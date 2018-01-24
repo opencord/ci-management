@@ -1,0 +1,4 @@
+[gerrit]
+host=gerrit.opencord.org
+port=29418
+project=ci-management.git
