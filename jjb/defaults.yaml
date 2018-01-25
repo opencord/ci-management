@@ -1,0 +1,41 @@
+---
+# GLOBAL jenkins defaults
+
+- defaults:
+    name: global
+
+    # lftools
+    lftools-version: <1.0.0
+
+    # lf-infra-defaults
+    jenkins-ssh-credential: 'cord-jenkins-ssh'
+
+    # build discards
+    build-days-to-keep: 30
+
+    # Timeout in minutes
+    # TODO deprecate this (should be project template specific)
+    build-timeout: 360
+    # TODO this should be the most common executor
+    build-node: centos7-basebuild-1c-1g
+
+    # default gerrit server definition
+    gerrit-server-name: 'CORD Gerrit'
+
+    archive-artifacts: ''
+
+    # Set default maven version used for everything
+    mvn-version: 'mvn33'
+
+    # Default maven goals
+    mvn-goals: 'clean install'
+    mvn-opts: ''
+
+    # Maven / Java
+    cord-infra-mvn-opts: |
+        --show-version
+        --batch-mode
+        -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        -Djenkins
+        -Dmaven.repo.local=/tmp/r
+        -Dorg.ops4j.pax.url.mvn.localRepository=/tmp/r
