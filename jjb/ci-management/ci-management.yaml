@@ -7,6 +7,12 @@
 
     jobs:
       - '{project-name}-ci-jobs'
+      - '{project-name}-packer-jobs':
+          platforms:
+            - 'centos-7'
+            - 'ubuntu-16.04'
+          templates:
+            - basebuild
 
     name: ci-management-jobs
     project: 'ci-management'
