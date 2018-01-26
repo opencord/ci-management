@@ -1,0 +1,8 @@
+{
+  "source_ami_filter_name": "*ubuntu*16.04*",
+  "source_ami_filter_owner": "099720109477",
+  "cloud_user": "ubuntu",
+
+  "distro": "Ubuntu 16.04",
+  "cloud_user_data": "provision/null_data.sh"
+}
