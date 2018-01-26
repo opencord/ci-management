@@ -1,0 +1,48 @@
+{
+  "variables": {
+    "aws_access_key": null,
+    "aws_security_key": null,
+    "security_group_id": null,
+    "source_ami_filter_name": null,
+    "source_ami_filter_owner": null,
+    "subnet_id": null,
+    "cloud_user": null,
+    "distro": null,
+    "cloud_user_data": null
+  },
+  "builders": [
+    {
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_name": "{{user `distro`}} - basebuild - {{isotime \"20060102-1504\"}}",
+      "instance_type": "t2.micro",
+      "region": "us-west-2",
+      "secret_key": "{{user `aws_security_key`}}",
+      "security_group_id": "{{user `security_group_id`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "{{user `source_ami_filter_name`}}",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": ["{{user `source_ami_filter_owner`}}"]
+      },
+      "ssh_username": "{{user `cloud_user`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "type": "amazon-ebs",
+      "user_data_file": "{{user `cloud_user_data`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "scripts": [
+        "provision/baseline.sh",
+        "provision/basebuild.sh",
+        "provision/system_reseal_local_env.sh",
+        "provision/system_reseal.sh"
+      ],
+      "execute_command": "chmod +x {{ .Path }}; if [ \"$UID\" == \"0\" ]; then {{ .Vars }} '{{ .Path }}'; else {{ .Vars }} sudo -E '{{ .Path }}'; fi"
+    }
+  ]
+}

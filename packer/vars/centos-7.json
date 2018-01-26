@@ -1,0 +1,8 @@
+{
+  "source_ami_filter_name": "*CentOS Linux 7*HVM*",
+  "source_ami_filter_owner": "679593333241",
+  "cloud_user": "centos",
+
+  "distro": "CentOS 7",
+  "cloud_user_data": "provision/rh-user_data.sh"
+}
