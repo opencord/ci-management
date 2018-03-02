@@ -1,0 +1,100 @@
+---
+
+- job_boiler_plate: &job_boiler_plate
+    name: job-boiler-plate
+
+    project-type: freestyle
+    node: '{build-node}'
+
+    ######################
+    # Default parameters #
+    ######################
+
+    branch: master
+    git-url: '$GIT_URL/$GERRIT_PROJECT'
+
+    #####################
+    # Job Configuration #
+    #####################
+
+    properties:
+      - lf-infra-properties:
+          project: '{project}'
+          build-days-to-keep: '{build-days-to-keep}'
+
+    parameters:
+      - lf-infra-parameters:
+          project: '{project}'
+          branch: '{stream}'
+          stream: '{stream}'
+          lftools-version: '{lftools-version}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+- verify_boiler_plate: &verify_boiler_plate
+    name: verify_boiler_plate
+
+    concurrent: true
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '{git-url}'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    triggers:
+      - gerrit:
+         #server-name: '{gerrit-server-name}'
+         server-name: 'CORD Project Gerrit'
+         #trigger-on: '{obj:gerrit_verify_triggers}'
+         trigger-on:
+           - patchset-created-event:
+               exclude-drafts: true
+               exclude-trivial-rebase: false
+               exclude-no-code-change: true
+           - draft-published-event
+           - comment-added-contains-event:
+               comment-contains-value: '(?i)^.*recheck$'
+         projects:
+           - project-compare-type: PLAIN
+             project-pattern: '{project}'
+             branches:
+               - branch-compare-type: ANT
+                 branch-pattern: '**/{stream}'
+             #file-paths: '{obj:gerrit_trigger_file_paths}'
+
+# workaround for lack of parameter expansion support in shell: (see above)
+- job-template:
+    #default name is global
+    name: 'cord-xos-gui-unit-{stream}'
+
+    <<: *job_boiler_plate
+    # yamllint disable-line rule:key-duplicates
+    <<: *verify_boiler_plate
+
+    builders:
+    #put shell scripts in file then make sure shell check is installed on verify vms
+      - shell: !include-raw-escape: cord-xos-gui-unit.sh
+
+- project:
+    name: cord-xos-gui-unit
+    project-name: cord-xos-gui-unit
+    project: xos-gui
+
+    build-timeout: '10'
+    build-node: 'ubuntu16.04-basebuild-8c-15g'
+
+    stream:
+      - 'master'
+      - 'cord-5.0'
+      - 'cord-4.1'
+      - 'cord-4.0'
+      - 'cord-3.0'
+
+    jobs:
+      - 'cord-xos-gui-unit-{stream}'
