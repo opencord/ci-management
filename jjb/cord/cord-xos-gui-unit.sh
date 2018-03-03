@@ -2,7 +2,9 @@
 
 # Install npm deps
 npm install
-typings install
+
+# Install typings deps
+# typings install
 
 # Check code style
 npm run lint
