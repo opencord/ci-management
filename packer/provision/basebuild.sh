@@ -37,17 +37,12 @@ ubuntu_systems() {
         curl \
         git \
         less \
-        # oracle-java8-installer \
-        # oracle-java8-set-default \
         python \
         ssh \
         zip \
-        # maven \
         nodejs \
-        # nodejs-legacy \
         npm \
-        python-pip \
-        # docker-ce \
+        python-pip
         # end of apt-get install list
     # npm install -g bower
     # npm install karma --save-dev
