@@ -10,26 +10,26 @@ rh_systems() {
     echo 'No changes to apply'
 }
 
-ubuntu_install_java_setup() {
-    DISTRO="xenial" # TODO get this programatically
-    echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-    echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
-        tee /etc/apt/sources.list.d/webupd8team-java.list
-    echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
-        tee -a /etc/apt/sources.list.d/webupd8team-java.list
-    apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-}
+# ubuntu_install_java_setup() {
+#     DISTRO="xenial" # TODO get this programatically
+#     echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
+#     echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
+#         tee /etc/apt/sources.list.d/webupd8team-java.list
+#     echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
+#         tee -a /etc/apt/sources.list.d/webupd8team-java.list
+#     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
+# }
 
 ubuntu_systems() {
     apt-get clean
-    ubuntu_install_java_setup
+    # ubuntu_install_java_setup
 
     # set up docker repo
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository \
-        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-         $(lsb_release -cs) \
-         stable"
+    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    # sudo add-apt-repository \
+    #     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+    #      $(lsb_release -cs) \
+    #      stable"
     
     apt-get update
     apt-get install -y \
@@ -37,20 +37,20 @@ ubuntu_systems() {
         curl \
         git \
         less \
-        oracle-java8-installer \
-        oracle-java8-set-default \
+        # oracle-java8-installer \
+        # oracle-java8-set-default \
         python \
         ssh \
         zip \
-        maven \
+        # maven \
         nodejs \
-        nodejs-legacy \
+        # nodejs-legacy \
         npm \
         python-pip \
-        docker-ce \
+        # docker-ce \
         # end of apt-get install list
-    npm install -g bower
-    npm install karma --save-dev
+    # npm install -g bower
+    # npm install karma --save-dev
 
     #TODO clean up
     #apt-get clean
