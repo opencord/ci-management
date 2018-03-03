@@ -1,10 +1,10 @@
 #!/bin/bash -ex
 
 # Install Node
-sudo apt-get install nodejs
+apt-get install nodejs
 
 # Install NPM
-sudo apt-get install npm
+apt-get install npm
 
 # Install npm deps
 npm install
