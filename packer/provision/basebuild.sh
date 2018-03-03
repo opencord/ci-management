@@ -51,6 +51,7 @@ ubuntu_systems() {
         # end of apt-get install list
     # npm install -g bower
     # npm install karma --save-dev
+    npm install -g typings
 
     #TODO clean up
     #apt-get clean

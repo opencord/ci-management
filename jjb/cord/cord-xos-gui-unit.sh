@@ -2,7 +2,6 @@
 
 # Install npm deps
 npm install
-npm install typings
 typings install
 
 # Check code style
