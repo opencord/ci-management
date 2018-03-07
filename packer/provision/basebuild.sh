@@ -30,9 +30,24 @@ ubuntu_systems() {
     #     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     #      $(lsb_release -cs) \
     #      stable"
-    
+
+    # set up ansible repo
+    sudo apt-add-repository -y ppa:ansible/ansible
+
+    # set up docker repo
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    sudo add-apt-repository \
+        "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+         $(lsb_release -cs) \
+         stable"
+
     apt-get update
+
+    # install basic sofware requirements
     apt-get install -y \
+        ansible \
+        apt-transport-https \
+        build-essential \
         bzip2 \
         curl \
         git \
@@ -42,11 +57,31 @@ ubuntu_systems() {
         zip \
         nodejs \
         npm \
-        python-pip
+        python-dev \
+        python-netaddr \
+        python-pip \
+        sshpass \
+        software-properties-common \
+        docker-ce
         # end of apt-get install list
-    # npm install -g bower
-    # npm install karma --save-dev
-    npm install -g typings
+
+    # install python modules
+    sudo pip install \
+        gitpython \
+        graphviz "Jinja2>=2.9" \
+        robotframework \
+        robotframework-sshlibrary \
+        robotframework-requests \
+        robotframework-httplibrary
+
+    # install npm modules
+    npm install -g \
+        typings
+
+    # install repo
+    curl -o /tmp/repo 'https://gerrit.opencord.org/gitweb?p=repo.git;a=blob_plain;f=repo;hb=refs/heads/stable'
+    sudo mv /tmp/repo /usr/local/bin/repo
+    sudo chmod a+x /usr/local/bin/repo
 
     #TODO clean up
     #apt-get clean
