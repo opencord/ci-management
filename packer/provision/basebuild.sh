@@ -67,8 +67,11 @@ ubuntu_systems() {
 
     # install python modules
     sudo pip install \
+        docker==2.6.1 \
+        docker-compose==1.15.0 \
         gitpython \
-        graphviz "Jinja2>=2.9" \
+        graphviz \
+        "Jinja2>=2.9" \
         robotframework \
         robotframework-sshlibrary \
         robotframework-requests \
