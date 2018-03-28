@@ -1,0 +1,123 @@
+---
+# CORD Test Pipeline jobs
+
+- test-pipe-job-boiler-plate: &test-pipe-job-boiler-plate
+    name: test-pipe-job-boiler-plate
+
+    project-type: pipeline
+
+    sandbox: true
+
+    properties:
+
+      - build-discarder:
+         num-to-keep: 20
+    gitURL: https://gerrit.opencord.org/cord-tester
+
+- test-pipe-init-procedure-plate: &test-pipe-init-procedure-plate
+    name: test-pipe-init-procedure-plate
+    project: cord-tester
+    stream: 'master'
+    jenkins-path: 'JenkinsFile'
+
+- job-project-pattern-plate: &job-project-pattern-plate
+    name: job-project-pattern-plate
+    pattern:
+      - 'xos'
+      - 'build'
+      - 'platform-install'
+
+- job-version-plate: &job-version-plate
+    name: job-version-plate
+    version:
+      - 'master'
+      - 'cord-5.0'
+
+- job-type-plate: &job-type-plate
+    name: job-type-plate
+    type:
+      - 'all-xos-api-tests'
+      - 'xos-sanity-api'
+
+
+- job-template:
+    name: '{type}-pipeline-{version}'
+    description: '<!-- Managed by Jenkins Job Builder -->
+                  This pipeline contains the test results and logs of {type} on CORD {version}. <br /><br />
+                  Created by Kailash Khalasi - kailash@opennetworking.org<br />
+                  Copyright (c) 2017 Open Networking Foundation (ONF)'
+
+    <<: *test-pipe-job-boiler-plate
+
+    parameters:
+
+      - string:
+         name: GERRIT_CHANGE_NUMBER
+         default: "2831"
+         description: ''
+
+      - string:
+         name: GERRIT_PATCHSET_NUMBER
+         default: '1'
+         description: ''
+
+      - string:
+         name: NODE_NAME
+         default: 'xos-api-test'
+         description: ''
+
+      - string:
+         name: RECEIPIENT
+         default: 'email list...'
+         description: ''
+
+      - lf-infra-parameters:
+         project: '{project}'
+         branch: '{stream}'
+         stream: '{stream}'
+         lftools-version: '<1.0.0'
+
+    concurrent: true
+
+    <<: *job-project-pattern-plate
+
+    triggers:
+      - gerrit:
+         server-name: 'Opencord Gerrit'
+         trigger-on:
+           - patchset-created-event:
+               exclude-drafts: false
+               exclude-trivial-rebase: false
+               exclude-no-code-change: false
+           - draft-published-event
+         projects:
+           - project-compare-type: PLAIN
+             project-pattern: '{pattern}'
+             branches:
+               - branch-compare-type: ANT
+                 branch-pattern: '{GERRIT_BRANCH}'
+
+    pipeline-scm:
+      script-path: '{jenkins-path}/{type}-JenkinsFile'
+      scm:
+        - git:
+           url: '{gitURL}'
+           branches:
+             - 'master'
+
+- project:
+    name: build-pipeline
+
+    <<: *job-type-plate
+
+    project-name: '{type}-pipeline'
+
+    build-timeout: '60'
+    build-node: 'ubuntu16.04-basebuild-1c-2g'
+
+    <<: *test-pipe-init-procedure-plate
+    <<: *job-version-plate
+
+    jobs:
+      - '{type}-pipeline-{version}'
+
