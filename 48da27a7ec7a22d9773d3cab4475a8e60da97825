@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "314771ff_4d773083",
+        "filename": "jjb/cord-test/api-sanity-test.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-28T18:50:52Z",
+      "side": 1,
+      "message": "For multi lines, we need to use | instead of \u0027\u0027\nso for this one should look like\ndescription: |\n                \u003c!-- Managed by Jenkins Job Builder --\u003e\n                This pipeline contains the test results and logs of {type} on CORD {version}. \u003cbr /\u003e\u003cbr /\u003e\n                Created by Kailash Khalasi - kailash@opennetworking.org\u003cbr /\u003e\n                Copyright (c) 2017 Open Networking Foundation (ONF)",
+      "range": {
+        "startLine": 45,
+        "startChar": 17,
+        "endLine": 45,
+        "endChar": 18
+      },
+      "revId": "48da27a7ec7a22d9773d3cab4475a8e60da97825",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4567a68b_11f4d700",
+        "filename": "jjb/cord-test/api-sanity-test.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-28T18:50:52Z",
+      "side": 1,
+      "message": "Also add the descriptions that current cord job has",
+      "range": {
+        "startLine": 67,
+        "startChar": 22,
+        "endLine": 67,
+        "endChar": 24
+      },
+      "revId": "48da27a7ec7a22d9773d3cab4475a8e60da97825",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ad205b33_9c9af939",
+        "filename": "jjb/cord-test/api-sanity-test.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-28T18:50:52Z",
+      "side": 1,
+      "message": "It needs to define the email list that current build has.",
+      "range": {
+        "startLine": 71,
+        "startChar": 18,
+        "endLine": 71,
+        "endChar": 33
+      },
+      "revId": "48da27a7ec7a22d9773d3cab4475a8e60da97825",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b4d6c554_5e688fb3",
+        "filename": "jjb/cord-test/api-sanity-test.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-28T18:50:52Z",
+      "side": 1,
+      "message": "Just tested this part and and unfortunately it does not work with the list. \nSo we have to define whole project-compare-type three times with the actual pattern names with them...",
+      "range": {
+        "startLine": 95,
+        "startChar": 30,
+        "endLine": 95,
+        "endChar": 41
+      },
+      "revId": "48da27a7ec7a22d9773d3cab4475a8e60da97825",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7c0f2649_ea0dfe47",
+        "filename": "jjb/cord-test/api-sanity-test.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 98,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-28T18:50:52Z",
+      "side": 1,
+      "message": "It needs to be \u0027$GERRIT_BRANCH\u0027 since what defined from lf-infra-parameters cannot be accessed directly.",
+      "range": {
+        "startLine": 98,
+        "startChar": 34,
+        "endLine": 98,
+        "endChar": 49
+      },
+      "revId": "48da27a7ec7a22d9773d3cab4475a8e60da97825",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5ba647a2_d7d41255",
+        "filename": "jjb/cord-test/api-sanity-test.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-28T18:50:52Z",
+      "side": 1,
+      "message": "I don\u0027t think this is necessary since pipeline defines the build node inside the Jenkins file.",
+      "range": {
+        "startLine": 116,
+        "startChar": 0,
+        "endLine": 116,
+        "endChar": 45
+      },
+      "revId": "48da27a7ec7a22d9773d3cab4475a8e60da97825",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
