@@ -89,7 +89,7 @@
     project: xos-gui
 
     build-timeout: '10'
-    build-node: 'ubuntu16.04-basebuild-8c-15g'
+    build-node: 'ubuntu16.04-basebuild-1c-1g'
 
     stream:
       - 'master'
