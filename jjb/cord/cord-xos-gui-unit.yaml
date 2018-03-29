@@ -96,7 +96,6 @@
       - 'cord-5.0'
       - 'cord-4.1'
       - 'cord-4.0'
-      - 'cord-3.0'
 
     jobs:
       - 'cord-xos-gui-unit-{stream}'
