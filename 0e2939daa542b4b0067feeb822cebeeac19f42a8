@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9facbc0a_21b6315a",
+        "filename": "jjb/cord-test/api-sanity-test.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000361
+      },
+      "writtenOn": "2018-03-29T19:58:01Z",
+      "side": 1,
+      "message": "Please rename the file to use a .yaml file extension. The JJB jobs do not use .yml files",
+      "revId": "0e2939daa542b4b0067feeb822cebeeac19f42a8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
