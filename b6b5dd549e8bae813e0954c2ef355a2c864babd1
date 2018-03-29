@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b4c115b_20685d8d",
+        "filename": "jjb/cord-test/api-sanity-test.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-29T20:51:53Z",
+      "side": 1,
+      "message": "can we change this to single quotation",
+      "range": {
+        "startLine": 51,
+        "startChar": 18,
+        "endLine": 51,
+        "endChar": 24
+      },
+      "revId": "b6b5dd549e8bae813e0954c2ef355a2c864babd1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a4f67706_33aa237f",
+        "filename": "jjb/cord-test/api-sanity-test.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-29T20:51:53Z",
+      "side": 1,
+      "message": "can we get rid of this indentation here and line 57",
+      "range": {
+        "startLine": 52,
+        "startChar": 85,
+        "endLine": 52,
+        "endChar": 86
+      },
+      "revId": "b6b5dd549e8bae813e0954c2ef355a2c864babd1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b89e0f96_66e3a32f",
+        "filename": "jjb/cord-test/api-sanity-test.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000428
+      },
+      "writtenOn": "2018-03-29T20:51:53Z",
+      "side": 1,
+      "message": "Where the jjb-verify fails. We need extra space here.",
+      "range": {
+        "startLine": 94,
+        "startChar": 9,
+        "endLine": 94,
+        "endChar": 10
+      },
+      "revId": "b6b5dd549e8bae813e0954c2ef355a2c864babd1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
