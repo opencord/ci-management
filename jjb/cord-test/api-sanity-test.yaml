@@ -31,8 +31,6 @@
     name: job-type-plate
     type:
       - 'all-xos-api-tests'
-      - 'xos-sanity-api'
-
 
 - job-template:
     name: '{type}-pipeline-{version}'
@@ -83,19 +81,19 @@
              project-pattern: 'build'
              branches:
                - branch-compare-type: ANT
-                 branch-pattern: '$GERRIT_BRANCH'
+                 branch-pattern: 'master'
 
            - project-compare-type: PLAIN
              project-pattern: 'platform-install'
              branches:
                - branch-compare-type: ANT
-                 branch-pattern: '$GERRIT_BRANCH'
+                 branch-pattern: 'master'
 
            - project-compare-type: PLAIN
              project-pattern: 'xos'
              branches:
                - branch-compare-type: ANT
-                 branch-pattern: '$GERRIT_BRANCH'
+                 branch-pattern: 'master'
 
     pipeline-scm:
       script-path: '{jenkins-path}/{type}-JenkinsFile'
