@@ -71,7 +71,7 @@
 
     triggers:
       - gerrit:
-         server-name: 'Opencord Gerrit'
+         server-name: 'CORD Gerrit'
          trigger-on:
            - patchset-created-event:
                exclude-drafts: false
