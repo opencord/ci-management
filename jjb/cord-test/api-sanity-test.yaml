@@ -18,14 +18,13 @@
     name: test-pipe-init-procedure-plate
     project: cord-tester
     stream: 'master'
-    jenkins-path: 'JenkinsFile'
+    jenkins-path: 'Jenkinsfile'
 
 
 - job-version-plate: &job-version-plate
     name: job-version-plate
     version:
       - 'master'
-      - 'cord-5.0'
 
 - job-type-plate: &job-type-plate
     name: job-type-plate
