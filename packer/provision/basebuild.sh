@@ -10,33 +10,36 @@ rh_systems() {
     echo 'No changes to apply'
 }
 
-# ubuntu_install_java_setup() {
-#     DISTRO="xenial" # TODO get this programatically
-#     echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-#     echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
-#         tee /etc/apt/sources.list.d/webupd8team-java.list
-#     echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
-#         tee -a /etc/apt/sources.list.d/webupd8team-java.list
-#     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-# }
+ubuntu_install_java_setup() {
+
+     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
+
+     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
+
+     DISTRO=$(lsb_release -cs)
+
+     apt-add-repository \
+       "deb http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main"
+}
 
 ubuntu_systems() {
     apt-get clean
-    # ubuntu_install_java_setup
 
-    # set up docker repo
-    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    # sudo add-apt-repository \
-    #     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-    #      $(lsb_release -cs) \
-    #      stable"
+    # get prereqs for PPA and apt-over-HTTPS support
+    apt-get update
+    apt-get install -y apt-transport-https software-properties-common
+
+    # install java (not needed as SonarQube includes this)
+    # ubuntu_install_java_setup
+    # apt-get update
+    # apt-get install -y oracle-java8-installer
 
     # set up ansible repo
-    sudo apt-add-repository -y ppa:ansible/ansible
+    apt-add-repository -y ppa:ansible/ansible
 
     # set up docker repo
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv 0EBFCD88
+    add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
          $(lsb_release -cs) \
          stable"
@@ -45,58 +48,76 @@ ubuntu_systems() {
 
     # install basic sofware requirements
     apt-get install -y \
+        "docker-ce=17.06*" \
         ansible \
-        apt-transport-https \
         build-essential \
         bzip2 \
         curl \
         git \
         less \
-        python \
-        ssh \
-        zip \
         nodejs \
         npm \
+        python \
         python-dev \
         python-netaddr \
         python-pip \
+        ssh \
         sshpass \
-        software-properties-common \
-        docker-ce
+        zip
         # end of apt-get install list
 
     # install python modules
-    sudo pip install \
-        docker==2.6.1 \
-        docker-compose==1.15.0 \
+    pip install \
+        Jinja2 \
+        ansible-lint \
+        astroid \
+        docker-compose==1.20.1 \
+        docker==3.2.1 \
         gitpython \
         graphviz \
-        "Jinja2>=2.9" \
+        isort \
+        pexpect \
+        pylint \
+        pyyaml \
         robotframework \
-        robotframework-sshlibrary \
-        robotframework-requests \
         robotframework-httplibrary \
-	pexpect \
-	pyyaml
+        robotframework-requests \
+        robotframework-sshlibrary
+        # end of pip install list
 
     # install npm modules
     npm install -g \
+        gitbook-cli \
+        markdownlint \
         typings
+        # end of npm install list
 
     # install repo
+    REPO_SHA256SUM="394d93ac7261d59db58afa49bb5f88386fea8518792491ee3db8baab49c3ecda"
     curl -o /tmp/repo 'https://gerrit.opencord.org/gitweb?p=repo.git;a=blob_plain;f=repo;hb=refs/heads/stable'
-    sudo mv /tmp/repo /usr/local/bin/repo
-    sudo chmod a+x /usr/local/bin/repo
+    echo "$REPO_SHA256SUM  /tmp/repo" | sha256sum -c -
+    mv /tmp/repo /usr/local/bin/repo
+    chmod a+x /usr/local/bin/repo
 
-    #TODO clean up
-    #apt-get clean
-    #apt-get purge -y
-    #apt-get autoremove -y
-    #rm -rf /var/lib/apt/lists/*
-    #rm -rf /var/cache/oracle-jdk8-installer
-    echo 'No changes to apply'
+    # install sonarqube scanner
+    SONAR_SCANNER_CLI_VERSION="3.1.0.1141"
+    SONAR_SCANNER_CLI_SHA256SUM="efbe7d1a274bbed220846eccc5b36db853a6bab3ee576aebf93ddc604a89ced4"
+    curl -L -o /tmp/sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip
+    echo "$SONAR_SCANNER_CLI_SHA256SUM  /tmp/sonarscanner.zip" | sha256sum -c -
+    pushd /opt
+    unzip /tmp/sonarscanner.zip
+    mv sonar-scanner-${SONAR_SCANNER_CLI_VERSION}-linux sonar-scanner
+    popd
+
+    # clean up
+    apt-get clean
+    apt-get purge -y
+    apt-get autoremove -y
+    rm -rf /var/lib/apt/lists/*
+    rm -rf /var/cache/oracle-jdk8-installer
+    rm -rf /tmp/sonarscanner.zip
 }
- 
+
 all_systems() {
     echo 'No common distribution configuration to perform'
 }
