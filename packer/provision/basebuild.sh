@@ -10,33 +10,32 @@ rh_systems() {
     echo 'No changes to apply'
 }
 
-# ubuntu_install_java_setup() {
-#     DISTRO="xenial" # TODO get this programatically
-#     echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-#     echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
-#         tee /etc/apt/sources.list.d/webupd8team-java.list
-#     echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main" | \
-#         tee -a /etc/apt/sources.list.d/webupd8team-java.list
-#     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-# }
+ubuntu_install_java_setup() {
+
+     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
+
+     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
+
+     DISTRO=$(lsb release -cs)
+
+     apt-add-repository \
+       "deb http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main"
+
+     apt-add-respsitory \
+       "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main"
+}
 
 ubuntu_systems() {
     apt-get clean
-    # ubuntu_install_java_setup
 
-    # set up docker repo
-    # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    # sudo add-apt-repository \
-    #     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-    #      $(lsb_release -cs) \
-    #      stable"
+    ubuntu_install_java_setup
 
     # set up ansible repo
-    sudo apt-add-repository -y ppa:ansible/ansible
+    apt-add-repository -y ppa:ansible/ansible
 
     # set up docker repo
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-    sudo add-apt-repository \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv 0EBFCD88
+    add-apt-repository \
         "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
          $(lsb_release -cs) \
          stable"
@@ -46,45 +45,58 @@ ubuntu_systems() {
     # install basic sofware requirements
     apt-get install -y \
         ansible \
-        apt-transport-https \
         build-essential \
         bzip2 \
         curl \
+        docker-ce \
         git \
         less \
-        python \
-        ssh \
-        zip \
         nodejs \
         npm \
+        oracle-java8-installer \
+        python \
         python-dev \
         python-netaddr \
         python-pip \
-        sshpass \
         software-properties-common \
-        docker-ce
+        ssh \
+        sshpass \
+        zip
         # end of apt-get install list
 
     # install python modules
-    sudo pip install \
-        docker==2.6.1 \
+    pip install \
+        ansible-lint \
+        astroid \
         docker-compose==1.15.0 \
+        docker==2.6.1 \
         gitpython \
         graphviz \
+        isort \
         "Jinja2>=2.9" \
+        pylint \
         robotframework \
-        robotframework-sshlibrary \
+        robotframework-httplibrary \
         robotframework-requests \
-        robotframework-httplibrary
+        robotframework-sshlibrary
+        # end of pip install list
 
     # install npm modules
     npm install -g \
+        gitbook-cli \
+        markdownlint \
         typings
+        # end of npm install list
 
     # install repo
+    REPO_SHA256SUM="394d93ac7261d59db58afa49bb5f88386fea8518792491ee3db8baab49c3ecda"
     curl -o /tmp/repo 'https://gerrit.opencord.org/gitweb?p=repo.git;a=blob_plain;f=repo;hb=refs/heads/stable'
-    sudo mv /tmp/repo /usr/local/bin/repo
-    sudo chmod a+x /usr/local/bin/repo
+    echo "$REPO_SHA256SUM  /tmp/repo" | sha256sum -c -
+    mv /tmp/repo /usr/local/bin/repo
+    chmod a+x /usr/local/bin/repo
+
+    # TODO - install sonarqube scanner
+    # https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
 
     #TODO clean up
     #apt-get clean
@@ -92,9 +104,8 @@ ubuntu_systems() {
     #apt-get autoremove -y
     #rm -rf /var/lib/apt/lists/*
     #rm -rf /var/cache/oracle-jdk8-installer
-    echo 'No changes to apply'
 }
- 
+
 all_systems() {
     echo 'No common distribution configuration to perform'
 }
