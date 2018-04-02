@@ -45,6 +45,30 @@
       "revId": "83dc91ecd662988d3337cf3d195df38be20123f9",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4e1f8033_45b29b54",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-02T17:36:17Z",
+      "side": 1,
+      "message": "This is the PGP key fingerprint of the Docker CE release key:\n\nhttps://keyserver.ubuntu.com/pks/lookup?op\u003dvindex\u0026search\u003dDocker+Release+%28CE+deb%29\u0026fingerprint\u003don\n\nSame (but different PGP key) for the Java one above.",
+      "parentUuid": "c78ebd4a_e20925f0",
+      "range": {
+        "startLine": 37,
+        "startChar": 56,
+        "endLine": 37,
+        "endChar": 64
+      },
+      "revId": "83dc91ecd662988d3337cf3d195df38be20123f9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
