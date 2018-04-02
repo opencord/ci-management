@@ -17,7 +17,7 @@
     # TODO deprecate this (should be project template specific)
     build-timeout: 360
     # TODO this should be the most common executor
-    build-node: centos7-basebuild-1c-1g
+    build-node: ubuntu16.04-basebuild-1c-1g
 
     # default gerrit server definition
     gerrit-server-name: 'CORD Gerrit'
