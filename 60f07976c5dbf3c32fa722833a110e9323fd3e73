@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c48e940_d139a8a8",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-04-03T17:43:24Z",
+      "side": 1,
+      "message": "are there spaces here? If yes we should remove them.",
+      "range": {
+        "startLine": 79,
+        "startChar": 10,
+        "endLine": 79,
+        "endChar": 11
+      },
+      "revId": "60f07976c5dbf3c32fa722833a110e9323fd3e73",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
