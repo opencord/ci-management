@@ -75,7 +75,9 @@ ubuntu_systems() {
         robotframework \
         robotframework-sshlibrary \
         robotframework-requests \
-        robotframework-httplibrary
+        robotframework-httplibrary \ 
+	pexpect \ 
+	pyyaml
 
     # install npm modules
     npm install -g \
