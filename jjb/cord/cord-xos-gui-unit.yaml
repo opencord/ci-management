@@ -89,13 +89,16 @@
     project: xos-gui
 
     build-timeout: '10'
-    build-node: 'ubuntu16.04-basebuild-1c-1g'
+    build-node: '{build-node}'
 
-    stream:
+    # ideally this would be in defaults.yaml, but that doesn't work
+    supported_versions: &supported_versions
       - 'master'
       - 'cord-5.0'
       - 'cord-4.1'
       - 'cord-4.0'
+
+    stream: *supported_versions
 
     jobs:
       - 'cord-xos-gui-unit-{stream}'
