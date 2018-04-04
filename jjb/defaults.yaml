@@ -16,6 +16,7 @@
     # Timeout in minutes
     # TODO deprecate this (should be project template specific)
     build-timeout: 360
+
     # TODO this should be the most common executor
     build-node: ubuntu16.04-basebuild-1c-1g
 
@@ -39,3 +40,4 @@
         -Djenkins
         -Dmaven.repo.local=/tmp/r
         -Dorg.ops4j.pax.url.mvn.localRepository=/tmp/r
+
