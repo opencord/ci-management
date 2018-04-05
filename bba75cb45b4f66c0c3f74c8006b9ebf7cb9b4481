@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f14457df_150267d7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000361
+      },
+      "writtenOn": "2018-04-05T14:05:36Z",
+      "side": 1,
+      "message": "Bad commit message.\n\nMessages should in general follow the practice of a good summary subject line (less than 50 characters) a blank line and a good descriptive body.\n\nLF Release Engineering strongly discourages putting issue IDs in the subject line (it reduces your character count). Instead we suggest adding a footer line of \u0027Issue-ID: \u003cyour_id\u003e\u0027\n\nSee http://docs.releng.linuxfoundation.org/en/latest/best-practices.html",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "bba75cb45b4f66c0c3f74c8006b9ebf7cb9b4481",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
