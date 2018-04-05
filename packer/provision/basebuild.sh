@@ -109,6 +109,18 @@ ubuntu_systems() {
     mv sonar-scanner-${SONAR_SCANNER_CLI_VERSION}-linux sonar-scanner
     popd
 
+    # install helm (for lint)
+    HELM_VERSION="2.8.2"
+    HELM_SHA256SUM="614b5ac79de4336b37c9b26d528c6f2b94ee6ccacb94b0f4b8d9583a8dd122d3"
+    HELM_PLATFORM="linux-amd64"
+    curl -L -o /tmp/helm.tgz https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz
+    echo "$HELM_SHA256SUM  /tmp/helm.tgz" | sha256sum -c -
+    pushd /tmp
+    tar -xzvf helm.tgz
+    mv ${HELM_PLATFORM}/helm /usr/local/bin/helm
+    chmod a+x /usr/local/bin/helm
+    popd
+
     # clean up
     apt-get clean
     apt-get purge -y
