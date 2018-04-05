@@ -22,6 +22,30 @@
       "revId": "bba75cb45b4f66c0c3f74c8006b9ebf7cb9b4481",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c0b7978a_9b7f19c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-05T16:32:45Z",
+      "side": 1,
+      "message": "We have a long-running convention of putting the Jira ticket ID, which usually has the larger problem description, in the first line of the commit.\n\nI can bring up changing this with the other developers, but it seems like a matter of stylistic preference.",
+      "parentUuid": "f14457df_150267d7",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "bba75cb45b4f66c0c3f74c8006b9ebf7cb9b4481",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
