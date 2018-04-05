@@ -29,4 +29,7 @@ target/
 __pycache__/
 *.pyc
 
-onap_sandbox
+# jjb local testing
+venv-jjb
+job-configs
+
