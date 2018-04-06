@@ -1,0 +1,112 @@
+---
+# CORD documentation verification and publish tasks
+
+- project:
+    name: verify-docs
+
+    # add repos that have documentation to the project list in both jobs
+    jobs:
+      - 'verify-documentation-{stream}':
+          project-regex: '^(cord|platform-install|cord-tester|rcord|ecord|mcord|opencloud|xos|xos-gui|xos-tosca)$'
+          stream:
+            - 'master'
+            - 'cord-5.0'
+            - 'cord-4.1'
+            - 'cord-4.0'
+
+- project:
+    name: publish-docs
+
+    jobs:
+      - 'publish-documentation-{stream}':
+          project-regex: '^(cord|platform-install|cord-tester|rcord|ecord|mcord|opencloud|xos|xos-gui|xos-tosca)$'
+          stream:
+            - 'master'
+            - 'cord-5.0'
+            - 'cord-4.1'
+            - 'cord-4.0'
+
+- job-template:
+    name: "verify-documentation-{stream}"
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regex: '$GERRIT_PROJECT'
+          stream: '{stream}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - lf-infra-properties:
+          project: '$GERRIT_PROJECT'
+          build-days-to-keep: '{build-days-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - lf-infra-parameters:
+          project: '$GERRIT_PROJECT'
+          branch: '{stream}'
+          stream: '{stream}'
+          lftools-version: '{lftools-version}'
+
+    scm:
+      - cord-infra-gerrit-repo-scm:
+          gerrit-server-url: '{gerrit-server-url}'
+          branch: '{stream}'
+          destination-dir: "cord"
+
+    builders:
+      - cord-infra-gerrit-repo-patch:
+          project: '$GERRIT_PROJECT'
+          change-number: '$GERRIT_CHANGE_NUMBER'
+          patchset-number: '$GERRIT_PATCHSET_NUMBER'
+      - shell: |
+          cd cord/build/docs
+          make test
+
+
+- job-template:
+    name: 'publish-documentation-{stream}'
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regex: '{project-regex}'
+          stream: '{stream}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - lf-infra-properties:
+          project: '$GERRIT_PROJECT'
+          build-days-to-keep: '{build-days-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - lf-infra-parameters:
+          project: '$GERRIT_PROJECT'
+          branch: '{stream}'
+          stream: '{stream}'
+          lftools-version: '{lftools-version}'
+
+    scm:
+      - cord-infra-gerrit-repo-scm:
+          gerrit-server-url: '{gerrit-server-url}'
+          branch: '{stream}'
+          destination-dir: "cord"
+
+    builders:
+      - shell: |
+          cd cord/build/docs
+          make build
+
+# publish over ssh: https://docs.openstack.org/infra/jenkins-job-builder/publishers.html#publishers.ssh
+#    publishers:
+#     - ssh:
