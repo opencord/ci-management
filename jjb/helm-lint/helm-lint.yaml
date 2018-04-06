@@ -27,6 +27,8 @@
           build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
+    concurrent: true
+
     scm:
       - lf-infra-gerrit-scm:
           git-url: '{git-url}'
@@ -62,11 +64,14 @@
 
     project-type: freestyle
 
+    node: '{build-node}'
     build-timeout: '10'
     build-node: '{build-node}'
 
-    stream:
-      - "master"
+    supported_versions: &supported_versions
+      - 'master'
+
+    stream: *supported_versions
 
     jobs:
       - 'verify-helm-charts-{stream}'
