@@ -1,5 +1,5 @@
 ---
-# GLOBAL jenkins defaults
+# CORD GLOBAL jenkins job builder (JJB) defaults
 
 - defaults:
     name: global
@@ -7,37 +7,37 @@
     # lftools
     lftools-version: <1.0.0
 
-    # lf-infra-defaults
+    # name of the SSH key to use
     jenkins-ssh-credential: 'cord-jenkins-ssh'
 
-    # build discards
-    build-days-to-keep: 30
+    # by default, don't depend on other jobs
+    dependency-jobs: ''
 
-    # Timeout in minutes
-    # TODO deprecate this (should be project template specific)
-    build-timeout: 360
+    # How long to keep builds and artifacts
+    build-days-to-keep: 60
+    artifact-num-to-keep: 30
 
-    # TODO this should be the most common executor
-    build-node: ubuntu16.04-basebuild-1c-1g
-
-    # default gerrit server definition
-    gerrit-server-name: 'CORD Gerrit'
-
+    # list of artifacts to archive
     archive-artifacts: ''
 
-    # Set default maven version used for everything
-    mvn-version: 'mvn33'
+    # build timeout (minutes)
+    build-timeout: 10
 
-    # Default maven goals
-    mvn-goals: 'clean install'
-    mvn-opts: ''
+    # The most frequently used type of build node
+    # see other build node types under "Cloud > Amazon EC2" at
+    #  https://jenkins-new.opencord.org/configure
+    build-node: ubuntu16.04-basebuild-1c-1g
 
-    # Maven / Java
-    cord-infra-mvn-opts: |
-        --show-version
-        --batch-mode
-        -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
-        -Djenkins
-        -Dmaven.repo.local=/tmp/r
-        -Dorg.ops4j.pax.url.mvn.localRepository=/tmp/r
+    # CORD Gerrit server definition, set in configuration
+    gerrit-server-name: 'CORD Gerrit'
+
+    # URL for Gerrit server, for use with `repo`
+    gerrit-server-url: 'https://gerrit.opencord.org/'
+
+    # name of the manifest git repos used with the `repo` cli tool
+    cord-repo-manifest: manifest.git
+    cordqa-manifest-repo: qa-manifest.git
+
+    # list of supported branch as a regexp
+    supported-branches-regexp: '^(master|cord-5.0|cord-4.1|cord-4.0)$'
 

@@ -1,0 +1,17 @@
+---
+# verification jobs for 'cord' repo
+
+- project:
+    name: cord
+    project: '{name}'
+
+    jobs:
+      - 'verify-cord-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-cord-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-ansible-lint'
+
