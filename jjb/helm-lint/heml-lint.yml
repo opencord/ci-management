@@ -1,0 +1,72 @@
+---
+# run `helm lint` on helm charts
+
+- job-template:
+    name: 'verify-helm-charts-{stream}'
+
+    git-url: '$GIT_URL/$GERRIT_PROJECT'
+    submodule-recursive: false
+
+    builders:
+      - shell: !include-raw-escape: helmlint.sh
+
+    properties:
+      - lf-infra-properties:
+          project: '{project}'
+          build-days-to-keep: '{build-days-to-keep}'
+
+    parameters:
+      - lf-infra-parameters:
+          project: '{project}'
+          branch: '{stream}'
+          stream: '{stream}'
+          lftools-version: '{lftools-version}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '{git-url}'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: '{submodule-recursive}'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: true
+                exclude-trivial-rebase: false
+                exclude-no-code-change: true
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*recheck$'
+          projects:
+            - project-compare-type: PLAIN
+              project-pattern: '{project}'
+              branches:
+                - branch-compare-type: ANT
+                  branch-pattern: '**/{stream}'
+
+- project:
+    name: verify-helm-charts
+    project-name: verify-helm-charts
+
+    project: helm-charts
+
+    project-type: freestyle
+
+    build-timeout: '10'
+    build-node: '{build-node}'
+
+    stream:
+      - "master"
+
+    jobs:
+      - 'verify-helm-charts-{stream}'
