@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c276845d_b1c79e82",
+        "filename": "jjb/cord-test/physical-pod.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-04-06T22:09:53Z",
+      "side": 1,
+      "message": "do you know what is this?",
+      "range": {
+        "startLine": 9,
+        "startChar": 4,
+        "endLine": 9,
+        "endChar": 17
+      },
+      "revId": "04ad22a4d9f602ac140cf0ebc2a8106999644d7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bae09124_bf2ce390",
+        "filename": "jjb/cord-test/physical-pod.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-04-06T22:09:53Z",
+      "side": 1,
+      "message": "This is fine, but where do you specify the manifest path, as we do in our Jenkins? I\u0027m sure this works for a normal git repo, but I\u0027m not sure it works fine for repo..thoughts?",
+      "range": {
+        "startLine": 15,
+        "startChar": 4,
+        "endLine": 15,
+        "endChar": 51
+      },
+      "revId": "04ad22a4d9f602ac140cf0ebc2a8106999644d7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fa48bcdf_5d5f3d18",
+        "filename": "jjb/cord-test/physical-pod.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-04-06T22:09:53Z",
+      "side": 1,
+      "message": "I don\u0027t think we should do this...this is to trigger the job automatically when a Gerrit patchset is submitted",
+      "range": {
+        "startLine": 75,
+        "startChar": 6,
+        "endLine": 82,
+        "endChar": 34
+      },
+      "revId": "04ad22a4d9f602ac140cf0ebc2a8106999644d7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24942ac1_cfdf4842",
+        "filename": "jjb/cord-test/physical-pod.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-04-06T22:09:53Z",
+      "side": 1,
+      "message": "I don\u0027t think this will work. the final patch should be build/Jenkinsfile.newBuildSystem. This way you\u0027re setting it to Jenkinsfile/Jenkinsfile-rcord",
+      "range": {
+        "startLine": 91,
+        "startChar": 20,
+        "endLine": 91,
+        "endChar": 51
+      },
+      "revId": "04ad22a4d9f602ac140cf0ebc2a8106999644d7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70cea91e_6b764f38",
+        "filename": "jjb/cord-test/physical-pod.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-04-06T22:09:53Z",
+      "side": 1,
+      "message": "Is this compatible with the naming discussion we had?",
+      "range": {
+        "startLine": 103,
+        "startChar": 19,
+        "endLine": 103,
+        "endChar": 34
+      },
+      "revId": "04ad22a4d9f602ac140cf0ebc2a8106999644d7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9ee3e68c_b48f0ff4",
+        "filename": "jjb/cord-test/physical-pod.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2018-04-06T22:09:53Z",
+      "side": 1,
+      "message": "I don\u0027t think this will be enough :)",
+      "range": {
+        "startLine": 105,
+        "startChar": 20,
+        "endLine": 105,
+        "endChar": 22
+      },
+      "revId": "04ad22a4d9f602ac140cf0ebc2a8106999644d7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
