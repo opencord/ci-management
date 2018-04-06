@@ -1,0 +1,38 @@
+---
+# CORD JJB macros
+
+# checkout entire source tree with repo
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/scm.html#scm.repo
+- scm:
+    name: cord-infra-gerrit-repo-scm
+    scm:
+      - repo:
+          manifest-url: '{gerrit-server-url}'
+          manifest-branch: '{branch}'
+          destination-dir: '{destination-dir}'
+          jobs: 4
+          reset-first: true
+          depth: 1
+
+# trigger on gerrit actions
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.gerrit
+- trigger:
+    name: cord-infra-gerrit-trigger
+    triggers:
+      gerrit:
+        server-name: '{gerrit-server-name}'
+        trigger-on:
+          - patchset-created-event:
+              exclude-drafts: true
+              exclude-trivial-rebase: false
+              exclude-no-code-change: true
+          - draft-published-event
+          - comment-added-contains-event:
+              comment-contains-value: '(?i)^.*recheck$'
+        projects:
+          - project-compare-type: PLAIN
+            project-pattern: '{project}'
+            branches:
+              - branch-compare-type: ANT
+                branch-pattern: '**/{stream}'
+

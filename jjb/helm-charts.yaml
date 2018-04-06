@@ -1,0 +1,18 @@
+---
+# Jobs run to verify helm charts
+
+- project:
+    name: helm-charts
+    project: '{name}'
+
+    jobs:
+      - 'verify-helm-charts-jobs':
+          stream:
+            - 'master'
+
+- job-group:
+    name: 'verify-helm-charts-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-helm-lint'
+

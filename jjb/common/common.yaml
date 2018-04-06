@@ -1,0 +1,136 @@
+---
+# CORD commonly used job templates
+
+# Verify that there is valid license/copyright on files
+- job-template:
+    id: verify-licensed
+    name: 'verify-{project}-{stream}-licensed'
+    node: '{build-node}'
+
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: licensecheck.sh
+
+    properties:
+      - lf-infra-properties:
+          project: '{project}'
+          build-days-to-keep: '{build-days-to-keep}'
+
+    parameters:
+      - lf-infra-parameters:
+          project: '{project}'
+          branch: '{stream}'
+          stream: '{stream}'
+          lftools-version: '{lftools-version}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    triggers:
+      - cord-infra-gerrit-trigger:
+          gerrit-server-name: '{gerrit-server-name}'
+          project: '{project}'
+          stream: '{stream}'
+
+# run `ansible-lint` to validate ansible playbooks/roles
+- job-template:
+    id: verify-ansible-lint
+    name: 'verify-{project}-{stream}-ansible-lint'
+    node: '{build-node}'
+
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: ansiblelint.sh
+
+    properties:
+      - lf-infra-properties:
+          project: '{project}'
+          build-days-to-keep: '{build-days-to-keep}'
+
+    parameters:
+      - lf-infra-parameters:
+          project: '{project}'
+          branch: '{stream}'
+          stream: '{stream}'
+          lftools-version: '{lftools-version}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    triggers:
+      - cord-infra-gerrit-trigger:
+          gerrit-server-name: '{gerrit-server-name}'
+          project: '{project}'
+          stream: '{stream}'
+
+# run `helm lint --strict` to validate helm charts
+- job-template:
+    id: verify-helm-lint
+    name: 'verify-{project}-{stream}-helm-lint'
+    node: '{build-node}'
+
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: helmlint.sh
+
+    properties:
+      - lf-infra-properties:
+          project: '{project}'
+          build-days-to-keep: '{build-days-to-keep}'
+
+    parameters:
+      - lf-infra-parameters:
+          project: '{project}'
+          branch: '{stream}'
+          stream: '{stream}'
+          lftools-version: '{lftools-version}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    triggers:
+      - cord-infra-gerrit-trigger:
+          gerrit-server-name: '{gerrit-server-name}'
+          project: '{project}'
+          stream: '{stream}'
+
+

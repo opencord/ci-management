@@ -1,0 +1,21 @@
+---
+# Jobs run to run on maas repo
+
+- project:
+    name: maas
+    project: '{name}'
+
+    jobs:
+      - 'verify-maas-jobs':
+          stream:
+            - 'master'
+            - 'cord-5.0'
+            - 'cord-4.1'
+            - 'cord-4.0'
+
+- job-group:
+    name: 'verify-maas-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-ansible-lint'
+
