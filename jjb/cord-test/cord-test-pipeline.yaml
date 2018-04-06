@@ -29,9 +29,38 @@
 - job-type-plate: &job-type-plate
     name: job-type-plate
     type:
-      - 'all-xos-api-tests'
+      - 'verify-api-tests'
+
+- job-repo-plate: &job-repo-plate
+    name: job-repo-plate
+    repo:
+      - 'xos'
+      - 'cord'
+      - 'platform-install'
+      - 'rcord'
+      - 'vrouter'
+      - 'vsg'
+      - 'vtn'
+      - 'vtr'
+      - 'fabric'
+      - 'openstack'
+      - 'chameleon'
+      - 'exampleservice'
+      - 'onos-service'
+      - 'olt-service'
+      - 'cord-tester'
+      - 'vEE'
+      - 'vEG'
+      - 'mcord'
+      - 'vspgwu'
+      - 'venb'
+      - 'vspgwc'
+      - 'vEPC'
+      - 'vMME'
+      - 'vHSS'
 
 - job-template:
+
     name: '{type}-pipeline-{version}'
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -53,6 +82,73 @@
          default: '1'
          description: 'This parameter is required to manually build this pipeline job'
 
+
+      - string:
+         name: RECEIPIENT
+         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
+         description: ''
+
+      - lf-infra-parameters:
+         project: '{project}'
+         branch: '{stream}'
+         stream: '{stream}'
+         lftools-version: '<1.0.0'
+
+    concurrent: true
+
+    <<: *job-repo-plate
+
+    triggers:
+      - gerrit:
+         server-name: 'CORD Gerrit'
+         trigger-on:
+           - patchset-created-event:
+               exclude-drafts: false
+               exclude-trivial-rebase: false
+               exclude-no-code-change: false
+           - draft-published-event
+         projects:
+           - project-compare-type: PLAIN
+             project-pattern: '{repo}'
+             branches:
+               - branch-compare-type: ANT
+                 branch-pattern: 'master'
+
+    pipeline-scm:
+      script-path: '{jenkins-path}/{type}-JenkinsFile'
+      scm:
+        - git:
+           url: '{gitURL}'
+           branches:
+             - 'master'
+
+- job-template:
+    name: 'automated-nightly-build-qct4-cord-master'
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  It builds nighlty a full POD using R-CORD at QCT - POD 4 <br /><br />
+                  Created by Kailash Khalasi - kailash@opennetworking.org<br />
+                  Copyright (c) 2017 Open Networking Foundation (ONF)
+
+    <<: *test-pipe-job-boiler-plate
+
+    parameters:
+
+      - string:
+         name: configRepoUrl
+         default: 'https://gerrit.opencord.org/pod-configs'
+         description: 'The URL of the POD configs repository'
+
+      - string:
+         name: configRepoBaseDir
+         default: 'pod-configs/'
+         description: 'The directory inside the POD configs repository'
+
+      - string:
+         name: configRepoFile
+         default: 'deployment-configs/qct-pod4.yml'
+         description: 'The deployment config file'
+
       - string:
          name: RECEIPIENT
          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
@@ -67,26 +163,15 @@
     concurrent: true
 
     triggers:
-      - gerrit:
-         server-name: 'CORD Gerrit'
-         trigger-on:
-           - patchset-created-event:
-               exclude-drafts: false
-               exclude-trivial-rebase: false
-               exclude-no-code-change: false
-           - draft-published-event
-         projects:
-           - project-compare-type: PLAIN
-             project-pattern: 'cord-tester'
-             branches:
-               - branch-compare-type: ANT
-                 branch-pattern: 'master'
+      - timed: |
+                TZ=America/Los_Angeles
+                H 21 * * *
 
     pipeline-scm:
-      script-path: '{jenkins-path}/{type}-JenkinsFile'
+      script-path: 'build/Jenkinsfile.newBuildSystem'
       scm:
         - git:
-           url: '{gitURL}'
+           url: 'https://gerrit.opencord.org/cord'
            branches:
              - 'master'
 
@@ -102,7 +187,18 @@
 
     <<: *test-pipe-init-procedure-plate
     <<: *job-version-plate
+    <<: *job-repo-plate
 
     jobs:
       - '{type}-pipeline-{version}'
 
+- project:
+    name: nightly-build-pipeline
+
+    project-name: 'automated-build-pipeline'
+
+    build-timeout: '300'
+    build-node: 'qct-cord-pod-04'
+
+    jobs:
+      - 'automated-nightly-build-qct4-cord-master'
