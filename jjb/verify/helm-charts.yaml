@@ -1,0 +1,17 @@
+---
+# verification jobs for 'helm-charts' repo
+
+- project:
+    name: helm-charts
+    project: '{name}'
+
+    jobs:
+      - 'verify-helm-charts-jobs':
+          branch-regexp: '^master$'
+
+- job-group:
+    name: 'verify-helm-charts-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-helm-lint'
+

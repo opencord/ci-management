@@ -1,0 +1,76 @@
+---
+# CORD JJB macros
+
+# control how long builds and artifact are retained
+- property:
+    name: cord-infra-properties
+    properties:
+      - build-discarder:
+          days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+# checkout entire source tree with repo
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/scm.html#scm.repo
+- scm:
+    name: cord-infra-gerrit-repo-scm
+    scm:
+      - repo:
+          manifest-url: '{gerrit-server-url}'
+          manifest-branch: '{branch}'
+          destination-dir: '{destination-dir}'
+          jobs: 4
+          reset-first: true
+          depth: 1
+
+# download a specific patchset after checking out enitre source tree with repo
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/builders.html#builders.inject
+- builder:
+    name: cord-infra-gerrit-repo-patch
+    builders:
+      - inject:
+          properties-content: |
+            GERRIT_PROJECT={project}
+            GERRIT_CHANGE_NUMBER={change-number}
+            GERRIT_PATCHSET_NUMBER={patchset-number}
+      - shell: !include-raw-escape: shell/repopatch.sh
+
+# trigger on gerrit patchsets and actions
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.gerrit
+- trigger:
+    name: cord-infra-gerrit-trigger-patchset
+    triggers:
+      gerrit:
+        server-name: '{gerrit-server-name}'
+        dependency-jobs: '{dependency-jobs}'
+        silent-start: true
+        trigger-on:
+          - patchset-created-event:
+              exclude-drafts: true
+              exclude-trivial-rebase: false
+              exclude-no-code-change: true
+          - draft-published-event
+          - comment-added-contains-event:
+              comment-contains-value: '(?i)^.*recheck$'
+        projects:
+          - project-compare-type: REG_EXP
+            project-pattern: '{project-regexp}'
+            branches:
+              - branch-compare-type: REG_EXP
+                branch-pattern: '{branch-regexp}'
+
+# trigger on gerrit commits/merges
+- trigger:
+    name: cord-infra-gerrit-trigger-merge
+    triggers:
+      gerrit:
+        server-name: '{gerrit-server-name}'
+        dependency-jobs: '{dependency-jobs}'
+        silent-start: True
+        trigger-on:
+          - change-merged-event
+        projects:
+          - project-compare-type: REG_EXP
+            project-pattern: '{project-regexp}'
+            branches:
+              - branch-compare-type: REG_EXP
+                branch-pattern: '{branch-regexp}'

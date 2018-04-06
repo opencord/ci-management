@@ -1,0 +1,100 @@
+---
+# CORD documentation verification and publish tasks
+
+- project:
+    name: verify-docs
+
+    # add repos that have documentation to the project list in both jobs
+    jobs:
+      - 'verify-documentation':
+          project-regexp: '^(cord|platform-install|cord-tester|rcord|ecord|mcord|opencloud|xos|xos-gui|xos-tosca)$'
+          branch-regexp: '{supported-branches-regexp}'
+
+- project:
+    name: publish-docs
+
+    jobs:
+      - 'publish-documentation':
+          project-regexp: '^(cord|platform-install|cord-tester|rcord|ecord|mcord|opencloud|xos|xos-gui|xos-tosca)$'
+          branch-regexp: '{supported-branches-regexp}'
+
+# Documentation job templates
+- job-template:
+    name: "verify-documentation"
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '$GERRIT_PROJECT'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - cord-infra-gerrit-repo-scm:
+          gerrit-server-url: '{gerrit-server-url}'
+          branch: '$GERRIT_BRANCH'
+          destination-dir: 'cord'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: false
+
+    builders:
+      - cord-infra-gerrit-repo-patch:
+          project: '$GERRIT_PROJECT'
+          change-number: '$GERRIT_CHANGE_NUMBER'
+          patchset-number: '$GERRIT_PATCHSET_NUMBER'
+      - shell: |
+          cd cord/build/docs
+          make test
+
+
+- job-template:
+    name: 'publish-documentation'
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project-regexp}'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - cord-infra-gerrit-repo-scm:
+          gerrit-server-url: '{gerrit-server-url}'
+          branch: '$GERRIT_BRANCH'
+          destination-dir: 'cord'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: false
+
+    builders:
+      - shell: |
+          cd cord/build/docs
+          make build
+
+# publish over ssh: https://docs.openstack.org/infra/jenkins-job-builder/publishers.html#publishers.ssh
+#    publishers:
+#     - ssh:
+

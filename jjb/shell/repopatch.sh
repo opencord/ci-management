@@ -1,4 +1,4 @@
-#/usr/bin/env bash
+#!/usr/bin/env bash
 
 # Copyright 2018-present Open Networking Foundation
 #
@@ -14,33 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# helmlint.sh
-# run `helm lint` on all helm charts that are found
+# repopatch.sh
+# downloads a patch to within an already checked out repo tree
 
 set +e -u -o pipefail
-echo "helmlint.sh, using helm version: $(helm version -c --short)"
 
-fail_lint=0
+# verify that we have repo installed
+command -v repo >/dev/null 2>&1 || { echo "repo not found, please install it" >&2; exit 1; }
 
-for chart in $(find . -name Chart.yaml -print) ; do
+echo "Checking out patch with repo, using repo version:"
+repo version
 
-  chartdir=$(dirname "${chart}")
+echo "GERRIT_PROJECT: ${GERRIT_PROJECT}"
+echo "GERRIT_CHANGE_NUMBER: ${GERRIT_CHANGE_NUMBER}"
+echo "GERRIT_PATCHSET_NUMBER: ${GERRIT_PATCHSET_NUMBER}"
 
-  # lint with values.yaml if it exists
-  if [ -f "${chartdir}/values.yaml" ]; then
-    helm lint --strict --values "${chartdir}/values.yaml" "${chartdir}"
-  else
-    helm lint --strict "${chartdir}"
-  fi
+echo "Make this work eventually!"
 
-  rc=$?
-  if [[ $rc != 0 ]]; then
-    fail_lint=1
-  fi
-done
-
-if [[ $fail_lint != 0 ]]; then
-  exit 1
-fi
-
-exit 0

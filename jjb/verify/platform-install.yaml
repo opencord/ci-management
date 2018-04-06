@@ -1,0 +1,17 @@
+---
+# verification jobs for 'platform-install' repo
+
+- project:
+    name: platform-install
+    project: '{name}'
+
+    jobs:
+      - 'verify-platform-install-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-platform-install-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-ansible-lint'
+
