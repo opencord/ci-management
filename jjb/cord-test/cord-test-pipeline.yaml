@@ -61,7 +61,7 @@
 
 - job-template:
 
-    name: '{type}-pipeline-{version}'
+    name: 'verify-{repo}-{type}-pipeline-{version}'
     description: |
                   <!-- Managed by Jenkins Job Builder -->
                   This pipeline contains the test results and logs of {type} on CORD {version}. <br /><br />
@@ -107,7 +107,7 @@
            - draft-published-event
          projects:
            - project-compare-type: PLAIN
-             project-pattern: 'cord-tester'
+             project-pattern: '{repo}'
              branches:
                - branch-compare-type: ANT
                  branch-pattern: 'master'
@@ -187,7 +187,7 @@
     <<: *job-version-plate
 
     jobs:
-      - '{type}-pipeline-{version}'
+      - 'verify-{repo}-{type}-pipeline-{version}'
 
 - project:
     name: nightly-build-pipeline
