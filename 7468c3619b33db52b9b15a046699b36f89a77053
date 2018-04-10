@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d65fb1cd_9c959751",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-04-10T19:42:45Z",
+      "side": 1,
+      "message": "does this mean that if \"build-node\" is not specified for each project, then it will default to this one ?",
+      "revId": "7468c3619b33db52b9b15a046699b36f89a77053",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
