@@ -16,6 +16,24 @@
       "revId": "7468c3619b33db52b9b15a046699b36f89a77053",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "474d2fc2_44ae5cfe",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-10T19:50:38Z",
+      "side": 1,
+      "message": "Correct, per the `job-template` that has it listed.",
+      "parentUuid": "d65fb1cd_9c959751",
+      "revId": "7468c3619b33db52b9b15a046699b36f89a77053",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
