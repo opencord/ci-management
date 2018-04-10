@@ -29,7 +29,7 @@
 - job-type-plate: &job-type-plate
     name: job-type-plate
     type:
-      - 'verify-api-tests'
+      - 'api-tests'
 
 - job-repo-plate: &job-repo-plate
     name: job-repo-plate
