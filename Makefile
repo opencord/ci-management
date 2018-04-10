@@ -3,7 +3,7 @@
 .PHONY: test clean
 
 VENV_DIR      ?= venv-jjb
-JJB_VERSION   ?= 2.0.0
+JJB_VERSION   ?= 2.0.3
 JOBCONFIG_DIR ?= job-configs
 
 $(VENV_DIR):

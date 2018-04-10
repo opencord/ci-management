@@ -18,4 +18,4 @@
     project: 'ci-management'
     project-name: 'ci-management'
 
-    jjb-version: 2.0.0
+    jjb-version: 2.0.3
