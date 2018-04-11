@@ -32,12 +32,16 @@
     gerrit-server-name: 'CORD Gerrit'
 
     # URL for Gerrit server, for use with `repo`
-    gerrit-server-url: 'https://gerrit.opencord.org/'
+    gerrit-server-url: 'https://gerrit.opencord.org'
 
     # name of the manifest git repos used with the `repo` cli tool
     cord-repo-manifest: manifest.git
     cordqa-manifest-repo: qa-manifest.git
 
-    # list of supported branch as a regexp
+    # regexp for gerrit triggers
+    # list of supported branches, for branch-regexp
     supported-branches-regexp: '^(master|cord-5.0|cord-4.1|cord-4.0)$'
 
+    # for matching files with file-include-regexp
+    all-files-regexp: '.*'
+    doc-files-regexp: "^docs/.*"

@@ -13,6 +13,7 @@
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
 
     properties:
@@ -31,7 +32,7 @@
 
     # Run the master branch Jenkinsfile from cord-tester against all other revisions
     pipeline-scm:
-      script-path: 'Jenkinsfile/verify-api-test-JenkinsFile'
+      script-path: 'Jenkinsfile/verify-api-tests-JenkinsFile'
       scm:
         - git:
            url: '{gerrit-server-url}/cord-tester'

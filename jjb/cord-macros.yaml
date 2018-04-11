@@ -15,20 +15,21 @@
     name: cord-infra-gerrit-repo-scm
     scm:
       - repo:
-          manifest-url: '{gerrit-server-url}'
+          manifest-url: '{manifest-url}'
           manifest-branch: '{branch}'
           destination-dir: '{destination-dir}'
           jobs: 4
           reset-first: true
           depth: 1
 
-# download a specific patchset after checking out enitre source tree with repo
+# download a specific patchset after checking out entire source tree with repo
 # docs: https://docs.openstack.org/infra/jenkins-job-builder/builders.html#builders.inject
 - builder:
     name: cord-infra-gerrit-repo-patch
     builders:
       - inject:
           properties-content: |
+            DESTINATION_DIR={destination-dir}
             GERRIT_PROJECT={project}
             GERRIT_CHANGE_NUMBER={change-number}
             GERRIT_PATCHSET_NUMBER={patchset-number}
@@ -57,6 +58,9 @@
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{branch-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '{file-include-regexp}'
 
 # trigger on gerrit commits/merges
 - trigger:
@@ -74,3 +78,6 @@
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{branch-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '{file-include-regexp}'

@@ -15,6 +15,7 @@
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
 
     properties:
@@ -57,6 +58,7 @@
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
 
     properties:
@@ -99,6 +101,7 @@
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
 
     properties:
