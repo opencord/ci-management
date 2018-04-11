@@ -20,12 +20,13 @@
 
 # Documentation job templates
 - job-template:
+    id: verify-documentation
     name: "verify-documentation"
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '$GERRIT_PROJECT'
+          project-regexp: '{project-regexp}'
           branch-regexp: '{branch-regexp}'
           dependency-jobs: '{dependency-jobs}'
 
@@ -41,7 +42,7 @@
 
     scm:
       - cord-infra-gerrit-repo-scm:
-          gerrit-server-url: '{gerrit-server-url}'
+          manifest-url: '{gerrit-server-url}/{cord-repo-manifest}'
           branch: '$GERRIT_BRANCH'
           destination-dir: 'cord'
 
@@ -51,6 +52,7 @@
 
     builders:
       - cord-infra-gerrit-repo-patch:
+          destination-dir: 'cord'
           project: '$GERRIT_PROJECT'
           change-number: '$GERRIT_CHANGE_NUMBER'
           patchset-number: '$GERRIT_PATCHSET_NUMBER'
@@ -58,8 +60,8 @@
           cd cord/build/docs
           make test
 
-
 - job-template:
+    id: publish-documentation
     name: 'publish-documentation'
 
     triggers:
@@ -81,7 +83,7 @@
 
     scm:
       - cord-infra-gerrit-repo-scm:
-          gerrit-server-url: '{gerrit-server-url}'
+          manifest-url: '{gerrit-server-url}/{cord-repo-manifest}'
           branch: '$GERRIT_BRANCH'
           destination-dir: 'cord'
 
@@ -95,6 +97,15 @@
           make build
 
 # publish over ssh: https://docs.openstack.org/infra/jenkins-job-builder/publishers.html#publishers.ssh
-#    publishers:
-#     - ssh:
+    publishers:
+      - ssh:
+          site: 'CORD Wiki'
+          source: 'cord/build/docs/_book/**'
+          remove-prefix: 'cord/build/docs/_book'
+          target: '//var/www/guide/$GERRIT_BRANCH'
+      - ssh:
+          site: 'CORD Wiki'
+          source: 'cord/build/docs/xos/swagger/**'
+          remove-prefix: 'cord/build/docs/xos'
+          target: '//var/www/guide/$GERRIT_BRANCH'
 
