@@ -15,7 +15,7 @@
     name: cord-infra-gerrit-repo-scm
     scm:
       - repo:
-          manifest-url: '{gerrit-server-url}'
+          manifest-url: '{manifest-url}'
           manifest-branch: '{branch}'
           destination-dir: '{destination-dir}'
           jobs: 4
