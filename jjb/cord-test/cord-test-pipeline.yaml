@@ -133,6 +133,11 @@
     parameters:
 
       - string:
+         name: devNodeName
+         default: 'qct-cord-pod4'
+         description: 'Jenkins node name of Dev Node'
+
+      - string:
          name: configRepoUrl
          default: 'https://gerrit.opencord.org/pod-configs'
          description: 'The URL of the POD configs repository'
@@ -166,7 +171,7 @@
                 H 21 * * *
 
     pipeline-scm:
-      script-path: 'build/Jenkinsfile.newBuildSystem'
+      script-path: 'build/Jenkinsfile'
       scm:
         - git:
            url: 'https://gerrit.opencord.org/cord'
