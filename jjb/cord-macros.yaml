@@ -39,38 +39,38 @@
 - trigger:
     name: cord-infra-gerrit-trigger-patchset
     triggers:
-      gerrit:
-        server-name: '{gerrit-server-name}'
-        dependency-jobs: '{dependency-jobs}'
-        silent-start: true
-        trigger-on:
-          - patchset-created-event:
-              exclude-drafts: true
-              exclude-trivial-rebase: false
-              exclude-no-code-change: true
-          - draft-published-event
-          - comment-added-contains-event:
-              comment-contains-value: '(?i)^.*recheck$'
-        projects:
-          - project-compare-type: REG_EXP
-            project-pattern: '{project-regexp}'
-            branches:
-              - branch-compare-type: REG_EXP
-                branch-pattern: '{branch-regexp}'
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: true
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: true
+                exclude-trivial-rebase: false
+                exclude-no-code-change: true
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*recheck$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '{project-regexp}'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{branch-regexp}'
 
 # trigger on gerrit commits/merges
 - trigger:
     name: cord-infra-gerrit-trigger-merge
     triggers:
-      gerrit:
-        server-name: '{gerrit-server-name}'
-        dependency-jobs: '{dependency-jobs}'
-        silent-start: True
-        trigger-on:
-          - change-merged-event
-        projects:
-          - project-compare-type: REG_EXP
-            project-pattern: '{project-regexp}'
-            branches:
-              - branch-compare-type: REG_EXP
-                branch-pattern: '{branch-regexp}'
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: True
+          trigger-on:
+            - change-merged-event
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '{project-regexp}'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{branch-regexp}'

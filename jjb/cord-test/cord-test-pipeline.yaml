@@ -98,7 +98,7 @@
 
     triggers:
       - gerrit:
-         server-name: 'CORD Gerrit'
+         server-name: '{gerrit-server-name}'
          trigger-on:
            - patchset-created-event:
                exclude-drafts: false
