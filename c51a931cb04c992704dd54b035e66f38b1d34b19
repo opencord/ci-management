@@ -16,6 +16,24 @@
       "revId": "c51a931cb04c992704dd54b035e66f38b1d34b19",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8f59790b_4c721378",
+        "filename": "jjb/api-test.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-11T20:50:33Z",
+      "side": 1,
+      "message": "Ah, I used 1c-2g because of this line: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/cord-test/cord-test-pipeline.yaml#l184   Fixed in patchset #2\n\nI think we _should not_ specify the build node type in the Jenkinsfile, it seems executor type and sizing is an \"internal to Jenkins\" thing that JJB should handle.   We might want to go multi-distro or multi-platform in the future (say testing on 18.04?), and having the Jenkinsfile specify a machine type would get in the way of this.",
+      "parentUuid": "5649853d_d73fe200",
+      "revId": "c51a931cb04c992704dd54b035e66f38b1d34b19",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
