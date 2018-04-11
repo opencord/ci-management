@@ -1,0 +1,123 @@
+---
+# Sonarqube coverage tests
+#
+# There are two kinds of tests:
+#
+#  - coverage_{project}_sonarqube - run after merge to give an idea of ongoing code health
+#  - verify_{project}_sonarqube - run on patchsets, invoked in the verify/*.yaml
+#
+# JJB module docs:
+#  https://docs.openstack.org/infra/jenkins-job-builder/builders.html?highlight=sonar#builders.sonar
+#
+# Sonarqube docs:
+#  https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
+#  https://docs.sonarqube.org/display/SCAN/Advanced+SonarQube+Scanner+Usages
+
+- project:
+    name: 'sonarqube-ongoing-coverage'
+
+    jobs:
+      - 'sonarqube-coverage':
+          branch-regexp: '{supported-branches-regexp}'
+          project:
+            - 'cord'
+            - 'maas'
+            - 'platform-install'
+            - 'xos'
+
+# run ongoing coverage tests on merged patchsets
+- job-template:
+    id: sonarqube-coverage
+    name: 'coverage_{project}_sonarqube'
+    description: |
+      Created by sonarqube-coverage job-template from ci-management/jjb/sonar.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - sonar:
+          sonar-name: 'sonarqube.opencord.org'
+          properties: |
+            sonar.projectKey={project}_$GERRIT_BRANCH
+            sonar.python.pylint=/usr/local/bin/pylint
+
+
+# run Sonarqube as a verification jobs on individual patchsets
+- job-template:
+    id: verify-sonarqube
+    name: 'verify_{project}_sonarqube'
+    description: |
+      Created by verify-sonarqube job-template from ci-management/jjb/sonar.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+# coverage checks with sonarqube
+# module docs: https://docs.openstack.org/infra/jenkins-job-builder/builders.html?highlight=sonar#builders.sonar
+# Sonarqube docs:
+#  https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
+#  https://docs.sonarqube.org/display/SCAN/Advanced+SonarQube+Scanner+Usages
+    builders:
+      - sonar:
+          sonar-name: 'sonarqube.opencord.org'
+          properties: |
+            sonar.projectKey=verify_{project}_$GERRIT_BRANCH
+            sonar.python.pylint=/usr/local/bin/pylint
+
