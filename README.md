@@ -18,6 +18,72 @@ repositories](https://guide.opencord.org/getting_the_code.html#downloading-testi
 [LF Best practices for
 JJB](http://docs.releng.linuxfoundation.org/projects/global-jjb/en/latest/best-practices.html#)
 
+### Adding tests to a new git repo
+
+When adding a new git repo that needs tests:
+
+1. Create a new file in `jjb/verify` named `<reponame>.yaml`
+
+2. Create a
+   [project](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#project)
+   using the name of the repo, and a
+   [job-group](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#job-group)
+   section with a list of
+   [jobs-template](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#job-template)
+   `id`s to invoke.
+
+3. _Optional_: If you have more than one job that applies to the repo, add a
+   `dependency-jobs` variable to each item the `job-group` `jobs` list to
+   control the order of jobs to invoke. Note that this is a string with the
+   name of the jobs as created in Jenkins, not the `job-template` id.
+
+### Making a new job-template
+
+To create jobs that are usable by multiple repos, you want to create a
+[job-template](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#job-template)
+that can be used by multiple jobs.
+
+Most `job-template`s are kept in `jjb/*.yaml`. See `lint.yaml` or
+`api-test.yaml` for examples.
+
+Every `job-template` must have at least a `name` (which creates the name of the
+job in Jenkins) and an `id` item (referred to in the `job-group`), as well as
+several
+[modules](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#modules)
+that invoke Jenkins functionality, or `macros` (see below, and in the docs)
+that customize or provide defaults for those modules.
+
+### Setting default variable values
+
+Default values can be found in `jjb/defaults.yaml`.  These can be used in
+`projects`, `jobs`, `job-templates`.
+
+> NOTE: Defaults don't work with `macros` - [all
+parameters must be passed to every macro
+invocation](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#macro-notes).
+
+### Creating macros
+
+If you need to customize how a Jenkins module is run, consider creating a
+reusable
+[macro](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#macro).
+These are generally put in `jjb/cord-macros.yaml`, and have names matching
+`cord-infra-*`.
+
+See also `global-jjb/jjb/lf-macros.yaml` for more macros to use (these have
+name matching `lf-infra-*`).
+
+There are a few useful macros defined in `jjb/cord-macros.yml`
+
+- `cord-infra-properties` - sets build discarder settings
+- `cord-infra-gerrit-repo-scm` - checks out the entire source tree with the
+  `repo` tool
+- `cord-infra-gerrit-repo-patch` - checks out a patch to a git repo within a
+  checked out repo source tree (WIP, doesn't work yet)
+- `cord-infra-gerrit-trigger-patchset` - triggers build on gerrit new
+  patchset, draft publishing, comments, etc.
+- `cord-infra-gerrit-trigger-merge` - triggers build on gerrit merge
+
 ### Testing job definitions
 
 JJB job definitions can be tested by running:
@@ -30,20 +96,9 @@ Which will create a python virtualenv, install jenkins-job-builder in it, then
 try building all the job files, which are put in `job-configs` and can be
 inspected.
 
-### cord-infra macros
-
-There are a few useful macros defined in jjb/cord-macros.yml
-
-- `cord-infra-properties` - sets build discarder settings
-- `cord-infra-gerrit-repo-scm` - checks out the entire source tree with the
-  `repo` tool
-- `cord-infra-gerrit-repo-patch` - checks out a patch to a git repo within a
-  checked out repo source tree (WIP, doesn't work yet)
-- `cord-infra-gerrit-trigger-patchset` - triggers build on gerrit new
-  patchset, draft publishing, comments, etc.
-- `cord-infra-gerrit-trigger-merge` - triggers build on gerrit merge
-
-## Things to look out for
+The output of this is somewhat difficult to decipher, sometimes requiring you
+to go through the python backtrace to figure out where the error occurred in
+the jenkins-job-builder source code.
 
 ### AMI Images and Cloud instances
 
