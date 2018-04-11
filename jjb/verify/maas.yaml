@@ -13,5 +13,6 @@
     name: 'verify-maas-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-ansible-lint'
+      - 'verify-ansible-lint':
+          dependency-jobs: 'verify_maas_licensed'
 

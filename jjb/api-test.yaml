@@ -1,0 +1,39 @@
+---
+# CORD API tests using cord-tester
+
+- job-template:
+    id: api-test
+    name: 'verify_{project}_api-test'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by api-test job-template from ci-management/jjb/api-test.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '60'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: 'ubuntu16.04-basebuild-4c-8g'
+    project-type: pipeline
+    concurrent: true
+
+    # Run the master branch Jenkinsfile from cord-tester against all other revisions
+    pipeline-scm:
+      script-path: 'Jenkinsfile/verify-api-test-JenkinsFile'
+      scm:
+        - git:
+           url: '{gerrit-server-url}/cord-tester'
+           branches:
+             - 'master'

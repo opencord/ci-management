@@ -13,5 +13,8 @@
     name: 'verify-cord-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-ansible-lint'
+      - 'verify-ansible-lint':
+          dependency-jobs: 'verify_cord_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_cord_licensed, verify_cord_ansible-lint'
 

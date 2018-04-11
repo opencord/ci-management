@@ -1,11 +1,14 @@
 ---
 # CORD lint and static code validation job templates
-# These are invoked by the per-git-repo jobs stored in jjb/validate/
+# These are invoked by the per-git-repo jobs stored in verify/
 
 # Verify that there is valid license/copyright on files
 - job-template:
     id: verify-licensed
-    name: 'verify-{project}-licensed'
+    name: 'verify_{project}_licensed'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by verify-licensed job-template from ci-management/jjb/lint.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -44,7 +47,10 @@
 # run `ansible-lint` to validate ansible playbooks/roles
 - job-template:
     id: verify-ansible-lint
-    name: 'verify-{project}-ansible-lint'
+    name: 'verify_{project}_ansible-lint'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by verify-ansible-lint job-template from ci-management/jjb/lint.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -83,7 +89,10 @@
 # run `helm lint --strict` to validate helm charts
 - job-template:
     id: verify-helm-lint
-    name: 'verify-{project}-helm-lint'
+    name: 'verify_{project}_helm-lint'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by verify-helm-lint job-template from ci-management/jjb/lint.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
