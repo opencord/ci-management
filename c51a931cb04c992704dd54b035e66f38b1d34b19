@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5649853d_d73fe200",
+        "filename": "jjb/api-test.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-04-11T20:23:04Z",
+      "side": 1,
+      "message": "we need 4c-8g for this test. i tried on 1c-2g and it runs out of memory when starting xos containers.\n\nalso, the verify-api-tests-Jenkinsfile is a pipeline script which specifies the builde node, so do we even need to identify it here ?",
+      "revId": "c51a931cb04c992704dd54b035e66f38b1d34b19",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
