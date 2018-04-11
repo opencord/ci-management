@@ -133,6 +133,11 @@
     parameters:
 
       - string:
+         name: devNodeName
+         default: ''
+         description: 'Jenkins node name of Dev Node'
+
+      - string:
          name: configRepoUrl
          default: 'https://gerrit.opencord.org/pod-configs'
          description: 'The URL of the POD configs repository'
