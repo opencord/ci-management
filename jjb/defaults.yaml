@@ -32,7 +32,7 @@
     gerrit-server-name: 'CORD Gerrit'
 
     # URL for Gerrit server, for use with `repo`
-    gerrit-server-url: 'https://gerrit.opencord.org/'
+    gerrit-server-url: 'https://gerrit.opencord.org'
 
     # name of the manifest git repos used with the `repo` cli tool
     cord-repo-manifest: manifest.git
