@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "367f914e_80d20788",
+        "filename": "jjb/verify/vsg.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-12T20:53:39Z",
+      "side": 1,
+      "message": "The services don\u0027t have ansible playbooks, so this isn\u0027t needed.\n\nThe profiles (rcord/ecord/mcord) _do_ have these.",
+      "revId": "6ba9a250bf30e02601f2e9b4190328c544f23be9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
