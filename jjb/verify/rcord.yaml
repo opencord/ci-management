@@ -1,0 +1,18 @@
+---
+# verification jobs for 'rcord' repo
+
+- project:
+    name: rcord
+    project: '{name}'
+
+    jobs:
+      - 'verify-rcord-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-rcord-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_rcord_licensed
+

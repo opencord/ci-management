@@ -1,0 +1,18 @@
+---
+# verification jobs for 'fabric' repo
+
+- project:
+    name: fabric
+    project: '{name}'
+
+    jobs:
+      - 'verify-fabric-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-fabric-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_fabric_licensed
+

@@ -1,0 +1,18 @@
+---
+# verification jobs for 'vtn' repo
+
+- project:
+    name: vtn
+    project: '{name}'
+
+    jobs:
+      - 'verify-vtn-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vtn-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vtn_licensed
+

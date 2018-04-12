@@ -1,0 +1,18 @@
+---
+# verification jobs for 'chameleon' repo
+
+- project:
+    name: chameleon
+    project: '{name}'
+
+    jobs:
+      - 'verify-chameleon-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-chameleon-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_chameleon_licensed
+

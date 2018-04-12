@@ -1,0 +1,18 @@
+---
+# verification jobs for 'onos-service' repo
+
+- project:
+    name: onos-service
+    project: '{name}'
+
+    jobs:
+      - 'verify-onos-service-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-onos-service-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_onos-service_licensed
+

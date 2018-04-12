@@ -1,0 +1,18 @@
+---
+# verification jobs for 'xos' repo
+
+- project:
+    name: xos
+    project: '{name}'
+
+    jobs:
+      - 'verify-xos-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-xos-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_xos_licensed
+
