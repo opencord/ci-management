@@ -18,6 +18,26 @@ repositories](https://guide.opencord.org/getting_the_code.html#downloading-testi
 [LF Best practices for
 JJB](http://docs.releng.linuxfoundation.org/projects/global-jjb/en/latest/best-practices.html#)
 
+[LF mailing list for release
+engineering](https://lists.linuxfoundation.org/mailman/listinfo/lf-releng)
+
+The `#lf-releng` channel on Freenode IRC is usually well attendend.
+
+## What should be in my job description?
+
+When writing jobs, there are some things that JJB should be used to handle, and
+some things that should be put in external scripts or Jenkinsfile.
+
+Some things that are good to put in a JJB job:
+
+- Perform all SCM tasks (checkout code, etc.)
+- Specify the executors type and size (don't do this in a Jenkinsfile)
+
+JJB Jobs shold not:
+
+- Have complicated (more than 2-5 lines) scripts inline - instead, include
+  these using `!include-escape` or `!include-raw-escape`.
+
 ### Adding tests to a new git repo
 
 When adding a new git repo that needs tests:
@@ -100,13 +120,30 @@ The output of this is somewhat difficult to decipher, sometimes requiring you
 to go through the python backtrace to figure out where the error occurred in
 the jenkins-job-builder source code.
 
-### AMI Images and Cloud instances
+If you're writing a new shell script, it's a good idea to test it with
+[shellcheck](https://github.com/koalaman/shellcheck) before including it -
+failing to heed those messages then using `!include-escape` to add it to the
+job may lead to hard to debug problems with the job definition.
 
-If you make changes which create a new packer image, you have to manually set
-the instance `AMI ID` on jenkins in [Global
-Config](https://jenkins-new.opencord.org/configure) > Cloud > Amazon EC2.
+## Jenkins Executors and AMI Images
 
-### Creating new EC2 instance types
+The Jenkins executors are spun up automatically in EC2, and torn down after
+jobs have completed. Some are "one shot" and others (usually static or lint
+checks) are re-used for run multiple jobs.
+
+The AMI images used for these executors built with
+[Packer](https://www.packer.io/) and most of the local configuration happens in
+`packer/provision/basebuild.sh`. If you need a new tool installed in the
+executor, you would add the steps to install it here.  It's verified, and when
+merged generates a new AMI image.
+
+> NOTE: Future builds won't automatically use the new AMI - you have to
+> manually set the instance `AMI ID` on jenkins in [Global
+> Config](https://jenkins-new.opencord.org/configure) > Cloud > Amazon EC2.
+> The new AMI ID can be found near the end of the logs of the run of
+> [ci-management-packer-merge-<ostype>-basebuild](https://jenkins-new.opencord.org/job/ci-management-packer-merge-ubuntu-16.04-basebuild/).
+
+### Adding additional EC2 instance types
 
 If you create a new cloud instance type, make sure to set both the `Security
 group names` and `Subnet ID for VPC` or it will fail to instantiate.
