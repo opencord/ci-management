@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vrouter' repo
+
+- project:
+    name: vrouter
+    project: '{name}'
+
+    jobs:
+      - 'verify-vrouter-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vrouter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vrouter_licensed'

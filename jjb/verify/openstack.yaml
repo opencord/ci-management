@@ -1,0 +1,17 @@
+---
+# verification jobs for 'openstack' repo
+
+- project:
+    name: openstack
+    project: '{name}'
+
+    jobs:
+      - 'verify-openstack-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-openstack-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_openstack_licensed'
