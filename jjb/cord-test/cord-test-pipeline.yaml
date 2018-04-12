@@ -171,7 +171,7 @@
                 H 21 * * *
 
     pipeline-scm:
-      script-path: 'build/Jenkinsfile'
+      script-path: 'Jenkinsfile'
       scm:
         - git:
            url: 'https://gerrit.opencord.org/cord'
