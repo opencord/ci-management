@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vsg' repo
+
+- project:
+    name: vsg
+    project: '{name}'
+
+    jobs:
+      - 'verify-vsg-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vsg-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vsg_licensed'

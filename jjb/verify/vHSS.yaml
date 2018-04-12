@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vHSS' repo
+
+- project:
+    name: vHSS
+    project: '{name}'
+
+    jobs:
+      - 'verify-vHSS-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vHSS-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vHSS_licensed'

@@ -1,0 +1,17 @@
+---
+# verification jobs for 'olt-service' repo
+
+- project:
+    name: olt-service
+    project: '{name}'
+
+    jobs:
+      - 'verify-olt-service-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-olt-service-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_olt-service_licensed'

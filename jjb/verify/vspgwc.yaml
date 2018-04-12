@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vspgwc' repo
+
+- project:
+    name: vspgwc
+    project: '{name}'
+
+    jobs:
+      - 'verify-vspgwc-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vspgwc-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vspgwc_licensed'

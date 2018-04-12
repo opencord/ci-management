@@ -1,0 +1,17 @@
+---
+# verification jobs for 'cord-tester' repo
+
+- project:
+    name: cord-tester
+    project: '{name}'
+
+    jobs:
+      - 'verify-cord-tester-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-cord-tester-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_cord-tester_licensed'

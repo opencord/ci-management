@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vtr' repo
+
+- project:
+    name: vtr
+    project: '{name}'
+
+    jobs:
+      - 'verify-vtr-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vtr-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vtr_licensed'
