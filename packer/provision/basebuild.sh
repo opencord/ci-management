@@ -83,7 +83,8 @@ ubuntu_systems() {
         robotframework \
         robotframework-httplibrary \
         robotframework-requests \
-        robotframework-sshlibrary
+        robotframework-sshlibrary \
+        virtualenv
         # end of pip install list
 
     # install npm modules
