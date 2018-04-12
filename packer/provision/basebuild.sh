@@ -77,6 +77,7 @@ ubuntu_systems() {
         gitpython \
         graphviz \
         isort \
+        linkchecker \
         pexpect \
         pylint \
         pyyaml \
@@ -93,6 +94,10 @@ ubuntu_systems() {
         markdownlint \
         typings
         # end of npm install list
+
+    # ubuntu 16.04 installs the node binary as /usr/bin/nodejs, which breaks
+    # tools that expect it to be named just `node`. Symlink it to fix
+    ln -s /usr/bin/nodejs /usr/local/bin/node
 
     # install repo
     REPO_SHA256SUM="394d93ac7261d59db58afa49bb5f88386fea8518792491ee3db8baab49c3ecda"
