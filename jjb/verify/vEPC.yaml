@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vEPC' repo
+
+- project:
+    name: vEPC
+    project: '{name}'
+
+    jobs:
+      - 'verify-vEPC-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vEPC-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vEPC_licensed'

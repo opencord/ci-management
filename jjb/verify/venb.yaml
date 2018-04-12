@@ -1,0 +1,17 @@
+---
+# verification jobs for 'venb' repo
+
+- project:
+    name: venb
+    project: '{name}'
+
+    jobs:
+      - 'verify-venb-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-venb-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_venb_licensed'

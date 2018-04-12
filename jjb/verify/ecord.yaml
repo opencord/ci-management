@@ -1,0 +1,19 @@
+---
+# verification jobs for 'ecord' repo
+
+- project:
+    name: ecord
+    project: '{name}'
+
+    jobs:
+      - 'verify-ecord-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-ecord-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-ansible-lint':
+          dependency-jobs: 'verify_ecord_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_ecord_ansible-lint'

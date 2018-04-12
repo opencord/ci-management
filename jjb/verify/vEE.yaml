@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vEE' repo
+
+- project:
+    name: vEE
+    project: '{name}'
+
+    jobs:
+      - 'verify-vEE-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vEE-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vEE_licensed'

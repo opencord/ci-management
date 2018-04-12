@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vEG' repo
+
+- project:
+    name: vEG
+    project: '{name}'
+
+    jobs:
+      - 'verify-vEG-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vEG-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vEG_licensed'

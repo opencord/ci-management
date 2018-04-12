@@ -1,0 +1,19 @@
+---
+# verification jobs for 'mcord' repo
+
+- project:
+    name: mcord
+    project: '{name}'
+
+    jobs:
+      - 'verify-mcord-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-mcord-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-ansible-lint':
+          dependency-jobs: 'verify_mcord_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_mcord_ansible-lint'
