@@ -261,15 +261,20 @@ EOF
     # Used by lftools scripts to parse XML
     ensure_ubuntu_install xmlstarlet
 
-    # Haskel Packages
-    # Cabal update fails on a 1G system so workaround that with a swap file
-    dd if=/dev/zero of=/tmp/swap bs=1M count=1024
-    mkswap /tmp/swap
-    swapon /tmp/swap
+    # Change made by zdw on 2018-04-12
+    # hackage.haskell.org was down, talked to zxiiro on #lf-releng and he recommended
+    # pulling down the packages in a way similar to this ansible role, rather than using cabal:
+    # https://github.com/lfit/ansible-roles-shellcheck-install/blob/master/tasks/main.yml
 
-    ensure_ubuntu_install cabal-install
-    cabal update
-    cabal install --bindir=/usr/local/bin "shellcheck-0.4.6"  # Pin shellcheck version
+    SHELLCHECK_VERSION="v0.4.7"
+    SHELLCHECK_SHA256SUM="deeea92a4d3a9c5b16ba15210d9c1ab84a2e12e29bf856427700afd896bbdc93"
+    curl -L -o /tmp/shellcheck.tar.xz https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz
+    echo "$SHELLCHECK_SHA256SUM  /tmp/shellcheck.tar.xz" | sha256sum -c -
+    pushd /tmp
+    tar -xJvf shellcheck.tar.xz
+    cp shellcheck-${SHELLCHECK_VERSION}/shellcheck /usr/local/bin/shellcheck
+    chmod a+x /usr/local/bin/shellcheck
+    popd
 
     # --- END LFTOOLS DEPS
     ######################
