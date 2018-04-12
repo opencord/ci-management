@@ -55,6 +55,7 @@ ubuntu_systems() {
         curl \
         git \
         less \
+        libxml2-utils \
         nodejs \
         npm \
         python \
