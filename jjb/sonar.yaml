@@ -67,6 +67,7 @@
       - sonar:
           sonar-name: 'sonarqube.opencord.org'
           properties: |
+            sonar.sources=.
             sonar.projectKey={project}_$GERRIT_BRANCH
             sonar.python.pylint=/usr/local/bin/pylint
 
@@ -118,6 +119,7 @@
       - sonar:
           sonar-name: 'sonarqube.opencord.org'
           properties: |
+            sonar.sources=.
             sonar.projectKey=verify_{project}_$GERRIT_BRANCH
             sonar.python.pylint=/usr/local/bin/pylint
 
