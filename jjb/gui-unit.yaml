@@ -21,9 +21,10 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
+    # `npm install` can take >10m depending on connectivity
     wrappers:
       - lf-infra-wrappers:
-          build-timeout: '{build-timeout}'
+          build-timeout: 20
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     scm:
@@ -43,7 +44,7 @@
       - shell: |
           #/usr/bin/env bash
           set -eu -o pipefail
-          npm install
+          time npm install
           npm run lint
           npm test
 
