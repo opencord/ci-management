@@ -72,7 +72,7 @@
 
       - string:
          name: configRepoFile
-         default: 'deployment-configs/''{config}'
+         default: 'deployment-configs/"{config}"'
          description: 'The deployment config file'
 
       - string:
