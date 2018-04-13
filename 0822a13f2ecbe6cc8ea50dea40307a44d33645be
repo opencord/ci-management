@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1ea4d90b_5e5102ed",
+        "filename": "jjb/sonar.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-04-13T19:38:49Z",
+      "side": 1,
+      "message": "$gerrit-server-url ?",
+      "revId": "0822a13f2ecbe6cc8ea50dea40307a44d33645be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d7154019_94f4c484",
+        "filename": "jjb/sonar.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-04-13T19:38:49Z",
+      "side": 1,
+      "message": "$gerrit-server-url ?",
+      "revId": "0822a13f2ecbe6cc8ea50dea40307a44d33645be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
