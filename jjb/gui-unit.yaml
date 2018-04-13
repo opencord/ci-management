@@ -1,0 +1,46 @@
+---
+# xos-gui unit test
+
+- job-template:
+    id: 'gui-unit-test'
+    name: 'verify_{project}_gui-unit-test'
+
+    description: |
+      Created by gui-unit-tests job-template from ci-management/jjb/gui-unit.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    shell: |
+      npm install
+      npm run lint
+      npm test
+
