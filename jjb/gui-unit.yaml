@@ -39,8 +39,11 @@
     project-type: freestyle
     concurrent: true
 
-    shell: |
-      npm install
-      npm run lint
-      npm test
+    builders:
+      - shell: |
+          #/usr/bin/env bash
+          set -eu -o pipefail
+          npm install
+          npm run lint
+          npm test
 
