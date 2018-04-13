@@ -23,14 +23,8 @@
 - job-pod-plate: &job-pod-plate
     name: job-pod-plate
     pod:
-      - 'qct-cord-pod1'
-      - 'qct-cord-pod3'
-
-- job-config-plate: &job-config-plate
-    name: job-config-plate
-    config:
-      - 'qct-pod1.yml'
-      - 'qct-pod3.yml'
+      - 'qct-pod1'
+      - 'qct-pod3'
 
 - job-version-plate: &job-version-plate
     name: job-version-plate
@@ -52,8 +46,6 @@
 
     <<: *job-pod-plate
 
-    <<: *job-config-plate
-
     parameters:
       - string:
          name: devNodeName
@@ -72,7 +64,7 @@
 
       - string:
          name: configRepoFile
-         default: 'deployment-configs/"{config}"'
+         default: 'deployment-configs/{pod}.yml'
          description: 'The deployment config file'
 
       - string:
