@@ -9,42 +9,14 @@
     sandbox: true
 
     properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
 
-      - build-discarder:
-         num-to-keep: 20
-    gitURL: https://gerrit.opencord.org/cord-tester
 
-- test-pipe-init-procedure-plate: &test-pipe-init-procedure-plate
-    name: test-pipe-init-procedure-plate
-    project: cord-tester
-    stream: 'master'
-    jenkins-path: 'Jenkinsfile'
-
-- job-pod-plate: &job-pod-plate
-    name: job-pod-plate
-    pod:
-      - 'qct-pod1'
-      - 'qct-pod3'
-
-- job-version-plate: &job-version-plate
-    name: job-version-plate
-    version:
-      - 'master'
-      - 'cord-5.0'
-      - 'cord-4.1'
-      - 'cord-4.0'
-
-- job-template:
-    name: 'build-{pod}-{version}'
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  It builds nighlty a full POD at {pod} <br /><br />
-                  Created by Kailash Khalasi - kailash@opennetworking.org<br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
-
+- job-parameters-plate: &job-parameters-plate
+    name: job-parameters-plate
     <<: *test-pipe-job-boiler-plate
-
-    <<: *job-pod-plate
 
     parameters:
       - string:
@@ -68,8 +40,8 @@
          description: 'The deployment config file'
 
       - string:
-         name: GERRIT_BRANCH
-         default: '{version}'
+         name: branch
+         default: '{branch}'
 
       - string:
          name: RECEIPIENT
@@ -78,25 +50,175 @@
 
     concurrent: true
 
+- job-template:
+    name: 'build_{pod}_{branch}'
+    id: build_pod_first
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Nightly Physical POD Builds at {pod} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
+                  Created by Kailash Khalasi - kailash@opennetworking.org <br />
+                  Copyright (c) 2017 Open Networking Foundation (ONF)
+
+    <<: *job-parameters-plate
 
     pipeline-scm:
-      script-path: 'Jenkinsfile'
+      script-path: '{Jenkinsfile}'
       scm:
         - git:
-           url: 'https://gerrit.opencord.org/cord'
+           url: '{gerrit-server-url}/cord'
            branches:
-             - 'master'
+             - '{branch}'
 
+    triggers:
+       - timed: |
+                 TZ=America/Los_Angeles
+                 H {time} * * *
+
+- job-template:
+    name: 'build_{pod}_{branch}'
+    id: build_pod
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Nightly Physical POD Builds at {pod} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
+                  Created by Kailash Khalasi - kailash@opennetworking.org <br />
+                  Copyright (c) 2017 Open Networking Foundation (ONF)
+
+    <<: *job-parameters-plate
+
+    pipeline-scm:
+      script-path: '{Jenkinsfile}'
+      scm:
+        - git:
+           url: '{gerrit-server-url}/cord'
+           branches:
+             - '{branch}'
+
+    triggers:
+        - reverse:
+            jobs: 'build-{pod}-{fromBranch}-test'
+            result: 'failure'
+
+- job-template:
+    name: 'build_{pod}_{branch}_test'
+    id: build_pod_test
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Post Tests on {pod} triggered by build_{pod}_{branch} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
+                  Created by Kailash Khalasi - kailash@opennetworking.org <br />
+                  Copyright (c) 2017 Open Networking Foundation (ONF)
+
+    branches: '{branch}'
+
+    <<: *job-parameters-plate
+
+    pipeline-scm:
+      script-path: '{Jenkinsfile}'
+      scm:
+        - git:
+           url: '{gerrit-server-url}/cord-tester'
+           branches:
+             - '{branch}'
+
+    triggers:
+      - reverse:
+          jobs: 'build-{pod}-{branch}'
+          result: 'failure'
 
 - project:
     name: nightly-build-pipeline
-
-    <<: *job-pod-plate
-    <<: *job-version-plate
 
     project-name: '{name}'
 
     build-timeout: '300'
 
     jobs:
-      - 'build-{pod}-{version}'
+      - 'build_pod_first':
+         pod: 'qct-pod1'
+         branch: 'cord-4.0'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         time: '20'
+
+      - 'build_pod':
+         pod: 'qct-pod1'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         fromBranch: 'cord-4.0'
+
+      - 'build_pod':
+         pod: 'qct-pod1'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         fromBranch: 'cord-4.1'
+
+      - 'build_pod':
+         pod: 'qct-pod1'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile'
+         fromBranch: 'cord-5.0'
+
+      - 'build_pod_first':
+         pod: 'qct-pod3'
+         branch: 'cord-4.0'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         time: '20'
+
+      - 'build_pod':
+         pod: 'qct-pod3'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         fromBranch: 'cord-4.0'
+
+      - 'build_pod':
+         pod: 'qct-pod3'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         fromBranch: 'cord-4.1'
+
+      - 'build_pod':
+         pod: 'qct-pod3'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile'
+         fromBranch: 'cord-5.0'
+
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'cord-4.0'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         branch: 'cord-4.0'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-rcord'
