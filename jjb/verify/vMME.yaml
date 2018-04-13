@@ -1,0 +1,17 @@
+---
+# verification jobs for 'vMME' repo
+
+- project:
+    name: vMME
+    project: '{name}'
+
+    jobs:
+      - 'verify-vMME-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vMME-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vMME_licensed'
