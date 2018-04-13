@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2ff6152_7617e357",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-13T19:32:55Z",
+      "side": 1,
+      "message": "use `cord-infra-properties` macro instead",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 46
+      },
+      "revId": "674b661301eb90bda6077ca3cb7ad3c1d5411b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "579dba56_bf3dfd4e",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-13T19:32:55Z",
+      "side": 1,
+      "message": "underscores?",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 23
+      },
+      "revId": "674b661301eb90bda6077ca3cb7ad3c1d5411b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c05142fa_4850ac1d",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-13T19:32:55Z",
+      "side": 1,
+      "message": "Are the HTML newlines needed? \n\nCould you put the name of the file where the job template resides in here as well?",
+      "range": {
+        "startLine": 81,
+        "startChar": 55,
+        "endLine": 81,
+        "endChar": 68
+      },
+      "revId": "674b661301eb90bda6077ca3cb7ad3c1d5411b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3898fc17_c76d99ec",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-13T19:32:55Z",
+      "side": 1,
+      "message": "$GERRIT_BRANCH ?",
+      "range": {
+        "startLine": 95,
+        "startChar": 15,
+        "endLine": 95,
+        "endChar": 26
+      },
+      "revId": "674b661301eb90bda6077ca3cb7ad3c1d5411b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e78cbd3e_229ca268",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-13T19:32:55Z",
+      "side": 1,
+      "message": "Just copy the boilerplate into here (it isn\u0027t reused), and eliminate this anchor?",
+      "range": {
+        "startLine": 109,
+        "startChar": 3,
+        "endLine": 109,
+        "endChar": 29
+      },
+      "revId": "674b661301eb90bda6077ca3cb7ad3c1d5411b32",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
