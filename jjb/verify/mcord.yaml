@@ -15,5 +15,7 @@
       - 'verify-licensed'
       - 'verify-ansible-lint':
           dependency-jobs: 'verify_mcord_licensed'
-      - 'api-test':
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_mcord_ansible-lint'
+      - 'api-test':
+          dependency-jobs: 'verify_mcord_sonarqube'

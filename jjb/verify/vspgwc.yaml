@@ -13,5 +13,7 @@
     name: 'verify-vspgwc-jobs'
     jobs:
       - 'verify-licensed'
-      - 'api-test':
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_vspgwc_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vspgwc_sonarqube'

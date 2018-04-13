@@ -13,5 +13,7 @@
     name: 'verify-xos-gui-jobs'
     jobs:
       - 'verify-licensed'
-      - 'gui-unit-test':
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_xos-gui_licensed'
+      - 'gui-unit-test':
+          dependency-jobs: 'verify_xos-gui_sonarqube'

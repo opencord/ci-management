@@ -13,5 +13,7 @@
     name: 'verify-venb-jobs'
     jobs:
       - 'verify-licensed'
-      - 'api-test':
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_venb_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_venb_sonarqube'

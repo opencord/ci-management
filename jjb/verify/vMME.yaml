@@ -13,5 +13,7 @@
     name: 'verify-vMME-jobs'
     jobs:
       - 'verify-licensed'
-      - 'api-test':
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_vMME_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vMME_sonarqube'

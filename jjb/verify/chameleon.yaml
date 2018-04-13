@@ -13,5 +13,7 @@
     name: 'verify-chameleon-jobs'
     jobs:
       - 'verify-licensed'
-      - 'api-test':
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_chameleon_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_chameleon_sonarqube'
