@@ -68,6 +68,10 @@
          description: 'The deployment config file'
 
       - string:
+         name: GERRIT_BRANCH
+         default: '{version}'
+
+      - string:
          name: RECEIPIENT
          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
          description: ''
