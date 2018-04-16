@@ -14,6 +14,9 @@ $(VENV_DIR):
 $(JOBCONFIG_DIR):
 	mkdir $@
 
+lint:
+	yamllint -c yamllint.conf jjb/
+
 test: $(VENV_DIR) $(JOBCONFIG_DIR)
 	source $(VENV_DIR)/bin/activate ; \
 	pipdeptree ; \

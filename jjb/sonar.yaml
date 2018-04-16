@@ -115,11 +115,6 @@
     project-type: freestyle
     concurrent: true
 
-# coverage checks with sonarqube
-# module docs: https://docs.openstack.org/infra/jenkins-job-builder/builders.html?highlight=sonar#builders.sonar
-# Sonarqube docs:
-#  https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
-#  https://docs.sonarqube.org/display/SCAN/Advanced+SonarQube+Scanner+Usages
     builders:
       - sonar:
           sonar-name: 'sonarqube.opencord.org'

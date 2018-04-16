@@ -69,7 +69,7 @@
       - gerrit:
           server-name: '{gerrit-server-name}'
           dependency-jobs: '{dependency-jobs}'
-          silent-start: True
+          silent-start: true
           trigger-on:
             - change-merged-event
           projects:

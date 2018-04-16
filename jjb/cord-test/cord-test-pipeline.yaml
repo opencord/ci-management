@@ -20,33 +20,33 @@
 
     parameters:
       - string:
-         name: devNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
+          name: devNodeName
+          default: '{pod}'
+          description: 'Jenkins node name of Dev Node'
 
       - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
+          name: configRepoUrl
+          default: 'https://gerrit.opencord.org/pod-configs'
+          description: 'The URL of the POD configs repository'
 
       - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
+          name: configRepoBaseDir
+          default: 'pod-configs/'
+          description: 'The directory inside the POD configs repository'
 
       - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod}.yml'
-         description: 'The deployment config file'
+          name: configRepoFile
+          default: 'deployment-configs/{pod}.yml'
+          description: 'The deployment config file'
 
       - string:
-         name: branch
-         default: '{branch}'
+          name: branch
+          default: '{branch}'
 
       - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
+          name: notificationEmail
+          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
+          description: ''
 
     concurrent: true
 
@@ -66,14 +66,14 @@
       script-path: '{Jenkinsfile}'
       scm:
         - git:
-           url: '{gerrit-server-url}/cord'
-           branches:
-             - '{branch}'
+            url: '{gerrit-server-url}/cord'
+            branches:
+              - '{branch}'
 
     triggers:
-       - timed: |
-                 TZ=America/Los_Angeles
-                 H {time} * * *
+      - timed: |
+                TZ=America/Los_Angeles
+                H {time} * * *
 
 - job-template:
     name: 'build_{pod}_{branch}'
@@ -91,14 +91,14 @@
       script-path: '{Jenkinsfile}'
       scm:
         - git:
-           url: '{gerrit-server-url}/cord'
-           branches:
-             - '{branch}'
+            url: '{gerrit-server-url}/cord'
+            branches:
+              - '{branch}'
 
     triggers:
-        - reverse:
-            jobs: 'build-{pod}-{fromBranch}-test'
-            result: 'failure'
+      - reverse:
+          jobs: 'build-{pod}-{fromBranch}-test'
+          result: 'failure'
 
 - job-template:
     name: 'build_{pod}_{branch}_test'
@@ -118,9 +118,9 @@
       script-path: '{Jenkinsfile}'
       scm:
         - git:
-           url: '{gerrit-server-url}/cord-tester'
-           branches:
-             - '{branch}'
+            url: '{gerrit-server-url}/cord-tester'
+            branches:
+              - '{branch}'
 
     triggers:
       - reverse:
@@ -136,89 +136,90 @@
 
     jobs:
       - 'build_pod_first':
-         pod: 'qct-pod1'
-         branch: 'cord-4.0'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         time: '20'
+          pod: 'qct-pod1'
+          branch: 'cord-4.0'
+          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+          time: '20'
 
       - 'build_pod':
-         pod: 'qct-pod1'
-         branch: 'cord-4.1'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         fromBranch: 'cord-4.0'
+          pod: 'qct-pod1'
+          branch: 'cord-4.1'
+          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+          fromBranch: 'cord-4.0'
 
       - 'build_pod':
-         pod: 'qct-pod1'
-         branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         fromBranch: 'cord-4.1'
+          pod: 'qct-pod1'
+          branch: 'cord-5.0'
+          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+          fromBranch: 'cord-4.1'
 
       - 'build_pod':
-         pod: 'qct-pod1'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile'
-         fromBranch: 'cord-5.0'
+          pod: 'qct-pod1'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile'
+          fromBranch: 'cord-5.0'
 
       - 'build_pod_first':
-         pod: 'qct-pod3'
-         branch: 'cord-4.0'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         time: '20'
+          pod: 'qct-pod3'
+          branch: 'cord-4.0'
+          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+          time: '20'
 
       - 'build_pod':
-         pod: 'qct-pod3'
-         branch: 'cord-4.1'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         fromBranch: 'cord-4.0'
+          pod: 'qct-pod3'
+          branch: 'cord-4.1'
+          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+          fromBranch: 'cord-4.0'
 
       - 'build_pod':
-         pod: 'qct-pod3'
-         branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         fromBranch: 'cord-4.1'
+          pod: 'qct-pod3'
+          branch: 'cord-5.0'
+          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+          fromBranch: 'cord-4.1'
 
       - 'build_pod':
-         pod: 'qct-pod3'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile'
-         fromBranch: 'cord-5.0'
+          pod: 'qct-pod3'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile'
+          fromBranch: 'cord-5.0'
 
       - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'cord-4.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod1'
+          branch: 'cord-4.0'
+          Jenkinsfile: 'Jenkinsfile-rcord'
 
       - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'cord-4.1'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod1'
+          branch: 'cord-4.1'
+          Jenkinsfile: 'Jenkinsfile-rcord'
 
       - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod1'
+          branch: 'cord-5.0'
+          Jenkinsfile: 'Jenkinsfile-rcord'
 
       - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod1'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile-rcord'
 
       - 'build_pod_test':
-         pod: 'qct-pod3'
-         branch: 'cord-4.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod3'
+          branch: 'cord-4.0'
+          Jenkinsfile: 'Jenkinsfile-rcord'
 
       - 'build_pod_test':
-         pod: 'qct-pod3'
-         branch: 'cord-4.1'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod3'
+          branch: 'cord-4.1'
+          Jenkinsfile: 'Jenkinsfile-rcord'
 
       - 'build_pod_test':
-         pod: 'qct-pod3'
-         branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod3'
+          branch: 'cord-5.0'
+          Jenkinsfile: 'Jenkinsfile-rcord'
 
       - 'build_pod_test':
-         pod: 'qct-pod3'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-rcord'
+          pod: 'qct-pod3'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile-rcord'
+

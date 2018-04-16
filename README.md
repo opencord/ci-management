@@ -106,19 +106,16 @@ There are a few useful macros defined in `jjb/cord-macros.yml`
 
 ### Testing job definitions
 
-JJB job definitions can be tested by running:
-
-```shell
-make test
-```
-
-Which will create a python virtualenv, install jenkins-job-builder in it, then
-try building all the job files, which are put in `job-configs` and can be
-inspected.
+JJB job definitions can be tested by running `make test`, which will create a
+python virtualenv, install jenkins-job-builder in it, then try building all the
+job files, which are put in `job-configs` and can be inspected.
 
 The output of this is somewhat difficult to decipher, sometimes requiring you
 to go through the python backtrace to figure out where the error occurred in
 the jenkins-job-builder source code.
+
+There is also a `make lint` target which will run `yamllint` on all the JJB
+YAML files, which can catch a variety of formatting errors.
 
 If you're writing a new shell script, it's a good idea to test it with
 [shellcheck](https://github.com/koalaman/shellcheck) before including it -

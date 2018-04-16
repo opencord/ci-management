@@ -35,6 +35,6 @@
       script-path: 'Jenkinsfile/verify-api-tests-JenkinsFile'
       scm:
         - git:
-           url: '{gerrit-server-url}/cord-tester'
-           branches:
-             - 'master'
+            url: '{gerrit-server-url}/cord-tester'
+            branches:
+              - 'master'
