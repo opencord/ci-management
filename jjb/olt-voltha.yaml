@@ -1,0 +1,35 @@
+---
+# olt-voltha-build
+
+- project:
+    name: olt-voltha
+
+    project-name: '{name}'
+
+    jobs:
+      - 'olt-voltha-build'
+
+- job-template:
+    id: olt-voltha-build
+    name: 'olt_voltha_automated_build'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/olt-voltha.yaml
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    node: 'olt-agent-onf'
+
+    project-type: pipeline
+    concurrent: true
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile'
+      scm:
+        - git:
+           url: '{gerrit-server-url}/openolt'
+           branches:
+             - 'master'
