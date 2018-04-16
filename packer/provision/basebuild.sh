@@ -59,9 +59,14 @@ ubuntu_systems() {
         nodejs \
         npm \
         python \
+        python-certifi \
+        python-cryptography \
         python-dev \
+        python-idna \
         python-netaddr \
+        python-openssl \
         python-pip \
+        python-urllib3 \
         ssh \
         sshpass \
         zip
