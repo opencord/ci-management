@@ -16,6 +16,29 @@
       "revId": "d9b5bcb0d6d1ba33e70ccdfccfaf10289b05ac88",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aec200de_3d51b9d1",
+        "filename": "jjb/olt-voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-16T23:57:23Z",
+      "side": 1,
+      "message": "Maybe put the project before the job-template, so the file can be read through from the top down?\n\nShould this be triggered on merge, with `cord-infra-gerrit-trigger-merge`?  Should there be other validation jobs before then?",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "revId": "d9b5bcb0d6d1ba33e70ccdfccfaf10289b05ac88",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
