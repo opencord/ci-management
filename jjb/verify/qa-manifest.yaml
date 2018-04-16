@@ -1,0 +1,16 @@
+---
+# verification jobs for 'qa-manifest' repo
+
+- project:
+    name: qa-manifest
+    project: '{name}'
+
+    jobs:
+      - 'verify-qa-manifest-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-qa-manifest-jobs'
+    jobs:
+      - 'verify-repo-manifest'
+

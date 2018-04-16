@@ -1,0 +1,17 @@
+---
+# verification jobs for 'manifest' repo
+
+- project:
+    name: manifest
+    project: '{name}'
+
+    jobs:
+      - 'verify-manifest-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-manifest-jobs'
+    jobs:
+      - 'verify-repo-manifest'
+
+
