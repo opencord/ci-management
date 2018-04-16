@@ -36,7 +36,8 @@
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: '{build-node}'
+    # `npm install` fails on 1Gb RAM
+    node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: true
 
