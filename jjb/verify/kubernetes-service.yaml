@@ -1,0 +1,17 @@
+---
+# verification jobs for 'kubernetes-service' repo
+
+- project:
+    name: kubernetes-service
+    project: '{name}'
+
+    jobs:
+      - 'verify-kubernetes-service-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-kubernetes-service-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_kubernetes-service_licensed'
