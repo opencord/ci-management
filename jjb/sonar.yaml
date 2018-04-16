@@ -21,9 +21,13 @@
           branch-regexp: '{supported-branches-regexp}'
           project:
             - 'cord'
+            - 'ecord'
             - 'maas'
+            - 'mcord'
             - 'platform-install'
+            - 'rcord'
             - 'xos'
+            - 'xos-gui'
 
 # run ongoing coverage tests on merged patchsets
 - job-template:
@@ -59,13 +63,14 @@
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: '{build-node}'
+    node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: true
 
     builders:
       - sonar:
           sonar-name: 'sonarqube.opencord.org'
+          java-opts: '-Xmx1280m'
           properties: |
             sonar.sources=.
             sonar.projectKey={project}_$GERRIT_BRANCH
@@ -106,7 +111,7 @@
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: '{build-node}'
+    node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: true
 
@@ -118,6 +123,7 @@
     builders:
       - sonar:
           sonar-name: 'sonarqube.opencord.org'
+          java-opts: '-Xmx1280m'
           properties: |
             sonar.sources=.
             sonar.projectKey=verify_{project}_$GERRIT_BRANCH
