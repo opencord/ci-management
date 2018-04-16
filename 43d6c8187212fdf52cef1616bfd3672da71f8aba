@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "831c4e84_2a3fafbe",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-16T18:41:32Z",
+      "side": 1,
+      "message": "Add `id` of the template to this description so people looking at the job in the Jenkins UI can find the template that created it.",
+      "range": {
+        "startLine": 77,
+        "startChar": 43,
+        "endLine": 77,
+        "endChar": 44
+      },
+      "revId": "43d6c8187212fdf52cef1616bfd3672da71f8aba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "90c0331e_8c9afd69",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-16T18:41:32Z",
+      "side": 1,
+      "message": "Add an `id` to this job-template, and add here",
+      "range": {
+        "startLine": 101,
+        "startChar": 43,
+        "endLine": 101,
+        "endChar": 44
+      },
+      "revId": "43d6c8187212fdf52cef1616bfd3672da71f8aba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e6229d00_8a16a6d6",
+        "filename": "jjb/cord-test/cord-test-pipeline.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-04-16T18:41:32Z",
+      "side": 1,
+      "message": "refer to this by the `id` added to the job-template above",
+      "range": {
+        "startLine": 181,
+        "startChar": 9,
+        "endLine": 181,
+        "endChar": 34
+      },
+      "revId": "43d6c8187212fdf52cef1616bfd3672da71f8aba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
