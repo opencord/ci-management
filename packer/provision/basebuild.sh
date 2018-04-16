@@ -67,6 +67,7 @@ ubuntu_systems() {
         python-openssl \
         python-pip \
         python-urllib3 \
+        ruby \
         ssh \
         sshpass \
         zip
@@ -92,6 +93,11 @@ ubuntu_systems() {
         robotframework-sshlibrary \
         virtualenv
         # end of pip install list
+
+    # install ruby gems
+    gem install \
+        mdl
+        # end of gem install list
 
     # install npm modules
     npm install -g \
