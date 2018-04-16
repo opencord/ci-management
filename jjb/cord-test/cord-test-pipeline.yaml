@@ -135,6 +135,7 @@
     build-timeout: '300'
 
     jobs:
+      # qct pod 1 build jobs
       - 'build_pod_first':
          pod: 'qct-pod1'
          branch: 'cord-4.0'
@@ -159,6 +160,28 @@
          Jenkinsfile: 'Jenkinsfile'
          fromBranch: 'cord-5.0'
 
+      # qct pod 1 test jobs
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'cord-4.0'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      - 'build_pod_test':
+         pod: 'qct-pod1'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-rcord'
+
+      # qct pod 3 build jobs
       - 'build_pod_first':
          pod: 'qct-pod3'
          branch: 'cord-4.0'
@@ -183,26 +206,7 @@
          Jenkinsfile: 'Jenkinsfile'
          fromBranch: 'cord-5.0'
 
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'cord-4.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
-
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'cord-4.1'
-         Jenkinsfile: 'Jenkinsfile-rcord'
-
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
-
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-rcord'
-
+      # qct pod 3 test jobs
       - 'build_pod_test':
          pod: 'qct-pod3'
          branch: 'cord-4.0'
