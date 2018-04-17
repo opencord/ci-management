@@ -1,0 +1,105 @@
+---
+# POD Nightly Build Pipeline E-CORD Jobs
+
+- project:
+    name: ecord-nightly-build-pipeline
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    jobs:
+      # qct pod 3 build jobs (ecord-global)
+      - 'build_pod_first':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-global.yml'
+         profile: 'ecord-global'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         time: '20'
+
+      - 'build_pod':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-global.yml'
+         profile: 'ecord-global'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         fromBranch: 'cord-4.1'
+
+      - 'build_pod':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-global.yml'
+         profile: 'ecord-global'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile'
+         fromBranch: 'cord-5.0'
+
+      # qct pod 3 test jobs (ecord-global)
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-global.yml'
+         profile: 'ecord-global'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile-ecord-global'
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-global.yml'
+         profile: 'ecord-global'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile-ecord-global'
+
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-global.yml'
+         profile: 'ecord-global'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-ecord-global'
+
+      # qct pod 3 build jobs (ecord-local)
+      - 'build_pod_first':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-local.yml'
+         profile: 'ecord-local'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         time: '3'
+
+      - 'build_pod':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-local.yml'
+         profile: 'ecord-local'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         fromBranch: 'cord-4.1'
+
+      - 'build_pod':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-local.yml'
+         profile: 'ecord-local'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile'
+         fromBranch: 'cord-5.0'
+
+      # qct pod 3 test jobs (ecord-local)
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-local.yml'
+         profile: 'ecord-local'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile-ecord-local'
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-local.yml'
+         profile: 'ecord-local'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile-ecord-local'
+
+      - 'build_pod_test':
+         pod: 'qct-pod3'
+         pod_config: 'qct-pod3-ecord-local.yml'
+         profile: 'ecord-local'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-ecord-local'
