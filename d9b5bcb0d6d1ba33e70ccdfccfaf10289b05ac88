@@ -39,6 +39,30 @@
       "revId": "d9b5bcb0d6d1ba33e70ccdfccfaf10289b05ac88",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "959b372e_39b9763f",
+        "filename": "jjb/olt-voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-04-17T00:06:49Z",
+      "side": 1,
+      "message": "I will move it up..... as far as triggers go, there should be no triggers on this job right now.",
+      "parentUuid": "aec200de_3d51b9d1",
+      "range": {
+        "startLine": 28,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 26
+      },
+      "revId": "d9b5bcb0d6d1ba33e70ccdfccfaf10289b05ac88",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
