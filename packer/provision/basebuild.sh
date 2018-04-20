@@ -56,6 +56,7 @@ ubuntu_systems() {
         git \
         less \
         libxml2-utils \
+        maven \
         nodejs \
         npm \
         python \
