@@ -3,7 +3,7 @@
 .PHONY: test clean
 
 VENV_DIR      ?= venv-jjb
-JJB_VERSION   ?= 2.0.3
+JJB_VERSION   ?= 2.0.5
 JOBCONFIG_DIR ?= job-configs
 
 $(VENV_DIR):
@@ -20,7 +20,7 @@ lint:
 test: $(VENV_DIR) $(JOBCONFIG_DIR)
 	source $(VENV_DIR)/bin/activate ; \
 	pipdeptree ; \
-	jenkins-jobs -l DEBUG test --recursive -o $(JOBCONFIG_DIR) jjb/ ;
+	jenkins-jobs -l DEBUG test --recursive --config-xml -o $(JOBCONFIG_DIR) jjb/ ;
 
 clean:
 	rm -rf $(VENV_DIR) $(JOBCONFIG_DIR)
