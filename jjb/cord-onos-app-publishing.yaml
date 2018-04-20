@@ -34,6 +34,11 @@
             destination-dir: 'cord'
       script-path: 'cord/onos-apps/Jenkinsfile'
 
+    config-file-provider:
+      files:
+        - file-id: onoscord-apps
+          target: '~/.m2/settings.xml'
+
     triggers:
        - timed: |
                  TZ=America/Los_Angeles
