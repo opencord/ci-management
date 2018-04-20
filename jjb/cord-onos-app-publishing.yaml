@@ -9,6 +9,14 @@
     jobs:
       - 'onos-app-publishing'
 
+- scm:
+    name: cord-checkout
+    scm:
+      - cord-infra-gerrit-repo-scm:
+          manifest-url: '{gerrit-server-url}/{cord-repo-manifest}'
+          branch: '$GERRIT_BRANCH'
+          destination-dir: 'cord'
+
 - job-template:
     id: onos-app-publishing
     name: 'cord-onos-app-publishing'
@@ -26,12 +34,9 @@
     concurrent: true
 
     pipeline-scm:
-      script-path: 'Jenkinsfile'
       scm:
-        - git:
-           url: '{gerrit-server-url}/cord-onos-publisher'
-           branches:
-             - 'master'
+        - cord-checkout
+      script-path: 'cord-onos-publisher/Jenkinsfile'
 
     triggers:
        - timed: |
