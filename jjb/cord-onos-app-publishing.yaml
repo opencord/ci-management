@@ -32,7 +32,7 @@
             manifest-url: '{gerrit-server-url}/{cord-repo-manifest}'
             branch: 'master'
             destination-dir: 'cord'
-      script-path: 'cord-onos-publisher/Jenkinsfile'
+      script-path: 'cord/onos-apps/Jenkinsfile'
 
     triggers:
        - timed: |
