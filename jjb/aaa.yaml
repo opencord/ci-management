@@ -1,0 +1,22 @@
+---
+# maven job for 'aaa' repo
+
+- project:
+    name: aaa
+    project: '{name}'
+
+    jobs:
+      - 'aaa':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-template:
+    name: 'aaa-gerrit'
+    builders:
+        - lf-maven-build:
+           mvn-goals: '{goals}'
+
+- job-group:
+    name: 'aaa'
+    jobs:
+      - 'aaa-gerrit':
+            goals: 'clean install'
