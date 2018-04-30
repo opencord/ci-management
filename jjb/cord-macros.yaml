@@ -35,6 +35,19 @@
             GERRIT_PATCHSET_NUMBER={patchset-number}
       - shell: !include-raw-escape: shell/repopatch.sh
 
+# sonarqube-ongoing-coverage
+- builder:
+    name: cord-infra-sonarqube
+    builders:
+      - shell: 'pylint --version'
+      - sonar:
+          sonar-name: 'sonarqube.opencord.org'
+          java-opts: '-Xmx1280m'
+          properties: |
+            sonar.sources=.
+            sonar.projectKey={project}_$GERRIT_BRANCH
+            sonar.python.pylint=/usr/local/bin/pylint
+
 # trigger on gerrit patchsets and actions
 # docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.gerrit
 - trigger:
