@@ -67,7 +67,10 @@
     project-type: freestyle
     concurrent: true
 
+# run `pylint --version` before sonarqube, to expose version in logs and to
+# avoid a timeout when sonarqube runs it during analysis.
     builders:
+      - shell: 'pylint --version'
       - sonar:
           sonar-name: 'sonarqube.opencord.org'
           java-opts: '-Xmx1280m'
@@ -115,7 +118,10 @@
     project-type: freestyle
     concurrent: true
 
+# run `pylint --version` before sonarqube, to expose version in logs and to
+# avoid a timeout when sonarqube runs it during analysis.
     builders:
+      - shell: 'pylint --version'
       - sonar:
           sonar-name: 'sonarqube.opencord.org'
           java-opts: '-Xmx1280m'
