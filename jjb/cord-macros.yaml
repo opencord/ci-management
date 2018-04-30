@@ -35,6 +35,15 @@
             GERRIT_PATCHSET_NUMBER={patchset-number}
       - shell: !include-raw-escape: shell/repopatch.sh
 
+# sonarqube-ongoing-coverage
+- builder:
+    name: sonarqube-verify
+    builders:
+      - builders-from:
+          "sonarcube-coverage"
+      - builders-from:
+          "verify-sonarqube"
+
 # trigger on gerrit patchsets and actions
 # docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.gerrit
 - trigger:
