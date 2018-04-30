@@ -1,0 +1,38 @@
+---
+# maven job for 'aaa' repo
+
+- project:
+    name: aaa
+    project: '{name}'
+
+    jobs:
+      - 'aaa':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'aaa'
+    jobs:
+      - 'aaa-gerrit':
+            goals: 'clean install'
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_aaa_licensed'
+
+- job-template:
+    name: 'aaa-gerrit'
+    builders:
+        - lf-maven-build:
+           mvn-goals: '{goals}'
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: 'aaa'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
