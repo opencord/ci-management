@@ -70,14 +70,7 @@
 # run `pylint --version` before sonarqube, to expose version in logs and to
 # avoid a timeout when sonarqube runs it during analysis.
     builders:
-      - shell: 'pylint --version'
-      - sonar:
-          sonar-name: 'sonarqube.opencord.org'
-          java-opts: '-Xmx1280m'
-          properties: |
-            sonar.sources=.
-            sonar.projectKey={project}_$GERRIT_BRANCH
-            sonar.python.pylint=/usr/local/bin/pylint
+      - builders-from: 'sonarqube-verify'
 
 
 # run Sonarqube as a verification jobs on individual patchsets
@@ -121,12 +114,4 @@
 # run `pylint --version` before sonarqube, to expose version in logs and to
 # avoid a timeout when sonarqube runs it during analysis.
     builders:
-      - shell: 'pylint --version'
-      - sonar:
-          sonar-name: 'sonarqube.opencord.org'
-          java-opts: '-Xmx1280m'
-          properties: |
-            sonar.sources=.
-            sonar.projectKey=verify_{project}_$GERRIT_BRANCH
-            sonar.python.pylint=/usr/local/bin/pylint
-
+      - builders-from: 'sonarqube-verify'
