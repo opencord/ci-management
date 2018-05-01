@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9e8d3977_e3c238d9",
+        "filename": "jjb/aaa.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-05-01T18:15:30Z",
+      "side": 1,
+      "message": "Macros need to be parameterized - the `project` parameter is needed.",
+      "range": {
+        "startLine": 24,
+        "startChar": 10,
+        "endLine": 24,
+        "endChar": 32
+      },
+      "revId": "10c250b0c526a7324163ce1c44d6ccb6f15ea073",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
