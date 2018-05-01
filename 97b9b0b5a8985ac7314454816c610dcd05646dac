@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c452222a_a6b6fa50",
+        "filename": "jjb/cord-macros.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-05-01T18:00:31Z",
+      "side": 1,
+      "message": "make this match the other macro names, maybe `cord-infra-sonarqube` ?",
+      "range": {
+        "startLine": 40,
+        "startChar": 9,
+        "endLine": 40,
+        "endChar": 26
+      },
+      "revId": "97b9b0b5a8985ac7314454816c610dcd05646dac",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eda492a7_3b849b06",
+        "filename": "jjb/sonar.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-05-01T18:00:31Z",
+      "side": 1,
+      "message": "Just call this as a normal builder. Needs the `project` parameter to fill out `sonar.projectKey`\n\nAlso in aaa.yaml",
+      "range": {
+        "startLine": 73,
+        "startChar": 8,
+        "endLine": 73,
+        "endChar": 41
+      },
+      "revId": "97b9b0b5a8985ac7314454816c610dcd05646dac",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
