@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca83449b_1f0f4d09",
+        "filename": "jjb/aaa.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-05-01T03:41:51Z",
+      "side": 1,
+      "message": "Could the job-template be put after the job-group, so someone can read the file from top to bottom?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 15
+      },
+      "revId": "759367aba44f294271a1d2c3c5a3a5b32f6ea4c6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
