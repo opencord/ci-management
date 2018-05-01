@@ -70,7 +70,8 @@
 # run `pylint --version` before sonarqube, to expose version in logs and to
 # avoid a timeout when sonarqube runs it during analysis.
     builders:
-        - 'cord-infra-sonarqube'
+        - 'cord-infra-sonarqube':
+            project: '{project}'
 
 # run Sonarqube as a verification jobs on individual patchsets
 - job-template:
@@ -113,4 +114,5 @@
 # run `pylint --version` before sonarqube, to expose version in logs and to
 # avoid a timeout when sonarqube runs it during analysis.
     builders:
-        - 'cord-infra-sonarqube'
+        - 'cord-infra-sonarqube':
+            project: '{project}'
