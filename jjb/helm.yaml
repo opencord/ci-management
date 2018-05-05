@@ -1,0 +1,61 @@
+---
+# CORD helm chart publishing tasks
+
+- project:
+    name: helm-repo
+
+    # add repos that have documentation to the project list in both jobs
+    jobs:
+      - 'publish-helm-repo':
+          project-regexp: '^(helm-charts)$'
+          branch-regexp: '{supported-branches-regexp}'
+
+
+- job-template:
+    id: publish-helm-repo
+    name: 'publish-helm-repo'
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project-regexp}'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{doc-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: false
+
+    builders:
+      - shell: |
+          helm init --client-only
+          ./scripts/helmrepo.sh
+
+# publish over ssh: https://docs.openstack.org/infra/jenkins-job-builder/publishers.html#publishers.ssh
+    publishers:
+      - ssh:
+          site: 'CORD Wiki'
+          source: 'chart_repo/**'
+          remove-prefix: 'chart_repo'
+          target: '//var/www/guide/charts/$GERRIT_BRANCH/'
+
