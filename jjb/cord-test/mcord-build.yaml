@@ -1,0 +1,26 @@
+---
+# POD Nightly Build Pipeline M-CORD Jobs
+
+- project:
+    name: mcord-nightly-build-pipeline
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    jobs:
+      # qct pod 4 build jobs (mcord)
+      - 'build_pod_manual':
+         pod: 'qct-pod4'
+         pod_config: 'qct-pod4.yml'
+         profile: 'mcord'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+
+      # qct pod 4 test jobs
+      - 'build_pod_manual_test':
+         pod: 'qct-pod4'
+         pod_config: 'qct-pod4.yml'
+         profile: 'mcord'
+         branch: 'cord-4.1'
+         Jenkinsfile: 'Jenkinsfile-mcord'
