@@ -33,6 +33,7 @@ ubuntu_systems() {
     # ubuntu_install_java_setup
     # apt-get update
     # apt-get install -y oracle-java8-installer
+    # rm -rf /var/cache/oracle-jdk8-installer
 
     # set up ansible repo
     apt-add-repository -y ppa:ansible/ansible
@@ -121,23 +122,36 @@ ubuntu_systems() {
     # install sonarqube scanner
     SONAR_SCANNER_CLI_VERSION="3.1.0.1141"
     SONAR_SCANNER_CLI_SHA256SUM="efbe7d1a274bbed220846eccc5b36db853a6bab3ee576aebf93ddc604a89ced4"
-    curl -L -o /tmp/sonarscanner.zip https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip
+    curl -L -o /tmp/sonarscanner.zip "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip"
     echo "$SONAR_SCANNER_CLI_SHA256SUM  /tmp/sonarscanner.zip" | sha256sum -c -
     pushd /opt
     unzip /tmp/sonarscanner.zip
     mv sonar-scanner-${SONAR_SCANNER_CLI_VERSION}-linux sonar-scanner
+    rm -rf sonarscanner*
     popd
 
-    # install helm (for lint)
+    # install helm
     HELM_VERSION="2.8.2"
     HELM_SHA256SUM="614b5ac79de4336b37c9b26d528c6f2b94ee6ccacb94b0f4b8d9583a8dd122d3"
     HELM_PLATFORM="linux-amd64"
-    curl -L -o /tmp/helm.tgz https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz
+    curl -L -o /tmp/helm.tgz "https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz"
     echo "$HELM_SHA256SUM  /tmp/helm.tgz" | sha256sum -c -
     pushd /tmp
     tar -xzvf helm.tgz
     mv ${HELM_PLATFORM}/helm /usr/local/bin/helm
     chmod a+x /usr/local/bin/helm
+    rm -rf helm*
+    popd
+
+    # install minikube
+    MINIKUBE_VERSION="0.26.1"
+    MINIKUBE_DEB_VERSION="$(echo ${MINIKUBE_VERSION} | sed -n 's/\(.*\)\.\(.*\)/\1-\2/p')"
+    MINIKUBE_SHA256SUM="4a97ff448347eb374e1c48b4578cc3cf61af51cca4ff002101a57e77ffaa1575"
+    curl -L -o /tmp/minikube.deb "https://storage.googleapis.com/minikube/releases/v${MINIKUBE_VERSION}/minikube_${MINIKUBE_DEB_VERSION}.deb"
+    echo "$MINIKUBE_SHA256SUM  /tmp/minikube.deb" | sha256sum -c -
+    pushd /tmp
+    dpkg -i minikube.deb
+    rm -f minikube.deb
     popd
 
     # clean up
@@ -145,9 +159,6 @@ ubuntu_systems() {
     apt-get purge -y
     apt-get autoremove -y
     rm -rf /var/lib/apt/lists/*
-    rm -rf /var/cache/oracle-jdk8-installer
-    rm -rf /tmp/sonarscanner.zip
-    rm -rf /tmp/helm.tgz
 }
 
 all_systems() {
