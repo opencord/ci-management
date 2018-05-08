@@ -18,6 +18,9 @@
 
 - job-template:
     name: 'aaa-gerrit'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {name} job-template from ci-management/jjb/aaa.yaml
 
     project-type: maven
     maven:
