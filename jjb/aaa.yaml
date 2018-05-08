@@ -3,29 +3,26 @@
 
 - project:
     name: aaa
-    project: '{name}'
+
+    project-name: '{name}'
 
     jobs:
       - 'aaa':
           branch-regexp: '{supported-branches-regexp}'
 
-- job-group:
-    name: 'aaa'
-    jobs:
-      - 'aaa-gerrit':
-            goals: 'clean install'
-      - 'verify-licensed'
 
 - job-template:
+    id: aaa
     name: 'aaa-gerrit'
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {name} job-template from ci-management/jjb/aaa.yaml
+      Created by {id} job-template from ci-management/jjb/aaa.yaml
 
+    node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: maven
     maven:
       root-pom: pom.xml
-      goals: '{goals}'
+      goals: 'clean install'
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -40,4 +37,3 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
