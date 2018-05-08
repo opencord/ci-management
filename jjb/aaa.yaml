@@ -21,8 +21,6 @@
     builders:
         - lf-maven-build:
            mvn-goals: '{goals}'
-        - 'cord-infra-sonarqube':
-           project: '{name}'
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
