@@ -18,9 +18,22 @@
 
 - job-template:
     name: 'aaa-gerrit'
-    builders:
-        - lf-maven-build:
-           mvn-goals: '{goals}'
+
+    project-type: maven
+    maven:
+      root-pom: pom.xml
+      goals: '{goals}'
+
+    parameters:
+      - string:
+         name: GERRIT_REFSPEC
+         default: 'refs/heads/master'
+         description: 'Use default when using "Build Now"'
+
+      - string:
+         name: GERRIT_BRANCH
+         default: 'master'
+         description: 'Use default when using "Build Now"'
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
