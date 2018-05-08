@@ -57,10 +57,10 @@
     scm:
       - lf-infra-gerrit-scm:
           git-url: '$GIT_URL/$GERRIT_PROJECT'
-          refspec: '$GERRIT_REFSPEC'
+          refspec: ''
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
-          choosing-strategy: gerrit
+          choosing-strategy: default
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     node: 'ubuntu16.04-basebuild-1c-2g'
@@ -101,7 +101,7 @@
     scm:
       - lf-infra-gerrit-scm:
           git-url: '$GIT_URL/$GERRIT_PROJECT'
-          refspec: 'refs/heads/$GERRIT_BRANCH'
+          refspec: '$GERRIT_REFSPEC'
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
           choosing-strategy: gerrit
