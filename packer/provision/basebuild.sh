@@ -143,6 +143,15 @@ ubuntu_systems() {
     rm -rf helm.tgz ${HELM_PLATFORM}
     popd
 
+    # install kubectl
+    KUBECTL_VERSION="1.9.5"
+    KUBECTL_SHA256SUM="9c67b6e80e9dd3880511c7d912c5a01399c1d74aaf4d71989c7d5a4f2534bcd5"
+    curl -L -o /tmp/kubectl "https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
+    echo "$KUBECTL_SHA256SUM  /tmp/kubectl" | sha256sum -c -
+    mv /tmp/kubectl /usr/local/bin/kubectl
+    chmod a+x /usr/local/bin/kubectl
+    rm -f /tmp/kubectl
+
     # install minikube
     MINIKUBE_VERSION="0.26.1"
     MINIKUBE_DEB_VERSION="$(echo ${MINIKUBE_VERSION} | sed -n 's/\(.*\)\.\(.*\)/\1-\2/p')"
