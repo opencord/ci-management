@@ -38,10 +38,10 @@
     scm:
       - lf-infra-gerrit-scm:
           git-url: '$GIT_URL/$GERRIT_PROJECT'
-          refspec: 'refs/heads/$GERRIT_BRANCH'
+          refspec: ''
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
-          choosing-strategy: gerrit
+          choosing-strategy: default
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     node: '{build-node}'
@@ -51,6 +51,7 @@
     builders:
       - shell: |
           helm init --client-only
+          helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
           ./scripts/helmrepo.sh
 
 # publish over ssh: https://docs.openstack.org/infra/jenkins-job-builder/publishers.html#publishers.ssh
