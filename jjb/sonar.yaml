@@ -101,7 +101,7 @@
     scm:
       - lf-infra-gerrit-scm:
           git-url: '$GIT_URL/$GERRIT_PROJECT'
-          refspec: '$GERRIT_REFSPEC'
+          refspec: 'refs/heads/$GERRIT_BRANCH'
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
           choosing-strategy: gerrit
