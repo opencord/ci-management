@@ -12,7 +12,7 @@
       # qct pod 4 build jobs (mcord)
       - 'build_pod_manual':
          pod: 'qct-pod4'
-         pod_config: 'qct-pod4.yml'
+         pod_config: 'qct-pod4-mcord.yml'
          profile: 'mcord'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
@@ -20,7 +20,7 @@
       # qct pod 4 test jobs
       - 'build_pod_manual_test':
          pod: 'qct-pod4'
-         pod_config: 'qct-pod4.yml'
+         pod_config: 'qct-pod4-mcord.yml'
          profile: 'mcord'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile-mcord'
