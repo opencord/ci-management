@@ -1,16 +1,16 @@
 ---
-# maven job for 'aaa' repo
+# maven job for 'igmpproxy' repo
 
 - project:
-    name: aaa
+    name: igmpproxy
     project: '{name}'
 
     jobs:
-      - 'aaa-gerrit':
+      - 'igmpproxy-gerrit':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
-    name: 'aaa-gerrit'
+    name: 'igmpproxy-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'

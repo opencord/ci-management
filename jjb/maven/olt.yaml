@@ -1,16 +1,16 @@
 ---
-# maven job for 'aaa' repo
+# maven job for 'olt' repo
 
 - project:
-    name: aaa
+    name: olt
     project: '{name}'
 
     jobs:
-      - 'aaa-gerrit':
+      - 'olt-gerrit':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
-    name: 'aaa-gerrit'
+    name: 'olt-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
