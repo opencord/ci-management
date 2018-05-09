@@ -26,13 +26,13 @@
 
     parameters:
       - string:
-         name: GERRIT_REFSPEC
-         default: 'refs/heads/master'
+         name: GERRIT_BRANCH
+         default: 'master'
          description: 'Use default when using "Build Now"'
 
       - string:
-         name: GERRIT_BRANCH
-         default: 'master'
+         name: GERRIT_REFSPEC
+         default: 'refs/heads/master'
          description: 'Use default when using "Build Now"'
 
     triggers:
@@ -47,3 +47,12 @@
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    scm:
+      - git:
+          url: '{gerrit-server-url}/aaa'
+          branches: '$GERRIT_BRANCH'
+          refspec: '$GERRIT_RECSPEC'
+          choosing-strategy: 'gerrit'
+          do-not-fetch-tags: true
+          shallow-clone: true
