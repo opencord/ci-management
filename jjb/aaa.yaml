@@ -51,8 +51,9 @@
     scm:
       - git:
           url: '{gerrit-server-url}/aaa'
-          branches: '$GERRIT_BRANCH'
-          refspec: '$GERRIT_RECSPEC'
+          branches:
+            - '$GERRIT_BRANCH'
+          refspec: $GERRIT_RECSPEC
           choosing-strategy: 'gerrit'
           do-not-fetch-tags: true
           shallow-clone: true
