@@ -2,15 +2,15 @@
 # maven job for 'aaa' repo
 
 - project:
-    name: config
+    name: olt
     project: '{name}'
 
     jobs:
-      - 'config-gerrit':
+      - 'olt-gerrit':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
-    name: 'config-gerrit'
+    name: 'olt-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'

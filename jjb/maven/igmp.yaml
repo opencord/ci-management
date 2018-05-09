@@ -2,15 +2,15 @@
 # maven job for 'aaa' repo
 
 - project:
-    name: config
+    name: igmp
     project: '{name}'
 
     jobs:
-      - 'config-gerrit':
+      - 'igmp-gerrit':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
-    name: 'config-gerrit'
+    name: 'igmp-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'

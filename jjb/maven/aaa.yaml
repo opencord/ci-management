@@ -12,4 +12,5 @@
 - job-group:
     name: 'aaa-gerrit'
     jobs:
+      - 'verify-licensed'
       - 'maven-install'

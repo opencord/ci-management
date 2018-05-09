@@ -2,15 +2,15 @@
 # maven job for 'aaa' repo
 
 - project:
-    name: config
+    name: vtn
     project: '{name}'
 
     jobs:
-      - 'config-gerrit':
+      - 'vtn-gerrit':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
-    name: 'config-gerrit'
+    name: 'vtn-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
