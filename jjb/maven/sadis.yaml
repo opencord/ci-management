@@ -1,16 +1,16 @@
 ---
-# maven job for 'aaa' repo
+# maven job for 'sadis' repo
 
 - project:
-    name: aaa
+    name: sadis
     project: '{name}'
 
     jobs:
-      - 'aaa-gerrit':
+      - 'sadis-gerrit':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
-    name: 'aaa-gerrit'
+    name: 'sadis-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'

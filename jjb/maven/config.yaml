@@ -1,5 +1,5 @@
 ---
-# maven job for 'aaa' repo
+# maven job for 'config' repo
 
 - project:
     name: config
@@ -12,4 +12,5 @@
 - job-group:
     name: 'config-gerrit'
     jobs:
+      - 'verify-licensed'
       - 'maven-install'
