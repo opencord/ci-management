@@ -1,22 +1,12 @@
 ---
-# maven job for 'aaa' repo
-
-- project:
-    name: aaa
-
-    project-name: '{name}'
-
-    jobs:
-      - 'aaa':
-          branch-regexp: '{supported-branches-regexp}'
-
+# maven install jobs for cord onos app repos
 
 - job-template:
-    id: aaa
-    name: 'aaa-gerrit'
+    id: maven-install
+    name: '{project}-gerrit'
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/aaa.yaml
+      Created by {id} job-template from ci-management/jjb/maven.yaml
 
     node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: maven
@@ -38,7 +28,7 @@
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: 'aaa'
+          project-regexp: '{project}'
           branch-regexp: '{branch-regexp}'
           file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
@@ -50,10 +40,9 @@
 
     scm:
       - git:
-          url: '{gerrit-server-url}/aaa'
+          url: '{gerrit-server-url}/{project}'
           branches:
             - '$GERRIT_BRANCH'
-          refspec: '$GERRIT_RECSPEC'
+          refspec: '$GERRIT_REFSPEC'
           choosing-strategy: 'gerrit'
-          do-not-fetch-tags: true
           shallow-clone: true

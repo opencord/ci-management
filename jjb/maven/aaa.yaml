@@ -1,0 +1,15 @@
+---
+# maven job for 'aaa' repo
+
+- project:
+    name: aaa
+    project: '{name}'
+
+    jobs:
+      - 'aaa-gerrit':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'aaa-gerrit'
+    jobs:
+      - 'maven-install'
