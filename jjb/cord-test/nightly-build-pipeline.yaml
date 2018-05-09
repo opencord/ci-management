@@ -189,11 +189,11 @@
           result: 'failure'
 
 - job-template:
-    name: 'build_{profile}_{pod}_manual_{branch}'
+    name: 'build_{profile}_{pod}_{branch}'
     id: build_pod_manual
     description: |
                   <!-- Managed by Jenkins Job Builder -->
-                  Nightly Physical POD Builds at {pod} using {pod_config} <br /><br />
+                  Manual Build on POD {pod} using {pod_config} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
