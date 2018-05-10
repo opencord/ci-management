@@ -17,4 +17,6 @@
           dependency-jobs: 'verify_helm-charts_licensed'
       - 'verify-helm-lint':
           dependency-jobs: 'verify_helm-charts_sonarqube'
+      - 'helm-api-test':
+          dependency-jobs: 'verify_helm-charts_helm-lint'
 
