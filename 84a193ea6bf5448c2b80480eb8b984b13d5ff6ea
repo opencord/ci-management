@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5531220f_ab8291ef",
+        "filename": "jjb/pipeline/helm-api-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-05-10T16:06:43Z",
+      "side": 1,
+      "message": "I still need to run these helm tests. But my question is that will the \"ROBOT\" logs be in this directory ? (log.xml output.xml report.xml) ?\n\nIn addition to the xos-core logs, we need those Robot logs too as those would be the first place we would look at to check failures.",
+      "revId": "84a193ea6bf5448c2b80480eb8b984b13d5ff6ea",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
