@@ -16,6 +16,24 @@
       "revId": "84a193ea6bf5448c2b80480eb8b984b13d5ff6ea",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "90c0ff86_e266b3a8",
+        "filename": "jjb/pipeline/helm-api-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-05-10T16:16:11Z",
+      "side": 1,
+      "message": "Yes, they\u0027re mounted into /tmp per this patchset: https://gerrit.opencord.org/c/9192/",
+      "parentUuid": "5531220f_ab8291ef",
+      "revId": "84a193ea6bf5448c2b80480eb8b984b13d5ff6ea",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
