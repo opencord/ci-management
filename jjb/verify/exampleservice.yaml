@@ -1,0 +1,19 @@
+---
+# verification jobs for 'exampleservice' repo
+
+- project:
+    name: exampleservice
+    project: '{name}'
+
+    jobs:
+      - 'verify-exampleservice-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-exampleservice-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_exampleservice_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_exampleservice_sonarqube'

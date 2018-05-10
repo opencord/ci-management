@@ -1,0 +1,20 @@
+---
+# verification jobs for 'simpleexampleservice' repo
+
+- project:
+    name: simpleexampleservice
+    project: '{name}'
+
+    jobs:
+      - 'verify-simpleexampleservice-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-simpleexampleservice-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_simpleexampleservice_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_simpleexampleservice_sonarqube'
+git stau
