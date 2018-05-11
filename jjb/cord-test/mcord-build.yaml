@@ -22,7 +22,7 @@
          pod_config: 'onlab-mcord-cavium-pod1.yml'
          profile: 'mcord'
          branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile.MCORDBuildSystem'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
 
       # qct pod 4 test jobs
       - 'build_pod_manual_test':
