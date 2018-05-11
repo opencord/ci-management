@@ -2,12 +2,36 @@
 
 pipeline {
 
+  parameters {
+    string(name:'executorNode', defaultValue:'invalid', description:'Name of the Jenkins node to run the job on')
+    string(name:'manifestUrl', defaultValue:'invalid', description:'URL to the repo manifest')
+    string(name:'manifestBranch', defaultValue:'master', description:'Name of the repo branch to use')
+  }
+
   /* no label, executor is determined by JJB */
   agent {
-    label ''
+    label '${params.executorNode}'
   }
 
   stages {
+
+    stage('checkout') {
+      steps {
+        checkout(changelog: false, \
+          poll: false,
+          scm: [$class: 'RepoScm', \
+            manifestRepositoryUrl: '${params.manifestUrl}', \
+            manifestBranch: '${params.manifestBranch}', \
+            currentBranch: true, \
+            destinationDir: 'cord', \
+            forceSync: true,
+            resetFirst: true, \
+            quiet: true, \
+            jobs: 4, \
+            showAllChanges: true] \
+          )
+      }
+    }
 
     stage('prep') {
       parallel {
@@ -30,10 +54,10 @@ pipeline {
                mkdir -p $HOME/.kube || true;
                touch $HOME/.kube/config;
                export KUBECONFIG=$HOME/.kube/config;
-               sudo -E minikube start --vm-driver=none;
+               minikube start --vm-driver=none;
 
-               sudo chown -R $USER $HOME/.minikube;
-               sudo chgrp -R $(id -g) $HOME/.minikube;
+               chown -R $USER $HOME/.minikube;
+               chgrp -R $(id -g) $HOME/.minikube;
 
                for i in {1..150}; do # timeout for 5 minutes
                    ./kubectl get po &> /dev/null

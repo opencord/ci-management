@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-helm-charts-jobs':
-          branch-regexp: '^master$'
+          branch-regexp: '{modern-branches-regexp}'
 
 - job-group:
     name: 'verify-helm-charts-jobs'
