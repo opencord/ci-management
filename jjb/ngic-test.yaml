@@ -1,0 +1,84 @@
+---
+# Verification job for ngic repo
+
+- job-template:
+    id: ngic-test
+    name: 'verify_{operations}_ngic'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Verification job for ngic repo
+      Created by api-test job-template from ci-management/jjb/api-test.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^ngic$'
+          branch-regexp: '{supported-branches-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: ''
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    project-type: pipeline
+    concurrent: false
+
+    parameters:
+      - string:
+          name: NODE_NAME
+          default: 'ng40ran1'
+          description: 'Name of the node to run the job'
+
+      - string:
+          name: RECIPIENTS
+          default: 'you@opennetworking.org, $GERRIT_PATCHSET_UPLOADER_EMAIL'
+          description: 'Email recipients for receiving build failure notifications'
+
+      - string:
+          name: GERRIT_BRANCH
+          default: 'master'
+          description: 'Gerrit branch of ngic repo'
+
+      - string:
+          name: GERRIT_PROJECT
+          default: 'ngic'
+          description: 'This parameter is required to manually build this pipeline job'
+
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: '5232'
+          description: 'Gerrit patch change number. This parameter is required to manually build this pipeline job'
+
+      - string:
+          name: GERRIT_PATCHSET_NUMBER
+          default: '2'
+          description: 'Gerrit patchset number. This parameter is required to manually build this pipeline job'
+
+      - string:
+          name: GERRIT_REFSPEC
+          default: 'refs/changes/32/5232/2'
+          description: 'Gerrit patch refspec. This parameter is required to manually build this pipeline job'
+
+    pipeline-scm:
+      script-path: '{Jenkinsfile}'
+      scm:
+        - git:
+            url: '{gerrit-server-url}/ngic'
+            branches:
+              - 'master'
+
+- project:
+    name: ngic-build-test
+    project-name: '{name}'
+    build-timeout: '60'
+
+    jobs:
+      - 'ngic-test':
+          operations: 'build-only'
+          Jenkinsfile: 'Jenkinsfile-build-only'
+
+      - 'ngic-test':
+          operations: 'build-and-test'
+          Jenkinsfile: 'Jenkinsfile'
