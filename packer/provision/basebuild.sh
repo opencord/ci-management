@@ -163,6 +163,12 @@ ubuntu_systems() {
     rm -f minikube.deb
     popd
 
+    # give sudo permissions on minikube to jenkins user, so `minikube init` can be run
+    cat <<EOF >/etc/sudoers.d/88-jenkins-minikube
+Defaults:jenkins !requiretty
+jenkins ALL=(ALL) NOPASSWD:SETENV: /usr/bin/minikube
+EOF
+
     # clean up
     apt-get clean
     apt-get purge -y
