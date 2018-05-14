@@ -21,6 +21,12 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
+    parameters:
+      - string:
+         name: notificationEmail
+         default: 'luca@opennetworking.org, shad@opennetworking.org'
+         description: ''
+
     node: 'olt-agent-onf'
 
     project-type: pipeline
