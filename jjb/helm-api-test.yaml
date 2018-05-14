@@ -41,6 +41,21 @@
          default: '$GERRIT_BRANCH'
          description: 'Name of the repo branch to use'
 
+      - string:
+         name: gerritProject
+         default: '$GERRIT_PROJECT'
+         description: 'Name of the Gerrit project'
+
+      - string:
+         name: gerritChangeNumber
+         default: '$GERRIT_CHANGE_NUMBER'
+         description: 'Changeset number in Gerrit'
+
+      - string:
+         name: gerritPatchsetNumber
+         default: '$GERRIT_PATCHSET_NUMBER'
+         description: 'PatchSet number in Gerrit'
+
     project-type: pipeline
     concurrent: true
 
