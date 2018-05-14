@@ -15,5 +15,7 @@
       - 'verify-licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_vEG_licensed'
-      - 'api-test':
+      - 'xos-unit-test':
           dependency-jobs: 'verify_vEG_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_vEG_-unit-test'

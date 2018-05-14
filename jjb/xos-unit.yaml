@@ -1,0 +1,70 @@
+---
+# xos unit test
+
+- job-template:
+    id: 'xos-unit-test'
+    name: 'verify_{project}_-unit-test'
+
+    description: |
+      Created by {id} job-template from ci-management/jjb/xos-unit.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: 20
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: |
+          #/usr/bin/env bash
+          BASEDIR=$(pwd)
+
+          # setup virtual env
+          virtualenv -q venv-xos --no-site-packages
+          source $BASEDIR/venv-xos/bin/activate
+          pip install --upgrade pip setuptools
+
+          # download changeset
+          mkdir cord && cd cord/
+          repo init -u https://gerrit.opencord.org/manifest -b $GERRIT_BRANCH
+          repo sync
+          repo download $GERRIT_PROJECT $GERRIT_CHANGE_NUMBER/$GERRIT_PATCHSET_NUMBER
+
+          # Install XOS dependencies
+          pip install -r $BASEDIR/cord/orchestration/xos/containers/xos/pip_requirements.txt
+          pip install nose2
+          pip install requests_mock
+          echo "Requirements Installed"
+
+          cd $BASEDIR/cord/orchestration/xos/lib/xos-util; python setup.py install; echo "xos-util Installed"
+          cd $BASEDIR/cord/orchestration/xos/lib/xos-config; python setup.py install; echo "xos-config Installed"
+          cd $BASEDIR/cord/orchestration/xos/lib/xos-genx; python setup.py install; echo "xos-genx Installed"
+
+          # Run the tests
+          cd $BASEDIR/cord/orchestration/xos_services/$GERRIT_PROJECT/xos
+          nose2 --verbose  --exclude-ignored-files
