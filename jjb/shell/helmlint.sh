@@ -24,14 +24,17 @@ command -v helm >/dev/null 2>&1 || { echo "helm not found, please install it" >&
 
 echo "helmlint.sh, using helm version: $(helm version -c --short)"
 
-fail_lint=0
-
 # when not running under Jenkins, use current dir as workspace
 WORKSPACE=${WORKSPACE:-.}
 
 for chart in $(find "${WORKSPACE}" -name Chart.yaml -print) ; do
 
   chartdir=$(dirname "${chart}")
+
+  # update requirements if it exists. Skip voltha as it has non-clean reqirements
+  if [ "${chartdir}" != "./voltha" ] && [ -f "${chartdir}/requirements.yaml" ]; then
+    helm dependency update "${chartdir}"
+  fi
 
   # lint with values.yaml if it exists
   if [ -f "${chartdir}/values.yaml" ]; then
@@ -46,4 +49,8 @@ for chart in $(find "${WORKSPACE}" -name Chart.yaml -print) ; do
   fi
 done
 
-exit ${fail_lint}
+if [[ $fail_lint != 0 ]]; then
+  exit 1
+fi
+
+exit 0
