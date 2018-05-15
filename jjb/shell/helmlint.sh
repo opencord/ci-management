@@ -33,6 +33,11 @@ for chart in $(find "${WORKSPACE}" -name Chart.yaml -print) ; do
 
   chartdir=$(dirname "${chart}")
 
+  # update requirements if it exists. Skip voltha as it has non-clean reqirements
+  if [ "${chartdir}" != "./voltha" ] && [ -f "${chartdir}/requirements.yaml" ]; then
+    helm dependency update "${chartdir}"
+  fi
+
   # lint with values.yaml if it exists
   if [ -f "${chartdir}/values.yaml" ]; then
     helm lint --strict --values "${chartdir}/values.yaml" "${chartdir}"
@@ -46,4 +51,8 @@ for chart in $(find "${WORKSPACE}" -name Chart.yaml -print) ; do
   fi
 done
 
-exit ${fail_lint}
+if [[ $fail_lint != 0 ]]; then
+  exit 1
+fi
+
+exit 0
