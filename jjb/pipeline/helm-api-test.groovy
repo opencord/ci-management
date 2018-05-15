@@ -31,7 +31,7 @@ pipeline {
       steps {
         sh """
            pushd cord
-           PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"${gerritProject}\"]/@path)" .repo/manifest.xml)
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
            repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
            popd
            """
@@ -63,15 +63,16 @@ pipeline {
                touch $HOME/.kube/config
                export KUBECONFIG=$HOME/.kube/config
                sudo -E /usr/bin/minikube start --vm-driver=none
-
-               for i in {1..150}; do # timeout for 5 minutes
-                   ./kubectl get po &> /dev/null
-                   if [ $? -ne 1 ]; then
-                      break
-                  fi
-                  sleep 2
-               done
                '''
+            script {
+              timeout(3) {
+                waitUntil {
+                  sleep 5
+                  def kc_ret = sh script: "kubectl get po", returnStatus: true
+                  return (kc_ret == 0);
+                }
+              }
+            }
           }
         }
       }
@@ -79,7 +80,11 @@ pipeline {
 
     stage('helm') {
       steps {
-        sh 'helm init && sleep 60'
+        sh '''
+           helm init
+           sleep 60
+           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+           '''
       }
     }
 
@@ -90,6 +95,7 @@ pipeline {
            helm dep up xos-core
            helm install -f examples/test-values.yaml -f examples/candidate-tag-values.yaml xos-core -n xos-core
            sleep 60
+           helm status xos-core
            popd
            '''
       }
@@ -99,7 +105,6 @@ pipeline {
       steps {
         sh '''
            helm test xos-core
-           kubectl logs xos-core-api-test
            mkdir -p ./RobotLogs;
            cp /tmp/helm_test_xos_core_logs_*/* ./RobotLogs
            '''
@@ -120,6 +125,9 @@ pipeline {
   post {
     always {
       sh '''
+         kubectl get pods --all-namespaces
+         helm list
+         kubectl logs xos-core-api-test
          kubectl delete pod xos-core-api-test
          helm delete --purge xos-core
          '''
