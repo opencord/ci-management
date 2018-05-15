@@ -6,7 +6,7 @@
 
     # add repos that have documentation to the project list in both jobs
     jobs:
-      - 'verify-docs-legacy':
+      - 'verify-documentation-legacy':
           project-regexp: '^(cord|platform-install|cord-tester|rcord|ecord|mcord|opencloud|xos|xos-gui|xos-tosca)$'
           branch-regexp: '{supported-branches-regexp}'
 
@@ -16,7 +16,8 @@
     # add repos that have documentation to the project list in both jobs
     jobs:
       - 'verify-documentation':
-          project-regexp: '^(docs|cord-tester|xos|xos-gui|xos-tosca)$'
+          primary-docs-repo-regexp: '^docs$'
+          other-docs-repos-regexp: '^(cord-tester|xos|xos-gui|xos-tosca)$'
           branch-regexp: '{modern-branches-regexp}'
 
 - project:
@@ -29,8 +30,8 @@
 
 # Documentation job templates
 - job-template:
-    id: verify-docs-legacy
-    name: "verify-docs-legacy"
+    id: verify-documentation-legacy
+    name: "verify-documentation-legacy"
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -75,9 +76,17 @@
     name: "verify-documentation"
 
     triggers:
+      # trigger on any change in docs repo
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '{project-regexp}'
+          project-regexp: '{primary-docs-repo-regexp}'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+      # trigger on only docs/* changes in other repos
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{other-docs-repos-regexp}'
           branch-regexp: '{branch-regexp}'
           file-include-regexp: '{doc-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
