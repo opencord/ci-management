@@ -17,3 +17,6 @@
           dependency-jobs: 'verify_xos_licensed'
       - 'api-test':
           dependency-jobs: 'verify_xos_sonarqube'
+      - 'helm-api-test':
+          dependency-jobs: 'verify_xos_sonarqube'
+
