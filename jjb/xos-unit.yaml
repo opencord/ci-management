@@ -56,9 +56,9 @@
           repo download $GERRIT_PROJECT $GERRIT_CHANGE_NUMBER/$GERRIT_PATCHSET_NUMBER
 
           # Install XOS dependencies
-          pip install -r $BASEDIR/cord/orchestration/xos/containers/xos/pip_requirements.txt
-          pip install nose2
-          pip install requests_mock
+          pip install nose2 requests_mock plyxproto jinja2 pattern astunparse pyyaml colorama
+          pip install pykwalify==1.6.1
+          pip install multistructlog==1.5
           echo "Requirements Installed"
 
           cd $BASEDIR/cord/orchestration/xos/lib/xos-util; python setup.py install; echo "xos-util Installed"
