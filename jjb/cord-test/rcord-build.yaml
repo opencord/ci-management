@@ -42,6 +42,14 @@
          Jenkinsfile: 'Jenkinsfile'
          fromBranch: 'cord-5.0'
 
+      # Flex POD1 build job for (rcord) - soak platform
+      - 'build_pod_manual':
+         pod: 'flex-pod1'
+         pod_config: 'flex-pod1.yml'
+         profile: 'rcord'
+         branch: 'cord-5.0'
+         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+
       # qct pod 1 test jobs
       - 'build_pod_test':
          pod: 'qct-pod1'

@@ -17,6 +17,7 @@
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
 
+      # onf pod build job (mcord)
       - 'build_pod_manual':
          pod: 'onf-mcord-dev'
          pod_config: 'onlab-mcord-cavium-pod1.yml'
