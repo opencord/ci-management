@@ -128,4 +128,8 @@
     concurrent: true
 
     builders:
+      - shell: |
+          helm init --client-only
+          helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+
       - shell: !include-raw-escape: shell/helmlint.sh
