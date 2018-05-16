@@ -34,7 +34,7 @@ for chart in $(find "${WORKSPACE}" -name Chart.yaml -print) ; do
   chartdir=$(dirname "${chart}")
 
   # update requirements if it exists. Skip voltha as it has non-clean reqirements
-  if [ "${chartdir}" != "./voltha" ] && [ -f "${chartdir}/requirements.yaml" ]; then
+  if [[ ! $chartdir =~ voltha$ ]] && [ -f "${chartdir}/requirements.yaml" ]; then
     helm dependency update "${chartdir}"
   fi
 

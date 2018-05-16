@@ -7,7 +7,6 @@
     id: verify-licensed
     name: 'verify_{project}_licensed'
     description: |
-      <!-- Managed by Jenkins Job Builder -->
       Created by verify-licensed job-template from ci-management/jjb/lint.yaml
 
     triggers:
@@ -50,7 +49,6 @@
     id: verify-ansible-lint
     name: 'verify_{project}_ansible-lint'
     description: |
-      <!-- Managed by Jenkins Job Builder -->
       Created by verify-ansible-lint job-template from ci-management/jjb/lint.yaml
 
     triggers:
@@ -93,7 +91,6 @@
     id: verify-helm-lint
     name: 'verify_{project}_helm-lint'
     description: |
-      <!-- Managed by Jenkins Job Builder -->
       Created by verify-helm-lint job-template from ci-management/jjb/lint.yaml
 
     triggers:
