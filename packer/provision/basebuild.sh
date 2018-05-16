@@ -70,6 +70,7 @@ ubuntu_systems() {
         python-pip \
         python-urllib3 \
         ruby \
+        socat \
         ssh \
         sshpass \
         zip
