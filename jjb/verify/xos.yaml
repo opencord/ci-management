@@ -15,5 +15,7 @@
       - 'verify-licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_xos_licensed'
-      - 'api-test':
+      - 'xos-unit-test':
           dependency-jobs: 'verify_xos_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_xos_-unit-test'
