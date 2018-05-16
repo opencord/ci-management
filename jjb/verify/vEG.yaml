@@ -18,4 +18,4 @@
       - 'xos-unit-test':
           dependency-jobs: 'verify_vEG_sonarqube'
       - 'api-test':
-          dependency-jobs: 'verify_vEG_-unit-test'
+          dependency-jobs: 'verify_vEG_unit-test'
