@@ -3,7 +3,7 @@
 
 - job-template:
     id: 'xos-unit-test'
-    name: 'verify_{project}_-unit-test'
+    name: 'verify_{project}_unit-test'
 
     description: |
       Created by {id} job-template from ci-management/jjb/xos-unit.yaml
