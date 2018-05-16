@@ -1,11 +1,11 @@
 ---
-# CORD API tests using helm
+# Run CORD API robot tests in helm
 
 - job-template:
     id: helm-api-test
     name: 'verify_{project}_helm-api-test'
     description: |
-      Created by helm-api-test job-template from ci-management/jjb/helm-api-test.yaml
+      Created by {id} job-template from ci-management/jjb/helm-api-test.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:

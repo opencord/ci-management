@@ -45,7 +45,7 @@ pipeline {
           steps {
             sh '''
                pushd cord/build
-               ./scripts/imagebuilder.py -f ../helm-charts/examples/test-images.yaml
+               ./scripts/imagebuilder.py -f ../helm-charts/examples/api-test-images.yaml
                popd
                '''
           }
@@ -93,7 +93,7 @@ pipeline {
         sh '''
            pushd cord/helm-charts
            helm dep up xos-core
-           helm install -f examples/test-values.yaml -f examples/candidate-tag-values.yaml xos-core -n xos-core
+           helm install -f examples/api-test-values.yaml xos-core -n xos-core
            sleep 60
            helm status xos-core
            popd
