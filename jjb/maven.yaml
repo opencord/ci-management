@@ -12,7 +12,7 @@
     project-type: maven
     maven:
       root-pom: pom.xml
-      goals: 'clean install'
+      goals: 'dependency:tree clean install'
 
     parameters:
       - string:
