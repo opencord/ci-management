@@ -17,6 +17,7 @@
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
          time: '20'
+         disabled: true
 
       - 'build_pod':
          pod: 'qct-pod3'
@@ -25,6 +26,7 @@
          branch: 'cord-5.0'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
          fromBranch: 'cord-4.1'
+         disabled: true
 
       - 'build_pod':
          pod: 'qct-pod3'
@@ -33,6 +35,7 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile'
          fromBranch: 'cord-5.0'
+         disabled: true
 
       # ONLAB ECORD build jobs (ecord-global)
       - 'build_pod_manual':
