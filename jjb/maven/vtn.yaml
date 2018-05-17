@@ -2,7 +2,7 @@
 # maven job for 'vtn' repo
 
 - project:
-    name: vtn-onos
+    name: vtn
     project: '{name}'
 
     jobs:
