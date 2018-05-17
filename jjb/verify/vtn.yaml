@@ -17,3 +17,4 @@
           dependency-jobs: 'verify_vtn_licensed'
       - 'api-test':
           dependency-jobs: 'verify_vtn_sonarqube'
+      - 'maven-install'
