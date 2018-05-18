@@ -3,7 +3,7 @@
 
 - job-template:
     id: 'gui-unit-test'
-    name: 'verify_{project}_gui-unit-test'
+    name: 'verify_{project}_unit-test'
 
     description: |
       Created by gui-unit-tests job-template from ci-management/jjb/gui-unit.yaml
