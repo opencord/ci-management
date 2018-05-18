@@ -2,19 +2,18 @@
 # verification jobs for 'vtn' repo
 
 - project:
-    name: vtn
+    name: vtn-service
     project: '{name}'
 
     jobs:
-      - 'verify-vtn-jobs':
+      - 'verify-vtn-service-jobs':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
-    name: 'verify-vtn-jobs'
+    name: 'verify-vtn-service-jobs'
     jobs:
       - 'verify-licensed'
       - 'verify-sonarqube':
-          dependency-jobs: 'verify_vtn_licensed'
+          dependency-jobs: 'verify_vtn-service_licensed'
       - 'api-test':
-          dependency-jobs: 'verify_vtn_sonarqube'
-      - 'maven-install'
+          dependency-jobs: 'verify_vtn-service_sonarqube'
