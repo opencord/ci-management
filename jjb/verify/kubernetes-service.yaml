@@ -6,7 +6,7 @@
     project: '{name}'
 
     jobs:
-      - 'verify-kubernetes-service-jobs':
+      - 'verify-vsg-jobs':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
@@ -15,3 +15,7 @@
       - 'verify-licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_kubernetes-service_licensed'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_kubernetes-service_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_kubernetes-service_unit-test'
