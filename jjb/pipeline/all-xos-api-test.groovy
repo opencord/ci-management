@@ -67,7 +67,7 @@ pipeline {
         if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS)\$ ]]; then
             PROFILE=mcord-cavium-local.yml
         fi
-        cd ~/cord/build/
+        cd $WORKSPACE/cord/build/
         make PODCONFIG=\$PROFILE config
         make -j4 build
         if [ '$GERRIT_BRANCH' = 'master' ]; then
@@ -126,13 +126,13 @@ pipeline {
                 export SERVER_PORT=9101
                 export XOS_USER=xosadmin@opencord.org
                 export XOS_PASSWD=\$(cat ~/cord/build/platform-install/credentials/xosadmin@opencord.org)
-                cd ~/cord/test/cord-tester/src/test/cord-api/Properties/
+                cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
                 sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'127.0.0.1\'/\" RestApiProperties.py
                 sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
                 sed -i \"s/^\\(XOS_USER = \\).*/\\1\'xosadmin@opencord.org\'/\" RestApiProperties.py
                 sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'\$(cat ~/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
                 sed -i \"s/^\\(PASSWD = \\).*/\\1\'\$(cat ~/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
-                cd ~/cord/test/cord-tester/src/test/cord-api/Tests
+                cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
                 pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
                 for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
                 """
