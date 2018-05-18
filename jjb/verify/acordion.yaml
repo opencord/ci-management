@@ -1,0 +1,21 @@
+---
+# verification jobs for 'acordion' repo
+
+- project:
+    name: acordion
+    project: '{name}'
+
+    jobs:
+      - 'verify-acordion-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-acordion-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_acordion_licensed'
+#     - 'xos-unit-test':
+#         dependency-jobs: 'verify_acordion_sonarqube'
+#     - 'api-test':
+#         dependency-jobs: 'verify_acordion_unit-test'
