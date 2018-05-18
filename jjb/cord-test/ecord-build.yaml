@@ -38,12 +38,13 @@
          disabled: true
 
       # ONLAB ECORD build jobs (ecord-global)
-      - 'build_pod_manual':
-         pod: 'onlab-ecord-global'
+      - 'build_ecord_pod_manual':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-global.yml'
          profile: 'ecord-global'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         local_pod_name: 'onlab-ecord-global'
 
       # qct pod 3 test jobs (ecord-global)
       - 'build_pod_test':
@@ -69,12 +70,13 @@
          Jenkinsfile: 'Jenkinsfile-ecord-global'
 
       # ONLAB Global POD test jobs (ecord-global)
-      - 'build_pod_manual_test':
-         pod: 'onlab-ecord-global'
+      - 'build_ecord_pod_manual_test':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-global.yml'
          profile: 'ecord-global'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile-ecord-global'
+         local_pod_name: 'onlab_ecord-global'
 
       # qct pod 3 build jobs (ecord-local)
       - 'build_pod_first':
@@ -102,26 +104,29 @@
          fromBranch: 'cord-5.0'
 
       # ONLAB LOCAL build jobs (ecord-local)
-      - 'build_pod_manual':
-         pod: 'onlab-ecord-local-pod1'
+      - 'build_ecord_pod_manual':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-local-pod1.yml'
          profile: 'ecord-local'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         local_pod_name: 'onlab-ecord-local-pod1'
 
-      - 'build_pod_manual':
-         pod: 'onlab-ecord-local-pod2'
+      - 'build_ecord_pod_manual':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-local-pod2.yml'
          profile: 'ecord-local'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         local_pod_name: 'onlab-ecord-local-pod2'
 
-      - 'build_pod_manual':
-         pod: 'onlab-ecord-local-pod3'
+      - 'build_ecord_pod_manual':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-local-pod3.yml'
          profile: 'ecord-local'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
+         local_pod_name: 'onlab-ecord-local-pod3'
 
       # qct pod 3 test jobs (ecord-local)
       - 'build_pod_test':
@@ -146,23 +151,26 @@
          Jenkinsfile: 'Jenkinsfile-ecord-local'
 
       # ONLAB Local POD test jobs (ecord-local)
-      - 'build_pod_manual_test':
-         pod: 'onlab-ecord-local-pod1'
+      - 'build_ecord_pod_manual_test':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-local-pod1.yml'
          profile: 'ecord-local'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile-ecord-local'
+         local_pod_name: 'onlab-ecord-local-pod1'
 
-      - 'build_pod_manual_test':
-         pod: 'onlab-ecord-local-pod2'
+      - 'build_ecord_pod_manual_test':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-local-pod2.yml'
          profile: 'ecord-local'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile-ecord-local'
+         local_pod_name: 'onlab-ecord-local-pod2'
 
-      - 'build_pod_manual_test':
-         pod: 'onlab-ecord-local-pod3'
+      - 'build_ecord_pod_manual_test':
+         pod: 'onf-build'
          pod_config: 'onlab-ecord-local-pod3.yml'
          profile: 'ecord-local'
          branch: 'cord-4.1'
          Jenkinsfile: 'Jenkinsfile-ecord-local'
+         local_pod_name: 'onlab-ecord-local-pod3'
