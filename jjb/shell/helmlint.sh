@@ -29,8 +29,8 @@ fail_lint=0
 # when not running under Jenkins, use current dir as workspace
 WORKSPACE=${WORKSPACE:-.}
 
-for chart in $(find "${WORKSPACE}" -name Chart.yaml -print) ; do
-
+while IFS= read -r -d '' chart
+do
   chartdir=$(dirname "${chart}")
 
   # update requirements if it exists. Skip voltha as it has non-clean reqirements
@@ -49,7 +49,7 @@ for chart in $(find "${WORKSPACE}" -name Chart.yaml -print) ; do
   if [[ $rc != 0 ]]; then
     fail_lint=1
   fi
-done
+done < <(find "${WORKSPACE}" -name Chart.yaml -print0)
 
 if [[ $fail_lint != 0 ]]; then
   exit 1

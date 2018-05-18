@@ -1,0 +1,22 @@
+---
+# verification jobs for 'automation-tools' repo
+
+- project:
+    name: automation-tools
+    project: '{name}'
+
+    jobs:
+      - 'verify-automation-tools-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-automation-tools-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-ansible-lint':
+          dependency-jobs: 'verify_automation-tools_licensed'
+      - 'verify-shellcheck':
+          dependency-jobs: 'verify_automation-tools_ansible-lint'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_automation-tools_shellcheck'
+

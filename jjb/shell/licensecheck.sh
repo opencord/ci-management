@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env bash
 
 # licensecheck.sh
 # checks for copyright/license headers on files
@@ -8,7 +8,18 @@
 # Jenkins job with minimal changes (BSD/OS X xargs params compat, sort of
 # excluded file extensions).
 
-find . -name ".git" -prune -o -type f \
+set +e -u -o pipefail
+fail_licensecheck=0
+
+while IFS= read -r -d '' f
+do
+  grep -q "Copyright\|Apache License" "${f}"
+  rc=$?
+  if [[ $rc != 0 ]]; then
+    echo "ERROR: $f does not contain License Header"
+    fail_licensecheck=1
+  fi
+done < <(find . -name ".git" -prune -o -type f \
   -name "*.*" \
   ! -name "*.PNG" \
   ! -name "*.asc" \
@@ -82,6 +93,7 @@ find . -name ".git" -prune -o -type f \
   ! -path "*conf*" \
   ! -path "*git*" \
   ! -path "*swagger*" \
-  -print0 |   \
-  xargs -0 -n1 sh -c 'if ! grep -q "Copyright\|Apache License" $0; then echo "ERROR: $0 does not contain Copyright header"; exit 1; fi;'
+  -print0 )
+
+exit ${fail_licensecheck}
 

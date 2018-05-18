@@ -14,28 +14,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# ansiblelint.sh - check all yaml files that they pass the ansible-lint tool
+# shcheck.sh - check shell scripts with shellcheck
 
 set +e -u -o pipefail
-fail_ansible=0
+fail_shellcheck=0
 
-# verify that we have ansible-lint installed
-command -v ansible-lint  >/dev/null 2>&1 || { echo "ansible-lint not found, please install it" >&2; exit 1; }
+# verify that we have shellcheck-lint installed
+command -v shellcheck  >/dev/null 2>&1 || { echo "shellcheck not found, please install it" >&2; exit 1; }
 
 # when not running under Jenkins, use current dir as workspace
 WORKSPACE=${WORKSPACE:-.}
 
-echo "=> Linting Ansible Code with $(ansible-lint --version)"
+echo "=> Linting shell script with $(shellcheck --version)"
 
-while IFS= read -r -d '' yf
+while IFS= read -r -d '' sf
 do
-  echo "==> CHECKING: ${yf}"
-  ansible-lint -p "${yf}"
+  echo "==> CHECKING: ${sf}"
+  shellcheck "${sf}"
   rc=$?
   if [[ $rc != 0 ]]; then
-    echo "==> LINTING FAIL: ${yf}"
-    fail_ansible=1
+    echo "==> LINTING FAIL: ${sf}"
+    fail_shellcheck=1
   fi
-done < <(find "${WORKSPACE}" \( -name "*.yml" -o -name "*.yaml" \) -print0)
+done < <(find "${WORKSPACE}" \( -name "*.sh" -o -name "*.bash" \) -print0)
 
-exit ${fail_ansible}
+exit ${fail_shellcheck}
+
