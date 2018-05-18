@@ -1,0 +1,47 @@
+---
+# xos-rest-gw test
+
+- project:
+    name: xos-rest-gw
+
+    project-name: '{name}'
+
+    jobs:
+      - 'xos-rest-gw'
+
+- job:
+    name: 'xos-rest-gw'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/xos-rest-gw.yaml  <br /><br />
+      Test for the XOS Rest Gateway that combine REST APIs and WebSocket
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^xos-rest-gw'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    # `npm install` can take >10m depending on connectivity
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: 20
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: |
+          #/usr/bin/env bash
+          npm install
+          npm test
