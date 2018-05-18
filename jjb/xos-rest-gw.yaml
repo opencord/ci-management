@@ -1,0 +1,67 @@
+---
+# xos-rest-gw test
+
+- job:
+    name: 'xos-rest-gw'
+
+    description: |
+      Test for the XOS Rest Gateway that combine REST APIs and WebSocket
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^xos-rest-gw'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    # `npm install` can take >10m depending on connectivity
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: 20
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: executorNode
+         default: 'ubuntu16.04-basebuild-1c-2g'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: manifestUrl
+         default: '{gerrit-server-url}/{cord-repo-manifest}'
+         description: 'URL to the repo manifest'
+
+      - string:
+         name: manifestBranch
+         default: '$GERRIT_BRANCH'
+         description: 'Name of the repo branch to use'
+
+      - string:
+         name: gerritProject
+         default: '$GERRIT_PROJECT'
+         description: 'Name of the Gerrit project'
+
+      - string:
+         name: gerritChangeNumber
+         default: '$GERRIT_CHANGE_NUMBER'
+         description: 'Changeset number in Gerrit'
+
+      - string:
+         name: gerritPatchsetNumber
+         default: '$GERRIT_PATCHSET_NUMBER'
+         description: 'PatchSet number in Gerrit'
+
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: |
+          #/usr/bin/env bash
+          npm install
+          npm test
