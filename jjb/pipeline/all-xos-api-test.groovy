@@ -67,7 +67,7 @@ pipeline {
         if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS)\$ ]]; then
             PROFILE=mcord-cavium-local.yml
         fi
-        cd ~/cord/build/
+        cd $WORKSPACE/cord/build/
         make PODCONFIG=\$PROFILE config
         make -j4 build
         if [ '$GERRIT_BRANCH' = 'master' ]; then
@@ -91,15 +91,15 @@ pipeline {
         if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS)\$ ]]; then
             CORE_CONTAINER=mcordcavium_xos_core_1
         fi
-        docker cp ~/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
-        docker cp ~/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
-        docker cp ~/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
-        docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > ~/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
+        docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
+        docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
+        docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
+        docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
         SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
         export testname=_service_api.robot
         export library=_library.robot
-        for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > ~/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
-        for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > ~/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
+        for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
+        for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
         """
         }
       }
@@ -125,14 +125,14 @@ pipeline {
                 export SERVER_IP=localhost
                 export SERVER_PORT=9101
                 export XOS_USER=xosadmin@opencord.org
-                export XOS_PASSWD=\$(cat ~/cord/build/platform-install/credentials/xosadmin@opencord.org)
-                cd ~/cord/test/cord-tester/src/test/cord-api/Properties/
+                export XOS_PASSWD=\$(cat $WORKSPACE/cord/build/platform-install/credentials/xosadmin@opencord.org)
+                cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
                 sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'127.0.0.1\'/\" RestApiProperties.py
                 sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
                 sed -i \"s/^\\(XOS_USER = \\).*/\\1\'xosadmin@opencord.org\'/\" RestApiProperties.py
-                sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'\$(cat ~/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
-                sed -i \"s/^\\(PASSWD = \\).*/\\1\'\$(cat ~/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
-                cd ~/cord/test/cord-tester/src/test/cord-api/Tests
+                sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'\$(cat $WORKSPACE/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
+                sed -i \"s/^\\(PASSWD = \\).*/\\1\'\$(cat $WORKSPACE/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
+                cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
                 pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
                 for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
                 """
@@ -142,7 +142,7 @@ pipeline {
         steps {
             sh """
             if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-            cp -r ~/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
+            cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
             """
             step([$class: 'RobotPublisher',
                 disableArchiveOutput: false,
