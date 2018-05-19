@@ -55,7 +55,7 @@ pipeline {
     stage('Build') {
       steps {
         sh """
-        if [[ "$GERRIT_PROJECT" =~ ^(platform-install|xos|cord|rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|cord-tester|kubernetes-service)\$ ]]; then
+        if [[ "$GERRIT_PROJECT" =~ ^(platform-install|xos|cord|rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|cord-tester|kubernetes-service)\$ ]]; then
             PROFILE=rcord-local.yml
         fi
         if [[ "$GERRIT_PROJECT" =~ ^(ecord|vEE|vEG)\$ ]]; then
@@ -79,7 +79,7 @@ pipeline {
     stage('Setup') {
       steps {
         sh """
-        if [[ "$GERRIT_PROJECT" =~ ^(platform-install|xos|cord|rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|cord-tester|kubernetes-service)\$ ]]; then
+        if [[ "$GERRIT_PROJECT" =~ ^(platform-install|xos|cord|rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|cord-tester|kubernetes-service)\$ ]]; then
             CORE_CONTAINER=rcord_xos_core_1
         fi
         if [[ "$GERRIT_PROJECT" =~ ^(ecord|vEE|vEG)\$ ]]; then
@@ -106,7 +106,7 @@ pipeline {
     stage('Test') {
         steps {
             sh """
-            if [[ "$GERRIT_PROJECT" =~ ^(platform-install|xos|cord|rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|cord-tester|kubernetes-service)\$ ]]; then
+            if [[ "$GERRIT_PROJECT" =~ ^(platform-install|xos|cord|rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|cord-tester|kubernetes-service)\$ ]]; then
                 CORE_CONTAINER=rcord_xos_core_1
             fi
             if [[ "$GERRIT_PROJECT" =~ ^(ecord|vEE|vEG)\$ ]]; then
