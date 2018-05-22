@@ -44,8 +44,8 @@ pipeline {
         stage('images') {
           steps {
             sh '''
-               pushd cord/build
-               ./scripts/imagebuilder.py -f ../helm-charts/examples/api-test-images.yaml
+               pushd cord/automation-tools
+               ./developer/imagebuilder.py -f ../helm-charts/examples/api-test-images.yaml
                popd
                '''
           }
