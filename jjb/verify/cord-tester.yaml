@@ -13,7 +13,5 @@
     name: 'verify-cord-tester-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_cord-tester_licensed'
       - 'api-test':
-          dependency-jobs: 'verify_cord-tester_sonarqube'
+          dependency-jobs: 'verify_cord-tester_licensed'
