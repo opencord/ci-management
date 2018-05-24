@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1540350a_83d2ffbd",
+        "filename": "jjb/docs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-05-24T22:33:28Z",
+      "side": 1,
+      "message": "@Zack Williams - can you confirm if this will pick up all projects in CORD ? that is the goal here",
+      "revId": "cc9a358edb42848583a07f72d6dd66ce45da7c0a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
