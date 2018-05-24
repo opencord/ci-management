@@ -59,12 +59,16 @@
           pip install nose2 requests_mock plyxproto jinja2 pattern astunparse pyyaml colorama
           pip install pykwalify==1.6.1
           pip install multistructlog==1.5
+          pip install networkx==1.11
+          pip install netaddr==0.7.19
+          pip install ipaddress==1.0.19
           echo "Requirements Installed"
+
 
           cd $BASEDIR/cord/orchestration/xos/lib/xos-util; python setup.py install; echo "xos-util Installed"
           cd $BASEDIR/cord/orchestration/xos/lib/xos-config; python setup.py install; echo "xos-config Installed"
           cd $BASEDIR/cord/orchestration/xos/lib/xos-genx; python setup.py install; echo "xos-genx Installed"
 
           # Run the tests
-          cd $BASEDIR/cord/orchestration/xos_services/$GERRIT_PROJECT/xos
+          cd $BASEDIR
           nose2 --verbose  --exclude-ignored-files
