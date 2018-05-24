@@ -16,6 +16,47 @@
       "revId": "cc9a358edb42848583a07f72d6dd66ce45da7c0a",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f28f7b7e_293b151d",
+        "filename": "jjb/docs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-05-24T22:48:54Z",
+      "side": 1,
+      "message": "regex, not glob, so:\n\n    \u0027^.*$\u0027",
+      "parentUuid": "1540350a_83d2ffbd",
+      "revId": "cc9a358edb42848583a07f72d6dd66ce45da7c0a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca9381e9_baa5fa30",
+        "filename": "jjb/docs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-05-24T22:48:54Z",
+      "side": 1,
+      "message": "Did you change the name of the SSH publisher server in the Jenkins UI?  That\u0027s what this name refers to.",
+      "range": {
+        "startLine": 186,
+        "startChar": 15,
+        "endLine": 186,
+        "endChar": 28
+      },
+      "revId": "cc9a358edb42848583a07f72d6dd66ce45da7c0a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
