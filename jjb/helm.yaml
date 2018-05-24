@@ -57,7 +57,7 @@
 # publish over ssh: https://docs.openstack.org/infra/jenkins-job-builder/publishers.html#publishers.ssh
     publishers:
       - ssh:
-          site: 'CORD Wiki'
+          site: '{docs-ssh-host}'
           source: 'chart_repo/**'
           remove-prefix: 'chart_repo'
           target: '//var/www/guide/charts/$GERRIT_BRANCH'
