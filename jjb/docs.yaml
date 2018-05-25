@@ -24,7 +24,7 @@
 
     jobs:
       - 'publish-documentation-legacy':
-          project-regexp: '^.*$'
+          project-regexp: '.*'
           branch-regexp: '{legacy-branches-regexp}'
 
 - project:
@@ -32,7 +32,7 @@
 
     jobs:
       - 'publish-documentation':
-          project-regexp: '^.*$'
+          project-regexp: '.*'
           branch-regexp: '{modern-branches-regexp}'
 
 # Documentation job templates
