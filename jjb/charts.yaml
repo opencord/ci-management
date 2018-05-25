@@ -60,5 +60,5 @@
           site: '{docs-ssh-host}'
           source: 'chart_repo/**'
           remove-prefix: 'chart_repo'
-          target: '//var/www/guide/charts/$GERRIT_BRANCH'
+          target: '//var/www/charts/$GERRIT_BRANCH'
 
