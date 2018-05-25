@@ -11,10 +11,18 @@
 
 - job-template:
     id: olt-voltha-build
-    name: 'olt_voltha_automated_build'
+    name: 'build_openolt_deb'
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/olt-voltha.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^(openolt)$'
+          branch-regexp: '{modern-branches-regexp}'
+          file-include-regexp: '{doc-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
 
     properties:
       - cord-infra-properties:
@@ -24,10 +32,10 @@
     parameters:
       - string:
          name: notificationEmail
-         default: 'luca@opennetworking.org, shad@opennetworking.org'
+         default: 'shad@opennetworking.org'
          description: ''
 
-    node: 'olt-agent-onf'
+    node: 'openolt_deb_onf_agent'
 
     project-type: pipeline
     concurrent: true
