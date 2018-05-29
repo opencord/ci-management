@@ -27,17 +27,17 @@ pipeline {
 
     stage('imagebuilder'){
       steps {
-        sh '''
+        sh """
            #!/usr/bin/env bash
 
-           mkdir "$WORKSPACE/image_logs"
+           mkdir "$WORKSPACE/ib_logs"
            ib_args=""
 
-           if [[ ${params.force} == 'true' ]]; then
+           if [ "${params.force}" = "true" ]; then
              ib_args+="--force "
            fi
 
-           if [[ ${params.build} == 'true' ]]; then
+           if [ "${params.build}" = "true" ]; then
              ib_args+="--build "
            fi
 
@@ -47,7 +47,7 @@ pipeline {
                              -l "$WORKSPACE/ib_logs" \
                              -g "$WORKSPACE/ib_graph.dot"
            popd
-           '''
+           """
       }
     }
 
