@@ -21,3 +21,4 @@
           dependency-jobs: 'verify_xos_sonarqube'
       - 'xos-unit-test':
           dependency-jobs: 'verify_xos_helm-api-test'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
