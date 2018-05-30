@@ -25,11 +25,7 @@
     wrappers:
       - ssh-agent-credentials:
           users:
-              - '9eade54b-3246-4b41-9a35-d8ba39a0285c'
-      - config-file-provider:
-          files:
-            - file-id: gerrit-host-key
-              target: '$HOME/.ssh/known_hosts'
+              - 'gerrit-jenkins-user'
 
     parameters:
       - string:
