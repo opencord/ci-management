@@ -1,0 +1,20 @@
+---
+# verification jobs for 'vepc-service' repo
+
+- project:
+    name: vepc-service
+    project: '{name}'
+
+    jobs:
+      - 'verify-vepc-service-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vepc-service-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_vepc-service_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_vepc-service_sonarqube'
+          pipeline_script: 'all-xos-api-test.groovy'

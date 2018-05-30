@@ -1,0 +1,20 @@
+---
+# verification jobs for 'internetemulator' repo
+
+- project:
+    name: internetemulator
+    project: '{name}'
+
+    jobs:
+      - 'verify-internetemulator-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-internetemulator-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_internetemulator_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_internetemulator_sonarqube'
+          pipeline_script: 'all-xos-api-test.groovy'

@@ -61,10 +61,10 @@ pipeline {
         if [[ "$GERRIT_PROJECT" =~ ^(ecord|vEE|vEG)\$ ]]; then
             PROFILE=ecord-local.yml
         fi
-        if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC)\$ ]]; then
+        if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|epc-service|internetemulator)\$ ]]; then
             PROFILE=mcord-ng40-local.yml
         fi
-        if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS)\$ ]]; then
+        if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS|hssdb)\$ ]]; then
             PROFILE=mcord-cavium-local.yml
         fi
         cd $WORKSPACE/cord/build/
@@ -85,10 +85,10 @@ pipeline {
         if [[ "$GERRIT_PROJECT" =~ ^(ecord|vEE|vEG)\$ ]]; then
             CORE_CONTAINER=ecord_xos_core_1
         fi
-        if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC)\$ ]]; then
+        if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|epc-service|internetemulator)\$ ]]; then
             CORE_CONTAINER=mcordng40_xos_core_1
         fi
-        if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS)\$ ]]; then
+        if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS|hssdb)\$ ]]; then
             CORE_CONTAINER=mcordcavium_xos_core_1
         fi
         docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
@@ -112,10 +112,10 @@ pipeline {
             if [[ "$GERRIT_PROJECT" =~ ^(ecord|vEE|vEG)\$ ]]; then
                 CORE_CONTAINER=ecord_xos_core_1
             fi
-            if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC)\$ ]]; then
+            if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|epc-service|internetemulator)\$ ]]; then
                 CORE_CONTAINER=mcordng40_xos_core_1
             fi
-            if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS)\$ ]]; then
+            if [[ "$GERRIT_PROJECT" =~ ^(vMME|vHSS|hssdb)\$ ]]; then
                 CORE_CONTAINER=mcordcavium_xos_core_1
             fi
                 export testname=_service_api.robot

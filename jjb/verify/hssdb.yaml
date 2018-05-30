@@ -1,0 +1,20 @@
+---
+# verification jobs for 'hssdb' repo
+
+- project:
+    name: hssdb
+    project: '{name}'
+
+    jobs:
+      - 'verify-hssdb-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-hssdb-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_hssdb_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_hssdb_sonarqube'
+          pipeline_script: 'all-xos-api-test.groovy'
