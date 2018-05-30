@@ -26,6 +26,7 @@
       - ssh-agent-credentials:
           users:
               - 'gerrit-jenkins-user'
+      - build-user-vars
 
     parameters:
       - string:
