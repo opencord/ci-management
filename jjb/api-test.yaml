@@ -60,4 +60,4 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/all-xos-api-test.groovy
+    dsl: !include-raw-escape: pipeline/all-xos-api-test-helm.groovy
