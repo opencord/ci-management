@@ -1,0 +1,20 @@
+---
+# verification jobs for 'sdn-controller' repo
+
+- project:
+    name: sdn-controller
+    project: '{name}'
+
+    jobs:
+      - 'verify-sdn-controller-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-sdn-controller-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_sdn-controller_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_sdn-controller_sonarqube'
+          pipeline_script: 'all-xos-api-test.groovy'
