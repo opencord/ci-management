@@ -152,7 +152,7 @@ pipeline {
               echo \$SERVICES
               export SERVER_IP=\$XOS_CHAMELEON
               export SERVER_PORT=9101
-              export XOS_USER=xosadmin@opencord.org
+              export XOS_USER=admin@opencord.org
               export XOS_PASSWD=\$(cat $WORKSPACE/cord/build/platform-install/credentials/xosadmin@opencord.org)
               cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
               sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
