@@ -190,8 +190,13 @@ pipeline {
     post {
         always {
             sh '''
-                kubectl get pods --all-namespaces
-                helm list
+              kubectl get pods --all-namespaces
+              helm list
+              helm delete --purge xos-core
+              if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service)\$ ]]; then
+                helm delete --purge rcord-lite
+              fi
+              minikube delete
             '''
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "suchitra@opennetworking.org, you@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
         }
