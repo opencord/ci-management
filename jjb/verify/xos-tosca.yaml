@@ -6,7 +6,7 @@
     project: '{name}'
 
     jobs:
-      - 'verify-xos-jobs':
+      - 'verify-xos-tosca-jobs':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
