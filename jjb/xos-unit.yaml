@@ -67,6 +67,8 @@
           cd $BASEDIR/cord/orchestration/xos/lib/xos-util; python setup.py install; echo "xos-util Installed"
           cd $BASEDIR/cord/orchestration/xos/lib/xos-config; python setup.py install; echo "xos-config Installed"
           cd $BASEDIR/cord/orchestration/xos/lib/xos-genx; python setup.py install; echo "xos-genx Installed"
+
+          cd $BASEDIR/cord/orchestration/xos/xos/xos_client/xosapi; ln -s ../../../../../component/chameleon chameleon
           cd $BASEDIR/cord/orchestration/xos/xos/xos_client; make; echo "xos-client Installed"
 
           # Run the tests
