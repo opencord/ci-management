@@ -1,0 +1,24 @@
+---
+# verification jobs for 'vsg-hw' repo
+
+- project:
+    name: vsg-hw
+    project: '{name}'
+
+    jobs:
+      - 'verify-vsg-hw-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-vsg-hw-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_vsg-hw_licensed'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_vsg-hw_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_vsg-hw_unit-test'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
+
+
