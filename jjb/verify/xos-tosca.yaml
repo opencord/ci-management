@@ -1,0 +1,22 @@
+---
+# verification jobs for 'xos-tosca' repo
+
+- project:
+    name: xos-tosca
+    project: '{name}'
+
+    jobs:
+      - 'verify-xos-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-xos-tosca-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_xos-tosca_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_xos-tosca_sonarqube'
+          pipeline_script: 'all-xos-tosca-api-test-helm.groovy'
+      - 'xos-tosca-unit-test':
+          dependency-jobs: 'verify_xos-tosca_sonarqube'
