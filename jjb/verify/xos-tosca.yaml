@@ -6,7 +6,7 @@
     project: '{name}'
 
     jobs:
-      - 'verify-xos-jobs':
+      - 'verify-xos-tosca-jobs':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
@@ -17,6 +17,6 @@
           dependency-jobs: 'verify_xos-tosca_licensed'
       - 'api-test':
           dependency-jobs: 'verify_xos-tosca_sonarqube'
-          pipeline_script: 'all-xos-tosca-api-test-helm.groovy'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
       - 'xos-tosca-unit-test':
           dependency-jobs: 'verify_xos-tosca_sonarqube'
