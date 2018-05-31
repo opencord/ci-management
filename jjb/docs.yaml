@@ -51,6 +51,9 @@
               file-paths:
                 - compare-type: REG_EXP
                   pattern: '{doc-files-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '.*\.md'
 
     properties:
       - cord-infra-properties:
