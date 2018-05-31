@@ -62,6 +62,8 @@
           pip install networkx==1.11
           pip install netaddr==0.7.19
           pip install ipaddress==1.0.19
+          pip install grpcio==1.9.1
+          pip install grpcio-tools==1.9.1
           echo "Requirements Installed"
 
           cd $BASEDIR/cord/orchestration/xos/lib/xos-util; python setup.py install; echo "xos-util Installed"
