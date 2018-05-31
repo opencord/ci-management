@@ -130,6 +130,7 @@ pipeline {
          kubectl logs xos-core-api-test
          kubectl delete pod xos-core-api-test
          helm delete --purge xos-core
+         minikube delete
          '''
       deleteDir()
     }
