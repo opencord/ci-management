@@ -1,0 +1,22 @@
+---
+# verification jobs for 'hippie-oss' repo
+
+- project:
+    name: hippie-oss
+    project: '{name}'
+
+    jobs:
+      - 'verify-hippie-oss-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-hippie-oss-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_hippie-oss_licensed'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_hippie-oss_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_hippie-oss_unit-test'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
