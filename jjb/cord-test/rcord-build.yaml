@@ -12,7 +12,7 @@
       # qct pod 1 build jobs (rcord)
       - 'build_pod_first':
          pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
+         pod_config: 'kubenetes_configs/onf_flex_pod1.yaml'
          profile: 'rcord'
          branch: 'cord-4.0'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
