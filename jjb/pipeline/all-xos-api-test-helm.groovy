@@ -112,7 +112,7 @@ pipeline {
            if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service)\$ ]]; then
                helm dep update xos-profiles/rcord-lite
                helm install xos-profiles/rcord-lite -n rcord-lite
-               sleep 300
+               sleep 360
                helm status xos-core
                kubectl get pods
            fi
