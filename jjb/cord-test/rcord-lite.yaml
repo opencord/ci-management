@@ -1,0 +1,19 @@
+---
+# POD Nightly Test Pipeline RCORD Lite Jobs
+
+- project:
+    name: rcord-lite-nightly-job
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    jobs:
+      # flex onf pod 1 kubernetes build jobs (rcord lite)
+      - 'build_kube_pod_first':
+         testvm: 'qa-testvm-pod1'
+         kube-pod: 'flex-onf-pod1'
+         profile: 'rcord-lite'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile.rcordlite'
+         time: '20'
