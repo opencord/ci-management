@@ -31,6 +31,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.curl" \
   ! -name "*.db" \
   ! -name "*.der" \
+  ! -name "*.desc" \
   ! -name "*.diff" \
   ! -name "*.dnsmasq" \
   ! -name "*.do" \
