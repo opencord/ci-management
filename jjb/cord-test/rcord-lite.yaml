@@ -11,7 +11,7 @@
     jobs:
       # flex onf pod 1 kubernetes build jobs (rcord lite)
       - 'build_kube_pod_first':
-         testvm: 'qa-testvm-pod1'
+         testvm: 'qa-testvm-pod'
          kube-pod: 'flex-onf-pod1'
          profile: 'rcord-lite'
          branch: 'master'
