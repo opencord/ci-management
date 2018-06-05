@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df1ae7fc_2526b239",
+        "filename": "jjb/docs-legacy.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-06-05T20:29:33Z",
+      "side": 1,
+      "message": "Does this need to be an absolute path?",
+      "revId": "51705def95ba42e2e79a90bc0f2537945d319357",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ff89758c_90320101",
+        "filename": "jjb/docs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-06-05T20:29:33Z",
+      "side": 1,
+      "message": "Does this need to be an absolute path ? \"$WORKSPACE/......\"",
+      "revId": "51705def95ba42e2e79a90bc0f2537945d319357",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
