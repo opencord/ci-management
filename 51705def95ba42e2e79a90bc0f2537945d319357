@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "09f7f0fa_3ac894c9",
+        "filename": "jjb/docs-legacy.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-05T20:31:45Z",
+      "side": 1,
+      "message": "Nope, see other comment.",
+      "parentUuid": "df1ae7fc_2526b239",
+      "revId": "51705def95ba42e2e79a90bc0f2537945d319357",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ff89758c_90320101",
         "filename": "jjb/docs.yaml",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-06-05T20:29:33Z",
       "side": 1,
       "message": "Does this need to be an absolute path ? \"$WORKSPACE/......\"",
+      "revId": "51705def95ba42e2e79a90bc0f2537945d319357",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "24bbffbb_eb3410c8",
+        "filename": "jjb/docs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-05T20:31:45Z",
+      "side": 1,
+      "message": "Per the `cd cord/docs` earlier, there\u0027s not a need for absolute source paths.\n\nAlso, the `--exclude` lower down is a relative path at the destination, which I wasn\u0027t expecting.",
+      "parentUuid": "ff89758c_90320101",
       "revId": "51705def95ba42e2e79a90bc0f2537945d319357",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
