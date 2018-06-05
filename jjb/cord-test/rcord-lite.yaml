@@ -15,5 +15,5 @@
          kube-pod: 'flex-onf-pod1'
          profile: 'rcord-lite'
          branch: 'master'
-         Jenkinsfile: 'Jenkinsfile.rcordlite'
+         Jenkinsfile: 'Jenkinsfile-rcordlite'
          time: '20'
