@@ -50,7 +50,17 @@
 
     builders:
       - shell: |
+          #!/usr/bin/env bash
+
+          # Set up the ssh host keys for the docs host
+          mkdir -p ~/.ssh
+          echo '{docs-ssh-host-key}' >> ~/.ssh/known_hosts
+
+          # Setup and build the helm repo
           helm init --client-only
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
           ./scripts/helmrepo.sh
+
+          # Copy repo to host
           rsync -rvzh --delete chart_repo/ {docs-ssh-host}:/var/www/charts/$GERRIT_BRANCH
+
