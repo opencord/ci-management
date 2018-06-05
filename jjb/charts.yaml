@@ -53,12 +53,4 @@
           helm init --client-only
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
           ./scripts/helmrepo.sh
-
-# publish over ssh: https://docs.openstack.org/infra/jenkins-job-builder/publishers.html#publishers.ssh
-    publishers:
-      - ssh:
-          site: '{docs-ssh-host}'
-          source: 'chart_repo/**'
-          remove-prefix: 'chart_repo'
-          target: '//var/www/charts/$GERRIT_BRANCH'
-
+          rsync -rvzh --delete chart_repo/ {docs-ssh-host}:/var/www/charts/$GERRIT_BRANCH
