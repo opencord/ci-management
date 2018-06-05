@@ -136,7 +136,17 @@
 
     builders:
       - shell: |
+          #!/usr/bin/env bash
+
+          # Set up the ssh host keys for the docs host
+          mkdir -p ~/.ssh
+          echo '{docs-ssh-host-key}' >> ~/.ssh/known_hosts
+
+          # build the docs
           cd cord/docs
           make build
-          rsync -rvzh --delete cord/docs/_book/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH
-          rsync -rvzh --delete cord/docs/xos/swagger/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH
+
+          # copy swagger REST API docs first, then exclude deleting them when copying rest of guide
+          rsync -rvzh --delete xos/swagger/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH/swagger
+          rsync -rvzh --delete --exclude swagger _book/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH
+
