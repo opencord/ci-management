@@ -148,6 +148,6 @@
           make build
 
           # copy swagger REST API docs first, then exclude deleting them when copying rest of guide
-          rsync -rvzh --delete _book/ guide.opencord.org:/var/www/guide/$GERRIT_BRANCH
-          rsync -rvzh --delete xos/swagger/ guide.opencord.org:/var/www/guide/$GERRIT_BRANCH/swagger
+          rsync -rvzh --delete _book/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH
+          rsync -rvzh --delete xos/swagger/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH/swagger
 
