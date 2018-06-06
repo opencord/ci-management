@@ -62,13 +62,19 @@
           pip install networkx==1.11
           pip install netaddr==0.7.19
           pip install ipaddress==1.0.19
+          pip install grpcio==1.9.1
+          pip install grpcio-tools==1.9.1
+          pip install nose
+          pip install tosca-parser==0.9.0
           echo "Requirements Installed"
 
           cd $BASEDIR/cord/orchestration/xos/lib/xos-util; python setup.py install; echo "xos-util Installed"
           cd $BASEDIR/cord/orchestration/xos/lib/xos-config; python setup.py install; echo "xos-config Installed"
           cd $BASEDIR/cord/orchestration/xos/lib/xos-genx; python setup.py install; echo "xos-genx Installed"
 
-          cp -R $BASEDIR/cord/component/chameleon $BASEDIR/cord/orchestration/xos/xos/xos_client/xosapi/chameleon
+          cd $BASEDIR/cord/orchestration/xos/xos/xos_client/xosapi; ln -s ../../../../../component/chameleon chameleon
+          cd $BASEDIR/cord/orchestration/xos/xos/xos_client; make; echo "xos-client Installed"
+
           cd $BASEDIR/cord/orchestration/xos/xos/xos_client/xosapi/chameleon/protos; VOLTHA_BASE=anything make
           cd $BASEDIR/cord/orchestration/xos/xos/xos_client; python setup.py install
           chmod 777 $BASEDIR/venv-xos/lib/python2.7/site-packages/xosapi/chameleon/protoc_plugins/gw_gen.py
