@@ -107,7 +107,7 @@ pipeline {
            pushd cord/helm-charts
            helm dep up xos-core
            helm install -f examples/api-test-values.yaml xos-core -n xos-core
-           sleep 60
+           sleep 300
            helm status xos-core
            if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service)\$ ]]; then
                helm dep update xos-profiles/rcord-lite
