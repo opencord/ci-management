@@ -17,3 +17,12 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite'
          time: '20'
+      
+     # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
+      - 'build_kube_pod_first':
+         testvm: 'qa-testvm-pod'
+         kube-pod: 'flex-pod1-olt'
+         profile: 'rcord-lite'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile.rcordlite'
+         time: '50'
