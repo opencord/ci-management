@@ -44,6 +44,9 @@
     legacy-branches-regexp: '^(cord-5.0|cord-4.1|cord-4.0)$'
     modern-branches-regexp: '^(master|cord-6.0)$'
 
+    # for matching repos that build docker images with imagebuilder
+    imagebuilder-projects-regexp: '^(chameleon|xos.*|acordion|addressmanager|epc-service|exampleservice|fabric|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vbbu|venb|vhss|vmm|vmme|vnaas|vpgwc|vrouter|vsg|vsg-hw|vsgw|vsm|vspgwc|vspgwu|vtn-service|vtr)$'
+
     # for matching files with file-include-regexp
     all-files-regexp: '.*'
     doc-files-regexp: '^docs/.*'
