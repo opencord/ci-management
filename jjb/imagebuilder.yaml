@@ -7,7 +7,7 @@
     # add repos that have documentation to the project list in both jobs
     jobs:
       - 'publish-imagebuilder':
-          project-regexp: '.*'
+          project-regexp: '{imagebuilder-projects-regexp}'
           branch-regexp: '{supported-branches-regexp}'
 
 
