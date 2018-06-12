@@ -75,5 +75,10 @@ pipeline {
       archiveArtifacts artifacts: 'ib_actions.yml, ib_graph.dot, ib_logs/*', fingerprint: true
       deleteDir()
     }
+    failure {
+      emailext (
+        to: "${params.failureEmail}"
+      )
+    }
   }
 }
