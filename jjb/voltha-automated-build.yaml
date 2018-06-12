@@ -43,7 +43,7 @@
 
       - string:
          name: manifestBranch
-         default: '$GERRIT_BRANCH'
+         default: 'master'
          description: 'Name of the repo branch to use'
 
     project-type: pipeline
