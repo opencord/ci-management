@@ -61,6 +61,10 @@
           default: false
           description: 'Force remove obsolete tags/images (same as "docker rmi --force")'
 
+      - string:
+         name: failureEmail
+         default: '{failure-email-address}, $GERRIT_PATCHSET_UPLOADER_EMAIL'
+         description: 'On job failure, send an email to these addresses'
 
     project-type: pipeline
     concurrent: false
