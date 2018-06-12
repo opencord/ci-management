@@ -77,6 +77,8 @@ pipeline {
     }
     failure {
       emailext (
+        subject: "$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS",
+        body: "Check console output at $BUILD_URL to view the results.",
         to: "${params.failureEmail}"
       )
     }
