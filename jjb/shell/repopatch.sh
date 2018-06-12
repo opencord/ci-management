@@ -32,8 +32,14 @@ echo "Checking out a patchset with repo, using repo version:"
 repo version
 
 PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"${GERRIT_PROJECT}\"]/@path)" .repo/manifest.xml)
-echo "Project Path: $PROJECT_PATH"
 
-repo download "${PROJECT_PATH}" "$GERRIT_CHANGE_NUMBER/${GERRIT_PATCHSET_NUMBER}"
+if [ -z "$PROJECT_PATH" ]
+then
+  echo "WARNING: Project not in repo! Not downloading the changeset."
+else
+  echo "Project Path: $PROJECT_PATH"
+  repo download "${PROJECT_PATH}" "$GERRIT_CHANGE_NUMBER/${GERRIT_PATCHSET_NUMBER}"
+fi
+
 popd
 
