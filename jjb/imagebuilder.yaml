@@ -1,5 +1,5 @@
 ---
-# CORD helm chart publishing tasks
+# CORD docker image building + dockerhub publishing tasks
 
 - project:
     name: imagebuilder
@@ -9,7 +9,7 @@
       - 'publish-imagebuilder':
           project-regexp: '{imagebuilder-projects-regexp}'
           branch-regexp: '{supported-branches-regexp}'
-
+#          dependency-jobs: 'version-tag'
 
 - job-template:
     id: publish-imagebuilder
@@ -50,6 +50,9 @@
           name: manifestBranch
           default: '$GERRIT_BRANCH'
           description: 'Name of the repo branch to use'
+
+# NOTE: May need to parameters that give the ability to rebuild from a specific
+# tag or commit on a branch.
 
       - bool:
           name: build
