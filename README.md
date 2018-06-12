@@ -21,19 +21,19 @@ JJB](http://docs.releng.linuxfoundation.org/projects/global-jjb/en/latest/best-p
 [LF mailing list for release
 engineering](https://lists.linuxfoundation.org/mailman/listinfo/lf-releng)
 
-The `#lf-releng` channel on Freenode IRC is usually well attendend.
+The `#lf-releng` channel on Freenode IRC is usually well attended.
 
 ## What should be in my job description?
 
 When writing jobs, there are some things that JJB should be used to handle, and
-some things that should be put in external scripts or Jenkinsfile.
+some things that should be put in external scripts or pipeline jobs.
 
 Some things that are good to put in a JJB job:
 
 - Perform all SCM tasks (checkout code, etc.)
-- Specify the executors type and size (don't do this in a Jenkinsfile)
+- Specify the executors type and size (don't hardcode this in a pipeline)
 
-JJB Jobs shold not:
+JJB Jobs should not:
 
 - Have complicated (more than 2-5 lines) scripts inline - instead, include
   these using `!include-escape` or `!include-raw-escape`.
@@ -121,6 +121,27 @@ If you're writing a new shell script, it's a good idea to test it with
 [shellcheck](https://github.com/koalaman/shellcheck) before including it -
 failing to heed those messages then using `!include-escape` to add it to the
 job may lead to hard to debug problems with the job definition.
+
+## Using Pipeline jobs with JJB
+
+Another way of creating jobs in Jenkins is to use the Pipeline method, which
+traditionally is done by creating a Groovy script that describes a job. These
+are traditionally stored in a "Jenkinsfile". It is recommended that you use the
+[Declarative Pipeline](https://jenkins.io/doc/book/pipeline/syntax/) syntax,
+which can be linted with the `shell/jjb/jflint.sh` script, which will verify
+the pipeline syntax against the Jenkins server. This script may run
+automatically on commits in the future, so please verfiy your scripts with it.
+
+The recommended way of creating a pipeline job is to create a pipeline script
+in `jjb/pipeline` with an extension of `.groovy`, and a `job-template` job that
+calls it and uses the JJB `parameters` to configure the pipeline job.  One
+necessary parameter is the `executorNode`, which should be defined in the job
+or job template, but is used to specify the `agent` in the pipeline script (the
+executor the job runs on).
+
+For help writing pipeline jobs, please see the [Pipeline steps
+documentation](https://jenkins.io/doc/pipeline/steps/) for help with the
+syntax.
 
 ## Jenkins Executors and AMI Images
 
