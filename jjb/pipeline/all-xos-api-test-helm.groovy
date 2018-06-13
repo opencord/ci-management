@@ -138,7 +138,7 @@ pipeline {
             SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
             export testname=_service_api.robot
             export library=_library.robot
-            if ! [[ "$GERRIT_PROJECT" =~ ^(cord|platform-install|xos)\$ ]]; then
+            if ! [[ "$GERRIT_PROJECT" =~ ^(cord|platform-install|xos|xos-tosca)\$ ]]; then
                 for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
                 for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
             fi
@@ -168,7 +168,7 @@ pipeline {
               sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
               cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
               pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
-              if ! [[ "$GERRIT_PROJECT" =~ ^(cord|platform-install|xos)\$ ]]; then
+              if ! [[ "$GERRIT_PROJECT" =~ ^(cord|platform-install|xos|xos-tosca)\$ ]]; then
                   for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
               fi
               popd
