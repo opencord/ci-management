@@ -7,8 +7,9 @@
     # lftools
     lftools-version: <1.0.0
 
-    # name of the SSH key to use
+    # name of the SSH key to use in most cases
     jenkins-ssh-credential: 'cord-jenkins-ssh'
+    gerrit-ssh-credential: 'gerrit-jenkins-user'
 
     # by default, don't depend on other jobs
     dependency-jobs: ''
@@ -48,7 +49,7 @@
     modern-branches-regexp: '^(master|cord-6.0)$'
 
     # for matching repos that build docker images with imagebuilder
-    imagebuilder-projects-regexp: '^(automation-tools|xos.*|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vbbu|venb|vhss|vmm|vmme|vnaas|vpgwc|vrouter|vsg|vsg-hw|vsgw|vsm|vspgwc|vspgwu|vtn-service|vtr)$'
+    imagebuilder-projects-regexp: '^(xos.*|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vbbu|venb|vhss|vmm|vmme|vnaas|vpgwc|vrouter|vsg|vsg-hw|vsgw|vsm|vspgwc|vspgwu|vtn-service|vtr)$'
 
     # for matching files with file-include-regexp
     all-files-regexp: '.*'

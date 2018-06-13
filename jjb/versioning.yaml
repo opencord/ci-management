@@ -22,7 +22,8 @@
     name: versioning-jobs
 
     branch-regexp: '{modern-branches-regexp}'
-    project: '^bogus-project$'
+    project-regexp: '^bogus-project$'
+#    project-regexp: '{imagebuilder-projects-regexp}'
 
     jobs:
       - 'tag-collision-reject'
@@ -39,7 +40,7 @@
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '^{project}$'
+          project-regexp: '{project-regexp}'
           branch-regexp: '{branch-regexp}'
           file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
@@ -52,7 +53,7 @@
     wrappers:
       - lf-infra-wrappers:
           build-timeout: '{build-timeout}'
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
 
     scm:
       - lf-infra-gerrit-scm:
@@ -61,7 +62,7 @@
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
           choosing-strategy: gerrit
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
 
     node: '{build-node}'
     project-type: freestyle
@@ -82,7 +83,7 @@
     triggers:
       - cord-infra-gerrit-trigger-merge:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '^{project}$'
+          project-regexp: '{project-regexp}'
           branch-regexp: '{branch-regexp}'
           file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
@@ -95,7 +96,7 @@
     wrappers:
       - lf-infra-wrappers:
           build-timeout: '{build-timeout}'
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
 
     scm:
       - lf-infra-gerrit-scm:
@@ -104,7 +105,7 @@
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
           choosing-strategy: gerrit
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
 
     node: '{build-node}'
     project-type: freestyle

@@ -19,7 +19,14 @@
 
 set -eu -o pipefail
 
-NEW_VERSION=""
+VERSIONFILE="" # file path to file containing version number
+NEW_VERSION="" # version number found in $VERSIONFILE
+
+releaseversion=0
+fail_validation=0
+
+# when not running under Jenkins, use current dir as workspace
+WORKSPACE=${WORKSPACE:-.}
 
 # find the version string in the repo, read into NEW_VERSION
 # Add additional places NEW_VERSION could be found to this function
@@ -27,7 +34,7 @@ function read_version {
   if [ -f "VERSION" ]
   then
     NEW_VERSION=$(head -n1 "VERSION")
-    echo "New version: $NEW_VERSION"
+    VERSIONFILE="VERSION"
   else
     echo "ERROR: No versioning file found!"
     exit 1
@@ -46,6 +53,64 @@ function is_git_tag_duplicated {
   done
 }
 
+# check if the version is a released version
+function check_if_releaseversion {
+  if [[ "$NEW_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+  then
+    echo "Version string '$NEW_VERSION' found in '$VERSIONFILE' is a SemVer released version!"
+    releaseversion=1
+  else
+    echo "Version string '$NEW_VERSION' found in '$VERSIONFILE' is not a SemVer released version, skipping."
+  fi
+}
+
+# check if Dockerfiles have a released version as their parent
+function dockerfile_parentcheck {
+  while IFS= read -r -d '' dockerfile
+  do
+    echo "Checking dockerfile: '$dockerfile'"
+
+    # split on newlines
+    IFS=$'\n'
+    df_parents=($(grep "^FROM" "$dockerfile"))
+
+    # check all parents in the Dockerfile
+    for df_parent in "${df_parents[@]}"
+    do
+
+      df_pattern="FROM (.*):(.*)"
+      if [[ "$df_parent" =~ $df_pattern ]]
+      then
+
+        p_image="${BASH_REMATCH[1]}"
+        p_version="${BASH_REMATCH[2]}"
+
+        if [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+        then
+          echo "  OK: Parent '$p_image:$p_version' is a released SemVer version"
+        elif [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+).*$ ]]
+        then
+          # handle the non-SemVer 'ubuntu:16.04' and 'postgres:10.3-alpine' cases
+          echo "  OK: Parent '$p_image:$p_version' is using a non-SemVer, but sufficient, version"
+        else
+          echo "  ERROR: Parent '$p_image:$p_version' is NOT using an specific version"
+          fail_validation=1
+        fi
+
+      elif [[ "$df_parent" =~ ^FROM\ scratch$ ]]
+      then
+        # Handle the parent-less `FROM scratch` case:
+        #  https://docs.docker.com/develop/develop-images/baseimages/
+        echo "  OK: Using the versionless 'scratch' parent: '$df_parent'"
+      else
+        echo "  ERROR: Couldn't find a parent image in $df_parent"
+      fi
+
+    done
+
+  done  < <( find "${WORKSPACE}" -name 'Dockerfile*' -print0 )
+}
+
 echo "Checking git repo with remotes:"
 git remote -v
 
@@ -56,7 +121,13 @@ echo "Existing git tags:"
 git tag -n
 
 read_version
-is_git_tag_duplicated
+check_if_releaseversion
 
-exit 0
+# perform checks if a released version
+if [ "$releaseversion" -eq "1" ]
+then
+  is_git_tag_duplicated
+  dockerfile_parentcheck
+fi
 
+exit $fail_validation
