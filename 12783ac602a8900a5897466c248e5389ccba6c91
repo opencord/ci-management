@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3581c562_27aa1a35",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2018-06-13T23:18:54Z",
+      "side": 1,
+      "message": "this will work for python repos only, but looks a good starting point",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 35,
+        "endChar": 1
+      },
+      "revId": "12783ac602a8900a5897466c248e5389ccba6c91",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4aaeebb5_21d47f77",
+        "filename": "jjb/shell/versiontag.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2018-06-13T23:18:54Z",
+      "side": 1,
+      "message": "same as the other file, also, why is this duplicated?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 40,
+        "endChar": 1
+      },
+      "revId": "12783ac602a8900a5897466c248e5389ccba6c91",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
