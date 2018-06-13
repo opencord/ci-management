@@ -20,10 +20,14 @@
 
 set -eu -o pipefail
 
-NEW_VERSION=""
-VERSIONFILE=""
+VERSIONFILE="" # file path to file containing version number
+NEW_VERSION="" # version number found in $VERSIONFILE
 
 releaseversion=0
+fail_validation=0
+
+# when not running under Jenkins, use current dir as workspace
+WORKSPACE=${WORKSPACE:-.}
 
 # find the version string in the repo, read into NEW_VERSION
 # Add additional places NEW_VERSION could be found to this function
@@ -32,10 +36,20 @@ function read_version {
   then
     NEW_VERSION=$(head -n1 "VERSION")
     VERSIONFILE="VERSION"
-    echo "New version: $NEW_VERSION"
   else
     echo "ERROR: No versioning file found!"
     exit 1
+  fi
+}
+
+# check if the version is a released version
+function check_if_releaseversion {
+  if [[ "$NEW_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+  then
+    echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is a SemVer released version!"
+    releaseversion=1
+  else
+    echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is not a SemVer released version, skipping."
   fi
 }
 
@@ -51,22 +65,67 @@ function is_git_tag_duplicated {
   done
 }
 
-# check if the version is a released version
-function check_if_releasever {
-  if [[ "$NEW_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
-  then
-    echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is a SemVer released version!"
-    releaseversion=1
-  else
-    echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is not a SemVer released version, skipping."
-  fi
+# check if Dockerfiles have a released version as their parent
+function dockerfile_parentcheck {
+  while IFS= read -r -d '' dockerfile
+  do
+    echo "Checking dockerfile: '$dockerfile'"
+
+    # split on newlines
+    IFS=$'\n'
+    df_parents=($(grep "^FROM" "$dockerfile"))
+
+    # check all parents in the Dockerfile
+    for df_parent in "${df_parents[@]}"
+    do
+
+      df_pattern="FROM (.*):(.*)"
+      if [[ "$df_parent" =~ $df_pattern ]]
+      then
+
+        p_image="${BASH_REMATCH[1]}"
+        p_version="${BASH_REMATCH[2]}"
+
+        if [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+        then
+          echo "  OK: Parent '$p_image:$p_version' is a released SemVer version"
+        elif [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+).*$ ]]
+        then
+          # handle the non-SemVer 'ubuntu:16.04' and 'postgres:10.3-alpine' cases
+          echo "  OK: Parent '$p_image:$p_version' is using a non-SemVer, but sufficient, version"
+        else
+          echo "  ERROR: Parent '$p_image:$p_version' is NOT using an specific version"
+          fail_validation=1
+        fi
+
+      elif [[ "$df_parent" =~ ^FROM\ scratch$ ]]
+      then
+        # Handle the parent-less `FROM scratch` case:
+        #  https://docs.docker.com/develop/develop-images/baseimages/
+        echo "  OK: Using the versionless 'scratch' parent: '$df_parent'"
+      else
+        echo "  ERROR: Couldn't find a parent image in $df_parent"
+      fi
+
+    done
+
+  done  < <( find "${WORKSPACE}" -name 'Dockerfile*' -print0 )
 }
+
 
 # create a git tag
 function create_git_tag {
   echo "Creating git tag: $NEW_VERSION"
   git checkout "$GERRIT_PATCHSET_REVISION"
+
+  git config --global user.email "do-not-reply@opencord.org"
+  git config --global user.name "Jenkins"
+
   git tag -a "$NEW_VERSION" -m "Tagged by CORD Jenkins version-tag job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
+
+  echo "Tags including new tag:"
+  git tag -n
+
   git push origin "$NEW_VERSION"
 }
 
@@ -80,12 +139,20 @@ echo "Existing git tags:"
 git tag -n
 
 read_version
-is_git_tag_duplicated
-check_if_releasever
+check_if_releaseversion
 
-if $releaseversion
+# perform checks if a released version
+if [ "$releaseversion" -eq "1" ]
 then
-  create_git_tag
+  is_git_tag_duplicated
+  dockerfile_parentcheck
+
+  if [ "$fail_validation" -eq "0" ]
+  then
+    create_git_tag
+  else
+    echo "ERROR: commit merged but failed validation, not tagging!"
+  fi
 fi
 
-exit 0
+exit $fail_validation
