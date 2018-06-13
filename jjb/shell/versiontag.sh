@@ -66,7 +66,15 @@ function check_if_releasever {
 function create_git_tag {
   echo "Creating git tag: $NEW_VERSION"
   git checkout "$GERRIT_PATCHSET_REVISION"
+
+  git config --global user.email "do-not-reply@opencord.org"
+  git config --global user.name "Jenkins"
+
   git tag -a "$NEW_VERSION" -m "Tagged by CORD Jenkins version-tag job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
+
+  echo "Tags including new tag:"
+  git tag -n
+
   git push origin "$NEW_VERSION"
 }
 
@@ -83,7 +91,7 @@ read_version
 is_git_tag_duplicated
 check_if_releasever
 
-if $releaseversion
+if [ "$releaseversion" -eq "1" ]
 then
   create_git_tag
 fi
