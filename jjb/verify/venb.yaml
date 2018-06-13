@@ -17,4 +17,4 @@
           dependency-jobs: 'verify_venb_licensed'
       - 'api-test':
           dependency-jobs: 'verify_venb_sonarqube'
-          pipeline_script: 'all-xos-api-test.groovy'
+          pipeline_script: 'all-xos-api-test-helm.groovy'

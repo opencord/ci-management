@@ -17,4 +17,4 @@
           dependency-jobs: 'verify_sdn-controller_licensed'
       - 'api-test':
           dependency-jobs: 'verify_sdn-controller_sonarqube'
-          pipeline_script: 'all-xos-api-test.groovy'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
