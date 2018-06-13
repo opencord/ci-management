@@ -1,0 +1,115 @@
+---
+# CORD versioning jobs for tagging/releasing software
+
+# CORD versioning conventions:
+#
+# 1. There is a 1:1 relationship between SemVer _release_ versions described
+#    in the commit and the git tag applied to that commit by Jenkins.
+#
+# 2. Non-release versions (ex: 1.0.1-dev3, etc.) can exist in multiple
+#    commits, and don't trigger creation of git tags.
+#
+# 3. Git history is public, and therefore shouldn't be rewritten to abandon
+#    already merged commits
+#
+# 4. Reverting a commit leaves it in history, so if a broken version is
+#    released, the correct action is to make a new fixed version, not try to
+#    fix the released version
+#
+# See also: https://jira.opencord.org/browse/CORD-3117
+
+- project:
+    name: versioning-jobs
+
+    branch-regexp: '{modern-branches-regexp}'
+    project: '^bogus-project$'
+
+    jobs:
+      - 'tag-collision-reject'
+      - 'version-tag'
+
+- job-template:
+    id: tag-collision-reject
+    name: "tag-collision-reject"
+    description: |
+      Created by {id} job-template from ci-management/jjb/versioning.yaml
+      Checks for changes to version files, and that they don't duplicate tags
+      already in the git repo.
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: shell/tagcollisionreject.sh
+
+
+- job-template:
+    id: version-tag
+    name: "version-tag"
+    description: |
+      Created by {id} job-template from ci-management/jjb/release.yaml
+      When a patch is merged, check if it contains a SemVer released version
+      file and if so tags the commit in git with that same version.
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: shell/versiontag.sh
+
