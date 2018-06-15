@@ -118,7 +118,7 @@ pipeline {
            if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|vMME|vHSS|hss_db|epc-service|internetemulator|sdn-controller)\$ ]]; then
                helm dep update xos-profiles/mcord
                helm install xos-profiles/mcord -n mcord
-               sleep 360
+               sleep 900
            fi
            helm status xos-core
            kubectl get pods
