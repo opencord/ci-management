@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "62f2d5f2_1ce92b29",
+        "filename": "jjb/pipeline/mcord-deployment.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-16T03:18:36Z",
+      "side": 1,
+      "message": "Is there a reason to:\n\n1. Use the /home/cord directory, rather than the Jenkins executor directory? \n2. Clone just these two repos rather than the entire source tree with repo?",
+      "range": {
+        "startLine": 15,
+        "startChar": 10,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "5d48bda7cb693a522fa20753411e5aed97e00445",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "37a44033_e098ea46",
+        "filename": "jjb/pipeline/mcord-deployment.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-16T03:18:36Z",
+      "side": 1,
+      "message": "It seems asymmetric to do all this teardown when the corresponding steps to bring it up weren\u0027t performed.",
+      "range": {
+        "startLine": 50,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 34
+      },
+      "revId": "5d48bda7cb693a522fa20753411e5aed97e00445",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce85c243_85cae08e",
+        "filename": "jjb/pipeline/mcord-deployment.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-16T03:18:36Z",
+      "side": 1,
+      "message": "Might make email recipients a parameter. \n\nAlso, it\u0027s better to put optional post tasks in their own condition-specific blocks",
+      "range": {
+        "startLine": 58,
+        "startChar": 80,
+        "endLine": 58,
+        "endChar": 161
+      },
+      "revId": "5d48bda7cb693a522fa20753411e5aed97e00445",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
