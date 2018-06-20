@@ -109,7 +109,7 @@ pipeline {
            helm install -f examples/api-test-values.yaml xos-core -n xos-core
            sleep 300
            helm status xos-core
-           if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss)\$ ]]; then
+           if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
                helm dep update xos-profiles/rcord-lite
                helm install xos-profiles/rcord-lite -n rcord-lite
                sleep 360
@@ -199,7 +199,7 @@ pipeline {
               kubectl get pods --all-namespaces
               helm list
               helm delete --purge xos-core
-              if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss)\$ ]]; then
+              if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
                 helm delete --purge rcord-lite
               fi
               if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|vMME|vHSS|hss_db|epc-service|internetemulator|sdn-controller)\$ ]]; then
