@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-cord-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{legacy-branches-regexp}'
 
 - job-group:
     name: 'verify-cord-jobs'
@@ -19,4 +19,4 @@
           dependency-jobs: 'verify_cord_ansible-lint'
       - 'api-test':
           dependency-jobs: 'verify_cord_sonarqube'
-          pipeline_script: 'all-xos-api-test-helm.groovy'
+          pipeline_script: 'all-xos-api-test.groovy'

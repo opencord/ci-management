@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-platform-install-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{legacy-branches-regexp}'
 
 - job-group:
     name: 'verify-platform-install-jobs'
@@ -19,4 +19,4 @@
           dependency-jobs: 'verify_platform-install_ansible-lint'
       - 'api-test':
           dependency-jobs: 'verify_platform-install_sonarqube'
-          pipeline_script: 'all-xos-api-test-helm.groovy'
+          pipeline_script: 'all-xos-api-test.groovy'

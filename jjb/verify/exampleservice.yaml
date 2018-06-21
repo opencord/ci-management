@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-exampleservice-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{legacy-branches-regexp}'
 
 - job-group:
     name: 'verify-exampleservice-jobs'
