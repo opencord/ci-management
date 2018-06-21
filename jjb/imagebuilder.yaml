@@ -9,7 +9,7 @@
       - 'publish-imagebuilder':
           project-regexp: '{imagebuilder-projects-regexp}'
           branch-regexp: '{supported-branches-regexp}'
-#          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag'
 
 - job-template:
     id: publish-imagebuilder

@@ -22,8 +22,7 @@
     name: versioning-jobs
 
     branch-regexp: '{modern-branches-regexp}'
-    project-regexp: '^bogus-project$'
-#    project-regexp: '{imagebuilder-projects-regexp}'
+    project-regexp: '{imagebuilder-projects-regexp}'
 
     jobs:
       - 'tag-collision-reject'
