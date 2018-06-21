@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6a4ec077_5de029ff",
+        "filename": "jjb/verify/cord.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-06-21T18:32:58Z",
+      "side": 1,
+      "message": "Can you change this to \"all-xos-api-test.groovy\" which is the pipeline test script for the old build system",
+      "revId": "5ba4b668bd24645cd16452283cd0439d1dadce1b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9941cfea_7a8d4dfc",
+        "filename": "jjb/verify/platform-install.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-06-21T18:32:58Z",
+      "side": 1,
+      "message": "Change to \"all-xos-api-test.groovy\"",
+      "revId": "5ba4b668bd24645cd16452283cd0439d1dadce1b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
