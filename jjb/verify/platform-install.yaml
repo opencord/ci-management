@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-platform-install-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{legacy-branches-regexp}'
 
 - job-group:
     name: 'verify-platform-install-jobs'

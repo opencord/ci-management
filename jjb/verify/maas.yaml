@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-maas-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{legacy-branches-regexp}'
 
 - job-group:
     name: 'verify-maas-jobs'
