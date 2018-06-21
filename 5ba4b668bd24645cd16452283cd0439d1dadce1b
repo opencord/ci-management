@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "4d2818a0_7358508b",
+        "filename": "jjb/verify/cord.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-21T20:03:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6a4ec077_5de029ff",
+      "revId": "5ba4b668bd24645cd16452283cd0439d1dadce1b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9941cfea_7a8d4dfc",
         "filename": "jjb/verify/platform-install.yaml",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-06-21T18:32:58Z",
       "side": 1,
       "message": "Change to \"all-xos-api-test.groovy\"",
+      "revId": "5ba4b668bd24645cd16452283cd0439d1dadce1b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2f98ba63_cc96b98e",
+        "filename": "jjb/verify/platform-install.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-21T20:03:21Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9941cfea_7a8d4dfc",
       "revId": "5ba4b668bd24645cd16452283cd0439d1dadce1b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
