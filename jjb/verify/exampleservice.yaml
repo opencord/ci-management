@@ -7,6 +7,10 @@
 
     jobs:
       - 'verify-exampleservice-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+      - 'verify-exampleservice-jobs-legacy':
+          project: 'exampleservice-legacy'
           branch-regexp: '{legacy-branches-regexp}'
 
 - job-group:
@@ -15,6 +19,16 @@
       - 'verify-licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_exampleservice_licensed'
-      - 'api-test':
+      - 'helm-api-test':
           dependency-jobs: 'verify_exampleservice_sonarqube'
+
+- job-group:
+    name: 'verify-exampleservice-jobs-legacy'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_exampleservice-legacy_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_exampleservice-legacy_sonarqube'
           pipeline_script: 'all-xos-api-test.groovy'
+
