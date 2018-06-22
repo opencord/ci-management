@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c7b467a5_fc6e1309",
+        "filename": "jjb/verify/exampleservice.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-06-22T20:06:33Z",
+      "side": 1,
+      "message": "The `project-regex` to trigger on is built using the `project`, so redefining it to something other than the repo name might be problematic.\n\nMaybe having a common job-group for the shared jobs, then two separate ones for supported/legacy where they diverge?",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 18
+      },
+      "revId": "0ca7e616631ba6aebc5ebeb5323198e72b88cb16",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
