@@ -36,6 +36,10 @@ function read_version {
   then
     NEW_VERSION=$(head -n1 "VERSION")
     VERSIONFILE="VERSION"
+  elif [ -f "package.json" ]
+  then
+    NEW_VERSION=$(python -c 'import json,sys;obj=json.load(sys.stdin); print obj["version"]' < package.json)
+    VERSIONFILE="package.json"
   else
     echo "ERROR: No versioning file found!"
     exit 1
