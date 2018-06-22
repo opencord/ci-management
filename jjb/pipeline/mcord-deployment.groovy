@@ -28,6 +28,27 @@ pipeline {
             '''
             }
         }
+    stage ('Configure K8 Compute Node DNS') {
+      steps {
+        sh '''
+            pushd $WORKSPACE
+            HOSTNAME=\$(cat /etc/hostname)
+            IPADDRESS=\$(ip route get 8.8.8.8 | head -1 | cut -d' ' -f8)
+            cat <<EOF > /tmp/\$HOSTNAME-dns.yaml
+            kind: Service
+            apiVersion: v1
+            metadata:
+              name: \$HOSTNAME
+              namespace: default
+            spec:
+              type: ExternalName
+              externalName: \$IPADDRESS
+            EOF
+            popd
+            kubectl create -f /tmp/\$HOSTNAME-dns.yaml
+            '''
+            }
+        }
 
     stage ('Test MCORD') {
       steps {
@@ -55,7 +76,24 @@ pipeline {
                     helm reset --force
                 fi
                 if [ -x "/usr/bin/kubelet" ]; then
-                    sudo rm /usr/bin/kubelet
+                    for NS in openstack ceph nfs libvirt; do
+                       helm ls --namespace $NS --short | xargs -r -L1 -P2 helm delete --purge
+                    done
+
+                    sudo systemctl stop kubelet
+                    sudo systemctl disable kubelet
+
+                    sudo docker ps -aq | xargs -r -L1 -P16 sudo docker rm -f
+
+                    sudo rm -rf /var/lib/openstack-helm/*
+
+                    # NOTE(portdirect): These directories are used by nova and libvirt
+                    sudo rm -rf /var/lib/nova/*
+                    sudo rm -rf /var/lib/libvirt/*
+                    sudo rm -rf /etc/libvirt/qemu/*
+
+                    # NOTE(portdirect): Clean up mounts left behind by kubernetes pods
+                    sudo findmnt --raw | awk '/^\/var\/lib\/kubelet\/pods/ { print $1 }' | xargs -r -L1 -P16 sudo umount -f -l
                 fi
                 popd
                 '''
