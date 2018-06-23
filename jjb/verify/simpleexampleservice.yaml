@@ -13,8 +13,10 @@
     name: 'verify-simpleexampleservice-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_simpleexampleservice_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_simpleexampleservice_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_simpleexampleservice_sonarqube'
       - 'api-test':

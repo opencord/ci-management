@@ -13,8 +13,10 @@
     name: 'verify-ecord-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-ansible-lint':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_ecord_licensed'
+      - 'verify-ansible-lint':
+          dependency-jobs: 'verify_ecord_tag-collision'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_ecord_ansible-lint'
       - 'api-test':

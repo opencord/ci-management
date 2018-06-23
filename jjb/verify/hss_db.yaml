@@ -13,8 +13,10 @@
     name: 'verify-hss_db-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_hss_db_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_hss_db_tag-collision'
       - 'api-test':
           dependency-jobs: 'verify_hss_db_sonarqube'
           pipeline_script: 'all-xos-api-test-helm.groovy'

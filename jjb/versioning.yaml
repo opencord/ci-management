@@ -25,12 +25,11 @@
     project-regexp: '{imagebuilder-projects-regexp}'
 
     jobs:
-      - 'tag-collision-reject'
       - 'version-tag'
 
 - job-template:
     id: tag-collision-reject
-    name: "tag-collision-reject"
+    name: "verify_{project}_tag-collision"
     description: |
       Created by {id} job-template from ci-management/jjb/versioning.yaml
       Checks for changes to version files, and that they don't duplicate tags
@@ -39,7 +38,7 @@
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '{project-regexp}'
+          project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
           file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'

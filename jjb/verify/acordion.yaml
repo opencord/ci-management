@@ -13,8 +13,10 @@
     name: 'verify-acordion-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_acordion_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_acordion_tag-collision'
 #     - 'xos-unit-test':
 #         dependency-jobs: 'verify_acordion_sonarqube'
 #     - 'api-test':

@@ -13,8 +13,10 @@
     name: 'verify-hippie-oss-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_hippie-oss_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_hippie-oss_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_hippie-oss_sonarqube'
       - 'api-test':

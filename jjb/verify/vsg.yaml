@@ -13,8 +13,10 @@
     name: 'verify-vsg-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_vsg_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_vsg_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_vsg_sonarqube'
       - 'api-test':
