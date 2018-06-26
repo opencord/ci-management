@@ -85,6 +85,7 @@ ubuntu_systems() {
         docker==3.2.1 \
         gitpython \
         graphviz \
+        grpcio-tools \
         isort \
         linkchecker \
         pexpect \
