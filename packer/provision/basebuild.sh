@@ -94,7 +94,8 @@ ubuntu_systems() {
         robotframework-httplibrary \
         robotframework-requests \
         robotframework-sshlibrary \
-        virtualenv
+        virtualenv \
+        grpcio-tools
         # end of pip install list
 
     # install ruby gems
