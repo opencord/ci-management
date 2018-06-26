@@ -1,0 +1,20 @@
+---
+# verification jobs for 'seba' repo
+
+- project:
+    name: seba
+    project: '{name}'
+
+    jobs:
+      - 'verify-seba-jobs':
+          branch-regexp: '{modern-branches-regexp}'
+
+- job-group:
+    name: 'verify-seba-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_seba_licensed'
+      - 'verify-helm-lint':
+          dependency-jobs: 'verify_seba_sonarqube'
+
