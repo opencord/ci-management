@@ -26,7 +26,7 @@
 
     # The most frequently used type of build node
     # see other build node types under "Cloud > Amazon EC2" at
-    #  https://jenkins-new.opencord.org/configure
+    #  https://jenkins.opencord.org/configure
     build-node: ubuntu16.04-basebuild-1c-1g
 
     # CORD Gerrit server definition, set in configuration
