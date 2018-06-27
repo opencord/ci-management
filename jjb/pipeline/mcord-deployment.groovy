@@ -13,6 +13,8 @@ pipeline {
       steps {
         sh '''
             pushd $WORKSPACE
+            mkdir cord
+            cd cord/
             git clone https://gerrit.opencord.org/automation-tools
             popd
             '''
@@ -22,7 +24,7 @@ pipeline {
     stage ('Install MCORD') {
       steps {
         sh '''
-            pushd $WORKSPACE
+            pushd $WORKSPACE/cord
             ./automation-tools/mcord/mcord-in-a-box.sh
             popd
             '''
@@ -68,39 +70,7 @@ EOF
             sh '''
                 pushd $WORKSPACE
                 kubectl get pods --all-namespaces
-                if [ -x "/usr/bin/helm" ]; then
-                    helm list
-                    helm delete --purge xos-core
-                    helm delete --purge mcord
-                    helm delete --purge base-openstack
-                    helm delete --purge onos-cord
-
-                    for NS in openstack ceph nfs libvirt; do
-                       helm ls --namespace $NS --short | xargs -r -L1 -P2 helm delete --purge
-                    done
-
-                    # delete any helm chart left
-                    helm ls --short | xargs -r -L1 -P2 helm delete --purge || true
-
-                    #delete all kubectl pods
-                    kubectl delete pods --all
-
-                    sudo docker ps -aq | xargs -r -L1 -P16 sudo docker rm -f
-
-                    sudo rm -rf /var/lib/openstack-helm/*
-
-                    # NOTE(portdirect): These directories are used by nova and libvirt
-                    sudo rm -rf /var/lib/nova/*
-                    sudo rm -rf /var/lib/libvirt/*
-                    sudo rm -rf /etc/libvirt/qemu/*
-
-                    #remove all docker images
-                    sudo docker rmi $(sudo docker images -q) || true
-
-                fi
-                kubectl get pods || true
-                helm ls || true
-                sudo rm -rf $WORKSPACE/*
+                helm list
                 popd
                 '''
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
