@@ -6,17 +6,33 @@
     project: '{name}'
 
     jobs:
-      - 'verify-exampleservice-jobs':
+      - 'verify-exampleservice-common':
+          branch-regexp: '{supported-branches-regexp}'
+
+      - 'verify-exampleservice-jobs-modern':
+          branch-regexp: '{modern-branches-regexp}'
+
+      - 'verify-exampleservice-jobs-legacy':
           branch-regexp: '{legacy-branches-regexp}'
 
 - job-group:
-    name: 'verify-exampleservice-jobs'
+    name: 'verify-exampleservice-common'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_exampleservice_licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_exampleservice_tag-collision'
+
+- job-group:
+    name: 'verify-exampleservice-jobs-modern'
+    jobs:
+      - 'helm-api-test':
+          dependency-jobs: 'verify_exampleservice_sonarqube'
+
+- job-group:
+    name: 'verify-exampleservice-jobs-legacy'
+    jobs:
       - 'api-test':
           dependency-jobs: 'verify_exampleservice_sonarqube'
           pipeline_script: 'all-xos-api-test.groovy'
