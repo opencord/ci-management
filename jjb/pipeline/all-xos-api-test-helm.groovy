@@ -45,13 +45,68 @@ pipeline {
     stage('patch') {
       steps {
         sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           VERSIONFILE="" # file path to file containing version number
+           NEW_VERSION="" # version number found in VERSIONFILE
+           release_version=0
+
+           function read_version {
+             if [ -f "VERSION" ]
+             then
+               NEW_VERSION=\$(head -n1 "VERSION")
+               VERSIONFILE="VERSION"
+             elif [ -f "package.json" ]
+             then
+               NEW_VERSION=\$(python -c 'import json,sys;obj=json.load(sys.stdin); print obj["version"]' < package.json)
+               VERSIONFILE="package.json"
+             else
+               echo "ERROR: No versioning file found!"
+               exit 1
+             fi
+           }
+
+           # check if the version is a released version
+           function check_if_releaseversion {
+             if [[ "\$NEW_VERSION" =~ ^([0-9]+)\\.([0-9]+)\\.([0-9]+)\$ ]]
+             then
+               echo "Version string '\$NEW_VERSION' in '\$VERSIONFILE' is a SemVer released version!"
+               releaseversion=1
+             else
+               echo "Version string '\$NEW_VERSION' in '\$VERSIONFILE' is not a SemVer released version, skipping."
+             fi
+           }
+
            pushd cord
            PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
            repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+
+           pushd \$PROJECT_PATH
+           echo "Existing git tags:"
+           git tag -n
+
+           read_version
+           check_if_releaseversion
+
+           # perform checks if a released version
+           if [ "\$releaseversion" -eq "1" ]
+           then
+             git config --global user.email "apitest@opencord.org"
+             git config --global user.name "API Test"
+
+             git tag -a "\$NEW_VERSION" -m "Tagged for api test on Gerrit patchset: ${gerritChangeNumber}"
+
+             echo "Tags including new tag:"
+             git tag -n
+
+           fi
            popd
-         """
+           popd
+           """
       }
     }
+
 
     stage('prep') {
       parallel {
