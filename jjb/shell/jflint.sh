@@ -20,7 +20,7 @@
 
 set -e -u -o pipefail
 
-JENKINS_URL=https://jenkins-new.opencord.org/
+JENKINS_URL=https://jenkins.opencord.org/
 JF_LIST=()
 
 # if no args, and there's a Jenkinsfile in cwd, check it
