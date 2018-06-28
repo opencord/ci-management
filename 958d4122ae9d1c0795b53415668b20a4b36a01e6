@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "5299ff2c_7b912a59",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-06-28T19:42:31Z",
+      "side": 1,
+      "message": "You can remove this section. A clean EC2 instance will not have these directories at the beginning of each build.",
+      "revId": "958d4122ae9d1c0795b53415668b20a4b36a01e6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "16b5e166_e6276c22",
         "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
         "patchSetId": 1
