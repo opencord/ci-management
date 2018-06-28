@@ -16,6 +16,24 @@
       "revId": "958d4122ae9d1c0795b53415668b20a4b36a01e6",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e6fc921e_2e3a21bf",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000437
+      },
+      "writtenOn": "2018-06-28T16:02:07Z",
+      "side": 1,
+      "message": "Sure. We have no our test source code in Gerrit yet, since its under the pull-request approval now.\nOnce it\u0027s approved, we\u0027ll put here the call to the test.\nCurrently, it\u0027s just an entry point.",
+      "parentUuid": "16b5e166_e6276c22",
+      "revId": "958d4122ae9d1c0795b53415668b20a4b36a01e6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
