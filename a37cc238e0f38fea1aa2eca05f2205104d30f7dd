@@ -22,6 +22,30 @@
       "revId": "a37cc238e0f38fea1aa2eca05f2205104d30f7dd",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dfbbf1e5_dbc2599f",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-06-28T21:53:12Z",
+      "side": 1,
+      "message": "which additional command are you referring to ?",
+      "parentUuid": "3211e33b_00426e54",
+      "range": {
+        "startLine": 177,
+        "startChar": 49,
+        "endLine": 179,
+        "endChar": 56
+      },
+      "revId": "a37cc238e0f38fea1aa2eca05f2205104d30f7dd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
