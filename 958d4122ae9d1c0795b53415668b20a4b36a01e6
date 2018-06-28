@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16b5e166_e6276c22",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000444
+      },
+      "writtenOn": "2018-06-28T15:59:33Z",
+      "side": 1,
+      "message": "I\u0027m guessing you\u0027ll be adding something to the steps other than just printing the start of the test?",
+      "revId": "958d4122ae9d1c0795b53415668b20a4b36a01e6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
