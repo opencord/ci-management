@@ -165,10 +165,16 @@ ubuntu_systems() {
     rm -f minikube.deb
     popd
 
-    # give sudo permissions on minikube to jenkins user, so `minikube init` can be run
+    # install protobufs
+    PROTOC_VERSION="3.3.0"
+    curl -OL https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+    unzip protoc-${PROTOC_VERSION}-linux-x86_64.zip -d protoc3
+    mv protoc3/bin/* /usr/local/bin/
+    mv protoc3/include/* /usr/local/include/
+    # give sudo permissions on protoc to jenkins user
     cat <<EOF >/etc/sudoers.d/88-jenkins-minikube
 Defaults:jenkins !requiretty
-jenkins ALL=(ALL) NOPASSWD:SETENV: /usr/bin/minikube
+jenkins ALL=(ALL) NOPASSWD:SETENV: /usr/local/bin/protoc
 EOF
 
     # clean up
