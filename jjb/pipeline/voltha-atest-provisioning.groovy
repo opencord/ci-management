@@ -10,9 +10,9 @@ pipeline {
   stages {
 
     stage ('Cleanup workspace') {
-        steps {
+      steps {
         sh 'rm -rf ./build ./component ./incubator ./onos-apps ./orchestration ./test ./.repo'
-        }
+      }
     }
 
     stage('voltha Repo') {
@@ -33,30 +33,23 @@ pipeline {
       }
     }
 
-    stage ('Bring up voltha dev vm') {
-      steps {
-        sh '''
-        pushd $WORKSPACE/cord/incubator/voltha
-        vagrant up voltha
-        popd
-        '''
-        }
-      }
-    stage ('Remove the pre-created venv-linux') {
-      steps {
-        sh 'vagrant ssh -c "rm -rf $WORKSPACE/cord/incubator/voltha/venv-linux"'
-        }
-      }
-
     stage ('Build voltha and onos') {
       steps {
-        sh 'vagrant ssh -c "cd $WORKSPACE/cord/incubator/voltha && source env.sh && make fetch-jenkins && make jenkins && make onos" voltha' }
-        }
+        sh '''
+        cd $WORKSPACE/cord/incubator/voltha
+        source env.sh
+        make fetch
+        make clean
+        make build
+        make onos
+        '''
+      }
+    }
 
     stage ('Start Provisioning Test') {
       steps {
         println 'Start Provisioning Test'
-        sh 'vagrant ssh -c "cd $WORKSPACE/cord/incubator/voltha/tests && pwd" voltha' }
       }
     }
+  }
 }
