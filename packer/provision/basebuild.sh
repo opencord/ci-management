@@ -165,10 +165,20 @@ ubuntu_systems() {
     rm -f minikube.deb
     popd
 
-    # give sudo permissions on minikube to jenkins user, so `minikube init` can be run
+    # install protobufs
+    PROTOC_VERSION="3.3.0"
+    PROTOC_SHA256SUM="feb112bbc11ea4e2f7ef89a359b5e1c04428ba6cfa5ee628c410eccbfe0b64c3"
+    curl -L -o /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
+    echo "$PROTOC_SHA256SUM  /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip" | sha256sum -c -
+    unzip /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d protoc3
+    mv /tmp/protoc3/bin/* /usr/local/bin/
+    mv /tmp/protoc3/include/* /usr/local/include/
+    # give sudo permissions on protoc to jenkins user
     cat <<EOF >/etc/sudoers.d/88-jenkins-minikube
+    Cmnd_Alias CMDS = /usr/local/bin/protoc, /usr/bin/minikube
+
 Defaults:jenkins !requiretty
-jenkins ALL=(ALL) NOPASSWD:SETENV: /usr/bin/minikube
+jenkins ALL=(ALL) NOPASSWD:SETENV: CMDS
 EOF
 
     # clean up
