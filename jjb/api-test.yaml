@@ -5,8 +5,8 @@
     id: api-test
     name: 'verify_{project}_api-test'
     description: |
-      <!-- Managed by Jenkins Job Builder -->
-      Created by api-test job-template from ci-management/jjb/api-test.yaml
+      Created by {id} job-template from ci-management/jjb/api-test.yaml, using pipeline: {pipeline-script}
+
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
