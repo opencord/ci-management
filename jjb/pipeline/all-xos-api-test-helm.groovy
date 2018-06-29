@@ -50,7 +50,7 @@ pipeline {
 
            VERSIONFILE="" # file path to file containing version number
            NEW_VERSION="" # version number found in VERSIONFILE
-           release_version=0
+           releaseversion=0
 
            function read_version {
              if [ -f "VERSION" ]
