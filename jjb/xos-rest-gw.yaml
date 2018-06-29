@@ -15,7 +15,7 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/xos-rest-gw.yaml  <br /><br />
+      Created by {id} job-template from ci-management/jjb/xos-rest-gw.yaml
       Test for the XOS Rest Gateway that combine REST APIs and WebSocket
 
     properties:
@@ -29,10 +29,6 @@
           build-timeout: 20
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
-    project-type: freestyle
-    concurrent: true
-
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
@@ -41,8 +37,24 @@
           dependency-jobs: '{dependency-jobs}'
           file-include-regexp: '{all-files-regexp}'
 
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: freestyle
+    concurrent: true
+
     builders:
       - shell: |
           #/usr/bin/env bash
+          set -eu -o pipefail
+
           npm install
           npm test
+
