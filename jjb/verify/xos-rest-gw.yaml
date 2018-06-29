@@ -1,0 +1,21 @@
+---
+# verification jobs for 'xos-rest-gw' repo
+
+- project:
+    name: xos-rest-gw
+    project: '{name}'
+
+    jobs:
+      - 'verify-xos-rest-gw-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-xos-rest-gw-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_xos-rest-gw_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_xos-rest-gw_tag-collision'
+      - 'xos-rest-gw-unit':
+          dependency-jobs: 'verify_xos-rest-gw_sonarqube'

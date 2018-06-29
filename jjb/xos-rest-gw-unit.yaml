@@ -1,21 +1,13 @@
 ---
-# xos-rest-gw test
-
-- project:
-    name: xos-rest-gw
-
-    project-name: '{name}'
-
-    jobs:
-      - 'xos-rest-gw'
+# xos-rest-gw unit test
 
 - job-template:
-    id: 'xos-rest-gw'
-    name: 'xos-rest-gw'
+    id: 'xos-rest-gw-unit'
+    name: '{id}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/xos-rest-gw.yaml
+      Created by {id} job-template from ci-management/jjb/xos-rest-gw-unit.yaml
       Test for the XOS Rest Gateway that combine REST APIs and WebSocket
 
     properties:
@@ -32,8 +24,8 @@
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '^xos-rest-gw'
-          branch-regexp: '{supported-branches-regexp}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
           dependency-jobs: '{dependency-jobs}'
           file-include-regexp: '{all-files-regexp}'
 
