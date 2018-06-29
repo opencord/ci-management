@@ -143,11 +143,13 @@
           mkdir -p ~/.ssh
           echo '{docs-ssh-host-key}' >> ~/.ssh/known_hosts
 
-          # build the docs
-          cd cord/docs
+          # build gitbook docs
+          cd $WORKSPACE/cord/docs
           make build
-
-          # copy swagger REST API docs first, then exclude deleting them when copying rest of guide
           rsync -rvzh --delete _book/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH
-          rsync -rvzh --delete xos/swagger/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH/swagger
+
+          # build swagger docs
+          cd $WORKSPACE/cord/orchestration/xos/docs
+          make swagger_docs
+          rsync -rvzh --delete swagger/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH/swagger
 
