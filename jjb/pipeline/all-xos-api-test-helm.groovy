@@ -164,7 +164,7 @@ pipeline {
            helm install -f examples/api-test-values.yaml xos-core -n xos-core
            sleep 300
            helm status xos-core
-           if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
+           if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn-service|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
                helm dep update xos-profiles/rcord-lite
                helm install xos-profiles/rcord-lite -n rcord-lite
                sleep 360
