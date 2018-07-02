@@ -238,7 +238,7 @@ pipeline {
                 otherFiles: '',
                 outputFileName: 'RobotLogs/output*.xml',
                 outputPath: '.',
-                passThreshold: 100,
+                passThreshold: 95,
                 reportFileName: 'RobotLogs/report*.html',
                 unstableThreshold: 0]);
         }
