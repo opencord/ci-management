@@ -81,8 +81,22 @@
           change-number: '$GERRIT_CHANGE_NUMBER'
           patchset-number: '$GERRIT_PATCHSET_NUMBER'
       - shell: |
-          cd cord/docs
-          make test
+          #!/usr/bin/env bash
+
+          # checkout is under cord
+          cd cord
+
+          # make repos checkout directory
+          mkdir -p docs/repos
+
+          # Find path to the repo, copy into docs
+          PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" .repo/manifest.xml)
+          cp -r "$PROJECT_PATH" "docs/repos/$(basename $PROJECT_PATH)"
+
+          # build docs, don't touch checkout under test
+          cd docs
+          SKIP_CHECKOUT="$GERRIT_PROJECT" make test
+
 
 - job-template:
     id: publish-documentation
@@ -145,6 +159,7 @@
 
           # build gitbook docs
           cd $WORKSPACE/cord/docs
+
           make build
           rsync -rvzh --delete _book/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH
 
