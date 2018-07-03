@@ -161,18 +161,18 @@ pipeline {
         sh """
            pushd cord/helm-charts
            helm dep up xos-core
-           helm install -f examples/image-tag-candidate.yaml -f imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-core -n xos-core
+           helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-core -n xos-core
            sleep 300
            helm status xos-core
            if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn-service|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
                helm dep update xos-profiles/rcord-lite
-               helm install -f examples/image-tag-candidate.yaml -f imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-profiles/rcord-lite -n rcord-lite
+               helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-profiles/rcord-lite -n rcord-lite
                sleep 360
 
            fi
            if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|vMME|vHSS|hss_db|epc-service|internetemulator|sdn-controller)\$ ]]; then
                helm dep update xos-profiles/mcord
-               helm install -f examples/image-tag-candidate.yaml -f imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml  xos-profiles/mcord -n mcord
+               helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml  xos-profiles/mcord -n mcord
                sleep 900
            fi
            helm status xos-core
