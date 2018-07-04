@@ -100,7 +100,7 @@ pipeline {
             sh '''
                pushd cord/automation-tools/developer
                mkdir ib_logs
-               ./imagebuilder.py -l ib_logs -a ib_actions.yml -d ib_graph.dot -f ../../helm-charts/examples/api-test-images.yaml
+               ./imagebuilder.py -l ib_logs -a ib_actions.yml -g ib_graph.dot -f ../../helm-charts/examples/api-test-images.yaml
                popd
                '''
             archiveArtifacts artifacts: 'cord/automation-tools/developer/ib_actions.yml, cord/automation-tools/developer/ib_graph.dot, cord/automation-tools/developer/ib_logs/*', fingerprint: true
