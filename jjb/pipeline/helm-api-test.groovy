@@ -147,7 +147,7 @@ pipeline {
         sh '''
            pushd cord/helm-charts
            helm dep up xos-core
-           helm install -f examples/image-tag-candidate.yaml -f imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-core -n xos-core
+           helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-core -n xos-core
            sleep 60
            helm status xos-core
            popd
