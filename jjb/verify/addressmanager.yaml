@@ -1,0 +1,24 @@
+---
+# verification jobs for 'addressmanager' repo
+
+- project:
+    name: addressmanager
+    project: '{name}'
+
+    jobs:
+      - 'verify-addressmanager-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-addressmanager-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_addressmanager_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_addressmanager_tag-collision'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_addressmanager_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_addressmanager_unit-test'
+          pipeline_script: 'all-xos-api-test-helm.groovy'

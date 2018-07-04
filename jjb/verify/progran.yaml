@@ -1,0 +1,22 @@
+---
+# verification jobs for 'progran' repo
+
+- project:
+    name: progran
+    project: '{name}'
+
+    jobs:
+      - 'verify-progran-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-progran-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_progran_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_progran_tag-collision'
+      - 'api-test':
+          dependency-jobs: 'verify_progran_sonarqube'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
