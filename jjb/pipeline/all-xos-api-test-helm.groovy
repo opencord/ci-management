@@ -115,9 +115,11 @@ pipeline {
           steps {
             sh '''
                pushd cord/automation-tools/developer
-               ./imagebuilder.py -f ../../helm-charts/examples/api-test-images.yaml
+               mkdir ib_logs
+               ./imagebuilder.py -l ib_logs -a ib_actions.yml -d ib_graph.dot ../../helm-charts/examples/filter-images.yaml
                popd
                '''
+            archiveArtifacts artifacts: 'cord/automation-tools/developer/ib_actions.yml, cord/automation-tools/developer/ib_graph.dot, cord/automation-tools/developer/ib_logs/*', fingerprint: true
           }
         }
 
