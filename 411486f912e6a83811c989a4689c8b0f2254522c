@@ -72,6 +72,24 @@
     },
     {
       "key": {
+        "uuid": "cab7d2c8_53b7fd44",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T22:31:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f4d02a1_f0d557d4",
+      "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "088a0280_d3997309",
         "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
         "patchSetId": 3
@@ -101,6 +119,24 @@
       "side": 1,
       "message": "Whoops. Fixed.",
       "parentUuid": "088a0280_d3997309",
+      "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8992c684_920ebf00",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T22:31:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "979440be_057e1ba7",
       "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
