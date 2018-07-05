@@ -13,6 +13,8 @@
     name: 'verify-cord-tester-jobs'
     jobs:
       - 'verify-licensed'
-      - 'api-test':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_cord-tester_licensed'
+      - 'api-test':
+          dependency-jobs: 'verify_cord-tester_tag-collision'
           pipeline_script: 'all-xos-api-test-helm.groovy'
