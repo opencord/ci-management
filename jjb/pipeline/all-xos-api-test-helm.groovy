@@ -161,25 +161,68 @@ pipeline {
     stage('Build') {
       steps {
         sh """
-           pushd cord/helm-charts
-           helm dep up xos-core
-           helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-core -n xos-core
-           sleep 300
-           helm status xos-core
-           if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn-service|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
-               helm dep update xos-profiles/rcord-lite
-               helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-profiles/rcord-lite -n rcord-lite
-               sleep 360
+           #!/usr/bin/env bash
+           set -eu -o pipefail
 
+           helm_install_args='-f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml'
+           basesleep=300
+           extrasleep=60
+
+           pushd cord/helm-charts
+
+           helm dep up xos-core
+           helm install \${helm_install_args} xos-core -n xos-core
+
+           # Pick which chart(s) to load depending on the project being tested
+           # In regex, please list repos in same order as requirements.yaml in the chart(s) loaded!
+
+           if [[ "$GERRIT_PROJECT" =~ ^(rcord|onos-service|fabric|olt-service|vsg-hw|vrouter)\$ ]]; then
+             helm dep update xos-profiles/rcord-lite
+             helm install \${helm_install_args} xos-profiles/rcord-lite -n rcord-lite
+             extrasleep=300
+
+           elif [[ "$GERRIT_PROJECT" =~ ^(vMME|vspgwc|vspgwu|vHSS|hss_db|internetemulator|sdn-controller|epc-service|mcord|progran)\$ ]]; then
+             helm dep update xos-profiles/mcord
+             helm install \${helm_install_args}  xos-profiles/mcord -n mcord
+             extrasleep=900
+
+           elif [[ "$GERRIT_PROJECT" =~ ^(openstack|vtn-service|exampleservice|addressmanager)\$ ]]; then
+             # NOTE: onos-service is included in base-openstack, but tested w/rcord-lite chart
+
+             helm dep update xos-profiles/base-openstack
+             helm dep update xos-profiles/demo-exampleservice
+             helm install \${helm_install_args} xos-profiles/base-openstack base-openstack
+             helm install \${helm_install_args} xos-profiles/demo-exampleservice demo-exampleservice
+
+           elif [[ "$GERRIT_PROJECT" =~ ^(kubernetes-service|simpleexampleservice)\$ ]]; then
+             helm dep update xos-profiles/base-kubernetes
+             helm dep update xos-profiles/demo-simpleexampleservice
+             helm install \${helm_install_args} xos-profiles/base-kubernetes base-kubernetes
+             helm install \${helm_install_args} xos-profiles/demo-simpleexampleservice demo-simpleexampleservice
+
+           elif [[ "$GERRIT_PROJECT" =~ ^(hippie-oss)\$ ]]; then
+             helm dep update xos-services/hippie-oss
+             helm install \${helm_install_args} xos-services/hippie-oss
+
+           else
+             echo "Couldn't find a chart to test project: $GERRIT_PROJECT!"
+             exit 1
            fi
-           if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|vMME|vHSS|hss_db|epc-service|internetemulator|sdn-controller)\$ ]]; then
-               helm dep update xos-profiles/mcord
-               helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml  xos-profiles/mcord -n mcord
-               sleep 900
-           fi
-           helm status xos-core
+
+           # sleep to wait for services to load
+           sleep "\$basesleep"
+           sleep "\$extrasleep"
+
+           echo "# Checking helm deployments"
            kubectl get pods
-           helm ls
+           helm list
+
+           for hchart in \$(helm list -q);
+           do
+             echo "## 'helm status' for chart: \${hchart} ##"
+             helm status "\${hchart}"
+           done
+
            popd
         """
       }
@@ -188,16 +231,21 @@ pipeline {
       steps {
         sh """
             CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+
             docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
             docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
             docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
             docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
+
             SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+
             export testname=_service_api.robot
             export library=_library.robot
+
+            # do addtional tests if additional services are loaded
             if ! [[ "$GERRIT_PROJECT" =~ ^(cord|platform-install|xos|xos-tosca|cord-tester)\$ ]]; then
-                for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
-                for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
+              for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
+              for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
             fi
             """
         }
@@ -250,14 +298,17 @@ pipeline {
         always {
             sh '''
               kubectl get pods --all-namespaces
+
+              echo "# removing helm deployments"
+              kubectl get pods
               helm list
-              helm delete --purge xos-core
-              if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn-service|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
-                helm delete --purge rcord-lite
-              fi
-              if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|vMME|vHSS|hss_db|epc-service|internetemulator|sdn-controller)\$ ]]; then
-                helm delete --purge mcord
-              fi
+
+              for hchart in \$(helm list -q);
+              do
+                echo "## Purging chart: \${hchart} ##"
+                helm delete --purge "\${hchart}"
+              done
+
               minikube delete
             '''
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "suchitra@opennetworking.org, you@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
