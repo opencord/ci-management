@@ -161,25 +161,61 @@ pipeline {
     stage('Build') {
       steps {
         sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           helm_install_args='-f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml'
+
            pushd cord/helm-charts
+
            helm dep up xos-core
-           helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-core -n xos-core
+           helm install \${helm_install_args} xos-core -n xos-core
            sleep 300
            helm status xos-core
-           if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn-service|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
-               helm dep update xos-profiles/rcord-lite
-               helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml xos-profiles/rcord-lite -n rcord-lite
-               sleep 360
 
+           # Pick which chart(s) to load depending on the project being tested
+           # In regex, please list repos in same order as requirements.yaml in the chart!
+
+           if [[ "$GERRIT_PROJECT" =~ ^(rcord|onos-service|fabric|olt-service|vsg-hw|vrouter)\$ ]]; then
+             helm dep update xos-profiles/rcord-lite
+             helm install \${helm_install_args} xos-profiles/rcord-lite -n rcord-lite
+             sleep 360
+
+           elif [[ "$GERRIT_PROJECT" =~ ^(vMME|vspgwc|vspgwu|vHSS|hss_db|internetemulator|sdn-controller|epc-service|mcord|progran)\$ ]]; then
+             helm dep update xos-profiles/mcord
+             helm install \${helm_install_args}  xos-profiles/mcord -n mcord
+             sleep 900
+
+           elif [[ "$GERRIT_PROJECT" =~ ^(openstack|vtn-service|exampleservice|addressmanager)\$ ]]; then
+             # NOTE: onos-service is included in base-openstack, but tested w/rcord-lite chart
+
+             helm dep update xos-profiles/base-openstack
+             helm dep update xos-profiles/demo-exampleservice
+             helm install \${helm_install_args} xos-profiles/base-openstack base-openstack
+             helm install \${helm_install_args} xos-profiles/demo-exampleservice demo-exampleservice
+             sleep 360
+
+           elif [[ "$GERRIT_PROJECT" =~ ^(kubernetes-service|simpleexampleservice)\$ ]]; then
+             helm dep update xos-profiles/base-kubernetes
+             helm dep update xos-profiles/demo-simpleexampleservice
+             helm install \${helm_install_args} xos-profiles/base-kubernetes base-kubernetes
+             helm install \${helm_install_args} xos-profiles/demo-simpleexampleservice demo-simpleexampleservice
+             sleep 360
+           else
+             echo "Couldn't find a chart to test with repo: $GERRIT_PROJECT!"
+             exit 1
            fi
-           if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|vMME|vHSS|hss_db|epc-service|internetemulator|sdn-controller)\$ ]]; then
-               helm dep update xos-profiles/mcord
-               helm install -f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml  xos-profiles/mcord -n mcord
-               sleep 900
-           fi
-           helm status xos-core
+
+           echo "# Checking helm deployments"
            kubectl get pods
-           helm ls
+           helm list
+
+           for hchart in \$(helm list -q);
+           do
+             echo "## 'helm status' for chart: \${hchart}##"
+             helm status "\${hchart}"
+           done
+
            popd
         """
       }
@@ -250,14 +286,17 @@ pipeline {
         always {
             sh '''
               kubectl get pods --all-namespaces
+
+              echo "# removing helm deployments"
+              kubectl get pods
               helm list
-              helm delete --purge xos-core
-              if [[ "$GERRIT_PROJECT" =~ ^(rcord|vrouter|vsg|vtn-service|vtr|fabric|openstack|chameleon|exampleservice|simpleexampleservice|onos-service|olt-service|kubernetes-service|hippie-oss|vsg-hw)\$ ]]; then
-                helm delete --purge rcord-lite
-              fi
-              if [[ "$GERRIT_PROJECT" =~ ^(mcord|vspgwu|venb|vspgwc|vEPC|vMME|vHSS|hss_db|epc-service|internetemulator|sdn-controller)\$ ]]; then
-                helm delete --purge mcord
-              fi
+
+              for hchart in \$(helm list -q);
+              do
+                echo "## Purging chart: \${hchart}##"
+                helm delete --purge "\${hchart}"
+              done
+
               minikube delete
             '''
             step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "suchitra@opennetworking.org, you@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
