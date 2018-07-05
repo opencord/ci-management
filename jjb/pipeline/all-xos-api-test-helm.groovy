@@ -204,6 +204,9 @@ pipeline {
              helm dep update xos-services/hippie-oss
              helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
+           elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester)\$ ]]; then
+             echo "No additional charts to install for testing $GERRIT_PROJECT"
+
            else
              echo "Couldn't find a chart to test project: $GERRIT_PROJECT!"
              exit 1
@@ -243,7 +246,7 @@ pipeline {
             export library=_library.robot
 
             # do addtional tests if additional services are loaded
-            if ! [[ "$GERRIT_PROJECT" =~ ^(cord|platform-install|xos|xos-tosca|cord-tester)\$ ]]; then
+            if ! [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester)\$ ]]; then
               for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
               for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
             fi
