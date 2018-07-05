@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4cfb2fd9_d834e60e",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T21:53:14Z",
+      "side": 1,
+      "message": "rcord-lite also needs a sleep of 360. set that to extrasleep here ?",
+      "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "088a0280_d3997309",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T21:53:14Z",
+      "side": 1,
+      "message": "Duplicate if nest as the one above ?",
+      "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
