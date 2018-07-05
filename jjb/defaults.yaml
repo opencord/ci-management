@@ -49,7 +49,7 @@
     modern-branches-regexp: '^(master|cord-6.0)$'
 
     # for matching repos that build docker images with imagebuilder
-    imagebuilder-projects-regexp: '^(xos.*|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vbbu|venb|vhss|vmm|vmme|vnaas|vpgwc|vrouter|vsg|vsg-hw|vsgw|vsm|vspgwc|vspgwu|vtn-service|vtr)$'
+    imagebuilder-projects-regexp: '^(xos.*|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vsm|vspgwc|vspgwu|vtn-service|vtr)$'
 
     # for matching files with file-include-regexp
     all-files-regexp: '.*'
