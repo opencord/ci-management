@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b2a1b04_1058d9e7",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T22:31:31Z",
+      "side": 1,
+      "message": "-n ?",
+      "revId": "9486e04790db44b049e004177cf431836ec264c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3172ed53_3bbc6eec",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T22:31:31Z",
+      "side": 1,
+      "message": "-n ?",
+      "revId": "9486e04790db44b049e004177cf431836ec264c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "834045db_809c08e3",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T22:31:31Z",
+      "side": 1,
+      "message": "-n ?",
+      "revId": "9486e04790db44b049e004177cf431836ec264c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c56fe32c_cb6abf71",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-05T22:31:31Z",
+      "side": 1,
+      "message": "-n ?",
+      "revId": "9486e04790db44b049e004177cf431836ec264c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
