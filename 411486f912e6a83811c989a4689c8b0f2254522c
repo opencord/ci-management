@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "998ed744_2d81aef2",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-07-05T22:15:41Z",
+      "side": 1,
+      "message": "pushd is used twice, line 81 and 85",
+      "parentUuid": "e7475462_8dc462f2",
+      "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4cfb2fd9_d834e60e",
         "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
         "patchSetId": 3
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "8f4d02a1_f0d557d4",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 182,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-07-05T22:15:41Z",
+      "side": 1,
+      "message": "Total sleep (sleep + extrasleep) is 360.  I think what we\u0027re sleeping on is loading of models.\n\nPreviously the sleep was 300 after xos-core, then 360 (rcord-lite) or 900 (mcord). \n\nThis changes the helm charts to all install at once, with no delay between loading xos-core and the other profile charts, then wait for longer at the end.  I can add an extra bit of time on the rcord-lite chart. \n\nI feel like what we really need is a \"check if the tosca loader container is in the Completed state, or a timeout is reached\", but that can come later.",
+      "parentUuid": "4cfb2fd9_d834e60e",
+      "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "088a0280_d3997309",
         "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
         "patchSetId": 3
@@ -47,6 +83,24 @@
       "writtenOn": "2018-07-05T21:53:14Z",
       "side": 1,
       "message": "Duplicate if nest as the one above ?",
+      "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "979440be_057e1ba7",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 202,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-07-05T22:15:41Z",
+      "side": 1,
+      "message": "Whoops. Fixed.",
+      "parentUuid": "088a0280_d3997309",
       "revId": "411486f912e6a83811c989a4689c8b0f2254522c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
