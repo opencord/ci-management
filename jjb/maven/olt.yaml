@@ -7,7 +7,7 @@
 
     jobs:
       - 'olt-gerrit':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '^(master|{name}-.*)$'
 
 - job-group:
     name: 'olt-gerrit'
