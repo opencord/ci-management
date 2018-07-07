@@ -122,8 +122,8 @@ ubuntu_systems() {
     chmod a+x /usr/local/bin/repo
 
     # install sonarqube scanner
-    SONAR_SCANNER_CLI_VERSION="3.1.0.1141"
-    SONAR_SCANNER_CLI_SHA256SUM="efbe7d1a274bbed220846eccc5b36db853a6bab3ee576aebf93ddc604a89ced4"
+    SONAR_SCANNER_CLI_VERSION="3.2.0.1227"
+    SONAR_SCANNER_CLI_SHA256SUM="07a50ec270a36cb83f26fe93233819c53c145248c638f4591880f1bd36e331d6"
     curl -L -o /tmp/sonarscanner.zip "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip"
     echo "$SONAR_SCANNER_CLI_SHA256SUM  /tmp/sonarscanner.zip" | sha256sum -c -
     pushd /opt
