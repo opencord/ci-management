@@ -56,6 +56,7 @@ ubuntu_systems() {
         curl \
         git \
         less \
+        libpcap-dev \
         libxml2-utils \
         maven \
         nodejs \
