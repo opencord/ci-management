@@ -1,0 +1,51 @@
+---
+# verification jobe for voltha
+
+- job-template:
+    id: 'voltha-unit-test'
+    name: '{project}_unit-test'
+
+    description: |
+      Created by {id} job-template from ci-management/jjb/voltha-unit-test.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: 20
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+
+          rm -rf venv-linux
+          bash ./env.sh
+
+          make utest-with-coverage
+
