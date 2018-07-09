@@ -42,10 +42,24 @@
     builders:
       - shell: |
           #!/usr/bin/env bash
-          set -eu -o pipefail
+          set -e -o pipefail
 
           rm -rf venv-linux
           source ./env.sh
 
           make utest-with-coverage
 
+    publishers:
+      - junit:
+          results: "**/nosetests.xml"
+      - cobertura:
+          report-file: "**/coverage.xml"
+          targets:
+            - files:
+                healthy: 80
+                unhealthy: 0
+                failing: 0
+            - method:
+                healthy: 50
+                unhealthy: 0
+                failing: 0
