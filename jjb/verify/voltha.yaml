@@ -16,6 +16,6 @@
       - 'verify-sonarqube':
           dependency-jobs: 'verify_voltha_licensed'
           build-timeout: 20
-#     - 'voltha-unit-test':
-#         dependency-jobs: 'verify_voltha_sonarqube'
+      - 'voltha-unit-test':
+          dependency-jobs: 'verify_voltha_sonarqube'
 
