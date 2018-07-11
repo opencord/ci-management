@@ -25,10 +25,26 @@
           build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
+
     parameters:
       - string:
+         name: configRepoUrl
+         default: 'https://gerrit.opencord.org/pod-configs'
+         description: 'The URL of the POD configs repository'
+
+      - string:
+         name: configRepoBaseDir
+         default: 'pod-configs/'
+         description: 'The directory inside the POD configs repository'
+
+      - string:
+         name: configRepoFile
+         default: 'kubernetes-configs/flex-ocp-mcord.yml'
+         description: 'The deployment config file'
+
+      - string:
           name: executorNode
-          default: 'flex-ocp-mcord'
+          default: 'qa-testvm-pod'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
@@ -39,8 +55,9 @@
     project-type: pipeline
     concurrent: false
 
-    dsl: !include-raw-escape: ../pipeline/mcord-deployment.groovy
+    dsl: !include-raw-escape: ../pipeline/mcord-build-test.groovy
 
     triggers:
-        - reverse:
-            jobs: 'deploy-node-maas'
+       - timed: |
+                 TZ=America/Los_Angeles
+                 H 6 * * *
