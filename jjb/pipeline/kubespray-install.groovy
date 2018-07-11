@@ -8,9 +8,14 @@ pipeline {
   }
   stages {
 
+    stage ("Clean workspace") {
+      steps {
+            sh 'rm -rf *'
+          }
+        }
+
     stage ("Parse deployment configuration file") {
       steps {
-            sh returnStdout: true, script: 'rm -rf ${configRepoBaseDir}'
             sh returnStdout: true, script: 'git clone -b ${branch} ${configRepoUrl}'
             script { deployment_config = readYaml file: "${configRepoBaseDir}${configRepoFile}" }
           }
@@ -28,23 +33,23 @@ pipeline {
 
     stage ('Install Kubespray on Nodes') {
       steps {
-        sh '''
+        sh """
             pushd $WORKSPACE/automation-tools/kubespray-installer
             ./setup.sh -i flex-onf-pod1 ${deployment_config.node1.ip} ${deployment_config.node2.ip} ${deployment_config.node3.ip}
             popd
-            '''
+            """
             }
         }
 
     stage ('Validate Kube Config File') {
       steps {
-        sh '''
+        sh """
             pushd $WORKSPACE/automation-tools/kubespray-installer/configs
-            #Validate the conf file
-            export KUBECONFIG=$WORKSPACE/automation-tools/kubespray-installer/configs${deployment_config.pod_config}
+            ls -al
+            export KUBECONFIG=$WORKSPACE/automation-tools/kubespray-installer/configs/${deployment_config.pod_config}
             kubectl get pods
             popd
-            '''
+            """
             }
         }
     }
