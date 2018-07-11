@@ -28,6 +28,11 @@
 
     parameters:
       - string:
+         name: branch
+         default: 'master'
+         description: 'Branch to pull'
+
+      - string:
          name: configRepoUrl
          default: 'https://gerrit.opencord.org/pod-configs'
          description: 'The URL of the POD configs repository'
