@@ -125,8 +125,12 @@ EOF
   post {
         always {
           script {
-          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'helm ls; kubectl get pods --all-namespaces 1>&2'", returnStdout: true)
-          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'export OS_CLOUD=openstack_helm; openstack image list; openstack network list; openstack server list --all-projects 1>&2'", returnStdout: true)
+          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'helm ls 1>&2'", returnStdout: true)
+          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'kubectl get pods --all-namespaces 1>&2'", returnStdout: true)
+          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'export OS_CLOUD=openstack_helm; openstack image list 1>&2'", returnStdout: true)
+          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'export OS_CLOUD=openstack_helm; openstack network list 1>&2'", returnStdout: true)
+          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'export OS_CLOUD=openstack_helm; openstack server list --all-projects 1>&2'", returnStdout: true)
+
           }
           step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
      }
