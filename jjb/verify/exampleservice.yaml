@@ -27,12 +27,14 @@
 - job-group:
     name: 'verify-exampleservice-jobs-modern'
     jobs:
-      - 'helm-api-test':
+      - 'api-test':
           dependency-jobs: 'verify_exampleservice_sonarqube'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
 
 - job-group:
     name: 'verify-exampleservice-jobs-legacy'
     jobs:
       - 'api-test':
+          name-extension: '-legacy'
           dependency-jobs: 'verify_exampleservice_sonarqube'
           pipeline_script: 'all-xos-api-test.groovy'

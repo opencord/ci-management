@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Run XOS api tests on HEAD of a branch (usually master), loading the
-// corresponding charts
+// chart-api-test-helm.groovy
+// Checks functionality of the helm-chart, without overriding the version/tag used
 
 CORE_CONTAINER="null"
 
@@ -47,110 +47,40 @@ pipeline {
     stage('patch') {
       steps {
         sh """
-           #!/usr/bin/env bash
-           set -eu -o pipefail
-
-           VERSIONFILE="" # file path to file containing version number
-           NEW_VERSION="" # version number found in VERSIONFILE
-           releaseversion=0
-
-           function read_version {
-             if [ -f "VERSION" ]
-             then
-               NEW_VERSION=\$(head -n1 "VERSION")
-               VERSIONFILE="VERSION"
-             elif [ -f "package.json" ]
-             then
-               NEW_VERSION=\$(python -c 'import json,sys;obj=json.load(sys.stdin); print obj["version"]' < package.json)
-               VERSIONFILE="package.json"
-             else
-               echo "ERROR: No versioning file found!"
-               exit 1
-             fi
-           }
-
-           # check if the version is a released version
-           function check_if_releaseversion {
-             if [[ "\$NEW_VERSION" =~ ^([0-9]+)\\.([0-9]+)\\.([0-9]+)\$ ]]
-             then
-               echo "Version string '\$NEW_VERSION' in '\$VERSIONFILE' is a SemVer released version!"
-               releaseversion=1
-             else
-               echo "Version string '\$NEW_VERSION' in '\$VERSIONFILE' is not a SemVer released version, skipping."
-             fi
-           }
-
            pushd cord
            PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
            repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-
-           pushd \$PROJECT_PATH
-           echo "Existing git tags:"
-           git tag -n
-
-           read_version
-           check_if_releaseversion
-
-           # perform checks if a released version
-           if [ "\$releaseversion" -eq "1" ]
-           then
-             git config --global user.email "apitest@opencord.org"
-             git config --global user.name "API Test"
-
-             git tag -a "\$NEW_VERSION" -m "Tagged for api test on Gerrit patchset: ${gerritChangeNumber}"
-
-             echo "Tags including new tag:"
-             git tag -n
-
-           fi
-           popd
            popd
            """
       }
     }
 
 
-    stage('prep') {
-      parallel {
-
-        stage('images') {
-          steps {
-            sh '''
-               pushd cord/automation-tools/developer
-               mkdir ib_logs
-               ./imagebuilder.py -l ib_logs -a ib_actions.yml -g ib_graph.dot -f ../../helm-charts/examples/filter-images.yaml
-               popd
-               '''
-            archiveArtifacts artifacts: 'cord/automation-tools/developer/ib_actions.yml, cord/automation-tools/developer/ib_graph.dot, cord/automation-tools/developer/ib_logs/*', fingerprint: true
-          }
-        }
-
-        stage('minikube') {
-          steps {
-            /* see https://github.com/kubernetes/minikube/#linux-continuous-integration-without-vm-support */
-            sh '''
-               export MINIKUBE_WANTUPDATENOTIFICATION=false
-               export MINIKUBE_WANTREPORTERRORPROMPT=false
-               export CHANGE_MINIKUBE_NONE_USER=true
-               export MINIKUBE_HOME=$HOME
-               mkdir -p $HOME/.kube || true
-               touch $HOME/.kube/config
-               export KUBECONFIG=$HOME/.kube/config
-               sudo -E /usr/bin/minikube start --vm-driver=none
-               '''
-            script {
-              timeout(3) {
-                waitUntil {
-                  sleep 5
-                  def kc_ret = sh script: "kubectl get po", returnStatus: true
-                  return (kc_ret == 0);
-                }
-              }
+    stage('minikube') {
+      steps {
+        /* see https://github.com/kubernetes/minikube/#linux-continuous-integration-without-vm-support */
+        sh '''
+           export MINIKUBE_WANTUPDATENOTIFICATION=false
+           export MINIKUBE_WANTREPORTERRORPROMPT=false
+           export CHANGE_MINIKUBE_NONE_USER=true
+           export MINIKUBE_HOME=$HOME
+           mkdir -p $HOME/.kube || true
+           touch $HOME/.kube/config
+           export KUBECONFIG=$HOME/.kube/config
+           sudo -E /usr/bin/minikube start --vm-driver=none
+           '''
+        script {
+          timeout(3) {
+            waitUntil {
+              sleep 5
+              def kc_ret = sh script: "kubectl get po", returnStatus: true
+              return (kc_ret == 0);
             }
           }
         }
       }
     }
+
     stage('helm') {
       steps {
         sh '''
@@ -160,13 +90,14 @@ pipeline {
            '''
       }
     }
-    stage('Build') {
+
+    stage('build') {
       steps {
         sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
 
-           helm_install_args='-f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml'
+           helm_install_args='-f examples/api-test-values.yaml'
            basesleep=300
            extrasleep=60
 
@@ -208,7 +139,7 @@ pipeline {
              helm dep update xos-services/hippie-oss
              helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
-           elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester)\$ ]]; then
+           elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
              echo "No additional charts to install for testing $GERRIT_PROJECT"
 
            else
@@ -234,7 +165,7 @@ pipeline {
         """
       }
     }
-    stage('Setup') {
+    stage('setup') {
       steps {
         sh """
             CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
@@ -257,7 +188,7 @@ pipeline {
             """
         }
       }
-    stage('Test') {
+    stage('test') {
        steps {
           sh """
               pushd cord/test/cord-tester/src/test/cord-api/Tests
