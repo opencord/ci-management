@@ -3,7 +3,7 @@
 
 - job-template:
     id: api-test
-    name: 'verify_{project}_api-test'
+    name: 'verify_{project}{name-extension}_api-test'
     description: |
       Created by {id} job-template from ci-management/jjb/api-test.yaml, using pipeline: {pipeline_script}
 

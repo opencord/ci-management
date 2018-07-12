@@ -13,10 +13,11 @@
     name: 'verify-helm-charts-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_helm-charts_licensed'
       - 'verify-helm-lint':
-          dependency-jobs: 'verify_helm-charts_sonarqube'
-      - 'helm-api-test':
+          dependency-jobs: 'verify_helm-charts_licensed'
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_helm-charts_helm-lint'
+      - 'api-test':
+          dependency-jobs: 'verify_helm-charts_sonarqube'
+          pipeline_script: 'chart-api-test-helm.groovy'
 
