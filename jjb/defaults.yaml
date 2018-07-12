@@ -14,6 +14,9 @@
     # by default, don't depend on other jobs
     dependency-jobs: ''
 
+    # used to rename jobs if version/branch forking is required
+    name-extension: ''
+
     # How long to keep builds and artifacts
     build-days-to-keep: 60
     artifact-num-to-keep: 30
