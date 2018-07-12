@@ -19,10 +19,10 @@ CORE_CONTAINER="null"
 
 pipeline {
 
-    /* no label, executor is determined by JJB */
-    agent {
-        label "${params.executorNode}"
-    }
+  /* no label, executor is determined by JJB */
+  agent {
+    label "${params.executorNode}"
+  }
 
   stages {
 
@@ -162,94 +162,108 @@ pipeline {
            done
 
            popd
-        """
+           """
       }
     }
+
     stage('setup') {
       steps {
         sh """
-            CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
 
-            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
-            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
-            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
-            docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
+           docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
 
-            SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+           # create additional testing files if services are loaded
+           if ! [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
+             export testname=_service_api.robot
+             export library=_library.robot
 
-            export testname=_service_api.robot
-            export library=_library.robot
+             SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+             echo \$SERVICES
 
-            # do addtional tests if additional services are loaded
-            if ! [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester)\$ ]]; then
-              for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
-              for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
-            fi
-            """
-        }
+             for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
+
+             for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
+           fi
+           """
       }
+    }
+
     stage('test') {
-       steps {
-          sh """
-              pushd cord/test/cord-tester/src/test/cord-api/Tests
-              CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
-              CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
-              XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
-              export testname=_service_api.robot
-              export library=_library.robot
-              SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
-              echo \$SERVICES
-              cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
-              sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
-              sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
-              sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
-              sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
-              sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
-              cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
-              pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
-              if ! [[ "$GERRIT_PROJECT" =~ ^(cord|platform-install|xos|xos-tosca|cord-tester)\$ ]]; then
-                  for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
-              fi
-              popd
-            """
-            }
-    }
-    stage('Publish') {
-        steps {
-            sh """
-            if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-            cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
-            """
-            step([$class: 'RobotPublisher',
-                disableArchiveOutput: false,
-                logFileName: 'RobotLogs/log*.html',
-                otherFiles: '',
-                outputFileName: 'RobotLogs/output*.xml',
-                outputPath: '.',
-                passThreshold: 95,
-                reportFileName: 'RobotLogs/report*.html',
-                unstableThreshold: 0]);
-        }
-    }
-    }
-    post {
-        always {
-            sh '''
-              kubectl get pods --all-namespaces
+      steps {
+        sh """
+           pushd cord/test/cord-tester/src/test/cord-api/Tests
 
-              echo "# removing helm deployments"
-              kubectl get pods
-              helm list
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
-              for hchart in \$(helm list -q);
-              do
-                echo "## Purging chart: \${hchart} ##"
-                helm delete --purge "\${hchart}"
-              done
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
+           sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
+           sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
 
-              minikube delete
-            '''
-            step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "suchitra@opennetworking.org, you@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
-        }
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
+           pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
+
+           # do additional tests if services are loaded
+           if ! [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
+             export testname=_service_api.robot
+             export library=_library.robot
+             SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+             echo \$SERVICES
+
+             for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           fi
+
+           popd
+           """
+      }
     }
+
+    stage('publish') {
+      steps {
+        sh """
+           if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
+           cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
+           """
+
+        step([$class: 'RobotPublisher',
+            disableArchiveOutput: false,
+            logFileName: 'RobotLogs/log*.html',
+            otherFiles: '',
+            outputFileName: 'RobotLogs/output*.xml',
+            outputPath: '.',
+            passThreshold: 95,
+            reportFileName: 'RobotLogs/report*.html',
+            unstableThreshold: 0]);
+      }
+    }
+
+  }
+  post {
+    always {
+      sh '''
+         kubectl get pods --all-namespaces
+
+         echo "# removing helm deployments"
+         kubectl get pods
+         helm list
+
+         for hchart in \$(helm list -q);
+         do
+           echo "## Purging chart: \${hchart} ##"
+           helm delete --purge "\${hchart}"
+         done
+
+         minikube delete
+         '''
+         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "suchitra@opennetworking.org, you@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
+    }
+  }
 }
