@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abaafa87_d0f1d74d",
+        "filename": "jjb/shell/xos-unit.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2018-07-13T03:25:17Z",
+      "side": 1,
+      "message": "instead of installing packages one by one can we have a script in the XOS repo so that we can setup the same exact envronment locally? (something like xos/scripts/setup_venv.sh)",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 4
+      },
+      "revId": "76ac1420f1435a888af38750148ca203005d6d24",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
