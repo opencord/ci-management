@@ -35,7 +35,7 @@ pipeline {
       steps {
         sh """
             pushd $WORKSPACE/automation-tools/kubespray-installer
-            ./setup.sh -i flex-onf-pod1 ${deployment_config.node1.ip} ${deployment_config.node2.ip} ${deployment_config.node3.ip}
+            ./setup.sh -i ${podName} ${deployment_config.node1.ip} ${deployment_config.node2.ip} ${deployment_config.node3.ip}
             popd
             """
             }
@@ -44,9 +44,9 @@ pipeline {
     stage ('Validate Kube Config File') {
       steps {
         sh """
-            pushd $WORKSPACE/automation-tools/kubespray-installer/configs
+            pushd $WORKSPACE/automation-tools/kubespray-installer
             ls -al
-            export KUBECONFIG=$WORKSPACE/automation-tools/kubespray-installer/configs/${deployment_config.pod_config}
+            source setup.sh -s ${podName}
             kubectl get pods
             popd
             """

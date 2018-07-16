@@ -54,6 +54,11 @@
          default: 'kubernetes-configs/flex-onf-pod1.yml'
          description: 'The deployment config file'
 
+      - string:
+         name: podName
+         default: 'flex-onf-pod1'
+         description: 'Name of pod'
+
     project-type: pipeline
     concurrent: false
 
