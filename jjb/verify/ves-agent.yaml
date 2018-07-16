@@ -1,0 +1,17 @@
+---
+# verification jobs for 'ves-agent' repo
+
+- project:
+    name: ves-agent
+    project: '{name}'
+
+    jobs:
+      - 'verify-ves-agent-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-ves-agent-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_ves-agent_tag-collision'
