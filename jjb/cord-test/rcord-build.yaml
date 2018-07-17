@@ -9,39 +9,6 @@
     build-timeout: '300'
 
     jobs:
-      # qct pod 1 build jobs (rcord)
-      - 'build_pod_first':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'cord-4.0'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         time: '20'
-
-      - 'build_pod':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'cord-4.1'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         fromBranch: 'cord-4.0'
-
-      - 'build_pod':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-         fromBranch: 'cord-4.1'
-
-      - 'build_pod':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile'
-         fromBranch: 'cord-5.0'
-
       # Flex POD1 build job for (rcord) - soak platform
       - 'build_pod_manual':
          pod: 'flex-pod1'
@@ -49,32 +16,3 @@
          profile: 'rcord'
          branch: 'cord-5.0'
          Jenkinsfile: 'Jenkinsfile.newBuildSystem'
-
-      # qct pod 1 test jobs
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'cord-4.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
-
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'cord-4.1'
-         Jenkinsfile: 'Jenkinsfile-rcord'
-
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'cord-5.0'
-         Jenkinsfile: 'Jenkinsfile-rcord'
-
-      - 'build_pod_test':
-         pod: 'qct-pod1'
-         pod_config: 'qct-pod1.yml'
-         profile: 'rcord'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-rcord'
