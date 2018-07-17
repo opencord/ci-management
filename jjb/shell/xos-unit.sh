@@ -36,6 +36,6 @@ else
 fi
 
 echo "Performing nose2 tests"
-nose2 --verbose --with-coverage --coverage-report xml --coverage-report term --junit-xml
+nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
 popd
 
