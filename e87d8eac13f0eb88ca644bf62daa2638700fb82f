@@ -16,6 +16,24 @@
       "revId": "e87d8eac13f0eb88ca644bf62daa2638700fb82f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "70d9599e_fa70e3f3",
+        "filename": "jjb/verify/vnaas.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-07-17T23:34:01Z",
+      "side": 1,
+      "message": "It\u0027s not included in any of the helm charts, so it wouldn\u0027t be verified by the helm-based API tests - it\u0027s one of the E-CORD services that wasn\u0027t updated for 6.0, IIRC.",
+      "parentUuid": "fcbb726a_1e3f6230",
+      "revId": "e87d8eac13f0eb88ca644bf62daa2638700fb82f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
