@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fcbb726a_1e3f6230",
+        "filename": "jjb/verify/vnaas.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-17T23:30:35Z",
+      "side": 1,
+      "message": "Why dont we want to enable the api tests for this repo?",
+      "revId": "e87d8eac13f0eb88ca644bf62daa2638700fb82f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
