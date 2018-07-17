@@ -34,6 +34,24 @@
       "revId": "e87d8eac13f0eb88ca644bf62daa2638700fb82f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "44833b79_11bb64e2",
+        "filename": "jjb/verify/vnaas.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-07-17T23:35:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "70d9599e_fa70e3f3",
+      "revId": "e87d8eac13f0eb88ca644bf62daa2638700fb82f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
