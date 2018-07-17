@@ -46,6 +46,30 @@
       "revId": "76ac1420f1435a888af38750148ca203005d6d24",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d079f7fb_efbf08a9",
+        "filename": "jjb/shell/xos-unit.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-07-17T15:39:46Z",
+      "side": 1,
+      "message": "Done in patch #4",
+      "parentUuid": "d74f6002_6dfe5001",
+      "range": {
+        "startLine": 1,
+        "startChar": 0,
+        "endLine": 80,
+        "endChar": 4
+      },
+      "revId": "76ac1420f1435a888af38750148ca203005d6d24",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
