@@ -39,7 +39,10 @@
 - builder:
     name: cord-infra-sonarqube
     builders:
-      - shell: 'pylint --version'
+      - inject:
+          properties-content: |
+            SONAR_PREP_COMMANDS={sonar-prep-commands}
+      - shell: !include-raw-escape: shell/sonarprep.sh
       - sonar:
           sonar-name: 'sonarqube.opencord.org'
           java-opts: '-Xmx1280m'
@@ -47,6 +50,7 @@
             sonar.sources=.
             sonar.projectKey={project}_$GERRIT_BRANCH
             sonar.python.pylint=/usr/local/bin/pylint
+            sonar.java.binaries={sonar-java-binaries}
 
 # trigger on gerrit patchsets and actions
 # docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.gerrit
