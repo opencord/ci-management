@@ -12,6 +12,13 @@
 # Sonarqube docs:
 #  https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Jenkins
 #  https://docs.sonarqube.org/display/SCAN/Advanced+SonarQube+Scanner+Usages
+#
+# Variables:
+#  sonar-java-binaries - paths to Java bytecodefiles for SonarQube to analyze. Defaults to "".
+#                        See: https://docs.sonarqube.org/display/PLUG/Java+Plugin+and+Bytecode
+#  sonar-prep-commands - shell commands to run before SonarScanner is run, frequently used to
+#                        build java bytecode. Defaults to "" (nothing run)
+#
 
 - project:
     name: 'sonarqube-ongoing-coverage'
@@ -67,11 +74,11 @@
     project-type: freestyle
     concurrent: true
 
-# run `pylint --version` before sonarqube, to expose version in logs and to
-# avoid a timeout when sonarqube runs it during analysis.
     builders:
         - 'cord-infra-sonarqube':
             project: '{project}'
+            sonar-prep-commands: '{sonar-prep-commands}'
+            sonar-java-binaries: '{sonar-java-binaries}'
 
 # run Sonarqube as a verification jobs on individual patchsets
 - job-template:
@@ -111,8 +118,8 @@
     project-type: freestyle
     concurrent: true
 
-# run `pylint --version` before sonarqube, to expose version in logs and to
-# avoid a timeout when sonarqube runs it during analysis.
     builders:
         - 'cord-infra-sonarqube':
             project: '{project}'
+            sonar-prep-commands: '{sonar-prep-commands}'
+            sonar-java-binaries: '{sonar-java-binaries}'
