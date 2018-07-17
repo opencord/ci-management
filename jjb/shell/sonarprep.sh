@@ -15,7 +15,7 @@
 # limitations under the License.
 
 # sonarprep.sh - prep project for running sonarqube
-set -eu -o pipefail
+set -e -o pipefail
 
 # run build commands if not blank
 if [ ! -z "$SONAR_PREP_COMMANDS" ]
