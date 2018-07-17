@@ -17,6 +17,8 @@
           dependency-jobs: 'verify_onos-service_licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_onos-service_tag-collision'
-      - 'api-test':
+      - 'xos-unit-test':
           dependency-jobs: 'verify_onos-service_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_onos-service_unit-test'
           pipeline_script: 'all-xos-api-test-helm.groovy'
