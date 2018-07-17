@@ -128,6 +128,7 @@
       - shell: |
           helm init --client-only
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+          helm repo add cord https://charts.opencord.org/master
 
       - shell: !include-raw-escape: shell/helmlint.sh
 
