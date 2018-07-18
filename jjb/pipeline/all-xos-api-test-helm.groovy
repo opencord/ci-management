@@ -333,7 +333,7 @@ pipeline {
            helm delete --purge "\${hchart}"
          done
 
-         minikube delete
+         sudo minikube delete
          '''
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "suchitra@opennetworking.org, you@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
     }
