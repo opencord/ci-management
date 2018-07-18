@@ -17,6 +17,8 @@
           dependency-jobs: 'verify_rcord_licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_rcord_tag-collision'
-      - 'api-test':
+      - 'xos-unit-test':
           dependency-jobs: 'verify_rcord_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_rcord_unit-test'
           pipeline_script: 'all-xos-api-test-helm.groovy'
