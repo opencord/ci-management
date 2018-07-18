@@ -6,7 +6,7 @@
     project: '{name}'
 
     jobs:
-      - 'verify-vsg-jobs':
+      - 'verify-kubernetes-service-jobs':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
