@@ -49,7 +49,7 @@
 
       - string:
           name: executorNode
-          default: 'qa-testvm-pod'
+          default: 'qa-testvm-pod2'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
