@@ -13,8 +13,10 @@
     name: 'verify-helm-charts-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-helm-lint':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_helm-charts_licensed'
+      - 'verify-helm-lint':
+          dependency-jobs: 'verify_helm-charts_tag-collision'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_helm-charts_helm-lint'
       - 'api-test':
