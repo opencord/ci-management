@@ -22,7 +22,7 @@
     name: versioning-jobs
 
     branch-regexp: '{modern-branches-regexp}'
-    project-regexp: '{imagebuilder-projects-regexp}'
+    project-regexp: '{version-tag-projects-regexp}'
 
     jobs:
       - 'version-tag'
