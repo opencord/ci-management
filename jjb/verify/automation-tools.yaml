@@ -13,8 +13,10 @@
     name: 'verify-automation-tools-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-ansible-lint':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_automation-tools_licensed'
+      - 'verify-ansible-lint':
+          dependency-jobs: 'verify_automation-tools_tag-collision'
       - 'verify-shellcheck':
           dependency-jobs: 'verify_automation-tools_ansible-lint'
       - 'verify-sonarqube':
