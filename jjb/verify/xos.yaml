@@ -19,7 +19,9 @@
           dependency-jobs: 'verify_xos_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_xos_sonarqube'
-      - 'api-test':
+      - 'synchronizer-update':
           dependency-jobs: 'verify_xos_unit-test'
+      - 'api-test':
+          dependency-jobs: 'verify_xos_synchronizer-update'
           pipeline_script: 'all-xos-api-test-helm.groovy'
 
