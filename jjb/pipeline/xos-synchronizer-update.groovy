@@ -108,13 +108,46 @@ pipeline {
            """
       }
     }
+
     stage('candiate tag') {
       steps {
         sh """
+           echo "" > \${WORKSPACE}/updated_dockerfiles
            XOS_MAJOR=\$(cut -b 1 cord/orchestration/xos/VERSION)
+
            for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer cord/orchestration/profiles/*/Dockerfile.synchronizer
            do
              sed -i "s/^FROM\\(.*\\):\${XOS_MAJOR}.*\$/FROM\\1:candidate/" "\$df"
+             echo "\${WORKSPACE}/\$df" >> \${WORKSPACE}/updated_dockerfiles
+           done
+           """
+      }
+    }
+
+    stage('unittest') {
+      steps {
+        sh """
+           #!/usr/bin/env bash
+           set -e -o pipefail
+
+           cd "\${WORKSPACE}"
+
+           export XOS_DIR=\${WORKSPACE}/cord/orchestration/xos
+           \$XOS_DIR/scripts/setup_venv.sh
+           source "\${WORKSPACE}/venv-xos/bin/activate"
+
+           for df in \$(cat "\${WORKSPACE}/updated_dockerfiles")
+           do
+             projectdir=\$(dirname "\${df}")
+             if [ -e "\${projectdir}/xos/unittest.cfg" ]
+             then
+               pushd \${projectdir}/xos
+               echo "Performing nose2 tests"
+               nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
+             popd
+             else
+               echo "No unit tests found for project \$(basename \${projectdir})"
+             fi
            done
            """
       }
