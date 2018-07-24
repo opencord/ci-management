@@ -90,7 +90,7 @@ ubuntu_systems() {
         isort \
         linkchecker \
         pexpect \
-        pylint \
+        pylint==1.* \
         pyyaml \
         robotframework \
         robotframework-httplibrary \
