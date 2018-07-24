@@ -95,7 +95,7 @@ pipeline {
         docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
         docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
         docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
-        SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+        SERVICES=\$(curl -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/dynamicload/load_status | jq -r '.services[].name')
         export testname=_service_api.robot
         export library=_library.robot
         for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
@@ -120,7 +120,7 @@ pipeline {
             fi
                 export testname=_service_api.robot
                 export library=_library.robot
-                SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+                SERVICES=\$(curl -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/dynamicload/load_status | jq -r '.services[].name')
                 echo \$SERVICES
                 export SERVER_IP=localhost
                 export SERVER_PORT=9101

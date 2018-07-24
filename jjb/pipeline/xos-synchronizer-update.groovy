@@ -262,7 +262,7 @@ pipeline {
              export testname=_service_api.robot
              export library=_library.robot
 
-             SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+             SERVICES=\$(curl -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/dynamicload/load_status | jq -r '.services[].name')
              echo \$SERVICES
 
              for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
@@ -296,7 +296,7 @@ pipeline {
            if ! [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
              export testname=_service_api.robot
              export library=_library.robot
-             SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+             SERVICES=\$(curl -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/dynamicload/load_status | jq -r '.services[].name')
              echo \$SERVICES
 
              for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
