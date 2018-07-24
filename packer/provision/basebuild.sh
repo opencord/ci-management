@@ -81,7 +81,7 @@ ubuntu_systems() {
     pip install \
         Jinja2 \
         ansible-lint \
-        astroid \
+        astroid==1.* \
         docker-compose==1.20.1 \
         docker==3.2.1 \
         gitpython \
