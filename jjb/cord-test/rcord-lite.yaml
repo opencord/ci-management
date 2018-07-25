@@ -23,6 +23,6 @@
          testvm: 'qa-testvm-pod'
          kube-pod: 'flex-pod1-olt'
          profile: 'rcord-lite'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-rcordlite'
+         branch: '6.0'
+         Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch'
          time: '50'
