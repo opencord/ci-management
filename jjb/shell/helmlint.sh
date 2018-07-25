@@ -37,6 +37,7 @@ do
   if [[ ! $chartdir =~ voltha$ ]] && \
      [[ ! $chartdir =~ nem-core$ ]] && \
      [[ ! $chartdir =~ seba-substrate$ ]] && \
+     [[ ! $chartdir =~ nem-monitoring$ ]] && \
      [ -f "${chartdir}/requirements.yaml" ]
   then
     helm dependency update "${chartdir}"
