@@ -169,8 +169,6 @@ pipeline {
            set -eu -o pipefail
 
            helm_install_args='-f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml'
-           basesleep=300
-           extrasleep=60
 
            pushd cord/helm-charts
 
@@ -183,14 +181,12 @@ pipeline {
            if [[ "$GERRIT_PROJECT" =~ ^(rcord|onos-service|fabric|olt-service|vsg-hw|vrouter)\$ ]]; then
              helm dep update xos-profiles/rcord-lite
              helm install \${helm_install_args} xos-profiles/rcord-lite -n rcord-lite
-             extrasleep=300
 
            elif [[ "$GERRIT_PROJECT" =~ ^(vMME|vspgwc|vspgwu|vHSS|hss_db|internetemulator|sdn-controller|epc-service|mcord|progran)\$ ]]; then
              helm dep update xos-profiles/base-openstack
              helm dep update xos-profiles/mcord
              helm install \${helm_install_args} xos-profiles/base-openstack -n base-openstack
              helm install \${helm_install_args} xos-profiles/mcord -n mcord
-             extrasleep=900
 
            elif [[ "$GERRIT_PROJECT" =~ ^(openstack|vtn-service|exampleservice|addressmanager)\$ ]]; then
              # NOTE: onos-service is included in base-openstack, but tested w/rcord-lite chart
@@ -218,9 +214,8 @@ pipeline {
              exit 1
            fi
 
-           # sleep to wait for services to load
-           sleep "\$basesleep"
-           sleep "\$extrasleep"
+           # wait for services to load
+           ./scripts/wait_for_jobs.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
