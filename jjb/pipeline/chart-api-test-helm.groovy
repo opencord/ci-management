@@ -137,6 +137,8 @@ pipeline {
 
            elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
              echo "No additional charts to install for testing $GERRIT_PROJECT"
+             # ADDING TEMP SLEEP UNIL SEBA-102 resolves
+	     sleep 300
 
            else
              echo "Couldn't find a chart to test project: $GERRIT_PROJECT!"
@@ -144,7 +146,7 @@ pipeline {
            fi
 
            # wait for services to load - TEMP SLEEP
-           sleep 300
+           ./scripts/wait_for_jobs.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
