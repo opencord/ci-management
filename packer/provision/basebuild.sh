@@ -177,7 +177,7 @@ ubuntu_systems() {
     mv /tmp/protoc3/include/* /usr/local/include/
     # give sudo permissions on minikube and protoc to jenkins user
     cat <<EOF >/etc/sudoers.d/88-jenkins-minikube-protoc
-Cmnd_Alias CMDS = /usr/local/bin/protoc, /usr/bin/minikube
+Cmnd_Alias CMDS = /usr/local/bin/protoc, /usr/bin/minikube, /bin/chmod
 Defaults:jenkins !requiretty
 jenkins ALL=(ALL) NOPASSWD:SETENV: CMDS
 EOF
