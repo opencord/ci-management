@@ -263,7 +263,7 @@ pipeline {
 
            # wait for services to load
            ./scripts/wait_for_jobs.sh
- 
+
            echo "# Checking helm deployments"
            kubectl get pods
            helm list
@@ -276,6 +276,31 @@ pipeline {
 
            popd
            """
+      }
+    }
+
+    stage('wait for core') {
+      steps {
+        timeout(time:5) {
+          waitUntil {
+            script {
+              try {
+                sh """
+                CORE_POD=\$(kubectl get pods | grep xos-core | awk '{print \$1}')
+                CHAM_POD=\$(kubectl get pods | grep chameleon | awk '{print \$1}')
+                CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+                XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
+                kubectl logs \$CORE_POD | grep "XOS core entering wait loop"
+                kubectl logs \$CHAM_POD | grep reconnected | wc -l | grep 2
+                curl -I -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/core/users | grep "200 OK"
+                """
+                return true
+              } catch (exception) {
+              return false
+              }
+            }
+          }
+        }
       }
     }
 
