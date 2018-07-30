@@ -172,9 +172,10 @@ pipeline {
                 CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
                 XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
                 kubectl logs \$CORE_POD | grep "XOS core entering wait loop"
-                kubectl logs \$CHAM_POD | grep reconnected | wc -l | grep 2
                 curl -I -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/core/users | grep "200 OK"
-                """
+		sleep 5
+                curl -I -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/core/sites | grep "200 OK"
+		"""
                 return true
               } catch (exception) {
               return false
