@@ -260,7 +260,7 @@ pipeline {
            fi
 
            # wait for services to load
-           ./scripts/wait_for_jobs.sh
+           JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
