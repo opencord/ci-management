@@ -173,7 +173,7 @@ pipeline {
                 XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
                 kubectl logs \$CORE_POD | grep "XOS core entering wait loop"
                 curl -I -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/core/users | grep "200 OK"
-		sleep 5
+		sleep 30
                 curl -I -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/core/sites | grep "200 OK"
 		"""
                 return true
