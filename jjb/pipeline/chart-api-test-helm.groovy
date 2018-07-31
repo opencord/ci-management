@@ -269,6 +269,11 @@ pipeline {
   post {
     always {
       sh '''
+         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+         do
+           kubectl logs \$pod > $WORKSPACE/\$pod.log;
+         done
+
          kubectl get pods --all-namespaces
 
          echo "# removing helm deployments"
@@ -283,6 +288,7 @@ pipeline {
 
          sudo minikube delete
          '''
+         archiveArtifacts artifacts: '*.log'
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "suchitra@opennetworking.org, you@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
     }
   }
