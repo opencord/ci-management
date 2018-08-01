@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "af3478c5_67ada971",
+        "filename": "jjb/pipeline/chart-api-test-helm.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2018-08-01T20:36:59Z",
+      "side": 1,
+      "message": "The pattern for each \"install/test\" stage looks pretty similar.  Would it make sense to have a single \"install/test\" function that can be parameterized with the specifics for each test?",
+      "range": {
+        "startLine": 92,
+        "startChar": 4,
+        "endLine": 92,
+        "endChar": 38
+      },
+      "revId": "1c773ed23d0ba61051fdfd57894dbab30805ce70",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
