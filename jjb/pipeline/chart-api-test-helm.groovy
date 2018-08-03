@@ -107,6 +107,8 @@ pipeline {
 
            # wait for services to load
            JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh
+	   # adding tmp sleep momentarily
+	   sleep 120
 
            echo "# Checking helm deployments"
            kubectl get pods
@@ -150,7 +152,7 @@ pipeline {
            ## Run CORE API Tests
            pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
            ## Run Rcord-lite services API Tests
-           for i in \$SERVICES; do bash -c "pybot -d Log -T -e ProgranServiceInstance -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
            popd
 
@@ -217,7 +219,7 @@ pipeline {
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run mcord services API Tests
-           for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -e ProgranServiceInstance -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
            popd
 
