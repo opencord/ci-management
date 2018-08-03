@@ -150,7 +150,7 @@ pipeline {
            ## Run CORE API Tests
            pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
            ## Run Rcord-lite services API Tests
-           for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -e ProgranServiceInstance -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
            popd
 
