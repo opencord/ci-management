@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9e3b75c8_1d0b99ec",
+        "filename": "jjb/cord-test/rcord-lite.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-08-06T20:00:23Z",
+      "side": 1,
+      "message": "i believe you can leave this empty as \u0027\u0027. let me confirm",
+      "revId": "950c5a59a08750a7c17c4b6e32afc8af161cccce",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
