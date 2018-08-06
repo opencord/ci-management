@@ -409,8 +409,9 @@
       - reverse:
           jobs: 'build_{profile}_{pod}_manual_{branch}'
           result: 'failure'
+
 - job-template:
-    name: 'build_{profile}_{kube-pod}_{branch}'
+    name: 'build_{profile}_{kube-pod}_{scenario}_{branch}'
     id: build_kube_pod_first
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -464,5 +465,4 @@
     triggers:
        - timed: |
                  TZ=America/Los_Angeles
-                 H {time} * * *
-
+                 H {time} {day} * *
