@@ -346,7 +346,7 @@ pipeline {
            sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
-           pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
+           pybot -d Log -T XOSCoreAPITests.robot  || true
 
            # do additional tests if services are loaded
            if ! [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
@@ -355,7 +355,7 @@ pipeline {
              SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
              echo \$SERVICES
 
-             for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+             for i in \$SERVICES; do bash -c "pybot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
            fi
 
            popd

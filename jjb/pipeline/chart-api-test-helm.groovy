@@ -150,9 +150,9 @@ pipeline {
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run CORE API Tests
-           pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
+           pybot -d Log -T XOSCoreAPITests.robot  || true
            ## Run Rcord-lite services API Tests
-           for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
            popd
 
@@ -219,7 +219,7 @@ pipeline {
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run mcord services API Tests
-           for i in \$SERVICES; do bash -c "pybot -d Log -T -e ProgranServiceInstance -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -e ProgranServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
            popd
 
@@ -287,7 +287,7 @@ pipeline {
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run kubernetes-base services API Tests
-           for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
            popd
 
@@ -343,7 +343,7 @@ pipeline {
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run hippie-oss services API Tests
-           for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
            popd
 
