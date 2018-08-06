@@ -14,9 +14,11 @@
          testvm: 'qa-testvm-pod'
          kube-pod: 'flex-onf-pod1'
          profile: 'rcord-lite'
+         scenario: ''
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite'
          time: '20'
+         day: '0-31/1'
       
      # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
       - 'build_kube_pod_first':
@@ -24,5 +26,18 @@
          kube-pod: 'flex-pod1-olt'
          profile: 'rcord-lite'
          branch: 'cord-6.0'
+         scenario: 'zerotouch'
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch'
-         time: '50'
+         time: '0'
+         day: '1-31/2'
+     
+     # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
+      - 'build_kube_pod_first':
+         testvm: 'qa-testvm-pod'
+         kube-pod: 'flex-pod1-olt'
+         profile: 'rcord-lite'
+         branch: 'cord-6.0'
+         scenario: 'topdown'
+         Jenkinsfile: 'Jenkinsfile-rcordlite-topdown'
+         time: '0'
+         day: '2-30/2'
