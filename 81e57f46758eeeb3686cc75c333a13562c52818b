@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf8c6005_1fe11240",
+        "filename": "jjb/cord-test/rcord-lite.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2018-08-07T18:29:07Z",
+      "side": 1,
+      "message": "Why are we using the same POD as the client machine?  We need to find another VM for accessing QCT PODs like we have for Flex",
+      "range": {
+        "startLine": 47,
+        "startChar": 21,
+        "endLine": 47,
+        "endChar": 22
+      },
+      "revId": "81e57f46758eeeb3686cc75c333a13562c52818b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
