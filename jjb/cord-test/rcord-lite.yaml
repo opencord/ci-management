@@ -19,7 +19,7 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite'
          time: '20'
          day: '0-31/1'
-      
+
      # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
       - 'build_kube_pod_first':
          testvm: 'qa-testvm-pod'
@@ -30,7 +30,7 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch'
          time: '0'
          day: '1-31/2'
-     
+
      # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
       - 'build_kube_pod_first':
          testvm: 'qa-testvm-pod'
@@ -41,3 +41,14 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown'
          time: '0'
          day: '2-30/2'
+
+     # qct pod1 kubernetes build jobs (rcord lite)
+      - 'build_kube_pod_first':
+         testvm: 'qct-pod1'
+         kube-pod: 'qct-pod1'
+         profile: 'rcord-lite'
+         branch: 'master'
+         scenario: ''
+         Jenkinsfile: 'Jenkinsfile-rcordlite'
+         time: '0'
+         day: '*'
