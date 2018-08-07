@@ -1,3 +1,5 @@
+TEST
+
 # ci-management for CORD
 
 This repo holds configuration for the Jenkins testing infrastructure used by
