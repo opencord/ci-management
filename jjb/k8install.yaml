@@ -11,7 +11,7 @@
 
 - job-template:
     id: 'k8-install'
-    name: 'k8-install'
+    name: 'kubespray-multinode-install'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -63,3 +63,8 @@
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/kubespray-install.groovy
+
+    triggers:
+       - timed: |
+                 TZ=America/Los_Angeles
+                 H 10 31/3 * *
