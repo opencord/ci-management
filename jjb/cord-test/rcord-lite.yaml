@@ -52,3 +52,14 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite'
          time: '0'
          day: '*'
+     # flex ocp pod 2 kubernetes build jobs (rcord lite)
+      - 'build_kube_pod_first':
+         testvm: 'flex-pod2'
+         kube-pod: 'flex-ocp-pod2'
+         profile: 'rcord-lite'
+         scenario: ''
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-rcordlite'
+         time: '30'
+         day: '0-31/1'
+
