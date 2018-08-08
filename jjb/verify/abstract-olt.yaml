@@ -1,0 +1,17 @@
+---
+# verification jobs for 'abstract-olt' repo
+
+- project:
+    name: abstract-olt
+    project: '{name}'
+
+    jobs:
+      - 'verify-abstract-olt-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-abstract-olt-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_abstract-olt_licensed'
