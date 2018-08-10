@@ -1,0 +1,17 @@
+---
+# verification jobs for 'mgmt-gateway-vm' repo
+
+- project:
+    name: mgmt-gateway-vm
+    project: '{name}'
+
+    jobs:
+      - 'verify-mgmt-gateway-vm-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-mgmt-gateway-vm-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_mgmt-gateway-vm_licensed'
