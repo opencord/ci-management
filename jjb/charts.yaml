@@ -51,6 +51,7 @@
     builders:
       - shell: |
           #!/usr/bin/env bash
+          set -eu -o pipefail
 
           # Set up the ssh host keys for the docs host
           mkdir -p ~/.ssh
@@ -59,6 +60,7 @@
           # Setup and build the helm repo
           helm init --client-only
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+          helm repo add rook-beta https://charts.rook.io/beta
           ./scripts/helmrepo.sh
 
           # Copy repo to host
