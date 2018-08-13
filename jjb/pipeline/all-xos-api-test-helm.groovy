@@ -206,6 +206,10 @@ pipeline {
              helm dep update xos-services/hippie-oss
              helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
+           elif [[ "$GERRIT_PROJECT" =~ ^(att-workflow-driver)\$ ]]; then
+             helm dep update xos-services/att-workflow-driver
+             helm install \${helm_install_args} xos-services/att-workflow-driver -n att-workflow-driver
+
            elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
              echo "No additional charts to install for testing $GERRIT_PROJECT"
 
