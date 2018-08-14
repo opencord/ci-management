@@ -356,6 +356,12 @@ pipeline {
   post {
     always {
       sh '''
+         # save pod logs
+         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+         do
+           kubectl logs \$pod > $WORKSPACE/\$pod.log;
+         done
+
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
@@ -374,6 +380,7 @@ pipeline {
 
          sudo minikube delete
          '''
+         archiveArtifacts artifacts: '*.log'
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
             logFileName: 'RobotLogs/log*.html',
