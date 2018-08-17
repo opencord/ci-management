@@ -117,8 +117,13 @@ pipeline {
 
            for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer cord/orchestration/profiles/*/Dockerfile.synchronizer
            do
-             sed -i "s/^FROM\\(.*\\):\${XOS_MAJOR}.*\$/FROM\\1:candidate/" "\$df"
-             echo "\${WORKSPACE}/\$df" >> \${WORKSPACE}/updated_dockerfiles
+             df_contents=$(cat "\$df")
+             if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\${XOS_MAJOR}" ||
+                   "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
+             then
+               sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:candidate/" "\$df"
+               echo "\${WORKSPACE}/\$df" >> \${WORKSPACE}/updated_dockerfiles
+             fi
            done
            """
       }
