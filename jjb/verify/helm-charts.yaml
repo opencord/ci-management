@@ -8,6 +8,9 @@
     jobs:
       - 'verify-helm-charts-jobs':
           branch-regexp: '{modern-branches-regexp}'
+      - 'post-merge-helm-charts-jobs':
+          branch-regexp: '{modern-branches-regexp}'
+          timed-trigger: '{every-four-hours}'
 
 - job-group:
     name: 'verify-helm-charts-jobs'
@@ -19,7 +22,9 @@
           dependency-jobs: 'verify_helm-charts_tag-collision'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_helm-charts_helm-lint'
-      - 'api-test':
-          dependency-jobs: 'verify_helm-charts_sonarqube'
-          pipeline_script: 'chart-api-test-helm.groovy'
 
+- job-group:
+    name: 'post-merge-helm-charts-jobs'
+    jobs:
+      - 'triggered-api-test':
+          pipeline_script: 'chart-api-test-helm.groovy'

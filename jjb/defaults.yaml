@@ -27,6 +27,15 @@
     # build timeout (minutes)
     build-timeout: 10
 
+    # timed trigger defaults, crontab syntax
+    # H = random value hashed by name of job
+    every-hour: "H * * * *"
+    every-four-hours: "H */4 * * *"
+    every-six-hours: "H */6 * * *"
+    every-eight-hours: "H */8 * * *"
+    twice-a-day: "H */12 * * *"
+    once-a-day: "H 0 * * *"
+
     # The most frequently used type of build node
     # see other build node types under "Cloud > Amazon EC2" at
     #  https://jenkins.opencord.org/configure
