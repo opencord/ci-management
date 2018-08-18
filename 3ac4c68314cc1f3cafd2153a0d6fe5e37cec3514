@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bc80fd1c_cef0c534",
+        "filename": "jjb/pipeline/chart-api-test-helm.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-08-18T00:13:07Z",
+      "side": 1,
+      "message": "Kubectl has a `-o` option  that can get just the data you need: https://kubernetes.io/docs/reference/kubectl/overview/#output-options",
+      "range": {
+        "startLine": 360,
+        "startChar": 23,
+        "endLine": 360,
+        "endChar": 73
+      },
+      "revId": "3ac4c68314cc1f3cafd2153a0d6fe5e37cec3514",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
