@@ -94,6 +94,7 @@ ubuntu_systems() {
         pyyaml \
         robotframework \
         robotframework-httplibrary \
+        robotframework-kafkalibrary
         robotframework-requests \
         robotframework-sshlibrary \
         virtualenv
