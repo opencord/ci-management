@@ -126,12 +126,15 @@
 
     builders:
       - shell: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+
           helm init --client-only
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
           helm repo add rook-beta https://charts.rook.io/beta
           helm repo add cord https://charts.opencord.org/master
 
-      - shell: !include-raw-escape: shell/helmlint.sh
+          ./scripts/helmlint.sh clean
 
 
 # run `shellcheck` to validate shell scripts charts
