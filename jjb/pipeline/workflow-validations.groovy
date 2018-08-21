@@ -30,7 +30,7 @@ pipeline {
           poll: false,
           scm: [$class: 'RepoScm', \
             manifestRepositoryUrl: "${params.manifestUrl}", \
-            manifestBranch: "${params.branch}", \
+            manifestBranch: "${params.manifestBranch}", \
             currentBranch: true, \
             destinationDir: 'cord', \
             forceSync: true,
