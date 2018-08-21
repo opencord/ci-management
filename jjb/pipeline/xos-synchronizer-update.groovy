@@ -117,7 +117,7 @@ pipeline {
 
            for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer cord/orchestration/profiles/*/Dockerfile.synchronizer
            do
-             df_contents=$(cat "\$df")
+             df_contents=\$(cat "\$df")
              if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\${XOS_MAJOR}" ||
                    "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
              then
