@@ -1,0 +1,24 @@
+---
+# verification jobs for 'k8sepcservice' repo
+
+- project:
+    name: k8sepcservice
+    project: '{name}'
+
+    jobs:
+      - 'verify-k8sepcservice-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-k8sepcservice-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_k8sepcservice_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_k8sepcservice_tag-collision'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_k8sepcservice_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_k8sepcservice_unit-test'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
