@@ -1,0 +1,18 @@
+---
+# POD Build Pipeline Jobs for ATT-WorkflowDriver
+
+- project:
+    name: attworkflowdriver-build-job
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    jobs:
+      # flex onf pod 1 kubernetes build jobs (rcord lite)
+      - 'build_pod_manual':
+         pod: 'onf-build'
+         pod_config: 'onlab-pod1.yml'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-att-workflow'
