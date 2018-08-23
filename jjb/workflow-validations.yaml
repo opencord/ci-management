@@ -11,7 +11,7 @@
 
 - job-template:
     id: 'wf-validation'
-    name: 'workflow-validations'
+    name: 'ATT-Event-Workflow-Validation'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
