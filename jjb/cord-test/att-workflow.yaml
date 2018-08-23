@@ -15,3 +15,14 @@
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-att-workflow'
+
+    # flex pod1 with olt/onu 
+      - 'build_kube_pod_first':
+         testvm: 'qa-testvm-pod'
+         kube-pod: 'flex-pod1-olt'
+         profile: 'att-workflow'
+         branch: 'master'
+         scenario: ''
+         Jenkinsfile: 'Jenkinsfile-attworkflow'
+         time: '50'
+         day: '1-31/2'
