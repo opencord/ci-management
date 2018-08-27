@@ -51,7 +51,7 @@
          default: '{branch}'
 
       - string:
-         name: notificationEmail
+         name: notificationEmails
          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
          description: ''
 
@@ -442,6 +442,11 @@
          name: configRepoFile
          default: 'kubernetes-configs/{kube-pod}.yml'
          description: 'The kubernetes deployment config file'
+
+      - string:
+         name: oltDebVersion
+         default: ''
+         description: 'OLT Software version to install'
 
       - string:
          name: branch
