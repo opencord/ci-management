@@ -28,6 +28,7 @@
          branch: 'cord-6.0'
          scenario: 'zerotouch'
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch'
+         oltDebVersion: 'openolt.deb'
          time: '0'
          day: '1-31/2'
 
@@ -39,6 +40,7 @@
          branch: 'cord-6.0'
          scenario: 'topdown'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown'
+         oltDebVersion: 'openolt.deb'
          time: '0'
          day: '2-30/2'
 
@@ -52,6 +54,7 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite'
          time: '0'
          day: '*'
+
      # flex ocp pod 2 kubernetes build jobs (rcord lite)
       - 'build_kube_pod_first':
          testvm: 'flex-pod2'

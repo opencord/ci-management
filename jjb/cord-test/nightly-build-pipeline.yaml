@@ -444,6 +444,11 @@
          description: 'The kubernetes deployment config file'
 
       - string:
+         name: oltDebVersion
+         default: ''
+         description: 'OLT Software version to install'
+
+      - string:
          name: branch
          default: '{branch}'
 
