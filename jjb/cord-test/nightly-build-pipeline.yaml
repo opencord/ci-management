@@ -440,8 +440,8 @@
 
       - string:
          name: configRepoFile
-         default: 'kubernetes-configs/{kube-pod}.yml'
-         description: 'The kubernetes deployment config file'
+         default: 'deployment-configs/{kube-pod}.yml'
+         description: 'The deployment config file'
 
       - string:
          name: oltDebVersion
