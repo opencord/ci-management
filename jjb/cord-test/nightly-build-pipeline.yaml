@@ -445,7 +445,7 @@
 
       - string:
          name: oltDebVersion
-         default: ''
+         default: '{oltDebVersion}'
          description: 'OLT Software version to install'
 
       - string:
