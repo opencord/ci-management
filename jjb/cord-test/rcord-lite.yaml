@@ -17,6 +17,7 @@
          scenario: ''
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite'
+         oltDebVersion: 'openolt-1.4.deb'
          time: '20'
          day: '0-31/1'
 
@@ -52,6 +53,7 @@
          branch: 'master'
          scenario: ''
          Jenkinsfile: 'Jenkinsfile-rcordlite'
+         oltDebVersion: 'openolt-1.4.deb'
          time: '0'
          day: '*'
 
@@ -63,6 +65,7 @@
          scenario: ''
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite'
+         oltDebVersion: 'openolt-1.4.deb'
          time: '30'
          day: '0-31/1'
 
