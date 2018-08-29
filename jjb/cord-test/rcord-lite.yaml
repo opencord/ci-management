@@ -10,9 +10,9 @@
 
     jobs:
       # flex onf pod 1 kubernetes build jobs (rcord lite)
-      - 'build_kube_pod_first':
+      - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
-         kube-pod: 'flex-onf-pod1'
+         config-pod: 'flex-onf-pod1'
          profile: 'rcord-lite'
          scenario: ''
          branch: 'master'
@@ -22,9 +22,9 @@
          day: '0-31/1'
 
      # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
-      - 'build_kube_pod_first':
+      - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
-         kube-pod: 'flex-pod1-olt'
+         config-pod: 'flex-pod1-olt'
          profile: 'rcord-lite'
          branch: 'cord-6.0'
          scenario: 'zerotouch'
@@ -34,9 +34,9 @@
          day: '1-31/2'
 
      # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
-      - 'build_kube_pod_first':
+      - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
-         kube-pod: 'flex-pod1-olt'
+         config-pod: 'flex-pod1-olt'
          profile: 'rcord-lite'
          branch: 'cord-6.0'
          scenario: 'topdown'
@@ -46,9 +46,9 @@
          day: '2-30/2'
 
      # qct pod1 kubernetes build jobs (rcord lite)
-      - 'build_kube_pod_first':
+      - 'build_pod_timer':
          testvm: 'qct-pod1'
-         kube-pod: 'qct-pod1'
+         config-pod: 'qct-pod1'
          profile: 'rcord-lite'
          branch: 'master'
          scenario: ''
@@ -58,9 +58,9 @@
          day: '*'
 
      # flex ocp pod 2 kubernetes build jobs (rcord lite)
-      - 'build_kube_pod_first':
+      - 'build_pod_timer':
          testvm: 'flex-pod2'
-         kube-pod: 'flex-ocp-pod2'
+         config-pod: 'flex-ocp-pod2'
          profile: 'rcord-lite'
          scenario: ''
          branch: 'master'
