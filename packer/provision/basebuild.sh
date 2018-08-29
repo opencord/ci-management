@@ -45,6 +45,9 @@ ubuntu_systems() {
          $(lsb_release -cs) \
          stable"
 
+    # set up golang repo
+    sudo add-apt-repository ppa:gophers/archive
+
     apt-get update
 
     # install basic sofware requirements
@@ -55,6 +58,7 @@ ubuntu_systems() {
         bzip2 \
         curl \
         git \
+        golang-1.10-go \
         less \
         libpcap-dev \
         libxml2-utils \
@@ -111,6 +115,15 @@ ubuntu_systems() {
         markdownlint \
         typings
         # end of npm install list
+
+    # install golang packages in /usr/local/go
+    # Set PATH=$PATH:/usr/local/go/bin` to use these
+    export GOPATH=/usr/local/go
+    mkdir -p $GOPATH
+    export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
+    # converters for unit/coverage test
+    go get -v github.com/t-yuki/gocover-cobertura
+    go get -v github.com/jstemmer/go-junit-report
 
     # ubuntu 16.04 installs the node binary as /usr/bin/nodejs, which breaks
     # tools that expect it to be named just `node`. Symlink it to fix
