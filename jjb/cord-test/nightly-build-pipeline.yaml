@@ -13,187 +13,13 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
-- job-template:
-    name: 'build_{profile}_{pod}_{branch}'
-    id: build_pod_first
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Nightly Physical POD Builds at {pod} using {pod_config} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
-                  Created by Kailash Khalasi - kailash@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
-
-    <<: *test-pipe-job-boiler-plate
-
-    parameters:
-      - string:
-         name: devNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
-
-      - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
-
-      - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
-
-      - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod_config}'
-         description: 'The deployment config file'
-
-      - string:
-         name: branch
-         default: '{branch}'
-
-      - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
-
-    concurrent: true
-
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-           url: '{gerrit-server-url}/cord'
-           branches:
-             - '{branch}'
-
-    triggers:
-       - timed: |
-                 TZ=America/Los_Angeles
-                 H {time} * * *
-
 
 - job-template:
-    name: 'build_{profile}_{pod}_{branch}'
-    id: build_pod
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Nightly Physical POD Builds at {pod} using {pod_config} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
-                  Created by Kailash Khalasi - kailash@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
-
-    <<: *test-pipe-job-boiler-plate
-
-    parameters:
-      - string:
-         name: devNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
-
-      - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
-
-      - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
-
-      - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod_config}'
-         description: 'The deployment config file'
-
-      - string:
-         name: branch
-         default: '{branch}'
-
-      - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
-
-    concurrent: true
-
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-           url: '{gerrit-server-url}/cord'
-           branches:
-             - '{branch}'
-
-    triggers:
-        - reverse:
-            jobs: 'build_{profile}_{pod}_{fromBranch}_test'
-            result: 'failure'
-
-
-- job-template:
-    name: 'build_{profile}_{pod}_{branch}_test'
-    id: build_pod_test
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {pod} triggered by build_{pod}_{branch} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
-                  Created by Kailash Khalasi - kailash@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
-
-    branches: '{branch}'
-
-    <<: *test-pipe-job-boiler-plate
-
-    parameters:
-      - string:
-         name: devNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
-
-      - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
-
-      - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
-
-      - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod_config}'
-         description: 'The deployment config file'
-
-      - string:
-         name: branch
-         default: '{branch}'
-
-      - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
-
-    concurrent: true
-
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-           url: '{gerrit-server-url}/cord-tester'
-           branches:
-             - '{branch}'
-
-    triggers:
-      - reverse:
-          jobs: 'build_{profile}_{pod}_{branch}'
-          result: 'failure'
-
-- job-template:
-    name: 'build_{profile}_{pod}_{branch}'
+    name: 'build_{profile}_{testvm}_{scenario}_{branch}'
     id: build_pod_manual
     description: |
                   <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on POD {pod} using {pod_config} <br /><br />
+                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
@@ -203,8 +29,8 @@
     parameters:
       - string:
          name: TestNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
+         default: '{testvm}'
+         description: 'Jenkins node name of TestVM Node'
 
       - string:
          name: configRepoUrl
@@ -217,9 +43,24 @@
          description: 'The directory inside the POD configs repository'
 
       - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod_config}'
-         description: 'The deployment config file'
+         name: configDeploymentDir
+         default: 'deployment-configs/'
+         description: 'The deployment configs folder'
+
+      - string:
+         name: configKubernetesDir
+         default: 'kubernetes-configs/'
+         description: 'The kubernetes config folder'
+
+      - string:
+         name: configFileName
+         default: '{config-pod}'
+         description: 'The config file'
+
+      - string:
+         name: oltDebVersion
+         default: '{oltDebVersion}'
+         description: 'OLT Software version to install'
 
       - string:
          name: branch
@@ -241,181 +82,11 @@
              - '{branch}'
 
 - job-template:
-    name: 'build_{profile}_{pod}_{branch}_test'
-    id: build_pod_manual_test
+    name: 'build_{profile}_{config-pod}_{scenario}_{branch}'
+    id: build_pod_timer
     description: |
                   <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {pod} triggered by build_{pod}_{branch} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
-                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org) <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
-
-    branches: '{branch}'
-
-    <<: *test-pipe-job-boiler-plate
-
-    parameters:
-      - string:
-         name: devNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
-
-      - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
-
-      - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
-
-      - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod_config}'
-         description: 'The deployment config file'
-
-      - string:
-         name: branch
-         default: '{branch}'
-
-      - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
-
-    concurrent: true
-
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-           url: '{gerrit-server-url}/cord-tester'
-           branches:
-             - '{branch}'
-
-    triggers:
-      - reverse:
-          jobs: 'build_{profile}_{pod}_manual_{branch}'
-          result: 'failure'
-
-- job-template:
-    name: 'build_{profile}_{local_pod_name}_{branch}'
-    id: build_ecord_pod_manual
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on ECORD POD {pod} using {pod_config} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
-                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright (c) 2018 Open Networking Foundation (ONF)
-
-    <<: *test-pipe-job-boiler-plate
-
-    parameters:
-      - string:
-         name: devNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
-
-      - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
-
-      - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
-
-      - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod_config}'
-         description: 'The deployment config file'
-
-      - string:
-         name: branch
-         default: '{branch}'
-
-      - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
-
-    concurrent: true
-
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-           url: '{gerrit-server-url}/cord'
-           branches:
-             - '{branch}'
-
-- job-template:
-    name: 'build_{profile}_{local_pod_name}_{branch}_test'
-    id: build_ecord_pod_manual_test
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {pod} triggered by build_{pod}_{branch} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
-                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org) <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
-
-    branches: '{branch}'
-
-    <<: *test-pipe-job-boiler-plate
-
-    parameters:
-      - string:
-         name: devNodeName
-         default: '{pod}'
-         description: 'Jenkins node name of Dev Node'
-
-      - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
-
-      - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
-
-      - string:
-         name: configRepoFile
-         default: 'deployment-configs/{pod_config}'
-         description: 'The deployment config file'
-
-      - string:
-         name: branch
-         default: '{branch}'
-
-      - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
-
-    concurrent: true
-
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-           url: '{gerrit-server-url}/cord-tester'
-           branches:
-             - '{branch}'
-
-    triggers:
-      - reverse:
-          jobs: 'build_{profile}_{pod}_manual_{branch}'
-          result: 'failure'
-
-- job-template:
-    name: 'build_{profile}_{kube-pod}_{scenario}_{branch}'
-    id: build_kube_pod_first
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Nightly Kubernetes tests on {kube-pod} <br /><br />
+                  Nightly Kubernetes tests on {config-pod} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
@@ -439,9 +110,19 @@
          description: 'The directory inside the POD configs repository'
 
       - string:
-         name: configRepoFile
-         default: 'deployment-configs/{kube-pod}.yml'
-         description: 'The deployment config file'
+         name: configDeploymentDir
+         default: 'deployment-configs/'
+         description: 'The deployment configs folder'
+
+      - string:
+         name: configKubernetesDir
+         default: 'kubernetes-configs/'
+         description: 'The kubernetes config folder'
+
+      - string:
+         name: configFileName
+         default: '{config-pod}'
+         description: 'The config file'
 
       - string:
          name: oltDebVersion

@@ -10,16 +10,18 @@
 
     jobs:
       - 'build_pod_manual':
-         pod: 'onf-build'
-         pod_config: 'onlab-pod1.yml'
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod1'
          profile: 'att-workflow'
          branch: 'master'
+         scenario: ''
          Jenkinsfile: 'Jenkinsfile-att-workflow'
+         oltDebVersion: 'openolt-master.deb'
 
-    # flex pod1 with olt/onu 
-      - 'build_kube_pod_first':
+    # flex pod1 with olt/onu
+      - 'build_pod_manual':
          testvm: 'qa-testvm-pod'
-         kube-pod: 'flex-pod1-olt'
+         config-pod: 'flex-pod1-olt'
          profile: 'att-workflow'
          branch: 'master'
          scenario: ''
