@@ -107,7 +107,7 @@ pipeline {
              echo "## 'helm status' for chart: \${hchart} ##"
              helm status "\${hchart}"
            done
-           helm test att-workflow
+           helm test --timeout 1000 att-workflow
            popd
 
            """
