@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "849dd416_0b8d0e7e",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-08-29T20:25:03Z",
+      "side": 1,
+      "message": "Do we still need this?",
+      "range": {
+        "startLine": 41,
+        "startChar": 15,
+        "endLine": 41,
+        "endChar": 28
+      },
+      "revId": "2176770faf18d9cc84d4fb83a02f5995aac8b559",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "39d7ba5b_f8e3db40",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-08-29T20:25:03Z",
+      "side": 1,
+      "message": "configBaseDir",
+      "range": {
+        "startLine": 46,
+        "startChar": 15,
+        "endLine": 46,
+        "endChar": 32
+      },
+      "revId": "2176770faf18d9cc84d4fb83a02f5995aac8b559",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8c5659c5_276a7caf",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-08-29T20:25:03Z",
+      "side": 1,
+      "message": "We decided to move all \u0027/\u0027 from here to the jenkins script",
+      "range": {
+        "startLine": 47,
+        "startChar": 30,
+        "endLine": 47,
+        "endChar": 31
+      },
+      "revId": "2176770faf18d9cc84d4fb83a02f5995aac8b559",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "91018d7b_fd6e4c80",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-08-29T20:25:03Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 52,
+        "startChar": 37,
+        "endLine": 52,
+        "endChar": 38
+      },
+      "revId": "2176770faf18d9cc84d4fb83a02f5995aac8b559",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2dab9d0e_a7cd9f8f",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-08-29T20:25:03Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 57,
+        "startChar": 37,
+        "endLine": 57,
+        "endChar": 38
+      },
+      "revId": "2176770faf18d9cc84d4fb83a02f5995aac8b559",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
