@@ -23,64 +23,54 @@
 
     wrappers:
       - lf-infra-wrappers:
-          build-timeout: 20
+          build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     scm:
-      - lf-infra-gerrit-scm:
-          git-url: '$GIT_URL/$GERRIT_PROJECT'
-          refspec: '$GERRIT_REFSPEC'
+      - cord-infra-gerrit-repo-scm:
+          manifest-url: '{gerrit-server-url}/{cord-repo-manifest}'
           branch: '$GERRIT_BRANCH'
-          submodule-recursive: 'false'
-          choosing-strategy: gerrit
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          destination-dir: 'cord'
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
+    node: '{build-node}'
     project-type: freestyle
     concurrent: true
 
     builders:
+      - cord-infra-gerrit-repo-patch:
+          destination-dir: 'cord'
+          project: '$GERRIT_PROJECT'
+          change-number: '$GERRIT_CHANGE_NUMBER'
+          patchset-number: '$GERRIT_PATCHSET_NUMBER'
       - shell: |
-          #/usr/bin/env bash
-          BASEDIR=$(pwd)
+          #!/usr/bin/env bash
+          set -ex -o pipefail
+
+          export XOS_DIR=$WORKSPACE/cord/orchestration/xos
+          export TOSCA_DIR=$WORKSPACE/cord/orchestration/xos-tosca
 
           # setup virtual env
-          virtualenv -q venv-xos --no-site-packages
-          source $BASEDIR/venv-xos/bin/activate
-          pip install --upgrade pip setuptools
-
-          # download changeset
-          mkdir cord && cd cord/
-          repo init -u https://gerrit.opencord.org/manifest -b $GERRIT_BRANCH
-          repo sync
-          repo download $GERRIT_PROJECT $GERRIT_CHANGE_NUMBER/$GERRIT_PATCHSET_NUMBER
-
-          # Install XOS dependencies
-          pip install nose2 requests_mock plyxproto jinja2 pattern astunparse pyyaml colorama
-          pip install pykwalify==1.6.1
-          pip install multistructlog==1.5
-          pip install networkx==1.11
-          pip install netaddr==0.7.19
-          pip install ipaddress==1.0.19
-          pip install grpcio==1.9.1
-          pip install grpcio-tools==1.9.1
-          pip install nose
-          pip install tosca-parser==0.9.0
-          echo "Requirements Installed"
-
-          cd $BASEDIR/cord/orchestration/xos/lib/xos-util; python setup.py install; echo "xos-util Installed"
-          cd $BASEDIR/cord/orchestration/xos/lib/xos-config; python setup.py install; echo "xos-config Installed"
-          cd $BASEDIR/cord/orchestration/xos/lib/xos-genx; python setup.py install; echo "xos-genx Installed"
-
-          cd $BASEDIR/cord/orchestration/xos/xos/xos_client/xosapi; ln -s ../../../../../component/chameleon chameleon
-          cd $BASEDIR/cord/orchestration/xos/xos/xos_client; make; echo "xos-client Installed"
-
-          cd $BASEDIR/cord/orchestration/xos/xos/xos_client/xosapi/chameleon/protos; VOLTHA_BASE=anything make
-          cd $BASEDIR/cord/orchestration/xos/xos/xos_client; python setup.py install
-          chmod 777 $BASEDIR/venv-xos/lib/python2.7/site-packages/xosapi/chameleon/protoc_plugins/gw_gen.py
-          chmod 777 $BASEDIR/venv-xos/lib/python2.7/site-packages/xosapi/chameleon/protoc_plugins/swagger_gen.py
-          pip install -r $BASEDIR/cord/orchestration/xos-tosca/pip_requirements.txt
+          $XOS_DIR/scripts/setup_venv.sh
+          source "$WORKSPACE/venv-xos/bin/activate"
+          set -u
 
           # Run the tests
-          cd $BASEDIR/cord/orchestration/xos-tosca
+          pushd "$WORKSPACE/cord/orchestration/xos-tosca"
           make tests
+          popd
+
+    publishers:
+      - junit:
+          results: "**/nose2-junit.xml"
+      - cobertura:
+          report-file: "**/coverage.xml"
+          targets:
+            - files:
+                healthy: 80
+                unhealthy: 0
+                failing: 0
+            - method:
+                healthy: 50
+                unhealthy: 0
+                failing: 0
+
