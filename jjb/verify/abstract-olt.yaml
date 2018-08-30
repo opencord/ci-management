@@ -46,7 +46,7 @@
     scm:
       - cord-infra-gerrit-scm:
           git-url: '$GIT_URL/$GERRIT_PROJECT'
-          refspec: ''
+          refspec: '$GERRIT_REFSPEC'
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
           choosing-strategy: default
@@ -58,17 +58,12 @@
     concurrent: true
 
     builders:
-      - cord-infra-gerrit-repo-patch:
-          destination-dir: 'cord'
-          project: '$GERRIT_PROJECT'
-          change-number: '$GERRIT_CHANGE_NUMBER'
-          patchset-number: '$GERRIT_PATCHSET_NUMBER'
       - shell: |
           #!/usr/bin/env bash
           set -eux -o pipefail
 
           export GOPATH=~/go
-          export PATH=$PATH:/usr/lib/go-1.10/bin:~/go/bin
+          export PATH=$PATH:/usr/lib/go-1.10/bin:/usr/local/go/bin:~/go/bin
 
           # move code the proper location
           mkdir -p $GOPATH/src/gerrit.opencord.org
