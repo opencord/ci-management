@@ -14,6 +14,10 @@
     # by default, don't depend on other jobs
     dependency-jobs: ''
 
+    # SCM checkout locations within Jenkins Workspace
+    destination-dir: ''
+    basedir: ''
+
     # used to rename jobs if version/branch forking is required
     name-extension: ''
 

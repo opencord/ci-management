@@ -22,6 +22,27 @@
           reset-first: true
           depth: 1
 
+# same as lf-infra-gerrit-scm, but allows checkouts to a subdir of $WORKSPACE
+# with the `basedir` option
+#
+# `basedir` serves the same function as `destination-dir` in the repo scm
+# macros, seems strange that they're named differently.
+- scm:
+    name: cord-infra-gerrit-scm
+    scm:
+      - git:
+          credentials-id: '{jenkins-ssh-credential}'
+          url: '{git-url}'
+          refspec: '{refspec}'
+          branches:
+            - 'refs/heads/{branch}'
+          skip-tag: true
+          wipe-workspace: true
+          submodule:
+            recursive: '{submodule-recursive}'
+          choosing-strategy: '{choosing-strategy}'
+          basedir: '{basedir}'
+
 # download a specific patchset after checking out entire source tree with repo
 # docs: https://docs.openstack.org/infra/jenkins-job-builder/builders.html#builders.inject
 - builder:
