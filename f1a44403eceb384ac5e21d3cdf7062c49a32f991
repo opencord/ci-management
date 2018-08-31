@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9ce86ac1_9709ce7b",
+        "filename": "jjb/cord-test/rcord-lite.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-08-31T18:08:02Z",
+      "side": 1,
+      "message": "openolt-master?",
+      "range": {
+        "startLine": 56,
+        "startChar": 25,
+        "endLine": 56,
+        "endChar": 36
+      },
+      "revId": "f1a44403eceb384ac5e21d3cdf7062c49a32f991",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
