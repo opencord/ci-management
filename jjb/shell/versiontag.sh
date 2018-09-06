@@ -23,6 +23,8 @@ set -eu -o pipefail
 VERSIONFILE="" # file path to file containing version number
 NEW_VERSION="" # version number found in $VERSIONFILE
 
+SEMVER_STRICT=${SEMVER_STRICT:-0} # require semver versions
+
 releaseversion=0
 fail_validation=0
 
@@ -53,7 +55,13 @@ function check_if_releaseversion {
     echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is a SemVer released version!"
     releaseversion=1
   else
-    echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is not a SemVer released version, skipping."
+    if [ "$SEMVER_STRICT" -eq "1" ]
+    then
+      echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is not a SemVer released version, SEMVER_STRICT enabled, failing!"
+      fail_validation=1
+    else
+      echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is not a SemVer released version, skipping."
+    fi
   fi
 }
 
