@@ -109,6 +109,40 @@ pipeline {
       }
     }
 
+    stage('candiate tag') {
+      steps {
+        sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           # skip projects that aren't the XOS core repository
+           if [ "${gerrit_project}" != "xos" ]; then
+             exit 0
+           fi
+
+           echo "" > \${WORKSPACE}/updated_dockerfiles
+           XOS_MAJOR=\$(cut -b 1 cord/orchestration/xos/VERSION)
+
+           # update services
+           for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer cord/orchestration/profiles/*/Dockerfile.synchronizer
+           do
+             df_contents=\$(cat "\$df")
+             if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\${XOS_MAJOR}" ||
+                   "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
+             then
+               sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:candidate/" "\$df"
+               echo "\${WORKSPACE}/\$df" >> \${WORKSPACE}/updated_dockerfiles
+             fi
+           done
+
+           # update core
+           for df in cord/orchestration/xos/containers/*/Dockerfile* cord/orchestration/xos-tosca/Dockerfile
+           do
+             sed -i "s/^FROM xos\\(.*\\):.*\$/FROM xos\\1:candidate/" "\$df"
+           done
+           """
+      }
+    }
 
     stage('prep') {
       parallel {

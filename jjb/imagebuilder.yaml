@@ -56,7 +56,7 @@
 
       - bool:
           name: build
-          default: false
+          default: true
           description: 'Rebuild all containers (same as "docker build --no-cache")'
 
       - bool:
