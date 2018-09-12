@@ -53,7 +53,7 @@
          branch: 'master'
          scenario: 'zerotouch'
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch'
-         oltDebVersion: 'openolt-master'
+         oltDebVersion: 'openolt-master.deb'
          time: '1'
          day: '1-31/2'
 
@@ -65,7 +65,7 @@
          branch: 'master'
          scenario: 'topdown'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown'
-         oltDebVersion: 'openolt-master'
+         oltDebVersion: 'openolt-master.deb'
          time: '1'
          day: '2-30/2'
 
