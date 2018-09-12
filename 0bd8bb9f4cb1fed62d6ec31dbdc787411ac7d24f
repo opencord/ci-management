@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cb34c919_540313c0",
+        "filename": "jjb/imagebuilder.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-12T21:44:21Z",
+      "side": 1,
+      "message": "Makes building without the cache the default, which will cause the XOS containers set to fully rebuild every time (instead of using stale `master` tagged parents)",
+      "range": {
+        "startLine": 59,
+        "startChar": 10,
+        "endLine": 59,
+        "endChar": 23
+      },
+      "revId": "0bd8bb9f4cb1fed62d6ec31dbdc787411ac7d24f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fc0d5ea4_bc39a839",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-12T21:44:21Z",
+      "side": 1,
+      "message": "If the project being API tested is XOS, change the tags of everything to be `candidate` so they\u0027re all rebuilt in the `images` stage below.\n\nThis gets around pulling of stale master XOS images, testing the code in the patchset.",
+      "range": {
+        "startLine": 118,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 13
+      },
+      "revId": "0bd8bb9f4cb1fed62d6ec31dbdc787411ac7d24f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b40e7f3e_39fe2eae",
+        "filename": "jjb/pipeline/xos-synchronizer-update.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-12T21:44:21Z",
+      "side": 1,
+      "message": "When updating XOS and testing synchronizers that have the same major version, also change the intermediate XOS images to use `candidate` so they\u0027re rebuilt, and stale `master` images aren\u0027t pulled.",
+      "range": {
+        "startLine": 133,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 15
+      },
+      "revId": "0bd8bb9f4cb1fed62d6ec31dbdc787411ac7d24f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
