@@ -15,7 +15,7 @@
 
 
 - job-template:
-    name: 'build_{profile}_{testvm}_{scenario}_{branch}'
+    name: 'build_{profile}_{config-pod}_{scenario}_{branch}'
     id: build_pod_manual
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -50,6 +50,11 @@
       - string:
          name: configKubernetesDir
          default: 'kubernetes-configs'
+         description: 'The kubernetes config folder'
+
+      - string:
+         name: configToscaDir
+         default: 'tosca-configs'
          description: 'The kubernetes config folder'
 
       - string:
@@ -117,6 +122,11 @@
       - string:
          name: configKubernetesDir
          default: 'kubernetes-configs'
+         description: 'The kubernetes config folder'
+
+      - string:
+         name: configToscaDir
+         default: 'tosca-configs'
          description: 'The kubernetes config folder'
 
       - string:
