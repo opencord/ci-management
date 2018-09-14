@@ -81,11 +81,6 @@
           default: true
           description: "Configure POD via TOSCA post build"
 
-      - bool:
-          name: oltsPresent
-          default: false
-          description: "Set to true if OLTs present in this POD or if you do NOT want OLT software to be re-installed"
-
       - string:
          name: notificationEmail
          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
@@ -167,11 +162,6 @@
           name: configurePod
           default: true
           description: "Configure POD via TOSCA post build"
-
-      - bool:
-          name: oltsPresent
-          default: false
-          description: "Set to true if OLTs present in this POD or if you do NOT want OLT software to be re-installed"
 
       - string:
          name: notificationEmail

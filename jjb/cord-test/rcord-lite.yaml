@@ -18,7 +18,6 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
          configurePod: true
-         oltsPresent: false
 
      # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
       - 'build_pod_timer':
@@ -29,7 +28,6 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch-build'
          oltDebVersion: 'openolt-1.4.deb'
          configurePod: true
-         oltsPresent: true
          time: '0'
          day: '1-31/2'
 
@@ -42,7 +40,6 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
          configurePod: true
-         oltsPresent: true
          time: '0'
          day: '2-30/2'
 
@@ -55,7 +52,6 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch-build'
          oltDebVersion: 'openolt-master'
          configurePod: true
-         oltsPresent: true
          time: '1'
          day: '1-31/2'
 
@@ -68,7 +64,6 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
-         oltsPresent: true
          time: '1'
          day: '2-30/2'
 
@@ -81,7 +76,6 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
          configurePod: true
-         oltsPresent: false
          time: '0'
          day: '*'
 
@@ -102,4 +96,3 @@
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
          configurePod: true
-         oltsPresent: false
