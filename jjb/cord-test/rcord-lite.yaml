@@ -10,26 +10,26 @@
 
     jobs:
       # flex onf pod 1 kubernetes build jobs (rcord lite)
-      - 'build_pod_timer':
+      - 'build_pod_manual':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-onf-pod1'
-         profile: 'rcord'
-         scenario: 'topdown'
+         profile: 'rcord-topdown'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
-         time: '20'
-         day: '0-31/1'
+         configurePod: true
+         oltsPresent: false
 
      # flex pod1 with olt/onu  kubernetes build jobs (rcord lite)
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
-         profile: 'rcord'
+         profile: 'rcord-zerotouch'
          branch: 'cord-6.0'
-         scenario: 'zerotouch'
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch-build'
          oltDebVersion: 'openolt-1.4.deb'
+         configurePod: true
+         oltsPresent: true
          time: '0'
          day: '1-31/2'
 
@@ -37,11 +37,12 @@
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
-         profile: 'rcord'
+         profile: 'rcord-topdown'
          branch: 'cord-6.0'
-         scenario: 'topdown'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
+         configurePod: true
+         oltsPresent: true
          time: '0'
          day: '2-30/2'
 
@@ -49,11 +50,12 @@
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
-         profile: 'rcord'
+         profile: 'rcord-zerotouch'
          branch: 'master'
-         scenario: 'zerotouch'
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch-build'
          oltDebVersion: 'openolt-master'
+         configurePod: true
+         oltsPresent: true
          time: '1'
          day: '1-31/2'
 
@@ -61,11 +63,12 @@
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
-         profile: 'rcord'
+         profile: 'rcord-topdown'
          branch: 'master'
-         scenario: 'topdown'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
-         oltDebVersion: 'openolt-master'
+         oltDebVersion: 'openolt-master.deb'
+         configurePod: true
+         oltsPresent: true
          time: '1'
          day: '2-30/2'
 
@@ -73,23 +76,30 @@
       - 'build_pod_timer':
          testvm: 'qct-pod1'
          config-pod: 'qct-pod1'
-         profile: 'rcord'
+         profile: 'rcord-topdown'
          branch: 'master'
-         scenario: 'topdown'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
+         configurePod: true
+         oltsPresent: false
          time: '0'
          day: '*'
 
+     # qct pod1 test jobs (rcord lite topdown)
+      - 'build_pod_test':
+         testvm: 'qct-pod1'
+         config-pod: 'qct-pod1'
+         profile: 'rcord-topdown'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-test'
+
      # flex ocp pod 2 kubernetes build jobs (rcord lite)
-      - 'build_pod_timer':
+      - 'build_pod_manual':
          testvm: 'flex-pod2'
          config-pod: 'flex-ocp-pod2'
-         profile: 'rcord'
-         scenario: 'topdown'
+         profile: 'rcord-topdown'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
          oltDebVersion: 'openolt-1.4.deb'
-         time: '30'
-         day: '0-31/1'
-
+         configurePod: true
+         oltsPresent: false
