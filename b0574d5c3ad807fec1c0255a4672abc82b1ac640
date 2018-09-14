@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "411ac8bd_39616d9e",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-14T22:36:08Z",
+      "side": 1,
+      "message": "Need to indent both lines more, which is causing the validation job to fail.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 55,
+        "endChar": 2
+      },
+      "revId": "b0574d5c3ad807fec1c0255a4672abc82b1ac640",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
