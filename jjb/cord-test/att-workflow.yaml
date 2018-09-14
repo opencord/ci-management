@@ -15,7 +15,7 @@
          profile: 'att-workflow'
          branch: 'master'
          scenario: ''
-         Jenkinsfile: 'Jenkinsfile-att-workflow'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
 
     # flex pod1 with olt/onu
@@ -25,5 +25,5 @@
          profile: 'att-workflow'
          branch: 'master'
          scenario: ''
-         Jenkinsfile: 'Jenkinsfile-attworkflow'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'

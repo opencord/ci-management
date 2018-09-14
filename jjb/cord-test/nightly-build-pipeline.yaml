@@ -71,6 +71,11 @@
          name: branch
          default: '{branch}'
 
+      - bool:
+          name: configurePod
+          default: true
+          description: "Configure POD via TOSCA post build"
+
       - string:
          name: notificationEmail
          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
@@ -147,6 +152,11 @@
          name: notificationEmail
          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
          description: ''
+
+      - bool:
+          name: configurePod
+          default: true
+          description: "Configure POD via TOSCA post build"
 
     concurrent: true
 
