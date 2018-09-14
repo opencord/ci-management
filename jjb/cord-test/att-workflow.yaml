@@ -17,7 +17,6 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
-         oltsPresent: true
 
     # flex pod1 with olt/onu
       - 'build_pod_manual':
@@ -28,4 +27,3 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
-         oltsPresent: true
