@@ -65,14 +65,14 @@
     modern-branches-regexp: '^(master|cord-6.0)$'
 
     # for matching repos that build docker images with imagebuilder
-    imagebuilder-projects-regexp: '^(xos.*|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr)$'
+    imagebuilder-projects-regexp: '^(xos.*|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|att-workflow-driver)$'
 
     # strictness of version checks
     semver-strict: 0
 
     # matching repos that should be version tagged by the version-tag job
     # (basically the same as imagebuilder projects + helm charts + tools
-    version-tag-projects-regexp: '^(xos.*|helm-charts|automation-tools|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr)$'
+    version-tag-projects-regexp: '^(xos.*|helm-charts|automation-tools|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|att-workflow-driver)$'
 
     # for matching files with file-include-regexp
     all-files-regexp: '.*'
