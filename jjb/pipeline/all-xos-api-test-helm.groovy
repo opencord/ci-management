@@ -137,13 +137,13 @@ pipeline {
            done
 
            # create values file with core version tags
+           # not indented because heredoc requires it
            cat << EOF > \${WORKSPACE}/xos_tags.yaml
-           ---
-           xos_coreImage: 'xosproject/xos-core:\$(XOS_VERSION}'
-           xos_chameleonImage: 'xosproject/chameleon:\$(XOS_VERSION}'
-           xos_toscaImage: 'xosproject/xos-tosca:\$(XOS_VERSION}'
-
-           EOF
+---
+xos_coreImage: 'xosproject/xos-core:\${XOS_VERSION}'
+xos_chameleonImage: 'xosproject/chameleon:\${XOS_VERSION}'
+xos_toscaImage: 'xosproject/xos-tosca:\${XOS_VERSION}'
+EOF
            """
       }
     }
