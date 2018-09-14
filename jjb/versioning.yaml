@@ -67,6 +67,9 @@
     concurrent: true
 
     builders:
+      - inject:
+          properties-content:
+            SEMVER_STRICT={semver-strict}
       - shell: !include-raw-escape: shell/tagcollisionreject.sh
 
 
@@ -110,5 +113,8 @@
     concurrent: true
 
     builders:
+      - inject:
+          properties-content:
+            SEMVER_STRICT={semver-strict}
       - shell: !include-raw-escape: shell/versiontag.sh
 

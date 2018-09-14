@@ -12,8 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Run XOS api tests after changing the containers to use the `candidate`
-// parent, which may include synchronizer changes
+// Run XOS api tests after changing the containers to use the current XOS
+// container versions as parent, which may include synchronizer framework
+// changes
 
 CORE_CONTAINER="null"
 
@@ -109,22 +110,36 @@ pipeline {
       }
     }
 
-    stage('candiate tag') {
+    stage('tag update') {
       steps {
         sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
            echo "" > \${WORKSPACE}/updated_dockerfiles
            XOS_MAJOR=\$(cut -b 1 cord/orchestration/xos/VERSION)
+           XOS_VERSION=\$(cat cord/orchestration/xos/VERSION)
 
+           # update services
            for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer cord/orchestration/profiles/*/Dockerfile.synchronizer
            do
              df_contents=\$(cat "\$df")
              if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\${XOS_MAJOR}" ||
                    "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
              then
-               sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:candidate/" "\$df"
+               sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:\$XOS_VERSION/" "\$df"
                echo "\${WORKSPACE}/\$df" >> \${WORKSPACE}/updated_dockerfiles
              fi
            done
+
+           # create values file with core version tags
+           cat << EOF > \${WORKSPACE}/xos_tags.yaml
+           ---
+           xos_coreImage: 'xosproject/xos-core:\$(XOS_VERSION}'
+           xos_chameleonImage: 'xosproject/chameleon:\$(XOS_VERSION}'
+           xos_toscaImage: 'xosproject/xos-tosca:\${XOS_VERSION}'
+
+           EOF
            """
       }
     }
@@ -218,7 +233,7 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
-           helm_install_args='-f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml'
+           helm_install_args='-f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml -f $WORKSPACE/xos_tags.yaml'
 
            pushd cord/helm-charts
 
