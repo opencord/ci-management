@@ -114,13 +114,13 @@ pipeline {
         sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
-
+           echo "" > $WORKSPACE/xos_tags.yaml
            # skip projects that aren't the XOS core repository
-           if [ "${gerrit_project}" != "xos" ]; then
+           if [ "${$GERRIT_PROJECT}" != "xos" ]; then
              exit 0
            fi
 
-           echo "" > \${WORKSPACE}/updated_dockerfiles
+           echo "" > $WORKSPACE/updated_dockerfiles
            XOS_MAJOR=\$(cut -b 1 cord/orchestration/xos/VERSION)
            XOS_VERSION=\$(cat cord/orchestration/xos/VERSION)
 
@@ -132,17 +132,17 @@ pipeline {
                    "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
              then
                sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:\$XOS_VERSION/" "\$df"
-               echo "\${WORKSPACE}/\$df" >> \${WORKSPACE}/updated_dockerfiles
+               echo "$WORKSPACE/\$df" >> $WORKSPACE/updated_dockerfiles
              fi
            done
 
            # create values file with core version tags
            # not indented because heredoc requires it
-           cat << EOF > \${WORKSPACE}/xos_tags.yaml
+           cat << EOF > $WORKSPACE/xos_tags.yaml
 ---
-xos_coreImage: 'xosproject/xos-core:\${XOS_VERSION}'
-xos_chameleonImage: 'xosproject/chameleon:\${XOS_VERSION}'
-xos_toscaImage: 'xosproject/xos-tosca:\${XOS_VERSION}'
+xos_coreImage: 'xosproject/xos-core:\$XOS_VERSION'
+xos_chameleonImage: 'xosproject/chameleon:\$XOS_VERSION'
+xos_toscaImage: 'xosproject/xos-tosca:\$XOS_VERSION'
 EOF
            """
       }
@@ -209,7 +209,7 @@ EOF
            helm_install_args='-f examples/image-tag-candidate.yaml -f examples/imagePullPolicy-IfNotPresent.yaml -f examples/api-test-values.yaml'
 
            # skip projects that aren't the XOS core repository
-           if [ "${gerrit_project}" != "xos" ]; then
+           if [ "${$GERRIT_PROJECT}" != "xos" ]; then
              helm_install_args+=' -f $WORKSPACE/xos_tags.yaml'
            fi
 
