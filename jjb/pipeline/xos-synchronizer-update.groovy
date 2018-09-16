@@ -116,7 +116,8 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
-           echo "" > \${WORKSPACE}/updated_dockerfiles
+           echo "" > $WORKSPACE/xos_tags.yaml
+           echo "" > $WORKSPACE/updated_dockerfiles
            XOS_MAJOR=\$(cut -b 1 cord/orchestration/xos/VERSION)
            XOS_VERSION=\$(cat cord/orchestration/xos/VERSION)
 
@@ -124,21 +125,21 @@ pipeline {
            for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer cord/orchestration/profiles/*/Dockerfile.synchronizer
            do
              df_contents=\$(cat "\$df")
-             if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\${XOS_MAJOR}" ||
+             if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\$XOS_MAJOR" ||
                    "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
              then
                sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:\$XOS_VERSION/" "\$df"
-               echo "\${WORKSPACE}/\$df" >> \${WORKSPACE}/updated_dockerfiles
+               echo "$WORKSPACE/\$df" >> $WORKSPACE/updated_dockerfiles
              fi
            done
 
            # create values file with core version tags
            # not indented because heredoc requires it
-           cat << EOF > \${WORKSPACE}/xos_tags.yaml
+           cat << EOF > $WORKSPACE/xos_tags.yaml
 ---
-xos_coreImage: 'xosproject/xos-core:\${XOS_VERSION}'
-xos_chameleonImage: 'xosproject/chameleon:\${XOS_VERSION}'
-xos_toscaImage: 'xosproject/xos-tosca:\${XOS_VERSION}'
+xos_coreImage: 'xosproject/xos-core:\$XOS_VERSION'
+xos_chameleonImage: 'xosproject/chameleon:\$XOS_VERSION'
+xos_toscaImage: 'xosproject/xos-tosca:\$XOS_VERSION'
 EOF
            """
       }
