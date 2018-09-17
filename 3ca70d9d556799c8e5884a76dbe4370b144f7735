@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a5afa3b_0023111b",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-17T17:28:08Z",
+      "side": 1,
+      "message": "not balanced?",
+      "range": {
+        "startLine": 120,
+        "startChar": 18,
+        "endLine": 120,
+        "endChar": 19
+      },
+      "revId": "3ca70d9d556799c8e5884a76dbe4370b144f7735",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2d9a8577_5c297029",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-17T17:28:08Z",
+      "side": 1,
+      "message": "might need to be escaped with \\",
+      "range": {
+        "startLine": 136,
+        "startChar": 21,
+        "endLine": 136,
+        "endChar": 22
+      },
+      "revId": "3ca70d9d556799c8e5884a76dbe4370b144f7735",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e9c35d42_93baaee5",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-17T17:28:08Z",
+      "side": 1,
+      "message": "I\u0027m not sure this will work",
+      "range": {
+        "startLine": 213,
+        "startChar": 17,
+        "endLine": 213,
+        "endChar": 20
+      },
+      "revId": "3ca70d9d556799c8e5884a76dbe4370b144f7735",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
