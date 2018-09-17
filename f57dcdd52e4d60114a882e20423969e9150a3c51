@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24bf2ca8_b3c9d7e5",
+        "filename": "jjb/pipeline/all-xos-api-test-helm.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-09-17T17:33:39Z",
+      "side": 1,
+      "message": "See $GERRIT_PROJECT being used later in this stage.",
+      "revId": "f57dcdd52e4d60114a882e20423969e9150a3c51",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
