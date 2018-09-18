@@ -84,8 +84,10 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
-
            pushd cord/helm-charts
+
+           helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
+           scripts/wait_for_pods.sh
 
            helm dep up xos-core
            helm install xos-core -n xos-core
@@ -93,7 +95,6 @@ pipeline {
            helm dep update xos-profiles/att-workflow
            helm install xos-profiles/att-workflow -n att-workflow
            helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-           helm install --name cord-kafka incubator/kafka -f examples/kafka-single.yaml
 
            # wait for services to load
            JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh

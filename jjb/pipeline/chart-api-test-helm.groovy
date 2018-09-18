@@ -77,6 +77,21 @@ pipeline {
       }
     }
 
+    stage('cord-kafka') {
+      steps {
+        sh '''
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           pushd cord/helm-charts
+           helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
+           scripts/wait_for_pods.sh
+
+           popd
+           '''
+      }
+    }
+
     stage('install/test rcord-lite') {
       steps {
         sh """

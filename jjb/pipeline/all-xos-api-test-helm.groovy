@@ -215,6 +215,9 @@ EOF
 
            pushd cord/helm-charts
 
+           helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
+           scripts/wait_for_pods.sh
+
            helm dep up xos-core
            helm install \${helm_install_args} xos-core -n xos-core
 
