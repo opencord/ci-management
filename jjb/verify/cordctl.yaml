@@ -5,8 +5,12 @@
     name: cordctl
     project: '{name}'
 
+    dest-gopath: "github.com/opencord"
+
     jobs:
       - 'verify-cordctl-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'post-submit-cordctl-jobs':
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
@@ -16,7 +20,14 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_cordctl_licensed'
       - 'make-unit-test':
-          dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint test'
           unit-test-keep-going: 'true'
           dependency-jobs: 'verify_cordctl_tag-collision'
+
+- job-group:
+    name: 'post-submit-cordctl-jobs'
+    jobs:
+      - 'github-release':
+          dependency-jobs: 'version-tag'
+          github-organization: 'opencord'
+          artifact-glob: 'release/*'
