@@ -139,7 +139,6 @@ pipeline {
 ---
 xos_coreImage: 'xosproject/xos-core:\$XOS_VERSION'
 xos_chameleonImage: 'xosproject/chameleon:\$XOS_VERSION'
-xos_toscaImage: 'xosproject/xos-tosca:\$XOS_VERSION'
 EOF
            """
       }
