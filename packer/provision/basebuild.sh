@@ -189,6 +189,9 @@ EOF
     go get -v github.com/t-yuki/gocover-cobertura
     go get -v github.com/jstemmer/go-junit-report
 
+    # gothub - uploader for github artifacts
+    go get -v github.com/itchio/gothub
+
     # dep for go package dependencies w/versioning, version 0.5.2, adapted from:
     #  https://golang.github.io/dep/docs/installation.html#install-from-source
     go get -d -u github.com/golang/dep

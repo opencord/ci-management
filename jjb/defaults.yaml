@@ -151,8 +151,20 @@
     dest-gopath: ''
 
     # github organization
-    # Used to pull list of all repos from a specific github organization
-    # Currently used with: synopsys detect
-    # Default is blank, which implies using gerrit instead
+    # Specifies the github organization to operate on.  Default is blank which
+    # may either be invalid, or specify that gerrit should be used instead.
+    # Currently used with: synopsys detect, github-release
     github-organization: ''
+
+    # release targets
+    # List of targets run when creating a software release, run with make or
+    # similar. Default is "release", multiple targets may be space separated
+    # (when using make).
+    release-targets: 'release'
+
+    # artifact glob
+    # Shell glob expression used to select which files are included as binaries
+    # in a release.
+    # Currently used with: github-release
+    artifact-glob: ''
 
