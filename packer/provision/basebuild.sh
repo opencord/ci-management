@@ -182,13 +182,14 @@ ubuntu_systems() {
     popd
 
     # install protobufs
-    PROTOC_VERSION="3.3.0"
-    PROTOC_SHA256SUM="feb112bbc11ea4e2f7ef89a359b5e1c04428ba6cfa5ee628c410eccbfe0b64c3"
+    PROTOC_VERSION="3.6.1"
+    PROTOC_SHA256SUM="6003de742ea3fcf703cfec1cd4a3380fd143081a2eb0e559065563496af27807"
     curl -L -o /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
     echo "$PROTOC_SHA256SUM  /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip" | sha256sum -c -
     unzip /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d /tmp/protoc3
     mv /tmp/protoc3/bin/* /usr/local/bin/
     mv /tmp/protoc3/include/* /usr/local/include/
+
     # give sudo permissions on minikube and protoc to jenkins user
     cat <<EOF >/etc/sudoers.d/88-jenkins-minikube-protoc
 Cmnd_Alias CMDS = /usr/local/bin/protoc, /usr/bin/minikube
