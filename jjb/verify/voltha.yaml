@@ -13,10 +13,12 @@
     name: 'verify-voltha-jobs'
     jobs:
       - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha_licensed'
 #     - 'verify-sonarqube':
 #         dependency-jobs: 'verify_voltha_licensed'
 #         build-timeout: 20
       - 'voltha-unit-test':
-          dependency-jobs: 'verify_voltha_licensed'
+          dependency-jobs: 'verify_voltha_tag-collision'
 #         dependency-jobs: 'verify_voltha_sonarqube'
 
