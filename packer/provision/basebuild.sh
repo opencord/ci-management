@@ -86,16 +86,20 @@ EOF
     # install basic sofware requirements
     apt-get install -y \
         "docker-ce=17.06*" \
+        apt-transport-https \
         ansible \
         build-essential \
         bzip2 \
         curl \
+        ebtables \
+        ethtool \
         git \
         golang-1.10-go \
         httpie \
-        "kubeadm=1.11.3-*" \
-        "kubelet=1.11.3-*" \
-        "kubectl=1.11.3-*" \
+        jq \
+        "kubeadm=1.12.4-*" \
+        "kubelet=1.12.4-*" \
+        "kubectl=1.12.4-*" \
         less \
         libmysqlclient-dev \
         libpcap-dev \
@@ -239,6 +243,12 @@ Cmnd_Alias CMDS = /usr/local/bin/protoc, /usr/bin/minikube
 Defaults:jenkins !requiretty
 jenkins ALL=(ALL) NOPASSWD:SETENV: CMDS
 EOF
+
+    # remove apparmor
+    service apparmor stop
+    update-rc.d -f apparmor remove
+    apt-get remove apparmor-utils libapparmor-perl apparmor
+    update-grub
 
     # clean up
     apt-get clean
