@@ -228,6 +228,7 @@ EOF
     apt-get upgrade -m
     apt-get dist-upgrade -m
 
+    apt-get update -m
     ensure_ubuntu_install unzip xz-utils puppet git libxml-xpath-perl
 
     # install Java 7
