@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0bcb1acb_604df50f",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-20T18:27:48Z",
+      "side": 1,
+      "message": "Might be better to make the GPG key a heredoc rather than redownloading, when it might change on the remote server.\n\nDocker is included in this repo, did we want to use their version?",
+      "range": {
+        "startLine": 52,
+        "startChar": 3,
+        "endLine": 52,
+        "endChar": 66
+      },
+      "revId": "6a4772c1cc5e98f03e8dcd8c05d5d161460c0dce",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
