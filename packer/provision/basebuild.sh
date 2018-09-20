@@ -48,17 +48,32 @@ ubuntu_systems() {
     # set up golang repo
     add-apt-repository ppa:gophers/archive
 
+    # set up kubernetes repo
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+    cat <<EOF >/tmp/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+    sudo cp /tmp/kubernetes.list /etc/apt/sources.list.d/kubernetes.list
+
     apt-get update
 
     # install basic sofware requirements
     apt-get install -y \
         "docker-ce=17.06*" \
+        apt-transport-https \
         ansible \
         build-essential \
         bzip2 \
         curl \
+        ebtables \
+        ethtool \
         git \
         golang-1.10-go \
+        httpie \
+        jq \
+        kubeadm \
+        kubelet \
+        kubectl \
         less \
         libpcap-dev \
         libxml2-utils \
@@ -161,15 +176,6 @@ ubuntu_systems() {
     rm -rf helm.tgz ${HELM_PLATFORM}
     popd
 
-    # install kubectl
-    KUBECTL_VERSION="1.11.3"
-    KUBECTL_SHA256SUM="0d4c70484e90d4310f03f997b4432e0a97a7f5b5be5c31d281f3d05919f8b46c"
-    curl -L -o /tmp/kubectl "https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
-    echo "$KUBECTL_SHA256SUM  /tmp/kubectl" | sha256sum -c -
-    mv /tmp/kubectl /usr/local/bin/kubectl
-    chmod a+x /usr/local/bin/kubectl
-    rm -f /tmp/kubectl
-
     # install minikube
     MINIKUBE_VERSION="0.28.2"
     MINIKUBE_DEB_VERSION="$(echo ${MINIKUBE_VERSION} | sed -n 's/\(.*\)\.\(.*\)/\1-\2/p')"
@@ -195,6 +201,15 @@ Cmnd_Alias CMDS = /usr/local/bin/protoc, /usr/bin/minikube
 Defaults:jenkins !requiretty
 jenkins ALL=(ALL) NOPASSWD:SETENV: CMDS
 EOF
+
+    # prep kubeadm
+    kubeadm config images pull
+
+    # remove apparmor
+    service apparmor stop
+    update-rc.d -f apparmor remove
+    apt-get remove apparmor-utils libapparmor-perl
+    update-grub
 
     # clean up
     apt-get clean
