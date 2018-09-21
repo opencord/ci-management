@@ -25,7 +25,7 @@
          config-pod: 'flex-pod1-olt'
          profile: 'rcord-zerotouch'
          branch: 'cord-6.0'
-         Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch-build'
+         Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch'
          oltDebVersion: 'openolt-1.4.deb'
          configurePod: true
          time: '0'
@@ -37,7 +37,7 @@
          config-pod: 'flex-pod1-olt'
          profile: 'rcord-topdown'
          branch: 'cord-6.0'
-         Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
+         Jenkinsfile: 'Jenkinsfile-rcordlite-topdown'
          oltDebVersion: 'openolt-1.4.deb'
          configurePod: true
          time: '0'
