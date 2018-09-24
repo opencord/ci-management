@@ -9,8 +9,13 @@
       - 'verify-helm-charts-jobs':
           branch-regexp: '{modern-branches-regexp}'
       - 'post-merge-helm-charts-jobs':
-          branch-regexp: '{modern-branches-regexp}'
-          timed-trigger: '{every-four-hours}'
+          branch: 'master'
+          name-extension: '-master'
+          timed-trigger: '{twice-a-day}'
+      - 'post-merge-helm-charts-jobs':
+          branch: 'cord-6.0'
+          name-extension: '-cord6.0'
+          timed-trigger: '{once-a-day}'
 
 - job-group:
     name: 'verify-helm-charts-jobs'

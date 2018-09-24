@@ -5,14 +5,14 @@
     id: triggered-api-test
     name: 'verify_{project}{name-extension}_triggered-api-test'
     description: |
-      Triggers an api test in a pipeline post-merge or on a schedule.
+      Triggers an api test in a pipeline post-merge and on a schedule.
       Created by {id} job-template from ci-management/jjb/triggered-api-test.yaml, using pipeline: {pipeline_script}
 
     triggers:
       - cord-infra-gerrit-trigger-merge:
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
-          branch-regexp: '{branch-regexp}'
+          branch-regexp: '^{branch}$'
           file-include-regexp: '{all-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
       - timed: '{timed-trigger}'
@@ -40,7 +40,7 @@
 
       - string:
          name: manifestBranch
-         default: '$GERRIT_BRANCH'
+         default: '{branch}'
          description: 'Name of the repo branch to use'
 
     project-type: pipeline
