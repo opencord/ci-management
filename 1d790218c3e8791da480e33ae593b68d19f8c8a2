@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca6158d9_f908cb6e",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-25T18:48:10Z",
+      "side": 1,
+      "message": "Just a comment - I think this will also dependency install `cri-tools` for `crictl`, which I\u0027ve found  is needed to use 1.11.x versions of k8s under minikube.",
+      "range": {
+        "startLine": 74,
+        "startChar": 8,
+        "endLine": 74,
+        "endChar": 26
+      },
+      "revId": "1d790218c3e8791da480e33ae593b68d19f8c8a2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e2c49a1_29080162",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 2
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-25T18:48:10Z",
+      "side": 1,
+      "message": "How much additional space do these images take?",
+      "range": {
+        "startLine": 205,
+        "startChar": 18,
+        "endLine": 206,
+        "endChar": 30
+      },
+      "revId": "1d790218c3e8791da480e33ae593b68d19f8c8a2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
