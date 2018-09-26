@@ -1,0 +1,65 @@
+---
+- project:
+    name: att-workflow
+    project: '{name}'
+    build-node: 'qct-pod4-node2'
+    jobs:
+      - 'siab-e2e':
+          project-regexp: '^helm-charts$'
+          branch-regexp: 'master'
+
+- job-template:
+    id: siab-e2e
+    name: 'siab-{project}-e2e'
+    description: |
+      Created by {id} job-template from ci-management/jjb/siab-e2e.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project-regexp}'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - cord-infra-gerrit-scm:
+          git-url: '$GIT_URL/automation-tools'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: default
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: 'cord/automation-tools'
+      - cord-infra-gerrit-scm:
+          git-url: '$GIT_URL/helm-charts'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: default
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: 'cord/helm-charts'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: false
+
+    builders:
+      - shell: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+
+          cd cord/automation-tools/seba-in-a-box
+          make reset-kubeadm
+          make -j2
+          make run-tests
