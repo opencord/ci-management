@@ -359,7 +359,7 @@ EOF
              SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
              echo \$SERVICES
 
-             for i in \$SERVICES; do bash -c "pybot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+             for i in \$SERVICES; do bash -c "pybot -d Log -T -e ProgranServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
            fi
 
            popd

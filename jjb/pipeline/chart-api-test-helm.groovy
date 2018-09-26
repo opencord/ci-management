@@ -85,10 +85,80 @@ pipeline {
 
            pushd cord/helm-charts
            helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
-           scripts/wait_for_pods.sh
+           ./scripts/wait_for_pods.sh
 
            popd
            '''
+      }
+    }
+
+    stage('install/test att-workflow') {
+      steps {
+        sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           helm_install_args='-f examples/api-test-values.yaml'
+
+           pushd cord/helm-charts
+
+           helm dep up xos-core
+           helm install \${helm_install_args} xos-core -n xos-core
+
+           helm dep update xos-profiles/att-workflow
+           helm install \${helm_install_args} xos-profiles/att-workflow -n att-workflow
+
+           # wait for services to load
+           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
+
+           echo "# Checking helm deployments"
+           kubectl get pods
+
+           for hchart in \$(helm list -q);
+           do
+             echo "## 'helm status' for chart: \${hchart} ##"
+             helm status "\${hchart}"
+           done
+
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
+           docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
+
+           export testname=_service_api.robot
+           export library=_library.robot
+
+           SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+           echo \$SERVICES
+
+           for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
+
+           for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
+
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
+
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
+           sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
+           sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
+           ## Run CORE API Tests
+           pybot -d Log -T XOSCoreAPITests.robot  || true
+           ## Run services API Tests
+           for i in \$SERVICES; do bash -c "pybot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+
+           popd
+
+           helm delete --purge att-workflow
+           helm delete --purge xos-core
+           """
       }
     }
 
@@ -109,13 +179,10 @@ pipeline {
            helm install \${helm_install_args} xos-profiles/rcord-lite -n rcord-lite
 
            # wait for services to load
-           JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh
-	   # adding tmp sleep momentarily
-	   sleep 120
+           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
-           helm list
 
            for hchart in \$(helm list -q);
            do
@@ -184,11 +251,10 @@ pipeline {
            helm install \${helm_install_args} xos-profiles/mcord -n mcord
 
            # wait for services to load
-           JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh
+           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
-           helm list
 
            for hchart in \$(helm list -q);
            do
@@ -252,11 +318,10 @@ pipeline {
            helm install \${helm_install_args} xos-profiles/demo-simpleexampleservice -n demo-simpleexampleservice
 
            # wait for services to load
-           JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh
+           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
-           helm list
 
            for hchart in \$(helm list -q);
            do
@@ -318,12 +383,10 @@ pipeline {
            helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
            # wait for services to load
-           JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh
-           ## sleeping as hippie-oss doesnt have a tosca-loader
-           sleep 300
+           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
+
            echo "# Checking helm deployments"
            kubectl get pods
-           helm list
 
            for hchart in \$(helm list -q);
            do
@@ -366,9 +429,6 @@ pipeline {
          kubectl get pods --all-namespaces
 
          echo "# removing helm deployments"
-         kubectl get pods
-         helm list
-
          for hchart in \$(helm list -q);
          do
            echo "## Purging chart: \${hchart} ##"
