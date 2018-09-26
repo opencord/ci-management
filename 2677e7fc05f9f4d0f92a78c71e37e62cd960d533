@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "dc90a471_1c6a745f",
+        "filename": "jjb/siab-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-26T23:37:49Z",
+      "side": 1,
+      "message": "don\u0027t need parenthesis unless you\u0027re going to pipe-separate multiple names.",
+      "range": {
+        "startLine": 7,
+        "startChar": 28,
+        "endLine": 7,
+        "endChar": 29
+      },
+      "revId": "2677e7fc05f9f4d0f92a78c71e37e62cd960d533",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "698063ad_2682a344",
+        "filename": "jjb/siab-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-26T23:37:49Z",
+      "side": 1,
+      "message": "att-workflow is only in master (and post-master, but I\u0027m not sure we have a regex for that)",
+      "range": {
+        "startLine": 8,
+        "startChar": 27,
+        "endLine": 8,
+        "endChar": 52
+      },
+      "revId": "2677e7fc05f9f4d0f92a78c71e37e62cd960d533",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d823dd54_36acded6",
+        "filename": "jjb/siab-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-26T23:37:49Z",
+      "side": 1,
+      "message": "The trigger sets these $GIT_* and $GERRIT_* variables, so as it triggers on `helm-charts` it would download that repo, not `automation-tools` as given in basedir.\n\nYou could specify multiple checkouts with extra copies of `cord-infra-gerrit-scm` in the `scm` section. \n\nThen for `automation-tools` recycle`$GERRIT_BRANCH`, and use`refs/heads/master` for the refspec.",
+      "range": {
+        "startLine": 36,
+        "startChar": 0,
+        "endLine": 38,
+        "endChar": 34
+      },
+      "revId": "2677e7fc05f9f4d0f92a78c71e37e62cd960d533",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0a32448f_f9014da5",
+        "filename": "jjb/siab-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-26T23:37:49Z",
+      "side": 1,
+      "message": "The makefile assumes `$WORKSPACE/cord/helm-charts`, so you would need to add a `cord` component to this path.",
+      "range": {
+        "startLine": 42,
+        "startChar": 10,
+        "endLine": 42,
+        "endChar": 36
+      },
+      "revId": "2677e7fc05f9f4d0f92a78c71e37e62cd960d533",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
