@@ -3,8 +3,6 @@
     name: siab-e2e-att
     project: '{name}'
     build-node: 'qct-pod4-node2'
-    git-url: 'https://gerrit.opencord.org'
-    branch: 'master'
     timed-trigger: '{every-four-hours}'
     jobs:
       - 'siab-e2e-att':
@@ -13,18 +11,18 @@
     name: automation-tools
     scm:
       - git:
-          url: '{git-url}/automation-tools'
+          url: 'https://gerrit.opencord.org/automation-tools'
           branches:
-            - '{branch}'
+            - 'master'
           basedir: 'cord/automation-tools'
 
 - scm:
     name: helm-charts
     scm:
       - git:
-          url: '{git-url}/helm-charts'
+          url: 'https://gerrit.opencord.org/helm-charts'
           branches:
-            - '{branch}'
+            - 'master'
           basedir: 'cord/helm-charts'
 
 - scm:
