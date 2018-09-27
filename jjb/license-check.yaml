@@ -1,0 +1,47 @@
+---
+# kubespray installation validation job
+
+- project:
+    name: license-check
+
+    project-name: '{name}'
+
+    jobs:
+      - 'license-check'
+
+- job-template:
+    name: 'mcord-license-check'
+    id: license-check
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Copyright (c) 2018 Open Networking Foundation (ONF)
+
+    parameters:
+      - string:
+         name: TestNodeName
+         default: 'ubuntu16.04-basebuild-4c-8g'
+         description: 'Jenkins node name of TestVM Node'
+
+      - string:
+         name: branch
+         default: 'master'
+         description: 'Gerrit Branch'
+
+      - string:
+         name: repos
+         default: 'c3po'
+         description: 'Name of the repos to check with this job'
+
+      - string:
+         name: prefix
+         default: 'cord-m'
+         description: 'The prefix to give to the projects in the BlackDuck dashboard'
+
+      - string:
+         name: notificationEmail
+         default: 'luca@opennetworking.org'
+         description: ''
+
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/license-check.groovy
