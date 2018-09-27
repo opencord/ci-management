@@ -3,35 +3,50 @@
     name: siab-e2e-att
     project: '{name}'
     build-node: 'qct-pod4-node2'
-    git-url: 'https://gerrit.opencord.org'
     branch: 'master'
+    refspec: 'refs/heads/*'
+
     timed-trigger: '{every-four-hours}'
     jobs:
       - 'siab-e2e-att':
 
 - scm:
-    name: automation-tools
+    name: automation-tools-scm
     scm:
-      - git:
-          url: '{git-url}/automation-tools'
-          branches:
-            - '{branch}'
+       - cord-infra-gerrit-scm:
+          git-url: '{gerrit-server-url}/automation-tools'
+          refspec: '{refspec}'
+          branch: '{branch}'
+          submodule-recursive: 'false'
+          choosing-strategy: default
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
           basedir: 'cord/automation-tools'
 
 - scm:
-    name: helm-charts
+    name: helm-charts-scm
     scm:
-      - git:
-          url: '{git-url}/helm-charts'
-          branches:
-            - '{branch}'
+      - cord-infra-gerrit-scm:
+          git-url: '{gerrit-server-url}/helm-charts'
+          refspec: '{refspec}'
+          branch: '{branch}'
+          submodule-recursive: 'false'
+          choosing-strategy: default
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
           basedir: 'cord/helm-charts'
 
 - scm:
     name: tools-and-charts
     scm:
-      - automation-tools
-      - helm-charts
+      - automation-tools-scm:
+          branch: '{branch}'
+          refspec: '{refspec}'
+          gerrit-server-url: '{gerrit-server-url}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+      - helm-charts-scm:
+          branch: '{branch}'
+          refspec: '{refspec}'
+          gerrit-server-url: '{gerrit-server-url}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
 - job-template:
     id: 'siab-e2e-att'
@@ -53,7 +68,11 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     scm:
-      - tools-and-charts
+      - tools-and-charts:
+          branch: '{branch}'
+          refspec: '{refspec}'
+          gerrit-server-url: '{gerrit-server-url}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     node: '{build-node}'
     project-type: freestyle
