@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6f2c59ed_e2767491",
+        "filename": "jjb/siab-e2e.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-09-27T16:16:50Z",
+      "side": 1,
+      "message": "Convention is to separate job type identifiers with underscores, as dashes exist in the repo names for easier visual parsing. \n\nex: `verify_\u003creponame\u003e_\u003cjobtype\u003e`",
+      "range": {
+        "startLine": 15,
+        "startChar": 11,
+        "endLine": 15,
+        "endChar": 29
+      },
+      "revId": "4f410d98d1cfc8c1ebf186cac145fe62046dc394",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
