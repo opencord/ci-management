@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "37874c2b_4385168e",
+        "filename": "jjb/cord-test/rcord-lite.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-09-28T20:49:12Z",
+      "side": 1,
+      "message": "flex pod1 with olt/onu test job",
+      "range": {
+        "startLine": 64,
+        "startChar": 7,
+        "endLine": 64,
+        "endChar": 72
+      },
+      "revId": "89e03b6d6c63881eceb85cbc91a7f5321f755ed7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
