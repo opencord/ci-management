@@ -10,44 +10,6 @@
     jobs:
       - 'siab-e2e-att':
 
-- scm:
-    name: automation-tools-scm
-    scm:
-       - cord-infra-gerrit-scm:
-          git-url: '{gerrit-server-url}/automation-tools'
-          refspec: '{refspec}'
-          branch: '{branch}'
-          submodule-recursive: 'false'
-          choosing-strategy: default
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
-          basedir: 'cord/automation-tools'
-
-- scm:
-    name: helm-charts-scm
-    scm:
-      - cord-infra-gerrit-scm:
-          git-url: '{gerrit-server-url}/helm-charts'
-          refspec: '{refspec}'
-          branch: '{branch}'
-          submodule-recursive: 'false'
-          choosing-strategy: default
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
-          basedir: 'cord/helm-charts'
-
-- scm:
-    name: tools-and-charts
-    scm:
-      - automation-tools-scm:
-          branch: '{branch}'
-          refspec: '{refspec}'
-          gerrit-server-url: '{gerrit-server-url}'
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
-      - helm-charts-scm:
-          branch: '{branch}'
-          refspec: '{refspec}'
-          gerrit-server-url: '{gerrit-server-url}'
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
-
 - job-template:
     id: 'siab-e2e-att'
     name: 'verify_automation-tools_{project}'
@@ -68,11 +30,14 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     scm:
-      - tools-and-charts:
-          branch: '{branch}'
+      - cord-infra-gerrit-scm:
+          git-url: '{gerrit-server-url}/automation-tools'
           refspec: '{refspec}'
-          gerrit-server-url: '{gerrit-server-url}'
+          branch: '{branch}'
+          submodule-recursive: 'false'
+          choosing-strategy: default
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: 'cord/automation-tools'
 
     node: '{build-node}'
     project-type: freestyle
