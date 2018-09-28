@@ -19,7 +19,7 @@
          configurePod: true
 
     # flex pod1 with olt/onu
-      - 'build_pod_manual':
+      - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
          profile: 'att-workflow'
@@ -27,6 +27,7 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
+         time: '4'
 
      # flex pod1 test job
       - 'build_pod_test':
