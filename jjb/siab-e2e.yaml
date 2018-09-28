@@ -4,7 +4,7 @@
     project: '{name}'
     build-node: 'qct-pod4-node2'
     branch: 'master'
-    refspec: 'refs/heads/*'
+    refspec: 'refs/heads/master'
 
     timed-trigger: '{every-four-hours}'
     jobs:
@@ -49,6 +49,6 @@
           set -eu -o pipefail
 
           cd cord/automation-tools/seba-in-a-box
-          make reset-kubeadm
+          [ -e /usr/bin/kubeadm ] && make reset-kubeadm
           make -j2
           make run-tests
