@@ -5,7 +5,7 @@
     build-node: 'qct-pod4-node2'
     branch: 'master'
     refspec: 'refs/heads/master'
-
+    failure-email-address: 'andy@opennetworking.org'
     timed-trigger: '{every-four-hours}'
     jobs:
       - 'siab-e2e-att'
@@ -52,3 +52,30 @@
           [ -e /usr/bin/kubeadm ] && make reset-kubeadm
           make -j2
           make run-tests
+
+    publishers:
+      - email:
+          recipients: '{failure-email-address}'
+      - postbuildscript:
+          builders:
+            - role: BOTH
+              build-on:
+                - SUCCESS
+                - UNSTABLE
+                - NOT_BUILT
+                - ABORTED
+              build-steps:
+                - shell: sudo rm -rf /tmp/logs/*
+            - role: BOTH
+              build-on:
+                - FAILURE
+              build-steps:
+                - shell: |
+                    #!/usr/bin/env bash
+                    sudo rm -rf /tmp/logs
+                    mkdir /tmp/logs
+                    sudo cp /var/log/containers/*.log /tmp/logs
+                    sudo chown cord /tmp/logs/*.log
+      - archive:
+          artifacts: '/tmp/logs/*.log'
+          allow-empty: true
