@@ -152,6 +152,7 @@
     builders:
       - shell: |
           #!/usr/bin/env bash
+          set -e -o pipefail
 
           # Set up the ssh host keys for the docs host
           mkdir -p ~/.ssh

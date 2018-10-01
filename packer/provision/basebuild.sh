@@ -60,6 +60,7 @@ ubuntu_systems() {
         git \
         golang-1.10-go \
         less \
+        libmysqlclient-dev \
         libpcap-dev \
         libxml2-utils \
         maven \
