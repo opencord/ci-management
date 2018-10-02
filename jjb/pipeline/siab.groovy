@@ -7,10 +7,6 @@ pipeline {
     label "${params.executorNode}"
   }
 
-  options {
-    timeout(20, MINUTES)
-  }
-
   stages {
 
     stage ("Clean workspace") {
@@ -53,7 +49,7 @@ pipeline {
       steps {
         sh """
             pushd $WORKSPACE/automation-tools/seba-in-a-box
-            make run-tests
+            make run-tests || true
             popd
             """
             }
@@ -82,13 +78,10 @@ pipeline {
     post {
         always {
           sh '''
-
-             mkdir -p /tmp/logs
-             sudo cp /var/log/containers/*.log /tmp/logs
-             sudo chown cord /tmp/logs/*.log
-
+             sudo cp /var/log/containers/*.log $WORKSPACE/
+             sudo chown cord:cord $WORKSPACE/*log
              '''
-             archiveArtifacts artifacts: '/tmp/logs/*.log'
+             archiveArtifacts artifacts: '*.log'
              step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "andy@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
         }
     }
