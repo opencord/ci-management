@@ -1,0 +1,45 @@
+---
+# kubespray installation validation job
+
+- project:
+    name: seba-in-a-box
+
+    project-name: '{name}'
+
+    jobs:
+      - 'siab-build-test'
+
+- job-template:
+    id: 'siab-build-test'
+    name: 'seba-in-a-box-build-test'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/siba.yaml  <br /><br />
+      E2E Validation for Seba-in-a-Box
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: executorNode
+          default: 'qct-pod3-node1'
+          description: 'Name of the Jenkins node to run the job on'
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/siab.groovy
+
+    triggers:
+       - timed: |
+                 TZ=America/Los_Angeles
+                 H */4 * * *
