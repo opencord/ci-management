@@ -216,18 +216,22 @@ EOF
     # Change made 2018-07-09 by zdw
     # per discussion on #lf-releng, the upstream Ubuntu image changed to be
     # missing add-apt-repository, so the next command failed.
-    apt-get update -m
+    apt-get update
     apt-get install -y software-properties-common
 
     # add additional repositories
     add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse"
 
+
+    # Change made 2018-10-02 by zdw
+    # don't use the "ignore missing" -m option, as it may obscure failures
     echo "---> Installing base packages"
     apt-get clean
-    apt-get update -m
-    apt-get upgrade -m
-    apt-get dist-upgrade -m
+    apt-get update
+    apt-get upgrade
+    apt-get dist-upgrade
 
+    apt-get update
     ensure_ubuntu_install unzip xz-utils puppet git libxml-xpath-perl
 
     # install Java 7
