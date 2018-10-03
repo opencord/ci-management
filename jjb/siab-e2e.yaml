@@ -36,7 +36,7 @@
           refspec: '{refspec}'
           branch: '{branch}'
           submodule-recursive: 'false'
-          choosing-strategy: default
+          choosing-strategy: 'gerrit'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
           basedir: 'cord/automation-tools'
 
