@@ -84,5 +84,13 @@ pipeline {
              archiveArtifacts artifacts: '*.log'
              step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "andy@opennetworking.org, kailash@opennetworking.org", sendToIndividuals: false])
         }
+        failure {
+          sh '''
+             curl -X GET -u karaf:karaf http://127.0.0.1:30120/onos/v1/devices
+             curl -X GET -u karaf:karaf http://127.0.0.1:30120/onos/v1/devices/of:0000000000000001/ports
+             curl -X GET http://127.0.0.1:30125/api/v1/devices
+             curl -X GET http://127.0.0.1:30125/api/v1/logical_devices
+             '''
+        }
     }
 }
