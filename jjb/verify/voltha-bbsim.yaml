@@ -75,6 +75,8 @@
 
           pushd $GOPATH/src/gerrit.opencord.org/voltha-bbsim
 
+          make dep
+
           go test -v ./...  2>&1 | go-junit-report > $WORKSPACE/junit-report.xml
 
           go test -coverprofile=coverage.txt -covermode=count ./...
