@@ -42,4 +42,4 @@
     triggers:
        - timed: |
                  TZ=America/Los_Angeles
-                 H */4 * * *
+                 H * * * *
