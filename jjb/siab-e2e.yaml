@@ -6,7 +6,7 @@
     branch: 'master'
     refspec: 'refs/heads/master'
     failure-email-address: 'andy@opennetworking.org'
-    timed-trigger: '{every-four-hours}'
+    timed-trigger: '{every-hour}'
     jobs:
       - 'siab-e2e-att'
 
@@ -28,6 +28,7 @@
       - lf-infra-wrappers:
           build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
+      - workspace-cleanup
 
     scm:
       - cord-infra-gerrit-scm:
@@ -50,7 +51,7 @@
 
           cd cord/automation-tools/seba-in-a-box
           [ -e /usr/bin/kubeadm ] && make reset-kubeadm
-          make -j2
+          make /tmp/milestones/voltha-running && make -j2
           make run-tests
 
     publishers:
