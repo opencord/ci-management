@@ -18,6 +18,15 @@
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
 
+      - 'build_pod_manual':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod2'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+         oltDebVersion: 'openolt-master.deb'
+         configurePod: true
+
     # flex pod1 with olt/onu
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
