@@ -141,7 +141,7 @@ ubuntu_systems() {
     # dl link: https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
     SONAR_SCANNER_CLI_VERSION="3.2.0.1227"
     SONAR_SCANNER_CLI_SHA256SUM="07a50ec270a36cb83f26fe93233819c53c145248c638f4591880f1bd36e331d6"
-    curl -L -o /tmp/sonarscanner.zip "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip"
+    curl -L -o /tmp/sonarscanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip"
     echo "$SONAR_SCANNER_CLI_SHA256SUM  /tmp/sonarscanner.zip" | sha256sum -c -
     pushd /opt
     unzip /tmp/sonarscanner.zip
