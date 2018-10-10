@@ -137,8 +137,11 @@ pipeline {
            # not indented because heredoc requires it
            cat << EOF > $WORKSPACE/xos_tags.yaml
 ---
-xos_coreImage: 'xosproject/xos-core:\$XOS_VERSION'
-xos_chameleonImage: 'xosproject/chameleon:\$XOS_VERSION'
+images:
+  xos_core:
+    tag: '\$XOS_VERSION'
+  xos_chameleon:
+    tag: '\$XOS_VERSION'
 EOF
            """
       }
