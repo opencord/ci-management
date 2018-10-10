@@ -36,6 +36,14 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
+     # onlab pod2 test job
+      - 'build_pod_test_manual':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod2'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+
     # flex pod1 with olt/onu
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
