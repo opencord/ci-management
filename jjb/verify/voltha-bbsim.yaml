@@ -13,8 +13,10 @@
     name: 'verify-voltha-bbsim-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
+      - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-bbsim_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_voltha-bbsim_tag-collision'
       - 'voltha-bbsim-tests':
           dependency-jobs: 'verify_voltha-bbsim_sonarqube'
 
@@ -77,8 +79,13 @@
 
           make dep
 
+          # run tests as a developer would
+          make test
+
+          # generate Jenkins report
           go test -v ./...  2>&1 | go-junit-report > $WORKSPACE/junit-report.xml
 
+          # generate Jenkins coverage
           go test -coverprofile=coverage.txt -covermode=count ./...
           gocover-cobertura < coverage.txt > $WORKSPACE/coverage.xml
 
