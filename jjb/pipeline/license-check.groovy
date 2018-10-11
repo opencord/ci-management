@@ -13,10 +13,7 @@
 // limitations under the License.
 
 repos = params.repos.split(",")
-
-def stepsForParallel = repos.collectEntries {
-    ["${it}" : checkRepo(it)]
-}
+echo repos[0]
 
 node ("${TestNodeName}") {
     timeout (100) {
@@ -25,7 +22,10 @@ node ("${TestNodeName}") {
                 sh returnStdout: true, script: "rm -rf *"
             }
             stage ("Check repositories") {
-                parallel stepsForParallel
+
+                for(int i=0; i < repos.size(); i++) {
+                    checkRepo(repos[i])
+                }
             }
             currentBuild.result = 'SUCCESS'
         } catch (err) {
@@ -37,7 +37,6 @@ node ("${TestNodeName}") {
 }
 
 def checkRepo(repo) {
-    return {
         withCredentials([sshUserPrivateKey(credentialsId: '315e1f56-7193-464e-8af1-97bf7b1ee541', keyFileVariable: 'KEY')]) {
             sh returnStdout: true, script: """
                 chmod 600 $KEY && eval `ssh-agent -s` && ssh-add $KEY &&
@@ -45,6 +44,5 @@ def checkRepo(repo) {
                 git clone -b ${branch} ssh://mcord-private@gerrit.opencord.org:29418/${repo}
             """
         }
-        hub_detect("--detect.source.path=${repo} --detect.blackduck.signature.scanner.snippet.mode=true --detect.project.name=${prefix}-${repo} --detect.project.version.name=${branch} --detect.search.depth=20")
-    }
+        hub_detect("--detect.source.path=${repo} --detect.project.name=${prefix}-${repo} --detect.project.version.name=${branch} --snippet-matching --full-snippet-scan")
 }
