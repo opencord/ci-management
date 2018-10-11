@@ -9,6 +9,7 @@
     build-timeout: '300'
 
     jobs:
+      # onlab pod1 build
       - 'build_pod_manual':
          testvm: 'onf-build'
          config-pod: 'onlab-pod1'
@@ -17,6 +18,25 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
+
+      # onlab pod1 build
+      - 'build_pod_timer':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod1'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+         oltDebVersion: 'openolt-master.deb'
+         configurePod: true
+         time: '3'
+
+     # onlab pod1 test job
+      - 'build_pod_test':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod1'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
       # onlab pod2 build
       - 'build_pod_manual':
@@ -27,22 +47,6 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
-
-     # onlab pod1 test job
-      - 'build_pod_test_manual':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod1'
-         profile: 'att-workflow'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
-
-     # onlab pod2 test job
-      - 'build_pod_test_manual':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod2'
-         profile: 'att-workflow'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
     # flex pod1 with olt/onu
       - 'build_pod_timer':
