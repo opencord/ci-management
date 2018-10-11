@@ -312,7 +312,7 @@ EOF
                 sh """
                 CORE_POD=\$(kubectl get pods | grep xos-core | awk '{print \$1}')
                 CHAM_POD=\$(kubectl get pods | grep chameleon | awk '{print \$1}')
-                CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+                CHAM_CONTAINER=\$(docker ps | grep k8s_POD_xos-chameleon | awk '{print \$1}')
                 XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
                 kubectl logs \$CORE_POD | grep "XOS core entering wait loop"
                 curl -I -u admin@opencord.org:letmein http://\$XOS_CHAMELEON:9101/xosapi/v1/core/users | grep "200 OK"
@@ -332,7 +332,7 @@ EOF
     stage('setup') {
       steps {
         sh """
-           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_POD_xos-core | awk '{print \$1}')
 
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
@@ -360,8 +360,8 @@ EOF
         sh """
            pushd cord/test/cord-tester/src/test/cord-api/Tests
 
-           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
-           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_POD_xos-core | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_POD_xos-chameleon | awk '{print \$1}')
            XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/

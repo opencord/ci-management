@@ -126,7 +126,7 @@ pipeline {
            done
 
            CORE_POD=\$(kubectl get pods | grep "xos-core.*Running" | awk '{print \$1}')
-           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core_\${CORE_POD} | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_POD_xos-core_\${CORE_POD} | awk '{print \$1}')
 
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
@@ -143,7 +143,7 @@ pipeline {
 
            for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
 
-           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_POD_xos-chameleon | awk '{print \$1}')
            XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
@@ -196,7 +196,7 @@ pipeline {
            done
 
            CORE_POD=\$(kubectl get pods | grep "xos-core.*Running" | awk '{print \$1}')
-           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core_\${CORE_POD} | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_POD_xos-core_\${CORE_POD} | awk '{print \$1}')
 
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
@@ -213,7 +213,7 @@ pipeline {
 
            for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
 
-           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_POD_xos-chameleon | awk '{print \$1}')
            XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
@@ -268,7 +268,7 @@ pipeline {
            done
 
            CORE_POD=\$(kubectl get pods | grep "xos-core.*Running" | awk '{print \$1}')
-           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core_\${CORE_POD} | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_POD_xos-core_\${CORE_POD} | awk '{print \$1}')
 
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
@@ -285,7 +285,7 @@ pipeline {
 
            for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
 
-           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_POD_xos-chameleon | awk '{print \$1}')
            XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
@@ -335,7 +335,7 @@ pipeline {
            done
 
            CORE_POD=\$(kubectl get pods | grep "xos-core.*Running" | awk '{print \$1}')
-           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core_\${CORE_POD} | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_POD_xos-core_\${CORE_POD} | awk '{print \$1}')
 
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
@@ -352,7 +352,7 @@ pipeline {
 
            for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
 
-           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_POD_xos-chameleon | awk '{print \$1}')
            XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
@@ -400,7 +400,7 @@ pipeline {
            done
 
            CORE_POD=\$(kubectl get pods | grep "xos-core.*Running" | awk '{print \$1}')
-           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core_\${CORE_POD} | awk '{print \$1}')
+           CORE_CONTAINER=\$(docker ps | grep k8s_POD_xos-core_\${CORE_POD} | awk '{print \$1}')
 
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosapitests.xtarget
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceapitests.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceapitests.xtarget
