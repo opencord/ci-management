@@ -19,6 +19,6 @@
           dependency-jobs: 'verify_fabric-crossconnect_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_fabric-crossconnect_sonarqube'
-#      - 'api-test':
-#          dependency-jobs: 'verify_fabric-crossconnect_unit-test'
-#          pipeline_script: 'all-xos-api-test-helm.groovy'
+      - 'api-test':
+          dependency-jobs: 'verify_fabric-crossconnect_unit-test'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
