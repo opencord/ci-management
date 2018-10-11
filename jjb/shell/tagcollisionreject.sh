@@ -100,9 +100,12 @@ function dockerfile_parentcheck {
         if [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
         then
           echo "  OK: Parent '$p_image:$p_version' is a released SemVer version"
-        elif [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+).*$ ]]
+        elif [[ "${p_version}" =~ ^.*([0-9]+)\.([0-9]+).*$ ]]
         then
-          # handle the non-SemVer 'ubuntu:16.04' and 'postgres:10.3-alpine' cases
+          # handle non-SemVer versions that have a Major.Minor version specifier in the name
+          #  'ubuntu:16.04'
+          #  'postgres:10.3-alpine'
+          #  'openjdk:8-jre-alpine3.8'
           echo "  OK: Parent '$p_image:$p_version' is using a non-SemVer, but sufficient, version"
         else
           echo "  ERROR: Parent '$p_image:$p_version' is NOT using an specific version"
