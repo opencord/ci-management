@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8c4eb565_a3095b88",
+        "filename": "jjb/pipeline/siab.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-10-12T17:08:24Z",
+      "side": 0,
+      "message": "Shouldn\u0027t we retain the -j2 (2 parallel targets) ?",
+      "range": {
+        "startLine": 42,
+        "startChar": 13,
+        "endLine": 42,
+        "endChar": 20
+      },
+      "revId": "e97640edb3dacb8a4f9101c63952f5bb8d185efd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}

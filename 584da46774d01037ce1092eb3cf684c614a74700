@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "29bc0b6a_5e0f3788",
+        "filename": "jjb/siab.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-10-12T17:08:24Z",
+      "side": 1,
+      "message": "30 will be at exactly 30m past the hour, whereas the `H` above  is at a random time determined by the hash of the  job name - you might change them both to be at specific times.",
+      "range": {
+        "startLine": 91,
+        "startChar": 16,
+        "endLine": 91,
+        "endChar": 19
+      },
+      "revId": "584da46774d01037ce1092eb3cf684c614a74700",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
