@@ -39,7 +39,7 @@ pipeline {
       steps {
         sh """
             pushd $WORKSPACE/automation-tools/seba-in-a-box
-            make -j2
+            make ${params.version}
             popd
             """
             }
@@ -50,6 +50,19 @@ pipeline {
         sh """
             pushd $WORKSPACE/automation-tools/seba-in-a-box
             make run-tests || true
+            popd
+            """
+            }
+        }
+
+    stage ('Display Kafka Events') {
+      steps {
+        sh """
+            pushd $WORKSPACE/automation-tools/seba-in-a-box
+            CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 192)
+            kafkacat -e -C -b \$CORD_KAFKA_IP -t onu.events -f 'Topic %t [%p] at offset %o: key %k: %s\n >0'
+            kafkacat -e -C -b \$CORD_KAFKA_IP -t authentication.events -f 'Topic %t [%p] at offset %o: key %k: %s\n >0'
+            kafkacat -e -C -b \$CORD_KAFKA_IP -t dhcp.events -f 'Topic %t [%p] at offset %o: key %k: %s\n >0'
             popd
             """
             }
