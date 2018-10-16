@@ -48,6 +48,39 @@ ubuntu_systems() {
     # set up golang repo
     add-apt-repository ppa:gophers/archive
 
+    # set up kubernetes repo
+    cat << EOF | base64 -d > /tmp/k8s-apt-key.gpg
+mQENBFUd6rIBCAD6mhKRHDn3UrCeLDp7U5IE7AhhrOCPpqGF7mfTemZYHf/5JdjxcOxoSFlK
+7zwmFr3lVqJ+tJ9L1wd1K6P7RrtaNwCiZyeNPf/Y86AJ5NJwBe0VD0xHTXzPNTqRSByVYtdN
+94NoltXUYFAAPZYQls0x0nUD1hLMlOlC2HdTPrD1PMCnYq/NuL/Vk8sWrcUt4DIS+0RDQ8tK
+Ke5PSV0+PnmaJvdF5CKawhh0qGTklS2MXTyKFoqjXgYDfY2EodI9ogT/LGr9Lm/+u4OFPvmN
+9VN6UG+s0DgJjWvpbmuHL/ZIRwMEn/tpuneaLTO7h1dCrXC849PiJ8wSkGzBnuJQUbXnABEB
+AAG0QEdvb2dsZSBDbG91ZCBQYWNrYWdlcyBBdXRvbWF0aWMgU2lnbmluZyBLZXkgPGdjLXRl
+YW1AZ29vZ2xlLmNvbT6JAT4EEwECACgFAlUd6rICGy8FCQWjmoAGCwkIBwMCBhUIAgkKCwQW
+AgMBAh4BAheAAAoJEDdGwginMXsPcLcIAKi2yNhJMbu4zWQ2tM/rJFovazcY28MF2rDWGOnc
+9giHXOH0/BoMBcd8rw0lgjmOosBdM2JT0HWZIxC/Gdt7NSRA0WOlJe04u82/o3OHWDgTdm9M
+S42noSP0mvNzNALBbQnlZHU0kvt3sV1YsnrxljoIuvxKWLLwren/GVshFLPwONjw3f9Fan6G
+WxJyn/dkX3OSUGaduzcygw51vksBQiUZLCD2Tlxyr9NvkZYTqiaWW78L6regvATsLc9L/dQU
+iSMQZIK6NglmHE+cuSaoK0H4ruNKeTiQUw/EGFaLecay6Qy/s3Hk7K0QLd+gl0hZ1w1VzIeX
+Lo2BRlqnjOYFX4CwAgADmQENBFrBaNsBCADrF18KCbsZlo4NjAvVecTBCnp6WcBQJ5oSh7+E
+98jX9YznUCrNrgmeCcCMUvTDRDxfTaDJybaHugfba43nqhkbNpJ47YXsIa+YL6eEE9emSmQt
+jrSWIiY+2YJYwsDgsgckF3duqkb02OdBQlh6IbHPoXB6H//b1PgZYsomB+841XW1LSJPYlYb
+IrWfwDfQvtkFQI90r6NknVTQlpqQh5GLNWNYqRNrGQPmsB+NrUYrkl1nUt1LRGu+rCe4bSaS
+mNbwKMQKkROE4kTiB72DPk7zH4Lm0uo0YFFWG4qsMIuqEihJ/9KNX8GYBr+tWgyLooLlsdK3
+l+4dVqd8cjkJM1ExABEBAAG0QEdvb2dsZSBDbG91ZCBQYWNrYWdlcyBBdXRvbWF0aWMgU2ln
+bmluZyBLZXkgPGdjLXRlYW1AZ29vZ2xlLmNvbT6JAT4EEwECACgFAlrBaNsCGy8FCQWjmoAG
+CwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGoDCyG6B/T78e8H/1WH2LN/nVNhm5TS1VYJ
+G8B+IW8zS4BqyozxC9iJAJqZIVHXl8g8a/Hus8RfXR7cnYHcg8sjSaJfQhqO9RbKnffiuQgG
+rqwQxuC2jBa6M/QKzejTeP0Mgi67pyrLJNWrFI71RhritQZmzTZ2PoWxfv6b+Tv5v0rPaG+u
+t1J47pn+kYgtUaKdsJz1umi6HzK6AacDf0C0CksJdKG7MOWsZcB4xeOxJYuy6NuO6KcdEz8/
+XyEUjIuIOlhYTd0hH8E/SEBbXXft7/VBQC5wNq40izPi+6WFK/e1O42DIpzQ749ogYQ1eode
+xPNhLzekKR3XhGrNXJ95r5KO10VrsLFNd8KwAgAD
+EOF
+
+    sudo apt-key add /tmp/k8s-apt-key.gpg
+    echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+    # update after adding apt repos to sources
     apt-get update
 
     # install basic sofware requirements
@@ -59,6 +92,9 @@ ubuntu_systems() {
         curl \
         git \
         golang-1.10-go \
+        "kubeadm=1.11.3-*" \
+        "kubelet=1.11.3-*" \
+        "kubectl=1.11.3-*" \
         less \
         libmysqlclient-dev \
         libpcap-dev \
@@ -150,8 +186,8 @@ ubuntu_systems() {
     popd
 
     # install helm
-    HELM_VERSION="2.10.0"
-    HELM_SHA256SUM="0fa2ed4983b1e4a3f90f776d08b88b0c73fd83f305b5b634175cb15e61342ffe"
+    HELM_VERSION="2.11.0"
+    HELM_SHA256SUM="02a4751586d6a80f6848b58e7f6bd6c973ffffadc52b4c06652db7def02773a1"
     HELM_PLATFORM="linux-amd64"
     curl -L -o /tmp/helm.tgz "https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz"
     echo "$HELM_SHA256SUM  /tmp/helm.tgz" | sha256sum -c -
@@ -162,19 +198,10 @@ ubuntu_systems() {
     rm -rf helm.tgz ${HELM_PLATFORM}
     popd
 
-    # install kubectl
-    KUBECTL_VERSION="1.11.3"
-    KUBECTL_SHA256SUM="0d4c70484e90d4310f03f997b4432e0a97a7f5b5be5c31d281f3d05919f8b46c"
-    curl -L -o /tmp/kubectl "https://storage.googleapis.com/kubernetes-release/release/v${KUBECTL_VERSION}/bin/linux/amd64/kubectl"
-    echo "$KUBECTL_SHA256SUM  /tmp/kubectl" | sha256sum -c -
-    mv /tmp/kubectl /usr/local/bin/kubectl
-    chmod a+x /usr/local/bin/kubectl
-    rm -f /tmp/kubectl
-
     # install minikube
-    MINIKUBE_VERSION="0.28.2"
+    MINIKUBE_VERSION="0.30.0"
     MINIKUBE_DEB_VERSION="$(echo ${MINIKUBE_VERSION} | sed -n 's/\(.*\)\.\(.*\)/\1-\2/p')"
-    MINIKUBE_SHA256SUM="47cd2db6a65b092a3e1ac47ddd4331914290f04069260ee273530ab7e29123d2"
+    MINIKUBE_SHA256SUM="c6c5aa5956f8ad5f61d426e9b8601ba95965a9c30bb80a9fe7525c64e6dd12fd"
     curl -L -o /tmp/minikube.deb "https://storage.googleapis.com/minikube/releases/v${MINIKUBE_VERSION}/minikube_${MINIKUBE_DEB_VERSION}.deb"
     echo "$MINIKUBE_SHA256SUM  /tmp/minikube.deb" | sha256sum -c -
     pushd /tmp
