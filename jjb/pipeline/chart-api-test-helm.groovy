@@ -342,6 +342,9 @@ pipeline {
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
            docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
 
+           # run e2e synchronizer test
+           helm test demo-simpleexampleservice
+
            export testname=_service_api.robot
            export library=_library.robot
 
@@ -431,6 +434,9 @@ pipeline {
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
+
+         #copy helm test robot logs
+         cp -r /tmp/*ml ./RobotLogs
 
          kubectl get pods --all-namespaces
 
