@@ -22,3 +22,5 @@
           pipeline_script: 'all-xos-api-test-helm.groovy'
       - 'xos-tosca-unit-test':
           dependency-jobs: 'verify_xos-tosca_sonarqube'
+      - 'xos-tosca-e2e-test':
+          dependency-jobs: 'verify_xos-tosca_sonarqube'
