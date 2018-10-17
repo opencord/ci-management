@@ -1,0 +1,63 @@
+---
+# verification jobs for 'openolt' repo
+
+- project:
+    name: openolt
+    project: '{name}'
+
+    jobs:
+      - 'verify-openolt-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-openolt-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_openolt_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_openolt_tag-collision'
+#      - 'openolt-tests':
+#          dependency-jobs: 'verify_openolt_sonarqube'
+
+- job-template:
+    id: 'openolt-tests'
+    name: 'verify_{project}_tests'
+
+    description: |
+      Created by {id} job-template from ci-management/jjb/verify/openolt.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+         name: notificationEmail
+         default: '$GERRIT_EVENT_ACCOUNT_EMAIL'
+         description: 'Verification failure of patch $GERRIT_CHANGE_NUMBER to {project} repo'
+
+    node: 'openolt_deb_onf_agent'
+    project-type: pipeline
+    concurrent: true
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile.test'
+      scm:
+        - cord-infra-gerrit-scm:
+            git-url: '$GIT_URL/$GERRIT_PROJECT'
+            refspec: '$GERRIT_REFSPEC'
+            branch: '$GERRIT_BRANCH'
+            submodule-recursive: 'false'
+            choosing-strategy: 'gerrit'
+            jenkins-ssh-credential: '{jenkins-ssh-credential}'
+            basedir: ''
