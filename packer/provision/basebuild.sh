@@ -92,6 +92,7 @@ EOF
         curl \
         git \
         golang-1.10-go \
+        httpie \
         "kubeadm=1.11.3-*" \
         "kubelet=1.11.3-*" \
         "kubectl=1.11.3-*" \
