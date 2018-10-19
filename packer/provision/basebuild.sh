@@ -124,6 +124,7 @@ EOF
         Jinja2 \
         ansible-lint \
         astroid==1.* \
+        coverage \
         docker-compose==1.20.1 \
         docker==3.2.1 \
         gitpython \
@@ -131,6 +132,8 @@ EOF
         grpcio-tools \
         isort \
         linkchecker \
+        mock \
+        nose2 \
         pexpect \
         pylint==1.* \
         pyyaml \
