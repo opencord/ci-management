@@ -43,6 +43,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.iml" \
   ! -name "*.in" \
   ! -name "*.inc" \
+  ! -name "*.install" \
   ! -name "*.j2" \
   ! -name "*.jar" \
   ! -name "*.jks" \
