@@ -7,7 +7,7 @@
     refspec: 'refs/heads/master'
     failure-email-address: 'andy@opennetworking.org'
     timed-trigger: '{every-hour}'
-    build-timeout: 20
+    build-timeout: 60
     jobs:
       - 'siab-e2e-att'
 
