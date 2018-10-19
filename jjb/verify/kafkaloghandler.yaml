@@ -1,0 +1,21 @@
+---
+# verification jobs for 'kafkaloghandler' repo
+
+- project:
+    name: kafkaloghandler
+    project: '{name}'
+
+    jobs:
+      - 'verify-kafkaloghandler-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-kafkaloghandler-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_kafkaloghandler_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_kafkaloghandler_tag-collision'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_kafkaloghandler_sonarqube'
