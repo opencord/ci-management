@@ -40,6 +40,11 @@
           default: 'stable'
           description: 'Latest | Stable'
 
+      - string:
+          name: Test_Tags
+          default: ''
+          description: 'empty for stable and latest for latest'
+
     project-type: pipeline
     concurrent: false
 
@@ -79,6 +84,11 @@
           name: version
           default: 'latest'
           description: 'Latest | Stable'
+
+      - string:
+          name: Test_Tags
+          default: 'TESTTAGS=latest'
+          description: 'empty for stable and latest for latest'
 
     project-type: pipeline
     concurrent: false
