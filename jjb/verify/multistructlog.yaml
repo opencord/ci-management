@@ -1,0 +1,21 @@
+---
+# verification jobs for 'multistructlog' repo
+
+- project:
+    name: multistructlog
+    project: '{name}'
+
+    jobs:
+      - 'verify-multistructlog-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-multistructlog-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_multistructlog_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_multistructlog_tag-collision'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_multistructlog_sonarqube'
