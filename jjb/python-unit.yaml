@@ -44,13 +44,20 @@
           #!/usr/bin/env bash
           set -eux -o pipefail
 
-          if [ -f requirements.txt ]; then
-            echo "requirements.txt found, installing locally with pip"
-            pip install -r requirements.txt
-          fi
+          if [ -f 'tox.ini' ]; then
+            echo "tox.ini found, running tox for Python2/3 unit tests"
+            tox
+          else
+            echo "tox.ini not found, running nose2 unit tests"
 
-          echo "Performing nose2 tests"
-          nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
+            if [ -f 'requirements.txt' ]; then
+              echo "requirements.txt found, installing locally with pip"
+              pip install -r requirements.txt
+            fi
+
+            echo "Performing nose2 tests"
+            nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
+          fi
 
     publishers:
       - junit:

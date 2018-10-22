@@ -142,6 +142,7 @@ EOF
         robotframework-kafkalibrary \
         robotframework-requests \
         robotframework-sshlibrary \
+        tox \
         virtualenv
         # end of pip install list
 
