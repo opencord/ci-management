@@ -1,0 +1,21 @@
+---
+# verification jobs for 'osam' repo
+
+- project:
+    name: osam
+    project: '{name}'
+
+    jobs:
+      - 'verify-osam-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-osam-jobs'
+    jobs:
+      - 'verify-licensed'
+#     - 'tag-collision-reject':
+#         dependency-jobs: 'verify_osam_licensed'
+#     - 'verify-sonarqube':
+#         dependency-jobs: 'verify_osam_tag-collision'
+#         sonar-prep-commands: './build.sh'
+#         sonar-java-binaries: 'target'
