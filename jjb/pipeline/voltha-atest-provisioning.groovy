@@ -27,19 +27,6 @@ pipeline {
       }
     }
 
-    stage ('Build voltha and onos') {
-      steps {
-        sh '''
-        cd $WORKSPACE/cord/incubator/voltha
-        source env.sh
-        make fetch
-        make clean
-        make build
-        make onos
-        '''
-      }
-    }
-
     stage ('Start Provisioning Test') {
       steps {
         println 'Start Provisioning Test'
