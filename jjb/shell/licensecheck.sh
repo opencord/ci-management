@@ -20,11 +20,13 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.PNG" \
   ! -name "*.asc" \
   ! -name "*.bat" \
+  ! -name "*.cert" \
   ! -name "*.cfg" \
   ! -name "*.cnf" \
   ! -name "*.conf" \
   ! -name "*.cql" \
   ! -name "*.crt" \
+  ! -name "*.csar" \
   ! -name "*.csr" \
   ! -name "*.csv" \
   ! -name "*.ctmpl" \
@@ -49,12 +51,15 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.jks" \
   ! -name "*.jpg" \
   ! -name "*.json" \
+  ! -name "*.jsonld" \
+  ! -name "*.JSON" \
   ! -name "*.key" \
   ! -name "*.list" \
   ! -name "*.local" \
   ! -name "*.log" \
   ! -name "*.mak" \
   ! -name "*.md" \
+  ! -name "*.MF" \
   ! -name "*.mk" \
   ! -name "*.oar" \
   ! -name "*.p12" \
