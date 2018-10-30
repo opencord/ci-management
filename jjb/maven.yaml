@@ -1,5 +1,5 @@
 ---
-# maven install jobs for cord onos app repos
+# maven jobs for Java projects
 
 - job-template:
     id: maven-install
@@ -46,3 +46,47 @@
           refspec: '$GERRIT_REFSPEC'
           choosing-strategy: 'gerrit'
           shallow-clone: true
+
+
+- job-template:
+    id: maven-test
+    name: 'verify_{project}_maven-test'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/maven.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project}'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: 30
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: maven
+    concurrent: true
+
+    maven:
+      root-pom: 'pom.xml'
+      goals: 'test'

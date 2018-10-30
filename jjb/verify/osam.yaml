@@ -13,6 +13,9 @@
     name: 'verify-osam-jobs'
     jobs:
       - 'verify-licensed'
+      - 'maven-test':
+          dependency-jobs: 'verify_osam_licensed'
+
 #     - 'tag-collision-reject':
 #         dependency-jobs: 'verify_osam_licensed'
 #     - 'verify-sonarqube':
