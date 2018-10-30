@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d22c1070_3d57532e",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2018-10-30T20:07:58Z",
+      "side": 1,
+      "message": "You don\u0027t first want to try and see if `source env.sh` in the pipeline thread will not cause the error we were seeing or have you tried that already",
+      "revId": "c6e073998b1e6b2ce979d3a6f6007a39bc8a0778",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0b263c4e_aa98bef1",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2018-10-30T20:07:58Z",
+      "side": 1,
+      "message": "jenkinstest is defining the top level folder where the logs are going to be written.\nThe child folder will be called voltha_test_results",
+      "revId": "c6e073998b1e6b2ce979d3a6f6007a39bc8a0778",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
