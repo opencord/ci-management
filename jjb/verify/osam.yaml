@@ -13,9 +13,100 @@
     name: 'verify-osam-jobs'
     jobs:
       - 'verify-licensed'
+      - 'osam-test':
+          dependency-jobs: 'verify_osam_licensed'
+
 #     - 'tag-collision-reject':
 #         dependency-jobs: 'verify_osam_licensed'
 #     - 'verify-sonarqube':
 #         dependency-jobs: 'verify_osam_tag-collision'
 #         sonar-prep-commands: './build.sh'
 #         sonar-java-binaries: 'target'
+
+
+- job-template:
+    id: 'osam-test'
+    name: 'verify_{project}_test'
+
+    description: |
+      Created by {id} job-template from ci-management/jjb/verify/osam.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: 20
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - cord-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: 'gerrit'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: '{project}'
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: |
+          #!/usr/bin/env bash
+          set -eux -o pipefail
+
+          echo "Starting database for OSAM tests"
+
+          # pull database
+          docker pull mariadb:10.3-bionic
+
+          # run database
+          # Settings for the following commmand must match values given
+          # in: osam-core/model/src/main/resources/application.properties
+
+          docker run -d -p -p 3306:3306 --name springbootdb \
+                     -e MYSQL_DATABASE=osam_core \
+                     -e MYSQL_USER=root \
+                     -e MYSQL_ROOT_PASSWORD=123456 \
+                     mariadb:10.3-bionic
+
+          # wait for mariadb to start up
+          sleep 30
+
+      - maven-target:
+          goals: "test"
+          pom: "pom.xml"
+          # java-opts option is a workaround for:
+          #    Error: Could not find or load main class org.apache.maven.surefire.booter.ForkedBooter
+          # solutionfound here: https://stackoverflow.com/a/53085816
+          java-opts:
+              - "-Djdk.net.URLClassPath.disableClassPathURLCheck=true"
+
+    publishers:
+      - postbuildscript:
+          builders:
+            - build-on:
+                - SUCCESS
+                - UNSTABLE
+                - FAILURE
+              build-steps:
+                - shell: |
+                    #!/usr/bin/env bash
+                    set -eux -o pipefail
+
+                    echo "Stopping database"
+                    docker rm -f springbootdb
+
