@@ -9,7 +9,15 @@ pipeline {
 
   stages {
 
-    stage('voltha Repo') {
+    stage ('Clean up') {
+      steps {
+        sh '''
+        rm -rf $WORKSPACE/
+        '''
+      }
+    }
+
+    stage('Voltha Repo') {
       steps {
         checkout(changelog: false, \
           poll: false,
@@ -27,26 +35,45 @@ pipeline {
       }
     }
 
-    stage ('Build voltha and onos') {
+    stage ('Build Voltha and ONOS') {
       steps {
         sh '''
         cd $WORKSPACE/cord/incubator/voltha
+        chmod +x env.sh
         source env.sh
-        make fetch
-        make clean
-        make build
-        make onos
         '''
       }
     }
 
     stage ('Start Provisioning Test') {
       steps {
-        println 'Start Provisioning Test'
-        println 'Run the following commands when the testing code is in Gerrit'
-        println 'cd tests/atests/'
-        println 'robot -d results -v LOG_DIR:/tmp robot/auto_testing.robot'
+        sh '''
+        cd $WORKSPACE/cord/incubator/voltha/tests/atests/common/
+        ./run_robot.sh jenkinstest
+        '''
       }
     }
+
+     stage('Publish') {
+      steps {
+        sh """
+           if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
+           cp -r $WORKSPACE/cord/incubator/voltha/jenkinstest/ ./RobotLogs
+           """
+
+        step([$class: 'RobotPublisher',
+            disableArchiveOutput: false,
+            logFileName: 'RobotLogs/log*.html',
+            otherFiles: '',
+            outputFileName: 'RobotLogs/output*.xml',
+            outputPath: '.',
+            passThreshold: 100,
+            reportFileName: 'RobotLogs/report*.html',
+            unstableThreshold: 0]);
+      }
+    }
+
   }
 }
+
+
