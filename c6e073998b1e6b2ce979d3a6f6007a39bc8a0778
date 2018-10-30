@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "b9760245_bf3f43cc",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-10-30T20:13:55Z",
+      "side": 1,
+      "message": "will try it!",
+      "parentUuid": "d22c1070_3d57532e",
+      "revId": "c6e073998b1e6b2ce979d3a6f6007a39bc8a0778",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "0b263c4e_aa98bef1",
         "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2018-10-30T20:07:58Z",
       "side": 1,
       "message": "jenkinstest is defining the top level folder where the logs are going to be written.\nThe child folder will be called voltha_test_results",
+      "revId": "c6e073998b1e6b2ce979d3a6f6007a39bc8a0778",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "af147e45_f77270fa",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-10-30T20:13:55Z",
+      "side": 1,
+      "message": "so should i not pass an argument to this script ?",
+      "parentUuid": "0b263c4e_aa98bef1",
       "revId": "c6e073998b1e6b2ce979d3a6f6007a39bc8a0778",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
