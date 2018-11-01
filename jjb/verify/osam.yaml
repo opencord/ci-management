@@ -57,7 +57,7 @@
           submodule-recursive: 'false'
           choosing-strategy: 'gerrit'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
-          basedir: '{project}'
+          basedir: '{basedir}'
 
     node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: freestyle
@@ -77,14 +77,15 @@
           # Settings for the following commmand must match values given
           # in: osam-core/model/src/main/resources/application.properties
 
-          docker run -d -p -p 3306:3306 --name springbootdb \
+          docker run -d -p 3306:3306 --name springbootdb \
                      -e MYSQL_DATABASE=osam_core \
                      -e MYSQL_USER=root \
                      -e MYSQL_ROOT_PASSWORD=123456 \
                      mariadb:10.3-bionic
 
-          # wait for mariadb to start up
-          sleep 30
+          # wait for mariadb to start up, print docker container status
+          sleep 15
+          docker ps -a
 
       - maven-target:
           goals: "test"
@@ -108,5 +109,6 @@
                     set -eux -o pipefail
 
                     echo "Stopping database"
+                    docker ps -a
                     docker rm -f springbootdb
 
