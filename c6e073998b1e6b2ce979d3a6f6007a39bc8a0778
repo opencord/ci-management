@@ -69,6 +69,24 @@
       "revId": "c6e073998b1e6b2ce979d3a6f6007a39bc8a0778",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b0462f3e_a2250704",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2018-11-02T19:54:25Z",
+      "side": 1,
+      "message": "It\u0027s fine, as long as you realize that this is only the parent folder to \"voltha_test_results\" folder where all the logs will be collected",
+      "parentUuid": "af147e45_f77270fa",
+      "revId": "c6e073998b1e6b2ce979d3a6f6007a39bc8a0778",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
