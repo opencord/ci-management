@@ -72,7 +72,18 @@ pipeline {
             unstableThreshold: 0]);
       }
     }
+  }
 
+  post {
+    always {
+      sh '''
+         cp $WORKSPACE/cord/incubator/voltha/tests/atests/common/*.log .
+         cp $WORKSPACE/cord/incubator/voltha/tests/atests/common/voltha_test_results/*.log .
+         sudo chown cord:cord $WORKSPACE/*log
+         '''
+         archiveArtifacts artifacts: '*.log'
+         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "gdepatie@northforgeinc.com, kailash@opennetworking.org", sendToIndividuals: false])
+    }
   }
 }
 
