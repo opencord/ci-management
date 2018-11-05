@@ -16,6 +16,24 @@
       "revId": "45b2e8d10070c806f03888ea867c703b8dfcd61b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "13805b9a_ebec2bc5",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-11-05T22:28:30Z",
+      "side": 1,
+      "message": "the \u0027archiveArtifacts\u0027 plugin currently only supports archiving logs from the \"$WORKSPACE\" directory.(i have no idea why).  so thats why i have to put it here.",
+      "parentUuid": "f895073d_bfd5853d",
+      "revId": "45b2e8d10070c806f03888ea867c703b8dfcd61b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
