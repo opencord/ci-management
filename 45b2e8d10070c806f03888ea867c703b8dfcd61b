@@ -34,6 +34,24 @@
       "revId": "45b2e8d10070c806f03888ea867c703b8dfcd61b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "975e91f3_c02411c7",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2018-11-05T22:29:51Z",
+      "side": 1,
+      "message": "I see\nOK then",
+      "parentUuid": "13805b9a_ebec2bc5",
+      "revId": "45b2e8d10070c806f03888ea867c703b8dfcd61b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
