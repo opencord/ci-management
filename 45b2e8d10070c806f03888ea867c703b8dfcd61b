@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f895073d_bfd5853d",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2018-11-05T17:43:13Z",
+      "side": 1,
+      "message": "I don\u0027t think it\u0027s good practice to collect logs here. However as I look above for where the Robot logs get collected, you\u0027ve defined the parent folder \"jenkinstest\" off of common I guess. \nWhy not define something like \"/tmp/jenkinstest\" and then the \"voltha_test_results\" child folder would be off of that.\nI just think it segregates the log from where the code is running\nJust a thought",
+      "revId": "45b2e8d10070c806f03888ea867c703b8dfcd61b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
