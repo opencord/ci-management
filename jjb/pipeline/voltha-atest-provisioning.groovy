@@ -49,7 +49,7 @@ pipeline {
       steps {
         sh '''
         cd $WORKSPACE/cord/incubator/voltha/tests/atests/common/
-        ./run_robot.sh jenkinstest
+        ./run_robot.sh jenkinstest || true
         '''
       }
     }
@@ -59,16 +59,17 @@ pipeline {
         sh """
            if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
            cp -r $WORKSPACE/cord/incubator/voltha/jenkinstest/ ./RobotLogs
+           cp -r $WORKSPACE/cord/incubator/voltha/jenkinstest/voltha_test_results/*.log $WORKSPACE/
            """
 
         step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
-            logFileName: 'RobotLogs/log*.html',
+            logFileName: 'RobotLogs/jenkinstest/log*.html',
             otherFiles: '',
-            outputFileName: 'RobotLogs/output*.xml',
+            outputFileName: 'RobotLogs/jenkinstest/output*.xml',
             outputPath: '.',
             passThreshold: 100,
-            reportFileName: 'RobotLogs/report*.html',
+            reportFileName: 'RobotLogs/jenkinstest/report*.html',
             unstableThreshold: 0]);
       }
     }
@@ -76,11 +77,6 @@ pipeline {
 
   post {
     always {
-      sh '''
-         cp $WORKSPACE/cord/incubator/voltha/tests/atests/common/*.log .
-         cp $WORKSPACE/cord/incubator/voltha/tests/atests/common/voltha_test_results/*.log .
-         sudo chown cord:cord $WORKSPACE/*log
-         '''
          archiveArtifacts artifacts: '*.log'
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "gdepatie@northforgeinc.com, kailash@opennetworking.org", sendToIndividuals: false])
     }
