@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "835624b6_52a618db",
+        "filename": "jjb/pipeline/voltha-atest-provisioning.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2018-11-08T20:28:42Z",
+      "side": 1,
+      "message": "This looks right however have you tried to remove the \"chmod +x env.sh\"\nYou should be able to run \"source env.sh\" in the pipeline without needing to add execute privilege on the file",
+      "revId": "f0720127e03b2db9dacf07ea6a240e01a0250e7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
