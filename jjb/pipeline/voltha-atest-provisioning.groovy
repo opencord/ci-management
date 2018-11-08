@@ -41,6 +41,9 @@ pipeline {
         cd $WORKSPACE/cord/incubator/voltha
         chmod +x env.sh
         source env.sh
+        make fetch
+        make clean
+        make build
         '''
       }
     }
