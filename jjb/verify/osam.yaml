@@ -46,7 +46,7 @@
 
     wrappers:
       - lf-infra-wrappers:
-          build-timeout: 20
+          build-timeout: 40
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     scm:
