@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "48c0f5e6_4f7d5d9c",
+        "filename": "jjb/cord-test/rcord-lite.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-11-12T21:48:58Z",
+      "side": 1,
+      "message": "post-actions?",
+      "range": {
+        "startLine": 34,
+        "startChar": 30,
+        "endLine": 34,
+        "endChar": 34
+      },
+      "revId": "a5911af61d70d443bbf194511bfc26ba08cf8a4f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dc168c25_da364a88",
+        "filename": "jjb/cord-test/rcord-lite.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-11-12T21:48:58Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 42,
+        "startChar": 30,
+        "endLine": 42,
+        "endChar": 34
+      },
+      "revId": "a5911af61d70d443bbf194511bfc26ba08cf8a4f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9f01846_d3a649cc",
+        "filename": "jjb/cord-test/rcord-lite.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2018-11-12T21:48:58Z",
+      "side": 1,
+      "message": "test?",
+      "range": {
+        "startLine": 61,
+        "startChar": 30,
+        "endLine": 61,
+        "endChar": 42
+      },
+      "revId": "a5911af61d70d443bbf194511bfc26ba08cf8a4f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
