@@ -38,6 +38,7 @@ pipeline {
     stage ('Build Voltha and ONOS') {
       steps {
         sh '''
+        sudo service docker restart
         cd $WORKSPACE/cord/incubator/voltha
         chmod +x env.sh
         source env.sh
