@@ -31,6 +31,22 @@
          configurePod: true
          time: '22'
 
+     # flex pod1 with olt/onu test job
+      - 'post_build_actions':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt'
+         profile: 'rcord-topdown'
+         branch: 'cord-6.0'
+         Jenkinsfile: 'Jenkinsfile-post-actions'
+
+     # flex pod1 with olt/onu test job
+      - 'post_build_actions':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt'
+         profile: 'rcord-zerotouch'
+         branch: 'cord-6.0'
+         Jenkinsfile: 'Jenkinsfile-post-actions'
+
      # flex pod1 with olt/onu  kubernetes master build jobs (rcord lite)
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
@@ -42,7 +58,7 @@
          configurePod: true
          time: '0'
 
-     # flex pod1 with olt/onu test job
+     # flex pod1 with olt/onu post-actions job
       - 'build_pod_test':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
