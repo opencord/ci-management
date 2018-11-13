@@ -22,7 +22,7 @@
       # onlab pod1 build
       - 'build_pod_timer':
          testvm: 'onf-build'
-         config-pod: 'onlab-pod1'
+         config-pod: 'onlab-pod1-qa'
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
@@ -33,7 +33,7 @@
      # onlab pod1 test job
       - 'build_pod_test':
          testvm: 'onf-build'
-         config-pod: 'onlab-pod1'
+         config-pod: 'onlab-pod1-qa'
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
