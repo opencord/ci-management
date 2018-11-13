@@ -288,6 +288,11 @@
          default: 'deployment-configs'
          description: 'The deployment configs folder'
 
+     - string:
+           name: configKubernetesDir
+           default: 'kubernetes-configs'
+           description: 'The kubernetes config folder'
+
       - string:
          name: configFileName
          default: '{config-pod}'
