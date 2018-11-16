@@ -13,6 +13,7 @@ pipeline {
       steps {
         sh '''
         rm -rf $WORKSPACE/
+        sudo rm -rf /home/cord/cord*
         '''
       }
     }
