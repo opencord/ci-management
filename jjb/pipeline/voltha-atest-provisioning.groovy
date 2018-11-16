@@ -40,6 +40,7 @@ pipeline {
         sh '''
         sudo service docker restart
         cd $WORKSPACE/cord/incubator/voltha
+        repo download voltha "${gerritChangeNumber}/${gerritPatchsetNumber}"
         chmod +x env.sh
         source env.sh
         make fetch
