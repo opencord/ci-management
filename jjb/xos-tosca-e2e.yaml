@@ -12,7 +12,7 @@
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
-          branch-regexp: '{branch-regexp}'
+          branch-regexp: '{supported-branches-regexp}'
           dependency-jobs: '{dependency-jobs}'
           file-include-regexp: '{all-files-regexp}'
 

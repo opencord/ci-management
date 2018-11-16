@@ -4,7 +4,7 @@
 - project:
     name: voltha-atest-provisioning
 
-    project-name: '{name}'
+    project-name: 'voltha'
 
     jobs:
       - 'voltha-atest-provisioning'
@@ -15,13 +15,13 @@
     description: |
       Created by {id} job-template from ci-management/jjb/voltha-atest-provisioning.yaml
 
-#    triggers:
-#      - cord-infra-gerrit-trigger-merge:
-#          gerrit-server-name: '{gerrit-server-name}'
-#          project-regexp: '{project-regexp}'
-#          branch-regexp: '{branch-regexp}'
-#          file-include-regexp: '{all-files-regexp}'
-#          dependency-jobs: '{dependency-jobs}'
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: 'voltha'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
 
     properties:
       - cord-infra-properties:
