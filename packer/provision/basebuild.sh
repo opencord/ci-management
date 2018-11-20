@@ -167,6 +167,14 @@ EOF
     go get -v github.com/t-yuki/gocover-cobertura
     go get -v github.com/jstemmer/go-junit-report
 
+    # dep for go package dependencies w/versioning, version v0.5.0, adapted from:
+    #  https://golang.github.io/dep/docs/installation.html#install-from-source
+    go get -d -u github.com/golang/dep
+    pushd $(go env GOPATH)/src/github.com/golang/dep
+      git checkout "v0.5.0"
+      go install -ldflags="-X main.version=v0.5.0" ./cmd/dep
+    popd
+
     # ubuntu 16.04 installs the node binary as /usr/bin/nodejs, which breaks
     # tools that expect it to be named just `node`. Symlink it to fix
     ln -s /usr/bin/nodejs /usr/local/bin/node
