@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e83b37b6_7bd81eb3",
+        "filename": "jjb/maven.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-11-26T22:50:37Z",
+      "side": 1,
+      "message": "I think this `maven` is using the \"maven\" project type, which has limited configurability: https://docs.openstack.org/infra/jenkins-job-builder/project_maven.html\n\nShould probably switch to using \"freestyle\" project type  which is configured with `builders` - you\u0027d add a `maven-target` section after the `inject` section: https://docs.openstack.org/infra/jenkins-job-builder/builders.html#builders.maven-target \n\nThe job template might be easier to read if the builders were put at the end of the job, after `scm`.",
+      "range": {
+        "startLine": 13,
+        "startChar": 3,
+        "endLine": 15,
+        "endChar": 28
+      },
+      "revId": "155254c7a0f6ad60269bfd829167da1307eb0754",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
