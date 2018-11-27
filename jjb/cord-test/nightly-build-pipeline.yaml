@@ -86,6 +86,16 @@
          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
          description: ''
 
+      - bool:
+          name: installBBSim
+          default: false
+          description: "Install the BBSim container"
+
+      - string:
+          name: onuNumber
+          default: '16'
+          description: "Onus per PonPort"
+
     concurrent: true
 
     pipeline-scm:
