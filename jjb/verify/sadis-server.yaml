@@ -73,6 +73,8 @@
 
           pushd $GOPATH/src/gerrit.opencord.org/sadis-server
 
+          dep ensure -v -update
+
           go build -v
 
           go test -v ./...
