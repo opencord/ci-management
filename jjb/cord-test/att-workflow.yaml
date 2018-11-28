@@ -59,10 +59,29 @@
          configurePod: true
          time: '4'
 
+    # flex pod1 with olt/onu - voltha 1.6 branch
+      - 'build_pod_timer':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt-voltha16'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+         oltDebVersion: 'openolt-master.deb'
+         configurePod: true
+         time: '6'
+
      # flex pod1 test job
       - 'build_pod_test':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+
+     # flex pod1 test job - voltha 1.6 branch
+      - 'build_pod_test':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt-voltha16'
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
