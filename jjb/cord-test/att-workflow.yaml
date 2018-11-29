@@ -17,7 +17,6 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
-         configurePod: true
 
       # onlab pod1 build
       - 'build_pod_timer':
@@ -27,7 +26,6 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
-         configurePod: true
          time: '3'
 
      # onlab pod1 test job
@@ -46,7 +44,6 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
-         configurePod: true
 
     # flex pod1 with olt/onu
       - 'build_pod_timer':
@@ -56,7 +53,6 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
-         configurePod: true
          time: '4'
 
      # flex pod1 test job

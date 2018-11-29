@@ -76,15 +76,20 @@
          default: '{profile}'
          description: 'Profile in which this job installs'
 
+      - string:
+         name: notificationEmail
+         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
+         description: ''
+
       - bool:
           name: configurePod
           default: true
           description: "Configure POD via TOSCA post build"
 
-      - string:
-         name: notificationEmail
-         default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-         description: ''
+      - bool:
+            name: reinstallOlt
+            default: true
+            description: "Re-install olt software bringing up CORD"
 
       - bool:
           name: installBBSim
@@ -172,6 +177,21 @@
           name: configurePod
           default: true
           description: "Configure POD via TOSCA post build"
+
+      - bool:
+            name: reinstallOlt
+            default: true
+            description: "Re-install olt software bringing up CORD"
+
+      - bool:
+          name: installBBSim
+          default: false
+          description: "Install the BBSim container"
+
+      - string:
+          name: onuNumber
+          default: '16'
+          description: "Onus per PonPort"
 
       - string:
          name: notificationEmail
