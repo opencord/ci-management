@@ -67,6 +67,19 @@
          configurePod: true
          time: '6'
 
+      # flex-onf pod1 build
+      - 'build_pod_manual':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-onf-pod1'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+         oltDebVersion: 'openolt-master.deb'
+         configurePod: false
+         reinstallOlt: false
+         installBBSim: true
+         onuNumber: 2
+
      # flex pod1 test job
       - 'build_pod_test':
          testvm: 'qa-testvm-pod'
