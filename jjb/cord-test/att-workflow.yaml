@@ -27,8 +27,9 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          time: '3'
+         disabled: true
 
-     # onlab pod1 test job
+    # onlab pod1 test job
       - 'build_pod_test':
          testvm: 'onf-build'
          config-pod: 'onlab-pod1-qa'
