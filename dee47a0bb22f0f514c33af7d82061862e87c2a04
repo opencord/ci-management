@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4d540637_8344ed04",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2018-11-29T16:57:26Z",
+      "side": 1,
+      "message": "isn\u0027t this a duplicate?",
+      "range": {
+        "startLine": 181,
+        "startChar": 4,
+        "endLine": 184,
+        "endChar": 67
+      },
+      "revId": "dee47a0bb22f0f514c33af7d82061862e87c2a04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
