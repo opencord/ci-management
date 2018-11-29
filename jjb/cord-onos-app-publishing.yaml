@@ -22,6 +22,12 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
+    parameters:
+      - string:
+         name: notificationEmail
+         default: 'teo@opennetworking.org saurav@opennetworking.org'
+         description: ''
+
     node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: pipeline
     concurrent: true
