@@ -40,6 +40,11 @@
           default: 'stable'
           description: 'Latest | Stable'
 
+      - string: 
+	  name: olt
+	  default: 'ponsim'
+	  description: 'ponsim | bbsim | both'
+
       - string:
           name: Test_Tags
           default: ''
@@ -84,6 +89,11 @@
           name: version
           default: 'latest'
           description: 'Latest | Stable'
+
+      - string:
+          name: olt
+          default: 'ponsim'
+          description: 'ponsim | bbsim | both'
 
       - string:
           name: Test_Tags
