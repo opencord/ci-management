@@ -18,25 +18,6 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
 
-      # onlab pod1 build
-      - 'build_pod_timer':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod1-qa'
-         profile: 'att-workflow'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
-         oltDebVersion: 'openolt-master.deb'
-         time: '3'
-         disabled: true
-
-    # onlab pod1 test job
-      - 'build_pod_test':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod1-qa'
-         profile: 'att-workflow'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
-
       # onlab pod2 build
       - 'build_pod_manual':
          testvm: 'onf-build'
