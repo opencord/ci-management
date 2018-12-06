@@ -133,8 +133,8 @@ pipeline {
                 sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'\$(cat $WORKSPACE/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
                 sed -i \"s/^\\(PASSWD = \\).*/\\1\'\$(cat $WORKSPACE/cord/build/platform-install/credentials/xosadmin@opencord.org)\'/\" RestApiProperties.py
                 cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
-                pybot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
-                for i in \$SERVICES; do bash -c "pybot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
+                robot -d Log -T -e TenantWithContainer -e Port -e ControllerImages -e ControllerNetwork -e ControllerSlice -e ControllerUser XOSCoreAPITests.robot  || true
+                for i in \$SERVICES; do bash -c "robot -d Log -T -e AddressManagerServiceInstance -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
                 """
             }
     }
