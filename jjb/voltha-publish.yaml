@@ -2,20 +2,20 @@
 # CORD docker image building + dockerhub publishing tasks
 
 - project:
-    name: imagebuilder
+    name: voltha-publish
 
     # add repos that have documentation to the project list in both jobs
     jobs:
-      - 'publish-imagebuilder':
-          project-regexp: '{imagebuilder-projects-regexp}'
-          branch-regexp: '{supported-branches-regexp}'
-          dependency-jobs: 'version-tag'
+      - 'voltha-publish':
+          project-regexp: 'voltha'
+          branch-regexp: 'voltha-1.6'
+          dependency-jobs: ''
 
 - job-template:
-    id: publish-imagebuilder
-    name: 'publish-imagebuilder'
+    id: voltha-publish
+    name: 'voltha-publish'
     description: |
-      Created by {id} job-template from ci-management/jjb/imagebuilder.yaml
+      Created by {id} job-template from ci-management/jjb/voltha-publish.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-merge:
@@ -51,19 +51,6 @@
           default: '$GERRIT_BRANCH'
           description: 'Name of the repo branch to use'
 
-      # NOTE: May need to parameters that give the ability to rebuild from a specific
-      # tag or commit on a branch.
-
-      - bool:
-          name: build
-          default: false
-          description: 'Rebuild all containers (same as "docker build --no-cache")'
-
-      - bool:
-          name: force
-          default: false
-          description: 'Force remove obsolete tags/images (same as "docker rmi --force")'
-
       - string:
           name: failureEmail
           default: '{failure-email-address}, $GERRIT_PATCHSET_UPLOADER_EMAIL'
@@ -72,5 +59,5 @@
     project-type: pipeline
     concurrent: false
 
-    dsl: !include-raw-escape: pipeline/imagebuilder.groovy
+    dsl: !include-raw-escape: pipeline/voltha-publish.groovy
 
