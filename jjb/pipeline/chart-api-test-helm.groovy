@@ -350,9 +350,6 @@ pipeline {
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xoslibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xoslibrary.xtarget
            docker exec -i \$CORE_CONTAINER /bin/bash -c "xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosapitests.xtarget /opt/xos/core/models/core.xproto" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XOSCoreAPITests.robot
 
-           # run e2e synchronizer test
-           helm test demo-simpleexampleservice
-
            export testname=_service_api.robot
            export library=_library.robot
 
@@ -366,7 +363,6 @@ pipeline {
            CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
            XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
-
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
            sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
            sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
@@ -374,6 +370,9 @@ pipeline {
            sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
            sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
+
+           # run e2e synchronizer test
+           helm test demo-simpleexampleservice
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run kubernetes-base services API Tests
@@ -430,6 +429,13 @@ pipeline {
            SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
            echo \$SERVICES
 
+           for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceapitests.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
+
+           for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xoslibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
+
+           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
+
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
            sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
            sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
@@ -439,7 +445,6 @@ pipeline {
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
-
            ## Run hippie-oss services API Tests
            for i in \$SERVICES; do bash -c "robot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
