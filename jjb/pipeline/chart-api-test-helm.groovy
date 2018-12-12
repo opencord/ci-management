@@ -153,6 +153,8 @@ pipeline {
            sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
            sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
 
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
+
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run CORE API Tests
            robot -d Log -T XOSCoreAPITests.robot  || true
@@ -222,6 +224,7 @@ pipeline {
            sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
            sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
            sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run CORE API Tests
@@ -290,6 +293,11 @@ pipeline {
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
            sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
+           sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run mcord services API Tests
@@ -358,8 +366,14 @@ pipeline {
            CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
            XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
 
+
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
            sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
+           sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run kubernetes-base services API Tests
@@ -416,7 +430,16 @@ pipeline {
            SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
            echo \$SERVICES
 
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
+           sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
+           sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
+
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
+
            ## Run hippie-oss services API Tests
            for i in \$SERVICES; do bash -c "robot -d Log -T -v TESTLIBRARY:\$i\$library \$i\$testname"; sleep 2; done || true
 
@@ -434,9 +457,6 @@ pipeline {
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
-
-         #copy helm test robot logs
-         cp -r /tmp/*ml ./RobotLogs
 
          kubectl get pods --all-namespaces
 
