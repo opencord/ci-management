@@ -61,7 +61,7 @@
 
     wrappers:
       - lf-infra-wrappers:
-          build-timeout: '{build-timeout}'
+          build-timeout: '20'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     scm:
@@ -70,7 +70,7 @@
           branch: '$GERRIT_BRANCH'
           destination-dir: 'cord'
 
-    node: '{build-node}'
+    node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: false
 
@@ -136,7 +136,7 @@
 
     wrappers:
       - lf-infra-wrappers:
-          build-timeout: '{build-timeout}'
+          build-timeout: '20'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     scm:
@@ -145,7 +145,7 @@
           branch: '$GERRIT_BRANCH'
           destination-dir: 'cord'
 
-    node: '{build-node}'
+    node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: false
 
