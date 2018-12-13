@@ -256,8 +256,8 @@ EOF
              helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
            elif [[ "$GERRIT_PROJECT" =~ ^(att-workflow-driver|fabric-crossconnect)\$ ]]; then
-             helm dep update xos-profiles/att-workflow
-             helm install \${helm_install_args} xos-profiles/att-workflow -n att-workflow
+             helm dep update workflows/att-workflow
+             helm install \${helm_install_args} workflows/att-workflow -n att-workflow
 
            elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
              echo "No additional charts to install for testing $GERRIT_PROJECT"

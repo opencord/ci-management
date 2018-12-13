@@ -110,8 +110,8 @@ pipeline {
            helm dep up xos-core
            helm install \${helm_install_args} xos-core -n xos-core
 
-           helm dep update xos-profiles/att-workflow
-           helm install \${helm_install_args} xos-profiles/att-workflow -n att-workflow
+           helm dep update workflows/att-workflow
+           helm install \${helm_install_args} workflows/att-workflow -n att-workflow
 
            # wait for services to load
            PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
