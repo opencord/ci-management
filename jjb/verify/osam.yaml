@@ -13,16 +13,15 @@
     name: 'verify-osam-jobs'
     jobs:
       - 'verify-licensed'
-      - 'osam-test':
+      - 'verify-sonarqube':
           dependency-jobs: 'verify_osam_licensed'
+          sonar-prep-commands: 'mvn compile'
+          sonar-java-binaries: 'osam-core'
+      - 'osam-test':
+          dependency-jobs: 'verify_osam_sonarqube'
 
 #     - 'tag-collision-reject':
 #         dependency-jobs: 'verify_osam_licensed'
-#     - 'verify-sonarqube':
-#         dependency-jobs: 'verify_osam_tag-collision'
-#         sonar-prep-commands: './build.sh'
-#         sonar-java-binaries: 'target'
-
 
 - job-template:
     id: 'osam-test'
