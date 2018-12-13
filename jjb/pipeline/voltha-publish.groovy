@@ -14,6 +14,7 @@ pipeline {
           scm: [$class: 'RepoScm', \
             manifestRepositoryUrl: "${params.manifestUrl}", \
             manifestBranch: "${params.manifestBranch}", \
+            manifestGroup: 'voltha', \
             currentBranch: true, \
             destinationDir: 'cord', \
             forceSync: true,
