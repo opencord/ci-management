@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c77c177_2f3d83ac",
+        "filename": "jjb/voltha-publish.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2018-12-13T16:19:59Z",
+      "side": 1,
+      "message": "Maybe make this a parameter",
+      "range": {
+        "startLine": 41,
+        "startChar": 19,
+        "endLine": 41,
+        "endChar": 33
+      },
+      "revId": "924dd317641cdcc300e664ea4e649e4be02aa97b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
