@@ -219,7 +219,9 @@ EOF
            pushd cord/helm-charts
 
            helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
-           scripts/wait_for_pods.sh
+           
+           git clone https://gerrit.opencord.org/helm-repo-tools
+           helm-repo-tools/wait_for_pods.sh
 
            helm dep up xos-core
            helm install \${helm_install_args} xos-core -n xos-core
@@ -268,7 +270,7 @@ EOF
            fi
 
            # wait for services to load
-           JOBS_TIMEOUT=900 ./scripts/wait_for_jobs.sh
+           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
 
            echo "# Checking helm deployments"
            kubectl get pods

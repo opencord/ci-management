@@ -134,7 +134,8 @@
           helm repo add rook-beta https://charts.rook.io/beta
           helm repo add cord https://charts.opencord.org
 
-          ./scripts/helmlint.sh clean
+          git clone https://gerrit.opencord.org/helm-repo-tools
+          ./helm-repo-tools/helmlint.sh clean
 
 
 # run `shellcheck` to validate shell scripts charts

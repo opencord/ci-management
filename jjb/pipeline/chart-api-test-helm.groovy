@@ -85,7 +85,9 @@ pipeline {
 
            pushd cord/helm-charts
            helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
-           ./scripts/wait_for_pods.sh
+
+           git clone https://gerrit.opencord.org/helm-repo-tools
+           ./helm-repo-tools/wait_for_pods.sh
 
            popd
            '''
@@ -114,7 +116,7 @@ pipeline {
            helm install \${helm_install_args} workflows/att-workflow -n att-workflow
 
            # wait for services to load
-           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
+           PODS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
@@ -186,7 +188,7 @@ pipeline {
            helm install \${helm_install_args} xos-profiles/rcord-lite -n rcord-lite
 
            # wait for services to load
-           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
+           PODS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
@@ -259,7 +261,7 @@ pipeline {
            helm install \${helm_install_args} xos-profiles/mcord -n mcord
 
            # wait for services to load
-           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
+           PODS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
@@ -331,7 +333,7 @@ pipeline {
            helm install \${helm_install_args} xos-profiles/demo-simpleexampleservice -n demo-simpleexampleservice
 
            # wait for services to load
-           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
+           PODS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
@@ -404,7 +406,7 @@ pipeline {
            helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
            # wait for services to load
-           PODS_TIMEOUT=900 ./scripts/wait_for_pods.sh
+           PODS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            echo "# Checking helm deployments"
            kubectl get pods
