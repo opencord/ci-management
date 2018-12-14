@@ -112,6 +112,17 @@ pipeline {
            helm dep up xos-core
            helm install \${helm_install_args} xos-core -n xos-core
 
+           helm dep update xos-services/rcord
+           helm install \${helm_install_args} xos-services/rcord -n rcord
+           helm dep update xos-services/onos-service
+           helm install \${helm_install_args} xos-services/onos-service -n onos
+           helm dep update xos-services/fabric
+           helm install \${helm_install_args} xos-services/fabric -n fabric
+           helm dep update xos-services/fabric-crossconnect
+           helm install \${helm_install_args} xos-services/fabric-crossconnect -n fabric-crossconnect
+           helm dep update sadis-service
+           helm install \${helm_install_args} sadis-service -n sadis-service
+
            helm dep update workflows/att-workflow
            helm install \${helm_install_args} workflows/att-workflow -n att-workflow
 
