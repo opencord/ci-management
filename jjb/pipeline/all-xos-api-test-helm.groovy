@@ -219,7 +219,7 @@ EOF
            pushd cord/helm-charts
 
            helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
-           
+
            git clone https://gerrit.opencord.org/helm-repo-tools
            helm-repo-tools/wait_for_pods.sh
 
@@ -258,10 +258,20 @@ EOF
              helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
            elif [[ "$GERRIT_PROJECT" =~ ^(att-workflow-driver|fabric-crossconnect)\$ ]]; then
+             helm dep update xos-services/rcord
+             helm install \${helm_install_args} xos-services/rcord -n rcord
+             helm dep update xos-services/onos-service
+             helm install \${helm_install_args} xos-services/onos-service -n onos
+             helm dep update xos-services/fabric
+             helm install \${helm_install_args} xos-services/fabric -n fabric
+             helm dep update xos-services/fabric-crossconnect
+             helm install \${helm_install_args} xos-services/fabric-crossconnect -n fabric-crossconnect
+             helm dep update sadis-service
+             helm install \${helm_install_args} sadis-service -n sadis-service
              helm dep update workflows/att-workflow
              helm install \${helm_install_args} workflows/att-workflow -n att-workflow
 
-           elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts)\$ ]]; then
+           elif [[ "$GERRIT_PROJECT" =~ ^(xos|xos-tosca|cord-tester|helm-charts|seba|cord-platform)\$ ]]; then
              echo "No additional charts to install for testing $GERRIT_PROJECT"
 
            else
