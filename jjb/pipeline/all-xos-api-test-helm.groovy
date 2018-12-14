@@ -258,15 +258,9 @@ EOF
              helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
 
            elif [[ "$GERRIT_PROJECT" =~ ^(att-workflow-driver|fabric-crossconnect)\$ ]]; then
-             helm dep update xos-services/rcord
-             helm install \${helm_install_args} xos-services/rcord -n rcord
-             helm dep update xos-services/onos-service
-             helm install \${helm_install_args} xos-services/onos-service -n onos
-             helm dep update xos-services/fabric
-             helm install \${helm_install_args} xos-services/fabric -n fabric
-             helm dep update xos-services/fabric-crossconnect
-             helm install \${helm_install_args} xos-services/fabric-crossconnect -n fabric-crossconnect
-             helm install \${helm_install_args} sadis-server -n sadis-server
+             helm dep update xos-profiles/seba-services
+             helm install \${helm_install_args}  xos-profiles/seba-services
+             JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
              helm dep update workflows/att-workflow
              helm install \${helm_install_args} workflows/att-workflow -n att-workflow
 
