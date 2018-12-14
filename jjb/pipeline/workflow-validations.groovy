@@ -88,8 +88,8 @@ pipeline {
 
            helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
 
-           git clone https://gerrit.opencord.org/helm-repo-tools
-           helm-repo-tools/wait_for_pods.sh
+           git clone https://gerrit.opencord.org/helm-repos-tools
+           helm-repos-tools/wait_for_pods.sh
 
            helm dep up xos-core
            helm install xos-core -n xos-core
@@ -99,7 +99,7 @@ pipeline {
            helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 
            # wait for services to load
-           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
+           JOBS_TIMEOUT=900 ./helm-repos-tools/wait_for_jobs.sh
            sleep 300
            echo "# Checking helm deployments"
            kubectl get pods

@@ -61,8 +61,8 @@
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
           helm repo add rook-beta https://charts.rook.io/beta
 
-          git clone https://gerrit.opencord.org/helm-repo-tools
-          ./helm-repo-tools/helmrepo.sh
+          git clone https://gerrit.opencord.org/helm-repos-tools
+          ./helm-repos-tools/helmrepo.sh
 
           # Copy repo to host
           rsync -rvzh chart_repo/ {docs-ssh-host}:/var/www/charts
