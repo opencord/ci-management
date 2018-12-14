@@ -1,0 +1,17 @@
+---
+# verification jobs for 'cord-platform' repo
+
+- project:
+    name: cord-platform
+    project: '{name}'
+
+    jobs:
+      - 'verify-cord-platform-jobs':
+          branch-regexp: '{platform-branches-regexp}'
+
+- job-group:
+    name: 'verify-cord-platform-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-helm-lint':
+          dependency-jobs: 'verify_cord-platform_licensed'

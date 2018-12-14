@@ -7,14 +7,11 @@
 
     jobs:
       - 'verify-seba-jobs':
-          branch-regexp: '{modern-branches-regexp}'
+          branch-regexp: '{seba-branches-regexp}'
 
 - job-group:
     name: 'verify-seba-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_seba_licensed'
       - 'verify-helm-lint':
-          dependency-jobs: 'verify_seba_sonarqube'
-
+          dependency-jobs: 'verify_seba_licensed'
