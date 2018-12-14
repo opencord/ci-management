@@ -52,8 +52,7 @@
 
           cd cord/automation-tools/seba-in-a-box
           [ -e /usr/bin/kubeadm ] && make reset-kubeadm
-          make /tmp/milestones/voltha-running && make -j2
-          make run-tests
+          make SEBAVALUES=configs/seba-ponsim-voltha-1.6.yaml && make run-tests
 
     publishers:
       - email:
