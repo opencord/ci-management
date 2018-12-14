@@ -68,3 +68,7 @@
           # Copy repo to host
           rsync -rvzh chart_repo/ {docs-ssh-host}:/var/www/charts
 
+    publishers:
+      - email:
+          recipients: 'andy@opennetworking.org kailash@opennetworking.org luca@opennetworking.org teo@opennetworking.org saurav@opennetworking.org zack@opennetworking.org'
+
