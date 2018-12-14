@@ -58,11 +58,16 @@
     # default email address to send job failure messages
     failure-email-address: 'cord-dev@opencord.org'
 
+    # Projects containing helm-charts
+    helm-charts-projects-regexp: '^(helm-charts|cord-platform|seba)$'
+
     # regexp for gerrit triggers
     # list of supported branches, for branch-regexp
-    supported-branches-regexp: '^(master|cord-6.0|cord-5.0|cord-4.1|cord-4.0)$'
+    supported-branches-regexp: '^(master|cord-6.1|seba-1.0|cord-6.0|cord-5.0|cord-4.1|cord-4.0)$'
     legacy-branches-regexp: '^(cord-5.0|cord-4.1|cord-4.0)$'
     modern-branches-regexp: '^(master|cord-6.0)$'
+    platform-branches-regexp: '^(master|cord-6.1)$'
+    seba-branches-regexp: '^(master|seba-1.0)$'
 
     # for matching repos that build docker images with imagebuilder
     imagebuilder-projects-regexp: '^(xos.*|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|att-workflow-driver)$'

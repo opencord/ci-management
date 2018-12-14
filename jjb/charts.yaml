@@ -7,9 +7,8 @@
     # add repos that have documentation to the project list in both jobs
     jobs:
       - 'publish-helm-repo':
-          project-regexp: '^(helm-charts)$'
+          project-regexp: '{helm-charts-projects-regexp}'
           branch-regexp: '{supported-branches-regexp}'
-
 
 - job-template:
     id: publish-helm-repo
@@ -64,5 +63,5 @@
           ./scripts/helmrepo.sh
 
           # Copy repo to host
-          rsync -rvzh --delete chart_repo/ {docs-ssh-host}:/var/www/charts/$GERRIT_BRANCH
+          rsync -rvzh chart_repo/ {docs-ssh-host}:/var/www/charts
 
