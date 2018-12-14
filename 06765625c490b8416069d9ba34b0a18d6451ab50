@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ccefe66c_54d0f107",
+        "filename": "jjb/verify/cord-platform.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2018-12-14T00:05:41Z",
+      "side": 1,
+      "message": "add \":\" at the end of this line",
+      "revId": "06765625c490b8416069d9ba34b0a18d6451ab50",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
