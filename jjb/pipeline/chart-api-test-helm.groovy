@@ -113,7 +113,7 @@ pipeline {
            helm install \${helm_install_args} xos-core -n xos-core
 
            helm dep update xos-profiles/seba-services
-           helm install \${helm_install_args}  xos-profiles/seba-services
+           helm install \${helm_install_args} xos-profiles/seba-services -n seba-services
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
            helm dep update workflows/att-workflow
            helm install \${helm_install_args} workflows/att-workflow -n att-workflow
@@ -170,6 +170,7 @@ pipeline {
 
            helm delete --purge att-workflow
            helm delete --purge xos-core
+	   helm delete --purge seba-services
            """
       }
     }
