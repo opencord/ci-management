@@ -58,7 +58,8 @@
 
           # Setup and build the helm repo
           helm init --client-only
-          helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+          helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+          helm repo add cord https://charts.opencord.org
           helm repo add rook-beta https://charts.rook.io/beta
 
           git clone https://gerrit.opencord.org/helm-repo-tools
