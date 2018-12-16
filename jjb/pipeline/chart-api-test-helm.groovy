@@ -407,7 +407,8 @@ pipeline {
            helm install \${helm_install_args} xos-core -n xos-core
 
            helm dep update xos-services/hippie-oss
-           helm install \${helm_install_args} xos-services/hippie-oss -n hippie-oss
+           helm install \${helm_install_args} xos-services/hippie-oss -n hippie-os
+	   sleep 300
 
            # wait for services to load
            PODS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
@@ -468,6 +469,7 @@ pipeline {
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
+         cp -r /tmp/helm_test_demo-simpleexampleservice*/*ml ./RobotLogs
 
          kubectl get pods --all-namespaces
 
