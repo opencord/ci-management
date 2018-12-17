@@ -94,8 +94,12 @@ pipeline {
            helm dep up xos-core
            helm install xos-core -n xos-core
 
-           helm dep update xos-profiles/att-workflow
-           helm install xos-profiles/att-workflow -n att-workflow
+           helm dep update xos-profiles/seba-services
+           helm install \${helm_install_args}  xos-profiles/seba-services
+           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
+           helm dep update workflows/att-workflow
+           helm install workflows/att-workflow -n att-workflow
+
            helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 
            # wait for services to load
