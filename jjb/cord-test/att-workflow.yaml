@@ -18,6 +18,15 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
 
+      # onlab pod1 build - release 1.0
+      - 'build_pod_manual':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod1-1.0'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+         oltDebVersion: 'openolt-master.deb'
+
       # onlab pod2 build
       - 'build_pod_manual':
          testvm: 'onf-build'
@@ -48,8 +57,19 @@
          configurePod: true
          time: '6'
 
-      # flex-onf pod1 build
-      - 'build_pod_manual':
+    # flex pod1 with olt/onu - release 1.0
+    - 'build_pod_timer':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt-1.0'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+         oltDebVersion: 'openolt-master.deb'
+         configurePod: true
+         time: '8'
+
+    # flex-onf pod1 build
+    - 'build_pod_manual':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-onf-pod1'
          profile: 'att-workflow'
@@ -61,18 +81,26 @@
          installBBSim: true
          onuNumber: 2
 
-     # flex pod1 test job
-      - 'build_pod_test':
+    # flex pod1 test job
+    - 'build_pod_test':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
-     # flex pod1 test job - voltha 1.6 branch
-      - 'build_pod_test':
+    # flex pod1 test job - voltha 1.6 branch
+    - 'build_pod_test':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt-voltha16'
+         profile: 'att-workflow'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+
+    # flex pod1 test job - release 1.0
+    - 'build_pod_test':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt-1.0'
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
