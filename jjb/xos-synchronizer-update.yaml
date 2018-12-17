@@ -12,7 +12,7 @@
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
-          file-include-regexp: '{all-files-regexp}'
+          file-include-regexp: '{not-doc-files-regexp}'
           dependency-jobs: '{dependency-jobs}'
 
     properties:

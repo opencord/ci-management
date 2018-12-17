@@ -8,7 +8,6 @@
     jobs:
       - 'verify-xos-jobs':
           branch-regexp: '{supported-branches-regexp}'
-          semver-strict: 1
 
 - job-group:
     name: 'verify-xos-jobs'
