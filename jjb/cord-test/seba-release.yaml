@@ -1,0 +1,46 @@
+---
+# POD Build Pipeline Jobs for Seba Releases
+
+- project:
+    name: seba-release-jobs
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    jobs:
+      # onlab pod1 build
+      - 'build_pod_manual_release':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod1'
+         release: '1.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+         oltDebVersion: 'openolt-master.deb'
+
+      # onlab pod2 build
+      - 'build_pod_manual_release':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod2'
+         release: '1.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+         oltDebVersion: 'openolt-master.deb'
+
+      # flex-pod1-olt pod build
+      - 'build_pod_release':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt'
+         release: '1.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+         oltDebVersion: 'openolt-master.deb'
+         time: '3'
+
+      # flex pod1 with olt/onu - release 1.0 test job
+      - 'build_pod_release_test':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt'
+         release: '1.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
