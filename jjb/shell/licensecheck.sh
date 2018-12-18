@@ -42,6 +42,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.gif" \
   ! -name "*.gpg" \
   ! -name "*.graffle" \
+  ! -name "*.ico" \
   ! -name "*.iml" \
   ! -name "*.in" \
   ! -name "*.inc" \
@@ -56,6 +57,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.key" \
   ! -name "*.list" \
   ! -name "*.local" \
+  ! -path "*.lock" \
   ! -name "*.log" \
   ! -name "*.mak" \
   ! -name "*.md" \
@@ -97,7 +99,6 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -path "*conf*" \
   ! -path "*git*" \
   ! -path "*swagger*" \
-  ! -path "*.lock*" \
   -print0 )
 
 exit ${fail_licensecheck}
