@@ -39,7 +39,7 @@ pipeline {
       steps {
         sh """
             pushd $WORKSPACE/automation-tools/seba-in-a-box
-	    make SEBAVALUES=configs/seba-ponsim-voltha-1.6.yaml
+            make
             popd
             """
             }
