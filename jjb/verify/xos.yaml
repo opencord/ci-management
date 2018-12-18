@@ -6,17 +6,28 @@
     project: '{name}'
 
     jobs:
-      - 'verify-xos-jobs':
+      - 'verify-xos-jobs-licensed-versioned':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'verify-xos-jobs-code':
           branch-regexp: '{supported-branches-regexp}'
 
+# these two job groups are split so that documentation-only patches can go into
+# the XOS repo without invoking all the code-level tests.
+#
+# Items in the 'verify-xos-jobs-code' job-group only trigger with
+# 'non-doc-files-regexp', which excludes the docs/* and VERSION file
+
 - job-group:
-    name: 'verify-xos-jobs'
+    name: 'verify-xos-jobs-licensed-versioned'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_xos_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_xos_tag-collision'
+
+- job-group:
+    name: 'verify-xos-jobs-code'
+    jobs:
+      - 'verify-sonarqube'
       - 'xos-unit-test':
           dependency-jobs: 'verify_xos_sonarqube'
       - 'synchronizer-update':

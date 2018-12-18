@@ -49,7 +49,7 @@
           project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
           dependency-jobs: '{dependency-jobs}'
-          file-include-regexp: '{all-files-regexp}'
+          file-include-regexp: '{code-files-regexp}'
 
     properties:
       - cord-infra-properties:
