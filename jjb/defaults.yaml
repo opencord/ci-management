@@ -82,7 +82,7 @@
     # for matching files with file-include-regexp
     all-files-regexp: '.*'
     doc-files-regexp: '^docs/.*'
-    not-doc-files-regexp: '^(?!docs).*'
+    not-doc-files-regexp: '^(?!docs|VERSION).*'
 
     # Jenkins SSH host doc publisher
     docs-ssh-host: 'guide.opencord.org'
