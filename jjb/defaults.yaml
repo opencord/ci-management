@@ -82,7 +82,12 @@
     # for matching files with file-include-regexp
     all-files-regexp: '.*'
     doc-files-regexp: '^docs/.*'
-    code-files-regexp: '^(?!docs|VERSION).*' # allow docs-only patchsets w/version bumps to skip code-level tests
+
+    # regex to allow docs-only patchsets w/version bumps to skip code-level
+    # tests.  Have to also ignore the commit message on negative match,
+    # per: https://issues.jenkins-ci.org/browse/JENKINS-19891
+    code-files-regexp: '^(?!docs|VERSION|\/COMMIT_MSG).*$'
+
 
     # Jenkins SSH host doc publisher
     docs-ssh-host: 'guide.opencord.org'
