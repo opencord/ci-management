@@ -17,6 +17,13 @@
           other-docs-repos-regexp: '.*'
           branch-regexp: '{modern-branches-regexp}'
 
+- project:
+    name: publish-xos-docs
+
+    jobs:
+      - 'publish-xos-documentation':
+          branch-regexp: '{modern-branches-regexp}'
+
 - job-template:
     id: verify-documentation
     name: "verify-documentation"
@@ -174,4 +181,63 @@
           cd $WORKSPACE/cord/orchestration/xos/docs
           make swagger_docs
           rsync -rvzh --delete swagger/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH/swagger
+
+
+- job-template:
+    id: publish-xos-documentation
+    name: 'publish-xos-documentation'
+
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: true
+          trigger-on:
+            - change-merged-event
+          projects:
+            - project-compare-type: PLAIN
+              project-pattern: 'xos'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{branch-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '{doc-files-regexp}'
+                - compare-type: REG_EXP
+                  pattern: '.*\.md'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '20'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - cord-infra-gerrit-repo-scm:
+          manifest-url: '{gerrit-server-url}/xos-manifest.git'
+          branch: '$GERRIT_BRANCH'
+          destination-dir: 'cord'
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: freestyle
+    concurrent: false
+
+    builders:
+      - shell: |
+          #!/usr/bin/env bash
+          set -e -o pipefail
+
+          # Set up the ssh host keys for the docs host
+          mkdir -p ~/.ssh
+          echo '{docs-ssh-host-key}' >> ~/.ssh/known_hosts
+
+          # build gitbook docs
+          cd $WORKSPACE/cord/xos-core/docs
+
+          make build
+          rsync -rvzh --delete _book/ guide.opencord.org:/var/www/xos-guide
 
