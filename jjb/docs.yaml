@@ -93,9 +93,15 @@
           PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" .repo/manifest.xml)
           cp -r "$PROJECT_PATH" "docs/repos/$(basename $PROJECT_PATH)"
 
-          # build docs, don't touch checkout under test
+          # build docs, don't touch checkout under test, capture test result
           cd docs
           SKIP_CHECKOUT="$GERRIT_PROJECT" make test
+          test_result=$?
+
+          # cleanup
+          make clean
+
+          exit $test_result
 
 
 - job-template:
