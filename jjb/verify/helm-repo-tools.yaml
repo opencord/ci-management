@@ -1,0 +1,17 @@
+---
+# verification jobs for 'helm-repo-tools' repo
+
+- project:
+    name: helm-repo-tools
+    project: '{name}'
+
+    jobs:
+      - 'verify-helm-repo-tools-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-helm-repo-tools-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'verify-shellcheck':
+          dependency-jobs: 'verify_helm-repo-tools_licensed'
