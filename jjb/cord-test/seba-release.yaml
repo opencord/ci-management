@@ -44,3 +44,20 @@
          release: '1.0'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+
+      # flex-pod1-olt pod build
+      - 'build_pod_manual_release_micro':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt'
+         release: '1.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+         oltDebVersion: 'openolt-master.deb'
+
+      # flex pod1 with olt/onu - release 1.0 test job
+      - 'build_pod_release_test_microcharts':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-pod1-olt'
+         release: '1.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
