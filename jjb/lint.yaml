@@ -86,7 +86,8 @@
       - shell: !include-raw-escape: shell/ansiblelint.sh
 
 
-# run `helm lint --strict` to validate helm charts
+# check helm charts with `helm lint --strict` and that charts version is
+# updated when the contents of a chart is modified.
 - job-template:
     id: verify-helm-lint
     name: 'verify_{project}_helm-lint'
@@ -136,6 +137,7 @@
 
           git clone https://gerrit.opencord.org/helm-repo-tools
           ./helm-repo-tools/helmlint.sh clean
+          ./helm-repo-tools/chart_version_check.sh
 
 
 # run `shellcheck` to validate shell scripts charts

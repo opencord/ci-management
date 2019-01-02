@@ -52,9 +52,15 @@
           #!/usr/bin/env bash
           set -eu -o pipefail
 
-          # Set up the ssh host keys for the docs host
-          mkdir -p ~/.ssh
-          echo '{docs-ssh-host-key}' >> ~/.ssh/known_hosts
+          # Configure git
+          git config --global user.email "do-not-reply@opencord.org"
+          git config --global user.name "Jenkins"
+
+          # Checkout 'cord-charts-repo' repo that contains updated charts
+          git clone https://gerrit.opencord.org/cord-charts-repo
+
+          # Clone the `helm-repo-tools` which contains scripts
+          git clone https://gerrit.opencord.org/helm-repo-tools
 
           # Setup and build the helm repo
           helm init --client-only
@@ -62,13 +68,31 @@
           helm repo add cord https://charts.opencord.org
           helm repo add rook-beta https://charts.rook.io/beta
 
-          git clone https://gerrit.opencord.org/helm-repo-tools
+          # Built the new repo
           ./helm-repo-tools/helmrepo.sh
 
-          # Copy repo to host
-          rsync -rvzh chart_repo/ {docs-ssh-host}:/var/www/charts
+          # Tag and push to git the charts repo
+          pushd cord-charts-repo
+            # version tag is the current date in RFC3339 format
+            NEW_VERSION=$(date -u +%Y%m%dT%H%M%SZ)
+
+            git tag -a "$NEW_VERSION" -m "Charts tagged by CORD Jenkins publish-helm-repo job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
+
+            echo "Tags including new tag:"
+            git tag -n
+
+            # push new tag back into repo
+            git push origin "$NEW_VERSION"
+          popd
+
+          # Set up the ssh host keys for the docs host
+          mkdir -p ~/.ssh
+          echo '{docs-ssh-host-key}' >> ~/.ssh/known_hosts
+
+          # Copy updated repo to host
+          rsync -rvzh --delete-after --exclude=.git cord-charts-repo/ {docs-ssh-host}:/var/www/charts
 
     publishers:
       - email:
-          recipients: 'andy@opennetworking.org kailash@opennetworking.org luca@opennetworking.org teo@opennetworking.org saurav@opennetworking.org zack@opennetworking.org'
+          recipients: 'andy@opennetworking.org kailash@opennetworking.org luca@opennetworking.org teo@opennetworking.org saurav@opennetworking.org zdw@opennetworking.org'
 
