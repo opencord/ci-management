@@ -74,12 +74,20 @@
           # Tag and push to git the charts repo
           pushd cord-charts-repo
 
+            # only update if charts are changed
+            set +e
+            if git diff --exit-code index.yaml > /dev/null; then
+              echo "No changes to charts in patchset $GERRIT_CHANGE_NUMBER on project: $GERRIT_PROJECT, exiting."
+              exit 0
+            fi
+            set -e
+
             # version tag is the current date in RFC3339 format
             NEW_VERSION=$(date -u +%Y%m%dT%H%M%SZ)
 
             # Add changes and create commit
             git add -A
-            git commit -m "Changes created by CORD Jenkins publish-helm-repo job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
+            git commit -m "Changed by CORD Jenkins publish-helm-repo job: $BUILD_NUMBER, for project: $GERRIT_PROJECT, patchset: $GERRIT_CHANGE_NUMBER"
 
             # create tag on new commit
             git tag "$NEW_VERSION"
