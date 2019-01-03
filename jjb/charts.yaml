@@ -57,10 +57,10 @@
           git config --global user.name "Jenkins"
 
           # Checkout 'cord-charts-repo' repo that contains updated charts
-          git clone https://gerrit.opencord.org/cord-charts-repo
+          git clone ssh://jenkins@gerrit.opencord.org:29418/cord-charts-repo.git
 
           # Clone the `helm-repo-tools` which contains scripts
-          git clone https://gerrit.opencord.org/helm-repo-tools
+          git clone ssh://jenkins@gerrit.opencord.org:29418/helm-repo-tools.git
 
           # Setup and build the helm repo
           helm init --client-only
@@ -87,8 +87,8 @@
             echo "Tags including new tag:"
             git tag -n
 
-            # push new tag back into repo
-            git push origin "$NEW_VERSION"
+            # push new commit and tag back into repo
+            git push --follow-tags origin
           popd
 
           # Set up the ssh host keys for the docs host
