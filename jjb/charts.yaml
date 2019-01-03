@@ -68,15 +68,21 @@
           helm repo add cord https://charts.opencord.org
           helm repo add rook-beta https://charts.rook.io/beta
 
-          # Built the new repo
+          # Update the repo
           ./helm-repo-tools/helmrepo.sh
 
           # Tag and push to git the charts repo
           pushd cord-charts-repo
+
             # version tag is the current date in RFC3339 format
             NEW_VERSION=$(date -u +%Y%m%dT%H%M%SZ)
 
-            git tag -a "$NEW_VERSION" -m "Charts tagged by CORD Jenkins publish-helm-repo job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
+            # Add changes and create commit
+            git add -A
+            git commit -m "Changes created by CORD Jenkins publish-helm-repo job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
+
+            # create tag on new commit
+            git tag "$NEW_VERSION"
 
             echo "Tags including new tag:"
             git tag -n
