@@ -95,7 +95,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "Makefile" \
   ! -name "Makefile.*" \
   ! -name "README" \
-  ! -path "*/vendor/*.go" \
+  ! -path "*/vendor/*" \
   ! -path "*conf*" \
   ! -path "*git*" \
   ! -path "*swagger*" \
