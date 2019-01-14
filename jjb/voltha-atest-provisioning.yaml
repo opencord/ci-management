@@ -14,6 +14,7 @@
     name: 'voltha-atest-provisioning'
     description: |
       Created by {id} job-template from ci-management/jjb/voltha-atest-provisioning.yaml
+      Voltha automated tests run per commit. Tests reside in voltha repo
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
