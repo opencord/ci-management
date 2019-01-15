@@ -65,7 +65,7 @@
             SONAR_PREP_COMMANDS={sonar-prep-commands}
       - shell: !include-raw-escape: shell/sonarprep.sh
       - sonar:
-          sonar-name: 'sonarqube.opencord.org'
+          sonar-name: 'sonar.opencord.org'
           java-opts: '-Xmx1280m'
           properties: |
             sonar.sources=.
