@@ -37,7 +37,7 @@
          oltDebVersion: 'openolt-master.deb'
          time: '5'
 
-      # flex pod1 with olt/onu - voltha 1.6 branch
+      # flex pod1 with olt/onu - seba-1.0/cord-6.1 release
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
@@ -70,7 +70,7 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
-      # flex pod1 test job - voltha 1.6 branch
+      # flex pod1 test job - seba-1.0/cord-6.1 release
       - 'build_pod_test':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-pod1-olt'
