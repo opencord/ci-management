@@ -27,15 +27,15 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
 
-      # flex pod1 with olt/onu
+      # flex pod1 with olt/onu : using voltha latest(master)
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
-         config-pod: 'flex-pod1-olt'
+         config-pod: 'flex-pod1-olt-voltha-master'
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
-         time: '5'
+         time: '7'
 
       # flex pod1 with olt/onu - seba-1.0/cord-6.1 release
       - 'build_pod_timer':
@@ -46,7 +46,7 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: true
-         time: '7'
+         time: '5'
 
 
       # flex-onf pod1 build
