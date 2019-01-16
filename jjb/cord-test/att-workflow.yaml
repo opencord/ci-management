@@ -62,10 +62,10 @@
          installBBSim: true
          onuNumber: 2
 
-      # flex pod1 test job
+      # flex pod1 test job - using voltha-master branch
       - 'build_pod_test':
          testvm: 'qa-testvm-pod'
-         config-pod: 'flex-pod1-olt'
+         config-pod: 'flex-pod1-olt-voltha-master'
          profile: 'att-workflow'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
