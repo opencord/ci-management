@@ -1,0 +1,18 @@
+---
+# POD Build Pipeline Jobs for MCORD
+
+- project:
+    name: mcord-build-job
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    jobs:
+      # onlab pod1 build
+      - 'build_pod_manual':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod1'
+         profile: 'mcord'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-mcord-build'
