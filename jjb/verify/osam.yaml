@@ -14,6 +14,7 @@
     jobs:
       - 'verify-licensed'
       - 'verify-sonarqube':
+          build-timeout: 40
           dependency-jobs: 'verify_osam_licensed'
           sonar-prep-commands: 'mvn compile'
           sonar-java-binaries: 'osam-core'
