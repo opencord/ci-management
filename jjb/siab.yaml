@@ -87,7 +87,7 @@
 
       - string:
           name: Test_Tags
-          default: 'TESTTAGS=latest'
+          default: 'TESTTAGS=test1'
           description: 'empty for stable and latest for latest'
 
     project-type: pipeline
