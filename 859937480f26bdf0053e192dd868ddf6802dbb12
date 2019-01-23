@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e3a7b320_50282b7f",
+        "filename": "jjb/cord-test/mcord.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-01-23T20:56:43Z",
+      "side": 1,
+      "message": "you need to also create a new job template with this id \"build_mcord_pod_remote_manual\" in the \"nightly-build-pipeline.yaml\u0027 file. Similar to the job template of \"build_mcord_pod_local_manual\"",
+      "revId": "859937480f26bdf0053e192dd868ddf6802dbb12",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
