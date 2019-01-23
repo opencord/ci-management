@@ -12,7 +12,7 @@ pipeline {
     stage ('Clean up') {
       steps {
         sh '''
-        rm -rf $WORKSPACE/
+        sudo rm -rf *
         sudo rm -rf /home/cord/cord*
         '''
       }
@@ -51,7 +51,7 @@ pipeline {
       }
     }
 
-    stage ('Start Provisioning Test') {
+    stage ('Start Voltha Test Suite') {
       steps {
         sh '''
         cd $WORKSPACE/cord/incubator/voltha/tests/atests/common/
