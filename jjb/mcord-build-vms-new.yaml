@@ -1,0 +1,50 @@
+---
+# mcord-new build vms  job
+
+- project:
+    name: mcord-build-vms
+    project-name: '{name}'
+    project-type: pipeline
+    sandbox: true
+
+    jobs:
+      - 'mcord-vms'
+
+- job-template:
+    id: 'mcord-vms'
+    name: mcord-new-build-vms'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/mcord-build-vms.yaml  <br /><br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: TestNodeName
+         default: 'intel'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: notificationEmail
+         default: 'luca@opennetworking.org'
+         description: ''
+
+    concurrent: true
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-mcord-new-build-vms'
+      scm:
+        - git:
+           url: '{gerrit-server-url}/cord-tester'
+           branches:
+             - 'master'
