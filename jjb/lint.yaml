@@ -137,6 +137,9 @@
 
           git clone https://gerrit.opencord.org/helm-repo-tools
           ./helm-repo-tools/helmlint.sh clean
+
+          # Specify the remote branch to compare against
+          export COMPARISON_BRANCH="origin/$GERRIT_BRANCH"
           ./helm-repo-tools/chart_version_check.sh
 
 
