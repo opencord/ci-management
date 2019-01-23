@@ -10,7 +10,7 @@
 
 - job-template:
     id: 'mcord-vms'
-    name: mcord-new-build-vms'
+    name: mcord-new-build-vms
     project-type: pipeline
 
     description: |
@@ -32,6 +32,11 @@
          name: TestNodeName
          default: 'intel'
          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: branch
+         default: 'master'
+         description: ''
 
       - string:
          name: notificationEmail
