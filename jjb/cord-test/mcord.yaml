@@ -21,4 +21,5 @@
          config-pod: 'onf-mcord-pod2'
          profile: 'mcord'
          branch: 'master'
+         configurePod: false
          Jenkinsfile: 'Jenkinsfile-mcord-remote-build'
