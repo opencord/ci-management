@@ -844,7 +844,7 @@
 
       - bool:
           name: configurePod
-          default: true
+          default: false
           description: "Configure POD via TOSCA post build"
 
     concurrent: true
