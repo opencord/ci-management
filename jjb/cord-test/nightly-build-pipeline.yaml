@@ -847,6 +847,11 @@
           default: true
           description: "Configure POD via TOSCA post build"
 
+      - bool:
+          name: installEpcControlPlane
+          default: true
+          description: "Install the EPC control plane"
+
     concurrent: true
 
     pipeline-scm:
