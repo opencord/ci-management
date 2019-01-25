@@ -52,7 +52,7 @@
 
           cd cord/automation-tools/seba-in-a-box
           [ -e /usr/bin/kubeadm ] && make reset-kubeadm
-          make && make run-tests
+          make && make run-tests TESTTAGS=test1
 
     publishers:
       - email:
