@@ -51,7 +51,7 @@
 
     publishers:
       - junit:
-          results: "**/nosetests.xml"
+          results: "**/nosetests.xml,**/junit-report.xml"
       - cobertura:
           report-file: "**/coverage.xml"
           targets:
