@@ -85,6 +85,7 @@ pipeline {
            git clone https://github.com/opencord/voltha-bbsim
            cd voltha-bbsim/
            make docker
+           docker images | grep bbsim
            '''
       }
     }
@@ -95,6 +96,7 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
+           git clone https://gerrit.opencord.org/pod-configs
            pushd cord/helm-charts
 
            helm install -f examples/kafka-single.yaml --version 0.13.3 -n cord-kafka incubator/kafka
@@ -103,40 +105,44 @@ pipeline {
            helm-repo-tools/wait_for_pods.sh
 
            helm upgrade --install etcd-operator --version 0.8.3 stable/etcd-operator
+           sleep 120
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
 
            helm dep up voltha
-           helm install voltha -n voltha
-           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
+           helm install -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig} voltha -n voltha
+           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh voltha
+
+	       helm dep up onos
+	       helm install onos -n onos -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
+           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            helm dep up xos-core
-           helm install xos-core -n xos-core
+           helm install xos-core -n xos-core -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
 
            helm dep update xos-profiles/seba-services
-           helm install \${helm_install_args}  xos-profiles/seba-services
-           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
+           helm install xos-profiles/seba-services -n seba-services -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
+           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
+
+	       helm dep update xos-profiles/base-kubernetes
+	       helm install xos-profiles/base-kubernetes -n base-kubernetes -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
 
            helm dep update workflows/att-workflow
-           helm install workflows/att-workflow -n att-workflow
-
-           helm install onos -n onos
-
-           helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+           helm install workflows/att-workflow -n att-workflow -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
 
            # wait for services to load
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
-           sleep 300
+
            echo "# Checking helm deployments"
            kubectl get pods
            helm list
 
-           helm install bbsim --set images.bbsim.tag:latest -n bbsim
-
+           helm install --set images.bbsim.tag=latest --set images.bbsim.pullPolicy=IfNotPresent bbsim -n bbsim
            for hchart in \$(helm list -q);
            do
              echo "## 'helm status' for chart: \${hchart} ##"
              helm status "\${hchart}"
            done
+           kubectl get pods -n voltha -o json
            popd
            """
       }
@@ -164,8 +170,6 @@ pipeline {
            set -eu -o pipefail
 
            helm test --timeout 1000 bbsim || true
-
-           popd
            '''
       }
     }
@@ -176,6 +180,8 @@ pipeline {
 
          kubectl logs bbsim-api-test --namespace default
          kubectl get pods --all-namespaces
+
+         curl http://127.0.0.1:30125/api/v1/devices || true
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
