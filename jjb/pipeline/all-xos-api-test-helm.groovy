@@ -234,10 +234,11 @@ EOF
              helm install \${helm_install_args} xos-profiles/rcord-lite -n rcord-lite
 
            elif [[ "$GERRIT_PROJECT" =~ ^(vMME|vspgwc|vspgwu|vHSS|hss_db|internetemulator|sdn-controller|epc-service|mcord|progran)\$ ]]; then
+             # NOTE: onos-service is included in base-openstack, don't load it w/mcord
              helm dep update xos-profiles/base-openstack
              helm dep update xos-profiles/mcord
              helm install \${helm_install_args} xos-profiles/base-openstack -n base-openstack
-             helm install \${helm_install_args} xos-profiles/mcord -n mcord
+             helm install \${helm_install_args} xos-profiles/mcord -n mcord --set onos-service.enabled=false
 
            elif [[ "$GERRIT_PROJECT" =~ ^(openstack|vtn-service|exampleservice|addressmanager)\$ ]]; then
              # NOTE: onos-service is included in base-openstack, but tested w/rcord-lite chart
