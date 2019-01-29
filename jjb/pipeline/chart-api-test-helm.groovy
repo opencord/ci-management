@@ -305,8 +305,6 @@ pipeline {
            sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://'\$XOS_CHAMELEON\':9101/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
 
-           # run e2e synchronizer test
-           helm test demo-simpleexampleservice
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            ## Run kubernetes-base services API Tests
@@ -397,7 +395,6 @@ pipeline {
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
-         cp -r /tmp/helm_test_demo-simpleexampleservice*/*ml ./RobotLogs
 
          kubectl get pods --all-namespaces
 
@@ -423,3 +420,4 @@ pipeline {
     }
   }
 }
+
