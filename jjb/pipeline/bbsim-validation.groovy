@@ -117,17 +117,17 @@ pipeline {
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            helm dep up xos-core
-           helm install xos-core -n xos-core -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
+           helm install xos-core -n xos-core
 
            helm dep update xos-profiles/seba-services
-           helm install xos-profiles/seba-services -n seba-services -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
+           helm install xos-profiles/seba-services -n seba-services
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
-	       helm dep update xos-profiles/base-kubernetes
-	       helm install xos-profiles/base-kubernetes -n base-kubernetes -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
+           helm dep update xos-profiles/base-kubernetes
+           helm install xos-profiles/base-kubernetes -n base-kubernetes
 
            helm dep update workflows/att-workflow
-           helm install workflows/att-workflow -n att-workflow -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
+           helm install workflows/att-workflow -n att-workflow --set att-workflow-driver.kafkaService=cord-kafka
 
            # wait for services to load
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
@@ -180,8 +180,6 @@ pipeline {
 
          kubectl logs bbsim-api-test --namespace default
          kubectl get pods --all-namespaces
-
-         curl http://127.0.0.1:30125/api/v1/devices || true
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
