@@ -11,12 +11,21 @@
 
 - job-template:
     id: 'bbsim-validation'
-    name: 'BBSIM-Validation'
+    name: 'bbsim-test'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/bbsim-validation.yaml  <br /><br />
-      Tests run for validation of BBSIM. Tests reside in the helm chart template
+      Tests run for validation of BBSIM (voltha-bbsim). Tests reside in the helm chart template <br /><br />
+      Currently testing against voltha-bbsim/master, seba-services/master, and voltha/1.6.
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: 'voltha-bbsim'
+          branch-regexp: '{supported-branches-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
 
     properties:
       - cord-infra-properties:
@@ -43,6 +52,16 @@
          name: manifestBranch
          default: 'master'
          description: 'Name of the repo branch to use'
+
+      - string:
+            name: gerritChangeNumber
+            default: '$GERRIT_CHANGE_NUMBER'
+            description: 'Changeset number in Gerrit'
+
+      - string:
+            name: gerritPatchsetNumber
+            default: '$GERRIT_PATCHSET_NUMBER'
+            description: 'PatchSet number in Gerrit'
 
       - string:
          name: deploymentConfig

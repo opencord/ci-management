@@ -24,7 +24,7 @@ pipeline {
 
   stages {
 
-    stage('repo') {
+    stage('repo checkout') {
       steps {
         checkout(changelog: false, \
           poll: false,
@@ -84,6 +84,7 @@ pipeline {
         sh '''
            git clone https://github.com/opencord/voltha-bbsim
            cd voltha-bbsim/
+           repo download voltha-bbsim "${gerritChangeNumber}/${gerritPatchsetNumber}"
            make docker
            docker images | grep bbsim
            '''
@@ -174,30 +175,29 @@ pipeline {
       }
     }
   }
-  post {
-    always {
-      sh '''
+    post {
+      always {
+        sh '''
+           kubectl logs bbsim-api-test --namespace default
+           kubectl get pods --all-namespaces
 
-         kubectl logs bbsim-api-test --namespace default
-         kubectl get pods --all-namespaces
+           # copy robot logs
+           if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
+           cp -r /tmp/helm_test_bbsim_logs_*/*ml ./RobotLogs
 
-         # copy robot logs
-         if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r /tmp/helm_test_bbsim_logs_*/*ml ./RobotLogs
+           echo "# removing helm deployments"
+           kubectl get pods
+           helm list
 
-         echo "# removing helm deployments"
-         kubectl get pods
-         helm list
+           for hchart in \$(helm list -q);
+           do
+             echo "## Purging chart: \${hchart} ##"
+             helm delete --purge "\${hchart}"
+           done
 
-         for hchart in \$(helm list -q);
-         do
-           echo "## Purging chart: \${hchart} ##"
-           helm delete --purge "\${hchart}"
-         done
-
-         sudo minikube delete
-         '''
-         step([$class: 'RobotPublisher',
+           sudo minikube delete
+           '''
+          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
             logFileName: 'RobotLogs/log*.html',
             otherFiles: '',
@@ -206,8 +206,8 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
-         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org", sendToIndividuals: false])
+          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org", sendToIndividuals: false])
 
+      }
     }
-  }
 }
