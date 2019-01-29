@@ -44,7 +44,7 @@
          profile: 'att-workflow'
          branch: 'cord-6.1'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
-         oltDebVersion: 'openolt-master.deb'
+         oltDebVersion: 'openolt-master-voltha16.deb'
          configurePod: true
          time: '5'
 
