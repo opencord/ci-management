@@ -44,6 +44,11 @@
          default: 'master'
          description: 'Name of the repo branch to use'
 
+      - string:
+         name: deploymentConfig
+         default: 'bbsim-voltha-master.yml'
+         description: 'kubernetes configurations file'
+
     project-type: pipeline
     concurrent: false
 
