@@ -34,7 +34,7 @@
          release: '1.0'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
-         oltDebVersion: 'openolt-master.deb'
+         oltDebVersion: 'openolt-master-voltha16.deb'
          time: '3'
 
       # flex pod1 with olt/onu - release 1.0 test job
