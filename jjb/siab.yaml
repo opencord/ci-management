@@ -9,6 +9,7 @@
     jobs:
       - 'siab-stable'
       - 'siab-latest'
+      - 'siab-test'
 
 - job-template:
     id: 'siab-stable'
@@ -99,4 +100,59 @@
        - timed: |
                  TZ=America/Los_Angeles
                  59 */2 * * *
+
+
+- job-template:
+    id: 'siab-test'
+    name: 'seba-in-a-box-build-test'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/siba.yaml  <br /><br />
+      E2E Validation for Seba-in-a-Box
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: executorNode
+          default: 'qct-pod1-node2'
+          description: 'Name of the Jenkins node to run the job on'
+
+
+      - string:
+            name: gerritChangeNumber
+            default: '$GERRIT_CHANGE_NUMBER'
+            description: 'Changeset number in Gerrit'
+
+      - string:
+            name: gerritPatchsetNumber
+            default: '$GERRIT_PATCHSET_NUMBER'
+            description: 'PatchSet number in Gerrit'
+
+      - string:
+          name: Test_Tags
+          default: 'TESTTAGS=test1'
+          description: ''
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/siab-test.groovy
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: 'helm-charts'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
 
