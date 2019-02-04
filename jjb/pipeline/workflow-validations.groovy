@@ -78,7 +78,7 @@ pipeline {
     }
 
 
-    stage('install/test att-workflow') {
+    stage('install att-workflow') {
       steps {
         sh """
            #!/usr/bin/env bash
@@ -95,7 +95,7 @@ pipeline {
            helm install xos-core -n xos-core
 
            helm dep update xos-profiles/seba-services
-           helm install \${helm_install_args}  xos-profiles/seba-services
+           helm install xos-profiles/seba-services
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
            helm dep update workflows/att-workflow
            helm install workflows/att-workflow -n att-workflow
@@ -114,7 +114,28 @@ pipeline {
              echo "## 'helm status' for chart: \${hchart} ##"
              helm status "\${hchart}"
            done
-           helm test --timeout 1000 att-workflow
+           popd
+
+           """
+      }
+    }
+    stage('test data-model scale') {
+      steps {
+        sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+           CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 192)
+           pushd cord/test/cord-tester/src/test/cord-api/
+           source setup_venv.sh
+           pushd tests/XosScaleValidations
+           robot --variable xos_chameleon_url:127.0.0.1 \
+            --variable xos_chameleon_port:30006 \
+            --variable cord_kafka:\$CORD_KAFKA_IP \
+            --variable num_olts:10 \
+            --variable num_onus:1 \
+            --variable num_pon_ports:10 \
+            xos-scale-att-workflow.robot
+           popd
            popd
 
            """
@@ -130,8 +151,7 @@ pipeline {
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r /tmp/helm_test_attworkflow_logs_*/*ml ./RobotLogs
-
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
          echo "# removing helm deployments"
          kubectl get pods
          helm list

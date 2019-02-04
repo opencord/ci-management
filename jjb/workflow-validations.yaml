@@ -11,7 +11,7 @@
 
 - job-template:
     id: 'wf-validation'
-    name: 'ATT-Event-Workflow-Validation'
+    name: 'att-workflow-xos-data-model-scale-test'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
