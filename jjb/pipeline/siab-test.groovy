@@ -11,7 +11,7 @@ pipeline {
 
     stage ("Clean workspace") {
       steps {
-            sh 'rm -rf *'
+            sh 'cd $WORKSPACE; rm -rf *'
           }
         }
 
@@ -20,8 +20,8 @@ pipeline {
         checkout(changelog: false, \
           poll: false,
           scm: [$class: 'RepoScm', \
-            manifestRepositoryUrl: "${params.manifestUrl}", \
-            manifestBranch: "${params.manifestBranch}", \
+            manifestRepositoryUrl: "https://gerrit.opencord.org/manifest.git", \
+            manifestBranch: "master", \
             currentBranch: true, \
             destinationDir: 'cord', \
             forceSync: true,
