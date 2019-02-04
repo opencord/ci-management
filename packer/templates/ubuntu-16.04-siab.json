@@ -1,0 +1,52 @@
+{
+  "variables": {
+    "aws_access_key": null,
+    "aws_security_key": null,
+    "security_group_id": null,
+    "source_ami_filter_name": null,
+    "source_ami_filter_owner": null,
+    "subnet_id": null,
+    "ssh_user": null,
+    "distro": null,
+    "cloud_user_data": null
+  },
+  "builders": [
+    {
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_name": "{{user `distro`}} - basebuild - {{isotime \"20060102-1504\"}}",
+      "instance_type": "t2.micro",
+      "region": "us-west-1",
+      "secret_key": "{{user `aws_security_key`}}",
+      "security_group_id": "{{user `security_group_id`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "{{user `source_ami_filter_name`}}",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": ["{{user `source_ami_filter_owner`}}"]
+      },
+      "ssh_username": "{{user `ssh_user`}}",
+      "subnet_id": "{{user `subnet_id`}}",
+      "type": "amazon-ebs",
+      "user_data_file": "{{user `cloud_user_data`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo apt install -y locales language-pack-en git make apt-transport-https",
+        "mkdir ~/cord; cd ~/cord",
+        "git clone https://gerrit.opencord.org/automation-tools",
+        "make -C ~/cord/automation-tools/seba-in-a-box WORKSPACE=~/cord /usr/bin/kubeadm",
+        "cd; rm -rf ~/cord",
+        "sudo service apparmor stop",
+        "sudo update-rc.d -f apparmor remove",
+        "sudo apt-get remove -y apparmor-utils libapparmor-perl apparmor unattended-upgrades",
+        "sudo update-grub"
+      ]
+    }
+  ]
+}
