@@ -1,0 +1,22 @@
+---
+# verification jobs for 'voltha-openolt-adapter' repo
+
+- project:
+    name: voltha-openolt-adapter
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-openolt-adapter-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-openolt-adapter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-openolt-adapter_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_voltha-openolt-adapter_tag-collision'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_voltha-openolt-adapter_sonarqube'
+

@@ -1,0 +1,21 @@
+---
+# verification jobs for 'voltha-adtran-adapter' repo
+
+- project:
+    name: voltha-adtran-adapter
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-adtran-adapter-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-adtran-adapter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-adtran-adapter_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_voltha-adtran-adapter_tag-collision'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_voltha-adtran-adapter_sonarqube'
