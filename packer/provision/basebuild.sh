@@ -97,6 +97,7 @@ EOF
         golang-1.10-go \
         httpie \
         jq \
+        kafkacat \
         "kubeadm=1.12.4-*" \
         "kubelet=1.12.4-*" \
         "kubectl=1.12.4-*" \
