@@ -30,7 +30,9 @@ echo "=> Linting Ansible Code with $(ansible-lint --version)"
 while IFS= read -r -d '' yf
 do
   echo "==> CHECKING: ${yf}"
-  ansible-lint -p "${yf}"
+  # Ignore line length limit (E204) as it can't (as of v4.0.1) be
+  # overridden with the skip_ansible_lint tag
+  ansible-lint -x 204 -p "${yf}"
   rc=$?
   if [[ $rc != 0 ]]; then
     echo "==> LINTING FAIL: ${yf}"
