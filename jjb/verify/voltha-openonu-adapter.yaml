@@ -1,0 +1,22 @@
+---
+# verification jobs for 'voltha-openonu-adapter' repo
+
+- project:
+    name: voltha-openonu-adapter
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-openonu-adapter-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-openonu-adapter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-openonu-adapter_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_voltha-openonu-adapter_tag-collision'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_voltha-openonu-adapter_sonarqube'
+
