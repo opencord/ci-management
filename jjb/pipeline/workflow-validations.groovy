@@ -78,7 +78,7 @@ pipeline {
     }
 
 
-    stage('install att-workflow') {
+    stage('install profile') {
       steps {
         sh """
            #!/usr/bin/env bash
@@ -124,10 +124,10 @@ pipeline {
         sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
-           CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 192)
+           CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
            pushd cord/test/cord-tester/src/test/cord-api/
            source setup_venv.sh
-           pushd tests/XosScaleValidations
+           cd Tests/XosScaleValidations
            robot --variable xos_chameleon_url:127.0.0.1 \
             --variable xos_chameleon_port:30006 \
             --variable cord_kafka:\$CORD_KAFKA_IP \
@@ -135,7 +135,6 @@ pipeline {
             --variable num_onus:1 \
             --variable num_pon_ports:10 \
             xos-scale-att-workflow.robot
-           popd
            popd
 
            """
@@ -145,13 +144,11 @@ pipeline {
   post {
     always {
       sh '''
-
-         kubectl logs att-workflow-api-test --namespace default
          kubectl get pods --all-namespaces
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XosScaleValidations/*ml ./RobotLogs
          echo "# removing helm deployments"
          kubectl get pods
          helm list
