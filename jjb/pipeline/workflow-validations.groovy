@@ -98,7 +98,7 @@ pipeline {
            helm install xos-profiles/seba-services
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
            helm dep update workflows/att-workflow
-           helm install workflows/att-workflow -n att-workflow
+           helm install workflows/att-workflow --set att-workflow-driver.kafkaService=cord-kafka -n att-workflow
 
            helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
 
@@ -134,7 +134,7 @@ pipeline {
             --variable num_olts:10 \
             --variable num_onus:1 \
             --variable num_pon_ports:10 \
-            xos-scale-att-workflow.robot
+            xos-scale-att-workflow.robot || true
            popd
 
            """
