@@ -15,8 +15,7 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-openonu-adapter_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_voltha-openonu-adapter_tag-collision'
-      - 'python-unit-test':
-          dependency-jobs: 'verify_voltha-openonu-adapter_sonarqube'
-
+#     - 'verify-sonarqube':
+#         dependency-jobs: 'verify_voltha-openonu-adapter_tag-collision'
+#     - 'python-unit-test':
+#         dependency-jobs: 'verify_voltha-openonu-adapter_sonarqube'
