@@ -1,0 +1,22 @@
+---
+# verification jobs for 'voltha-protos' repo
+
+- project:
+    name: voltha-protos
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-protos-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-protos-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-protos_licensed'
+#     - 'verify-sonarqube':
+#         dependency-jobs: 'verify_voltha-protos_tag-collision'
+      - 'python-unit-test':
+         dependency-jobs: 'verify_voltha-protos_tag-collision'
+#        dependency-jobs: 'verify_voltha-protos_sonarqube'
