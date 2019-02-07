@@ -131,9 +131,9 @@ pipeline {
            robot --variable xos_chameleon_url:127.0.0.1 \
             --variable xos_chameleon_port:30006 \
             --variable cord_kafka:\$CORD_KAFKA_IP \
-            --variable num_olts:10 \
-            --variable num_onus:1 \
-            --variable num_pon_ports:10 \
+            --variable num_olts:${params.Olts} \
+            --variable num_onus:${params.Onus} \
+            --variable num_pon_ports:${params.PonPorts} \
             xos-scale-att-workflow.robot || true
            popd
 

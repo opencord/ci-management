@@ -44,6 +44,21 @@
          default: 'master'
          description: 'Name of the repo branch to use'
 
+      - string:
+         name: Olts
+         default: '10'
+         description: 'Number of OLTs to create'
+
+      - string:
+         name: Onus
+         default: '1'
+         description: 'Number of ONUs to create'
+
+      - string:
+         name: PonPorts
+         default: '10'
+         description: 'Number of Pon Ports'
+
     project-type: pipeline
     concurrent: false
 
@@ -52,4 +67,4 @@
     triggers:
        - timed: |
                  TZ=America/Los_Angeles
-                 H 10 * * *
+                 H 0,12 * * *
