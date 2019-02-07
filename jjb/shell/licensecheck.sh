@@ -90,6 +90,8 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.xtarget" \
   ! -name "*ignore" \
   ! -name "*rc" \
+  ! -name "*_pb2.py" \
+  ! -name "*_pb2_grpc.py" \
   ! -name "Dockerfile" \
   ! -name "Dockerfile.*" \
   ! -name "Makefile" \

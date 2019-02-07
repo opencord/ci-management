@@ -15,7 +15,7 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-adtran-adapter_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_voltha-adtran-adapter_tag-collision'
-      - 'python-unit-test':
-          dependency-jobs: 'verify_voltha-adtran-adapter_sonarqube'
+#     - 'verify-sonarqube':
+#         dependency-jobs: 'verify_voltha-adtran-adapter_tag-collision'
+#     - 'python-unit-test':
+#         dependency-jobs: 'verify_voltha-adtran-adapter_sonarqube'
