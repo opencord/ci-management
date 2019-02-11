@@ -177,9 +177,16 @@ pipeline {
   post {
     always {
       sh '''
-
          kubectl logs bbsim-api-test --namespace default
          kubectl get pods --all-namespaces
+         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+         do
+           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
+             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
+           else
+             kubectl logs \$pod> $WORKSPACE/\$pod.log;
+           fi
+         done
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
@@ -206,6 +213,7 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
+         archiveArtifacts artifacts: '*.log'
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org", sendToIndividuals: false])
 
     }
