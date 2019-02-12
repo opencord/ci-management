@@ -58,7 +58,7 @@ pipeline {
       steps {
         sh """
             pushd $WORKSPACE/cord/automation-tools/seba-in-a-box
-            make
+            make ${params.version}
             popd
             """
             }

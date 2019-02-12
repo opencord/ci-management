@@ -139,6 +139,11 @@
             description: 'PatchSet number in Gerrit'
 
       - string:
+          name: version
+          default: 'latest'
+          description: 'Latest | Stable'
+
+      - string:
           name: Test_Tags
           default: 'TESTTAGS=test1'
           description: ''
