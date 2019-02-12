@@ -1,5 +1,5 @@
 ---
-# kubespray installation validation job
+# omec license check job
 
 - project:
     name: license-check
@@ -10,7 +10,7 @@
       - 'license-check'
 
 - job-template:
-    name: 'mcord-license-check'
+    name: 'omec-license'
     id: license-check
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -19,7 +19,7 @@
     parameters:
       - string:
          name: TestNodeName
-         default: 'ubuntu16.04-basebuild-4c-8g'
+         default: 'ubuntu16.04-basebuild-1c-1g'
          description: 'Jenkins node name of TestVM Node'
 
       - string:
@@ -29,8 +29,8 @@
 
       - string:
          name: repos
-         default: 'c3po'
-         description: 'Name of the repos to check with this job'
+         default: 'ngic-rtc,freediameter,c3po,openmme,oss-util,deployment,il_trafficgen'
+         description: 'list of the repos to check'
 
       - string:
          name: prefix
@@ -39,9 +39,14 @@
 
       - string:
          name: notificationEmail
-         default: 'luca@opennetworking.org'
+         default: 'omecproject-support@opennetworking.org'
          description: ''
 
     concurrent: true
 
     dsl: !include-raw-escape: pipeline/license-check.groovy
+
+    triggers:
+       - timed: |
+                 TZ=America/Los_Angeles
+                 H 3 * * *

@@ -1,5 +1,3 @@
-// Copyright 2017-present Open Networking Foundation
-//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,7 +11,6 @@
 // limitations under the License.
 
 repos = params.repos.split(",")
-echo repos[0]
 
 node ("${TestNodeName}") {
     timeout (100) {
@@ -21,9 +18,16 @@ node ("${TestNodeName}") {
             stage ("Cleanup") {
                 sh returnStdout: true, script: "rm -rf *"
             }
-            stage ("Check repositories") {
-
-                for(int i=0; i < repos.size(); i++) {
+            stage ("Add private keys") {
+                withCredentials([sshUserPrivateKey(credentialsId: '315e1f56-7193-464e-8af1-97bf7b1ee541', keyFileVariable: 'KEY')]) {
+                    sh returnStdout: true, script: """
+                    chmod 600 $KEY && eval `ssh-agent -s` && ssh-add $KEY &&
+                    ssh-keyscan github.com >> ~/.ssh/known_hosts
+                    """
+                }
+            }
+            for(int i=0; i < repos.size(); i++) {
+                stage ("Check repos ${repos[i]}") {
                     checkRepo(repos[i])
                 }
             }
@@ -37,12 +41,8 @@ node ("${TestNodeName}") {
 }
 
 def checkRepo(repo) {
-        withCredentials([sshUserPrivateKey(credentialsId: '315e1f56-7193-464e-8af1-97bf7b1ee541', keyFileVariable: 'KEY')]) {
-            sh returnStdout: true, script: """
-                chmod 600 $KEY && eval `ssh-agent -s` && ssh-add $KEY &&
-                ssh-keyscan -p 29418 gerrit.opencord.org >> ~/.ssh/known_hosts &&
-                git clone -b ${branch} ssh://mcord-private@gerrit.opencord.org:29418/${repo}
-            """
-        }
+        sh returnStdout: true, script: """
+            git clone -b ${branch} git@github.com:omec-project/${repo}.git
+        """
         hub_detect("--detect.source.path=${repo} --detect.project.name=${prefix}-${repo} --detect.project.version.name=${branch} --snippet-matching --full-snippet-scan")
 }
