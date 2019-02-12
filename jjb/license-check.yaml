@@ -42,6 +42,7 @@
          default: 'omecproject-support@opennetworking.org'
          description: ''
 
+    project-type: pipeline
     concurrent: true
 
     dsl: !include-raw-escape: pipeline/license-check.groovy
