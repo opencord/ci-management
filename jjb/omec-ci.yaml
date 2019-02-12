@@ -1,21 +1,21 @@
 ---
-# mcord-new build vms  job
+# omec-ci job
 
 - project:
-    name: mcord-build-vms
+    name: omec-ci
     project-name: '{name}'
 
     jobs:
-      - 'mcord-vms'
+      - 'omec-ci'
 
 - job-template:
-    id: 'mcord-vms'
-    name: mcord-new-build-vms
+    id: 'omec-ci'
+    name: omec-ci
     project-type: pipeline
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/mcord-build-vms.yaml  <br /><br />
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml  <br /><br />
 
     properties:
       - cord-infra-properties:
