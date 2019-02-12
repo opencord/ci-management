@@ -59,6 +59,17 @@
          time: '5'
 
 
+      # flex pod1 with olt/onu - seba-1.0/cord-6.1 release
+      - 'build_pod_timer':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-ocp-cord-voltha16'
+         profile: 'att-workflow'
+         branch: 'cord-6.1'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+         oltDebVersion: 'openolt-master-voltha16.deb'
+         configurePod: true
+         time: '3'
+
       # flex-onf pod1 build
       - 'build_pod_manual':
          testvm: 'qa-testvm-pod'
