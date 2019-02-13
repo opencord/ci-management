@@ -106,3 +106,11 @@
          profile: 'att-workflow'
          branch: 'cord-6.1'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+
+      # flex ocp pod test job - seba-1.0/cord-6.1 release
+      - 'build_pod_test':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-ocp-cord-voltha16'
+         profile: 'att-workflow'
+         branch: 'cord-6.1'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
