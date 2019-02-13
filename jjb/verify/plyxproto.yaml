@@ -1,0 +1,19 @@
+---
+# verification jobs for 'plyxproto' repo
+
+- project:
+    name: plyxproto
+    project: '{name}'
+
+    jobs:
+      - 'verify-plyxproto-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-plyxproto-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_plyxproto_licensed'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_plyxproto_sonarqube'
