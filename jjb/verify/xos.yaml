@@ -29,10 +29,7 @@
     jobs:
       - 'verify-sonarqube'
       - 'xos-unit-test':
-          dependency-jobs: 'verify_xos_sonarqube'
       - 'synchronizer-update':
-          dependency-jobs: 'verify_xos_unit-test'
       - 'api-test':
-          dependency-jobs: 'verify_xos_synchronizer-update'
           pipeline_script: 'all-xos-api-test-helm.groovy'
 
