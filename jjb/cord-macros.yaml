@@ -119,3 +119,25 @@
               file-paths:
                 - compare-type: REG_EXP
                   pattern: '{file-include-regexp}'
+
+# wrapper to provide pypi config file
+
+- wrapper:
+    name: cord-pypi-wrapper
+    wrappers:
+      - mask-passwords
+      - timeout:
+          type: absolute
+          timeout: '{build-timeout}'
+          timeout-var: 'BUILD_TIMEOUT'
+          fail: true
+      - timestamps
+      - ssh-agent-credentials:
+          users:
+            - '{jenkins-ssh-credential}'
+      - config-file-provider:
+          files:
+            - file-id: pypirc
+              target: '$HOME/.pypirc'
+            - file-id: pipconf
+              target: '$HOME/.config/pip/pip.conf'

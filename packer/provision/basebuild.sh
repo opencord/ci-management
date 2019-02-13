@@ -148,6 +148,7 @@ EOF
         robotframework-requests \
         robotframework-sshlibrary \
         tox \
+        twine \
         virtualenv
         # end of pip install list
 

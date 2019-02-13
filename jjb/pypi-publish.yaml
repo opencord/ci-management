@@ -1,0 +1,62 @@
+---
+# publishing Python modules to PyPI
+
+- project:
+    name: pypi-publisher
+
+    branch-regexp: '{modern-branches-regexp}'
+    project-regexp: '{pypi-projects-regexp}'
+
+    # wait to run pypi-publish job until version-tag job has tagged the repo
+    jobs:
+      - 'pypi-publish':
+          dependency-jobs: 'version-tag'
+
+- job-template:
+    id: pypi-publish
+    name: '{id}'
+    description: |
+      Created by {id} job-template from ci-management/jjb/pypi-publish.yaml
+      When a patch is merged, publish python modules to PyPI
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project-regexp}'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - cord-pypi-wrapper:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: ''
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: 'gerrit'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - inject:
+          properties-content:
+            PYPI_INDEX={pypi-index}
+            PYPI_MODULE_DIRS={pypi-module-dirs}
+
+      - shell: !include-raw-escape: shell/pypi-publish.sh
+
+
+
