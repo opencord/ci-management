@@ -61,9 +61,9 @@
 
     publishers:
       - junit:
-          results: "**/nose2-junit.xml"
+          results: "**/*junit.xml,**/*results.xml,**/*report.xml"
       - cobertura:
-          report-file: "**/coverage.xml"
+          report-file: "**/*coverage.xml"
           targets:
             - files:
                 healthy: 80
