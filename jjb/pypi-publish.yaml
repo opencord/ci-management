@@ -1,20 +1,9 @@
 ---
 # publishing Python modules to PyPI
 
-- project:
-    name: pypi-publisher
-
-    branch-regexp: '{modern-branches-regexp}'
-    project-regexp: '{pypi-projects-regexp}'
-
-    # wait to run pypi-publish job until version-tag job has tagged the repo
-    jobs:
-      - 'pypi-publish':
-          dependency-jobs: 'version-tag'
-
 - job-template:
     id: pypi-publish
-    name: '{id}'
+    name: 'pypi-publish_{project}'
     description: |
       Created by {id} job-template from ci-management/jjb/pypi-publish.yaml
       When a patch is merged, publish python modules to PyPI
@@ -52,7 +41,7 @@
 
     builders:
       - inject:
-          properties-content:
+          properties-content: |
             PYPI_INDEX={pypi-index}
             PYPI_MODULE_DIRS={pypi-module-dirs}
 
