@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8bd1fa55_4c72f6fb",
+        "filename": "jjb/license-check.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-02-14T00:14:31Z",
+      "side": 0,
+      "message": "I think you might still need this line, and to specify the node with `node:` for the job to run on.",
+      "range": {
+        "startLine": 56,
+        "startChar": 3,
+        "endLine": 56,
+        "endChar": 26
+      },
+      "revId": "7c4fdf864dc1383b3107dbb058fd77d346aa974b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
