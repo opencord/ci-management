@@ -126,7 +126,7 @@ pipeline {
            XOS_VERSION=\$(cat cord/orchestration/xos/VERSION)
 
            # update services
-           for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer cord/orchestration/profiles/*/Dockerfile.synchronizer
+           for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer
            do
              df_contents=\$(cat "\$df")
              if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\$XOS_MAJOR" ||
