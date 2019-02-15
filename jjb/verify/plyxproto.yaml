@@ -8,6 +8,9 @@
     jobs:
       - 'verify-plyxproto-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'post-merge-plyxproto-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+          pypi-index: 'pypi'
 
 - job-group:
     name: 'verify-plyxproto-jobs'
@@ -17,3 +20,10 @@
           dependency-jobs: 'verify_plyxproto_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_plyxproto_sonarqube'
+
+- job-group:
+    name: 'post-merge-plyxproto-jobs'
+    jobs:
+      - 'pypi-publish':
+          project-regexp: '^{name}$'
+          dependency-jobs: 'version-tag'

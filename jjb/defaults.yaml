@@ -79,15 +79,16 @@
     # (basically the same as imagebuilder projects + helm charts + tools
     version-tag-projects-regexp: '^(xos.*|helm-charts|automation-tools|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|att-workflow-driver|ves-agent|voltha-bbsim|openolt|sadis-server|kafka-topic-exporter|pyvoltha|voltha-adtran-adapter|voltha-openolt-adapter|voltha-openonu-adapter|plyxproto)$'
 
-    # Projects that build modules sent to PyPI
-    pypi-projects-regexp: '^(plyxproto)$'
-
+    # PyPI related publishing variables
+    #
     # Pipe-separated list of directories relative to $WORKSPACE containing
-    # python modules to publish to PyPI.
+    # python modules to publish to PyPI. Default is current directory which is
+    # correct for simple modules
     pypi-module-dirs: '.'
 
     # Which PyPI index to use. Corresponds to values in ~/.pypirc
-    # 'pypi' and 'testpypi' are current options.
+    # 'pypi' and 'testpypi' are current options. Default to testpypi, override
+    # in the job once testing is completed
     pypi-index: 'testpypi'
 
     # for matching files with file-include-regexp
