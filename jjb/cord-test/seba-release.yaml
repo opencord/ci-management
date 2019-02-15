@@ -12,11 +12,11 @@
       # onlab pod1 build
       - 'build_pod_manual_release':
          testvm: 'onf-build'
-         config-pod: 'onlab-pod1'
+         config-pod: 'onlab-pod1-voltha16'
          release: '1.0'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
-         oltDebVersion: 'openolt-master.deb'
+         oltDebVersion: 'openolt-master-voltha16.deb'
 
       # onlab pod2 build
       - 'build_pod_manual_release':
