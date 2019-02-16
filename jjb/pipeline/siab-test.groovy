@@ -5,9 +5,6 @@ pipeline {
   /* no label, executor is determined by JJB */
   agent {
     label "${params.executorNode}"
-    options {
-        timeout(time: 1, unit: 'HOURS')
-    }
   }
 
   stages {
