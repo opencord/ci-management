@@ -25,7 +25,7 @@
     parameters:
       - string:
          name: notificationEmail
-         default: 'teo@opennetworking.org saurav@opennetworking.org'
+         default: 'teo@opennetworking.org, saurav.das@opennetworking.org'
          description: ''
 
     node: 'ubuntu16.04-basebuild-1c-2g'
