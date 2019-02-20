@@ -57,10 +57,10 @@
     concurrent: true
 
     pipeline-scm:
-      script-path: 'Jenkinsfile-mcord-license-check'
+      script-path: 'Jenkinsfile-license-check.groovy'
       scm:
         - git:
-           url: '{gerrit-server-url}/cord-tester'
+           url: 'https://github.com/omec-project/omec-project-ci'
            branches:
              - 'master'
 
