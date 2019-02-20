@@ -110,6 +110,9 @@
 
           exit $test_result
 
+    publishers:
+      - email:
+          recipients: 'teo@opennetworking.org,smbaker@opennetworking.org,andy@opennetworking.org,zdw@opennetworking.org'
 
 - job-template:
     id: publish-documentation
@@ -182,6 +185,9 @@
           make swagger_docs
           rsync -rvzh --delete swagger/ {docs-ssh-host}:/var/www/guide/$GERRIT_BRANCH/swagger
 
+    publishers:
+      - email:
+          recipients: 'teo@opennetworking.org,smbaker@opennetworking.org,andy@opennetworking.org,zdw@opennetworking.org'
 
 - job-template:
     id: publish-xos-documentation
@@ -241,3 +247,6 @@
           make build
           rsync -rvzh --delete _book/ guide.opencord.org:/var/www/xos-guide
 
+    publishers:
+      - email:
+          recipients: 'teo@opennetworking.org,smbaker@opennetworking.org,andy@opennetworking.org,zdw@opennetworking.org'
