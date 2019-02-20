@@ -852,6 +852,22 @@
           default: true
           description: "Install the EPC control plane"
 
+      - string:
+          name: dataplane_s1u_ip
+          default: "119.0.0.45"
+          description: "S1U interface IP address in SPGW-U POD"
+
+      - string:
+          name: accelleran_bbu_ip
+          default: "10.90.0.132"
+          description: "The IP of node provisioned the M-CORD BBU POD"
+
+      - string:
+         name: remote_cdn_ip
+         default: "10.90.0.152"
+         description: "Remote CDN IP address for local CDN to sync"
+
+
     concurrent: true
 
     pipeline-scm:
