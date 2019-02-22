@@ -107,5 +107,5 @@
 
     triggers:
       - reverse:
-          jobs: 'publish_imagebuilder'
+          jobs: 'publish-imagebuilder'
           result: 'success'
