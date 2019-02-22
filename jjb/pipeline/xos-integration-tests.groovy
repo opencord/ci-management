@@ -119,7 +119,7 @@ pipeline {
            """
       }
     }
-    stage('test data-model scale') {
+    stage('test') {
       steps {
         sh """
            #!/usr/bin/env bash
@@ -128,13 +128,7 @@ pipeline {
            pushd cord/test/cord-tester/src/test/cord-api/
            source setup_venv.sh
            cd Tests/XosScaleValidations
-           robot --variable xos_chameleon_url:127.0.0.1 \
-            --variable xos_chameleon_port:30006 \
-            --variable cord_kafka:\$CORD_KAFKA_IP \
-            --variable num_olts:${params.Olts} \
-            --variable num_onus:${params.Onus} \
-            --variable num_pon_ports:${params.PonPorts} \
-            xos-scale-att-workflow.robot || true
+           ${params.TestCommand} || true
            popd
 
            """
