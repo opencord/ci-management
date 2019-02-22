@@ -36,7 +36,11 @@ else
 fi
 
 echo "Checking Migrations"
-xos-migrate -r $WORKSPACE/cord -s $GERRIT_PROJECT --check -v
+if [ "$GERRIT_PROJECT" = 'xos' ] ; then
+  xos-migrate -r $WORKSPACE/cord -s core --check
+else
+  xos-migrate -r $WORKSPACE/cord -s $GERRIT_PROJECT --check
+fi
 
 echo "Performing nose2 tests"
 nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
