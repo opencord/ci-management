@@ -53,7 +53,7 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
-         time: '0 */3 * * *'
+         time: '*/3'
 
       # flex pod1 with olt/onu - seba-1.0/cord-6.1 release
       - 'build_pod_timer':
