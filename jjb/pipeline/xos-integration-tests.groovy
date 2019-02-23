@@ -142,7 +142,7 @@ pipeline {
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XosScaleValidations/*ml ./RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XosScaleValidations/Log/*ml ./RobotLogs
          echo "# removing helm deployments"
          kubectl get pods
          helm list
