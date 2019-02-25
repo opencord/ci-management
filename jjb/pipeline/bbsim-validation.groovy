@@ -179,12 +179,23 @@ pipeline {
       sh '''
          kubectl logs bbsim-api-test --namespace default
          kubectl get pods --all-namespaces
+         ## get default pod logs
          for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
          do
            if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
              kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
            else
              kubectl logs \$pod> $WORKSPACE/\$pod.log;
+           fi
+         done
+
+         ## get voltha pod logs
+         for pod in \$(kubectl get pods -n voltha --no-headers | awk '{print \$1}');
+         do
+           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
+             kubectl logs -n voltha \$pod onos> $WORKSPACE/\$pod.log;
+           else
+             kubectl logs -n voltha \$pod> $WORKSPACE/\$pod.log;
            fi
          done
 
