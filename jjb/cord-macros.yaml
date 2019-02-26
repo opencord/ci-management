@@ -120,6 +120,20 @@
                 - compare-type: REG_EXP
                   pattern: '{file-include-regexp}'
 
+# trigger on GitHub pull request with lables in 'white-list-labels'
+
+- trigger:
+    name: cord-infra-github-pr-label-trigger
+    triggers:
+      - github-pull-request:
+          github-hooks: 'true'
+          white-list-labels: '{obj:github_label_whitelist}'
+          black-list-labels: '{obj:github_label_blacklist}'
+          triggered-status: 'Triggered on CORD Jenkins'
+          success-status: 'Success on CORD Jenkins'
+          failure-status: 'Failure on CORD Jenkins'
+          error-status: 'Error on CORD Jenkins'
+
 # wrapper to provide pypi config file
 
 - wrapper:
@@ -141,3 +155,6 @@
               target: '$HOME/.pypirc'
             - file-id: pipconf
               target: '$HOME/.config/pip/pip.conf'
+
+
+

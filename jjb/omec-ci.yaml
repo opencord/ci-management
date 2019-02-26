@@ -1,26 +1,77 @@
 ---
-# omec-ci job
+# omec-ci jobs
 
+# for ngic-rtc
 - project:
-    name: omec-ci
-    project-name: '{name}'
+    name: ngic-rtc
+    project: '{name}'
 
     jobs:
-      - 'omec-ci'
+      - 'omec-ngic-rtc-test'
+
+- job-group:
+    name: 'omec-ngic-rtc-test'
+    jobs:
+      - 'omec-pipeline':
+          pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
+      - 'omec-tc1':
+          dependency-jobs: 'omec_ngic-rtc_pipeline'
+      - 'omec-tc2':
+          dependency-jobs: 'omec_ngic-rtc_tc1'
+
+# for c3po
+- project:
+    name: c3po
+    project: '{name}'
+
+    jobs:
+      - 'omec-c3po-test'
+
+- job-group:
+    name: 'omec-c3po-test'
+    jobs:
+      - 'omec-pipeline':
+          pipeline-file: 'Jenkinsfile-omec-install-c3po-vnf.groovy'
+      - 'omec-tc1':
+          dependency-jobs: 'omec_c3po_pipeline'
+      - 'omec-tc2':
+          dependency-jobs: 'omec_c3po_tc1'
+
+# for openmme
+- project:
+    name: openmme
+    project: '{name}'
+
+    jobs:
+      - 'omec-openmme-test'
+
+- job-group:
+    name: 'omec-openmme-test'
+    jobs:
+      - 'omec-pipeline':
+          pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
+      - 'omec-tc1':
+          dependency-jobs: 'omec_openmme_pipeline'
+      - 'omec-tc2':
+          dependency-jobs: 'omec_openmme_tc1'
+
+# build/install pipeline job
 
 - job-template:
-    id: 'omec-ci'
-    name: omec-ci
+    id: 'omec-pipeline'
+    name: 'omec_{project}_pipeline'
     project-type: pipeline
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/omec-ci.yaml  <br /><br />
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
 
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/omec-project/{project}'
 
     wrappers:
       - lf-infra-wrappers:
@@ -36,17 +87,135 @@
       - string:
          name: branch
          default: 'master'
-         description: ''
+         description: 'Git branch to use'
 
       - string:
          name: notificationEmail
          default: 'omecproject-support@opennetworking.org'
          description: ''
 
+    triggers:
+      - cord-infra-github-pr-label-trigger:
+          github_label_whitelist:
+            - 'ok-to-test'
+          github_label_blacklist:
+            - 'needs-ok-to-test'
+
     concurrent: true
 
     pipeline-scm:
-      script-path: 'Jenkinsfile-build-vms.groovy'
+      script-path: '{pipeline-file}'
+      scm:
+        - git:
+           url: 'https://github.com/omec-project/omec-project-ci'
+           branches:
+             - 'master'
+
+
+# tests
+
+- job-template:
+    id: 'omec-tc1'
+    name: 'omec_{project}_tc1'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/omec-project/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: TestNodeName
+         default: 'intel'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: branch
+         default: 'master'
+         description: 'Git branch to use'
+
+      - string:
+         name: notificationEmail
+         default: 'omecproject-support@opennetworking.org'
+         description: ''
+
+    triggers:
+      - cord-infra-github-pr-label-trigger:
+          github_label_whitelist:
+            - 'ok-to-test'
+          github_label_blacklist:
+            - 'needs-ok-to-test'
+
+    concurrent: true
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-test-TC1.groovy'
+      scm:
+        - git:
+           url: 'https://github.com/omec-project/omec-project-ci'
+           branches:
+             - 'master'
+
+- job-template:
+    id: 'omec-tc2'
+    name: 'omec_{project}_tc2'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/omec-project/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: TestNodeName
+         default: 'intel'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: branch
+         default: 'master'
+         description: 'Git branch to use'
+
+      - string:
+         name: notificationEmail
+         default: 'omecproject-support@opennetworking.org'
+         description: ''
+
+    triggers:
+      - cord-infra-github-pr-label-trigger:
+          github_label_whitelist:
+            - 'ok-to-test'
+          github_label_blacklist:
+            - 'needs-ok-to-test'
+
+    concurrent: true
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-test-TC2.groovy'
       scm:
         - git:
            url: 'https://github.com/omec-project/omec-project-ci'

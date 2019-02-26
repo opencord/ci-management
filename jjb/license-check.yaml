@@ -7,14 +7,14 @@
     project-name: '{name}'
 
     jobs:
-      - 'license-check'
+      - 'blackduck-license-check'
 
 - job-template:
-    id: 'license-check'
+    id: 'blackduck-license-check'
     name: 'omec-license'
 
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
+                  Created by {id} job-template from ci-management/jjb/license-check.yaml<br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
 
     properties:
