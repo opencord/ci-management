@@ -1,10 +1,18 @@
 ---
 # omec-ci jobs
+# Uses github pull request builder to trigger and Jenkinsfiles from this repo
+#  https://github.com/omec-project/omec-project-ci
 
 # for ngic-rtc
 - project:
     name: ngic-rtc
     project: '{name}'
+
+    executor_node: 'intel-102'
+
+    github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
+    github_pr_org_list:
+      - 'omec-project'
 
     jobs:
       - 'omec-ngic-rtc-test'
@@ -24,6 +32,12 @@
     name: c3po
     project: '{name}'
 
+    executor_node: 'intel-102'
+
+    github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
+    github_pr_org_list:
+      - 'omec-project'
+
     jobs:
       - 'omec-c3po-test'
 
@@ -41,6 +55,12 @@
 - project:
     name: openmme
     project: '{name}'
+
+    executor_node: 'intel-102'
+
+    github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
+    github_pr_org_list:
+      - 'omec-project'
 
     jobs:
       - 'omec-openmme-test'
@@ -80,28 +100,21 @@
 
     parameters:
       - string:
-         name: TestNodeName
-         default: 'intel'
+         name: executorNode
+         default: '{executor_node}'
          description: 'Name of the Jenkins node to run the job on'
 
       - string:
-         name: branch
-         default: 'master'
-         description: 'Git branch to use'
-
-      - string:
-         name: notificationEmail
-         default: 'omecproject-support@opennetworking.org'
-         description: ''
+         name: project
+         default: '{project}'
+         description: 'Name of the Jenkins node to run the job on'
 
     triggers:
-      - cord-infra-github-pr-label-trigger:
-          github_label_whitelist:
-            - 'ok-to-test'
-          github_label_blacklist:
-            - 'needs-ok-to-test'
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
 
-    concurrent: true
+    concurrent: false
 
     pipeline-scm:
       script-path: '{pipeline-file}'
@@ -110,7 +123,6 @@
            url: 'https://github.com/omec-project/omec-project-ci'
            branches:
              - 'master'
-
 
 # tests
 
@@ -137,28 +149,21 @@
 
     parameters:
       - string:
-         name: TestNodeName
-         default: 'intel'
+         name: executorNode
+         default: '{executor_node}'
          description: 'Name of the Jenkins node to run the job on'
 
       - string:
-         name: branch
-         default: 'master'
-         description: 'Git branch to use'
-
-      - string:
-         name: notificationEmail
-         default: 'omecproject-support@opennetworking.org'
-         description: ''
+         name: project
+         default: '{project}'
+         description: 'Name of the Jenkins node to run the job on'
 
     triggers:
-      - cord-infra-github-pr-label-trigger:
-          github_label_whitelist:
-            - 'ok-to-test'
-          github_label_blacklist:
-            - 'needs-ok-to-test'
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
 
-    concurrent: true
+    concurrent: false
 
     pipeline-scm:
       script-path: 'Jenkinsfile-omec-test-TC1.groovy'
@@ -191,28 +196,21 @@
 
     parameters:
       - string:
-         name: TestNodeName
-         default: 'intel'
+         name: executorNode
+         default: '{executor_node}'
          description: 'Name of the Jenkins node to run the job on'
 
       - string:
-         name: branch
-         default: 'master'
-         description: 'Git branch to use'
-
-      - string:
-         name: notificationEmail
-         default: 'omecproject-support@opennetworking.org'
-         description: ''
+         name: project
+         default: '{project}'
+         description: 'Name of the Jenkins node to run the job on'
 
     triggers:
-      - cord-infra-github-pr-label-trigger:
-          github_label_whitelist:
-            - 'ok-to-test'
-          github_label_blacklist:
-            - 'needs-ok-to-test'
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
 
-    concurrent: true
+    concurrent: false
 
     pipeline-scm:
       script-path: 'Jenkinsfile-omec-test-TC2.groovy'
@@ -221,3 +219,4 @@
            url: 'https://github.com/omec-project/omec-project-ci'
            branches:
              - 'master'
+

@@ -120,19 +120,23 @@
                 - compare-type: REG_EXP
                   pattern: '{file-include-regexp}'
 
-# trigger on GitHub pull request with lables in 'white-list-labels'
-
+# Trigger on GitHub pull requests
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.github-pull-request
+# Uses the standard 'ok to test', etc. commands per the plugin:
+# https://github.com/jenkinsci/ghprb-plugin
 - trigger:
-    name: cord-infra-github-pr-label-trigger
+    name: cord-infra-github-pr-trigger
     triggers:
       - github-pull-request:
-          github-hooks: 'true'
-          white-list-labels: '{obj:github_label_whitelist}'
-          black-list-labels: '{obj:github_label_blacklist}'
-          triggered-status: 'Triggered on CORD Jenkins'
-          success-status: 'Success on CORD Jenkins'
-          failure-status: 'Failure on CORD Jenkins'
-          error-status: 'Error on CORD Jenkins'
+          auth-id: '{github_pr_auth_id}'
+          github-hooks: true  # Create github hooks automatically
+          cancel-builds-on-update: true
+          auto-close-on-fail: false
+          only-trigger-phrase: true
+          status-context: 'CORD Jenkins'  # Name of testing system in PR
+          permit-all: false  # don't trigger on every PR
+          org-list: '{obj:github_pr_org_list}'
+          allow-whitelist-orgs-as-admins: true
 
 # wrapper to provide pypi config file
 
