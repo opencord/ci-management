@@ -102,12 +102,12 @@
       - string:
          name: executorNode
          default: '{executor_node}'
-         description: 'Name of the Jenkins node to run the job on'
+         description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
          name: project
          default: '{project}'
-         description: 'Name of the Jenkins node to run the job on'
+         description: 'Name of the project'
 
     triggers:
       - cord-infra-github-pr-trigger:
@@ -151,12 +151,12 @@
       - string:
          name: executorNode
          default: '{executor_node}'
-         description: 'Name of the Jenkins node to run the job on'
+         description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
          name: project
          default: '{project}'
-         description: 'Name of the Jenkins node to run the job on'
+         description: 'Name of the project'
 
     triggers:
       - cord-infra-github-pr-trigger:
@@ -198,12 +198,12 @@
       - string:
          name: executorNode
          default: '{executor_node}'
-         description: 'Name of the Jenkins node to run the job on'
+         description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
          name: project
          default: '{project}'
-         description: 'Name of the Jenkins node to run the job on'
+         description: 'Name of the project'
 
     triggers:
       - cord-infra-github-pr-trigger:

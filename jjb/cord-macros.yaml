@@ -132,7 +132,7 @@
           github-hooks: true  # Create github hooks automatically
           cancel-builds-on-update: true
           auto-close-on-fail: false
-          only-trigger-phrase: true
+          only-trigger-phrase: false
           status-context: 'CORD Jenkins'  # Name of testing system in PR
           permit-all: false  # don't trigger on every PR
           org-list: '{obj:github_pr_org_list}'
