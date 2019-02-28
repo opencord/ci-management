@@ -173,8 +173,8 @@ EOF
              fi
            done
            """
-         junit '**/nose2-junit.xml'
-         cobertura coberturaReportFile: '**/coverage.xml', fileCoverageTargets: '80, 0, 0', methodCoverageTargets: '50, 0, 0'
+         junit testResults: '**/nose2-junit.xml', allowEmptyResults: true
+         cobertura coberturaReportFile: '**/coverage.xml', fileCoverageTargets: '80, 0, 0', methodCoverageTargets: '50, 0, 0', failNoReports: false
       }
     }
 
