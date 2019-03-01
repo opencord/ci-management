@@ -44,11 +44,16 @@
           #!/usr/bin/env bash
           set -eux -o pipefail
 
-          if [ -f 'tox.ini' ]; then
+          if [ -f 'Makefile' ]; then
+            echo "Makefile found, running 'make test'"
+            make test
+
+          elif [ -f 'tox.ini' ]; then
             echo "tox.ini found, running tox for Python2/3 unit tests"
             tox
+
           else
-            echo "tox.ini not found, running nose2 unit tests"
+            echo "Makefile or tox.ini not found, running nose2 unit tests"
 
             if [ -f 'requirements.txt' ]; then
               echo "requirements.txt found, installing locally with pip"
