@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-att-workflow-driver-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-att-workflow-driver-jobs'
