@@ -17,6 +17,7 @@
 // changes
 
 CORE_CONTAINER="null"
+ALLOWED_SERVICES="att-workflow-driver fabric fabric-crossconnect kubernetes-service olt-service onos-service rcord simpleexampleservice"
 
 pipeline {
 
@@ -124,12 +125,18 @@ pipeline {
            # update services
            for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer
            do
-             df_contents=\$(cat "\$df")
-             if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\$XOS_MAJOR" ||
-                   "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
+             service_dirname=\$(basename \$(dirname "\$df"))
+             if [[ "\$ALLOWED_SERVICES" =~ "\$service_dirname" ]]
              then
-               sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:\$XOS_VERSION/" "\$df"
-               echo "$WORKSPACE/\$df" >> $WORKSPACE/updated_dockerfiles
+                 df_contents=\$(cat "\$df")
+                 if [[ "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:\$XOS_MAJOR" ||
+                       "\$df_contents" =~ "FROM xosproject/xos-synchronizer-base:master" ]]
+                 then
+                   sed -i "s/^FROM\\(.*\\):.*\$/FROM\\1:\$XOS_VERSION/" "\$df"
+                   echo "$WORKSPACE/\$df" >> $WORKSPACE/updated_dockerfiles
+                 fi
+             else
+                 echo "\$service_dirname not in ALLOWED_SERVICES. Not Testing."
              fi
            done
 
