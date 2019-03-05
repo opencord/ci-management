@@ -45,6 +45,11 @@
          description: 'Name of the repo branch to use'
 
       - string:
+         name: TestDir
+         default: 'xos-scale-tests'
+         description: 'Directory where tests reside'
+
+      - string:
          name: TestCommand
          default: 'robot -d Log -T -v xos_chameleon_url:127.0.0.1 -v xos_chameleon_port:30006 -v cord_kafka:\$CORD_KAFKA_IP -v num_olts:10 -v num_onus:1 -v num_pon_ports:10 xos-scale-att-workflow.robot'
          description: 'Exact command to execute the tests including arguments'
@@ -93,6 +98,11 @@
          name: manifestBranch
          default: 'master'
          description: 'Name of the repo branch to use'
+
+      - string:
+         name: TestDir
+         default: 'xos-migration-tests'
+         description: 'Directory where tests reside'
 
       - string:
          name: TestCommand
