@@ -127,7 +127,7 @@ pipeline {
            CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
            pushd cord/test/cord-tester/src/test/cord-api/
            source setup_venv.sh
-           cd Tests/XosScaleValidations
+           cd Tests/${params.TestDir}
            ${params.TestCommand} || true
            popd
 
@@ -142,7 +142,7 @@ pipeline {
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/XosScaleValidations/Log/*ml ./RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/${params.TestDir}/Log/*ml ./RobotLogs
          echo "# removing helm deployments"
          kubectl get pods
          helm list
