@@ -29,7 +29,7 @@
     scm:
       - cord-infra-gerrit-repo-scm:
           manifest-url: '{gerrit-server-url}/{cord-repo-manifest}'
-          branch: '$GERRIT_BRANCH'
+          branch: 'master'
           destination-dir: 'cord'
 
     node: 'ubuntu16.04-basebuild-1c-2g'
@@ -58,4 +58,3 @@
                 healthy: 50
                 unhealthy: 0
                 failing: 0
-
