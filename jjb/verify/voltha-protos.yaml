@@ -8,6 +8,9 @@
     jobs:
       - 'verify-voltha-protos-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'post-merge-voltha-protos-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+          pypi-index: 'pypi'
 
 - job-group:
     name: 'verify-voltha-protos-jobs'
@@ -20,3 +23,10 @@
       - 'python-unit-test':
          dependency-jobs: 'verify_voltha-protos_tag-collision'
 #        dependency-jobs: 'verify_voltha-protos_sonarqube'
+
+- job-group:
+    name: 'post-merge-voltha-protos-jobs'
+    jobs:
+      - 'pypi-publish':
+          project-regexp: '^{name}$'
+          dependency-jobs: 'version-tag'
