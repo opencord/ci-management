@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12704e47_1ce346e0",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-03-06T22:53:41Z",
+      "side": 1,
+      "message": "I think this is only needed as a cleanup step if you\u0027ve installed other PPA\u0027s, which shouldn\u0027t be the case here.",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 86,
+        "endChar": 68
+      },
+      "revId": "d6503bde0620270c422203ea11fd7bb13f2c3a09",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ca46da59_c59179f2",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-03-06T22:53:41Z",
+      "side": 1,
+      "message": "Add a name before this - see the *_VERSION variables below.",
+      "range": {
+        "startLine": 93,
+        "startChar": 4,
+        "endLine": 93,
+        "endChar": 11
+      },
+      "revId": "d6503bde0620270c422203ea11fd7bb13f2c3a09",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
