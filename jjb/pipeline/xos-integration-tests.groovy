@@ -124,20 +124,19 @@ pipeline {
         sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
-           CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
+           export CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
            pushd cord/test/cord-tester/src/test/cord-api/
            source setup_venv.sh
            cd Tests/${params.TestDir}
            ${params.TestCommand} || true
            popd
-
            """
       }
     }
   }
   post {
     always {
-      sh '''
+      sh """
          kubectl get pods --all-namespaces
 
          # copy robot logs
@@ -154,7 +153,7 @@ pipeline {
          done
 
          sudo minikube delete
-         '''
+         """
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
             logFileName: 'RobotLogs/log*.html',
