@@ -10,6 +10,8 @@
           branch-regexp: '{supported-branches-regexp}'
       - 'verify-xos-jobs-code':
           branch-regexp: '{supported-branches-regexp}'
+      - 'post-merge-publish-xos':
+          branch-regexp: '{supported-branches-regexp}'
 
 # these two job groups are split so that documentation-only patches can go into
 # the XOS repo without invoking all the code-level tests.
@@ -33,3 +35,11 @@
       - 'api-test':
           pipeline_script: 'all-xos-api-test-helm.groovy'
 
+- job-group:
+    name: 'post-merge-publish-xos'
+    jobs:
+      - 'pypi-publish':
+          pypi-module-dirs: 'lib/xos-config|lib/xos-genx|lib/xos-util'
+          project-regexp: '^{name}$'
+          pypi-index: 'pypi'
+          dependency-jobs: 'version-tag'
