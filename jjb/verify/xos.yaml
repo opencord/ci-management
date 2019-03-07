@@ -39,7 +39,7 @@
     name: 'post-merge-publish-xos'
     jobs:
       - 'pypi-publish':
-          pypi-module-dirs: 'lib/xos-config|lib/xos-genx|lib/xos-util'
+          pypi-module-dirs: 'lib/xos-config|lib/xos-genx|lib/xos-util|lib/xos-api|lib/xos-migrate|lib/xos-synchronizer|lib/xos-kafka'
           project-regexp: '^{name}$'
           pypi-index: 'pypi'
           dependency-jobs: 'version-tag'
