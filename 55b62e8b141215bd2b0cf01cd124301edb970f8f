@@ -16,6 +16,24 @@
       "revId": "55b62e8b141215bd2b0cf01cd124301edb970f8f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "368fea76_7e43bda2",
+        "filename": "jjb/verify/xos.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-03-08T20:41:54Z",
+      "side": 1,
+      "message": "The `xos-unit-test` job-template in `xos-unit.yaml` is still needed by the synchronizers until they\u0027re converted over.  It can then be removed.  \n\nThe same steps from the `xos-unit-test` are covered in https://gerrit.opencord.org/c/13235/2/Makefile#27 - this patch switches only the `xos` repo to using `python-unit-test` in `python-unit.yaml`, which runs `make test`, invoking the Makefile and the same tests.",
+      "parentUuid": "b250003c_af867f63",
+      "revId": "55b62e8b141215bd2b0cf01cd124301edb970f8f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
