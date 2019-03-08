@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b250003c_af867f63",
+        "filename": "jjb/verify/xos.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-03-08T20:35:51Z",
+      "side": 1,
+      "message": "you need to change the name of this job in the \"xos-unit.yaml\" job if you want to change it to \"python-unit-test\"",
+      "revId": "55b62e8b141215bd2b0cf01cd124301edb970f8f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
