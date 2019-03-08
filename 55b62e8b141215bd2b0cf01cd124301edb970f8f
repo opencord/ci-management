@@ -34,6 +34,42 @@
       "revId": "55b62e8b141215bd2b0cf01cd124301edb970f8f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8467ae09_5a64fda8",
+        "filename": "jjb/verify/xos.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-03-08T20:43:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "368fea76_7e43bda2",
+      "revId": "55b62e8b141215bd2b0cf01cd124301edb970f8f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "77cf5649_26e2ebc8",
+        "filename": "jjb/verify/xos.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-03-08T20:43:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b250003c_af867f63",
+      "revId": "55b62e8b141215bd2b0cf01cd124301edb970f8f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
