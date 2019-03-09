@@ -8,12 +8,13 @@
     "subnet_id": null,
     "ssh_user": null,
     "distro": null,
-    "cloud_user_data": null
+    "cloud_user_data": null,
+    "arch": "x86_64"
   },
   "builders": [
     {
       "access_key": "{{user `aws_access_key`}}",
-      "ami_name": "{{user `distro`}} - basebuild - {{isotime \"20060102-1504\"}}",
+      "ami_name": "{{user `distro`}} - basebuild - {{user `arch`}} - {{isotime \"20060102-1504\"}}",
       "instance_type": "t2.micro",
       "region": "us-west-2",
       "secret_key": "{{user `aws_security_key`}}",
@@ -21,6 +22,7 @@
       "source_ami_filter": {
         "filters": {
           "name": "{{user `source_ami_filter_name`}}",
+          "architecture": "{{user `arch`}}",
           "root-device-type": "ebs",
           "virtualization-type": "hvm"
         },

@@ -4,5 +4,6 @@
   "ssh_user": "centos",
 
   "distro": "CentOS 7",
+  "arch": "x86_64",
   "cloud_user_data": "provision/rh-user_data.sh"
 }
