@@ -131,6 +131,7 @@ EOF
         python-openssl \
         python-pip \
         python-urllib3 \
+        python3-dev \
         ruby \
         socat \
         ssh \
