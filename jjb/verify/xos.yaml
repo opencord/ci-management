@@ -30,8 +30,8 @@
     name: 'verify-xos-jobs-code'
     jobs:
       - 'verify-sonarqube'
-      - 'xos-unit-test':
-      - 'synchronizer-update':
+      - 'python-unit-test'
+      - 'synchronizer-update'
       - 'api-test':
           pipeline_script: 'all-xos-api-test-helm.groovy'
 
