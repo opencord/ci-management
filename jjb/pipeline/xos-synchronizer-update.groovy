@@ -124,7 +124,7 @@ pipeline {
            XOS_VERSION=\$(cat cord/orchestration/xos/VERSION)
 
            # update services
-           for df in cord/orchestration/xos_services/*/Dockerfile.synchronizer
+           for df in cord/orchestration/xos-services/*/Dockerfile.synchronizer
            do
              service_dirname=\$(basename \$(dirname "\$df"))
              if [[ "\$ALLOWED_SERVICES" =~ "\$service_dirname" ]]
