@@ -27,37 +27,20 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
          oltDebVersion: 'openolt-master.deb'
 
-      # flex-pod1-olt pod build
+      # flex OCP pod with olt/onu - relase 1.0 build job
       - 'build_pod_release':
          testvm: 'qa-testvm-pod'
-         config-pod: 'flex-pod1-olt'
+         config-pod: 'flex-ocp-cord'
          release: '1.0'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
          oltDebVersion: 'openolt-master-voltha16.deb'
          time: '3'
 
-      # flex pod1 with olt/onu - release 1.0 test job
+      # flex OCP POD with olt/onu - release 1.0 test job
       - 'build_pod_release_test':
          testvm: 'qa-testvm-pod'
-         config-pod: 'flex-pod1-olt'
-         release: '1.0'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
-
-      # flex-pod1-olt pod build
-      - 'build_pod_manual_release_micro':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-pod1-olt'
-         release: '1.0'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
-         oltDebVersion: 'openolt-master.deb'
-
-      # flex pod1 with olt/onu - release 1.0 test job
-      - 'build_pod_release_test_microcharts':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-pod1-olt'
+         config-pod: 'flex-ocp-cord'
          release: '1.0'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
