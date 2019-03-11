@@ -29,8 +29,10 @@
 - job-group:
     name: 'verify-xos-jobs-code'
     jobs:
-      - 'verify-sonarqube'
-      - 'python-unit-test'
+      - 'verify-sonarqube':
+          build-timeout: 20
+      - 'python-unit-test':
+          build-timeout: 30
       - 'synchronizer-update'
       - 'api-test':
           pipeline_script: 'all-xos-api-test-helm.groovy'
