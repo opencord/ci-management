@@ -66,6 +66,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.oar" \
   ! -name "*.p12" \
   ! -name "*.patch" \
+  ! -name "*.pb.go" \
   ! -name "*.pdf" \
   ! -name "*.pcap" \
   ! -name "*.pem" \
