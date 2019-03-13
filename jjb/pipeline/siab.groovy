@@ -95,6 +95,8 @@ pipeline {
     post {
         always {
           sh '''
+             kubectl describe pods > $WORKSPACE/kube_pods.log
+             kubectl describe pods -n voltha > $WORKSPACE/kube_voltha_pods.log
              sudo cp /var/log/containers/*.log $WORKSPACE/
              sudo chown cord:cord $WORKSPACE/*log
              '''
