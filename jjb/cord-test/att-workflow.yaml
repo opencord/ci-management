@@ -32,6 +32,7 @@
          config-pod: 'onlab-pod2'
          profile: 'att-workflow'
          branch: 'master'
+         helmRepoUrl: 'https://charts.opencord.org'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
 
@@ -41,6 +42,7 @@
          config-pod: 'flex-ocp-cord-voltha-master'
          profile: 'att-workflow'
          branch: 'master'
+         helmRepoUrl: 'https://charts.opencord.org'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          time: '6'
@@ -62,6 +64,7 @@
          config-pod: 'flex-onf-pod1'
          profile: 'att-workflow'
          branch: 'master'
+         helmRepoUrl: 'https://charts.opencord.org'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
          configurePod: false
