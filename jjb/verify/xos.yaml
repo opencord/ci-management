@@ -29,14 +29,14 @@
 - job-group:
     name: 'verify-xos-jobs-code'
     jobs:
-      - 'verify-sonarqube':
-          build-timeout: 45
+#     - 'verify-sonarqube':
+#         build-timeout: 45
       - 'python-unit-test':
           build-timeout: 45
           build-node: 'ubuntu16.04-basebuild-2c-4g'
-      - 'synchronizer-update'
-      - 'api-test':
-          pipeline_script: 'all-xos-api-test-helm.groovy'
+#     - 'synchronizer-update'
+#     - 'api-test':
+#         pipeline_script: 'all-xos-api-test-helm.groovy'
 
 - job-group:
     name: 'post-merge-publish-xos'
