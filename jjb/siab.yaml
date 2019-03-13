@@ -140,7 +140,7 @@
 
       - string:
           name: version
-          default: 'latest'
+          default: 'stable'
           description: 'Latest | Stable'
 
       - string:
