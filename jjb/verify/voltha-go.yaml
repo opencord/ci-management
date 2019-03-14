@@ -13,8 +13,8 @@
     name: 'verify-voltha-go-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_voltha-go_licensed'
+#     - 'verify-sonarqube':
+#         dependency-jobs: 'verify_voltha-go_licensed'
 #      - 'voltha-go-tests':
 #          dependency-jobs: 'verify_voltha-go_sonarqube'
 

@@ -15,8 +15,8 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-bbsim_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_voltha-bbsim_tag-collision'
+#     - 'verify-sonarqube':
+#         dependency-jobs: 'verify_voltha-bbsim_tag-collision'
       - 'voltha-bbsim-tests':
           dependency-jobs: 'verify_voltha-bbsim_sonarqube'
 
