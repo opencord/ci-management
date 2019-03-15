@@ -1,0 +1,24 @@
+---
+# verification jobs for 'tt-workflow-driver' repo
+
+- project:
+    name: tt-workflow-driver
+    project: '{name}'
+
+    jobs:
+      - 'verify-tt-workflow-driver-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-tt-workflow-driver-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_tt-workflow-driver_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_tt-workflow-driver_tag-collision'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_tt-workflow-driver_sonarqube'
+      - 'api-test':
+          dependency-jobs: 'verify_tt-workflow-driver_unit-test'
+          pipeline_script: 'all-xos-api-test-helm.groovy'
