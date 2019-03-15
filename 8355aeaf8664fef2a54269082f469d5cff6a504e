@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4f75540_c24cb238",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-03-15T21:06:31Z",
+      "side": 1,
+      "message": "You\u0027d need to add the repo to the file in `automation-tools/developer/docker_images.yml` for this to work, but we\u0027ll likely be post-imagebuilder by then.",
+      "range": {
+        "startLine": 74,
+        "startChar": 464,
+        "endLine": 74,
+        "endChar": 487
+      },
+      "revId": "8355aeaf8664fef2a54269082f469d5cff6a504e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
