@@ -159,6 +159,5 @@
           project-regexp: 'helm-charts'
           branch-regexp: 'master'
           dependency-jobs: '{dependency-jobs}'
-
-          file-include-regexp: '^(?!mcord|onos-progran).*$'
+          file-include-regexp: '{siab-projects-regexp}'
 

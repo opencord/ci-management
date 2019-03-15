@@ -110,3 +110,5 @@
     sonar-prep-commands: ''
     sonar-java-binaries: ''
 
+    # siab helm-charts
+    siab-projects-regexp: '^(xos-core/.*|xos-profiles/seba-services/.*|xos-profiles/base-kubernetes/.*|workflows/att-workflow/.*|voltha/.*|onos/.*)$'
