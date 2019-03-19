@@ -49,6 +49,11 @@
          default: 'bbsim-voltha-master.yml'
          description: 'kubernetes configurations file'
 
+     - string:
+           name: OnuCount
+           default: '16'
+           description: 'Number of ONUs per pon port'
+
     project-type: pipeline
     concurrent: false
 
