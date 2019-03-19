@@ -150,12 +150,12 @@ pipeline {
 
     stage('Test BBSIM') {
       steps {
-        sh '''
+        sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
            pushd cord/test/cord-tester/src/test/cord-api/Tests/BBSim/
            robot -e notready -v number_of_onus:${params.OnuCount} BBSIMScale.robot || true
-           '''
+           """
       }
     }
   }
