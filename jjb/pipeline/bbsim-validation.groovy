@@ -136,7 +136,7 @@ pipeline {
            kubectl get pods
            helm list
 
-           helm install --set images.bbsim.tag=latest --set images.bbsim.pullPolicy=IfNotPresent bbsim -n bbsim
+           helm install --set images.bbsim.tag=latest --set images.bbsim.pullPolicy=IfNotPresent --set onus_per_pon_port=${params.OnuCount} bbsim -n bbsim
            for hchart in \$(helm list -q);
            do
              echo "## 'helm status' for chart: \${hchart} ##"
@@ -148,28 +148,13 @@ pipeline {
       }
     }
 
-    stage('Load BBSIM Tosca') {
-      steps {
-        sh '''
-           #!/usr/bin/env bash
-           set -eu -o pipefail
-
-           pushd cord/helm-charts
-
-           curl -H "xos-username: admin@opencord.org" -H "xos-password: letmein" -X POST --data-binary @examples/bbsim-dhcp.yaml http://127.0.0.1:30007/run
-           curl -H "xos-username: admin@opencord.org" -H "xos-password: letmein" -X POST --data-binary @examples/bbsim-16.yaml http://127.0.0.1:30007/run
-
-           popd
-           '''
-      }
-    }
     stage('Test BBSIM') {
       steps {
         sh '''
            #!/usr/bin/env bash
            set -eu -o pipefail
-
-           helm test --timeout 1000 bbsim || true
+           pushd cord/test/cord-tester/src/test/cord-api/Tests/BBSim/
+           robot -e notready -v number_of_onus:${params.OnuCount} BBSIMScale.robot || true
            '''
       }
     }
@@ -177,7 +162,6 @@ pipeline {
   post {
     always {
       sh '''
-         kubectl logs bbsim-api-test --namespace default
          kubectl get pods --all-namespaces
          ## get default pod logs
          for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
@@ -201,7 +185,7 @@ pipeline {
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r /tmp/helm_test_bbsim_logs_*/*ml ./RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/BBSim/*ml ./RobotLogs
 
          echo "# removing helm deployments"
          kubectl get pods
