@@ -146,7 +146,17 @@ pipeline {
            """
       }
     }
-
+    stage('Load BBSIM-DHCP Tosca') {
+      steps {
+        sh '''
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+           pushd cord/helm-charts
+           curl -H "xos-username: admin@opencord.org" -H "xos-password: letmein" -X POST --data-binary @examples/bbsim-dhcp.yaml http://127.0.0.1:30007/run
+           popd
+           '''
+      }
+    }
     stage('Test BBSIM') {
       steps {
         sh """
@@ -158,6 +168,7 @@ pipeline {
       }
     }
   }
+
   post {
     always {
       sh '''
