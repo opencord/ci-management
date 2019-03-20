@@ -1,0 +1,17 @@
+---
+# verification jobs for 'alpine-grpc-base' repo
+
+- project:
+    name: alpine-grpc-base
+    project: '{name}'
+
+    jobs:
+      - 'verify-alpine-grpc-base-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-alpine-grpc-base-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_alpine-grpc-base_licensed'
