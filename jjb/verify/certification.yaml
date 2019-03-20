@@ -1,0 +1,17 @@
+---
+# verification jobs for 'certification' repo
+
+- project:
+    name: certification
+    project: '{name}'
+
+    jobs:
+      - 'verify-certification-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-certification-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_certification_licensed'
