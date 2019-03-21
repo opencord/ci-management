@@ -42,40 +42,18 @@ pipeline {
       }
     }
 
-    stage('minikube') {
+    stage('Clean up') {
       steps {
-        /* see https://github.com/kubernetes/minikube/#linux-continuous-integration-without-vm-support */
-        sh '''
-           export MINIKUBE_WANTUPDATENOTIFICATION=false
-           export MINIKUBE_WANTREPORTERRORPROMPT=false
-           export CHANGE_MINIKUBE_NONE_USER=true
-           export MINIKUBE_HOME=$HOME
-           mkdir -p $HOME/.kube || true
-           touch $HOME/.kube/config
-           export KUBECONFIG=$HOME/.kube/config
-           sudo -E /usr/bin/minikube start --vm-driver=none
-           '''
-        script {
-          timeout(3) {
-            waitUntil {
-              sleep 5
-              def kc_ret = sh script: "kubectl get po", returnStatus: true
-              return (kc_ret == 0);
-            }
-          }
-        }
-      }
-    }
-
-    stage('helm') {
-      steps {
-        sh '''
-           helm init
-           sleep 60
-           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-           helm repo add cord https://charts.opencord.org
-           helm repo update
-           '''
+            sh """
+            rm -rf voltha-bbsim/
+            rm -rf pod-configs/
+            rm -rf cord/helm-charts/helm-repo-tools/
+            for hchart in \$(helm list -q | grep -E -v 'docker-registry|mavenrepo|ponnet');
+            do
+                echo "Purging chart: \${hchart}"
+                helm delete --purge "\${hchart}"
+            done
+            """
       }
     }
 
@@ -84,7 +62,6 @@ pipeline {
         sh '''
            git clone https://github.com/opencord/voltha-bbsim
            cd voltha-bbsim/
-           make docker
            docker images | grep bbsim
            '''
       }
@@ -105,7 +82,7 @@ pipeline {
            helm-repo-tools/wait_for_pods.sh
 
            helm upgrade --install etcd-operator --version 0.8.3 stable/etcd-operator
-           sleep 120
+           sleep 60
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
 
            helm dep up voltha
@@ -136,7 +113,7 @@ pipeline {
            kubectl get pods
            helm list
 
-           helm install --set images.bbsim.tag=latest --set images.bbsim.pullPolicy=IfNotPresent --set onus_per_pon_port=${params.OnuCount} bbsim -n bbsim
+           helm install --set images.bbsim.tag=latest --set images.bbsim.pullPolicy=IfNotPresent --set onus_per_pon_port=${params.OnuCount} ${params.EmulationMode} bbsim -n bbsim
            for hchart in \$(helm list -q);
            do
              echo "## 'helm status' for chart: \${hchart} ##"
@@ -162,8 +139,8 @@ pipeline {
         sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
-           pushd cord/test/cord-tester/src/test/cord-api/Tests/BBSim/
-           robot -e notready -v number_of_onus:${params.OnuCount} BBSIMScale.robot || true
+           pushd cord/test/cord-tester/src/test/cord-api/Tests/BBSim
+           robot -e serviceinstances -e onosdhcp -e notready -v number_of_onus:${params.OnuCount} BBSIMScale.robot || true
            """
       }
     }
@@ -200,14 +177,6 @@ pipeline {
          echo "# removing helm deployments"
          kubectl get pods
          helm list
-
-         for hchart in \$(helm list -q);
-         do
-           echo "## Purging chart: \${hchart} ##"
-           helm delete --purge "\${hchart}"
-         done
-
-         sudo minikube delete
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,

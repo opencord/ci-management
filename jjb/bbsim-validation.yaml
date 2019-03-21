@@ -31,7 +31,7 @@
     parameters:
       - string:
          name: executorNode
-         default: 'ubuntu16.04-basebuild-4c-8g'
+         default: 'qct-pod2-node1'
          description: 'Name of the Jenkins node to run the job on'
 
       - string:
@@ -53,6 +53,12 @@
          name: OnuCount
          default: '16'
          description: 'Number of ONUs per pon port'
+
+
+     - string:
+           name: EmulationMode
+           default: '--set emulation_mode=default'
+           description: 'Emulation for BBSIM (both|aaa|default'
 
     project-type: pipeline
     concurrent: false
