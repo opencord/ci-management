@@ -54,6 +54,12 @@
          default: '16'
          description: 'Number of ONUs per pon port'
 
+
+     - string:
+           name: EmulationMode
+           default: '--set emulation_mode=default'
+           description: 'Emulation for BBSIM (both|aaa|default'
+
     project-type: pipeline
     concurrent: false
 
