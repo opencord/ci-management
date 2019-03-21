@@ -32,8 +32,12 @@ pipeline {
            #!/usr/bin/env bash
 
            pushd cord/incubator/voltha
-           VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache TAG=${params.manifestBranch} make build
-
+           if [ "${params.manifestBranch}" != "master" ]
+           then
+             VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache TAG=${params.manifestBranch} make build
+           else
+             VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache make build
+           fi
            popd
            """
       }
@@ -46,8 +50,12 @@ pipeline {
             #!/usr/bin/env bash
 
             pushd cord/incubator/voltha
-            VOLTHA_BUILD=docker TAG=${params.manifestBranch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.manifestBranch} make push
-
+            if [ "${params.manifestBranch}" != "master" ]
+            then
+              VOLTHA_BUILD=docker TAG=${params.manifestBranch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.manifestBranch} make push
+            else
+              VOLTHA_BUILD=docker TARGET_REPOSITORY=voltha/ make push
+            fi
             popd
             """
         }

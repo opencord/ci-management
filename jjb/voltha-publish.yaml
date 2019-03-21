@@ -8,7 +8,7 @@
     jobs:
       - 'voltha-publish':
           project-regexp: 'voltha'
-          branch-regexp: 'voltha-1.6'
+          branch-regexp: '^(master|voltha-1.6)$'
           executor-node: 'imagebuilder'
           dependency-jobs: ''
 
