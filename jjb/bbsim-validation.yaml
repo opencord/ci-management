@@ -57,7 +57,12 @@
       - string:
          name: EmulationMode
          default: '--set emulation_mode=default'
-         description: 'Emulation for BBSIM (both|aaa|default'
+         description: 'Emulation for BBSIM (both|aaa|default)'
+
+      - string:
+         name: TestTimeout
+         default: '300s'
+         description: 'timeout for each test case (increase as you scale up)'
 
     project-type: pipeline
     concurrent: false

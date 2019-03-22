@@ -140,7 +140,7 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
            pushd cord/test/cord-tester/src/test/cord-api/Tests/BBSim
-           robot -e serviceinstances -e onosdhcp -e notready -v number_of_onus:${params.OnuCount} BBSIMScale.robot || true
+           robot -e serviceinstances -e onosdhcp -e notready -v number_of_onus:${params.OnuCount} -v timeout:${params.TestTimeout} BBSIMScale.robot || true
            """
       }
     }
