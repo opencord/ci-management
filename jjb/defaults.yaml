@@ -97,6 +97,12 @@
     # Default is invalid - must be specified on every job.
     docker-repo: 'default-and-invalid'
 
+    # URL of the Docker registry (server running a docker registry) that is the
+    # destination for images to be pushed to after building. If set, must
+    # include trailing slash as a separator before the repo name.
+    # Default is blank, which maps to DockerHub.
+    docker-registry: ''
+
     # for matching files with file-include-regexp
     all-files-regexp: '.*'
     doc-files-regexp: '^docs/.*'
