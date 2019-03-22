@@ -37,9 +37,19 @@
           description: 'URL to the git repo'
 
       - string:
+          name: gitRef
+          default: '$GERRIT_PATCHSET_REVISION'
+          description: 'git ref to build (commit hash or tag)'
+
+      - string:
           name: dockerRepo
           default: '{docker-repo}'
           description: "Docker repository to push to ('opencord', 'xosproject', etc.)"
+
+      - string:
+          name: dockerRegistry
+          default: '{docker-registry}'
+          description: "Docker registry to push to (blank for DockerHub)"
 
       # AWS CPU arch names: `x86_64` `arm64` (which don't align to vendor names... *sigh*)
       - string:

@@ -8,6 +8,7 @@
     jobs:
       - 'verify-kubernetes-service-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-kubernetes-service-jobs'
 
 - job-group:
     name: 'verify-kubernetes-service-jobs'
@@ -22,3 +23,10 @@
       - 'api-test':
           dependency-jobs: 'verify_kubernetes-service_unit-test'
           pipeline_script: 'all-xos-api-test-helm.groovy'
+
+- job-group:
+    name: 'publish-kubernetes-service-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

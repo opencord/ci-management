@@ -71,7 +71,7 @@
     seba-branches-regexp: '^(master|seba-1.0)$'
 
     # for matching repos that build docker images with imagebuilder
-    imagebuilder-projects-regexp: '^(xos.*|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|att-workflow-driver|tt-workflow-driver)$'
+    imagebuilder-projects-regexp: '^(xos.*|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|att-workflow-driver|tt-workflow-driver)$'
 
     # strictness of version checks
     semver-strict: 0
@@ -96,6 +96,12 @@
     # destination for images to be pushed to after building.
     # Default is invalid - must be specified on every job.
     docker-repo: 'default-and-invalid'
+
+    # URL of the Docker registry (server running a docker registry) that is the
+    # destination for images to be pushed to after building. If set, must
+    # include trailing slash as a separator before the repo name.
+    # Default is blank, which maps to DockerHub.
+    docker-registry: ''
 
     # for matching files with file-include-regexp
     all-files-regexp: '.*'
