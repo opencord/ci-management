@@ -21,4 +21,5 @@
     name: 'publish-alpine-grpc-base-jobs'
     jobs:
       - 'docker-publish':
-          docker-repo: "xosproject"
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'
