@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "817206a2_e8a492e3",
+        "filename": "jjb/pipeline/voltha-publish.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-03-22T15:04:04Z",
+      "side": 1,
+      "message": "Might make the `latest` tag explicit, or use `master`",
+      "range": {
+        "startLine": 39,
+        "startChar": 13,
+        "endLine": 39,
+        "endChar": 71
+      },
+      "revId": "f159a2049f9488857c1456a67567ba0f6164c141",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
