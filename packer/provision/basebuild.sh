@@ -239,8 +239,8 @@ EOF
     popd
 
     # install protobufs
-    PROTOC_VERSION="3.6.1"
-    PROTOC_SHA256SUM="6003de742ea3fcf703cfec1cd4a3380fd143081a2eb0e559065563496af27807"
+    PROTOC_VERSION="3.7.0"
+    PROTOC_SHA256SUM="a1b8ed22d6dc53c5b8680a6f1760a305b33ef471bece482e92728f00ba2a2969"
     curl -L -o /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
     echo "$PROTOC_SHA256SUM  /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip" | sha256sum -c -
     unzip /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d /tmp/protoc3
