@@ -8,6 +8,7 @@
     jobs:
       - 'verify-alpine-grpc-base-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'publish-alpine-grpc-base-jobs'
 
 - job-group:
     name: 'verify-alpine-grpc-base-jobs'
@@ -15,3 +16,9 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_alpine-grpc-base_licensed'
+
+- job-group:
+    name: 'publish-alpine-grpc-base-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: "xosproject"
