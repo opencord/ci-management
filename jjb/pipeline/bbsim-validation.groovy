@@ -23,7 +23,18 @@ pipeline {
   }
 
   stages {
-
+    stage('Clean up') {
+      steps {
+            sh """
+            rm -rf *
+            for hchart in \$(helm list -q | grep -E -v 'docker-registry|mavenrepo|ponnet');
+            do
+                echo "Purging chart: \${hchart}"
+                helm delete --purge "\${hchart}"
+            done
+            """
+      }
+    }
     stage('repo') {
       steps {
         checkout(changelog: false, \
@@ -39,21 +50,6 @@ pipeline {
             jobs: 4, \
             showAllChanges: true] \
           )
-      }
-    }
-
-    stage('Clean up') {
-      steps {
-            sh """
-            rm -rf voltha-bbsim/
-            rm -rf pod-configs/
-            rm -rf cord/helm-charts/helm-repo-tools/
-            for hchart in \$(helm list -q | grep -E -v 'docker-registry|mavenrepo|ponnet');
-            do
-                echo "Purging chart: \${hchart}"
-                helm delete --purge "\${hchart}"
-            done
-            """
       }
     }
 
@@ -94,17 +90,17 @@ pipeline {
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            helm dep up xos-core
-           helm install xos-core -n xos-core
+           helm install xos-core -n xos-core -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
 
            helm dep update xos-profiles/seba-services
-           helm install xos-profiles/seba-services -n seba-services
+           helm install xos-profiles/seba-services -n seba-services -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_pods.sh
 
            helm dep update xos-profiles/base-kubernetes
-           helm install xos-profiles/base-kubernetes -n base-kubernetes
+           helm install xos-profiles/base-kubernetes -n base-kubernetes -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
 
            helm dep update workflows/att-workflow
-           helm install workflows/att-workflow -n att-workflow --set att-workflow-driver.kafkaService=cord-kafka
+           helm install workflows/att-workflow -n att-workflow --set att-workflow-driver.kafkaService=cord-kafka -f $WORKSPACE/pod-configs/kubernetes-configs/${params.deploymentConfig}
 
            # wait for services to load
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
@@ -114,6 +110,7 @@ pipeline {
            helm list
 
            helm install --set images.bbsim.tag=latest --set images.bbsim.pullPolicy=IfNotPresent --set onus_per_pon_port=${params.OnuCount} ${params.EmulationMode} bbsim -n bbsim
+
            for hchart in \$(helm list -q);
            do
              echo "## 'helm status' for chart: \${hchart} ##"
@@ -140,36 +137,49 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
            pushd cord/test/cord-tester/src/test/cord-api/Tests/BBSim
-           robot -e serviceinstances -e onosdhcp -e notready -v number_of_onus:${params.OnuCount} -v timeout:${params.TestTimeout} BBSIMScale.robot || true
+           robot -e notready -v number_of_onus:${params.OnuCount} -v timeout:${params.TestTimeout} ${params.TestTags} BBSIMScale.robot || true
            """
       }
     }
+    stage ('Display Kafka Events') {
+      steps {
+        sh """
+            CORD_KAFKA_IP=\$(kubectl exec cord-kafka-0 -- ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 192)
+            kafkacat -e -C -b \$CORD_KAFKA_IP -t onu.events -f 'Topic %t [%p] at offset %o: key %k: %s\n >0'
+            kafkacat -e -C -b \$CORD_KAFKA_IP -t authentication.events -f 'Topic %t [%p] at offset %o: key %k: %s\n >0'
+            kafkacat -e -C -b \$CORD_KAFKA_IP -t dhcp.events -f 'Topic %t [%p] at offset %o: key %k: %s\n >0'
+            """
+            }
+        }
   }
+
+    if ( params.ArchiveLogs ) {
+        stage ('Archive Artifacts') {
+          steps {
+            sh '''
+               kubectl get pods --all-namespaces
+               ## get default pod logs
+               for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+               do
+                 if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
+                   kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
+                 else
+                   kubectl logs \$pod> $WORKSPACE/\$pod.log;
+                 fi
+               done
+               ## get voltha pod logs
+               for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
+               do
+                  kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
+               done
+               '''
+                }
+            }
+        }
 
   post {
     always {
       sh '''
-         kubectl get pods --all-namespaces
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-         do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           fi
-         done
-
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods -n voltha --no-headers | awk '{print \$1}');
-         do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs -n voltha \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs -n voltha \$pod> $WORKSPACE/\$pod.log;
-           fi
-         done
-
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/BBSim/*ml ./RobotLogs
