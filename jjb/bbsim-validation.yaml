@@ -70,7 +70,7 @@
          default: '300s'
          description: 'timeout for each test case (increase as you scale up)'
 
-      - string:
+      - bool:
          name: ArchiveLogs
          default: false
          description: 'Archive all pod logs after test run. Default to false as logs are very large'

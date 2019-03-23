@@ -151,10 +151,9 @@ pipeline {
             """
             }
         }
-  }
 
-    if ( params.ArchiveLogs ) {
         stage ('Archive Artifacts') {
+          when { expression { return params.ArchiveLogs } }
           steps {
             sh '''
                kubectl get pods --all-namespaces
@@ -175,8 +174,7 @@ pipeline {
                '''
                 }
             }
-        }
-
+    }
   post {
     always {
       sh '''
