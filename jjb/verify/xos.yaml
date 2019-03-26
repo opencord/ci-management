@@ -35,8 +35,8 @@
           build-timeout: 45
           build-node: 'ubuntu16.04-basebuild-2c-4g'
 #     - 'synchronizer-update'
-#     - 'api-test':
-#         pipeline_script: 'all-xos-api-test-helm.groovy'
+      - 'api-test':
+          pipeline_script: 'xos-core.groovy'
 
 - job-group:
     name: 'post-merge-publish-xos'
