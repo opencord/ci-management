@@ -83,7 +83,6 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
-           sudo service docker restart
            cd $WORKSPACE/cord/orchestration/xos/containers/xos
            make build
            cd $WORKSPACE/cord/orchestration/xos/testservice
@@ -106,7 +105,7 @@ pipeline {
            helm-repo-tools/wait_for_pods.sh
 
            #install testservice
-           cd $WORKSPACE/cord/orchestration/xos/testservice
+           cd $WORKSPACE/cord/orchestration/xos/testservice/helm-charts
            helm install -f testservice-devel.yaml testservice -n testservice
            popd
            """
@@ -115,6 +114,9 @@ pipeline {
     stage('Wait for Core') {
       steps {
         sh """
+           #!/usr/bin/env bash
+           set -ex -o pipefail
+
            #wait for xos-core and models to be loaded
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/core/sites |jq '.items[0].name'|grep -q mysite; do echo 'Waiting for API To be up'; sleep 10; done"
            """
@@ -141,7 +143,7 @@ pipeline {
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/xos-test-service/Log/*ml ./RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/xos-test-service/*ml ./RobotLogs
          echo "# removing helm deployments"
          kubectl get pods
          helm list
