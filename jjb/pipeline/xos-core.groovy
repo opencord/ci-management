@@ -83,10 +83,9 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
-           sudo service docker restart
            cd $WORKSPACE/cord/orchestration/xos/containers/xos
            make build
-           cd $WORKSPACE/cord/orchestration/xos/testservice
+           cd $WORKSPACE/cord/orchestration/xos/testservice/helm-charts
            docker build --no-cache -t xosproject/testservice-synchronizer:candidate -f Dockerfile.synchronizer .
            """
       }
