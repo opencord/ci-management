@@ -51,7 +51,7 @@
 
       - string:
          name: TestCommand
-         default: 'robot -d Log -T -v xos_chameleon_url:127.0.0.1 -v xos_chameleon_port:30006 -v cord_kafka:\$CORD_KAFKA_IP -v num_olts:10 -v num_onus:1 -v num_pon_ports:10 xos-scale-att-workflow.robot'
+         default: 'robot -d Log -T -v xos_chameleon_url:127.0.0.1 -v xos_chameleon_port:30006 -v cord_kafka:\$CORD_KAFKA_IP -v num_olts:10 -v num_onus:1 -v num_pon_ports:10 -v timeout:360s xos-scale-att-workflow.robot'
          description: 'Exact command to execute the tests including arguments'
 
 
