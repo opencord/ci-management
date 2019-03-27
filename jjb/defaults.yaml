@@ -92,6 +92,11 @@
     # in the job once testing is completed
     pypi-index: 'testpypi'
 
+    # Commands to run within the root of the checked out repo before running
+    # the `python setup.py sdist` to generate the distribution.
+    # Primarily used for autogenerating code before publishing a repo
+    pypi-prep-commands: ''
+
     # Name of the Docker repository (usually on DockerHub) that is the
     # destination for images to be pushed to after building.
     # Default is invalid - must be specified on every job.

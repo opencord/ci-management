@@ -44,6 +44,7 @@
           properties-content: |
             PYPI_INDEX={pypi-index}
             PYPI_MODULE_DIRS={pypi-module-dirs}
+            PYPI_PREP_COMMANDS={pypi-prep-commands}
 
       - shell: !include-raw-escape: shell/pypi-publish.sh
 

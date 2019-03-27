@@ -11,6 +11,7 @@
       - 'post-merge-voltha-protos-jobs':
           branch-regexp: '{supported-branches-regexp}'
           pypi-index: 'pypi'
+          pypi-prep-commands: 'make python-protos'
 
 - job-group:
     name: 'verify-voltha-protos-jobs'

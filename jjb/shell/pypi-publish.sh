@@ -5,9 +5,10 @@
 # Makes the following assumptions:
 # - PyPI credentials are populated in ~/.pypirc
 # - git repo is tagged with a SEMVER released version. If not, exit.
-# - If required, Environmental variables are set for:
-#     PYPI_INDEX - name of PyPI index to use (see contents of ~/.pypirc)
+# - If required, Environmental variables can be set for:
+#     PYPI_INDEX - name of PyPI index to use (see contents of ~/.pypirc for reference)
 #     PYPI_MODULE_DIRS - pipe-separated list of modules to be uploaded
+#     PYPI_PREP_COMMANDS - commands to run (in root directory) to prepare for sdist
 
 set -eu -o pipefail
 
@@ -18,6 +19,7 @@ pypi_success=0
 
 # environmental vars
 WORKSPACE=${WORKSPACE:-.}
+PYPI_PREP_COMMANDS=${PYPI_PREP_COMMANDS:-}
 PYPI_INDEX=${PYPI_INDEX:-testpypi}
 PYPI_MODULE_DIRS=${PYPI_MODULE_DIRS:-.}
 
@@ -30,6 +32,12 @@ then
 else
   echo "No SemVer released version tag found, exiting..."
   exit 0
+fi
+
+# Run commands if PYPI_PREP_COMMANDS if not null
+if [[ -n "$PYPI_PREP_COMMANDS" ]]
+then
+  $PYPI_PREP_COMMANDS
 fi
 
 # iterate over $PYPI_MODULE_DIRS
