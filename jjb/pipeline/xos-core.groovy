@@ -86,7 +86,7 @@ pipeline {
            cd $WORKSPACE/cord/orchestration/xos/containers/xos
            make build
            cd $WORKSPACE/cord/orchestration/xos/testservice
-           docker build --no-cache -t xosproject/testservice-synchronizer:candidate -f Dockerfile.synchronizer .
+           make DOCKER_TAG=candidate DOCKER_BUILD_ARGS=--no-cache DOCKER_REPOSITORY=xosproject/ docker-build
            """
       }
     }
