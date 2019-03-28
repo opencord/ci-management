@@ -42,6 +42,17 @@ pipeline {
       }
     }
 
+    stage('patch') {
+      steps {
+        sh '''
+           pushd cord
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           popd
+           '''
+      }
+    }
+
     stage('minikube') {
       steps {
         /* see https://github.com/kubernetes/minikube/#linux-continuous-integration-without-vm-support */
@@ -83,10 +94,13 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
+           export DOCKER_REPOSITORY=xosproject/
+           export DOCKER_TAG=\$(cat $WORKSPACE/cord/orchestration/xos/VERSION)
+
            cd $WORKSPACE/cord/orchestration/xos/containers/xos
            make build
            cd $WORKSPACE/cord/orchestration/xos/testservice
-           make DOCKER_TAG=candidate DOCKER_BUILD_ARGS=--no-cache DOCKER_REPOSITORY=xosproject/ docker-build
+           make DOCKER_BUILD_ARGS=--no-cache docker-build
            """
       }
     }
@@ -97,16 +111,20 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
+           export DOCKER_TAG=\$(cat $WORKSPACE/cord/orchestration/xos/VERSION)
+
            pushd cord/helm-charts
            helm dep update xos-core
-           helm install --set images.xos_core.tag=candidate,images.xos_core.pullPolicy=Never xos-core -n xos-core
+           helm install --set images.xos_core.tag=\$DOCKER_TAG,images.xos_core.pullPolicy=Never xos-core -n xos-core
 
            git clone https://gerrit.opencord.org/helm-repo-tools
            helm-repo-tools/wait_for_pods.sh
 
            #install testservice
            cd $WORKSPACE/cord/orchestration/xos/testservice/helm-charts
-           helm install -f testservice-devel.yaml testservice -n testservice
+           helm install --set testservice_synchronizerImage=xosproject/testservice-synchronizer:\$DOCKER_TAG \
+                        --set imagePullPolicy=Never \
+                        testservice -n testservice
            popd
            """
       }
