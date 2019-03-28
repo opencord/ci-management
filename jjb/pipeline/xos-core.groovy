@@ -42,6 +42,17 @@ pipeline {
       }
     }
 
+    stage('patch') {
+      steps {
+        sh '''
+           pushd cord
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           popd
+           '''
+      }
+    }
+
     stage('minikube') {
       steps {
         /* see https://github.com/kubernetes/minikube/#linux-continuous-integration-without-vm-support */
