@@ -35,13 +35,18 @@ else
   pushd "$WORKSPACE/cord/$PROJECT_PATH/xos"
 fi
 
-echo "Checking Migrations"
-if [ "$GERRIT_PROJECT" = 'xos' ] ; then
-  xos-migrate -r $WORKSPACE/cord -s core --check
+if [ -f Makefile ]; then
+  make test
 else
-  xos-migrate -r $WORKSPACE/cord -s $GERRIT_PROJECT --check
+  echo "Checking Migrations"
+  if [ "$GERRIT_PROJECT" = 'xos' ] ; then
+    xos-migrate -r $WORKSPACE/cord -s core --check
+  else
+    xos-migrate -r $WORKSPACE/cord -s $GERRIT_PROJECT --check
+  fi
+
+  echo "Performing nose2 tests"
+  nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
 fi
 
-echo "Performing nose2 tests"
-nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
 popd
