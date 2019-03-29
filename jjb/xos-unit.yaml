@@ -46,7 +46,7 @@
 
     publishers:
       - junit:
-          results: "**/nose2-junit.xml"
+          results: "**/*results.xml"
       - cobertura:
           report-file: "**/coverage.xml"
           targets:

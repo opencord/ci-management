@@ -29,19 +29,27 @@ source venv-xos/bin/activate
 # find the path to the project that is checked out
 PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" cord/.repo/manifest.xml)
 
-if [ "$GERRIT_PROJECT" = 'xos' ] ; then
+if [ -f "$WORKSPACE/cord/$PROJECT_PATH/Makefile" ]; then
   pushd "$WORKSPACE/cord/$PROJECT_PATH"
+  make test
 else
-  pushd "$WORKSPACE/cord/$PROJECT_PATH/xos"
+  echo "No Makefile present"
+
+  if [ "$GERRIT_PROJECT" = 'xos' ] ; then
+    pushd "$WORKSPACE/cord/$PROJECT_PATH"
+  else
+    pushd "$WORKSPACE/cord/$PROJECT_PATH/xos"
+  fi
+
+  echo "Checking Migrations"
+  if [ "$GERRIT_PROJECT" = 'xos' ] ; then
+    xos-migrate -r $WORKSPACE/cord -s core --check
+  else
+    xos-migrate -r $WORKSPACE/cord -s $GERRIT_PROJECT --check
+  fi
+
+  echo "Performing nose2 tests"
+  nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
 fi
 
-echo "Checking Migrations"
-if [ "$GERRIT_PROJECT" = 'xos' ] ; then
-  xos-migrate -r $WORKSPACE/cord -s core --check
-else
-  xos-migrate -r $WORKSPACE/cord -s $GERRIT_PROJECT --check
-fi
-
-echo "Performing nose2 tests"
-nose2 --verbose --coverage-report xml --coverage-report term --junit-xml
 popd
