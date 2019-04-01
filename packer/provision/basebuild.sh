@@ -246,7 +246,8 @@ EOF
     unzip /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d /tmp/protoc3
     mv /tmp/protoc3/bin/* /usr/local/bin/
     mv /tmp/protoc3/include/* /usr/local/include/
-    # fix permissions on include files
+    # fix permissions on files
+    chmod -R a+rx /usr/local/bin/*
     chmod -R a+r /usr/local/include/
 
     # give sudo permissions on minikube and protoc to jenkins user
