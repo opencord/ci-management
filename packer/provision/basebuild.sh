@@ -112,9 +112,9 @@ EOF
         httpie \
         jq \
         kafkacat \
-        "kubeadm=1.12.4-*" \
-        "kubelet=1.12.4-*" \
-        "kubectl=1.12.4-*" \
+        "kubeadm=1.12.7-*" \
+        "kubelet=1.12.7-*" \
+        "kubectl=1.12.7-*" \
         less \
         libmysqlclient-dev \
         libpcap-dev \
