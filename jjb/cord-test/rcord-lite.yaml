@@ -104,16 +104,6 @@
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-test'
 
-      # flex onf pod 1 kubernetes build jobs (rcord lite)
-      - 'build_pod_manual':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-onf-pod1'
-         profile: 'rcord-topdown'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
-         oltDebVersion: 'openolt-master.deb'
-         configurePod: true
-
      # flex ocp pod 2 kubernetes build jobs (rcord lite)
       - 'build_pod_manual':
          testvm: 'flex-pod2'
