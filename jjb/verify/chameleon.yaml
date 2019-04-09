@@ -8,6 +8,7 @@
     jobs:
       - 'verify-chameleon-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-chameleon-jobs'
 
 - job-group:
     name: 'verify-chameleon-jobs'
@@ -15,8 +16,12 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_chameleon_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_chameleon_tag-collision'
-      - 'api-test':
+      - 'python-unit-test':
           dependency-jobs: 'verify_chameleon_sonarqube'
-          pipeline_script: 'all-xos-api-test-helm.groovy'
+
+- job-group:
+    name: 'publish-chameleon-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'
