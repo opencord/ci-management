@@ -9,44 +9,6 @@
     build-timeout: '300'
 
     jobs:
-     # flex OCP  with olt/onu  kubernetes build jobs (rcord lite)
-      - 'build_pod_timer':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         profile: 'rcord-topdown'
-         branch: 'cord-6.0'
-         Jenkinsfile: 'Jenkinsfile-rcordlite-topdown'
-         oltDebVersion: 'openolt-1.4.deb'
-         configurePod: true
-         time: '20'
-
-     # flex ocp pod with olt/onu  kubernetes build jobs (rcord lite)
-      - 'build_pod_timer':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         profile: 'rcord-zerotouch'
-         branch: 'cord-6.0'
-         Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch'
-         oltDebVersion: 'openolt-1.4.deb'
-         configurePod: true
-         time: '22'
-
-     # flex ocp pod with olt/onu postactions job
-      - 'post_build_actions':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         profile: 'rcord-topdown'
-         branch: 'cord-6.0'
-         Jenkinsfile: 'Jenkinsfile-postactions'
-
-     # flex ocp pod with olt/onu postactions job
-      - 'post_build_actions':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         profile: 'rcord-zerotouch'
-         branch: 'cord-6.0'
-         Jenkinsfile: 'Jenkinsfile-postactions'
-
      # flex ocp with olt/onu  kubernetes master build jobs (rcord lite)
       - 'build_pod_timer':
          testvm: 'qa-testvm-pod'
@@ -103,13 +65,3 @@
          profile: 'rcord-topdown'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-test'
-
-     # flex ocp pod 2 kubernetes build jobs (rcord lite)
-      - 'build_pod_manual':
-         testvm: 'flex-pod2'
-         config-pod: 'flex-ocp-pod2'
-         profile: 'rcord-topdown'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-build'
-         oltDebVersion: 'openolt-master.deb'
-         configurePod: true
