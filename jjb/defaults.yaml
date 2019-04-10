@@ -128,3 +128,7 @@
 
     # siab helm-charts
     siab-projects-regexp: '^(xos-core/.*|xos-profiles/seba-services/.*|xos-profiles/base-kubernetes/.*|workflows/att-workflow/.*|voltha/.*|onos/.*)$'
+
+    # Optionally allow JUnit results to be empty when test framework is set up,
+    # but no tests exist. Default behavior is to fail when test results are empty.
+    junit-allow-empty-results: false
