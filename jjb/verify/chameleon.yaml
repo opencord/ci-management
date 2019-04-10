@@ -8,6 +8,7 @@
     jobs:
       - 'verify-chameleon-jobs':
           branch-regexp: '{supported-branches-regexp}'
+          junit-allow-empty-results: true
       - 'publish-chameleon-jobs'
 
 - job-group:

@@ -67,6 +67,7 @@
     publishers:
       - junit:
           results: "**/*junit.xml,**/*results.xml,**/*report.xml"
+          allow-empty-results: '{junit-allow-empty-results}'
       - cobertura:
           report-file: "**/*coverage.xml"
           targets:
