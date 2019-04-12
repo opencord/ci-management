@@ -5,7 +5,7 @@
     id: pypi-publish
     name: 'pypi-publish_{project}'
     description: |
-      Created by {id} job-template from ci-management/jjb/pypi-publish.yaml
+      Created by {id} job-template from ci-management/jjb/pypi-publish.yaml<br/>
       When a patch is merged, publish python modules to PyPI
 
     triggers:

@@ -183,6 +183,7 @@ EOF
     export GOPATH=/usr/local/go
     mkdir -p $GOPATH
     export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
+
     # converters for unit/coverage test
     go get -v github.com/t-yuki/gocover-cobertura
     go get -v github.com/jstemmer/go-junit-report
@@ -193,6 +194,14 @@ EOF
     pushd $(go env GOPATH)/src/github.com/golang/dep
       git checkout "v0.5.0"
       go install -ldflags="-X main.version=v0.5.0" ./cmd/dep
+    popd
+
+    # protoc-gen-go - Golang protbuf compiler extension for protoc (installed
+    # below)
+    go get -d -u github.com/golang/protobuf/protoc-gen-go
+    pushd $(go env GOPATH)/src/github.com/golang/protobuf
+      git checkout "v1.3.1"
+      go install ./protoc-gen-go
     popd
 
     # install repo

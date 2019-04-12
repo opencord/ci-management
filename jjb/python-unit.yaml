@@ -6,7 +6,8 @@
     name: 'verify_{project}_unit-test'
 
     description: |
-      Created by {id} job-template from ci-management/jjb/xos-unit.yaml
+      Created by {id} job-template from ci-management/jjb/python-unit.yaml<br/>
+      Unit tests for Python (or Go w/Makefile) projects
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -43,6 +44,11 @@
       - shell: |
           #!/usr/bin/env bash
           set -eux -o pipefail
+
+          # setup for go-based testing
+          mkdir -p ~/go/src
+          export GOPATH=~/go
+          export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
 
           if [ -f 'Makefile' ]; then
             echo "Makefile found, running 'make test'"
