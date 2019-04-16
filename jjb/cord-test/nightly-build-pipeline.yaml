@@ -87,6 +87,11 @@
          description: ''
 
       - bool:
+          name: installMonitoringAndLogging
+          default: false
+          description: "Wether to install prometheus and Elk-stack"
+
+      - bool:
           name: configurePod
           default: true
           description: "Configure POD via TOSCA post build"
