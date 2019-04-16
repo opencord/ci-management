@@ -96,11 +96,13 @@ pipeline {
 
            export DOCKER_REPOSITORY=xosproject/
            export DOCKER_TAG=\$(cat $WORKSPACE/cord/orchestration/xos/VERSION)
+           export DOCKER_BUILD_ARGS=--no-cache
 
-           cd $WORKSPACE/cord/orchestration/xos/containers/xos
-           make build
+           cd $WORKSPACE/cord/orchestration/xos
+           make docker-build
+
            cd $WORKSPACE/cord/orchestration/xos/testservice
-           make DOCKER_BUILD_ARGS=--no-cache docker-build
+           make docker-build
            """
       }
     }
@@ -147,6 +149,7 @@ pipeline {
            set -eu -o pipefail
            pushd cord/test/cord-tester/src/test/cord-api/
            source setup_venv.sh
+
            cd Tests/xos-test-service
            robot -e notready test-service.robot || true
            popd

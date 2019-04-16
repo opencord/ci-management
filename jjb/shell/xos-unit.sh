@@ -21,19 +21,21 @@ set -e -o pipefail
 WORKSPACE=${WORKSPACE:-.}
 GERRIT_PROJECT=${GERRIT_PROJECT:-xos}
 
-# create python virtual env
-export XOS_DIR=${WORKSPACE}/cord/orchestration/xos
-$XOS_DIR/scripts/setup_venv.sh
-source venv-xos/bin/activate
-
 # find the path to the project that is checked out
 PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" cord/.repo/manifest.xml)
 
 if [ -f "$WORKSPACE/cord/$PROJECT_PATH/Makefile" ]; then
+  # assume newer testing method which uses Makefile
   pushd "$WORKSPACE/cord/$PROJECT_PATH"
   make test
+
 else
+  # assume older branch, so set up the venv the old way
   echo "No Makefile present"
+
+  export XOS_DIR=${WORKSPACE}/cord/orchestration/xos
+  "$XOS_DIR/scripts/setup_venv.sh"
+  source "$XOS_DIR/venv-xos/bin/activate"
 
   if [ "$GERRIT_PROJECT" = 'xos' ] ; then
     pushd "$WORKSPACE/cord/$PROJECT_PATH"
@@ -43,9 +45,9 @@ else
 
   echo "Checking Migrations"
   if [ "$GERRIT_PROJECT" = 'xos' ] ; then
-    xos-migrate -r $WORKSPACE/cord -s core --check
+    xos-migrate -r "$WORKSPACE/cord" -s core --check
   else
-    xos-migrate -r $WORKSPACE/cord -s $GERRIT_PROJECT --check
+    xos-migrate -r "$WORKSPACE/cord" -s "$GERRIT_PROJECT" --check
   fi
 
   echo "Performing nose2 tests"

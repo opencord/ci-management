@@ -18,7 +18,9 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_chameleon_licensed'
       - 'python-unit-test':
-          dependency-jobs: 'verify_chameleon_sonarqube'
+          dependency-jobs: 'verify_chameleon_tag-collision'
+      - 'xos-auth':
+          dependency-jobs: 'verify_chameleon_unit-test'
 
 - job-group:
     name: 'publish-chameleon-jobs'

@@ -15,12 +15,8 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_xos-tosca_licensed'
-      - 'verify-sonarqube':
+      - 'python-unit-test':
           dependency-jobs: 'verify_xos-tosca_tag-collision'
       - 'api-test':
-          dependency-jobs: 'verify_xos-tosca_sonarqube'
           pipeline_script: 'all-xos-api-test-helm.groovy'
-      - 'xos-tosca-unit-test':
-          dependency-jobs: 'verify_xos-tosca_sonarqube'
-      - 'xos-tosca-e2e-test':
-          dependency-jobs: 'verify_xos-tosca_sonarqube'
+          dependency-jobs: 'verify_xos-tosca_unit-test'
