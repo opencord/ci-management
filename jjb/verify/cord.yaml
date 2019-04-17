@@ -17,6 +17,3 @@
           dependency-jobs: 'verify_cord_licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_cord_ansible-lint'
-      - 'api-test':
-          dependency-jobs: 'verify_cord_sonarqube'
-          pipeline_script: 'all-xos-api-test.groovy'

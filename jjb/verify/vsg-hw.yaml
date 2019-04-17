@@ -19,8 +19,5 @@
           dependency-jobs: 'verify_vsg-hw_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_vsg-hw_sonarqube'
-      - 'api-test':
-          dependency-jobs: 'verify_vsg-hw_unit-test'
-          pipeline_script: 'all-xos-api-test-helm.groovy'
 
 

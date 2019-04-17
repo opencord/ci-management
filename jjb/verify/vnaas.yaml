@@ -19,7 +19,4 @@
           dependency-jobs: 'verify_vnaas_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_vnaas_sonarqube'
-#      - 'api-test':
-#          dependency-jobs: 'verify_vnaas_unit-test'
-#          pipeline_script: 'all-xos-api-test-helm.groovy'
 #

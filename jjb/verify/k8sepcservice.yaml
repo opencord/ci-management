@@ -19,6 +19,3 @@
           dependency-jobs: 'verify_k8sepcservice_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_k8sepcservice_sonarqube'
-      - 'api-test':
-          dependency-jobs: 'verify_k8sepcservice_unit-test'
-          pipeline_script: 'all-xos-api-test-helm.groovy'

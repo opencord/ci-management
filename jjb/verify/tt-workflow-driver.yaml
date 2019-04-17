@@ -20,10 +20,6 @@
           dependency-jobs: 'verify_tt-workflow-driver_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_tt-workflow-driver_sonarqube'
-# Commenting this out until we're a bit farther along
-#      - 'api-test':
-#          dependency-jobs: 'verify_tt-workflow-driver_unit-test'
-#          pipeline_script: 'all-xos-api-test-helm.groovy'
 
 - job-group:
     name: 'publish-tt-workflow-driver-jobs'

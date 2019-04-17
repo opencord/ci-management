@@ -20,9 +20,6 @@
           dependency-jobs: 'verify_fabric_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_fabric_sonarqube'
-      - 'api-test':
-          dependency-jobs: 'verify_fabric_unit-test'
-          pipeline_script: 'all-xos-api-test-helm.groovy'
 
 - job-group:
     name: 'publish-fabric-jobs'

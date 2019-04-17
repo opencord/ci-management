@@ -18,9 +18,6 @@
           dependency-jobs: 'verify_xos-tosca_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_xos-tosca_tag-collision'
-      - 'api-test':
-          pipeline_script: 'all-xos-api-test-helm.groovy'
-          dependency-jobs: 'verify_xos-tosca_unit-test'
 
 - job-group:
     name: 'publish-xos-tosca-jobs'

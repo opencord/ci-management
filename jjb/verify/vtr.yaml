@@ -17,6 +17,3 @@
           dependency-jobs: 'verify_vtr_licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_vtr_tag-collision'
-      - 'api-test':
-          dependency-jobs: 'verify_vtr_sonarqube'
-          pipeline_script: 'all-xos-api-test-helm.groovy'

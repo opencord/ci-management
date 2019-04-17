@@ -19,6 +19,3 @@
           dependency-jobs: 'verify_ecord_tag-collision'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_ecord_ansible-lint'
-      - 'api-test':
-          dependency-jobs: 'verify_ecord_sonarqube'
-          pipeline_script: 'all-xos-api-test.groovy'

@@ -17,6 +17,3 @@
           dependency-jobs: 'verify_venb_licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_venb_tag-collision'
-      - 'api-test':
-          dependency-jobs: 'verify_venb_sonarqube'
-          pipeline_script: 'all-xos-api-test-helm.groovy'

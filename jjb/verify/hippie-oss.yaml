@@ -19,6 +19,3 @@
           dependency-jobs: 'verify_hippie-oss_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_hippie-oss_sonarqube'
-      - 'api-test':
-          dependency-jobs: 'verify_hippie-oss_unit-test'
-          pipeline_script: 'all-xos-api-test-helm.groovy'
