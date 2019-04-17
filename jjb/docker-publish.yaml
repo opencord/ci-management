@@ -42,6 +42,16 @@
           description: 'git ref to build (commit hash or tag)'
 
       - string:
+          name: projectName
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the project in Gerrit'
+
+      - string:
+          name: branchName
+          default: '$GERRIT_BRANCH'
+          description: 'Branch of the project in Gerrit
+
+      - string:
           name: dockerRepo
           default: '{docker-repo}'
           description: "Docker repository to push to ('opencord', 'xosproject', etc.)"
