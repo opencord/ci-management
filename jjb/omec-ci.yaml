@@ -33,9 +33,9 @@
       - 'omec-install':
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
 
-# for c3po
+# for c3po-hss
 - project:
-    name: c3po
+    name: c3po-hss
     project: '{name}'
 
     executor_node: 'intel-102'
@@ -48,7 +48,24 @@
       - 'omec-combined':
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
       - 'omec-install':
-          pipeline-file: 'Jenkinsfile-omec-install-c3po-vnf.groovy'
+          pipeline-file: 'Jenkinsfile-omec-install-c3po-hss-vnf.groovy'
+
+# for c3po-sgx
+- project:
+    name: c3po-sgx
+    project: '{name}'
+
+    executor_node: 'intel-102'
+
+    github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
+    github_pr_org_list:
+      - 'omec-project'
+
+    jobs:
+      - 'omec-combined':
+          pipeline-file: 'Jenkinsfile-omec-combined.groovy'
+      - 'omec-install':
+          pipeline-file: 'Jenkinsfile-omec-install-c3po-sgx-vnf.groovy'
 
 # for openmme
 - project:
