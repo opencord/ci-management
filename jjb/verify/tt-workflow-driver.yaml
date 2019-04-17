@@ -8,6 +8,7 @@
     jobs:
       - 'verify-tt-workflow-driver-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'publish-tt-workflow-driver-jobs'
 
 - job-group:
     name: 'verify-tt-workflow-driver-jobs'
@@ -23,3 +24,10 @@
 #      - 'api-test':
 #          dependency-jobs: 'verify_tt-workflow-driver_unit-test'
 #          pipeline_script: 'all-xos-api-test-helm.groovy'
+
+- job-group:
+    name: 'publish-tt-workflow-driver-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

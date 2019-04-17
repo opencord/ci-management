@@ -8,6 +8,7 @@
     jobs:
       - 'verify-fabric-crossconnect-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-fabric-crossconnect-jobs'
 
 - job-group:
     name: 'verify-fabric-crossconnect-jobs'
@@ -22,3 +23,10 @@
       - 'api-test':
           dependency-jobs: 'verify_fabric-crossconnect_unit-test'
           pipeline_script: 'all-xos-api-test-helm.groovy'
+
+- job-group:
+    name: 'publish-fabric-crossconnect-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

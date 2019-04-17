@@ -8,6 +8,7 @@
     jobs:
       - 'verify-simpleexampleservice-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-simpleexampleservice-jobs'
 
 - job-group:
     name: 'verify-simpleexampleservice-jobs'
@@ -22,3 +23,10 @@
       - 'api-test':
           dependency-jobs: 'verify_simpleexampleservice_unit-test'
           pipeline_script: 'all-xos-api-test-helm.groovy'
+
+- job-group:
+    name: 'publish-simpleexampleservice-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

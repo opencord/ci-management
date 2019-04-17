@@ -8,6 +8,7 @@
     jobs:
       - 'verify-vrouter-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-vrouter-jobs'
 
 - job-group:
     name: 'verify-vrouter-jobs'
@@ -22,3 +23,10 @@
       - 'api-test':
           dependency-jobs: 'verify_vrouter_unit-test'
           pipeline_script: 'all-xos-api-test-helm.groovy'
+
+- job-group:
+    name: 'publish-vrouter-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

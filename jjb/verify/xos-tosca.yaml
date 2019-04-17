@@ -8,6 +8,7 @@
     jobs:
       - 'verify-xos-tosca-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-xos-tosca-jobs'
 
 - job-group:
     name: 'verify-xos-tosca-jobs'
@@ -20,3 +21,10 @@
       - 'api-test':
           pipeline_script: 'all-xos-api-test-helm.groovy'
           dependency-jobs: 'verify_xos-tosca_unit-test'
+
+- job-group:
+    name: 'publish-xos-tosca-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

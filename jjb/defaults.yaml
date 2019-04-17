@@ -71,7 +71,9 @@
     seba-branches-regexp: '^(master|seba-1.0)$'
 
     # for matching repos that build docker images with imagebuilder
-    imagebuilder-projects-regexp: '^(xos.*|cord-tester|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric|fabric-crossconnect|globalxos|hippie-oss|hss_db|hypercache|internetemulator|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|att-workflow-driver|tt-workflow-driver)$'
+    # As of 2019-04-16 most of the services actively being developed use the
+    # make-based image generation process managed by the `docker-publish` job
+    imagebuilder-projects-regexp: '^(cord-tester|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|globalxos|hippie-oss|hss_db|hypercache|internetemulator|monitoring|openstack|progran|sdn-controller|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr)$'
 
     # strictness of version checks
     semver-strict: 0

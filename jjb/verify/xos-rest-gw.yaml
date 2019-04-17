@@ -8,6 +8,7 @@
     jobs:
       - 'verify-xos-rest-gw-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-xos-rest-gw-jobs'
 
 - job-group:
     name: 'verify-xos-rest-gw-jobs'
@@ -19,3 +20,10 @@
           dependency-jobs: 'verify_xos-rest-gw_tag-collision'
       - 'xos-rest-gw-unit':
           dependency-jobs: 'verify_xos-rest-gw_sonarqube'
+
+- job-group:
+    name: 'publish-xos-rest-gw-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

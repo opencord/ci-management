@@ -8,6 +8,7 @@
     jobs:
       - 'verify-olt-service-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-olt-service-jobs'
 
 - job-group:
     name: 'verify-olt-service-jobs'
@@ -22,3 +23,10 @@
       - 'api-test':
           dependency-jobs: 'verify_olt-service_unit-test'
           pipeline_script: 'all-xos-api-test-helm.groovy'
+
+- job-group:
+    name: 'publish-olt-service-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

@@ -8,6 +8,7 @@
     jobs:
       - 'verify-xos-gui-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-xos-gui-jobs'
 
 - job-group:
     name: 'verify-xos-gui-jobs'
@@ -19,3 +20,10 @@
           dependency-jobs: 'verify_xos-gui_tag-collision'
       - 'gui-unit-test':
           dependency-jobs: 'verify_xos-gui_sonarqube'
+
+- job-group:
+    name: 'publish-xos-gui-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'

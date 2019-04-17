@@ -10,7 +10,7 @@
           branch-regexp: '{supported-branches-regexp}'
       - 'verify-xos-jobs-code':
           branch-regexp: '{supported-branches-regexp}'
-      - 'post-merge-publish-xos':
+      - 'publish-xos-jobs':
           branch-regexp: '{supported-branches-regexp}'
 
 # these two job groups are split so that documentation-only patches can go into
@@ -36,10 +36,13 @@
           pipeline_script: 'xos-core.groovy'
 
 - job-group:
-    name: 'post-merge-publish-xos'
+    name: 'publish-xos-jobs'
     jobs:
       - 'pypi-publish':
           pypi-module-dirs: 'lib/xos-config|lib/xos-genx|lib/xos-util|lib/xos-api|lib/xos-migrate|lib/xos-synchronizer|lib/xos-kafka'
           project-regexp: '^{name}$'
           pypi-index: 'pypi'
+          dependency-jobs: 'version-tag'
+      - 'docker-publish':
+          docker-repo: 'xosproject'
           dependency-jobs: 'version-tag'
