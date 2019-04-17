@@ -17,12 +17,12 @@ pipeline {
           ]],
           extensions: [
             [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.GERRIT_PROJECT}"],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.projectName}"],
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
         script {
-          git_tags = sh(script:"cd $GERRIT_PROJECT; git tag -l --points-at HEAD", returnStdout: true).trim()
+          git_tags = sh(script:"cd $projectName; git tag -l --points-at HEAD", returnStdout: true).trim()
         }
       }
     }
@@ -34,7 +34,7 @@ pipeline {
           set -eu -o pipefail
 
           # checked out in a subdir so the log can be in WORKSPACE
-          cd "$GERRIT_PROJECT"
+          cd "$projectName"
 
           # set registry/repository variables
           export DOCKER_REGISTRY="$dockerRegistry"
@@ -42,7 +42,7 @@ pipeline {
 
           # Build w/branch
           echo "Building image with branch"
-          make DOCKER_TAG="$GERRIT_BRANCH" docker-build 2>&1 | tee "$WORKSPACE/docker-build.log"
+          make DOCKER_TAG="$branchName" docker-build 2>&1 | tee "$WORKSPACE/docker-build.log"
 
           # Build w/tags if they exist
           if [ -n "$git_tags" ]
@@ -69,7 +69,7 @@ pipeline {
               set -eu -o pipefail
 
               # checked out in a subdir so the log can be in WORKSPACE
-              cd "$GERRIT_PROJECT"
+              cd "$projectName"
 
               # set registry/repository variables
               export DOCKER_REGISTRY="$dockerRegistry"
@@ -77,7 +77,7 @@ pipeline {
 
               # Push w/branch
               echo "Pushing image with branch"
-              make DOCKER_TAG="$GERRIT_BRANCH" docker-push 2>&1 | tee  "$WORKSPACE/docker-push.log"
+              make DOCKER_TAG="$branchName" docker-push 2>&1 | tee "$WORKSPACE/docker-push.log"
 
               # Push w/tags if they exist
               if [ -n "$git_tags" ]
