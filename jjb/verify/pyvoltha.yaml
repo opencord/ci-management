@@ -8,6 +8,9 @@
     jobs:
       - 'verify-pyvoltha-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-pyvoltha-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+          pypi-index: 'pypi'
 
 - job-group:
     name: 'verify-pyvoltha-jobs'
@@ -15,7 +18,12 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_pyvoltha_licensed'
-#     - 'verify-sonarqube':
-#         dependency-jobs: 'verify_pyvoltha_tag-collision'
-#     - 'python-unit-test':
-#         dependency-jobs: 'verify_pyvoltha_sonarqube'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_pyvoltha_tag-collision'
+
+- job-group:
+    name: 'publish-pyvoltha-jobs'
+    jobs:
+      - 'pypi-publish':
+          project-regexp: '^{project}$'
+          dependency-jobs: 'version-tag'
