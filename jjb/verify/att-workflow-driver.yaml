@@ -20,6 +20,8 @@
           dependency-jobs: 'verify_att-workflow-driver_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_att-workflow-driver_sonarqube'
+      - 'xos-service-upgrade':
+          dependency-jobs: 'verify_att-workflow-driver-unit-test'
 
 - job-group:
     name: 'publish-att-workflow-driver-jobs'
