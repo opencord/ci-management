@@ -20,6 +20,8 @@
           dependency-jobs: 'verify_simpleexampleservice_tag-collision'
       - 'xos-unit-test':
           dependency-jobs: 'verify_simpleexampleservice_sonarqube'
+      - 'xos-service-upgrade':
+            dependency-jobs: 'verify_simpleexampleservice-unit-test'
 
 - job-group:
     name: 'publish-simpleexampleservice-jobs'
