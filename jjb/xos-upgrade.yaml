@@ -1,0 +1,63 @@
+---
+# CORD API tests using cord-tester
+
+- job-template:
+    id: xos-service-upgrade
+    name: 'verify_{project}_service-upgrade-test'
+    description: |
+      Created by {id} job-template from ci-management/jjb/xos-upgrade.yaml, using pipeline: xos-service-upgrade.groovy
+
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{api-test-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '60'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: executorNode
+         default: 'ubuntu16.04-basebuild-4c-8g'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: manifestUrl
+         default: '{gerrit-server-url}/{cord-repo-manifest}'
+         description: 'URL to the repo manifest'
+
+      - string:
+         name: manifestBranch
+         default: '$GERRIT_BRANCH'
+         description: 'Name of the repo branch to use'
+
+      - string:
+         name: gerritProject
+         default: '$GERRIT_PROJECT'
+         description: 'Name of the Gerrit project'
+
+      - string:
+         name: gerritChangeNumber
+         default: '$GERRIT_CHANGE_NUMBER'
+         description: 'Changeset number in Gerrit'
+
+      - string:
+         name: gerritPatchsetNumber
+         default: '$GERRIT_PATCHSET_NUMBER'
+         description: 'PatchSet number in Gerrit'
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/xos-service-upgrade.groovy
