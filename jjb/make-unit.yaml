@@ -1,0 +1,64 @@
+---
+# python module unit test
+
+- job-template:
+    id: 'make-unit-test'
+    name: 'verify_{project}_unit-test'
+
+    description: |
+      Created by {id} job-template from ci-management/jjb/make-unit.yaml<br/>
+      Runs make with the following unit tests targets - '{unit-test-make-targets}'
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - inject:
+          properties-content: |
+            UNIT_TEST_MAKE_TARGETS={unit-test-make-targets}
+            UNIT_TEST_PATH={unit-test-path}
+      - shell: !include-raw-escape: shell/make-unit.sh
+
+    publishers:
+      - junit:
+          results: "**/*junit.xml,**/*results.xml,**/*report.xml"
+          allow-empty-results: '{junit-allow-empty-results}'
+      - cobertura:
+          report-file: "**/*coverage.xml"
+          targets:
+            - files:
+                healthy: 80
+                unhealthy: 0
+                failing: 0
+            - method:
+                healthy: 50
+                unhealthy: 0
+                failing: 0

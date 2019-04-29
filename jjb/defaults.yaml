@@ -134,3 +134,15 @@
     # Optionally allow JUnit results to be empty when test framework is set up,
     # but no tests exist. Default behavior is to fail when test results are empty.
     junit-allow-empty-results: false
+
+    # Unit test make targets
+    # List of Makefile targets to run when testing a patchset
+    # Will be invoked in the root of a repo as 'make <target>'
+    # defaults to just 'test', multiple targets can be pipe separated
+    unit-test-make-targets: 'test'
+
+    # Unit test path
+    # Used to supply the path which has the Makefile in it for unit testing
+    unit-test-path: '.'
+
+
