@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1a12c874_17a797eb",
+        "filename": "jjb/verify/voltha-go.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000107
+      },
+      "writtenOn": "2019-04-29T20:44:55Z",
+      "side": 1,
+      "message": "Can we run \u0027lint-style\u0027, \u0027lint-sanity\u0027, and \u0027test\u0027 as 3 separate jobs?",
+      "revId": "b64bceaa85a421d2dd9a4b1dab31a95f572ad082",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
