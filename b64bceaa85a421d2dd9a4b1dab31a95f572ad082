@@ -16,6 +16,24 @@
       "revId": "b64bceaa85a421d2dd9a4b1dab31a95f572ad082",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "caf02b72_9c6358fa",
+        "filename": "jjb/verify/voltha-go.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-04-29T22:52:42Z",
+      "side": 1,
+      "message": "While that would be possible, there is some overhead in starting 3 separate jobs and I\u0027d need to generate names programmatically.\n\nIs the goal to have pass/fail information from all of the 3 targets, even if one of them failed?",
+      "parentUuid": "1a12c874_17a797eb",
+      "revId": "b64bceaa85a421d2dd9a4b1dab31a95f572ad082",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
