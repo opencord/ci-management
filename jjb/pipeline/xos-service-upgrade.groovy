@@ -133,7 +133,6 @@ pipeline {
         sh """
            CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
            cd $WORKSPACE/cord/test/cord-tester
-           git fetch https://gerrit.opencord.org/cord-tester refs/changes/22/13722/13 && git checkout FETCH_HEAD
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceupgradetest.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceupgradetest.xtarget
            docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosstaticlibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosstaticlibrary.xtarget
 
@@ -202,6 +201,7 @@ pipeline {
            """
       }
     }
+
     stage('Verify Service Upgrade') {
       steps {
         sh """
@@ -213,14 +213,11 @@ pipeline {
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for New Service to be loaded'; sleep 5; done"
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").version'| grep -q \$DOCKER_TAG; do echo 'Waiting for New Service Version Check'; sleep 5; done"
-           ## get pod logs
-           for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-           do
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           done || true
+           sleep 15
            """
       }
     }
+
     stage('Test Post-Upgrade') {
       steps {
         sh """
@@ -232,11 +229,57 @@ pipeline {
            echo \$SERVICES
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${gerritProject}_library.robot \$i\$testname"; sleep 2; done || true
+
+           ## get pod logs
+           for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+           do
+             kubectl logs \$pod> $WORKSPACE/\$pod.log;
+           done || true
+           """
+      }
+    }
+
+    stage('Downgrade Service') {
+      steps {
+        sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           pushd cord/helm-charts
+           #delete service
+           helm delete --purge ${gerritProject}
+
+           #re-install service with previous version
+           helm dep update xos-services/${gerritProject}
+           helm install xos-services/${gerritProject} -n ${gerritProject}
+
+           #wait for xos-core and models to be loaded
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for Service to be loaded'; sleep 5; done"
+           sleep 15
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
+
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+
+           export testname=_service_api.robot
+           export library=_library.robot
+           SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+           echo \$SERVICES
+           for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${gerritProject}_library.robot \$i\$testname"; sleep 2; done || true
+
+           ## get pod logs
+           for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+           do
+             kubectl logs \$pod> $WORKSPACE/\$pod.log;
+           done || true
+
+           popd
            """
       }
     }
 
   }
+
   post {
     always {
       sh """
@@ -269,7 +312,6 @@ pipeline {
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, scottb@opennetworking.org", sendToIndividuals: false])
-
     }
   }
 }
