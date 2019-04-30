@@ -34,6 +34,24 @@
       "revId": "b64bceaa85a421d2dd9a4b1dab31a95f572ad082",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "546cfd9c_2864033e",
+        "filename": "jjb/verify/voltha-go.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000107
+      },
+      "writtenOn": "2019-04-30T13:44:56Z",
+      "side": 1,
+      "message": "Yes, that\u0027s the goal.\n\nlint-style and lint-sanity could be combined (I suggest adding a -k flag to the make invocation, when using \u0027lint\u0027 to cover both, this way both always run, regardless of failures).\nAt minimum, I\u0027d like \"test\" to be a separate job, if possible.\n\nWhat do you mean by \"generate names programmatically\"?",
+      "parentUuid": "caf02b72_9c6358fa",
+      "revId": "b64bceaa85a421d2dd9a4b1dab31a95f572ad082",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
