@@ -118,7 +118,6 @@ pipeline {
            #wait for xos-core and models to be loaded
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
-           http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq ".services[] | select(.name==\\"core\\").version"| grep -q \$DOCKER_TAG
 
            ## get pod logs
            for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
@@ -213,7 +212,7 @@ pipeline {
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for New Service to be loaded'; sleep 5; done"
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").version'| grep -q \$DOCKER_TAG; do echo 'Waiting for New Service Version Check'; sleep 5; done"
-           sleep 15
+           sleep 120
            """
       }
     }
@@ -256,7 +255,7 @@ pipeline {
            #wait for xos-core and models to be loaded
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for Service to be loaded'; sleep 5; done"
-           sleep 15
+           sleep 120
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
 
            CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
