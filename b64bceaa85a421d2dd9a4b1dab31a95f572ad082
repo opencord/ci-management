@@ -70,6 +70,24 @@
       "revId": "b64bceaa85a421d2dd9a4b1dab31a95f572ad082",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6291b46c_6bdc4fcc",
+        "filename": "jjb/verify/voltha-go.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-04-30T20:23:48Z",
+      "side": 1,
+      "message": "Done in version 3 of patchset.",
+      "parentUuid": "0df75646_7dbc4f0d",
+      "revId": "b64bceaa85a421d2dd9a4b1dab31a95f572ad082",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
