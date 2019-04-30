@@ -128,6 +128,57 @@ pipeline {
            """
       }
     }
+    stage('Generate Model API Tests') {
+      steps {
+        sh """
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+           cd $WORKSPACE/cord/test/cord-tester
+           git fetch https://gerrit.opencord.org/cord-tester refs/changes/22/13722/13 && git checkout FETCH_HEAD
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosserviceupgradetest.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosserviceupgradetest.xtarget
+           docker cp $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/targets/xosstaticlibrary.xtarget \$CORE_CONTAINER:/opt/xos/lib/xos-genx/xosgenx/targets/xosstaticlibrary.xtarget
+
+           export testname=_service_api.robot
+           export library=_library.robot
+
+           SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+           echo \$SERVICES
+
+           for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosserviceupgradetest.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$testname; done
+
+           for i in \$SERVICES; do bash -c "docker exec -i \$CORE_CONTAINER /bin/bash -c 'xosgenx --target /opt/xos/lib/xos-genx/xosgenx/targets/./xosstaticlibrary.xtarget /opt/xos/dynamic_services/\$i/\$i.xproto /opt/xos/core/models/core.xproto'" > $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/\$i\$library; done
+           ls -al $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/
+           """
+      }
+    }
+
+    stage('Test Pre-Upgrade') {
+      steps {
+        sh """
+           pushd cord/test/cord-tester/src/test/cord-api/Tests
+
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+           CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
+           XOS_CHAMELEON=\$(docker exec \$CHAM_CONTAINER ip a | grep -oE "([0-9]{1,3}\\.){3}[0-9]{1,3}\\b" | grep 172)
+
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Properties/
+           sed -i \"s/^\\(SERVER_IP = \\).*/\\1\'\$XOS_CHAMELEON\'/\" RestApiProperties.py
+           sed -i \"s/^\\(SERVER_PORT = \\).*/\\1\'9101\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_USER = \\).*/\\1\'admin@opencord.org\'/\" RestApiProperties.py
+           sed -i \"s/^\\(XOS_PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+           sed -i \"s/^\\(PASSWD = \\).*/\\1\'letmein\'/\" RestApiProperties.py
+
+           export testname=_service_api.robot
+           export library=_library.robot
+           SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+           echo \$SERVICES
+
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
+           for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i create -d Log -T -v TESTLIBRARY:${gerritProject}_library.robot \$i\$testname"; sleep 2; done || true
+
+           popd
+           """
+      }
+    }
 
     stage('Build/Install New Service') {
       steps {
@@ -170,10 +221,28 @@ pipeline {
            """
       }
     }
+    stage('Test Post-Upgrade') {
+      steps {
+        sh """
+           CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
+
+           export testname=_service_api.robot
+           export library=_library.robot
+           SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+           echo \$SERVICES
+           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
+           for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${gerritProject}_library.robot \$i\$testname"; sleep 2; done || true
+           """
+      }
+    }
+
   }
   post {
     always {
       sh """
+         # copy robot logs
+         if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
          kubectl get pods --all-namespaces
          kubectl describe pods
          http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status
@@ -189,6 +258,15 @@ pipeline {
 
          sudo minikube delete
          """
+        step([$class: 'RobotPublisher',
+            disableArchiveOutput: false,
+            logFileName: 'RobotLogs/log*.html',
+            otherFiles: '',
+            outputFileName: 'RobotLogs/output*.xml',
+            outputPath: '.',
+            passThreshold: 100,
+            reportFileName: 'RobotLogs/report*.html',
+            unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, scottb@opennetworking.org", sendToIndividuals: false])
 
