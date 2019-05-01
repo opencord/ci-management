@@ -10,6 +10,7 @@
       - 'data-model-scale'
       - 'data-migrations'
       - 'data-backup'
+      - 'att-wf'
 
 - job-template:
     id: 'data-model-scale'
@@ -165,6 +166,10 @@
          default: 'robot -d Log -T xos-backup.robot'
          description: 'Exact command to execute the tests including arguments'
 
+      - bool:
+         name: InstallService
+         default: true
+         description: 'Set to true when testing a particular xos-service'
 
     project-type: pipeline
     concurrent: false
@@ -174,4 +179,69 @@
     triggers:
       - reverse:
           jobs: 'docker-publish_xos'
+          result: 'success'
+
+- job-template:
+    id: 'att-wf'
+    name: 'att-workflow-validation-test'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/xos-integration-tests.yaml  <br /><br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: executorNode
+         default: 'ubuntu16.04-basebuild-4c-8g'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: manifestUrl
+         default: '{gerrit-server-url}/{cord-repo-manifest}'
+         description: 'URL to the repo manifest'
+
+      - string:
+         name: manifestBranch
+         default: 'master'
+         description: 'Name of the repo branch to use'
+
+      - string:
+         name: service
+         default: 'att-workflow-driver'
+         description: 'Name of the service being tested'
+
+      - string:
+         name: helmChart
+         default: 'workflows/att-workflow'
+         description: 'Directory/name of the service helm-chart'
+
+      - string:
+         name: TestDir
+         default: 'xos-att-workflow-driver-tests'
+         description: 'Directory where tests reside'
+
+      - string:
+         name: TestCommand
+         default: 'robot -d Log -T -v xos_chameleon_url:127.0.0.1 -v xos_chameleon_port:30006 -v cord_kafka:\$CORD_KAFKA_IP ATT_Workflow.robot'
+         description: 'Exact command to execute the tests including arguments'
+
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/xos-integration-tests.groovy
+
+    triggers:
+      - reverse:
+          jobs: 'docker-publish_att-workflow-driver'
           result: 'success'
