@@ -18,7 +18,7 @@
     destination-dir: ''
     basedir: ''
 
-    # used to rename jobs if version/branch forking is required
+    # used to rename jobs if required
     name-extension: ''
 
     # How long to keep builds and artifacts
@@ -134,3 +134,18 @@
     # Optionally allow JUnit results to be empty when test framework is set up,
     # but no tests exist. Default behavior is to fail when test results are empty.
     junit-allow-empty-results: false
+
+    # Unit test targets
+    # List of targets to run when testing a patchset, run with make or similar
+    # defaults to just 'test', multiple targets should be space separated
+    unit-test-targets: 'test'
+
+    # whether to "keep going" on multiple tests if one fails
+    # maps to the `-k` option passed to make in make-unit.yaml
+    unit-test-keep-going: false
+
+    # golang specific variables
+    # dest-gopath handles checking out patchsets and putting them into a GOPATH
+    # This portion of the path should be included: `$GOPATH/src/<dest-gopath>/<project>"
+    # If blank, golang related variables won't be set
+    dest-gopath: ''
