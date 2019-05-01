@@ -2,13 +2,14 @@
 # xos-integration test jobs
 
 - project:
-    name: data-model-scale
+    name: xos-integration-tests
 
-    project-name: 'data-model-scale'
+    project-name: 'xos-integration-tests'
 
     jobs:
       - 'data-model-scale'
       - 'data-migrations'
+      - 'data-backup'
 
 - job-template:
     id: 'data-model-scale'
@@ -117,5 +118,60 @@
 
     triggers:
       - reverse:
-          jobs: 'publish-imagebuilder'
+          jobs: 'docker-publish_xos'
+          result: 'success'
+
+- job-template:
+    id: 'data-backup'
+    name: 'xos-data-backup-test'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/xos-integration-tests.yaml  <br /><br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: executorNode
+         default: 'ubuntu16.04-basebuild-4c-8g'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: manifestUrl
+         default: '{gerrit-server-url}/{cord-repo-manifest}'
+         description: 'URL to the repo manifest'
+
+      - string:
+         name: manifestBranch
+         default: 'master'
+         description: 'Name of the repo branch to use'
+
+      - string:
+         name: TestDir
+         default: 'xos-backup-tests'
+         description: 'Directory where tests reside'
+
+      - string:
+         name: TestCommand
+         default: 'robot -d Log -T xos-backup.robot'
+         description: 'Exact command to execute the tests including arguments'
+
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/xos-integration-tests.groovy
+
+    triggers:
+      - reverse:
+          jobs: 'docker-publish_xos'
           result: 'success'
