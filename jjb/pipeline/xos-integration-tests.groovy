@@ -77,8 +77,7 @@ pipeline {
       }
     }
 
-
-    stage('install profile') {
+    stage('install xos') {
       steps {
         sh """
            #!/usr/bin/env bash
@@ -92,7 +91,7 @@ pipeline {
            helm-repo-tools/wait_for_pods.sh
 
            helm dep up xos-core
-           helm install xos-core -n xos-core
+           helm install --set images.xos_core.tag:master xos-core -n xos-core
 
            helm dep update xos-profiles/seba-services
            helm install xos-profiles/seba-services
@@ -119,6 +118,39 @@ pipeline {
            """
       }
     }
+
+    stage('install profile') {
+      when { expression { return params.InstallService } }
+      steps {
+        sh """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           pushd cord/helm-charts
+
+           helm dep update ${params.helmChart}
+           helm install --set image.tag=master ${params.helmChart} --set att-workflow-driver.kafkaService=cord-kafka -n ${params.service}
+
+           helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
+
+           # wait for services to load
+           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
+           sleep 300
+           echo "# Checking helm deployments"
+           kubectl get pods
+           helm list
+
+           for hchart in \$(helm list -q);
+           do
+             echo "## 'helm status' for chart: \${hchart} ##"
+             helm status "\${hchart}"
+           done
+           popd
+
+           """
+      }
+    }
+
     stage('test') {
       steps {
         sh """
@@ -134,10 +166,17 @@ pipeline {
       }
     }
   }
+
   post {
     always {
       sh """
          kubectl get pods --all-namespaces
+
+         ## get pod logs
+         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+         do
+           kubectl logs \$pod> $WORKSPACE/\$pod.log;
+         done || true
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
@@ -163,7 +202,8 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
-         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, teo@opennetworking.org", sendToIndividuals: false])
+         archiveArtifacts artifacts: '*.log'
+         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${params.notificationEmail}", sendToIndividuals: false])
 
     }
   }
