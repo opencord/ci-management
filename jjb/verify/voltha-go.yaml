@@ -18,6 +18,7 @@
           name-extension: "-lint"
           unit-test-targets: 'lint'
           unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-tests"
