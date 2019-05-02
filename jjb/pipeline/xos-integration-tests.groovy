@@ -91,19 +91,13 @@ pipeline {
            helm-repo-tools/wait_for_pods.sh
 
            helm dep up xos-core
-           helm install --set images.xos_core.tag:master xos-core -n xos-core
+           helm install --set images.xos_core.tag=master xos-core -n xos-core
 
            helm dep update xos-profiles/seba-services
            helm install xos-profiles/seba-services
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
-           helm dep update workflows/att-workflow
-           helm install workflows/att-workflow --set att-workflow-driver.kafkaService=cord-kafka -n att-workflow
 
-           helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-
-           # wait for services to load
-           JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
-           sleep 300
+           sleep 60
            echo "# Checking helm deployments"
            kubectl get pods
            helm list
@@ -135,7 +129,7 @@ pipeline {
 
            # wait for services to load
            JOBS_TIMEOUT=900 ./helm-repo-tools/wait_for_jobs.sh
-           sleep 300
+           sleep 120
            echo "# Checking helm deployments"
            kubectl get pods
            helm list
