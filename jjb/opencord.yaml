@@ -1,0 +1,13 @@
+---
+# opencord jobs
+# Currently is only the license check across all repos
+
+- project:
+    name: opencord-license-check
+
+    project-name: '{name}'
+
+    jobs:
+      - 'synopsys-check':
+          build-node: "ubuntu16.04-basebuild-2c-4g"
+          blackduck-project: opencord

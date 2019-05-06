@@ -149,3 +149,10 @@
     # This portion of the path should be included: `$GOPATH/src/<dest-gopath>/<project>"
     # If blank, golang related variables won't be set
     dest-gopath: ''
+
+    # github organization
+    # Used to pull list of all repos from a specific github organization
+    # Currently used with: synopsys detect
+    # Default is blank, which implies using gerrit instead
+    github-organization: ''
+

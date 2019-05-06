@@ -1,0 +1,57 @@
+---
+# synopsys license check job
+# Check for license issues with the Synopsys "Black Duck" tool
+
+- job-template:
+    id: 'synopsys-check'
+    name: 'synopsys-check_{blackduck-project}'
+
+    description: |
+                  Created by {id} job-template from ci-management/jjb/synopsys-check.yaml<br/>
+                  Copyright (c) 2018-present Open Networking Foundation (ONF)
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: executorNode
+         default: '{build-node}'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+         name: branch
+         default: 'master'
+         description: 'branch to check'
+
+      - string:
+         name: git_server_url
+         default: '{gerrit-server-url}'
+         description: 'Git Server URL'
+
+      - string:
+         name: github_organization
+         default: '{github-organization}'
+         description: 'GitHub Organization (leave blank if using Gerrit)'
+
+      - string:
+         name: blackduck_project
+         default: '{blackduck-project}'
+         description: 'The project to assign repos to in the BlackDuck dashboard'
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/synopsys-check.groovy
+
+    triggers:
+       - timed: |
+                 TZ=America/Los_Angeles
+                 H 3 * * *
