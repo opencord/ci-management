@@ -1,20 +1,21 @@
 ---
-# CORD helm chart publishing tasks
+# VOLTHA-Automated-Tests
 
 - project:
-    name: voltha-atest-provisioning
+    name: voltha-atests
 
     project-name: 'voltha'
 
     jobs:
       - 'voltha-atest-provisioning'
+      - 'voltha-atest-bbsim'
 
 - job-template:
     id: voltha-atest-provisioning
     name: 'voltha-atest-provisioning'
     description: |
       Created by {id} job-template from ci-management/jjb/voltha-atest-provisioning.yaml
-      Voltha automated tests run per commit. Tests reside in voltha repo
+      Voltha automated tests run per commit. Voltha testing with ponsim to validate voltha+ponsim
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -59,6 +60,87 @@
             name: gerritPatchsetNumber
             default: '$GERRIT_PATCHSET_NUMBER'
             description: 'PatchSet number in Gerrit'
+
+      - bool:
+         name: BuildVoltha
+         default: true
+         description: 'Build modified voltha component'
+
+      - bool:
+         name: BuildBbsim
+         default: false
+         description: 'Build modified bbsim component'
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/voltha-atest-provisioning.groovy
+
+- job-template:
+    id: voltha-atest-bbsim
+    name: 'voltha-atest-bbsim'
+    description: |
+      Created by {id} job-template from ci-management/jjb/voltha-atest-provisioning.yaml
+      Voltha automated tests run per commit. Voltha testing with bbsim to validate voltha+bbsim
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: 'bbsim'
+          branch-regexp: '{supported-branches-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: executorNode
+          default: 'qct-pod3-voltha-testing'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: manifestUrl
+          default: '{gerrit-server-url}/{cord-repo-manifest}'
+          description: 'URL to the repo manifest'
+
+      - string:
+          name: manifestBranch
+          default: 'master'
+          description: 'Name of the repo branch to use'
+
+      - string:
+            name: gerritChangeNumber
+            default: '$GERRIT_CHANGE_NUMBER'
+            description: 'Changeset number in Gerrit'
+
+      - string:
+            name: gerritPatchsetNumber
+            default: '$GERRIT_PATCHSET_NUMBER'
+            description: 'PatchSet number in Gerrit'
+
+      - string:
+            name: VirtualOLT
+            default: 'bbsim'
+            description: 'virtual olt to install with voltha'
+
+      - bool:
+         name: BuildVoltha
+         default: false
+         description: 'Build modified voltha component'
+
+      - bool:
+         name: BuildBbsim
+         default: true
+         description: 'Build modified bbsim component'
 
 
     project-type: pipeline
