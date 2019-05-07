@@ -34,7 +34,10 @@ pipeline {
     stage ("Get repo list") {
       steps {
         script {
-          def repos = sh(
+          /* this defines the variable globally - not ideal, but works - see:
+          https://stackoverflow.com/questions/50571316/strange-variable-scoping-behavior-in-jenkinsfile
+          */
+          repos = sh(
               returnStdout: true,
               script: """
                 #!/usr/bin/env bash
@@ -48,8 +51,9 @@ pipeline {
                   # github org set, assume github organization
                   curl -sS "https://api.github.com/orgs/${github_organization}/repos" | python -c 'import json,sys;obj=json.load(sys.stdin); print ",".join(map(lambda item: item["name"], obj))'
                 fi
-              """
+                """
               ).split(",")
+          echo "repo list: ${repos}"
         }
       }
     }

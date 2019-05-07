@@ -33,7 +33,7 @@
 
       - string:
          name: git_server_url
-         default: '{gerrit-server-url}'
+         default: '{git-server-url}'
          description: 'Git Server URL'
 
       - string:

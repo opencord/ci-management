@@ -11,3 +11,4 @@
       - 'synopsys-check':
           build-node: "ubuntu16.04-basebuild-2c-4g"
           blackduck-project: opencord
+          git-server-url: "{gerrit-server-url}"
