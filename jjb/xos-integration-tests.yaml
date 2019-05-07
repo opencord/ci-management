@@ -240,7 +240,7 @@
 
       - string:
          name: TestCommand
-         default: 'robot -d Log -T -v xos_chameleon_url:127.0.0.1 -v xos_chameleon_port:30006 -v cord_kafka:\$CORD_KAFKA_IP ATT_Workflow.robot'
+         default: 'robot -d Log -T -v server_ip:127.0.0.1 -v server_port:30006 -v cord_kafka:\$CORD_KAFKA_IP ATT_Workflow.robot'
          description: 'Exact command to execute the tests including arguments'
 
       - string:
