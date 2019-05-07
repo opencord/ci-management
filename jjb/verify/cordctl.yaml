@@ -1,0 +1,22 @@
+---
+# verification jobs for 'cordctl' repo
+
+- project:
+    name: cordctl
+    project: '{name}'
+
+    jobs:
+      - 'verify-cordctl-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-cordctl-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_cordctl_licensed'
+      - 'make-unit-test':
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint test'
+          unit-test-keep-going: 'true'
+          dependency-jobs: 'verify_cordctl_tag-collision'
