@@ -37,11 +37,12 @@ pipeline {
     }
 
     stage ('Build Voltha and ONOS') {
+      when { expression { return params.BuildVoltha } }
       steps {
         sh '''
         sudo service docker restart
         cd $WORKSPACE/cord/incubator/voltha
-        repo download voltha "${gerritChangeNumber}/${gerritPatchsetNumber}"
+        repo download ${gerritProject} "${gerritChangeNumber}/${gerritPatchsetNumber}"
         chmod +x env.sh
         source env.sh
         make fetch
@@ -51,11 +52,24 @@ pipeline {
       }
     }
 
+    stage ('Build BBSIM') {
+      when { expression { return params.BuildBbsim } }
+      steps {
+        sh '''
+        sudo service docker restart
+        cd $WORKSPACE/cord/incubator/voltha-bbsim
+        repo download ${gerritProject} "${gerritChangeNumber}/${gerritPatchsetNumber}"
+        make docker
+        docker images | grep bbsim
+        '''
+      }
+    }
+
     stage ('Start Voltha Test Suite') {
       steps {
         sh '''
         cd $WORKSPACE/cord/incubator/voltha/tests/atests/common/
-        ./run_robot.sh jenkinstest || true
+        ./run_robot.sh jenkinstest ${params.adapter} || true
         '''
       }
     }
