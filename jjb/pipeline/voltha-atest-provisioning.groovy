@@ -42,7 +42,7 @@ pipeline {
         sh '''
         sudo service docker restart
         cd $WORKSPACE/cord/incubator/voltha
-        repo download ${gerritProject} "${gerritChangeNumber}/${gerritPatchsetNumber}"
+        repo download "${GERRIT_PROJECT}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
         chmod +x env.sh
         source env.sh
         make fetch
