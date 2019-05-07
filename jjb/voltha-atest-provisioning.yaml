@@ -61,6 +61,10 @@
             default: '$GERRIT_PATCHSET_NUMBER'
             description: 'PatchSet number in Gerrit'
 
+      - string:
+            name: adapter
+            default: ''
+            description: 'BLANK for ponsim'
       - bool:
          name: BuildVoltha
          default: true
