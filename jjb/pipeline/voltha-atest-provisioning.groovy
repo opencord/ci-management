@@ -67,10 +67,10 @@ pipeline {
 
     stage ('Start Voltha Test Suite') {
       steps {
-        sh '''
+        sh """
         cd $WORKSPACE/cord/incubator/voltha/tests/atests/common/
         ./run_robot.sh jenkinstest ${params.adapter} || true
-        '''
+        """
       }
     }
 
