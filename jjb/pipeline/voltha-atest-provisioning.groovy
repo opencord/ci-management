@@ -58,7 +58,7 @@ pipeline {
         sh '''
         sudo service docker restart
         cd $WORKSPACE/cord/incubator/voltha-bbsim
-        repo download ${gerritProject} "${gerritChangeNumber}/${gerritPatchsetNumber}"
+        repo download "${GERRIT_PROJECT}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
         make docker
         docker images | grep bbsim
         '''
