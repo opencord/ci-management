@@ -238,6 +238,7 @@ pipeline {
       }
     }
 
+    /* Disable the downgrade step because the core doesn't support reverse migrations
     stage('Downgrade Service') {
       steps {
         sh """
@@ -276,6 +277,7 @@ pipeline {
            """
       }
     }
+    */
 
   }
 
