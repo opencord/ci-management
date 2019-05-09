@@ -53,7 +53,7 @@ pipeline {
       steps {
         sh """
             pushd $WORKSPACE/automation-tools/seba-in-a-box
-            make run-tests ${params.Test_Tags} || true
+            make ${params.Test_Target} ${params.Test_Tags} || true
             popd
             """
             }

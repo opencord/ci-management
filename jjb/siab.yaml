@@ -42,6 +42,11 @@
           description: 'Latest | Stable'
 
       - string:
+          name: Test_Target
+          default: 'run-tests'
+          description: 'run-tests for stable and run-tests-latest for latest'
+
+      - string:
           name: Test_Tags
           default: ''
           description: 'empty for stable and latest for latest'
@@ -85,6 +90,11 @@
           name: version
           default: 'latest'
           description: 'Latest | Stable'
+
+      - string:
+          name: Test_Target
+          default: 'run-tests-latest'
+          description: 'run-tests for stable and run-tests-latest for latest'
 
       - string:
           name: Test_Tags
@@ -142,6 +152,11 @@
           name: version
           default: 'stable'
           description: 'Latest | Stable'
+
+      - string:
+          name: Test_Target
+          default: 'run-tests'
+          description: 'run-tests for stable and run-tests-latest for latest'
 
       - string:
           name: Test_Tags
