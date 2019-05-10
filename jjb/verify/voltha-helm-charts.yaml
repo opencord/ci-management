@@ -1,0 +1,20 @@
+---
+# verification jobs for 'voltha-helm-charts' repo
+
+- project:
+    name: voltha-helm-charts
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-helm-charts-jobs':
+          branch-regexp: '{modern-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-helm-charts-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-helm-charts_licensed'
+      - 'verify-helm-lint':
+          dependency-jobs: 'verify_voltha-helm-charts_tag-collision'
+
