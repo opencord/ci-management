@@ -189,12 +189,12 @@ EOF
     go get -v github.com/t-yuki/gocover-cobertura
     go get -v github.com/jstemmer/go-junit-report
 
-    # dep for go package dependencies w/versioning, version v0.5.2, adapted from:
+    # dep for go package dependencies w/versioning, version 0.5.2, adapted from:
     #  https://golang.github.io/dep/docs/installation.html#install-from-source
     go get -d -u github.com/golang/dep
     pushd $(go env GOPATH)/src/github.com/golang/dep
-      git checkout "v0.5.2"
-      go install -ldflags="-X main.version=v0.5.2" ./cmd/dep
+      git checkout "0.5.2"
+      go install -ldflags="-X main.version=0.5.2" ./cmd/dep
     popd
 
     # protoc-gen-go - Golang protbuf compiler extension for protoc (installed
