@@ -27,4 +27,5 @@
           name-extension: "-tests"
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
 
