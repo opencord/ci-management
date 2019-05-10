@@ -13,6 +13,8 @@
     name: 'verify-voltha-go-jobs'
     jobs:
       - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-go_licensed'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-lint"
