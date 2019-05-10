@@ -65,7 +65,7 @@
           set -eux -o pipefail
 
           export GOPATH=~/go
-          export PATH=$PATH:/usr/lib/go-1.10/bin:/usr/local/go/bin:~/go/bin
+          export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:~/go/bin
 
           # move code the proper location
           mkdir -p $GOPATH/src/gerrit.opencord.org

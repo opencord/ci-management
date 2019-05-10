@@ -48,7 +48,7 @@
           # setup for go-based testing
           mkdir -p ~/go/src
           export GOPATH=~/go
-          export PATH=$PATH:/usr/lib/go-1.10/bin:/usr/local/go/bin:~/go/bin
+          export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:~/go/bin
 
           if [ -f 'Makefile' ]; then
             echo "Makefile found, running 'make test'"
