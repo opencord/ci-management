@@ -48,7 +48,8 @@ ubuntu_systems() {
          stable"
 
     # set up golang repo
-    add-apt-repository ppa:gophers/archive
+    # docs: https://github.com/golang/go/wiki/Ubuntu
+    add-apt-repository ppa:longsleep/golang-backports
 
     # set up kubernetes repo
     cat << EOF | base64 -d > /tmp/k8s-apt-key.gpg
@@ -108,7 +109,7 @@ EOF
         ebtables \
         ethtool \
         git \
-        golang-1.10-go \
+        golang-1.12-go \
         httpie \
         jq \
         kafkacat \
@@ -182,18 +183,18 @@ EOF
     # Set PATH=$PATH:/usr/local/go/bin` to use these
     export GOPATH=/usr/local/go
     mkdir -p $GOPATH
-    export PATH=$PATH:/usr/lib/go-1.10/bin:$GOPATH/bin
+    export PATH=$PATH:/usr/lib/go-1.12/bin:$GOPATH/bin
 
     # converters for unit/coverage test
     go get -v github.com/t-yuki/gocover-cobertura
     go get -v github.com/jstemmer/go-junit-report
 
-    # dep for go package dependencies w/versioning, version v0.5.0, adapted from:
+    # dep for go package dependencies w/versioning, version v0.5.2, adapted from:
     #  https://golang.github.io/dep/docs/installation.html#install-from-source
     go get -d -u github.com/golang/dep
     pushd $(go env GOPATH)/src/github.com/golang/dep
-      git checkout "v0.5.0"
-      go install -ldflags="-X main.version=v0.5.0" ./cmd/dep
+      git checkout "v0.5.2"
+      go install -ldflags="-X main.version=v0.5.2" ./cmd/dep
     popd
 
     # protoc-gen-go - Golang protbuf compiler extension for protoc (installed
