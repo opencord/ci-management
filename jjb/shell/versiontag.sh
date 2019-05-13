@@ -124,7 +124,7 @@ function dockerfile_parentcheck {
 
     done
 
-  done  < <( find "${WORKSPACE}" -name 'Dockerfile*' -print0 )
+  done  < <( find "${WORKSPACE}" -name 'Dockerfile*' ! -path "*/vendor/*" -print0 )
 }
 
 
