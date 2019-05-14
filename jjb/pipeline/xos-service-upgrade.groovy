@@ -15,6 +15,8 @@
 // chart-api-test-helm.groovy
 // Checks functionality of the helm-chart, without overriding the version/tag used
 
+def serviceName = "${gerritProject}"
+
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -110,6 +112,18 @@ pipeline {
     }
     stage('Verify') {
       steps {
+        script {
+          if (serviceName == "olt-service") {
+            serviceName = "volt"
+          }
+          else if (serviceName == "onos-service") {
+            serviceName = "onos"
+          }
+          else if (serviceName == "kubernetes-service") {
+            serviceName = "kubernetes"
+          }
+        }
+        echo "serviceName: ${serviceName}"
         sh """
            #!/usr/bin/env bash
            set -ex -o pipefail
@@ -117,7 +131,7 @@ pipeline {
 
            #wait for xos-core and models to be loaded
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
-           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${serviceName}\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
 
            ## get pod logs
            for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
@@ -171,7 +185,7 @@ pipeline {
            echo \$SERVICES
 
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
-           for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i create -d Log -T -v TESTLIBRARY:${gerritProject}_library.robot \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i create -d Log -T -v TESTLIBRARY:${serviceName}_library.robot \$i\$testname"; sleep 2; done || true
 
            popd
            """
@@ -210,8 +224,8 @@ pipeline {
 
            #wait for xos-core and models to be loaded
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
-           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for New Service to be loaded'; sleep 5; done"
-           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").version'| grep -q \$DOCKER_TAG; do echo 'Waiting for New Service Version Check'; sleep 5; done"
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${serviceName}\\").state'| grep -q present; do echo 'Waiting for New Service to be loaded'; sleep 5; done"
+           timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${serviceName}\\").version'| grep -q \$DOCKER_TAG; do echo 'Waiting for New Service Version Check'; sleep 5; done"
            sleep 120
            """
       }
@@ -227,7 +241,7 @@ pipeline {
            SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
            echo \$SERVICES
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
-           for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${gerritProject}_library.robot \$i\$testname"; sleep 2; done || true
+           for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${serviceName}_library.robot \$i\$testname"; sleep 2; done || true
 
            ## get pod logs
            for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
