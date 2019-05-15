@@ -20,7 +20,7 @@ pipeline {
   }
 
   options {
-      timeout(30)
+      timeout(240)
   }
 
   stages {
@@ -34,25 +34,46 @@ pipeline {
     stage ("Get repo list") {
       steps {
         script {
+          writeFile file: 'get_repo_list.py', text: """
+#!/usr/bin/env python
+
+import json
+import os
+import requests
+
+if "github_organization" in os.environ:
+    # this is a github org
+    github_req = requests.get("https://api.github.com/orgs/%s/repos" %
+                              os.environ["github_organization"])
+
+    # pull out the "name" key out of each item
+    repo_list = map(lambda item: item["name"], github_req.json())
+
+else:
+    # this is a gerrit server
+
+    # fetch the list of projects
+    gerrit_req = requests.get("%s/projects/?pp=0" %
+                              os.environ["git_server_url"])
+    # remove XSSI prefix
+    # https://gerrit-review.googlesource.com/Documentation/rest-api.html#output
+    gerrit_json = json.loads(gerrit_req.text.splitlines()[1])
+
+    # remove repos which don't contain code
+    repo_list = [repo for repo in gerrit_json.keys()
+                 if repo not in ["All-Projects", "All-Users", "voltha-bal"]]
+
+# sort and print
+print(",".join(sorted(repo_list)))
+"""
+
           /* this defines the variable globally - not ideal, but works - see:
           https://stackoverflow.com/questions/50571316/strange-variable-scoping-behavior-in-jenkinsfile
           */
           repos = sh(
-              returnStdout: true,
-              script: """
-                #!/usr/bin/env bash
-                set -eu -o pipefail
+            returnStdout: true,
+            script: "python -u get_repo_list.py").trim().split(",")
 
-                if [ -z "${github_organization}" ]
-                then
-                  # no github org set, assume gerrit server
-                  curl "${git_server_url}/projects/?pp=0" | python -c 'import json,sys; ij=sys.stdin.readlines(); obj=json.loads(ij[1]); print(",".join(obj.keys()))'
-                else
-                  # github org set, assume github organization
-                  curl -sS "https://api.github.com/orgs/${github_organization}/repos" | python -c 'import json,sys;obj=json.load(sys.stdin); print ",".join(map(lambda item: item["name"], obj))'
-                fi
-                """
-              ).split(",")
           echo "repo list: ${repos}"
         }
       }
@@ -63,18 +84,17 @@ pipeline {
         script {
           repos.each { gitRepo ->
             sh "echo Checking out: ${gitRepo}"
-            checkout(
-                [
+            checkout(changelog: false, scm: [
                 $class: 'GitSCM',
                 userRemoteConfigs: [[
-                url: "${params.git_server_url}/${gitRepo}/",
-                name: "${branch}",
+                  url: "${params.git_server_url}/${gitRepo}/",
+                  name: "${branch}",
                 ]],
                 extensions: [
-                [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitRepo}"],
-                [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+                  [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitRepo}"],
+                  [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
                 ],
-                ])
+              ])
           }
         }
       }
