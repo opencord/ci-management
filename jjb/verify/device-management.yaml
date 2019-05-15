@@ -1,0 +1,27 @@
+---
+# verification jobs for 'device-management' repo
+
+- project:
+    name: device-management
+    project: '{name}'
+
+    jobs:
+      - 'verify-device-management-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'publish-device-management-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-device-management-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_device-management_licensed'
+      - 'make-unit-test'
+
+- job-group:
+    name: 'publish-device-management-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'opencord'
+          dependency-jobs: 'version-tag'

@@ -1,0 +1,29 @@
+---
+# verification jobs for 'voltha-onos' repo
+
+- project:
+    name: voltha-onos
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-onos-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'publish-voltha-onos-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-onos-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-onos_licensed'
+      - 'make-unit-test':
+          unit-test-targets: 'build'
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'publish-voltha-onos-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
