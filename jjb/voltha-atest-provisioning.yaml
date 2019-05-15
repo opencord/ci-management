@@ -90,7 +90,7 @@
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: 'bbsim'
+          project-regexp: 'voltha-bbsim'
           branch-regexp: '{supported-branches-regexp}'
           dependency-jobs: '{dependency-jobs}'
           file-include-regexp: '{all-files-regexp}'
