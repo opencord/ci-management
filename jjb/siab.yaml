@@ -94,7 +94,7 @@
 
       - string:
           name: Test_Target
-          default: 'run-tests'
+          default: 'run-tests-latest'
           description: 'run-tests for stable and run-tests-latest for latest'
 
       - string:
