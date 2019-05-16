@@ -43,7 +43,7 @@ pipeline {
       steps {
         sh """
             pushd $WORKSPACE/automation-tools/seba-in-a-box
-            make ${params.version}
+            make ${params.Test_Tags} ${params.version}
             popd
             """
             }
