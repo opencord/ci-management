@@ -20,6 +20,7 @@
       - 'make-unit-test':
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'publish-voltha-openonu-adapter-jobs'
