@@ -8,6 +8,8 @@
     jobs:
       - 'verify-voltha-go-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-voltha-go-jobs':
+          branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-go-jobs'
@@ -27,3 +29,10 @@
           name-extension: "-tests"
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-voltha-go-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'

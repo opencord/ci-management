@@ -8,6 +8,8 @@
     jobs:
       - 'verify-voltha-openolt-adapter-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-voltha-openolt-adapter-jobs':
+          branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs'
@@ -22,10 +24,15 @@
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
       - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
           dest-gopath: "github.com/opencord"
           name-extension: "-tests"
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
 
+- job-group:
+    name: 'publish-voltha-openolt-adapter-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
