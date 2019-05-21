@@ -35,6 +35,7 @@ ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/*"}
 
 # Temporary staging directory to copy artifacts to
 RELEASE_TEMP="$WORKSPACE/release"
+mkdir -p "$RELEASE_TEMP"
 
 # Use "release" as the default makefile target, can be a space separated list
 RELEASE_TARGETS=${RELEASE_TARGETS:-release}
@@ -89,7 +90,7 @@ else
   cp $ARTIFACT_GLOB "$RELEASE_TEMP"
 
   # create release
-  gothub release \
+  gothub release -v \
     --user "$GITHUB_ORGANIZATION" \
     --repo "$GERRIT_PROJECT" \
     --tag  "$GIT_VERSION" \
@@ -100,13 +101,13 @@ else
   pushd "$RELEASE_TEMP"
 
     # Generate and check checksums
-    sha256sum ./* > checksum.SHA256
+    sha256sum -- * > checksum.SHA256
     sha256sum -c < checksum.SHA256
 
     # upload all files to the release
-    for rel_file in ./*
+    for rel_file in *
     do
-      gothub upload \
+      gothub upload -v \
         --user "$GITHUB_ORGANIZATION" \
         --repo "$GERRIT_PROJECT" \
         --tag  "$GIT_VERSION" \
