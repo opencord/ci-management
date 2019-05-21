@@ -1,0 +1,55 @@
+---
+# publishing artifacts to GitHub releases
+
+- job-template:
+    id: github-release
+    name: 'github-release_{project}'
+    description: |
+      Created by {id} job-template from ci-management/jjb/github-release.yaml<br/>
+      Build and publish artifacts to GitHub as a release, with checksums
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - cord-pypi-wrapper:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+      - credentials-binding:
+          - text:
+              credential-id: github-release-token
+              variable: GITHUB_TOKEN
+
+    scm:
+      - cord-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: '{project}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - inject:
+          properties-content: |
+            DEST_GOPATH={dest-gopath}
+            RELEASE_TARGETS={release-targets}
+            ARTIFACT_GLOB={artifact-glob}
+            GITHUB_ORGANIZATION={github-organization}
+
+      - shell: !include-raw-escape: shell/github-release.sh
