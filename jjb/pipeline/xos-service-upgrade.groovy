@@ -92,6 +92,17 @@ pipeline {
 
     stage('Install XOS w/Service') {
       steps {
+          script {
+          if (serviceName == "olt-service") {
+            serviceName = "volt"
+          }
+          else if (serviceName == "onos-service") {
+            serviceName = "onos"
+          }
+          else if (serviceName == "kubernetes-service") {
+            serviceName = "kubernetes"
+          }
+        }
         sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
@@ -104,25 +115,14 @@ pipeline {
            helm-repo-tools/wait_for_pods.sh
 
            #install service
-           helm dep update xos-services/${gerritProject}
-           helm install xos-services/${gerritProject} -n ${gerritProject}
+           helm dep update xos-services/${serviceName}
+           helm install xos-services/${serviceName} -n ${serviceName}
            popd
            """
       }
     }
     stage('Verify') {
       steps {
-        script {
-          if (serviceName == "olt-service") {
-            serviceName = "volt"
-          }
-          else if (serviceName == "onos-service") {
-            serviceName = "onos"
-          }
-          else if (serviceName == "kubernetes-service") {
-            serviceName = "kubernetes"
-          }
-        }
         echo "serviceName: ${serviceName}"
         sh """
            #!/usr/bin/env bash
@@ -201,7 +201,6 @@ pipeline {
            export DOCKER_TAG=\$(cat VERSION)-test
            export DOCKER_REPOSITORY=xosproject/
            export DOCKER_BUILD_ARGS=--no-cache
-           cd $WORKSPACE/cord/orchestration/xos-services/${gerritProject}
            echo "\$(cat VERSION)-test" > VERSION
            make docker-build
 
@@ -209,7 +208,7 @@ pipeline {
            cd $WORKSPACE/cord/helm-charts
            helm upgrade --set image.tag=\$DOCKER_TAG \
                         --set image.pullPolicy=Never \
-                         --recreate-pods ${gerritProject} xos-services/${gerritProject}
+                         --recreate-pods ${serviceName} xos-services/${serviceName}
            popd
            """
       }
