@@ -64,11 +64,11 @@
           # Clone the `helm-repo-tools` which contains scripts
           git clone ssh://jenkins@gerrit.opencord.org:29418/helm-repo-tools.git
 
-          # Setup and build the helm repo
+          # Setup helm and external repos
           helm init --client-only
-          helm repo add incubator http://storage.googleapis.com/kubernetes-charts-incubator
-          helm repo add cord https://charts.opencord.org
+          helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
           helm repo add rook-beta https://charts.rook.io/beta
+          helm repo add cord https://charts.opencord.org
 
           # Update the repo
           ./helm-repo-tools/helmrepo.sh
