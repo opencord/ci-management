@@ -90,7 +90,8 @@ else
   cp $ARTIFACT_GLOB "$RELEASE_TEMP"
 
   # create release
-  gothub release -v \
+  echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
+  gothub release \
     --user "$GITHUB_ORGANIZATION" \
     --repo "$GERRIT_PROJECT" \
     --tag  "$GIT_VERSION" \
@@ -104,10 +105,14 @@ else
     sha256sum -- * > checksum.SHA256
     sha256sum -c < checksum.SHA256
 
+    echo "Checksums:"
+    cat checksum.SHA256
+
     # upload all files to the release
     for rel_file in *
     do
-      gothub upload -v \
+      echo "Uploading file: $rel_file"
+      gothub upload \
         --user "$GITHUB_ORGANIZATION" \
         --repo "$GERRIT_PROJECT" \
         --tag  "$GIT_VERSION" \
