@@ -59,7 +59,7 @@
 
 - job-template:
     id: maven-deploy
-    name: '{project}-gerrit-deploy'
+    name: '{project}-gerrit'
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml
@@ -107,6 +107,7 @@
       - maven-target:
           pom: pom.xml
           settings: onoscord-apps
+          settings-type: cfp
           goals: 'clean deploy'
 
 - job-template:
