@@ -107,6 +107,7 @@
       - maven-target:
           pom: pom.xml
           settings: onoscord-apps
+          settings-type: cfp
           goals: 'clean deploy'
 
 - job-template:
