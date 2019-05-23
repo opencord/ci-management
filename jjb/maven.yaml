@@ -57,6 +57,57 @@
           pom: pom.xml
           goals: 'clean install'
 
+- job-template:
+    id: maven-deploy
+    name: '{project}-gerrit'
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/maven.yaml
+
+    node: 'ubuntu16.04-basebuild-1c-2g'
+    project-type: freestyle
+
+    parameters:
+      - string:
+         name: GERRIT_BRANCH
+         default: 'master'
+         description: 'Use default when using "Build Now"'
+
+      - string:
+         name: GERRIT_REFSPEC
+         default: 'refs/heads/master'
+         description: 'Use default when using "Build Now"'
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project}'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    scm:
+      - git:
+          url: '{gerrit-server-url}/{project}'
+          branches:
+            - '$GERRIT_BRANCH'
+          refspec: '$GERRIT_REFSPEC'
+          choosing-strategy: 'gerrit'
+          shallow-clone: true
+
+    builders:
+      - inject:
+          properties-content: |
+            _JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true
+      - maven-target:
+          pom: pom.xml
+          settings: onoscord-apps
+          goals: 'clean deploy'
 
 - job-template:
     id: maven-test

@@ -7,10 +7,11 @@
 
     jobs:
       - 'igmpproxy-gerrit':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '^(.*)$'
 
 - job-group:
     name: 'igmpproxy-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
+      - 'maven-deploy'
