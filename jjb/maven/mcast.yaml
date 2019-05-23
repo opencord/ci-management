@@ -7,10 +7,11 @@
 
     jobs:
       - 'mcast-gerrit':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '^(.*)$'
 
 - job-group:
     name: 'mcast-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
+      - 'maven-deploy'

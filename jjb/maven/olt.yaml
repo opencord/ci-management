@@ -7,10 +7,11 @@
 
     jobs:
       - 'olt-gerrit':
-          branch-regexp: '^(master|{name}-.*)$'
+          branch-regexp: '^(.*)$'
 
 - job-group:
     name: 'olt-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
+      - 'maven-deploy'

@@ -7,10 +7,11 @@
 
     jobs:
       - 'dhcpl2relay-gerrit':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '^(.*)$'
 
 - job-group:
     name: 'dhcpl2relay-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
+      - 'maven-deploy'

@@ -7,10 +7,11 @@
 
     jobs:
       - 'vtn-gerrit':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '^(.*)$'
 
 - job-group:
     name: 'vtn-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
+      - 'maven-deploy'

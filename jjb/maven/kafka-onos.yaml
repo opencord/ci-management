@@ -7,10 +7,11 @@
 
     jobs:
       - 'kafka-onos-gerrit':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '^(.*)$'
 
 - job-group:
     name: 'kafka-onos-gerrit'
     jobs:
       - 'verify-licensed'
       - 'maven-install'
+      - 'maven-deploy'
