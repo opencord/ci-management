@@ -73,6 +73,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.png" \
   ! -name "*.properties" \
   ! -name "*.proto" \
+  ! -name "*.protoset" \
   ! -name "*.pyc" \
   ! -name "*.repo" \
   ! -name "*.robot" \
