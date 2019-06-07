@@ -3,10 +3,11 @@
 # Check for license issues with the Synopsys "Black Duck" tool
 
 - job-template:
-    id: 'synopsys-check'
-    name: 'synopsys-check_{blackduck-project}'
+    id: 'synopsys-periodic-check'
+    name: 'synopsys-periodic-check_{blackduck-project}'
 
     description: |
+                  Periodic merge check of code with synopsys toolset
                   Created by {id} job-template from ci-management/jjb/synopsys-check.yaml<br/>
                   Copyright (c) 2018-present Open Networking Foundation (ONF)
 
@@ -55,3 +56,67 @@
        - timed: |
                  TZ=America/Los_Angeles
                  H 3 * * *
+
+
+- job-template:
+    id: 'synopsys-merge-check'
+    name: 'synopsys-merge-check_{blackduck-project}'
+
+    description: |
+                  Post-merge check of code with synopsys toolset
+                  Created by {id} job-template from ci-management/jjb/synopsys-check.yaml<br/>
+                  Copyright (c) 2018-present Open Networking Foundation (ONF)
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{all-projects-regexp}'
+          branch-regexp: '{all-branches-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+         name: executorNode
+         default: '{build-node}'
+         description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: gitUrl
+          default: '{gerrit-server-url}/$GERRIT_PROJECT'
+          description: 'URL to the git repo'
+
+      - string:
+          name: gitRef
+          default: '$GERRIT_PATCHSET_REVISION'
+          description: 'git ref to build (commit hash or tag)'
+
+      - string:
+          name: projectName
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the project in Gerrit'
+
+      - string:
+          name: branchName
+          default: '$GERRIT_BRANCH'
+          description: 'Branch of the project in Gerrit'
+
+      - string:
+         name: blackduck_project
+         default: '{blackduck-project}'
+         description: 'The project to assign repos to in the BlackDuck dashboard'
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/synopsys-single.groovy

@@ -105,7 +105,7 @@ print(",".join(sorted(repo_list)))
         script {
           repos.each { gitRepo ->
             sh "echo Running Synopsys Detect on: ${gitRepo}"
-            synopsys_detect("--detect.source.path=${gitRepo} --detect.project.name=${blackduck_project} --detect.project.version.name=${branch} --detect.blackduck.signature.scanner.snippet.mode=true --detect.tools=ALL --detect.cleanup=false")
+            synopsys_detect("--detect.source.path=${gitRepo} --detect.project.name=${blackduck_project}_${gitRepo} --detect.project.version.name=${branch} --detect.blackduck.signature.scanner.snippet.mode=true --detect.tools=ALL --detect.cleanup=false")
           }
         }
       }

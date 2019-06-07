@@ -3,12 +3,15 @@
 # Currently is only the license check across all repos
 
 - project:
-    name: opencord-license-check
+    name: cord-licensing-check
 
     project-name: '{name}'
 
+    blackduck-project: cord
+    build-node: "ubuntu16.04-basebuild-2c-4g"
+
     jobs:
-      - 'synopsys-check':
-          build-node: "ubuntu16.04-basebuild-2c-4g"
-          blackduck-project: opencord
+      - 'synopsys-periodic-check':
           git-server-url: "{gerrit-server-url}"
+      - 'synopsys-merge-check'
+

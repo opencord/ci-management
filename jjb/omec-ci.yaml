@@ -10,7 +10,7 @@
     project-name: '{name}'
 
     jobs:
-      - 'synopsys-check':
+      - 'synopsys-periodic-check':
           build-node: "ubuntu16.04-basebuild-2c-4g"
           blackduck-project: omec
           github-organization: omec-project
