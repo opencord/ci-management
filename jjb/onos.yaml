@@ -1,0 +1,14 @@
+---
+# onos jobs
+# Currently is only the license check across all repos on onos gerrit
+# Kind of a hack as it should happen in ONOS gerrit, but temporary
+
+- project:
+    name: onos-license-check
+
+    blackduck-project: onos
+
+    jobs:
+      - 'synopsys-periodic-check':
+          build-node: "ubuntu16.04-basebuild-2c-4g"
+          git-server-url: "https://gerrit.onosproject.org"

@@ -7,13 +7,12 @@
 - project:
     name: omec-license-check
 
-    project-name: '{name}'
+    blackduck-project: omec
 
     jobs:
-      - 'synopsys-check':
-          build-node: "ubuntu16.04-basebuild-2c-4g"
-          blackduck-project: omec
+      - 'synopsys-periodic-check':
           github-organization: omec-project
+          build-node: "ubuntu16.04-basebuild-2c-4g"
           git-server-url: "https://github.com/omec-project"
 
 # generic OMEC test-case jobs, shared by other projects and triggered within pipelines

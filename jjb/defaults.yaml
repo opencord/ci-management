@@ -70,6 +70,9 @@
     platform-branches-regexp: '^(master|cord-6.1)$'
     seba-branches-regexp: '^(master|seba-1.0)$'
 
+    # matchs all project repos
+    all-projects-regexp: '.*'
+
     # for matching repos that build docker images with imagebuilder
     # As of 2019-04-16 most of the services actively being developed use the
     # make-based image generation process managed by the `docker-publish` job
