@@ -71,13 +71,11 @@
           mkdir -p $GOPATH/src/gerrit.opencord.org
           mv kafka-topic-exporter $GOPATH/src/gerrit.opencord.org/kafka-topic-exporter
 
-          # get prereqs
-          go get -v github.com/prometheus/client_golang/prometheus
-          go get -v github.com/Shopify/sarama
-
           pushd $GOPATH/src/gerrit.opencord.org/kafka-topic-exporter
 
-          go get -v -d ./...
+          # get prereqs
+          dep ensure --vendor-only
+
           go test -v ./...
 
           # generate Jenkins report
