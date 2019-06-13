@@ -119,7 +119,6 @@ pipeline {
            helm dep update xos-core
            helm install --set images.xos_core.tag=\$DOCKER_TAG,images.xos_core.pullPolicy=Never xos-core -n xos-core
 
-           git clone https://gerrit.opencord.org/helm-repo-tools
            helm-repo-tools/wait_for_pods.sh
 
            #install testservice
