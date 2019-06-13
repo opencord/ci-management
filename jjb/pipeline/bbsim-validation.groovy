@@ -74,7 +74,6 @@ pipeline {
 
            helm install -f examples/kafka-single.yaml --version 0.13.3 -n cord-kafka incubator/kafka
 
-           git clone https://gerrit.opencord.org/helm-repo-tools
            helm-repo-tools/wait_for_pods.sh
 
            helm upgrade --install etcd-operator --version 0.8.3 stable/etcd-operator

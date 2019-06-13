@@ -111,7 +111,6 @@ pipeline {
            helm dep update xos-core
            helm install xos-core -n xos-core
 
-           git clone https://gerrit.opencord.org/helm-repo-tools
            helm-repo-tools/wait_for_pods.sh
 
            #install service
