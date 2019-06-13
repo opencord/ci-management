@@ -86,7 +86,6 @@ pipeline {
            pushd cord/helm-charts
            helm install -f examples/kafka-single.yaml --version 0.8.8 -n cord-kafka incubator/kafka
 
-           git clone https://gerrit.opencord.org/helm-repo-tools
            ./helm-repo-tools/wait_for_pods.sh
 
            popd
@@ -420,4 +419,3 @@ pipeline {
     }
   }
 }
-
