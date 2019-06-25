@@ -47,7 +47,7 @@ pipeline {
           ],
         ])
         script {
-          git_tag_or_branch = sh(script:"cd $projectName; if [[ \$(git tag -l --points-at HEAD) ]]; then git tag -l --points-at HEAD; else ${branchName}; fi", returnStdout: true).trim()
+          git_tag_or_branch = sh(script:"cd $projectName; if [[ \$(git tag -l --points-at HEAD) ]]; then git tag -l --points-at HEAD; else echo ${branchName}; fi", returnStdout: true).trim()
         }
       }
     }
