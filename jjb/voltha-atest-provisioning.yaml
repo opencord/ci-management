@@ -21,7 +21,7 @@
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: 'voltha'
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '^(master|voltha-1.7)$'
           dependency-jobs: '{dependency-jobs}'
           file-include-regexp: '{all-files-regexp}'
 
