@@ -126,6 +126,7 @@ pipeline {
            set -eu -o pipefail
            pushd cord/helm-charts
            curl -H "xos-username: admin@opencord.org" -H "xos-password: letmein" -X POST --data-binary @examples/bbsim-dhcp.yaml http://127.0.0.1:30007/run
+           curl -H "xos-username: admin@opencord.org" -H "xos-password: letmein" -X POST --data-binary @examples/technology-profile.yaml http://127.0.0.1:30007/run
            popd
            '''
       }
