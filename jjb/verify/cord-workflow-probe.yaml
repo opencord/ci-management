@@ -1,0 +1,21 @@
+---
+# verification jobs for 'cord-workflow-probe' repo
+
+- project:
+    name: cord-workflow-probe
+    project: '{name}'
+
+    dest-gopath: "github.com/opencord"
+
+    jobs:
+      - 'verify-cord-workflow-probe-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-cord-workflow-probe-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_cord-workflow-probe_licensed'
+      - 'make-unit-test':
+          dependency-jobs: 'verify_cord-workflow-probe_tag-collision'
