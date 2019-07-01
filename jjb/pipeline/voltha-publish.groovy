@@ -17,7 +17,7 @@ pipeline {
             manifestGroup: 'voltha', \
             currentBranch: true, \
             destinationDir: 'cord', \
-            forceSync: true,
+            forceSync: true, \
             resetFirst: true, \
             quiet: true, \
             jobs: 4, \
@@ -30,16 +30,15 @@ pipeline {
       steps {
         sh """
           #!/usr/bin/env bash
-          set -x
 
           pushd cord/incubator/voltha
           if [ "${params.manifestBranch}" == "master" ]
           then
-            tag="latest"
+            TAG="latest"
           else
-            tag="${params.manifestBranch}"
+            TAG="${params.manifestBranch}"
           fi
-          VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache TAG=${tag} make build
+          VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache TAG=\$TAG make build
           popd
           """
       }
@@ -50,21 +49,20 @@ pipeline {
         withDockerRegistry([credentialsId: 'docker-artifact-push-credentials', url: '']) {
           sh """
             #!/usr/bin/env bash
-            set -x
 
             pushd cord/incubator/voltha
             if [ "${params.manifestBranch}" == "master" ]
             then
-              tag="latest"
+              TAG="latest"
             else
-              tag="${params.manifestBranch}"
+              TAG="${params.manifestBranch}"
             fi
 
             if [ "${params.releaseTag}" != "" ]
             then
-              VOLTHA_BUILD=docker TAG=${tag} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.releaseTag} make push
+              VOLTHA_BUILD=docker TAG=\$TAG TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.releaseTag} make push
             else
-              VOLTHA_BUILD=docker TAG=${tag} TARGET_REPOSITORY=voltha/ TARGET_TAG=${tag} make push
+              VOLTHA_BUILD=docker TAG=\$TAG TARGET_REPOSITORY=voltha/ TARGET_TAG=\$TAG make push
             fi
             popd
             """
