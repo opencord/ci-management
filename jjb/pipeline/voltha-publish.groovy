@@ -30,6 +30,7 @@ pipeline {
       steps {
         sh """
           #!/usr/bin/env bash
+          set -x
 
           pushd cord/incubator/voltha
           if [ "${params.manifestBranch}" == "master" ]
@@ -49,6 +50,7 @@ pipeline {
         withDockerRegistry([credentialsId: 'docker-artifact-push-credentials', url: '']) {
           sh """
             #!/usr/bin/env bash
+            set -x
 
             pushd cord/incubator/voltha
             if [ "${params.manifestBranch}" == "master" ]
