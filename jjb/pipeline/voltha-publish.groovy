@@ -29,17 +29,18 @@ pipeline {
     stage('build'){
       steps {
         sh """
-           #!/usr/bin/env bash
+          #!/usr/bin/env bash
 
-           pushd cord/incubator/voltha
-           if [ "${params.manifestBranch}" != "master" ]
-           then
-             VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache TAG=${params.manifestBranch} make build
-           else
-             VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache make build
-           fi
-           popd
-           """
+          pushd cord/incubator/voltha
+          if [ "${params.manifestBranch}" == "master" ]
+          then
+            branch="latest"
+          else
+            branch="${params.manifestBranch}"
+          fi
+          VOLTHA_BUILD=docker DOCKER_CACHE_ARG=--no-cache TAG=${branch} make build
+          popd
+          """
       }
     }
 
@@ -50,11 +51,18 @@ pipeline {
             #!/usr/bin/env bash
 
             pushd cord/incubator/voltha
-            if [ "${params.manifestBranch}" != "master" ]
+            if [ "${params.manifestBranch}" == "master" ]
             then
-              VOLTHA_BUILD=docker TAG=${params.manifestBranch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.manifestBranch} make push
+              branch="latest"
             else
-              VOLTHA_BUILD=docker TARGET_REPOSITORY=voltha/ make push
+              branch="${params.manifestBranch}"
+            fi
+
+            if [ "${params.releaseTag}" != "" ]
+            then
+              VOLTHA_BUILD=docker TAG=${branch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.releaseTag} make push
+            else
+              VOLTHA_BUILD=docker TAG=${branch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${branch} make push
             fi
             popd
             """
