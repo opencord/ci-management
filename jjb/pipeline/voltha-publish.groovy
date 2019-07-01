@@ -52,7 +52,12 @@ pipeline {
             pushd cord/incubator/voltha
             if [ "${params.manifestBranch}" != "master" ]
             then
-              VOLTHA_BUILD=docker TAG=${params.manifestBranch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.manifestBranch} make push
+              if [ "${params.releaseTag}" != "" ]
+              then
+                VOLTHA_BUILD=docker TAG=${params.manifestBranch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.releaseTag} make push
+              else
+                VOLTHA_BUILD=docker TAG=${params.manifestBranch} TARGET_REPOSITORY=voltha/ TARGET_TAG=${params.manifestBranch} make push
+              fi
             else
               VOLTHA_BUILD=docker TARGET_REPOSITORY=voltha/ make push
             fi
