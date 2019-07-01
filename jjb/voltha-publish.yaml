@@ -53,6 +53,11 @@
           description: 'Name of the repo branch to use'
 
       - string:
+          name: releaseTag
+          default: ''
+          description: 'Tag for the containers on Docker Hub'
+
+      - string:
           name: failureEmail
           default: '{failure-email-address}, $GERRIT_PATCHSET_UPLOADER_EMAIL'
           description: 'On job failure, send an email to these addresses'
