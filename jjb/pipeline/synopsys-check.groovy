@@ -19,6 +19,12 @@ pipeline {
     label "${params.executorNode}"
   }
 
+  // Set so that synopsys_detect will know where to run golang tools from
+  environment {
+    PATH = "$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin/:$WORKSPACE/go/bin"
+    GOPATH = "$WORKSPACE/go"
+  }
+
   options {
       timeout(240)
   }
@@ -105,7 +111,14 @@ print(",".join(sorted(repo_list)))
         script {
           repos.each { gitRepo ->
             sh "echo Running Synopsys Detect on: ${gitRepo}"
-            synopsys_detect("--detect.source.path=${gitRepo} --detect.project.name=${blackduck_project}_${gitRepo} --detect.project.version.name=${branch} --detect.blackduck.signature.scanner.snippet.mode=true --detect.tools=ALL --detect.cleanup=false")
+            synopsys_detect("--detect.source.path=${gitRepo} " + \
+                            "--detect.project.name=${blackduck_project}_${projectName} " + \
+                            "--detect.project.version.name=$git_tag_or_branch " + \
+                            "--detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING " + \
+                            "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
+                            "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
+                            "--detect.tools=ALL " + \
+                            "--detect.cleanup=false")
           }
         }
       }

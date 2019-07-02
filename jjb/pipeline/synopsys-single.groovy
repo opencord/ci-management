@@ -20,6 +20,12 @@ pipeline {
     label "${params.executorNode}"
   }
 
+  // Set so that synopsys_detect will know where to run golang tools from
+  environment {
+    PATH = "$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin/:$WORKSPACE/go/bin"
+    GOPATH = "$WORKSPACE/go"
+  }
+
   options {
       timeout(30)
   }
@@ -32,7 +38,7 @@ pipeline {
       }
     }
 
-    stage('checkout') {
+    stage('Checkout') {
       steps {
         checkout([
           $class: 'GitSCM',
@@ -46,20 +52,62 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
+
+        // Used later to set the branch/tag in the blackduck UI release
         script {
           git_tag_or_branch = sh(script:"cd $projectName; if [[ \$(git tag -l --points-at HEAD) ]]; then git tag -l --points-at HEAD; else echo ${branchName}; fi", returnStdout: true).trim()
         }
       }
     }
 
-    stage ("Synopsys Detect") {
+    stage ("Prepare") {
       steps {
-        sh "echo Running Synopsys Detect on: ${params.projectName}"
-        synopsys_detect("--detect.source.path=${params.projectName} --detect.project.name=${blackduck_project}_${params.projectName} --detect.project.version.name=$git_tag_or_branch --detect.blackduck.signature.scanner.snippet.mode=true --detect.tools=ALL --detect.cleanup=false")
+
+        // change the path tested if for golang projects which expect to be found in GOPATH
+        script {
+          test_path = sh(script:"if [ -f \"$projectName/Gopkg.toml\" ]; then echo $WORKSPACE/go/src/github.com/opencord/$projectName; else echo $projectName; fi", returnStdout: true).trim()
+        }
+
+        sh returnStdout: true, script: """
+          if [ -f "$projectName/package.json" ]
+          then
+            echo "Found '$projectName/package.json', assuming a Node.js project, running npm install"
+            pushd "$projectName"
+            npm install
+            popd
+          elif [ -f "$projectName/Gopkg.toml" ]
+          then
+            echo "Found '$projectName/Gopkg.toml', assuming a golang project"
+            mkdir -p "\$GOPATH/src/github.com/opencord/"
+            mv "$WORKSPACE/$projectName" "$test_path"
+            pushd "$test_path"
+            dep ensure
+            popd
+          fi
+        """
       }
     }
 
-    stage ("Save logs") {
+    stage ("Synopsys Detect") {
+      steps {
+        sh "echo Running Synopsys Detect on: ${projectName}"
+
+        // Plugin: https://github.com/jenkinsci/synopsys-detect-plugin
+        // Documentation: https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/62423113/Synopsys+Detect
+        // also: https://community.synopsys.com/s/article/Integrations-Documentation-Synopsys-Detect-Properties-for-version-5-4-0
+        // also: Help menu after logging into BlackDuck portal
+        synopsys_detect("--detect.source.path=$test_path " + \
+                        "--detect.project.name=${blackduck_project}_${projectName} " + \
+                        "--detect.project.version.name=$git_tag_or_branch " + \
+                        "--detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING " + \
+                        "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
+                        "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
+                        "--detect.tools=ALL " + \
+                        "--detect.cleanup=false")
+      }
+    }
+
+    stage ("Save Logs") {
       steps {
         sh returnStdout: true, script: """
           echo COPYING LOGS
