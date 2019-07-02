@@ -113,3 +113,63 @@
       - email:
           recipients: 'andy@opennetworking.org kailash@opennetworking.org luca@opennetworking.org teo@opennetworking.org saurav@opennetworking.org zdw@opennetworking.org'
 
+# check helm charts with `helm lint --strict` and that charts version is
+# updated when the contents of a chart is modified.
+- job-template:
+    id: verify-helm-lint
+    name: 'verify_{project}_helm-lint'
+    description: |
+      Created by verify-helm-lint job-template from ci-management/jjb/lint.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+
+          # Setup helm and external repos
+          helm init --client-only
+          helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+          helm repo add rook-beta https://charts.rook.io/beta
+          helm repo add cord https://charts.opencord.org
+
+          git clone https://gerrit.opencord.org/helm-repo-tools
+          ./helm-repo-tools/helmlint.sh clean
+
+          # Specify the remote branch to compare against
+          export COMPARISON_BRANCH="origin/$GERRIT_BRANCH"
+          ./helm-repo-tools/chart_version_check.sh
+
+          # Check for chart version conflicts by building the repo (don't upload)
+          git clone ssh://jenkins@gerrit.opencord.org:29418/cord-charts-repo.git
+          ./helm-repo-tools/helmrepo.sh
