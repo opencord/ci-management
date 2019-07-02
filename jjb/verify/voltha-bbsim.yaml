@@ -8,6 +8,8 @@
     jobs:
       - 'verify-voltha-bbsim-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-voltha-bbsim-jobs':
+            branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-bbsim-jobs'
@@ -19,6 +21,15 @@
 #         dependency-jobs: 'verify_voltha-bbsim_tag-collision'
       - 'voltha-bbsim-tests':
           dependency-jobs: 'verify_voltha-bbsim_sonarqube'
+
+
+- job-group:
+    name: 'publish-voltha-bbsim-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
+
 
 - job-template:
     id: 'voltha-bbsim-tests'
