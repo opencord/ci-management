@@ -63,8 +63,8 @@
                  0 0,3,6,9,12,15,18,21 * * *
 
 - job-template:
-    id: 'siab-voltha-1.7'
-    name: 'seba-in-a-box-build-test-voltha-1.7'
+    id: 'siab-2.0.0-alpha1'
+    name: 'seba-in-a-box-build-test-2.0.0-alpha1'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -89,17 +89,17 @@
 
       - string:
           name: version
-          default: 'latest'
+          default: 'siab-2.0-alpha1'
           description: 'Latest | Stable'
 
       - string:
           name: Test_Target
-          default: 'run-tests-latest'
+          default: 'run-tests'
           description: 'run-tests for stable and run-tests-latest for latest'
 
       - string:
           name: Test_Tags
-          default: 'SEBAVALUES=configs/seba-ponsim-voltha-1.7.yaml'
+          default: ''
           description: 'test tags or make arguments'
 
     project-type: pipeline
