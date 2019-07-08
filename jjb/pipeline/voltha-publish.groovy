@@ -59,7 +59,7 @@ pipeline {
             fi
 
 	    # Check for SemVer in VERSION (only numbers and dots)
-	    RELEASETAG=`cat voltha/VERSION|tr -d ' '|egrep "^[0-9]+(\.[0-9]+)*$"`
+	    RELEASETAG=`cat voltha/VERSION|tr -d ' '|egrep "^[0-9]+(\\.[0-9]+)*\$"`
             if [ "\$RELEASETAG" != "" ]
             then
               VOLTHA_BUILD=docker TAG=\$TAG TARGET_REPOSITORY=voltha/ TARGET_TAG=\$RELEASETAG make push
