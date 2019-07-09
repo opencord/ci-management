@@ -200,6 +200,10 @@ EOF
       go install -ldflags="-X main.version=0.5.2" ./cmd/dep
     popd
 
+    # golangci-lint for testing
+    #  https://github.com/golangci/golangci-lint#local-installation
+    GO111MODULE=on go get github.com/golangci/golangci-lint/cmd/golangci-lint@v1.17.1
+
     # protoc-gen-go - Golang protbuf compiler extension for protoc (installed
     # below)
     go get -d -u github.com/golang/protobuf/protoc-gen-go
