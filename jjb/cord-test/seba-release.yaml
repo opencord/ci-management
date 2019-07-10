@@ -73,10 +73,28 @@
          branch: 'cord-6.1'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
-      # flex OCP POD with olt/onu - release 1.0 test job
+      # flex OCP POD with olt/onu - release 2.0 test job
       - 'build_pod_release_test':
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-ocp-cord'
          release: '2.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+
+      # flex OCP pod with olt/onu : using voltha latest(master)
+      - 'build_pod_release':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-ocp-cord'
+         release: '2.0-microcharts'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+         oltDebVersion: 'openolt-master.deb'
+         time: '7'
+
+      # flex OCP test job - release 2.0 test job
+      - 'build_pod_release_test':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-ocp-cord'
+         release: '2.0-microcharts'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
