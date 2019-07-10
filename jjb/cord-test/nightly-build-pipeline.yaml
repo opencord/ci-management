@@ -513,6 +513,11 @@
          description: 'OLT Software version to install'
 
       - string:
+         name: helmRepoUrl
+         default: 'https://charts.opencord.org'
+         description: 'URL where helm-charts are published'
+
+      - string:
          name: branch
          default: '{branch}'
 
