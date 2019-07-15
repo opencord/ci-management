@@ -1,0 +1,31 @@
+---
+# verification jobs for 'cord-workflow-controller-client' repo
+
+- project:
+    name: cord-workflow-controller-client
+    project: '{name}'
+
+    dest-gopath: "github.com/opencord"
+
+    jobs:
+      - 'verify-cord-workflow-controller-client-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'publish-cord-workflow-controller-client-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+          pypi-index: 'pypi'
+
+- job-group:
+    name: 'verify-cord-workflow-controller-client-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_cord-workflow-controller-client_licensed'
+      - 'make-unit-test':
+          dependency-jobs: 'verify_cord-workflow-controller-client_tag-collision'
+
+- job-group:
+    name: 'publish-cord-workflow-controller-client-jobs'
+    jobs:
+      - 'pypi-publish':
+          project-regexp: '^{name}$'
+          dependency-jobs: 'version-tag'
