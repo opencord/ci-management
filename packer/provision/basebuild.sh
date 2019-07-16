@@ -274,6 +274,14 @@ Defaults:jenkins !requiretty
 jenkins ALL=(ALL) NOPASSWD:SETENV: CMDS
 EOF
 
+    # install hadolint (Dockerfile checker)
+    HADOLINT_VERSION="1.17.1"
+    HADOLINT_SHA256SUM="2f8f3bf120e9766e6e79f7a86fed8ede55ebbf2042175b68a7c899a74eabbf34"
+    curl -L -o /tmp/hadolint https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64
+    echo "$HADOLINT_SHA256SUM  /tmp/hadolint" | sha256sum -c -
+    mv /tmp/hadolint /usr/local/bin/hadolint
+    chmod -R a+rx /usr/local/bin/hadolint
+
     # remove apparmor
     service apparmor stop
     update-rc.d -f apparmor remove
