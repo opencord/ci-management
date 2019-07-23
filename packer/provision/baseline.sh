@@ -231,29 +231,58 @@ EOF
     apt-get update -m
     ensure_ubuntu_install unzip xz-utils puppet git libxml-xpath-perl
 
+    # Deprecated - updating to corretto Java distro, 2019-07-22, zdw
     # install Java 7
-    echo "---> Configuring OpenJDK"
-    FACTER_OSVER=$(/usr/bin/facter operatingsystemrelease)
-    case "$FACTER_OSVER" in
-        14.04)
-            apt-get install openjdk-7-jdk
-            # make jdk8 available
-            add-apt-repository -y ppa:openjdk-r/ppa
-            apt-get update
-            # We need to force openjdk-8-jdk to install
-            apt-get install openjdk-8-jdk
-            # make sure that we still default to openjdk 7
-            update-alternatives --set java /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
-            update-alternatives --set javac /usr/lib/jvm/java-7-openjdk-amd64/bin/javac
-        ;;
-        16.04)
-            apt-get install openjdk-8-jdk
-        ;;
-        *)
-            echo "---> Unknown Ubuntu version $FACTER_OSVER"
-            exit 1
-        ;;
-    esac
+    # echo "---> Configuring OpenJDK"
+    # FACTER_OSVER=$(/usr/bin/facter operatingsystemrelease)
+    # case "$FACTER_OSVER" in
+    #     14.04)
+    #         apt-get install openjdk-7-jdk
+    #         # make jdk8 available
+    #         add-apt-repository -y ppa:openjdk-r/ppa
+    #         apt-get update
+    #         # We need to force openjdk-8-jdk to install
+    #         apt-get install openjdk-8-jdk
+    #         # make sure that we still default to openjdk 7
+    #         update-alternatives --set java /usr/lib/jvm/java-7-openjdk-amd64/jre/bin/java
+    #         update-alternatives --set javac /usr/lib/jvm/java-7-openjdk-amd64/bin/javac
+    #     ;;
+    #     16.04)
+    #         apt-get install openjdk-8-jdk
+    #     ;;
+    #     *)
+    #         echo "---> Unknown Ubuntu version $FACTER_OSVER"
+    #         exit 1
+    #     ;;
+    # esac
+    ########################
+
+    echo "---> Configuring Corretto JDK Distribution"
+    # instructions: https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/generic-linux-install.html
+    # install prereqs
+    apt-get install java-common
+
+    # install Java8
+    CORRETTO_JAVA8_VERSION="8.222.10-1"
+    CORRETTO_JAVA8_SHA256SUM="e5fd6c6f2d1a1fc5e6926f7a543e67ad0f0e0389ddc5d2deb5890bdeb21ea445"
+    curl -L -o /tmp/corretto_java8.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA8_VERSION | tr - .)/java-1.8.0-amazon-corretto-jdk_${CORRETTO_JAVA8_VERSION}_amd64.deb"
+    echo "$CORRETTO_JAVA8_SHA256SUM  /tmp/corretto_java8.deb" | sha256sum -c -
+    dpkg -i /tmp/corretto_java8.deb
+
+    # install Java11
+    CORRETTO_JAVA11_VERSION="11.0.4.11-1"
+    CORRETTO_JAVA11_SHA256SUM="f47c77f8f9ee5a80804765236c11dc749d351d3b8f57186c6e6b58a6c4019d3e"
+    curl -L -o /tmp/corretto_java11.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA11_VERSION | tr - .)/java-11-amazon-corretto-jdk_${CORRETTO_JAVA11_VERSION}_amd64.deb"
+    echo "$CORRETTO_JAVA11_SHA256SUM  /tmp/corretto_java11.deb" | sha256sum -c -
+    dpkg -i /tmp/corretto_java11.deb
+
+    # Set default version to be Java8
+    update-alternatives --set java  /usr/lib/jvm/java-1.8.0-amazon-corretto/jre/bin/java
+    update-alternatives --set javac /usr/lib/jvm/java-1.8.0-amazon-corretto/bin/javac
+
+    # Set default version to be Java11
+    # update-alternatives --set java  /usr/lib/jvm/java-11-amazon-corretto/bin/java
+    # update-alternatives --set javac /usr/lib/jvm/java-11-amazon-corretto/bin/javac
 
     ########################
     # --- START LFTOOLS DEPS
@@ -273,8 +302,8 @@ EOF
     # pulling down the packages in a way similar to this ansible role, rather than using cabal:
     # https://github.com/lfit/ansible-roles-shellcheck-install/blob/master/tasks/main.yml
 
-    SHELLCHECK_VERSION="v0.4.7"
-    SHELLCHECK_SHA256SUM="deeea92a4d3a9c5b16ba15210d9c1ab84a2e12e29bf856427700afd896bbdc93"
+    SHELLCHECK_VERSION="v0.6.0"
+    SHELLCHECK_SHA256SUM="95c7d6e8320d285a9f026b5241f48f1c02d225a1b08908660e8b84e58e9c7dce"
     curl -L -o /tmp/shellcheck.tar.xz https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz
     echo "$SHELLCHECK_SHA256SUM  /tmp/shellcheck.tar.xz" | sha256sum -c -
     pushd /tmp

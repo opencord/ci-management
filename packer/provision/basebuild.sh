@@ -10,18 +10,6 @@ rh_systems() {
     echo 'No changes to apply'
 }
 
-ubuntu_install_java_setup() {
-
-     echo "debconf shared/accepted-oracle-license-v1-1 select true" | debconf-set-selections
-
-     apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys EEA14886
-
-     DISTRO=$(lsb_release -cs)
-
-     apt-add-repository \
-       "deb http://ppa.launchpad.net/webupd8team/java/ubuntu $DISTRO main"
-}
-
 ubuntu_systems() {
     DISTRO=$(lsb_release -cs)
 
@@ -30,12 +18,6 @@ ubuntu_systems() {
     # get prereqs for PPA and apt-over-HTTPS support
     apt-get update
     apt-get install -y apt-transport-https software-properties-common
-
-    # install java (not needed as SonarQube includes this)
-    # ubuntu_install_java_setup
-    # apt-get update
-    # apt-get install -y oracle-java8-installer
-    # rm -rf /var/cache/oracle-jdk8-installer
 
     # set up ansible repo
     apt-add-repository -y ppa:ansible/ansible
