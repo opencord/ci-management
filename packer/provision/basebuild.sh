@@ -214,8 +214,8 @@ EOF
     popd
 
     # install helm
-    HELM_VERSION="2.11.0"
-    HELM_SHA256SUM="02a4751586d6a80f6848b58e7f6bd6c973ffffadc52b4c06652db7def02773a1"
+    HELM_VERSION="2.14.2"
+    HELM_SHA256SUM="9f50e69cf5cfa7268b28686728ad0227507a169e52bf59c99ada872ddd9679f0"
     HELM_PLATFORM="linux-amd64"
     curl -L -o /tmp/helm.tgz "https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz"
     echo "$HELM_SHA256SUM  /tmp/helm.tgz" | sha256sum -c -
