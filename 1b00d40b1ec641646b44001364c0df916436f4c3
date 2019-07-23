@@ -22,6 +22,30 @@
       "revId": "1b00d40b1ec641646b44001364c0df916436f4c3",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "adac14b4_46a28c95",
+        "filename": "packer/provision/baseline.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-07-23T02:10:07Z",
+      "side": 1,
+      "message": "Yes, that changes which version the `java` and `javac` tools invoke\n\n`update-alternatives` can be invoked in a script with passwordless sudo (see line 190 of this file).",
+      "parentUuid": "594ae753_4821d94f",
+      "range": {
+        "startLine": 283,
+        "startChar": 4,
+        "endLine": 285,
+        "endChar": 84
+      },
+      "revId": "1b00d40b1ec641646b44001364c0df916436f4c3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
