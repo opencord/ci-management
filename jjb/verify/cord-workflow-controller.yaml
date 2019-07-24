@@ -10,6 +10,8 @@
     jobs:
       - 'verify-cord-workflow-controller-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-cord-workflow-controller-jobs':
+            branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
     name: 'verify-cord-workflow-controller-jobs'
@@ -19,3 +21,10 @@
           dependency-jobs: 'verify_cord-workflow-controller_licensed'
       - 'make-unit-test':
           dependency-jobs: 'verify_cord-workflow-controller_tag-collision'
+
+- job-group:
+    name: 'publish-cord-workflow-controller-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'opencord'
+          dependency-jobs: 'version-tag'
