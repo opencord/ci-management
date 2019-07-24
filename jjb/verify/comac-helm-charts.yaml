@@ -1,0 +1,20 @@
+---
+# verification jobs for 'comac-helm-charts' repo
+
+- project:
+    name: comac-helm-charts
+    project: '{name}'
+
+    jobs:
+      - 'verify-comac-helm-charts-jobs':
+          branch-regexp: '{modern-branches-regexp}'
+
+- job-group:
+    name: 'verify-comac-helm-charts-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_comac-helm-charts_licensed'
+      - 'verify-helm-lint':
+          dependency-jobs: 'verify_comac-helm-charts_tag-collision'
+
