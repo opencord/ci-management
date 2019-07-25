@@ -1,0 +1,20 @@
+---
+# verification jobs for 'voltha-system-tests' repo
+
+- project:
+    name: voltha-system-tests
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-system-tests-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-system-tests-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-system-tests_licensed'
+      - 'make-unit-test':
+          dependency-jobs: 'verify_voltha-system-tests_tag-collision'
+
