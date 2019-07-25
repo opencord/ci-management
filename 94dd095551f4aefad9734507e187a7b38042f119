@@ -34,6 +34,24 @@
       "revId": "94dd095551f4aefad9734507e187a7b38042f119",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bb21a673_18041fd7",
+        "filename": "jjb/verify/voltha-system-tests.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-07-25T16:32:46Z",
+      "side": 1,
+      "message": "Yes that is a good idea. I will create a Makefile in this repo for that. so it can use this same job.",
+      "parentUuid": "dd965742_dcee6fe9",
+      "revId": "94dd095551f4aefad9734507e187a7b38042f119",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
