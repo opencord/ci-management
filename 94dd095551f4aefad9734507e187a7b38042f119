@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a44aa907_8e06bbf0",
+        "filename": "jjb/verify/voltha-system-tests.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-07-25T15:19:15Z",
+      "side": 1,
+      "message": "i dont think this repo will have unit tests...... i will set up a RF Lint job for all the robot files in this repo.",
+      "revId": "94dd095551f4aefad9734507e187a7b38042f119",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
