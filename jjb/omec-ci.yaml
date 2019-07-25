@@ -11,7 +11,7 @@
 
     jobs:
       - 'synopsys-periodic-check':
-          github-organization: omec-project
+          github-organization: 'omec-project'
           build-node: "ubuntu16.04-basebuild-2c-4g"
           git-server-url: "https://github.com/omec-project"
 
@@ -35,6 +35,8 @@
 
     executor_node: 'intel-102'
 
+    github-organization: 'omec-project'
+
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
@@ -45,6 +47,9 @@
       - 'omec-install':
           sub-project: '{name}'
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
+      - 'docker-publish-github':
+          build-timeout: 30
+          docker-repo: 'omecproject'
 
 # for c3po
 - project:
@@ -52,6 +57,8 @@
     project: '{name}'
 
     executor_node: 'intel-102'
+
+    github-organization: 'omec-project'
 
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
@@ -66,6 +73,9 @@
       - 'omec-install':
           sub-project: 'c3po-hss'
           pipeline-file: 'Jenkinsfile-omec-install-c3po-hss-vnf.groovy'
+      - 'docker-publish-github':
+          build-timeout: 30
+          docker-repo: 'omecproject'
 
 # for openmme
 - project:
@@ -73,6 +83,8 @@
     project: '{name}'
 
     executor_node: 'intel-102'
+
+    github-organization: 'omec-project'
 
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
@@ -84,6 +96,9 @@
       - 'omec-install':
           sub-project: '{name}'
           pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
+      - 'docker-publish-github':
+          build-timeout: 30
+          docker-repo: 'omecproject'
 
 # Combined pipeline
 - job-template:
@@ -100,7 +115,7 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
       - github:
-          url: 'https://github.com/omec-project/{project}'
+          url: 'https://github.com/{github-organization}/{project}'
       - build-blocker:
           use-build-blocker: true
           blocking-jobs:
@@ -133,7 +148,7 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-           url: 'https://github.com/omec-project/omec-project-ci'
+           url: 'https://github.com/{github-organization}/omec-project-ci'
            branches:
              - 'master'
 
@@ -153,7 +168,7 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
       - github:
-          url: 'https://github.com/omec-project/{project}'
+          url: 'https://github.com/{github-organization}/{project}'
 
     wrappers:
       - lf-infra-wrappers:
@@ -177,7 +192,7 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-           url: 'https://github.com/omec-project/omec-project-ci'
+           url: 'https://github.com/{github-organization}/omec-project-ci'
            branches:
              - 'master'
 
