@@ -16,6 +16,24 @@
       "revId": "94dd095551f4aefad9734507e187a7b38042f119",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "dd965742_dcee6fe9",
+        "filename": "jjb/verify/voltha-system-tests.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-07-25T16:13:50Z",
+      "side": 1,
+      "message": "I can change it so that the unit test job doesn\u0027t expect coverage/test results.\n\nCould we use a Makefile in the repo to have `make test` run rflint, so a common procedure with other repos?",
+      "parentUuid": "a44aa907_8e06bbf0",
+      "revId": "94dd095551f4aefad9734507e187a7b38042f119",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
