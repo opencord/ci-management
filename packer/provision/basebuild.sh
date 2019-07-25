@@ -142,6 +142,7 @@ EOF
         robotframework \
         robotframework-httplibrary \
         robotframework-kafkalibrary \
+        robotframework-lint \
         robotframework-requests \
         robotframework-sshlibrary \
         tox \
