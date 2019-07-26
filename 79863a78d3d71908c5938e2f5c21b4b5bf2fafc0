@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa5f380b_07b50e6d",
+        "filename": "jjb/verify/openairinterface.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000012
+      },
+      "writtenOn": "2019-07-26T19:34:41Z",
+      "side": 1,
+      "message": "does this mean that the images going to be published to xosproject repository in dockerhub?",
+      "range": {
+        "startLine": 26,
+        "startChar": 10,
+        "endLine": 26,
+        "endChar": 35
+      },
+      "revId": "79863a78d3d71908c5938e2f5c21b4b5bf2fafc0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
