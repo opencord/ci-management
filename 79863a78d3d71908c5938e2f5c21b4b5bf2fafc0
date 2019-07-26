@@ -22,6 +22,30 @@
       "revId": "79863a78d3d71908c5938e2f5c21b4b5bf2fafc0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "14c0bcc5_47ab4679",
+        "filename": "jjb/verify/openairinterface.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-07-26T21:08:05Z",
+      "side": 1,
+      "message": "You\u0027re right, should be: omecproject, to match:\n\nhttps://hub.docker.com/r/omecproject/lte-uesoftmodem\n\nIf so, fix:  https://gerrit.opencord.org/14814",
+      "parentUuid": "aa5f380b_07b50e6d",
+      "range": {
+        "startLine": 26,
+        "startChar": 10,
+        "endLine": 26,
+        "endChar": 35
+      },
+      "revId": "79863a78d3d71908c5938e2f5c21b4b5bf2fafc0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
