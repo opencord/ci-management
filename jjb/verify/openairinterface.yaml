@@ -23,5 +23,5 @@
     name: 'publish-openairinterface-jobs'
     jobs:
       - 'docker-publish':
-          docker-repo: 'xosproject'
+          docker-repo: 'omecproject'
           dependency-jobs: 'version-tag'
