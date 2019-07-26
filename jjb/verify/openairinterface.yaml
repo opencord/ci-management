@@ -17,11 +17,12 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_openairinterface_licensed'
       - 'make-unit-test':
+          build-timeout: 30
           junit-allow-empty-results: true
 
 - job-group:
     name: 'publish-openairinterface-jobs'
     jobs:
       - 'docker-publish':
-          docker-repo: 'xosproject'
+          docker-repo: 'omecproject'
           dependency-jobs: 'version-tag'
