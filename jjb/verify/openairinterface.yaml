@@ -1,0 +1,27 @@
+---
+# verification jobs for 'openairinterface' repo
+
+- project:
+    name: openairinterface
+    project: '{name}'
+
+    jobs:
+      - 'verify-openairinterface-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'publish-openairinterface-jobs'
+
+- job-group:
+    name: 'verify-openairinterface-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_openairinterface_licensed'
+      - 'make-unit-test':
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'publish-openairinterface-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'
