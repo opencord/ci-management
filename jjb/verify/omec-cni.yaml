@@ -1,29 +1,29 @@
 ---
-# verification jobs for 'openairinterface' repo
+# verification jobs for 'omec-cni' repo
 
 - project:
-    name: openairinterface
+    name: omec-cni
     project: '{name}'
 
     jobs:
-      - 'verify-openairinterface-jobs':
+      - 'verify-omec-cni-jobs':
           branch-regexp: '{supported-branches-regexp}'
-      - 'publish-openairinterface-jobs'
+      - 'publish-omec-cni-jobs'
 
 - job-group:
-    name: 'verify-openairinterface-jobs'
+    name: 'verify-omec-cni-jobs'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject':
-          dependency-jobs: 'verify_openairinterface_licensed'
+          dependency-jobs: 'verify_omec-cni_licensed'
       - 'make-unit-test':
-          build-timeout: 60
+          build-timeout: 30
           junit-allow-empty-results: true
 
 - job-group:
-    name: 'publish-openairinterface-jobs'
+    name: 'publish-omec-cni-jobs'
     jobs:
       - 'docker-publish':
-          build-timeout: 60
+          build-timeout: 30
           docker-repo: 'omecproject'
           dependency-jobs: 'version-tag'

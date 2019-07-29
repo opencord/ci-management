@@ -21,5 +21,6 @@
     name: 'publish-alpine-grpc-base-jobs'
     jobs:
       - 'docker-publish':
+          build-timeout: 30
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag'
