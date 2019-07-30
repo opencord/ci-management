@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "42f61fd8_8615036a",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2019-07-30T16:01:00Z",
+      "side": 1,
+      "message": "works for now, but in the future we should containerize the test.",
+      "range": {
+        "startLine": 54,
+        "startChar": 4,
+        "endLine": 66,
+        "endChar": 5
+      },
+      "revId": "2ef9e59a51dcc7407db7b764b783cb10ed1547fa",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
