@@ -19,3 +19,4 @@
           dependency-jobs: 'verify_cord-workflow-probe_licensed'
       - 'make-unit-test':
           dependency-jobs: 'verify_cord-workflow-probe_tag-collision'
+          junit-allow-empty-results: true
