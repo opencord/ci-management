@@ -95,10 +95,10 @@
           make test
 
           # generate Jenkins report
-          go test -v ./...  2>&1 | go-junit-report > $WORKSPACE/junit-report.xml
+          GO111MODULE=on go test -v ./...  2>&1 | go-junit-report > $WORKSPACE/junit-report.xml
 
           # generate Jenkins coverage
-          go test -coverprofile=coverage.txt -covermode=count ./...
+          GO111MODULE=on go test -coverprofile=coverage.txt -covermode=count ./...
           gocover-cobertura < coverage.txt > $WORKSPACE/coverage.xml
 
           popd

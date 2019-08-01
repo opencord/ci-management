@@ -103,7 +103,8 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -path "*conf*" \
   ! -path "*git*" \
   ! -path "*swagger*" \
+  ! -path "go.mod" \
+  ! -path "go.sum" \
   -print0 )
 
 exit ${fail_licensecheck}
-
