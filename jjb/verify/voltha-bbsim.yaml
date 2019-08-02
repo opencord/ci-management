@@ -18,7 +18,7 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-bbsim_licensed'
       - 'make-unit-test':
-          dest-gopath: "github.com/opencord"
+          dest-gopath: "gerrit.opencord.org"
 
 - job-group:
     name: 'publish-voltha-bbsim-jobs'
