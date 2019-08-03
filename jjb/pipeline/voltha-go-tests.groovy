@@ -22,6 +22,9 @@ pipeline {
   agent {
     label "${params.executorNode}"
   }
+  options {
+      timeout(time: 40, unit: 'MINUTES')
+  }
 
   stages {
 
@@ -37,16 +40,20 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
-           TYPE=minimal WITH_RADIUS=y USE_GO=false ./voltha up
+           TYPE=minimal WITH_RADIUS=y WITH_TP=no ./voltha up
            """
       }
     }
 
     stage('Install BBSIM') {
       steps {
-        sh """
-           helm install  --set onus_per_pon_port=${params.numOnus} ${params.EmulationMode} onf/bbsim -n bbsim
-           """
+        sh '''
+           cd kind-voltha/
+           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
+           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
+           export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
+           helm install --set onus_per_pon_port=1 onf/bbsim -n bbsim
+           '''
       }
     }
 
@@ -59,7 +66,7 @@ pipeline {
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
            cd $WORKSPACE/voltha-system-tests/tests/sanity
-           robot ${params.testTags} -v num_onus:${params.numOnus} -v timeout:${params.testTimeout} sanity.robot
+           robot -e notready -v num_onus:1 sanity.robot || true
            '''
       }
     }
@@ -70,7 +77,33 @@ pipeline {
       sh '''
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs
+         cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
+         cd kind-voltha/
+         cp install-minimal.log $WORKSPACE/
+         export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
+         export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
+         export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
+         kubectl get pods --all-namespaces
+         kubectl describe pods -n voltha
+         voltctl || true
+         ## get default pod logs
+         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+         do
+           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
+             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
+           else
+             kubectl logs \$pod> $WORKSPACE/\$pod.log;
+           fi
+         done
+         ## get voltha pod logs
+         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
+         do
+           if [[ \$pod == *"arouter"* ]]; then
+             kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
+           else
+             kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
+           fi
+         done
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
