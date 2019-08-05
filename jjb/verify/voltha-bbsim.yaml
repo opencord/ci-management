@@ -19,6 +19,7 @@
           dependency-jobs: 'verify_voltha-bbsim_licensed'
       - 'make-unit-test':
           dest-gopath: "gerrit.opencord.org"
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'publish-voltha-bbsim-jobs'
