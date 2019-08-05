@@ -52,7 +52,8 @@ pipeline {
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
-           helm install --set onus_per_pon_port=1 onf/bbsim -n bbsim
+           helm install -f minimal-values.yaml --namespace voltha --set onus_per_pon_port=1 --name bbsim onf/bbsim
+           sleep 60
            '''
       }
     }
@@ -65,8 +66,9 @@ pipeline {
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
+           export BBSIM_POD_IP=\$(kubectl get -n voltha service/bbsim -o go-template="{{.spec.clusterIP}}")
            cd $WORKSPACE/voltha-system-tests/tests/sanity
-           robot -e notready -v num_onus:1 sanity.robot || true
+           robot -e notready -v num_onus:1 -v BBSIM_IP:\$BBSIM_POD_IP sanity.robot || true
            '''
       }
     }
@@ -98,7 +100,7 @@ pipeline {
          ## get voltha pod logs
          for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
          do
-           if [[ \$pod == *"arouter"* ]]; then
+           if [[ \$pod == *"arouter"* || \$pod == *"voltha-api-server"*  ]]; then
              kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
            else
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
