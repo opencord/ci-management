@@ -31,7 +31,7 @@ pipeline {
     stage('Download kind-voltha') {
       steps {
         sh """
-           git clone https://github.com/ciena/kind-voltha.git
+           git clone https://github.com/andybavier/kind-voltha.git
            """
       }
     }
@@ -40,21 +40,8 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
-           TYPE=minimal WITH_RADIUS=y WITH_TP=no ./voltha up
+           TYPE=minimal WITH_RADIUS=y WITH_TP=no WITH_BBSIM=y ./voltha up
            """
-      }
-    }
-
-    stage('Install BBSIM') {
-      steps {
-        sh '''
-           cd kind-voltha/
-           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
-           helm install -f minimal-values.yaml --namespace voltha --set onus_per_pon_port=1 --name bbsim onf/bbsim
-           sleep 60
-           '''
       }
     }
 
@@ -65,10 +52,9 @@ pipeline {
            cd kind-voltha/
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
-           export BBSIM_POD_IP=\$(kubectl get -n voltha service/bbsim -o go-template="{{.spec.clusterIP}}")
+           export PATH=/w/workspace/voltha-go-e2e-tests/kind-voltha/bin:$PATH
            cd $WORKSPACE/voltha-system-tests/tests/sanity
-           robot -e notready -v num_onus:1 -v BBSIM_IP:\$BBSIM_POD_IP sanity.robot || true
+           robot -e notready -v num_onus:1 sanity.robot || true
            '''
       }
     }
@@ -84,7 +70,7 @@ pipeline {
          cp install-minimal.log $WORKSPACE/
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
          export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-         export PATH=/w/workspace/kind-voltha-minimal/kind-voltha/bin:$PATH
+         export PATH=/w/workspace/voltha-go-e2e-tests/kind-voltha/bin:$PATH
          kubectl get pods --all-namespaces
          kubectl describe pods -n voltha
          voltctl || true
@@ -100,7 +86,7 @@ pipeline {
          ## get voltha pod logs
          for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
          do
-           if [[ \$pod == *"arouter"* || \$pod == *"voltha-api-server"*  ]]; then
+           if [[ \$pod == *"-api-"* ]]; then
              kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
            else
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;

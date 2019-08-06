@@ -58,3 +58,8 @@
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/voltha-go-tests.groovy
+
+    triggers:
+       - timed: |
+                 TZ=America/Los_Angeles
+                 H * * * *
