@@ -54,7 +54,7 @@ pipeline {
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=/w/workspace/voltha-go-e2e-tests/kind-voltha/bin:$PATH
            cd $WORKSPACE/voltha-system-tests/tests/sanity
-           robot -e notready -v num_onus:1 sanity.robot || true
+           robot -e notready --critical sanity --noncritical VOL-1705 -v num_onus:1 sanity.robot || true
            '''
       }
     }
@@ -99,7 +99,7 @@ pipeline {
             otherFiles: '',
             outputFileName: 'RobotLogs/output*.xml',
             outputPath: '.',
-            passThreshold: 100,
+            passThreshold: 80,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
