@@ -72,8 +72,9 @@ pipeline {
          export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
          export PATH=/w/workspace/voltha-go-e2e-tests/kind-voltha/bin:$PATH
          kubectl get pods --all-namespaces -o jsonpath="{..image}" |tr -s "[[:space:]]" "\n" | sort | uniq -c
-         kubectl describe pods -n voltha
-         voltctl || true
+         kubectl get nodes -o wide
+         kubectl get pods -o wide
+         kubectl get pods -n voltha -o wide
          ## get default pod logs
          for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
          do
