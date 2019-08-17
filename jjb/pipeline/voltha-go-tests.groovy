@@ -40,7 +40,7 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
-           TYPE=minimal WITH_RADIUS=y WITH_TP=no WITH_BBSIM=y ./voltha up
+           VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_TP=no WITH_BBSIM=y ./voltha up
            """
       }
     }
