@@ -40,7 +40,7 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
-           VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_TP=no WITH_BBSIM=y ./voltha up
+           EXTRA_HELM_FLAGS='--set images.rw_core.repository=karthick18/voltha-rw-core,images.rw_core.tag=2.1.0-dev-dirty-tp,images.rw_core.pullPolicy=Always' VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_TP=no WITH_BBSIM=y ./voltha up
            """
       }
     }
