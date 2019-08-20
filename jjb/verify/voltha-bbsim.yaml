@@ -18,8 +18,10 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-bbsim_licensed'
       - 'make-unit-test':
-          dest-gopath: "gerrit.opencord.org"
+          dest-gopath: "github.com/opencord"
           junit-allow-empty-results: true
+          unit-test-targets: 'fmt vet lint test'
+          unit-test-keep-going: 'true'
 
 - job-group:
     name: 'publish-voltha-bbsim-jobs'

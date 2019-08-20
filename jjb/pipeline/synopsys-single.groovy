@@ -63,7 +63,7 @@ pipeline {
 
         // change the path tested if for golang projects which expect to be found in GOPATH
         script {
-          test_path = sh(script:"if [ -f \"$projectName/Gopkg.toml\" ]; then echo $WORKSPACE/go/src/github.com/opencord/$projectName; else echo $projectName; fi", returnStdout: true).trim()
+          test_path = sh(script:"if [ -f \"$projectName/Gopkg.toml\" ] ||  [ -f \"$projectName/go.mod\" ] ; then echo $WORKSPACE/go/src/github.com/opencord/$projectName; else echo $projectName; fi", returnStdout: true).trim()
         }
 
         sh returnStdout: true, script: """
@@ -75,11 +75,19 @@ pipeline {
             popd
           elif [ -f "$projectName/Gopkg.toml" ]
           then
-            echo "Found '$projectName/Gopkg.toml', assuming a golang project"
+            echo "Found '$projectName/Gopkg.toml', assuming a golang project using dep"
             mkdir -p "\$GOPATH/src/github.com/opencord/"
             mv "$WORKSPACE/$projectName" "$test_path"
             pushd "$test_path"
             dep ensure
+            popd
+          elif [ -f "$projectName/go.mod" ]
+          then
+            echo "Found '$projectName/go.mod', assuming a golang project using go modules"
+            mkdir -p "\$GOPATH/src/github.com/opencord/"
+            mv "$WORKSPACE/$projectName" "$test_path"
+            pushd "$test_path"
+            make dep
             popd
           fi
         """

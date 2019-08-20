@@ -8,8 +8,8 @@
     blackduck-project: cord
 
     jobs:
-      - 'synopsys-periodic-check':
-          build-node: "ubuntu16.04-basebuild-2c-4g"
-          git-server-url: "{gerrit-server-url}"
+#     - 'synopsys-periodic-check':
+#         build-node: "ubuntu16.04-basebuild-2c-4g"
+#         git-server-url: "{gerrit-server-url}"
       - 'synopsys-merge-check'
 
