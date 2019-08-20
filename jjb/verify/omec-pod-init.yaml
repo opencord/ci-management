@@ -1,0 +1,29 @@
+---
+# verification jobs for 'omec-pod-init' repo
+
+- project:
+    name: omec-pod-init
+    project: '{name}'
+
+    jobs:
+      - 'verify-omec-pod-init-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'publish-omec-pod-init-jobs'
+
+- job-group:
+    name: 'verify-omec-pod-init-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_omec-pod-init_licensed'
+      - 'make-unit-test':
+          build-timeout: 30
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'publish-omec-pod-init-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'omecproject'
+          dependency-jobs: 'version-tag'
