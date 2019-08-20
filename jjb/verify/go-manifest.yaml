@@ -1,0 +1,16 @@
+---
+# verification jobs for 'go-manifest' repo
+
+- project:
+    name: go-manifest
+    project: '{name}'
+
+    jobs:
+      - 'verify-go-manifest-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-go-manifest-jobs'
+    jobs:
+      - 'verify-repo-manifest'
+
