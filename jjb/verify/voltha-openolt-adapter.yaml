@@ -20,7 +20,7 @@
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-lint"
-          unit-test-targets: 'lint sca'
+          unit-test-targets: 'lint'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
           build-node: 'ubuntu16.04-basebuild-1c-2g'
