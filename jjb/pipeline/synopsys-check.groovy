@@ -92,10 +92,8 @@ print(",".join(sorted(repo_list)))
             sh "echo Checking out: ${gitRepo}"
             checkout(changelog: false, scm: [
                 $class: 'GitSCM',
-                userRemoteConfigs: [[
-                  url: "${params.git_server_url}/${gitRepo}/",
-                  name: "${branch}",
-                ]],
+                userRemoteConfigs: [[ url: "${params.git_server_url}/${gitRepo}/", ]],
+                branches: [[ name: "${branch}", ]],
                 extensions: [
                   [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gitRepo}"],
                   [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],

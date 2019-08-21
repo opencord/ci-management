@@ -42,10 +42,8 @@ pipeline {
       steps {
         checkout([
           $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "${params.gitUrl}",
-            name: "${params.gitRef}",
-          ]],
+          userRemoteConfigs: [[ url: "${params.gitUrl}", ]],
+          branches: [[ name: "${params.gitRef}", ]],
           extensions: [
             [$class: 'WipeWorkspace'],
             [$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.projectName}"],
