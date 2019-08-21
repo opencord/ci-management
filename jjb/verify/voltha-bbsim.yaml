@@ -7,9 +7,9 @@
 
     jobs:
       - 'verify-voltha-bbsim-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-bbsim-jobs':
-            branch-regexp: '{supported-branches-regexp}'
+            branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-bbsim-jobs'

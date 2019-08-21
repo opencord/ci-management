@@ -7,9 +7,9 @@
 
     jobs:
       - 'verify-voltha-openolt-adapter-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-openolt-adapter-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs'

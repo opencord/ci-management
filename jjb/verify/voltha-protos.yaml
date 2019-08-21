@@ -7,9 +7,9 @@
 
     jobs:
       - 'verify-voltha-protos-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
       - 'post-merge-voltha-protos-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
           pypi-index: 'pypi'
           pypi-prep-commands: 'make python-protos'
 

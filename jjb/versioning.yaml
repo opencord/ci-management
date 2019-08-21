@@ -21,7 +21,7 @@
 - project:
     name: versioning-jobs
 
-    branch-regexp: '{modern-branches-regexp}'
+    branch-regexp: '{all-branches-regexp}'
     project-regexp: '{version-tag-projects-regexp}'
 
     jobs:

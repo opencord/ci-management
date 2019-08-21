@@ -7,9 +7,9 @@
 
     jobs:
       - 'verify-voltha-onos-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-onos-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-onos-jobs'
