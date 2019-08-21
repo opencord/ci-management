@@ -31,7 +31,7 @@ pipeline {
     stage('Download kind-voltha') {
       steps {
         sh """
-           git clone https://github.com/andybavier/kind-voltha.git
+           git clone https://github.com/ciena/kind-voltha.git
            """
       }
     }
@@ -40,7 +40,7 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
-           EXTRA_HELM_FLAGS='--set images.rw_core.repository=karthick18/voltha-rw-core,images.rw_core.tag=2.1.0-dev-dirty-tp,images.rw_core.pullPolicy=Always' VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_TP=no WITH_BBSIM=y ./voltha up
+           VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y ./voltha up
            """
       }
     }
