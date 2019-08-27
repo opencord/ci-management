@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "b10c1f1a_a4399d2c",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2019-08-27T18:45:47Z",
+      "side": 1,
+      "message": "if you run `DEPLOY_K8S\u003dy JUST_K8S\u003dy ./voltha up` it will just deploy the k8s cluster and no voltha components",
+      "parentUuid": "8aeda34d_9d4f87cd",
+      "range": {
+        "startLine": 68,
+        "startChar": 11,
+        "endLine": 69,
+        "endChar": 127
+      },
+      "revId": "9d29d54a849f4306dc8f6356bd1c3c42d9c668b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52340f00_a294f095",
         "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
         "patchSetId": 2
@@ -84,6 +108,30 @@
       "side": 1,
       "message": "Need this cluster created before installing voltha so that i can push the images.",
       "parentUuid": "52340f00_a294f095",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 79
+      },
+      "revId": "9d29d54a849f4306dc8f6356bd1c3c42d9c668b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "26506691_f8f365c0",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2019-08-27T18:45:47Z",
+      "side": 1,
+      "message": "the command Andy references will deploy just the k8s cluster. you could then load the images.",
+      "parentUuid": "6ce65abf_a98e209d",
       "range": {
         "startLine": 99,
         "startChar": 11,
