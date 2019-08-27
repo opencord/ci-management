@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8aeda34d_9d4f87cd",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-08-27T17:57:05Z",
+      "side": 1,
+      "message": "i need kind installed for the \"Push Images\" stage.......then i do the deployment (\"voltha up\")",
+      "parentUuid": "782be9b9_c38155ec",
+      "range": {
+        "startLine": 68,
+        "startChar": 11,
+        "endLine": 69,
+        "endChar": 127
+      },
+      "revId": "9d29d54a849f4306dc8f6356bd1c3c42d9c668b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52340f00_a294f095",
         "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
         "patchSetId": 2
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "6ce65abf_a98e209d",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-08-27T17:57:05Z",
+      "side": 1,
+      "message": "Need this cluster created before installing voltha so that i can push the images.",
+      "parentUuid": "52340f00_a294f095",
+      "range": {
+        "startLine": 99,
+        "startChar": 11,
+        "endLine": 99,
+        "endChar": 79
+      },
+      "revId": "9d29d54a849f4306dc8f6356bd1c3c42d9c668b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "be073975_0e2e2e95",
         "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
         "patchSetId": 2
@@ -59,6 +107,30 @@
       "writtenOn": "2019-08-27T17:54:19Z",
       "side": 1,
       "message": "set this to Never, just in case?",
+      "range": {
+        "startLine": 109,
+        "startChar": 87,
+        "endLine": 109,
+        "endChar": 99
+      },
+      "revId": "9d29d54a849f4306dc8f6356bd1c3c42d9c668b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3ef6cebb_a6636fa9",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-08-27T17:57:05Z",
+      "side": 1,
+      "message": "will fix this !",
+      "parentUuid": "be073975_0e2e2e95",
       "range": {
         "startLine": 109,
         "startChar": 87,
