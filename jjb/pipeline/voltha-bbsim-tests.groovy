@@ -23,24 +23,77 @@ pipeline {
     label "${params.executorNode}"
   }
   options {
-      timeout(time: 40, unit: 'MINUTES')
+      timeout(time: 60, unit: 'MINUTES')
   }
 
   stages {
 
-    stage('Download kind-voltha') {
+    stage('Repo') {
+      steps {
+        checkout(changelog: false, \
+          poll: false,
+          scm: [$class: 'RepoScm', \
+            manifestRepositoryUrl: "${params.manifestUrl}", \
+            manifestBranch: "${params.manifestBranch}", \
+            currentBranch: true, \
+            destinationDir: 'voltha', \
+            forceSync: true,
+            resetFirst: true, \
+            quiet: true, \
+            jobs: 4, \
+            showAllChanges: true] \
+          )
+      }
+    }
+    stage('Patch') {
       steps {
         sh """
+           pushd voltha
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           popd
+           """
+      }
+    }
+    stage('Create K8s Cluster') {
+      steps {
+        sh """
+           git clone https://gerrit.opencord.org/voltha-system-tests
            git clone https://github.com/ciena/kind-voltha.git
+           cd kind-voltha/
+           DEPLOY_K8S=y JUST_K8S=y ./voltha up
            """
       }
     }
 
+    stage('Build Images') {
+      steps {
+        sh """
+           cd $WORKSPACE/voltha/voltha-go/
+           make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest build
+           """
+      }
+    }
+
+    stage('Push Images') {
+      steps {
+        sh '''
+           export GOROOT=/usr/local/go
+           export GOPATH=\$(pwd)
+           export TYPE=minimal
+           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
+           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
+           export PATH=/w/workspace/voltha-go-e2e-tests/kind-voltha/bin:$PATH
+           docker images | grep citest
+           for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
+           '''
+      }
+    }
     stage('Deploy Voltha') {
       steps {
         sh """
            cd kind-voltha/
-           VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 ./voltha up
+           EXTRA_HELM_FLAGS='-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml' VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 ./voltha up
            """
       }
     }
@@ -48,7 +101,6 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
-           git clone https://gerrit.opencord.org/voltha-system-tests
            cd kind-voltha/
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
