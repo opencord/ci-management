@@ -22,6 +22,30 @@
       "revId": "09195a0dbea55221fef593f4260d80b1ebe43dea",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3141c119_afbc154e",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-08-27T22:36:04Z",
+      "side": 1,
+      "message": "Never mind... I think we\u0027ll need to create another job that looks a lot like this one for the python openonu adapter repo.",
+      "parentUuid": "50f35f01_0bd53978",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 65
+      },
+      "revId": "09195a0dbea55221fef593f4260d80b1ebe43dea",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
