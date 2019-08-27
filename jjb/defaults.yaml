@@ -54,6 +54,8 @@
     # name of the manifest git repos used with the `repo` cli tool
     cord-repo-manifest: manifest.git
     cordqa-manifest-repo: qa-manifest.git
+    go-manifest-repo: go-manifest.git
+    voltha-test-manifest-repo: voltha-test-manifest.git
 
     # default email address to send job failure messages
     failure-email-address: 'cord-dev@opencord.org'
