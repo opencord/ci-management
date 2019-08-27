@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1e9bd85e_cb9e61b5",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000003
+      },
+      "writtenOn": "2019-08-27T22:49:33Z",
+      "side": 1,
+      "message": "i am a little confused by this and i expect it is just because i don\u0027t understand something. the voltha-go containers are in a separate repo from the olt-adapter. where are these two repo cloned and why isn\u0027t the onu-adapter handled the same was as the olt adapter?",
+      "range": {
+        "startLine": 70,
+        "startChar": 11,
+        "endLine": 73,
+        "endChar": 65
+      },
+      "revId": "09195a0dbea55221fef593f4260d80b1ebe43dea",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "50f35f01_0bd53978",
         "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
         "patchSetId": 3
