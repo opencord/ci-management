@@ -1,0 +1,29 @@
+---
+# verification jobs for 'bbsim' repo
+
+- project:
+    name: bbsim
+    project: '{name}'
+
+    jobs:
+      - 'verify-bbsim-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-bbsim-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-bbsim-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_bbsim_licensed'
+      - 'make-unit-test':
+          dest-gopath: "github.com/opencord"
+          unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-bbsim-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'

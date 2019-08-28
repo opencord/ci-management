@@ -1,0 +1,29 @@
+---
+# verification jobs for 'voltha-simolt-adapter' repo
+
+- project:
+    name: voltha-simolt-adapter
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-simolt-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-voltha-simolt-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-simolt-adapter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-simolt-adapter_licensed'
+      - 'make-unit-test':
+          dest-gopath: "github.com/opencord"
+          unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-voltha-simolt-adapter-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
