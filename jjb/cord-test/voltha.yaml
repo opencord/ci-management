@@ -1,0 +1,20 @@
+---
+# POD Build Pipeline Jobs for Voltha Releases
+
+- project:
+    name: voltha-release-jobs
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    jobs:
+      # flex OCP pod with olt/onu - release voltha2.0 build job
+      - 'build_pod_manual':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-ocp-cord'
+         release: '2.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-voltha-build'
+         oltDebVersion: 'openolt-seba-2.0.deb'
+         profile: 'multipleGem'
