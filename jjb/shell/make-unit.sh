@@ -35,7 +35,7 @@ if [ ! -z "$DEST_GOPATH" ]; then
   mkdir -p "$GOPATH/src/$DEST_GOPATH"
   export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
   test_path="$GOPATH/src/$DEST_GOPATH/$GERRIT_PROJECT"
-  ln -r -s "$WORKSPACE/$GERRIT_PROJECT" "$test_path"
+  mv "$WORKSPACE/$GERRIT_PROJECT" "$test_path"
 else
   test_path="$WORKSPACE/$GERRIT_PROJECT"
 fi
