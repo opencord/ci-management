@@ -7,11 +7,17 @@
     project-name: '{name}'
 
     jobs:
-      - 'voltha-test'
+    - 'voltha-periodic-test':
+          name: 'voltha-system-tests'
+          pipeline: 'voltha-go-tests.groovy'
+
+    - 'voltha-patch-test':
+         name: 'voltha-bbsim-system-tests'
+         pipeline: 'voltha-bbsim-tests.groovy'
 
 - job-template:
-    id: 'voltha-test'
-    name: 'voltha-go-e2e-tests'
+    id: 'voltha-periodic-test'
+    name: '{name}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -57,9 +63,92 @@
     project-type: pipeline
     concurrent: false
 
-    dsl: !include-raw-escape: pipeline/voltha-go-tests.groovy
+    dsl: !include-raw-escape: pipeline/{pipeline}
 
     triggers:
        - timed: |
                  TZ=America/Los_Angeles
                  H * * * *
+
+- job-template:
+    id: 'voltha-patch-test'
+    name: '{name}'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/voltha-e2e.yaml  <br /><br />
+      E2E Validation for Voltha 2.X
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: executorNode
+          default: 'ubuntu16.04-basebuild-4c-8g'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: manifestUrl
+          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
+          description: 'URL to the repo manifest'
+
+      - string:
+         name: manifestBranch
+         default: '$GERRIT_BRANCH'
+         description: 'Name of the repo branch to use'
+
+      - string:
+         name: gerritProject
+         default: '$GERRIT_PROJECT'
+         description: 'Name of the Gerrit project'
+
+      - string:
+         name: gerritChangeNumber
+         default: '$GERRIT_CHANGE_NUMBER'
+         description: 'Changeset number in Gerrit'
+
+      - string:
+         name: gerritPatchsetNumber
+         default: '$GERRIT_PATCHSET_NUMBER'
+         description: 'PatchSet number in Gerrit'
+
+      - string:
+          name: numOnus
+          default: '1'
+          description: 'Number of onus per pon port'
+
+      - string:
+         name: emulationMode
+         default: '--set emulation_mode=both'
+         description: 'Emulation for BBSIM (both|aaa)'
+
+      - string:
+          name: testTimeout
+          default: '90'
+          description: 'timeout for olt/onu validations'
+
+      - string:
+          name: testTags
+          default: '-e notready'
+          description: 'test tags'
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/{pipeline}
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|)$'
+          branch-regexp: '^(voltha-2.1)$'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
