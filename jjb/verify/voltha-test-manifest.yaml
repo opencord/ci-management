@@ -1,0 +1,16 @@
+---
+# verification jobs for 'voltha-test-manifest' repo
+
+- project:
+    name: voltha-test-manifest
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-test-manifest-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-test-manifest-jobs'
+    jobs:
+      - 'verify-repo-manifest'
+

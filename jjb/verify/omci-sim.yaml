@@ -1,0 +1,19 @@
+---
+# verification jobs for 'omci-sim' repo
+
+- project:
+    name: omci-sim
+    project: '{name}'
+
+    jobs:
+      - 'verify-omci-sim-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-omci-sim-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_omci-sim_licensed'
+#      - 'make-unit-test':
+#         dest-gopath: "github.com/opencord"
