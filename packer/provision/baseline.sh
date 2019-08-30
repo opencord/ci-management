@@ -186,8 +186,9 @@ ubuntu_systems() {
 
     # Allow jenkins access to update-alternatives command to switch java version
     cat <<EOF >/etc/sudoers.d/89-jenkins-user-defaults
+Cmnd_Alias UALTS = /usr/sbin/update-alternatives, /usr/sbin/update-java-alternatives
 Defaults:jenkins !requiretty
-jenkins ALL = NOPASSWD: /usr/bin/update-alternatives
+jenkins ALL = NOPASSWD: UALTS
 EOF
 
     export DEBIAN_FRONTEND=noninteractive
@@ -276,13 +277,54 @@ EOF
     echo "$CORRETTO_JAVA11_SHA256SUM  /tmp/corretto_java11.deb" | sha256sum -c -
     dpkg -i /tmp/corretto_java11.deb
 
+    # Fix corretto 11 lack of jinfo that prevents update-java-alternatives from working
+    # Upstream fix not integrated yet: https://github.com/corretto/corretto-11/pull/27
+    cat <<EOF >/usr/lib/jvm/.java-11-amazon-corretto.jinfo
+name=java-11-amazon-corretto
+alias=java-11-amazon-corretto
+priority=11100002
+section=main
+
+jdk java /usr/lib/jvm/java-11-amazon-corretto/bin/java
+jdk keytool /usr/lib/jvm/java-11-amazon-corretto/bin/keytool
+jdk rmid /usr/lib/jvm/java-11-amazon-corretto/bin/rmid
+jdk rmiregistry /usr/lib/jvm/java-11-amazon-corretto/bin/rmiregistry
+jdk jjs /usr/lib/jvm/java-11-amazon-corretto/bin/jjs
+jdk pack200 /usr/lib/jvm/java-11-amazon-corretto/bin/pack200
+jdk unpack200 /usr/lib/jvm/java-11-amazon-corretto/bin/unpack200
+jdk javac /usr/lib/jvm/java-11-amazon-corretto/bin/javac
+jdk jaotc /usr/lib/jvm/java-11-amazon-corretto/bin/jaotc
+jdk jlink /usr/lib/jvm/java-11-amazon-corretto/bin/jlink
+jdk jmod /usr/lib/jvm/java-11-amazon-corretto/bin/jmod
+jdk jhsdb /usr/lib/jvm/java-11-amazon-corretto/bin/jhsdb
+jdk jar /usr/lib/jvm/java-11-amazon-corretto/bin/jar
+jdk jarsigner /usr/lib/jvm/java-11-amazon-corretto/bin/jarsigner
+jdk javadoc /usr/lib/jvm/java-11-amazon-corretto/bin/javadoc
+jdk javap /usr/lib/jvm/java-11-amazon-corretto/bin/javap
+jdk jcmd /usr/lib/jvm/java-11-amazon-corretto/bin/jcmd
+jdk jconsole /usr/lib/jvm/java-11-amazon-corretto/bin/jconsole
+jdk jdb /usr/lib/jvm/java-11-amazon-corretto/bin/jdb
+jdk jdeps /usr/lib/jvm/java-11-amazon-corretto/bin/jdeps
+jdk jdeprscan /usr/lib/jvm/java-11-amazon-corretto/bin/jdeprscan
+jdk jimage /usr/lib/jvm/java-11-amazon-corretto/bin/jimage
+jdk jinfo /usr/lib/jvm/java-11-amazon-corretto/bin/jinfo
+jdk jmap /usr/lib/jvm/java-11-amazon-corretto/bin/jmap
+jdk jps /usr/lib/jvm/java-11-amazon-corretto/bin/jps
+jdk jrunscript /usr/lib/jvm/java-11-amazon-corretto/bin/jrunscript
+jdk jshell /usr/lib/jvm/java-11-amazon-corretto/bin/jshell
+jdk jstack /usr/lib/jvm/java-11-amazon-corretto/bin/jstack
+jdk jstat /usr/lib/jvm/java-11-amazon-corretto/bin/jstat
+jdk jstatd /usr/lib/jvm/java-11-amazon-corretto/bin/jstatd
+jdk rmic /usr/lib/jvm/java-11-amazon-corretto/bin/rmic
+jdk serialver /usr/lib/jvm/java-11-amazon-corretto/bin/serialver
+
+EOF
+
     # Set default version to be Java8
-    update-alternatives --set java  /usr/lib/jvm/java-1.8.0-amazon-corretto/jre/bin/java
-    update-alternatives --set javac /usr/lib/jvm/java-1.8.0-amazon-corretto/bin/javac
+    update-java-alternatives --set java-1.8.0-amazon-corretto
 
     # Set default version to be Java11
-    # update-alternatives --set java  /usr/lib/jvm/java-11-amazon-corretto/bin/java
-    # update-alternatives --set javac /usr/lib/jvm/java-11-amazon-corretto/bin/javac
+    # update-java-alternatives --set java-11-amazon-corretto
 
     ########################
     # --- START LFTOOLS DEPS
