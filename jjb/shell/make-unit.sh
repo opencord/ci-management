@@ -24,14 +24,14 @@ GERRIT_PROJECT=${GERRIT_PROJECT:-}
 
 # Fixes to for golang projects to support GOPATH
 # If $DEST_GOPATH is not an empty string:
-# - set create GOPATH, and destination directory within in
+# - create GOPATH within WORKSPACE, and destination directory within
 # - set PATH to include $GOPATH/bin and the system go binaries
-# - symlink from $WORKSPACE/$GERRIT_PROJECT to new location in $GOPATH
-# - start tests in that directory
+# - move project from $WORKSPACE/$GERRIT_PROJECT to new location in $GOPATH
+# - start tests within that directory
 
 DEST_GOPATH=${DEST_GOPATH:-}
 if [ ! -z "$DEST_GOPATH" ]; then
-  export GOPATH=${GOPATH:-~/go}
+  export GOPATH=${GOPATH:-$WORKSPACE/go}
   mkdir -p "$GOPATH/src/$DEST_GOPATH"
   export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
   test_path="$GOPATH/src/$DEST_GOPATH/$GERRIT_PROJECT"
