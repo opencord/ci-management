@@ -46,6 +46,30 @@
       "revId": "fb795c601fc0eca3644580a4b59205e7213b0bbf",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14899ade_e2d22453",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-08-30T18:22:59Z",
+      "side": 1,
+      "message": "Would \u0027timed\u0027 or \u0027periodic\u0027 be better, as these are triggered by the timer?",
+      "parentUuid": "9d68addb_cd1606c1",
+      "range": {
+        "startLine": 19,
+        "startChar": 16,
+        "endLine": 19,
+        "endChar": 25
+      },
+      "revId": "fb795c601fc0eca3644580a4b59205e7213b0bbf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
