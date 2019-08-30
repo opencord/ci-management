@@ -292,7 +292,7 @@
       script-path: '{Jenkinsfile}'
       scm:
         - git:
-           url: '{gerrit-server-url}/cord-tester'
+           url: '{gerrit-server-url}/{test-repo}'
            branches:
              - '{branch}'
 

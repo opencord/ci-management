@@ -25,6 +25,7 @@
          testvm: 'qa-testvm-pod'
          config-pod: 'flex-ocp-cord'
          profile: 'rcord-topdown'
+         test-repo: 'cord-tester'
          branch: 'master'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-test'
 
@@ -45,6 +46,7 @@
          config-pod: 'flex-ocp-cord'
          profile: 'rcord-zerotouch'
          branch: 'master'
+         test-repo: 'cord-tester'
          Jenkinsfile: 'Jenkinsfile-rcordlite-zerotouch-test'
 
      # qct pod1 kubernetes build jobs (rcord lite topdown)
@@ -64,4 +66,5 @@
          config-pod: 'qct-pod1'
          profile: 'rcord-topdown'
          branch: 'master'
+         test-repo: 'cord-tester'
          Jenkinsfile: 'Jenkinsfile-rcordlite-topdown-test'

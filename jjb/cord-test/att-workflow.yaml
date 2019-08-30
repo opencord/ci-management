@@ -37,6 +37,7 @@
          config-pod: 'onlab-pod1-qa'
          profile: 'att-workflow'
          branch: 'master'
+         test-repo: 'cord-tester'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
       # onlab pod2 build
@@ -78,6 +79,7 @@
          config-pod: 'flex-ocp-cord-voltha-master'
          profile: 'att-workflow'
          branch: 'master'
+         test-repo: 'cord-tester'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
       # flex ocp pod test job - seba-1.0/cord-6.1 release
@@ -86,4 +88,5 @@
          config-pod: 'flex-ocp-cord-voltha16'
          profile: 'att-workflow'
          branch: 'cord-6.1'
+         test-repo: 'cord-tester'
          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
