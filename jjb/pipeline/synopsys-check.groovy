@@ -116,6 +116,7 @@ print(",".join(sorted(repo_list)))
                             "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
                             "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
                             "--detect.policy.check.fail.on.severities=ALL,BLOCKER,CRITICAL,MAJOR,MINOR,TRIVIAL " + \
+                            "--detect.report.timeout=900 " + \
                             "--detect.tools=ALL " + \
                             "--detect.cleanup=false")
           }
