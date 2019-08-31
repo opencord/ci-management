@@ -22,6 +22,11 @@
          default: 'refs/heads/master'
          description: 'Use default when using "Build Now"'
 
+      - string:
+         name: jdkDistro
+         default: '{jdk-distribution}'
+         description: 'Distribution of the JDK to use with update-java-alternatives'
+
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
@@ -53,6 +58,15 @@
       - inject:
           properties-content: |
             _JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true
+
+      - shell: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+          echo "Setting JDK Distro to: $jdkDistro"
+          sudo update-java-alternatives -set "$jdkDistro"
+          echo "Java Version:"
+          java -version
+
       - maven-target:
           pom: pom.xml
           goals: 'clean install'
@@ -77,6 +91,11 @@
          name: GERRIT_REFSPEC
          default: 'refs/heads/master'
          description: 'Use default when using "Build Now"'
+
+      - string:
+         name: jdkDistro
+         default: '{jdk-distribution}'
+         description: 'Distribution of the JDK to use with update-java-alternatives'
 
     triggers:
       - cord-infra-gerrit-trigger-merge:
@@ -104,6 +123,15 @@
       - inject:
           properties-content: |
             _JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true
+
+      - shell: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+          echo "Setting JDK Distro to: $jdkDistro"
+          sudo update-java-alternatives -set "$jdkDistro"
+          echo "Java Version:"
+          java -version
+
       - maven-target:
           pom: pom.xml
           settings: onoscord-apps
@@ -116,6 +144,12 @@
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml
+
+    parameters:
+      - string:
+         name: jdkDistro
+         default: '{jdk-distribution}'
+         description: 'Distribution of the JDK to use with update-java-alternatives'
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -158,6 +192,15 @@
       - inject:
           properties-content: |
             _JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true
+
+      - shell: |
+          #!/usr/bin/env bash
+          set -eu -o pipefail
+          echo "Setting JDK Distro to: $jdkDistro"
+          sudo update-java-alternatives -set "$jdkDistro"
+          echo "Java Version:"
+          java -version
+
       - maven-target:
           pom: pom.xml
           goals: 'test'
