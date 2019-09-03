@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-go-manifest-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-go-manifest-jobs'

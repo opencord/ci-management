@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-seba-manifest-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-seba-manifest-jobs'
