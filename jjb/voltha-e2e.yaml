@@ -141,7 +141,7 @@
           description: 'test tags'
 
     project-type: pipeline
-    concurrent: false
+    concurrent: true
 
     dsl: !include-raw-escape: pipeline/{pipeline}
 
