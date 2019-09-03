@@ -52,7 +52,7 @@ pipeline {
            cd kind-voltha/
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/voltha-go-e2e-tests/kind-voltha/bin:$PATH
+           export PATH=/w/workspace/voltha-system-tests/kind-voltha/bin:$PATH
            cd $WORKSPACE/voltha-system-tests/tests/sanity
            robot -e notready --critical sanity --noncritical VOL-1705 -v num_onus:1 sanity.robot || true
            '''
@@ -70,7 +70,7 @@ pipeline {
          cp install-minimal.log $WORKSPACE/
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
          export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-         export PATH=/w/workspace/voltha-go-e2e-tests/kind-voltha/bin:$PATH
+         export PATH=/w/workspace/voltha-system-tests/kind-voltha/bin:$PATH
          kubectl get pods --all-namespaces -o jsonpath="{..image}" |tr -s "[[:space:]]" "\n" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
