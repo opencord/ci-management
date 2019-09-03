@@ -1,0 +1,19 @@
+---
+# verification jobs for 'cord-onos-publisher' repo
+
+- project:
+    name: cord-onos-publisher
+    project: '{name}'
+
+    jobs:
+      - 'verify-cord-onos-publisher-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-cord-onos-publisher-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_cord-onos-publisher_licensed'
+#      - 'make-unit-test':
+#         dest-gopath: "github.com/opencord"
