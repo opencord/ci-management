@@ -61,7 +61,7 @@ pipeline {
            git clone https://gerrit.opencord.org/voltha-system-tests
            git clone https://github.com/ciena/kind-voltha.git
            cd kind-voltha/
-           DEPLOY_K8S=y JUST_K8S=y ./voltha up
+           DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up
            """
       }
     }
@@ -69,8 +69,12 @@ pipeline {
     stage('Build Images') {
       steps {
         sh """
+           BUILD_COMMAND='build'
+           if [ '${gerritProject}' = 'voltha-openonu-adapter' ]; then
+             BUILD_COMMAND ='docker-build'
+           fi
            cd $WORKSPACE/voltha/${gerritProject}/
-           make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest build
+           make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest \$BUILD_COMMAND
            """
       }
     }
