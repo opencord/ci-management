@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "83483d42_c29645c2",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-09-04T16:04:33Z",
+      "side": 1,
+      "message": "I don\u0027t think you need to parameterize this - all repos should use the `docker-build` target to create their images, as that\u0027s the target run in the other automation: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/pipeline/docker-publish.groovy#l57\n\nAnd it\u0027s required by the docs: https://guide.opencord.org/developer/test_release_software.html#publish-docker-container-images-to-public-dockerhub-job-docker-publish\n\nHaving this test fail when the make target doesn\u0027t exist is a feature :)",
+      "range": {
+        "startLine": 71,
+        "startChar": 14,
+        "endLine": 77,
+        "endChar": 75
+      },
+      "revId": "68ffcd0da5eb294d082da29f66f09c0f9a9097e5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
