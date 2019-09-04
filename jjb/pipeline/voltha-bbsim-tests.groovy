@@ -69,8 +69,12 @@ pipeline {
     stage('Build Images') {
       steps {
         sh """
+           BUILD_COMMAND=build''
+           if [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
+             BUILD_COMMAND ='docker-build'
+           fi
            cd $WORKSPACE/voltha/${gerritProject}/
-           make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest build
+           make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest \$BUILD_COMMAND
            """
       }
     }
