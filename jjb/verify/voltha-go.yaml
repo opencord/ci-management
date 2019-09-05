@@ -10,6 +10,8 @@
           branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-go-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'voltha-go-system-tests':
+          branch-regexp: '{voltha-stablization-branch}'
 
 - job-group:
     name: 'verify-voltha-go-jobs'
@@ -37,3 +39,9 @@
           build-timeout: 30
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
+
+- job-group:
+    name: 'voltha-go-system-tests'
+    jobs:
+      - 'voltha-patch-test':
+         pipeline: 'voltha-bbsim-tests.groovy'

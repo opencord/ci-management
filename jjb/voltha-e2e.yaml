@@ -11,10 +11,6 @@
           name: 'voltha-system-tests'
           pipeline: 'voltha-go-tests.groovy'
 
-    - 'voltha-patch-test':
-         name: 'voltha-bbsim-system-tests'
-         pipeline: 'voltha-bbsim-tests.groovy'
-
 - job-template:
     id: 'voltha-periodic-test'
     name: '{name}'
@@ -72,7 +68,7 @@
 
 - job-template:
     id: 'voltha-patch-test'
-    name: '{name}'
+    name: '{project}_sanity-system-test'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -148,7 +144,7 @@
     triggers:
       - cord-infra-gerrit-trigger-patchset:
           gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|)$'
-          branch-regexp: '^(voltha-2.1)$'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
           dependency-jobs: '{dependency-jobs}'
           file-include-regexp: '{all-files-regexp}'
