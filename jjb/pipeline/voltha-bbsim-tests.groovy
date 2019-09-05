@@ -92,7 +92,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
-           HELM_FLAG="--set defaults.image_tag=2.1.0 "
+           HELM_FLAG="--set defaults.image_tag=voltha-2.1 "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
              HELM_FLAG+="-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml"
