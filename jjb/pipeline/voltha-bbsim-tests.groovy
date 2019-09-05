@@ -83,7 +83,7 @@ pipeline {
            export TYPE=minimal
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/voltha-bbsim-system-tests/kind-voltha/bin:$PATH
+           export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
            docker images | grep citest
            for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
            '''
