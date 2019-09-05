@@ -10,6 +10,8 @@
           branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-openonu-adapter-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'voltha-openonu-adapter-system-tests':
+          branch-regexp: '{voltha-stablization-branch}'
 
 - job-group:
     name: 'verify-voltha-openonu-adapter-jobs'
@@ -29,3 +31,9 @@
           build-timeout: 30
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
+
+- job-group:
+    name: 'voltha-openonu-adapter-system-tests'
+    jobs:
+      - 'voltha-patch-test':
+         pipeline: 'voltha-bbsim-tests.groovy'
