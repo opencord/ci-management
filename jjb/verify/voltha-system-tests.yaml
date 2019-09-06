@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-voltha-system-tests-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-system-tests-jobs'

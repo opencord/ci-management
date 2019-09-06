@@ -7,9 +7,9 @@
 
     jobs:
       - 'verify-pyvoltha-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
       - 'publish-pyvoltha-jobs':
-          branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '[all-branches-regexp}'
           pypi-index: 'pypi'
 
 - job-group:

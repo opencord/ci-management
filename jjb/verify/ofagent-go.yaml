@@ -1,0 +1,32 @@
+---
+# verification jobs for 'ofagent-go' repo
+
+- project:
+    name: ofagent-go
+    project: '{name}'
+
+    jobs:
+      - 'verify-ofagent-go-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-ofagent-go-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-ofagent-go-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_ofagent-go_licensed'
+      - 'make-unit-test':
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint'
+          unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'publish-ofagent-go-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
