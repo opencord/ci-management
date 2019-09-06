@@ -6,11 +6,22 @@
     project: '{name}'
 
     jobs:
-      - 'aaa-gerrit':
-          branch-regexp: '^(.*)$'
+      - 'aaa-gerrit-master':
+          branch-regexp: '^(aaa-2.*|master)$'
+          jdkDistro: 'java-11-amazon-corretto'
+      - 'aaa-gerrit-legacy':
+          branch-regexp: '^(aaa-1.*|cord-.*|voltha-.*)$'
+          jdkDistro: 'java-1.8.0-amazon-corretto'
 
 - job-group:
-    name: 'aaa-gerrit'
+    name: 'aaa-gerrit-master'
+    jobs:
+      - 'verify-licensed'
+      - 'maven-install'
+      - 'maven-deploy'
+
+- job-group:
+    name: 'aaa-gerrit-legacy'
     jobs:
       - 'verify-licensed'
       - 'maven-install'

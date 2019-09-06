@@ -3,7 +3,7 @@
 
 - job-template:
     id: maven-install
-    name: '{project}-gerrit'
+    name: '{project}-{jdkDistro}-gerrit'
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml
@@ -73,7 +73,7 @@
 
 - job-template:
     id: maven-deploy
-    name: '{project}-gerrit-deploy'
+    name: '{project}-{jdkDistro}-gerrit-deploy'
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml
