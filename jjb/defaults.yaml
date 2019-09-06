@@ -174,3 +174,7 @@
     # Currently used with: github-release
     artifact-glob: ''
 
+    # JDK distribution to use
+    # Give the version of the JDK to use when building
+    # Parameter is used with `update-java-alternatives --set <jdk-distribution>`
+    jdk-distribution: 'java-11-amazon-corretto'
