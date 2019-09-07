@@ -83,6 +83,9 @@
     concurrent: true
 
     builders:
+      - inject:
+          properties-content: |
+            SKIP_DIRS={skip-dirs}
       - shell: !include-raw-escape: shell/ansiblelint.sh
 
 

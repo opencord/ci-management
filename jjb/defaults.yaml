@@ -174,3 +174,6 @@
     # Currently used with: github-release
     artifact-glob: ''
 
+    # skip directories
+    # Used to skip directories in supported tests
+    skip-dirs: ''
