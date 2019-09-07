@@ -16,6 +16,7 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_automation-tools_licensed'
       - 'verify-ansible-lint':
+          skip-dirs: "comac comac-in-a-box"
           dependency-jobs: 'verify_automation-tools_tag-collision'
       - 'verify-shellcheck':
           dependency-jobs: 'verify_automation-tools_ansible-lint'
