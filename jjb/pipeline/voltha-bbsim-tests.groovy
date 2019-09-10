@@ -23,7 +23,7 @@ pipeline {
     label "${params.executorNode}"
   }
   options {
-      timeout(time: 60, unit: 'MINUTES')
+      timeout(time: 120, unit: 'MINUTES')
   }
 
   stages {
@@ -160,6 +160,10 @@ pipeline {
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
            fi
          done
+         ## clean up node
+	 ./voltha down
+	 cd $WORKSPACE/
+	 rm -rf kind-voltha/ voltha-system-tests/ || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
