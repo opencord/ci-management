@@ -9,12 +9,6 @@
       - 'verify-exampleservice-common':
           branch-regexp: '{supported-branches-regexp}'
 
-      - 'verify-exampleservice-jobs-modern':
-          branch-regexp: '{modern-branches-regexp}'
-
-      - 'verify-exampleservice-jobs-legacy':
-          branch-regexp: '{legacy-branches-regexp}'
-
 - job-group:
     name: 'verify-exampleservice-common'
     jobs:
@@ -23,20 +17,3 @@
           dependency-jobs: 'verify_exampleservice_licensed'
       - 'verify-sonarqube':
           dependency-jobs: 'verify_exampleservice_tag-collision'
-
-- job-group:
-    name: 'verify-exampleservice-jobs-modern'
-    jobs:
-      - 'api-test':
-          dependency-jobs: 'verify_exampleservice_sonarqube'
-          pipeline_script: 'all-xos-api-test-helm.groovy'
-
-- job-group:
-    name: 'verify-exampleservice-jobs-legacy'
-    jobs:
-      - 'api-test':
-          name-extension: '-legacy'
-          dependency-jobs: 'verify_exampleservice_sonarqube'
-          pipeline_script: 'all-xos-api-test.groovy'
-
-
