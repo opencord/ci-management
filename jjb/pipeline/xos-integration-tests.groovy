@@ -90,7 +90,12 @@ pipeline {
            helm-repo-tools/wait_for_pods.sh
 
            helm dep up xos-core
-           helm install --set images.xos_core.tag=master xos-core -n xos-core
+
+           if [[ ${gerritProject} == "xos"]]; then
+             helm install --set images.xos_core.tag=master xos-core -n xos-core;
+           else
+             helm install xos-core -n xos-core;
+           fi
 
            helm dep update xos-profiles/seba-services
            helm install xos-profiles/seba-services
