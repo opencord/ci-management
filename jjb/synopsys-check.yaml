@@ -82,7 +82,7 @@
 
     wrappers:
       - lf-infra-wrappers:
-          build-timeout: '{build-timeout}'
+          build-timeout: '60'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     parameters:
