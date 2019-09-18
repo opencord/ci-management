@@ -69,7 +69,7 @@
     triggers:
        - timed: |
                  TZ=America/Los_Angeles
-                 H/20 * * * *
+                 H/30 * * * *
 
 - job-template:
     id: 'voltha-patch-test'
