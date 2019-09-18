@@ -27,7 +27,7 @@ pipeline {
   }
 
   options {
-      timeout(30)
+      timeout(60)
   }
 
   stages {
@@ -109,7 +109,7 @@ pipeline {
                         "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
                         "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
                         "--detect.policy.check.fail.on.severities=ALL,BLOCKER,CRITICAL,MAJOR,MINOR,TRIVIAL " + \
-                        "--detect.report.timeout=900 " + \
+                        "--detect.report.timeout=3600 " + \
                         "--detect.tools=ALL " + \
                         "--detect.cleanup=false")
       }
