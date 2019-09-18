@@ -56,6 +56,11 @@
           default: '-e notready'
           description: 'test tags'
 
+      - string:
+          name: extraHelmFlags
+          default: '--set defaults.image_tag=voltha-2.1,images.afrouter.repository=volthacore/voltha-afrouter,images.afrouter.tag=khen,images.ro_core.repository=volthacore/voltha-ro-core,images.ro_core.tag=khen,images.rw_core.repository=volthacore/voltha-rw-core,images.rw_core.tag=khen'
+          description: 'Helm flags to pass to ./voltha up'
+
     project-type: pipeline
     concurrent: false
 
@@ -64,7 +69,7 @@
     triggers:
        - timed: |
                  TZ=America/Los_Angeles
-                 H * * * *
+                 H/20 * * * *
 
 - job-template:
     id: 'voltha-patch-test'
@@ -135,6 +140,11 @@
           name: testTags
           default: '-e notready'
           description: 'test tags'
+
+      - string:
+          name: extraHelmFlags
+          default: '--set defaults.image_tag=voltha-2.1'
+          description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
     concurrent: true
