@@ -161,7 +161,7 @@ pipeline {
            fi
          done
          ## clean up node
-	 ./voltha down
+	 WAIT_ON_DOWN=y ./voltha down
 	 cd $WORKSPACE/
 	 rm -rf kind-voltha/ voltha-system-tests/ || true
          '''
