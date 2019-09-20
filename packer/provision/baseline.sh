@@ -218,6 +218,9 @@ EOF
     # per discussion on #lf-releng, the upstream Ubuntu image changed to be
     # missing add-apt-repository, so the next command failed.
     apt-get update -m
+
+    # added 2019-09-20, sometimes upstream repos are broken w/this package, try to determine why
+    apt-cache madison software-properties-common
     apt-get install -y software-properties-common
 
     # add additional repositories
@@ -226,7 +229,6 @@ EOF
     echo "---> Installing base packages"
     apt-get clean
     apt-get update -m
-    apt-get upgrade -m
     apt-get dist-upgrade -m
 
     apt-get update -m
