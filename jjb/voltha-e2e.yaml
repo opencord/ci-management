@@ -58,7 +58,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag=voltha-2.1,images.afrouter.repository=andybavier/voltha-afrouter,images.afrouter.tag=vol-1913,images.rw_core.repository=andybavier/voltha-rw-core,images.rw_core.tag=vol-1913'
+          default: '--set defaults.image_tag=voltha-2.1'
           description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
