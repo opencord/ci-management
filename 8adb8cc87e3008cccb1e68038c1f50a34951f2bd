@@ -16,6 +16,24 @@
       "revId": "8adb8cc87e3008cccb1e68038c1f50a34951f2bd",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a3907c12_849876e0",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-09-20T20:01:05Z",
+      "side": 1,
+      "message": "I was misled by the linter :-)",
+      "parentUuid": "34de3f85_9115ca07",
+      "revId": "8adb8cc87e3008cccb1e68038c1f50a34951f2bd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
