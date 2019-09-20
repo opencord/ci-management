@@ -115,6 +115,7 @@ EOF
         python-urllib3 \
         python3-dev \
         ruby \
+        screen \
         socat \
         ssh \
         sshpass \
