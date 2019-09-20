@@ -214,14 +214,14 @@ EOF
 
     echo "---> Updating operating system"
 
-    # Change made 2018-07-09 by zdw
-    # per discussion on #lf-releng, the upstream Ubuntu image changed to be
-    # missing add-apt-repository, so the next command failed.
-    apt-get update -m
-
-    # added 2019-09-20, sometimes upstream repos are broken w/this package, try to determine why
-    apt-cache madison software-properties-common
-    apt-get install -y software-properties-common
+    # remove these as the fix seems to be broken now? zdw, 2019-09-20
+    # # Change made 2018-07-09 by zdw
+    # # per discussion on #lf-releng, the upstream Ubuntu image changed to be
+    # # missing add-apt-repository, so the next command failed.
+    # apt-get update -m
+    # # added 2019-09-20, sometimes upstream repos are broken w/this package, try to determine why
+    # apt-cache madison software-properties-common
+    # apt-get install -y software-properties-common
 
     # add additional repositories
     add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse"
