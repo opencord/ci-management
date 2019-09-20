@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "34de3f85_9115ca07",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000162
+      },
+      "writtenOn": "2019-09-20T17:54:22Z",
+      "side": 1,
+      "message": "lots of spacing issues. thats probably why jjb-verify is failing.",
+      "revId": "8adb8cc87e3008cccb1e68038c1f50a34951f2bd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
