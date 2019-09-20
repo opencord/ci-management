@@ -214,6 +214,13 @@ EOF
 
     echo "---> Updating operating system"
 
+    # added 2019-09-20 as apt-add-repository and software-properties-common weren't working
+    cat <<EOF >/etc/apt/sources.list.d/packer.list
+# created by packer
+deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse
+
+EOF
+
     # remove these as the fix seems to be broken now? zdw, 2019-09-20
     # # Change made 2018-07-09 by zdw
     # # per discussion on #lf-releng, the upstream Ubuntu image changed to be
@@ -224,11 +231,12 @@ EOF
     # apt-get install -y software-properties-common
 
     # add additional repositories
-    add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse"
+    # add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse"
 
     echo "---> Installing base packages"
     apt-get clean
     apt-get update -m
+    296     apt-get upgrade -m
     apt-get dist-upgrade -m
 
     apt-get update -m
