@@ -63,7 +63,7 @@
           #!/usr/bin/env bash
           set -eu -o pipefail
           echo "Setting JDK Distro to: $jdkDistro"
-          sudo update-java-alternatives -set "$jdkDistro"
+          sudo update-java-alternatives -s $jdkDistro
           echo "Java Version:"
           java -version
 
@@ -128,7 +128,7 @@
           #!/usr/bin/env bash
           set -eu -o pipefail
           echo "Setting JDK Distro to: $jdkDistro"
-          sudo update-java-alternatives -set "$jdkDistro"
+          sudo update-java-alternatives -s $jdkDistro
           echo "Java Version:"
           java -version
 
@@ -197,7 +197,7 @@
           #!/usr/bin/env bash
           set -eu -o pipefail
           echo "Setting JDK Distro to: $jdkDistro"
-          sudo update-java-alternatives -set "$jdkDistro"
+          sudo update-java-alternatives -s $jdkDistro
           echo "Java Version:"
           java -version
 
