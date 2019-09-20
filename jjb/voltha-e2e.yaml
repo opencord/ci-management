@@ -7,9 +7,14 @@
     project-name: '{name}'
 
     jobs:
-    - 'voltha-periodic-test':
-          name: 'voltha-system-tests'
-          pipeline: 'voltha-go-tests.groovy'
+      - 'voltha-periodic-test':
+        name: 'voltha-system-tests'
+        pipeline: 'voltha-go-tests.groovy'
+        default-image-tag: 'voltha-2.1'
+      - 'voltha-periodic-test':
+        name: 'voltha-system-tests-master'
+        pipeline: 'voltha-go-tests.groovy'
+        default-image-tag: 'master'
 
 - job-template:
     id: 'voltha-periodic-test'
@@ -42,9 +47,9 @@
           description: 'Number of onus per pon port'
 
       - string:
-         name: emulationMode
-         default: '--set emulation_mode=both'
-         description: 'Emulation for BBSIM (both|aaa)'
+          name: emulationMode
+          default: '--set emulation_mode=both'
+          description: 'Emulation for BBSIM (both|aaa)'
 
       - string:
           name: testTimeout
@@ -58,7 +63,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag=voltha-2.1,images.afrouter.repository=andybavier/voltha-afrouter,images.afrouter.tag=vol-1913,images.rw_core.repository=andybavier/voltha-rw-core,images.rw_core.tag=vol-1913'
+          default: '--set defaults.image_tag={default-image-tag},wpa_wait=10,dhcp_wait=10'
           description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
@@ -67,9 +72,9 @@
     dsl: !include-raw-escape: pipeline/{pipeline}
 
     triggers:
-       - timed: |
+      - timed: |
                  TZ=America/Los_Angeles
-                 H/30 * * * *
+                 H * * * *
 
 - job-template:
     id: 'voltha-patch-test'
@@ -102,24 +107,24 @@
           description: 'URL to the repo manifest'
 
       - string:
-         name: manifestBranch
-         default: '$GERRIT_BRANCH'
-         description: 'Name of the repo branch to use'
+          name: manifestBranch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the repo branch to use'
 
       - string:
-         name: gerritProject
-         default: '$GERRIT_PROJECT'
-         description: 'Name of the Gerrit project'
+          name: gerritProject
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the Gerrit project'
 
       - string:
-         name: gerritChangeNumber
-         default: '$GERRIT_CHANGE_NUMBER'
-         description: 'Changeset number in Gerrit'
+          name: gerritChangeNumber
+          default: '$GERRIT_CHANGE_NUMBER'
+          description: 'Changeset number in Gerrit'
 
       - string:
-         name: gerritPatchsetNumber
-         default: '$GERRIT_PATCHSET_NUMBER'
-         description: 'PatchSet number in Gerrit'
+          name: gerritPatchsetNumber
+          default: '$GERRIT_PATCHSET_NUMBER'
+          description: 'PatchSet number in Gerrit'
 
       - string:
           name: numOnus
@@ -127,9 +132,9 @@
           description: 'Number of onus per pon port'
 
       - string:
-         name: emulationMode
-         default: '--set emulation_mode=both'
-         description: 'Emulation for BBSIM (both|aaa)'
+          name: emulationMode
+          default: '--set emulation_mode=both'
+          description: 'Emulation for BBSIM (both|aaa)'
 
       - string:
           name: testTimeout
