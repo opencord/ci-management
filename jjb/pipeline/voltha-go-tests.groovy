@@ -93,6 +93,10 @@ pipeline {
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
            fi
          done
+         ## clean up node
+         ./voltha down
+         cd $WORKSPACE/
+         rm -rf kind-voltha/ voltha-system-tests/ || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
