@@ -186,9 +186,9 @@ ubuntu_systems() {
 
     # Allow jenkins access to update-alternatives command to switch java version
     cat <<EOF >/etc/sudoers.d/89-jenkins-user-defaults
-Cmnd_Alias CMDS = /usr/sbin/update-alternatives, /usr/sbin/update-java-alternatives
 Defaults:jenkins !requiretty
-jenkins ALL = NOPASSWD: CMDS
+jenkins  ALL = NOPASSWD: /usr/sbin/update-alternatives, /usr/sbin/update-java-alternatives
+
 EOF
 
     export DEBIAN_FRONTEND=noninteractive
