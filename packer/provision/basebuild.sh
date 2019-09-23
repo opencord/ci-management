@@ -135,6 +135,7 @@ EOF
         grpcio-tools \
         isort \
         linkchecker \
+        more-itertools==5.0.0 \
         mock \
         nose2 \
         pexpect \
