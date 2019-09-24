@@ -35,6 +35,7 @@
          config-pod: 'flex-ocp-cord'
          profile: 'multipleGem'
          branch: 'voltha-2.1'
+         test-repo: 'voltha-system-tests'
          Jenkinsfile: 'Jenkinsfile-voltha-build'
          oltDebVersion: 'openolt-seba-2.0.deb'
          configurePod: true

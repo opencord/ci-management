@@ -57,6 +57,7 @@
          config-pod: 'flex-ocp-cord-voltha-master'
          profile: 'att-workflow'
          branch: 'master'
+         test-repo: 'cord-tester'
          helmRepoUrl: 'https://charts.opencord.org'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master.deb'
@@ -68,6 +69,7 @@
          config-pod: 'flex-ocp-cord-voltha16'
          profile: 'att-workflow'
          branch: 'cord-6.1'
+         test-repo: 'cord-tester'
          Jenkinsfile: 'Jenkinsfile-attworkflow-build'
          oltDebVersion: 'openolt-master-voltha16.deb'
          configurePod: true
