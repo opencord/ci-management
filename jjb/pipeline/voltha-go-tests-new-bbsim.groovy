@@ -60,7 +60,7 @@ pipeline {
       steps {
         sh """
           cd $WORKSPACE/bbsim
-          curl --user karaf:karaf -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @examples/sadis-minimal.json http://127.0.0.1:8181/onos/v1/network/configuration/apps
+          curl --user karaf:karaf -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @examples/sadis-minimal-voltha-2.json http://127.0.0.1:8181/onos/v1/network/configuration/apps
           curl --user karaf:karaf -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @examples/onos-dhcp.json  http://127.0.0.1:8181/onos/v1/network/configuration/apps
           """
       }
@@ -147,7 +147,7 @@ pipeline {
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
-
+         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "teo@opennetworking.org", sendToIndividuals: false])
     }
   }
 }
