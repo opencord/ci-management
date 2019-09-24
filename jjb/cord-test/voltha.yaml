@@ -28,3 +28,15 @@
          branch: 'master'
          test-repo: 'voltha-system-tests'
          Jenkinsfile: 'Jenkinsfile-voltha-test'
+
+      # flex OCP pod with olt/onu - timer based job
+      - 'build_pod_timer':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-ocp-cord'
+         profile: 'multipleGem'
+         branch: 'voltha-2.1'
+         Jenkinsfile: 'Jenkinsfile-voltha-build'
+         oltDebVersion: 'openolt-seba-2.0.deb'
+         configurePod: true
+         time: '1'
+

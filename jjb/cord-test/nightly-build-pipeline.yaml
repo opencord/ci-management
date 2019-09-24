@@ -127,7 +127,7 @@
     description: |
                   <!-- Managed by Jenkins Job Builder -->
                   Nightly Kubernetes tests on {config-pod} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/cord-test-pipeline.yaml <br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
     disabled: false
