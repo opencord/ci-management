@@ -31,6 +31,7 @@ pipeline {
     stage('Download kind-voltha') {
       steps {
         sh """
+           rm -rf kind-voltha
            git clone https://github.com/ciena/kind-voltha.git
            """
       }
@@ -45,18 +46,35 @@ pipeline {
       }
     }
 
-    stage('Deploy and run BBSim') {
+    stage('Download BBSim repo') {
+      steps {
+        sh """
+          cd $WORKSPACE
+          rm -rf bbsim
+          git clone https://github.com/opencord/bbsim.git bbsim
+          """
+      }
+    }
+
+    stage('config ONOS with BBSim sadis values') {
+      steps {
+        sh """
+          cd $WORKSPACE/bbsim
+          curl --user karaf:karaf -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @examples/sadis-minimal.json http://127.0.0.1:8181/onos/v1/network/configuration/apps
+          curl --user karaf:karaf -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @examples/onos-dhcp.json  http://127.0.0.1:8181/onos/v1/network/configuration/apps
+          """
+      }
+    }
+
+    stage('Build and Deploy BBSim') {
       // This step doing multple things as it is (hopefully) a temporary step
       // once the new-bbsim is integrated with kind-voltha this all pipeline should be dismissed
       steps {
         sh """
-          cd $WORKSPACE
-          git clone https://github.com/opencord/bbsim.git bbsim
-          cd bbsim
-          # override sadis config
-          curl --user karaf:karaf -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @examples/sadis-minimal.json http://127.0.0.1:8181/onos/v1/network/configuration/apps
-          curl --user karaf:karaf -X POST --header 'Content-Type: application/json' --header 'Accept: application/json' -d @examples/onos-dhcp.json  http://127.0.0.1:8181/onos/v1/network/configuration/apps
-          # build and run BBSim
+          cd $WORKSPACE/bbsim
+          # FIXME why do we need these commands??
+          make dep
+          make protos
           DOCKER_TAG=candidate make docker-build
           TYPE=minimal kind load docker-image voltha/bbsim:candidate --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2;
           helm install -n bbsim deployments/helm-chart/bbsim/ --set images.bbsim.tag=candidate --set images.bbsim.pullPolicy=IfNotProsent
