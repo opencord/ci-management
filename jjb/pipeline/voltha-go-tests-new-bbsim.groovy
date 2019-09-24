@@ -70,15 +70,17 @@ pipeline {
       // This step doing multple things as it is (hopefully) a temporary step
       // once the new-bbsim is integrated with kind-voltha this all pipeline should be dismissed
       steps {
-        sh """
+        sh '''
+          cd $WORKSPACE/kind-voltha/
+          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
+          export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
+          export PATH=$WORKSPACE/kind-voltha/bin:$PATH
           cd $WORKSPACE/bbsim
-          # FIXME why do we need these commands??
-          make dep
-          make protos
-          DOCKER_TAG=candidate make docker-build
-          TYPE=minimal kind load docker-image voltha/bbsim:candidate --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2;
-          helm install -n bbsim deployments/helm-chart/bbsim/ --set images.bbsim.tag=candidate --set images.bbsim.pullPolicy=IfNotProsent
-          """
+          # DOCKER_TAG=candidate make docker-build
+          # TYPE=minimal kind load docker-image voltha/bbsim:candidate --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2;
+          # helm install -n bbsim deployments/helm-chart/bbsim/ --set images.bbsim.tag=candidate --set images.bbsim.pullPolicy=IfNotProsent
+          helm install -n bbsim deployments/helm-chart/bbsim/ --set images.bbsim.tag=master
+          '''
       }
     }
 
