@@ -23,6 +23,7 @@
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
+          build-timeout: 15
 
 - job-group:
     name: 'publish-voltha-openonu-adapter-jobs'
