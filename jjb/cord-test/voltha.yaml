@@ -41,3 +41,13 @@
          configurePod: true
          time: '1'
 
+     # flex pod1 test job - using voltha branch
+      - 'build_voltha_pod_test':
+         testvm: 'qa-testvm-pod'
+         config-pod: 'flex-ocp-cord'
+         profile: 'multipleGem'
+         branch: 'master'
+         release: '2.1'
+         test-repo: 'voltha-system-tests'
+         Jenkinsfile: 'Jenkinsfile-voltha-test'
+
