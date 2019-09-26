@@ -96,22 +96,26 @@ pipeline {
 
     stage ("Synopsys Detect") {
       steps {
-        sh "echo Running Synopsys Detect on: ${projectName}"
+        // catch any errors that occur so that logs can be saved in the next stage
+        // docs: https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/#catcherror-catch-error-and-set-build-result-to-failure
+        catchError {
+          sh "echo Running Synopsys Detect on: ${projectName}"
 
-        // Plugin: https://github.com/jenkinsci/synopsys-detect-plugin
-        // Documentation: https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/62423113/Synopsys+Detect
-        // also: https://community.synopsys.com/s/article/Integrations-Documentation-Synopsys-Detect-Properties-for-version-5-4-0
-        // also: Help menu after logging into BlackDuck portal
-        synopsys_detect("--detect.source.path=$test_path " + \
-                        "--detect.project.name=${blackduck_project}_${projectName} " + \
-                        "--detect.project.version.name=$git_tag_or_branch " + \
-                        "--detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING " + \
-                        "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
-                        "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
-                        "--detect.policy.check.fail.on.severities=ALL,BLOCKER,CRITICAL,MAJOR,MINOR,TRIVIAL " + \
-                        "--detect.report.timeout=3600 " + \
-                        "--detect.tools=ALL " + \
-                        "--detect.cleanup=false")
+          // Plugin: https://github.com/jenkinsci/synopsys-detect-plugin
+          // Documentation: https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/62423113/Synopsys+Detect
+          // also: https://community.synopsys.com/s/article/Integrations-Documentation-Synopsys-Detect-Properties-for-version-5-4-0
+          // also: Help menu after logging into BlackDuck portal
+          synopsys_detect("--detect.source.path=$test_path " + \
+                          "--detect.project.name=${blackduck_project}_${projectName} " + \
+                          "--detect.project.version.name=$git_tag_or_branch " + \
+                          "--detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING " + \
+                          "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
+                          "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
+                          "--detect.policy.check.fail.on.severities=ALL,BLOCKER,CRITICAL,MAJOR,MINOR,TRIVIAL " + \
+                          "--detect.report.timeout=3600 " + \
+                          "--detect.tools=ALL " + \
+                          "--detect.cleanup=false")
+        }
       }
     }
 
