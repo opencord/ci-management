@@ -106,19 +106,22 @@ print(",".join(sorted(repo_list)))
 
     stage ("Synopsys Detect") {
       steps {
-        script {
-          repos.each { gitRepo ->
-            sh "echo Running Synopsys Detect on: ${gitRepo}"
-            synopsys_detect("--detect.source.path=${gitRepo} " + \
-                            "--detect.project.name=${blackduck_project}_${projectName} " + \
-                            "--detect.project.version.name=$git_tag_or_branch " + \
-                            "--detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING " + \
-                            "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
-                            "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
-                            "--detect.policy.check.fail.on.severities=ALL,BLOCKER,CRITICAL,MAJOR,MINOR,TRIVIAL " + \
-                            "--detect.report.timeout=900 " + \
-                            "--detect.tools=ALL " + \
-                            "--detect.cleanup=false")
+        // catch any errors that occur so that logs can be saved in the next stage
+        catchError {
+          script {
+            repos.each { gitRepo ->
+              sh "echo Running Synopsys Detect on: ${gitRepo}"
+              synopsys_detect("--detect.source.path=${gitRepo} " + \
+                              "--detect.project.name=${blackduck_project}_${projectName} " + \
+                              "--detect.project.version.name=$git_tag_or_branch " + \
+                              "--detect.blackduck.signature.scanner.snippet.matching=SNIPPET_MATCHING " + \
+                              "--detect.blackduck.signature.scanner.upload.source.mode=true " + \
+                              "--detect.blackduck.signature.scanner.exclusion.patterns=/vendor/ " + \
+                              "--detect.policy.check.fail.on.severities=ALL,BLOCKER,CRITICAL,MAJOR,MINOR,TRIVIAL " + \
+                              "--detect.report.timeout=900 " + \
+                              "--detect.tools=ALL " + \
+                              "--detect.cleanup=false")
+            }
           }
         }
       }
