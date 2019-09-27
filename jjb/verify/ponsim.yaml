@@ -1,0 +1,31 @@
+---
+# verification jobs for 'ponsim' repo
+
+- project:
+    name: ponsim
+    project: '{name}'
+
+    jobs:
+      - 'verify-ponsim-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-ponsim-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-ponsim-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_ponsim_licensed'
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'test docker-build'
+          unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-ponsim-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'

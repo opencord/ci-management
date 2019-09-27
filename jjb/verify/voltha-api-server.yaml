@@ -1,0 +1,39 @@
+---
+# verification jobs for 'voltha-api-server' repo
+
+- project:
+    name: voltha-api-server
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-api-server-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-voltha-api-server-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-api-server-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-api-server_licensed'
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint sca test docker-build'
+          unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'publish-voltha-api-server-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
+
+- job-group:
+    name: 'voltha-api-server-system-tests'
+    jobs:
+      - 'voltha-patch-test':
+         pipeline: 'voltha-bbsim-tests.groovy'
