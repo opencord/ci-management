@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b3bafbc_2996b46b",
+        "filename": "jjb/docker-publish.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-09-27T18:40:27Z",
+      "side": 1,
+      "message": "Should be parameterized, with a default value from `defaults.yaml`",
+      "range": {
+        "startLine": 72,
+        "startChar": 18,
+        "endLine": 72,
+        "endChar": 41
+      },
+      "revId": "33ccd1474a65be3c084868595cdb9e55d3f3691e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
