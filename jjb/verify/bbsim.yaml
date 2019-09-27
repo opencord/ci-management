@@ -27,5 +27,6 @@
     name: 'publish-bbsim-jobs'
     jobs:
       - 'docker-publish':
+          maintainers: "teo@opennetworking.org"
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'

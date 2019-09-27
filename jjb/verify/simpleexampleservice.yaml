@@ -27,5 +27,6 @@
     name: 'publish-simpleexampleservice-jobs'
     jobs:
       - 'docker-publish':
+          maintainers: "scottb@opennetworking.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag'

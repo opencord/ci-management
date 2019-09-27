@@ -114,5 +114,8 @@ pipeline {
       archiveArtifacts artifacts: 'docker-*.log', fingerprint: true
       deleteDir()
     }
+    failure {
+      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${params.maintainers}", sendToIndividuals: false])
+    }
   }
 }
