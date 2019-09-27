@@ -24,5 +24,6 @@
     name: 'publish-device-management-jobs'
     jobs:
       - 'docker-publish':
+          maintainers: "scottb@opennetworking.org"
           docker-repo: 'opencord'
           dependency-jobs: 'version-tag'
