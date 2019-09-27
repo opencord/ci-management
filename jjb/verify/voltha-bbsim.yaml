@@ -26,6 +26,7 @@
     name: 'publish-voltha-bbsim-jobs'
     jobs:
       - 'docker-publish':
+          maintainers: "teo@opennetworking.org"
           build-timeout: 30
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
