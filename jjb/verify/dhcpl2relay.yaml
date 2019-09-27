@@ -1,0 +1,37 @@
+---
+# jobs for 'dhcpl2relay' repo
+
+- project:
+    name: dhcpl2relay
+    project: '{name}'
+
+    jobs:
+      - 'dhcpl2relay-jobs-common':
+          branch-regexp: '^(.*)$'
+
+      - 'dhcpl2relay-jobs':
+          branch-regexp: '^(master)$'
+
+      - 'dhcpl2relay-jobs-legacy':
+          branch-regexp: '^(dhcpl2relay-1.6)$'
+          jdk-distribution: 'java-1.8.0-amazon-corretto'
+          name-extension: '-jdk8'
+
+- job-group:
+    name: 'dhcpl2relay-jobs-common'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+
+- job-group:
+    name: 'dhcpl2relay-jobs'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'
+
+- job-group:
+    name: 'dhcpl2relay-jobs-legacy'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'
+

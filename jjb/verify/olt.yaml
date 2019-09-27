@@ -1,0 +1,37 @@
+---
+# jobs for 'olt' repo
+
+- project:
+    name: olt
+    project: '{name}'
+
+    jobs:
+      - 'olt-jobs-common':
+          branch-regexp: '^(.*)$'
+
+      - 'olt-jobs':
+          branch-regexp: '^(master)$'
+
+      - 'olt-jobs-legacy':
+          branch-regexp: '^(olt-2.2)$'
+          jdk-distribution: 'java-1.8.0-amazon-corretto'
+          name-extension: '-jdk8'
+
+- job-group:
+    name: 'olt-jobs-common'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+
+- job-group:
+    name: 'olt-jobs'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'
+
+- job-group:
+    name: 'olt-jobs-legacy'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'
+

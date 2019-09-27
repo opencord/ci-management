@@ -1,0 +1,36 @@
+---
+# jobs for 'aaa' repo
+
+- project:
+    name: aaa
+    project: '{name}'
+
+    jobs:
+      - 'aaa-jobs-common':
+          branch-regexp: '^(.*)$'
+
+      - 'aaa-jobs':
+          branch-regexp: '^(master)$'
+
+      - 'aaa-jobs-legacy':
+          branch-regexp: '^(aaa-1.10)$'
+          jdk-distribution: 'java-1.8.0-amazon-corretto'
+          name-extension: '-jdk8'
+
+- job-group:
+    name: 'aaa-jobs-common'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+
+- job-group:
+    name: 'aaa-jobs'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'
+
+- job-group:
+    name: 'aaa-jobs-legacy'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'

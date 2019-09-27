@@ -1,18 +1,18 @@
 ---
-# maven job for 'pppoel2relay' repo
+# jobs for 'pppoel2relay' repo
 
 - project:
     name: pppoel2relay
     project: '{name}'
 
     jobs:
-      - 'pppoel2relay-gerrit':
+      - 'pppoel2relay-jobs':
           branch-regexp: '^(.*)$'
 
 - job-group:
-    name: 'pppoel2relay-gerrit'
+    name: 'pppoel2relay-jobs'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject'
       - 'maven-install'
-      - 'maven-deploy'
+      - 'maven-publish'

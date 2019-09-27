@@ -42,6 +42,10 @@ function read_version {
   then
     NEW_VERSION=$(python -c 'import json,sys;obj=json.load(sys.stdin); print obj["version"]' < package.json)
     VERSIONFILE="package.json"
+  elif [ -f "pom.xml" ]
+  then
+    NEW_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml)
+    VERSIONFILE="pom.xml"
   else
     echo "ERROR: No versioning file found!"
     exit 1
