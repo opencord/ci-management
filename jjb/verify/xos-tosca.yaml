@@ -23,5 +23,6 @@
     name: 'publish-xos-tosca-jobs'
     jobs:
       - 'docker-publish':
+          maintainers: "teo@opennetworking.org, scottb@opennetworking.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag'

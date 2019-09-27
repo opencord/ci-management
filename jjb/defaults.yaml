@@ -182,3 +182,7 @@
     # skip directories
     # Used to skip directories in supported tests
     skip-dirs: ''
+
+    # maintainers
+    # Used to notify users in supported tests
+    maintainers: 'zdw@opennetworking.org'

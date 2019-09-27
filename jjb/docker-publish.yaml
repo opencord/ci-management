@@ -67,6 +67,11 @@
           default: 'x86_64'
           description: "List of architectures to build containers on, pipe separated (nonfunctional currently)"
 
+      - string:
+          name: maintainers
+          default: '{maintainers}'
+          description: "The person that sould be notified if this job fails"
+
     project-type: pipeline
     concurrent: true
 
