@@ -8,6 +8,8 @@
     jobs:
       - 'verify-voltha-bbsim-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'voltha-bbsim-system-tests':
+          branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-bbsim-jobs':
             branch-regexp: '{all-branches-regexp}'
 
@@ -21,6 +23,12 @@
           unit-test-targets: 'test docker-build'
           dest-gopath: "github.com/opencord"
           junit-allow-empty-results: true
+
+- job-group:
+    name: 'voltha-bbsim-system-tests'
+    jobs:
+      - 'voltha-patch-test':
+         pipeline: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-bbsim-jobs'
