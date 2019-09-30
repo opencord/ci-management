@@ -138,7 +138,7 @@
 
       - bool:
          name: BuildVoltha
-         default: false
+         default: true
          description: 'Build modified voltha component'
 
       - bool:
