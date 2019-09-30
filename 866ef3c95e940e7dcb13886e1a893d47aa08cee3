@@ -22,6 +22,30 @@
       "revId": "866ef3c95e940e7dcb13886e1a893d47aa08cee3",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f9bbfe6d_a9f55d6d",
+        "filename": "jjb/maven.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-09-30T20:47:17Z",
+      "side": 1,
+      "message": "The maven `test` goal wasn\u0027t being invoked by the previous set of jobs,which seemed incorrect to me. \n\nI combined the `test` (unit test) and `install` (builds and installs a copy to ~/.m2) together into a single job, similar to how unit tests + docker build are done in other components (run tests, ensure build works). \n\nNew job also collects JUnit/Cobertura results.",
+      "parentUuid": "968eecdc_8acac4e6",
+      "range": {
+        "startLine": 5,
+        "startChar": 4,
+        "endLine": 5,
+        "endChar": 18
+      },
+      "revId": "866ef3c95e940e7dcb13886e1a893d47aa08cee3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
