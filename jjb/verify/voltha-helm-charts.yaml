@@ -17,4 +17,6 @@
           dependency-jobs: 'verify_voltha-helm-charts_licensed'
       - 'verify-helm-lint':
           dependency-jobs: 'verify_voltha-helm-charts_tag-collision'
+      - 'voltha-patch-test':
+         pipeline: 'voltha-helm-charts-bbsim-tests.groovy'
 
