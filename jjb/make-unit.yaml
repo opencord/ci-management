@@ -47,6 +47,7 @@
             DEST_GOPATH={dest-gopath}
             UNIT_TEST_TARGETS={unit-test-targets}
             UNIT_TEST_KEEP_GOING={unit-test-keep-going}
+            GOPROXY={go-proxy|"https://proxy.golang.org"}
       - shell: !include-raw-escape: shell/make-unit.sh
 
     publishers:
