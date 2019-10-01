@@ -1,0 +1,32 @@
+---
+# verification jobs for 'voltha-docs' repo
+
+- project:
+    name: voltha-docs
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-docs-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+      - 'post-submit-voltha-docs-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-docs-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          unit-test-targets: 'test'
+          unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'post-submit-voltha-docs-jobs'
+    jobs:
+      - 'sync-dir':
+          dependency-jobs: 'version-tag'
+          build-command: 'make html'
+          build-output-path: '_build/html/'
+          sync-target-server: 'guide.opencord.org'
+          sync-target-path: '/var/www/voltha-docs/'

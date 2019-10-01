@@ -160,3 +160,23 @@
             - file-id: pipconf
               target: '$HOME/.config/pip/pip.conf'
 
+# wrapper to provide SSH key and fill in ~/.ssh/known_hosts file for use with rsync
+# Name matches macro in ONOS JJB, for future unification
+- wrapper:
+    name: onf-infra-rsync-wrappers
+    wrappers:
+      - mask-passwords
+      - timeout:
+          type: absolute
+          timeout: '{build-timeout}'
+          timeout-var: 'BUILD_TIMEOUT'
+          fail: true
+      - timestamps
+      - ssh-agent-credentials:
+          users:
+            - '{jenkins-ssh-credential}'
+      - config-file-provider:
+          files:
+            - file-id: known_hosts
+              target: '$HOME/.ssh/known_hosts'
+

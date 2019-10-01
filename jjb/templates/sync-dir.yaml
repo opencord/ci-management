@@ -1,0 +1,65 @@
+---
+# sync built directory to a remote server
+
+- job-template:
+    id: sync-dir
+    name: "sync-dir_{project}"
+    description: |
+      Created by {id} job-template from ci-management/jjb/templates/sync-dir.yaml
+      After merge run a build step then upload files to a directory remote server.
+
+    parameters:
+      - string:
+          name: BUILD_COMMAND
+          default: '{build-command}'
+          description: 'Name of the command to run to generate artifacts'
+
+      - string:
+          name: BUILD_OUTPUT_PATH
+          default: '{build-output-path}'
+          description: 'Path of files where build output is created by build command, relative to code checkout location'
+
+      - string:
+          name: SYNC_TARGET_SERVER
+          default: '{sync-target-server}'
+          description: 'Name of server where built files will be synced'
+
+      - string:
+          name: SYNC_TARGET_PATH
+          default: '{sync-target-path}'
+          description: 'Directory path on target server where the files will be synced'
+
+    triggers:
+      - cord-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - onf-infra-rsync-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-recursive: 'false'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: ../shell/sync-dir.sh
+
