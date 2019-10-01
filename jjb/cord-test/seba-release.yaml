@@ -27,6 +27,14 @@
          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
          oltDebVersion: 'openolt-master.deb'
 
+      # onlab pod1 test job - release 2.0 test job
+      - 'build_pod_release_test':
+         testvm: 'onf-build'
+         config-pod: 'onlab-pod1'
+         release: '2.0'
+         branch: 'master'
+         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+
       # onlab pod2 build
       - 'build_pod_manual_release':
          testvm: 'onf-build'
