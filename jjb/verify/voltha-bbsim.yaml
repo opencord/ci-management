@@ -18,9 +18,10 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-bbsim_licensed'
       - 'make-unit-test':
-          unit-test-targets: 'test docker-build'
+          unit-test-targets: 'test'
           dest-gopath: "github.com/opencord"
           junit-allow-empty-results: true
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'voltha-patch-test':
          pipeline: 'voltha-bbsim-tests.groovy'
 
