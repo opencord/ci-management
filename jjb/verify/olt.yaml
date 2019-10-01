@@ -13,7 +13,7 @@
           branch-regexp: '^(master)$'
 
       - 'olt-jobs-legacy':
-          branch-regexp: '^(olt-2.2)$'
+          branch-regexp: '^(olt-3.0)$'
           jdk-distribution: 'java-1.8.0-amazon-corretto'
           name-extension: '-jdk8'
 

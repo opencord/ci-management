@@ -13,7 +13,7 @@
           branch-regexp: '^(master)$'
 
       - 'sadis-jobs-legacy':
-          branch-regexp: '^(sadis-3.1)$'
+          branch-regexp: '^(sadis-3.0)$'
           jdk-distribution: 'java-1.8.0-amazon-corretto'
           name-extension: '-jdk8'
 
