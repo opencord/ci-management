@@ -36,7 +36,7 @@ pipeline {
             manifestRepositoryUrl: "${params.manifestUrl}", \
             manifestBranch: "${params.manifestBranch}", \
             currentBranch: true, \
-            destinationDir: 'voltha', \
+            destinationDir: 'voltha-helm-charts', \
             forceSync: true,
             resetFirst: true, \
             quiet: true, \
@@ -48,70 +48,38 @@ pipeline {
     stage('Patch') {
       steps {
         sh """
-           pushd voltha
+           cd $WORKSPACE/voltha-helm-charts
            PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
            repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-           popd
            """
       }
     }
     stage('Create K8s Cluster') {
       steps {
         sh """
+           cd $WORKSPACE
            git clone https://gerrit.opencord.org/voltha-system-tests
            git clone https://github.com/ciena/kind-voltha.git
-           cd kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up
            """
       }
     }
 
-    stage('Build Images') {
-      when { expression { return params.buildImages } }
-      steps {
-        sh """
-           cd $WORKSPACE/voltha/${gerritProject}/
-           make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
-           """
-      }
-    }
-
-    stage('Push Images') {
-      steps {
-        sh '''
-           export GOROOT=/usr/local/go
-           export GOPATH=\$(pwd)
-           export TYPE=minimal
-           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
-           docker images | grep citest
-           for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
-           '''
-      }
-    }
     stage('Deploy Voltha') {
       steps {
         sh """
+           cd $WORKSPACE/kind-voltha
+           source ./minimal-env.sh
+
+           export VOLTHA_CHART=$WORKSPACE/voltha-helm-charts/voltha
+           export VOLTHA_ADAPTER_OPEN_OLT_CHART=$WORKSPACE/voltha-helm-charts/voltha-adapter-openolt
+           export VOLTHA_ADAPTER_OPEN_ONU_CHART=$WORKSPACE/voltha-helm-charts/voltha-adapter-openonu
+           helm dep update \$VOLTHA_CHART
+           helm dep update \$VOLTHA_ADAPTER_OPEN_OLT_CHART
+           helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
+
            HELM_FLAG="--set defaults.image_tag=voltha-2.1 "
-
-           if [ "${gerritProject}" = "voltha-go" ]; then
-             HELM_FLAG+="-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml"
-           fi
-
-           if [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
-             HELM_FLAG+="--set images.adapter_open_olt.tag=citest,images.adapter_open_olt.pullPolicy=Never"
-           fi
-
-           if [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
-             HELM_FLAG+="--set images.adapter_open_onu.tag=citest,images.adapter_open_onu.pullPolicy=Never"
-           fi
-
-           if [ "${gerritProject}" = "voltha-bbsim" ]; then
-             HELM_FLAG+="--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
-           fi
-
-           cd kind-voltha/
            echo \$HELM_FLAG
            EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 ./voltha up
            """
@@ -121,12 +89,10 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
-           cd kind-voltha/
-           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
+           cd $WORKSPACE/kind-voltha/
+           source ./minimal-env.sh
            cd $WORKSPACE/voltha-system-tests/tests/sanity
-           robot -v ONOS_REST_PORT:8181 -v ONOS_SSH_PORT:8101 -e notready --critical sanity --noncritical VOL-1705 -v num_onus:1 sanity.robot || true
+           make sanity-kind || true
            '''
       }
     }
@@ -138,11 +104,9 @@ pipeline {
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
-         cd kind-voltha/
+         cd $WORKSPACE/kind-voltha/
          cp install-minimal.log $WORKSPACE/
-         export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-         export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-         export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
+	 source ./minimal-env.sh
          kubectl get pods --all-namespaces -o jsonpath="{..image}" |tr -s "[[:space:]]" "\n" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
@@ -168,7 +132,7 @@ pipeline {
          ## clean up node
 	 WAIT_ON_DOWN=y ./voltha down
 	 cd $WORKSPACE/
-	 rm -rf kind-voltha/ voltha-system-tests/ || true
+	 rm -rf kind-voltha/ voltha-system-tests/ voltha-helm-charts/ || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,

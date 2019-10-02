@@ -36,4 +36,5 @@
     name: 'voltha-api-server-system-tests'
     jobs:
       - 'voltha-patch-test':
-         pipeline: 'voltha-bbsim-tests.groovy'
+          buildImages: true
+          pipeline: 'voltha-bbsim-tests.groovy'
