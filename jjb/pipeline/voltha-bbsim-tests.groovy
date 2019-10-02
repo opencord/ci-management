@@ -67,6 +67,7 @@ pipeline {
     }
 
     stage('Build Images') {
+      when { expression { return params.buildImages } }
       steps {
         sh """
            cd $WORKSPACE/voltha/${gerritProject}/
@@ -76,6 +77,7 @@ pipeline {
     }
 
     stage('Push Images') {
+      when { expression { return params.buildImages } }
       steps {
         sh '''
            export GOROOT=/usr/local/go
@@ -91,7 +93,7 @@ pipeline {
     }
     stage('Deploy Voltha') {
       steps {
-        sh """
+        sh '''
            HELM_FLAG="--set defaults.image_tag=voltha-2.1 "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
@@ -114,10 +116,19 @@ pipeline {
              HELM_FLAG+="--set images.afrouter.tag=citest,images.afrouter.pullPolicy=Never,images.afrouterd.tag=citest,images.afrouterd.pullPolicy=Never"
            fi
 
-           cd kind-voltha/
+           if [ "${gerritProject}" = "voltha-helm-charts" ]; then
+             export VOLTHA_CHART=$WORKSPACE/voltha/voltha
+             export VOLTHA_ADAPTER_OPEN_OLT_CHART=$WORKSPACE/voltha/voltha-adapter-openolt
+             export VOLTHA_ADAPTER_OPEN_ONU_CHART=$WORKSPACE/voltha/voltha-adapter-openonu
+             helm dep update \$VOLTHA_CHART
+             helm dep update \$VOLTHA_ADAPTER_OPEN_OLT_CHART
+             helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
+           fi
+
+           cd $WORKSPACE/kind-voltha/
            echo \$HELM_FLAG
            EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 ./voltha up
-           """
+           '''
       }
     }
 
@@ -187,3 +198,4 @@ pipeline {
     }
   }
 }
+
