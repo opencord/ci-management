@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "78dbeff8_ee839a8b",
+        "filename": "jjb/verify/voltha-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-10-02T16:53:40Z",
+      "side": 1,
+      "message": "This is somewhat confusingly structured to someone trying to tell which jobs run on verification - we have two job groups that both do verification.\n\nCould you move the `voltha-patch-test` in the job group at the bottom of the file to the `verify-voltha-go-jobs` section, and eliminate that latter job group?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 48
+      },
+      "revId": "068500a6a58ead381b79a482b939281bb6d984f7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
