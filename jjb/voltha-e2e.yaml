@@ -205,6 +205,11 @@
           default: '-e notready'
           description: 'test tags'
 
+      - bool:
+         name: BuildImages
+         default: {buildImages}
+         description: 'Build modified voltha components'
+
     project-type: pipeline
     concurrent: true
 
