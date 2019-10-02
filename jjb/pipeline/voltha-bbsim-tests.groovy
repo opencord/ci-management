@@ -67,6 +67,7 @@ pipeline {
     }
 
     stage('Build Images') {
+      when { expression { return params.buildImages } }
       steps {
         sh """
            cd $WORKSPACE/voltha/${gerritProject}/
