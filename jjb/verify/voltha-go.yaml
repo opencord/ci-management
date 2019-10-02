@@ -11,7 +11,7 @@
       - 'publish-voltha-go-jobs':
           branch-regexp: '{all-branches-regexp}'
       - 'voltha-go-system-tests':
-          branch-regexp: '{voltha-stablization-branch}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-go-jobs'
