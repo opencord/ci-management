@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "0b1779ae_aedb9b80",
+        "filename": "jjb/verify/voltha-api-server.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-10-02T17:25:34Z",
+      "side": 1,
+      "message": "See comments on https://gerrit.opencord.org/c/15517/\n\n- Don\u0027t need two separate job-groups for verification tests\n- This is named incorrectly - the `voltha-api-server-system-tests` section at the bottom isn\u0027t ever referenced (and should go away)",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 48
+      },
+      "revId": "b37fca705d4ae0bafa0bb06fb368ff8eb9f0c49a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0d37334c_7517d0d7",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 5
