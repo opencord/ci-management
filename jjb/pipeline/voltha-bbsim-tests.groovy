@@ -117,9 +117,10 @@ pipeline {
            fi
 
            if [ "${gerritProject}" = "voltha-helm-charts" ]; then
-             export VOLTHA_CHART=$WORKSPACE/voltha/voltha
-             export VOLTHA_ADAPTER_OPEN_OLT_CHART=$WORKSPACE/voltha/voltha-adapter-openolt
-             export VOLTHA_ADAPTER_OPEN_ONU_CHART=$WORKSPACE/voltha/voltha-adapter-openonu
+             export CHART_PATH=$WORKSPACE/voltha/voltha-helm-charts
+             export VOLTHA_CHART=\$CHART_PATH/voltha
+             export VOLTHA_ADAPTER_OPEN_OLT_CHART=\$CHART_PATH/voltha-adapter-openolt
+             export VOLTHA_ADAPTER_OPEN_ONU_CHART=\$CHART_PATH/voltha-adapter-openonu
              helm dep update \$VOLTHA_CHART
              helm dep update \$VOLTHA_ADAPTER_OPEN_OLT_CHART
              helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
