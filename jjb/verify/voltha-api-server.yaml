@@ -10,7 +10,7 @@
           branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-api-server-jobs':
           branch-regexp: '{all-branches-regexp}'
-      - 'voltha-go-system-tests':
+      - 'voltha-api-server-system-tests':
           branch-regexp: '{all-branches-regexp}'
 
 - job-group:
@@ -38,4 +38,5 @@
     name: 'voltha-api-server-system-tests'
     jobs:
       - 'voltha-patch-test':
-         pipeline: 'voltha-bbsim-tests.groovy'
+          buildImages: true
+          pipeline: 'voltha-bbsim-tests.groovy'
