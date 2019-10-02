@@ -10,8 +10,6 @@
           branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-api-server-jobs':
           branch-regexp: '{all-branches-regexp}'
-      - 'voltha-go-system-tests':
-          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-api-server-jobs'
@@ -25,6 +23,8 @@
           unit-test-targets: 'lint test docker-build'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
+      - 'voltha-patch-test':
+         pipeline: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-api-server-jobs'
@@ -33,9 +33,3 @@
           build-timeout: 30
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
-
-- job-group:
-    name: 'voltha-api-server-system-tests'
-    jobs:
-      - 'voltha-patch-test':
-         pipeline: 'voltha-bbsim-tests.groovy'
