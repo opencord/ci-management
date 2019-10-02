@@ -10,6 +10,8 @@
           branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-api-server-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'voltha-go-system-tests':
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-api-server-jobs'

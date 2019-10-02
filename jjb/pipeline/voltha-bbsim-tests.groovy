@@ -110,6 +110,10 @@ pipeline {
              HELM_FLAG+="--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
            fi
 
+           if [ "${gerritProject}" = "voltha-api-server" ]; then
+             HELM_FLAG+="--set images.afrouter.tag=citest,images.afrouter.pullPolicy=Never,images.afrouterd.tag=citest,images.afrouterd.pullPolicy=Never"
+           fi
+
            cd kind-voltha/
            echo \$HELM_FLAG
            EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 ./voltha up
