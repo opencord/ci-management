@@ -18,6 +18,8 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-go_licensed'
       - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-timeout: 20
           dest-gopath: "github.com/opencord"
           name-extension: "-lint"
           unit-test-targets: 'lint'
