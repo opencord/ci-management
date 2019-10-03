@@ -67,27 +67,30 @@ pipeline {
     }
 
     stage('Build Images') {
-      when { expression { return params.buildImages } }
       steps {
         sh """
-           cd $WORKSPACE/voltha/${gerritProject}/
-           make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+           if [ "${gerritProject}" != "voltha-helm-charts" ]; then
+             cd $WORKSPACE/voltha/${gerritProject}/
+             make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+           fi
            """
       }
     }
 
     stage('Push Images') {
-      when { expression { return params.buildImages } }
       steps {
         sh '''
-           export GOROOT=/usr/local/go
-           export GOPATH=\$(pwd)
-           export TYPE=minimal
-           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
-           docker images | grep citest
-           for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
+           if [ "${gerritProject}" != "voltha-helm-charts" ]; then
+
+             export GOROOT=/usr/local/go
+             export GOPATH=\$(pwd)
+             export TYPE=minimal
+             export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
+             export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
+             export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
+             docker images | grep citest
+             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
+           fi
            '''
       }
     }
@@ -150,6 +153,7 @@ pipeline {
   post {
     always {
       sh '''
+         set +e
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true

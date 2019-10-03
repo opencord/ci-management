@@ -23,7 +23,6 @@
           junit-allow-empty-results: true
           build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'voltha-patch-test':
-          buildImages: true
           pipeline: 'voltha-bbsim-tests.groovy'
 
 - job-group:
