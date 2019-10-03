@@ -150,6 +150,7 @@ pipeline {
   post {
     always {
       sh '''
+         set +e
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
