@@ -32,6 +32,8 @@
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
+      - 'voltha-patch-test':
+          pipeline: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-openolt-adapter-jobs'
@@ -40,10 +42,3 @@
           build-timeout: 30
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
-
-- job-group:
-    name: 'voltha-openolt-adapter-system-tests'
-    jobs:
-      - 'voltha-patch-test':
-          buildImages: true
-          pipeline: 'voltha-bbsim-tests.groovy'
