@@ -18,6 +18,7 @@
       - 'verify-helm-lint':
           dependency-jobs: 'verify_voltha-helm-charts_tag-collision'
       - 'voltha-patch-test':
+          build-timeout: 20
           buildImages: false
           pipeline: 'voltha-bbsim-tests.groovy'
 

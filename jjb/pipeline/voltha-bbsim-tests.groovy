@@ -23,7 +23,7 @@ pipeline {
     label "${params.executorNode}"
   }
   options {
-      timeout(time: 120, unit: 'MINUTES')
+      timeout(time: 90, unit: 'MINUTES')
   }
 
   stages {
@@ -94,7 +94,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh '''
-           HELM_FLAG="--set defaults.image_tag=voltha-2.1 "
+           HELM_FLAG="--set defaults.image_tag=voltha-2.1,wpa_wait=10,dhcp_wait=10 "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
              HELM_FLAG+="-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml"
