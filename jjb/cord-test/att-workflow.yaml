@@ -52,28 +52,28 @@
          oltDebVersion: 'openolt-master.deb'
 
       # flex OCP pod with olt/onu : using voltha latest(master)
-      - 'build_pod_timer':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord-voltha-master'
-         profile: 'att-workflow'
-         branch: 'master'
-         test-repo: 'cord-tester'
-         helmRepoUrl: 'https://charts.opencord.org'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
-         oltDebVersion: 'openolt-master.deb'
-         time: '6'
+      #- 'build_pod_timer':
+      #   testvm: 'qa-testvm-pod'
+      #   config-pod: 'flex-ocp-cord-voltha-master'
+      #   profile: 'att-workflow'
+      #   branch: 'master'
+      #   test-repo: 'cord-tester'
+      #   helmRepoUrl: 'https://charts.opencord.org'
+      #   Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+      #   oltDebVersion: 'openolt-master.deb'
+      #   time: '6'
 
       # flex OCP pod with olt/onu - seba-1.0/cord-6.1 release
-      - 'build_pod_timer':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord-voltha16'
-         profile: 'att-workflow'
-         branch: 'cord-6.1'
-         test-repo: 'cord-tester'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build'
-         oltDebVersion: 'openolt-master-voltha16.deb'
-         configurePod: true
-         time: '3'
+      #- 'build_pod_timer':
+      #   testvm: 'qa-testvm-pod'
+      #   config-pod: 'flex-ocp-cord-voltha16'
+      #   profile: 'att-workflow'
+      #   branch: 'cord-6.1'
+      #   test-repo: 'cord-tester'
+      #   Jenkinsfile: 'Jenkinsfile-attworkflow-build'
+      #   oltDebVersion: 'openolt-master-voltha16.deb'
+      #   configurePod: true
+      #   time: '3'
 
       # flex OCP test job - using voltha-master branch
       - 'build_pod_test':
