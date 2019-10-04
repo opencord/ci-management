@@ -23,13 +23,14 @@
           unit-test-targets: 'lint sca'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-tests"
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
       - 'voltha-patch-test':
           pipeline: 'voltha-bbsim-tests.groovy'
 

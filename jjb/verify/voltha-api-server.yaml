@@ -18,7 +18,7 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-api-server_licensed'
       - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint test docker-build'
           unit-test-keep-going: 'true'
