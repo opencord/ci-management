@@ -22,6 +22,7 @@ set -eu -o pipefail
 
 VERSIONFILE="" # file path to file containing version number
 NEW_VERSION="" # version number found in $VERSIONFILE
+TAG_VERSION="" # version file that might have a leading v to work around go mod funkyness
 
 SEMVER_STRICT=${SEMVER_STRICT:-0} # require semver versions
 
@@ -38,13 +39,25 @@ function read_version {
   then
     NEW_VERSION=$(head -n1 "VERSION")
     VERSIONFILE="VERSION"
+
+    # If this is a golang project, use funky v-prefixed versions
+    if [ -f "Gopkg.toml" || -f "go.mod" ]
+    then
+      echo "go-based project found, using v-prefixed version for git tags: v${NEW_VERSION}"
+      TAG_VERSION=v${NEW_VERSION}
+    else
+      TAG_VERSION=${NEW_VERSION}
+    fi
+
   elif [ -f "package.json" ]
   then
     NEW_VERSION=$(python -c 'import json,sys;obj=json.load(sys.stdin); print obj["version"]' < package.json)
+    TAG_VERSION=$NEW_VERSION
     VERSIONFILE="package.json"
   elif [ -f "pom.xml" ]
   then
     NEW_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml)
+    TAG_VERSION=$NEW_VERSION
     VERSIONFILE="pom.xml"
   else
     echo "ERROR: No versioning file found!"
@@ -73,7 +86,7 @@ function check_if_releaseversion {
 function is_git_tag_duplicated {
   for existing_tag in $(git tag)
   do
-    if [ "$NEW_VERSION" = "$existing_tag" ]
+    if [ "$TAG_VERSION" = "$existing_tag" ]
     then
       echo "ERROR: Duplicate tag: $existing_tag"
       exit 2
@@ -134,18 +147,18 @@ function dockerfile_parentcheck {
 
 # create a git tag
 function create_git_tag {
-  echo "Creating git tag: $NEW_VERSION"
+  echo "Creating git tag: $TAG_VERSION"
   git checkout "$GERRIT_PATCHSET_REVISION"
 
   git config --global user.email "do-not-reply@opencord.org"
   git config --global user.name "Jenkins"
 
-  git tag -a "$NEW_VERSION" -m "Tagged by CORD Jenkins version-tag job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
+  git tag -a "$TAG_VERSION" -m "Tagged by CORD Jenkins version-tag job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"
 
   echo "Tags including new tag:"
   git tag -n
 
-  git push origin "$NEW_VERSION"
+  git push origin "$TAG_VERSION"
 }
 
 echo "Checking git repo with remotes:"

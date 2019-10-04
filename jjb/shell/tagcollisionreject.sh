@@ -21,6 +21,7 @@ set -eu -o pipefail
 
 VERSIONFILE="" # file path to file containing version number
 NEW_VERSION="" # version number found in $VERSIONFILE
+TAG_VERSION="" # version file that might have a leading v to work around go mod funkyness
 
 SEMVER_STRICT=${SEMVER_STRICT:-0} # require semver versions
 
@@ -37,30 +38,30 @@ function read_version {
   then
     NEW_VERSION=$(head -n1 "VERSION")
     VERSIONFILE="VERSION"
+
+    # If this is a golang project, use funky v-prefixed versions
+    if [ -f "Gopkg.toml" || -f "go.mod" ]
+    then
+      echo "go-based project found, using v-prefixed version for git tags: v${NEW_VERSION}"
+      TAG_VERSION=v${NEW_VERSION}
+    else
+      TAG_VERSION=${NEW_VERSION}
+    fi
+
   elif [ -f "package.json" ]
   then
     NEW_VERSION=$(python -c 'import json,sys;obj=json.load(sys.stdin); print obj["version"]' < package.json)
+    TAG_VERSION=$NEW_VERSION
     VERSIONFILE="package.json"
   elif [ -f "pom.xml" ]
   then
     NEW_VERSION=$(xmllint --xpath '/*[local-name()="project"]/*[local-name()="version"]/text()' pom.xml)
+    TAG_VERSION=$NEW_VERSION
     VERSIONFILE="pom.xml"
   else
     echo "ERROR: No versioning file found!"
     exit 1
   fi
-}
-
-# check if the version is already a tag in git
-function is_git_tag_duplicated {
-  for existing_tag in $(git tag)
-  do
-    if [ "$NEW_VERSION" = "$existing_tag" ]
-    then
-      echo "ERROR: Duplicate tag: $existing_tag"
-      exit 2
-    fi
-  done
 }
 
 # check if the version is a released version
@@ -78,6 +79,18 @@ function check_if_releaseversion {
       echo "Version string '$NEW_VERSION' in '$VERSIONFILE' is not a SemVer released version, skipping."
     fi
   fi
+}
+
+# check if the version is already a tag in git
+function is_git_tag_duplicated {
+  for existing_tag in $(git tag)
+  do
+    if [ "$TAG_VERSION" = "$existing_tag" ]
+    then
+      echo "ERROR: Duplicate tag: $existing_tag"
+      exit 2
+    fi
+  done
 }
 
 # check if Dockerfiles have a released version as their parent

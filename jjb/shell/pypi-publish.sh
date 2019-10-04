@@ -26,7 +26,8 @@ PYPI_MODULE_DIRS=${PYPI_MODULE_DIRS:-.}
 # check that we're on a semver released version
 GIT_VERSION=$(git tag -l --points-at HEAD)
 
-if [[ "$GIT_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+# match bare versions or v-prefixed golang style version
+if [[ "$GIT_VERSION" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
 then
   echo "git has a SemVer released version tag: '$GIT_VERSION', publishing to PyPI"
 else
