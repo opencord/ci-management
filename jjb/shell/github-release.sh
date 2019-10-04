@@ -44,7 +44,8 @@ RELEASE_TARGETS=${RELEASE_TARGETS:-release}
 pushd "$GERRIT_PROJECT"
   GIT_VERSION=$(git tag -l --points-at HEAD)
 
-  if [[ "$GIT_VERSION" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+  # match bare versions or v-prefixed golang style version
+  if [[ "$GIT_VERSION" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
   then
     echo "git has a SemVer released version tag: '$GIT_VERSION'"
     echo "Building artifacts for GitHub release."
