@@ -134,7 +134,7 @@ pipeline {
 
            cd $WORKSPACE/kind-voltha/
            echo \$HELM_FLAG
-           EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 ./voltha up
+           EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 WITH_SIM_ADAPTERS=n ./voltha up
            '''
       }
     }
@@ -188,7 +188,7 @@ pipeline {
            fi
          done
          ## clean up node
-	 WAIT_ON_DOWN=y ./voltha down
+	 FANCY=0 WAIT_ON_DOWN=y ./voltha down
 	 cd $WORKSPACE/
 	 rm -rf kind-voltha/ voltha-system-tests/ || true
          '''
