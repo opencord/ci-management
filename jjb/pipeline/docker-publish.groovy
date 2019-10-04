@@ -65,7 +65,7 @@ pipeline {
             for tag in $git_tags
             do
               # remove leading 'v' on funky golang tags
-              clean_tag=$(echo \$tag | sed 's/^v//g')
+              clean_tag=\$(echo \$tag | sed 's/^v//g')
               echo "Building image with tag: \$clean_tag (should reuse cached layers)"
               make DOCKER_TAG="\$clean_tag" docker-build
             done
@@ -101,7 +101,7 @@ pipeline {
                 for tag in $git_tags
                 do
                   # remove leading 'v' on funky golang tags
-                  clean_tag=$(echo \$tag | sed 's/^v//g')
+                  clean_tag=\$(echo \$tag | sed 's/^v//g')
                   echo "Pushing image with tag: \$clean_tag (should reuse cached layers)"
                   make DOCKER_TAG="\$clean_tag" docker-push
                 done
