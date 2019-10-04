@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5f80ee83_ecb90247",
+        "filename": "jjb/pipeline/docker-publish.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 106,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-10-04T20:12:40Z",
+      "side": 1,
+      "message": "I think this should be pushing the image?",
+      "range": {
+        "startLine": 103,
+        "startChar": 17,
+        "endLine": 106,
+        "endChar": 60
+      },
+      "revId": "ee7f0183b098f661bbce4f5365e63bbdf4f9adf2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
