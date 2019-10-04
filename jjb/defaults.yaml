@@ -5,7 +5,7 @@
     name: global
 
     # lftools
-    lftools-version: <1.0.0
+    lftools-version: '~=0.26.2'
 
     # name of the SSH key to use in most cases
     jenkins-ssh-credential: 'cord-jenkins-ssh'
