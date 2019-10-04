@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "391f03bc_2ae3e002",
+        "filename": "jjb/pipeline/docker-publish.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-10-04T20:36:56Z",
+      "side": 1,
+      "message": "Pushing",
+      "range": {
+        "startLine": 105,
+        "startChar": 24,
+        "endLine": 105,
+        "endChar": 32
+      },
+      "revId": "4288d419d0e6074a658d058b616ce0042fed7f84",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
