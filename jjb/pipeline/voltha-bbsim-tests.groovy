@@ -100,23 +100,23 @@ pipeline {
            HELM_FLAG="--set defaults.image_tag=voltha-2.1,wpa_wait=10,dhcp_wait=10 "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
-             HELM_FLAG+="-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml"
+             HELM_FLAG+="-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml "
            fi
 
            if [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
-             HELM_FLAG+="--set images.adapter_open_olt.tag=citest,images.adapter_open_olt.pullPolicy=Never"
+             HELM_FLAG+="--set images.adapter_open_olt.tag=citest,images.adapter_open_olt.pullPolicy=Never "
            fi
 
            if [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
-             HELM_FLAG+="--set images.adapter_open_onu.tag=citest,images.adapter_open_onu.pullPolicy=Never"
+             HELM_FLAG+="--set images.adapter_open_onu.tag=citest,images.adapter_open_onu.pullPolicy=Never "
            fi
 
            if [ "${gerritProject}" = "voltha-bbsim" ]; then
-             HELM_FLAG+="--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
+             HELM_FLAG+="--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never "
            fi
 
            if [ "${gerritProject}" = "voltha-api-server" ]; then
-             HELM_FLAG+="--set images.afrouter.tag=citest,images.afrouter.pullPolicy=Never,images.afrouterd.tag=citest,images.afrouterd.pullPolicy=Never"
+             HELM_FLAG+="--set images.afrouter.tag=citest,images.afrouter.pullPolicy=Never,images.afrouterd.tag=citest,images.afrouterd.pullPolicy=Never "
            else
              # afrouter is disaggregated from the core, and lacks voltha-2.1 tags
              HELM_FLAG+="--set images.afrouter.tag=master,images.afrouterd.tag=master "
