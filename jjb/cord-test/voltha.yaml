@@ -39,7 +39,6 @@
          Jenkinsfile: 'Jenkinsfile-voltha-build'
          oltDebVersion: 'openolt-seba-2.0.deb'
          configurePod: true
-         time: '1'
 
      # flex pod1 test job - using voltha branch
       - 'build_voltha_pod_test':
