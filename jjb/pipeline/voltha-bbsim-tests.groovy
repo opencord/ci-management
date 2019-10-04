@@ -117,6 +117,9 @@ pipeline {
 
            if [ "${gerritProject}" = "voltha-api-server" ]; then
              HELM_FLAG+="--set images.afrouter.tag=citest,images.afrouter.pullPolicy=Never,images.afrouterd.tag=citest,images.afrouterd.pullPolicy=Never"
+           else
+             # afrouter is disaggregated from the core, and lacks voltha-2.1 tags
+             HELM_FLAG+="--set images.afrouter.tag=master,images.afrouterd.tag=master "
            fi
 
            if [ "${gerritProject}" = "voltha-helm-charts" ]; then

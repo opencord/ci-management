@@ -67,7 +67,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag},wpa_wait=10,dhcp_wait=10'
+          default: '--set defaults.image_tag={default-image-tag},images.afrouter.tag=master,images.afrouterd.tag=master,wpa_wait=10,dhcp_wait=10'
           description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
@@ -122,7 +122,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag}'
+          default: '--set defaults.image_tag={default-image-tag},images.afrouter.tag=master,images.afrouterd.tag=master'
           description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
