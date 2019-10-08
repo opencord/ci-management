@@ -79,7 +79,7 @@ pipeline {
           # DOCKER_TAG=candidate make docker-build
           # TYPE=minimal kind load docker-image voltha/bbsim:candidate --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2;
           # helm install -n bbsim deployments/helm-chart/bbsim/ --set images.bbsim.tag=candidate --set images.bbsim.pullPolicy=IfNotProsent
-          helm install -n bbsim deployments/helm-chart/bbsim/ --set images.bbsim.tag=master
+          helm install -n bbsim onf/bbsim --set images.bbsim.tag=master
           '''
       }
     }
