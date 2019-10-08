@@ -40,24 +40,24 @@
           description: 'Name of the repo branch to use'
 
       - string:
-         name: configRepoUrl
-         default: 'https://gerrit.opencord.org/pod-configs'
-         description: 'The URL of the POD configs repository'
+          name: configRepoUrl
+          default: 'https://gerrit.opencord.org/pod-configs'
+          description: 'The URL of the POD configs repository'
 
       - string:
-         name: configRepoBaseDir
-         default: 'pod-configs/'
-         description: 'The directory inside the POD configs repository'
+          name: configRepoBaseDir
+          default: 'pod-configs/'
+          description: 'The directory inside the POD configs repository'
 
       - string:
-         name: configRepoFile
-         default: 'kubernetes-configs/flex-onf-pod1.yml'
-         description: 'The deployment config file'
+          name: configRepoFile
+          default: 'kubernetes-configs/flex-onf-pod1.yml'
+          description: 'The deployment config file'
 
       - string:
-         name: podName
-         default: 'flex-onf-pod1'
-         description: 'Name of pod'
+          name: podName
+          default: 'flex-onf-pod1'
+          description: 'Name of pod'
 
     project-type: pipeline
     concurrent: false
@@ -65,6 +65,6 @@
     dsl: !include-raw-escape: pipeline/kubespray-install.groovy
 
     triggers:
-       - timed: |
+      - timed: |
                  TZ=America/Los_Angeles
                  H 10 31/3 * *

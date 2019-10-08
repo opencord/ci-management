@@ -51,28 +51,28 @@
           description: 'Name of the repo branch to use'
 
       - string:
-            name: gerritChangeNumber
-            default: '$GERRIT_CHANGE_NUMBER'
-            description: 'Changeset number in Gerrit'
+          name: gerritChangeNumber
+          default: '$GERRIT_CHANGE_NUMBER'
+          description: 'Changeset number in Gerrit'
 
       - string:
-            name: gerritPatchsetNumber
-            default: '$GERRIT_PATCHSET_NUMBER'
-            description: 'PatchSet number in Gerrit'
+          name: gerritPatchsetNumber
+          default: '$GERRIT_PATCHSET_NUMBER'
+          description: 'PatchSet number in Gerrit'
 
       - string:
-            name: adapter
-            default: ''
-            description: 'BLANK for ponsim'
+          name: adapter
+          default: ''
+          description: 'BLANK for ponsim'
       - bool:
-         name: BuildVoltha
-         default: true
-         description: 'Build modified voltha component'
+          name: BuildVoltha
+          default: true
+          description: 'Build modified voltha component'
 
       - bool:
-         name: BuildBbsim
-         default: false
-         description: 'Build modified bbsim component'
+          name: BuildBbsim
+          default: false
+          description: 'Build modified bbsim component'
 
     project-type: pipeline
     concurrent: false

@@ -128,14 +128,14 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: '{executor_node}'
-         description: 'Name of the Jenkins executor node to run the job on'
+          name: executorNode
+          default: '{executor_node}'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
-         name: project
-         default: '{project}'
-         description: 'Name of the project'
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
 
     triggers:
       - cord-infra-github-pr-trigger:
@@ -148,9 +148,9 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-           url: 'https://github.com/{github-organization}/omec-project-ci'
-           branches:
-             - 'master'
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
 
 
 # install jobs, run for each project
@@ -177,14 +177,14 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: '{executor_node}'
-         description: 'Name of the Jenkins executor node to run the job on'
+          name: executorNode
+          default: '{executor_node}'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
-         name: project
-         default: '{project}'
-         description: 'Name of the project'
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
 
     concurrent: false
 
@@ -192,9 +192,9 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-           url: 'https://github.com/{github-organization}/omec-project-ci'
-           branches:
-             - 'master'
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
 
 # tests
 - job-template:
@@ -218,9 +218,9 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: '{executor_node}'
-         description: 'Name of the Jenkins executor node to run the job on'
+          name: executorNode
+          default: '{executor_node}'
+          description: 'Name of the Jenkins executor node to run the job on'
 
     concurrent: false
 
@@ -228,9 +228,9 @@
       script-path: 'Jenkinsfile-omec-test-TC1.groovy'
       scm:
         - git:
-           url: 'https://github.com/omec-project/omec-project-ci'
-           branches:
-             - 'master'
+            url: 'https://github.com/omec-project/omec-project-ci'
+            branches:
+              - 'master'
 
 - job-template:
     id: 'omec-tc2'
@@ -253,9 +253,9 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: '{executor_node}'
-         description: 'Name of the Jenkins executor node to run the job on'
+          name: executorNode
+          default: '{executor_node}'
+          description: 'Name of the Jenkins executor node to run the job on'
 
     concurrent: false
 
@@ -263,7 +263,7 @@
       script-path: 'Jenkinsfile-omec-test-TC2.groovy'
       scm:
         - git:
-           url: 'https://github.com/omec-project/omec-project-ci'
-           branches:
-             - 'master'
+            url: 'https://github.com/omec-project/omec-project-ci'
+            branches:
+              - 'master'
 

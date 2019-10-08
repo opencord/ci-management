@@ -11,7 +11,7 @@
       - 'verify-cord-workflow-airflow-jobs':
           branch-regexp: '{supported-branches-regexp}'
       - 'publish-cord-workflow-airflow-jobs':
-            branch-regexp: '{supported-branches-regexp}'
+          branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
     name: 'verify-cord-workflow-airflow-jobs'

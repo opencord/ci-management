@@ -21,7 +21,7 @@
       - 'xos-unit-test':
           dependency-jobs: 'verify_fabric_sonarqube'
       - 'xos-service-upgrade':
-            dependency-jobs: 'verify_fabric-unit-test'
+          dependency-jobs: 'verify_fabric-unit-test'
 
 - job-group:
     name: 'publish-fabric-jobs'

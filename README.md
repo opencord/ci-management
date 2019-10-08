@@ -5,7 +5,7 @@ CORD.
 
 The best way to work with this repo is to check it out with `repo`, per these
 instructions: [Downloading testing and QA
-repositories](https://guide.opencord.org/getting_the_code.html#downloading-testing-and-qa-repositories)
+repositories](https://guide.opencord.org/developer/getting_the_code.html#testing-and-qa-repositories)
 
 > NOTE: This repo uses git submodules. If you have trouble with the tests or
 > other tasks, please run: `git submodule init && git submodule update` to
@@ -157,9 +157,9 @@ merged generates a new AMI image.
 
 > NOTE: Future builds won't automatically use the new AMI - you have to
 > manually set the instance `AMI ID` on jenkins in [Global
-> Config](https://jenkins-new.opencord.org/configure) > Cloud > Amazon EC2.
+> Config](https://jenkins.opencord.org/configure) > Cloud > Amazon EC2.
 > The new AMI ID can be found near the end of the logs of the run of
-> [ci-management-packer-merge-<ostype>-basebuild](https://jenkins-new.opencord.org/job/ci-management-packer-merge-ubuntu-16.04-basebuild/).
+> [ci-management-packer-merge-<ostype>-basebuild](https://jenkins.opencord.org/job/ci-management-packer-merge-ubuntu-16.04-basebuild/).
 
 ### Adding additional EC2 instance types
 

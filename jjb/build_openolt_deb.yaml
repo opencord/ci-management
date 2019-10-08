@@ -31,9 +31,9 @@
 
     parameters:
       - string:
-         name: notificationEmail
-         default: 'shad@opennetworking.org kailash@opennetworking.org'
-         description: ''
+          name: notificationEmail
+          default: 'shad@opennetworking.org kailash@opennetworking.org'
+          description: ''
 
     node: 'qct-pod3-node2'
 
@@ -44,6 +44,6 @@
       script-path: 'Jenkinsfile-build'
       scm:
         - git:
-           url: '{gerrit-server-url}/openolt'
-           branches:
-             - 'master'
+            url: '{gerrit-server-url}/openolt'
+            branches:
+              - 'master'

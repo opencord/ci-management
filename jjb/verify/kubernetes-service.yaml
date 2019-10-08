@@ -21,7 +21,7 @@
       - 'xos-unit-test':
           dependency-jobs: 'verify_kubernetes-service_sonarqube'
       - 'xos-service-upgrade':
-            dependency-jobs: 'verify_kubernetes-service-unit-test'
+          dependency-jobs: 'verify_kubernetes-service-unit-test'
 
 - job-group:
     name: 'publish-kubernetes-service-jobs'

@@ -11,50 +11,50 @@
     jobs:
       # onlab pod1 build 1.0
       - 'build_pod_manual_release':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod1-voltha16'
-         release: '1.0'
-         branch: 'cord-6.1'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
-         oltDebVersion: 'openolt-master-voltha16.deb'
+          testvm: 'onf-build'
+          config-pod: 'onlab-pod1-voltha16'
+          release: '1.0'
+          branch: 'cord-6.1'
+          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+          oltDebVersion: 'openolt-master-voltha16.deb'
 
       # onlab pod1 build 2.0
       - 'build_pod_manual_release':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod1'
-         release: '2.0'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
-         oltDebVersion: 'openolt-master.deb'
+          testvm: 'onf-build'
+          config-pod: 'onlab-pod1'
+          release: '2.0'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+          oltDebVersion: 'openolt-master.deb'
 
       # onlab pod1 test job - release 2.0 test job
       - 'build_pod_release_test':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod1'
-         release: '2.0'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+          testvm: 'onf-build'
+          config-pod: 'onlab-pod1'
+          release: '2.0'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
       # onlab pod2 build
       - 'build_pod_manual_release':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod2'
-         release: '1.0'
-         branch: 'cord-6.1'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
-         oltDebVersion: 'openolt-master.deb'
+          testvm: 'onf-build'
+          config-pod: 'onlab-pod2'
+          release: '1.0'
+          branch: 'cord-6.1'
+          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+          oltDebVersion: 'openolt-master.deb'
 
       # onlab pod2 build 2.0
       - 'build_pod_manual_release':
-         testvm: 'onf-build'
-         config-pod: 'onlab-pod2'
-         release: '2.0'
-         branch: 'master'
-         Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
-         oltDebVersion: 'openolt-master.deb'
+          testvm: 'onf-build'
+          config-pod: 'onlab-pod2'
+          release: '2.0'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+          oltDebVersion: 'openolt-master.deb'
 
       # flex OCP pod with olt/onu - release 2.0 build job
-      #- 'build_pod_release':
+      # - 'build_pod_release':
       #   testvm: 'qa-testvm-pod'
       #   config-pod: 'flex-ocp-cord'
       #   release: '1.0'
@@ -64,7 +64,7 @@
       #   time: '3'
 
       # flex OCP pod with olt/onu - release 2.0 build job
-      #- 'build_pod_release':
+      # - 'build_pod_release':
       #   testvm: 'qa-testvm-pod'
       #   config-pod: 'flex-ocp-cord'
       #   release: '2.0'
@@ -74,7 +74,7 @@
       #   time: '5'
 
       # flex OCP POD with olt/onu - release 1.0 test job
-      #- 'build_pod_release_test':
+      # - 'build_pod_release_test':
       #   testvm: 'qa-testvm-pod'
       #   config-pod: 'flex-ocp-cord'
       #   release: '1.0'
@@ -82,7 +82,7 @@
       #   Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
       # flex OCP POD with olt/onu - release 2.0 test job
-      #- 'build_pod_release_test':
+      # - 'build_pod_release_test':
       #   testvm: 'qa-testvm-pod'
       #   config-pod: 'flex-ocp-cord'
       #   release: '2.0'
@@ -90,7 +90,7 @@
       #   Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
       # flex OCP pod with olt/onu : using voltha latest(master)
-      #- 'build_pod_release':
+      # - 'build_pod_release':
       #   testvm: 'qa-testvm-pod'
       #   config-pod: 'flex-ocp-cord'
       #   release: '2.0-microcharts'
@@ -100,7 +100,7 @@
       #   time: '7'
 
       # flex OCP test job - release 2.0 test job
-      #- 'build_pod_release_test':
+      # - 'build_pod_release_test':
       #   testvm: 'qa-testvm-pod'
       #   config-pod: 'flex-ocp-cord'
       #   release: '2.0-microcharts'

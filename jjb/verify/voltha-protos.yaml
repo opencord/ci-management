@@ -19,11 +19,11 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-protos_licensed'
-#     - 'verify-sonarqube':
-#         dependency-jobs: 'verify_voltha-protos_tag-collision'
+      #     - 'verify-sonarqube':
+      #         dependency-jobs: 'verify_voltha-protos_tag-collision'
       - 'python-unit-test':
-         dependency-jobs: 'verify_voltha-protos_tag-collision'
-#        dependency-jobs: 'verify_voltha-protos_sonarqube'
+          dependency-jobs: 'verify_voltha-protos_tag-collision'
+#         dependency-jobs: 'verify_voltha-protos_sonarqube'
 
 - job-group:
     name: 'post-merge-voltha-protos-jobs'

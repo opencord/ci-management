@@ -21,7 +21,7 @@
       - 'xos-unit-test':
           dependency-jobs: 'verify_olt-service_sonarqube'
       - 'xos-service-upgrade':
-            dependency-jobs: 'verify_olt-service-unit-test'
+          dependency-jobs: 'verify_olt-service-unit-test'
 - job-group:
     name: 'publish-olt-service-jobs'
     jobs:

@@ -75,10 +75,10 @@
     concurrent: true
 
     builders:
-        - 'cord-infra-sonarqube':
-            project: '{project}'
-            sonar-prep-commands: '{sonar-prep-commands}'
-            sonar-java-binaries: '{sonar-java-binaries}'
+      - 'cord-infra-sonarqube':
+          project: '{project}'
+          sonar-prep-commands: '{sonar-prep-commands}'
+          sonar-java-binaries: '{sonar-java-binaries}'
 
 # run Sonarqube as a verification jobs on individual patchsets
 - job-template:
@@ -119,7 +119,8 @@
     concurrent: true
 
     builders:
-        - 'cord-infra-sonarqube':
-            project: '{project}'
-            sonar-prep-commands: '{sonar-prep-commands}'
-            sonar-java-binaries: '{sonar-java-binaries}'
+      - 'cord-infra-sonarqube':
+          project: '{project}'
+          sonar-prep-commands: '{sonar-prep-commands}'
+          sonar-java-binaries: '{sonar-java-binaries}'
+

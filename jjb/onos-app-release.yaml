@@ -25,34 +25,34 @@
     wrappers:
       - ssh-agent-credentials:
           users:
-              - 'gerrit-jenkins-user'
+            - 'gerrit-jenkins-user'
       - build-user-vars
 
     parameters:
       - string:
-         name: app
-         default: ''
-         description: 'Name of the app repository on the OpenCORD Gerrit server.\n e.g. vtn'
+          name: app
+          default: ''
+          description: 'Name of the app repository on the OpenCORD Gerrit server.\n e.g. vtn'
 
       - string:
-         name: version
-         default: ''
-         description: 'Version to release.\n e.g. 1.0.0'
+          name: version
+          default: ''
+          description: 'Version to release.\n e.g. 1.0.0'
 
       - string:
-         name: nextVersion
-         default: ''
-         description: 'Snapshot version to move the code forward to.\n e.g. 1.1.0'
+          name: nextVersion
+          default: ''
+          description: 'Snapshot version to move the code forward to.\n e.g. 1.1.0'
 
       - string:
-         name: branch
-         default: 'master'
-         description: 'Name of the branch to release on.'
+          name: branch
+          default: 'master'
+          description: 'Name of the branch to release on.'
 
       - string:
-         name: jdkDistro
-         default: '{jdk-distribution}'
-         description: 'Distribution of the JDK to use with update-java-alternatives'
+          name: jdkDistro
+          default: '{jdk-distribution}'
+          description: 'Distribution of the JDK to use with update-java-alternatives'
 
     node: 'ubuntu16.04-basebuild-1c-2g'
     project-type: pipeline
