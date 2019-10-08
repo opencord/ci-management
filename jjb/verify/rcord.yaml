@@ -21,7 +21,7 @@
       - 'xos-unit-test':
           dependency-jobs: 'verify_rcord_sonarqube'
       - 'xos-service-upgrade':
-            dependency-jobs: 'verify_rcord-unit-test'
+          dependency-jobs: 'verify_rcord-unit-test'
 
 - job-group:
     name: 'publish-rcord-jobs'

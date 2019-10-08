@@ -160,5 +160,3 @@
             - file-id: pipconf
               target: '$HOME/.config/pip/pip.conf'
 
-
-

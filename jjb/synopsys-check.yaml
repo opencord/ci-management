@@ -23,29 +23,29 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: '{build-node}'
-         description: 'Name of the Jenkins node to run the job on'
+          name: executorNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
 
       - string:
-         name: branch
-         default: 'master'
-         description: 'branch to check'
+          name: branch
+          default: 'master'
+          description: 'branch to check'
 
       - string:
-         name: git_server_url
-         default: '{git-server-url}'
-         description: 'Git Server URL'
+          name: git_server_url
+          default: '{git-server-url}'
+          description: 'Git Server URL'
 
       - string:
-         name: github_organization
-         default: '{github-organization}'
-         description: 'GitHub Organization (leave blank if using Gerrit)'
+          name: github_organization
+          default: '{github-organization}'
+          description: 'GitHub Organization (leave blank if using Gerrit)'
 
       - string:
-         name: blackduck_project
-         default: '{blackduck-project}'
-         description: 'The project to assign repos to in the BlackDuck dashboard'
+          name: blackduck_project
+          default: '{blackduck-project}'
+          description: 'The project to assign repos to in the BlackDuck dashboard'
 
     project-type: pipeline
     concurrent: true
@@ -53,7 +53,7 @@
     dsl: !include-raw-escape: pipeline/synopsys-check.groovy
 
     triggers:
-       - timed: |
+      - timed: |
                  TZ=America/Los_Angeles
                  H 3 * * *
 
@@ -87,9 +87,9 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: '{build-node}'
-         description: 'Name of the Jenkins node to run the job on'
+          name: executorNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
 
       - string:
           name: gitUrl
@@ -112,9 +112,9 @@
           description: 'Branch of the project in Gerrit'
 
       - string:
-         name: blackduck_project
-         default: '{blackduck-project}'
-         description: 'The project to assign repos to in the BlackDuck dashboard'
+          name: blackduck_project
+          default: '{blackduck-project}'
+          description: 'The project to assign repos to in the BlackDuck dashboard'
 
     project-type: pipeline
     concurrent: true

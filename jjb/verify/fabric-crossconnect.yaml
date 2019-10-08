@@ -21,7 +21,7 @@
       - 'xos-unit-test':
           dependency-jobs: 'verify_fabric-crossconnect_sonarqube'
       - 'xos-service-upgrade':
-            dependency-jobs: 'verify_fabric-crossconnect-unit-test'
+          dependency-jobs: 'verify_fabric-crossconnect-unit-test'
 - job-group:
     name: 'publish-fabric-crossconnect-jobs'
     jobs:

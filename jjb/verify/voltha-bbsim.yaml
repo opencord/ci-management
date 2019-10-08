@@ -9,7 +9,7 @@
       - 'verify-voltha-bbsim-jobs':
           branch-regexp: '{all-branches-regexp}'
       - 'publish-voltha-bbsim-jobs':
-            branch-regexp: '{all-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-bbsim-jobs'

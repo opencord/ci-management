@@ -11,43 +11,44 @@
     jobs:
       # flex OCP pod with olt/onu - release voltha2.0 build job
       - 'build_pod_manual':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         release: '2.0'
-         branch: 'master'
-         test-repo: 'voltha-system-tests'
-         Jenkinsfile: 'Jenkinsfile-voltha-build'
-         oltDebVersion: 'openolt-seba-2.0.deb'
-         profile: 'multipleGem'
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.0'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          profile: 'multipleGem'
 
       # flex pod1 test job - using voltha branch
       - 'build_pod_test':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         profile: 'multipleGem'
-         branch: 'master'
-         test-repo: 'voltha-system-tests'
-         Jenkinsfile: 'Jenkinsfile-voltha-test'
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          profile: 'multipleGem'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # flex OCP pod with olt/onu - timer based job
       - 'build_voltha_pod_release':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         release: '2.1'
-         branch: 'master'
-         test-repo: 'voltha-system-tests'
-         Jenkinsfile: 'Jenkinsfile-voltha-build'
-         oltDebVersion: 'openolt-seba-2.0.deb'
-         configurePod: true
-         time: '1'
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.1'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          time: '1'
 
      # flex pod1 test job - using voltha branch
       - 'build_voltha_pod_test':
-         testvm: 'qa-testvm-pod'
-         config-pod: 'flex-ocp-cord'
-         profile: 'multipleGem'
-         branch: 'master'
-         release: '2.1'
-         test-repo: 'voltha-system-tests'
-         Jenkinsfile: 'Jenkinsfile-voltha-test'
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.1'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
 

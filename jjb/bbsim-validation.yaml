@@ -31,49 +31,49 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: 'qct-pod2-node1'
-         description: 'Name of the Jenkins node to run the job on'
+          name: executorNode
+          default: 'qct-pod2-node1'
+          description: 'Name of the Jenkins node to run the job on'
 
       - string:
-         name: manifestUrl
-         default: '{gerrit-server-url}/{cord-repo-manifest}'
-         description: 'URL to the repo manifest'
+          name: manifestUrl
+          default: '{gerrit-server-url}/{cord-repo-manifest}'
+          description: 'URL to the repo manifest'
 
       - string:
-         name: manifestBranch
-         default: 'master'
-         description: 'Name of the repo branch to use'
+          name: manifestBranch
+          default: 'master'
+          description: 'Name of the repo branch to use'
 
       - string:
-         name: deploymentConfig
-         default: 'bbsim-voltha-1.6.yml'
-         description: 'kubernetes configurations file'
+          name: deploymentConfig
+          default: 'bbsim-voltha-1.6.yml'
+          description: 'kubernetes configurations file'
 
       - string:
-         name: OnuCount
-         default: '16'
-         description: 'Number of ONUs per pon port'
+          name: OnuCount
+          default: '16'
+          description: 'Number of ONUs per pon port'
 
       - string:
-         name: EmulationMode
-         default: '--set emulation_mode=both'
-         description: 'Emulation for BBSIM (both|aaa)'
+          name: EmulationMode
+          default: '--set emulation_mode=both'
+          description: 'Emulation for BBSIM (both|aaa)'
 
       - string:
-         name: TestTags
-         default: ''
-         description: 'Tests to include/exclude. eg "-e serviceinstances"'
+          name: TestTags
+          default: ''
+          description: 'Tests to include/exclude. eg "-e serviceinstances"'
 
       - string:
-         name: TestTimeout
-         default: '300s'
-         description: 'timeout for each test case (increase as you scale up)'
+          name: TestTimeout
+          default: '300s'
+          description: 'timeout for each test case (increase as you scale up)'
 
       - bool:
-         name: ArchiveLogs
-         default: true
-         description: 'Archive all pod logs after test run'
+          name: ArchiveLogs
+          default: true
+          description: 'Archive all pod logs after test run'
 
     project-type: pipeline
     concurrent: false
@@ -101,49 +101,49 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: 'qct-pod2-node1'
-         description: 'Name of the Jenkins node to run the job on'
+          name: executorNode
+          default: 'qct-pod2-node1'
+          description: 'Name of the Jenkins node to run the job on'
 
       - string:
-         name: manifestUrl
-         default: '{gerrit-server-url}/{cord-repo-manifest}'
-         description: 'URL to the repo manifest'
+          name: manifestUrl
+          default: '{gerrit-server-url}/{cord-repo-manifest}'
+          description: 'URL to the repo manifest'
 
       - string:
-         name: manifestBranch
-         default: 'master'
-         description: 'Name of the repo branch to use'
+          name: manifestBranch
+          default: 'master'
+          description: 'Name of the repo branch to use'
 
       - string:
-         name: deploymentConfig
-         default: 'bbsim-voltha-master.yml'
-         description: 'kubernetes configurations file'
+          name: deploymentConfig
+          default: 'bbsim-voltha-master.yml'
+          description: 'kubernetes configurations file'
 
       - string:
-         name: OnuCount
-         default: '16'
-         description: 'Number of ONUs per pon port'
+          name: OnuCount
+          default: '16'
+          description: 'Number of ONUs per pon port'
 
       - string:
-         name: EmulationMode
-         default: '--set emulation_mode=both'
-         description: 'Emulation for BBSIM (both|aaa)'
+          name: EmulationMode
+          default: '--set emulation_mode=both'
+          description: 'Emulation for BBSIM (both|aaa)'
 
       - string:
-         name: TestTags
-         default: ''
-         description: 'Tests to include/exclude. eg "-e serviceinstances"'
+          name: TestTags
+          default: ''
+          description: 'Tests to include/exclude. eg "-e serviceinstances"'
 
       - string:
-         name: TestTimeout
-         default: '300s'
-         description: 'timeout for each test case (increase as you scale up)'
+          name: TestTimeout
+          default: '300s'
+          description: 'timeout for each test case (increase as you scale up)'
 
       - bool:
-         name: ArchiveLogs
-         default: true
-         description: 'Archive all pod logs after test run'
+          name: ArchiveLogs
+          default: true
+          description: 'Archive all pod logs after test run'
 
     project-type: pipeline
     concurrent: false

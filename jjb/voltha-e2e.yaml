@@ -7,11 +7,11 @@
     project-name: '{name}'
 
     jobs:
-    - 'voltha-periodic-test':
+      - 'voltha-periodic-test':
           name: 'voltha-system-tests'
           pipeline: 'voltha-go-tests.groovy'
           default-image-tag: 'voltha-2.1'
-    - 'voltha-periodic-test':
+      - 'voltha-periodic-test':
           name: 'voltha-system-tests-master'
           pipeline: 'voltha-go-tests.groovy'
           default-image-tag: 'master'
@@ -47,9 +47,9 @@
           description: 'Number of onus per pon port'
 
       - string:
-         name: emulationMode
-         default: '--set emulation_mode=both'
-         description: 'Emulation for BBSIM (both|aaa)'
+          name: emulationMode
+          default: '--set emulation_mode=both'
+          description: 'Emulation for BBSIM (both|aaa)'
 
       - string:
           name: testTimeout
@@ -72,7 +72,7 @@
     dsl: !include-raw-escape: pipeline/{pipeline}
 
     triggers:
-       - timed: |
+      - timed: |
                  TZ=America/Los_Angeles
                  H/30 * * * *
 
@@ -107,24 +107,24 @@
           description: 'URL to the repo manifest'
 
       - string:
-         name: manifestBranch
-         default: '$GERRIT_BRANCH'
-         description: 'Name of the repo branch to use'
+          name: manifestBranch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the repo branch to use'
 
       - string:
-         name: gerritProject
-         default: '$GERRIT_PROJECT'
-         description: 'Name of the Gerrit project'
+          name: gerritProject
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the Gerrit project'
 
       - string:
-         name: gerritChangeNumber
-         default: '$GERRIT_CHANGE_NUMBER'
-         description: 'Changeset number in Gerrit'
+          name: gerritChangeNumber
+          default: '$GERRIT_CHANGE_NUMBER'
+          description: 'Changeset number in Gerrit'
 
       - string:
-         name: gerritPatchsetNumber
-         default: '$GERRIT_PATCHSET_NUMBER'
-         description: 'PatchSet number in Gerrit'
+          name: gerritPatchsetNumber
+          default: '$GERRIT_PATCHSET_NUMBER'
+          description: 'PatchSet number in Gerrit'
 
       - string:
           name: numOnus
@@ -132,9 +132,9 @@
           description: 'Number of onus per pon port'
 
       - string:
-         name: emulationMode
-         default: '--set emulation_mode=both'
-         description: 'Emulation for BBSIM (both|aaa)'
+          name: emulationMode
+          default: '--set emulation_mode=both'
+          description: 'Emulation for BBSIM (both|aaa)'
 
       - string:
           name: testTimeout

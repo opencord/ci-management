@@ -42,9 +42,9 @@
 
     parameters:
       - string:
-         name: notificationEmail
-         default: '$GERRIT_EVENT_ACCOUNT_EMAIL'
-         description: 'Verification failure of patch $GERRIT_CHANGE_NUMBER to {project} repo'
+          name: notificationEmail
+          default: '$GERRIT_EVENT_ACCOUNT_EMAIL'
+          description: 'Verification failure of patch $GERRIT_CHANGE_NUMBER to {project} repo'
 
     node: 'openolt_deb_onf_agent'
     project-type: pipeline

@@ -29,19 +29,19 @@
 
     parameters:
       - string:
-         name: executorNode
-         default: 'ubuntu16.04-basebuild-4c-8g'
-         description: 'Name of the Jenkins node to run the job on'
+          name: executorNode
+          default: 'ubuntu16.04-basebuild-4c-8g'
+          description: 'Name of the Jenkins node to run the job on'
 
       - string:
-         name: manifestUrl
-         default: '{gerrit-server-url}/{cord-repo-manifest}'
-         description: 'URL to the repo manifest'
+          name: manifestUrl
+          default: '{gerrit-server-url}/{cord-repo-manifest}'
+          description: 'URL to the repo manifest'
 
       - string:
-         name: manifestBranch
-         default: '{branch}'
-         description: 'Name of the repo branch to use'
+          name: manifestBranch
+          default: '{branch}'
+          description: 'Name of the repo branch to use'
 
     project-type: pipeline
     concurrent: true
