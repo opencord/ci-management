@@ -1,0 +1,23 @@
+---
+# verification jobs for 'voltha-lib-go' repo
+
+- project:
+    name: voltha-lib-go
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-lib-go-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-lib-go-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-lib-go_licensed'
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-timeout: 20
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint test'
+          unit-test-keep-going: 'true'

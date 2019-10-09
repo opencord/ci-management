@@ -1,0 +1,29 @@
+---
+# verification jobs for 'voltha-ponsimolt-adapter' repo
+
+- project:
+    name: voltha-ponsimolt-adapter
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-ponsimolt-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-voltha-ponsimolt-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-ponsimolt-adapter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-ponsimolt-adapter_licensed'
+      - 'make-unit-test':
+          dest-gopath: "github.com/opencord"
+          unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-voltha-ponsimolt-adapter-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
