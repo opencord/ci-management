@@ -126,7 +126,7 @@
     code-files-regexp: '^(?!docs|VERSION|\/COMMIT_MSG).*$'
     api-test-files-regexp: '^(?!docs|VERSION|\/COMMIT_MSG|Jenkinsfile-*).*$'
 
-      # Jenkins SSH host doc publisher
+    # Jenkins SSH host doc publisher
     docs-ssh-host: 'guide.opencord.org'
     docs-ssh-host-key: 'guide.opencord.org,52.9.82.207 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFHwOY3/8GucdKzBngH/FC08nHac/RJ/OheZp2+5EpOPXZG9zQW2YUbXH5A9pO76lI5CG3z3+huG62xEGo99UQU='
 

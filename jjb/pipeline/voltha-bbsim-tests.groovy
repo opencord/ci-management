@@ -58,7 +58,6 @@ pipeline {
     stage('Create K8s Cluster') {
       steps {
         sh """
-           git clone https://gerrit.opencord.org/voltha-system-tests
            git clone https://github.com/ciena/kind-voltha.git
            cd kind-voltha/
            DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up
@@ -100,7 +99,7 @@ pipeline {
            HELM_FLAG="--set defaults.image_tag=voltha-2.1,wpa_wait=10,dhcp_wait=10 "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
-             HELM_FLAG+="-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml "
+             HELM_FLAG+="-f $WORKSPACE/voltha/voltha-system-tests/tests/data/ci-test.yaml "
            fi
 
            if [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
@@ -146,7 +145,7 @@ pipeline {
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
-           cd $WORKSPACE/voltha-system-tests/tests/sanity
+           cd $WORKSPACE/voltha/voltha-system-tests/tests/sanity
            robot -v ONOS_REST_PORT:8181 -v ONOS_SSH_PORT:8101 -e notready --critical sanity --noncritical VOL-1705 -v num_onus:1 sanity.robot || true
            '''
       }
@@ -159,7 +158,7 @@ pipeline {
          set +e
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
+         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
          cd kind-voltha/
          cp install-minimal.log $WORKSPACE/
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
