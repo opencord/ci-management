@@ -58,7 +58,6 @@ pipeline {
     stage('Create K8s Cluster') {
       steps {
         sh """
-           git clone https://gerrit.opencord.org/voltha-system-tests
            git clone https://github.com/ciena/kind-voltha.git
            cd kind-voltha/
            DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up
@@ -69,7 +68,7 @@ pipeline {
     stage('Build Images') {
       steps {
         sh """
-           if [ "${gerritProject}" != "voltha-helm-charts" ]; then
+           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              cd $WORKSPACE/voltha/${gerritProject}/
              make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
            fi
@@ -80,8 +79,7 @@ pipeline {
     stage('Push Images') {
       steps {
         sh '''
-           if [ "${gerritProject}" != "voltha-helm-charts" ]; then
-
+           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
              export TYPE=minimal
@@ -100,7 +98,7 @@ pipeline {
            HELM_FLAG="--set defaults.image_tag=voltha-2.1,wpa_wait=10,dhcp_wait=10 "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
-             HELM_FLAG+="-f $WORKSPACE/voltha-system-tests/tests/data/ci-test.yaml "
+             HELM_FLAG+="-f $WORKSPACE/voltha/voltha-system-tests/tests/data/ci-test.yaml "
            fi
 
            if [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
@@ -158,7 +156,7 @@ pipeline {
          set +e
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
+         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
          cd kind-voltha/
          cp install-minimal.log $WORKSPACE/
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
