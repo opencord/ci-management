@@ -58,7 +58,11 @@ pipeline {
     stage('Create K8s Cluster') {
       steps {
         sh """
-           git clone https://gerrit.opencord.org/voltha-system-tests
+           if [ "${gerritProject}" = "voltha-system-tests" ]; then
+             git clone https://gerrit.opencord.org/voltha-system-tests -b ${params.branch}
+           else
+             git clone https://gerrit.opencord.org/voltha-system-tests
+           fi
            git clone https://github.com/ciena/kind-voltha.git
            cd kind-voltha/
            DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up

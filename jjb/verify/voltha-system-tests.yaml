@@ -19,4 +19,8 @@
           dependency-jobs: 'verify_voltha-system-tests_tag-collision'
           unit-test-targets: 'lint'
           junit-allow-empty-results: true
-
+      - 'voltha-patch-test':
+          build-timeout: 20
+          pipeline: 'voltha-bbsim-tests.groovy'
+          dependency-jobs: 'verify_voltha-system-tests_unit-test'
+          branch: '$GERRIT_BRANCH'

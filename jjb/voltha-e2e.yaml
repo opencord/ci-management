@@ -146,6 +146,11 @@
           default: '-e notready'
           description: 'test tags'
 
+      - string:
+          name: branch
+          default: 'master'
+          description: 'Branch name of the repo voltha-system-test to use when gerritProject is voltha-system-test'
+
     project-type: pipeline
     concurrent: true
 

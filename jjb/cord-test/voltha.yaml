@@ -41,7 +41,7 @@
           configurePod: true
           time: '1'
 
-     # flex pod1 test job - using voltha branch
+      # flex pod1 test job - using voltha branch
       - 'build_voltha_pod_test':
           testvm: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
