@@ -8,6 +8,10 @@
     jobs:
       - 'fossa-verify':
           fossa-team: cord
+          project-regexp: '{all-projects-regexp}'
+          branch-regexp: '{all-branches-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+
 
 - job-template:
     id: 'fossa-verify'
@@ -17,11 +21,6 @@
                   Post-merge check of code with fossa toolset
                   Created by {id} job-template from ci-management/jjb/fossa.yaml<br/>
                   Copyright (c) 2018-present Open Networking Foundation (ONF)
-
-    # template defaults
-    project-regexp: '{all-projects-regexp}'
-    branch-regexp: '{all-branches-regexp}'
-    file-include-regexp: '{all-files-regexp}'
 
     # replace with cord-infra-gerrit-trigger-patchset when skip-vote is removed
     triggers:

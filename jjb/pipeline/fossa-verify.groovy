@@ -27,7 +27,7 @@ pipeline {
   }
 
   options {
-      timeout("${params.build-timeout}")
+      timeout(15)
   }
 
   stages {
@@ -51,7 +51,7 @@ pipeline {
           ],
         ])
 
-        // Used later to set the branch/tag in
+        // Used later to set the branch/tag
         script {
           git_tag_or_branch = sh(script:"cd $projectName; if [[ \$(git tag -l --points-at HEAD) ]]; then git tag -l --points-at HEAD; else echo ${branchName}; fi", returnStdout: true).trim()
         }
