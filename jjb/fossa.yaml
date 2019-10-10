@@ -1,0 +1,103 @@
+---
+# fossa license check job
+# Check for license issues with the FOSSA tool
+
+- project:
+    name: fossa-verify
+
+    jobs:
+      - 'fossa-verify':
+          fossa-team: cord
+
+- job-template:
+    id: 'fossa-verify'
+    name: 'verify_fossa_{fossa-team}'
+
+    description: |
+                  Post-merge check of code with fossa toolset
+                  Created by {id} job-template from ci-management/jjb/fossa.yaml<br/>
+                  Copyright (c) 2018-present Open Networking Foundation (ONF)
+
+    # template defaults
+    project-regexp: '{all-projects-regexp}'
+    branch-regexp: '{all-branches-regexp}'
+    file-include-regexp: '{all-files-regexp}'
+
+    # replace with cord-infra-gerrit-trigger-patchset when skip-vote is removed
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: true
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: true
+                exclude-trivial-rebase: false
+                exclude-no-code-change: true
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*recheck$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '{project-regexp}'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{branch-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '{file-include-regexp}'
+          skip-vote:
+            success: true
+            failed: true
+            unstable: true
+            notbuilt: true
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '15'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+      - credentials-binding:
+          - text:
+              credential-id: fossa-api-key
+              variable: FOSSA_API_KEY
+
+    parameters:
+      - string:
+          name: executorNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: gitUrl
+          default: '{gerrit-server-url}/$GERRIT_PROJECT'
+          description: 'URL to the git repo'
+
+      - string:
+          name: gitRef
+          default: '$GERRIT_PATCHSET_REVISION'
+          description: 'git ref to build (commit hash or tag)'
+
+      - string:
+          name: projectName
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the project in Gerrit'
+
+      - string:
+          name: branchName
+          default: '$GERRIT_BRANCH'
+          description: 'Branch of the project in Gerrit'
+
+      - string:
+          name: fossaTeam
+          default: '{fossa-team}'
+          description: 'Team to assign this project to in FOSSA'
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/fossa-verify.groovy
