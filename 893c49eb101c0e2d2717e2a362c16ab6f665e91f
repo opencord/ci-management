@@ -22,6 +22,30 @@
       "revId": "893c49eb101c0e2d2717e2a362c16ab6f665e91f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "96d25192_de9fc39c",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2019-10-11T22:23:50Z",
+      "side": 1,
+      "message": "Please help to review.\nhttps://gerrit.opencord.org/15703",
+      "parentUuid": "30b73f06_95ce24ac",
+      "range": {
+        "startLine": 61,
+        "startChar": 11,
+        "endLine": 63,
+        "endChar": 15
+      },
+      "revId": "893c49eb101c0e2d2717e2a362c16ab6f665e91f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
