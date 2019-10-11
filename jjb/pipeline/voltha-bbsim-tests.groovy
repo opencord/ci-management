@@ -146,8 +146,7 @@ pipeline {
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
-           cd $WORKSPACE/voltha-system-tests/tests/sanity
-           robot -v ONOS_REST_PORT:8181 -v ONOS_SSH_PORT:8101 -e notready --critical sanity --noncritical VOL-1705 -v num_onus:1 sanity.robot || true
+           make -C $WORKSPACE/voltha-system-tests sanity-kind || true
            '''
       }
     }

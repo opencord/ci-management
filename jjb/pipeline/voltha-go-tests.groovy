@@ -54,7 +54,7 @@ pipeline {
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=$WORKSPACE/kind-voltha/bin:$PATH
            cd $WORKSPACE/voltha-system-tests/tests/sanity
-           robot -v ONOS_REST_PORT:8181 -v ONOS_SSH_PORT:8101 -e notready --critical sanity -v num_onus:1 sanity.robot || true
+           make -C $WORKSPACE/voltha-system-tests sanity-kind || true
            '''
       }
     }
