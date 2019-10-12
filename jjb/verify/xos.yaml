@@ -33,7 +33,7 @@
           build-timeout: 45
           build-node: 'ubuntu16.04-basebuild-2c-4g'
       - 'api-test':
-          pipeline_script: 'xos-core.groovy'
+          pipeline-script: 'xos-core.groovy'
 
 - job-group:
     name: 'publish-xos-jobs'

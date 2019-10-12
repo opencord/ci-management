@@ -20,7 +20,7 @@ pipeline {
 
   /* no label, executor is determined by JJB */
   agent {
-    label "${params.executorNode}"
+    label "${params.buildNode}"
   }
   options {
       timeout(time: 40, unit: 'MINUTES')

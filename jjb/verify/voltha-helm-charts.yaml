@@ -20,5 +20,5 @@
       - 'voltha-patch-test':
           dependency-jobs: 'verify_voltha-helm-charts_helm-lint'
           build-timeout: 20
-          pipeline: 'voltha-bbsim-tests.groovy'
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 

@@ -5,7 +5,7 @@
     id: api-test
     name: 'verify_{project}{name-extension}_api-test'
     description: |
-      Created by {id} job-template from ci-management/jjb/api-test.yaml, using pipeline: {pipeline_script}
+      Created by {id} job-template from ci-management/jjb/api-test.yaml, using script: {pipeline-script}
 
 
     triggers:
@@ -28,7 +28,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -60,4 +60,4 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline_script}
+    dsl: !include-raw-escape: pipeline/{pipeline-script}

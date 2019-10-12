@@ -23,25 +23,30 @@
                   Created from job-template bbsim_scale_test from ci-management/jjb/bbr.yaml <br />
                   Created by Matteo Scandolo, teo@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
+
     project-type: pipeline
     sandbox: true
+
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
+
     pipeline-scm:
       script-path: './tests/bbr.groovy'
       scm:
         - git:
-            url: 'https://gerrit.opencord.org/bbsim'
+            url: '{gerrit-server-url}/bbsim'
             branches:
               - 'master'
+
     triggers:
       - timed: |
           TZ=America/Los_Angeles
           H * * * *
+
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'

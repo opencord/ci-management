@@ -32,7 +32,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'onf-build'
           description: 'Name of the Jenkins node to run the job on'
 
