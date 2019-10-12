@@ -5,7 +5,7 @@
     id: docker-publish
     name: 'docker-publish_{project}'
     description: |
-      Created by {id} job-template from ci-management/jjb/docker-publish.yaml
+      Created by {id} job-template from ci-management/jjb/docker-publish.yaml, script pipeline/docker-publish.groovy
 
     triggers:
       - cord-infra-gerrit-trigger-merge:
@@ -27,9 +27,9 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-1c-2g'
-          description: 'Name of the Jenkins node to run the job on'
+          description: 'Name of the Jenkins build executor to run the job on'
 
       - string:
           name: gitUrl

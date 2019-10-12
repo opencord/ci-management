@@ -32,4 +32,4 @@
     name: 'post-merge-helm-charts-jobs'
     jobs:
       - 'triggered-api-test':
-          pipeline_script: 'chart-api-test-helm.groovy'
+          pipeline-script: 'chart-api-test-helm.groovy'

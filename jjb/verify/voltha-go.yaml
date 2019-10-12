@@ -33,7 +33,7 @@
           unit-test-keep-going: 'true'
       - 'voltha-patch-test':
           buildImages: true
-          pipeline: 'voltha-bbsim-tests.groovy'
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-go-jobs'

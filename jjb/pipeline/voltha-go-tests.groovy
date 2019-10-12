@@ -20,11 +20,21 @@ pipeline {
 
   /* no label, executor is determined by JJB */
   agent {
-    label "${params.executorNode}"
+    label "${params.buildNode}"
   }
+
   options {
       timeout(time: 40, unit: 'MINUTES')
   }
+
+  environment {
+    PATH = "$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin/:$WORKSPACE/go/bin:$WORKSPACE/kind-voltha/bin"
+    GOPATH = "$WORKSPACE/go"
+    TYPE = "minimal"
+    VOLTCONFIG = "/home/jenkins/.volt/config-minimal"
+    VOLTHA_LOG_LEVEL = "DEBUG"
+  }
+
 
   stages {
 
@@ -40,7 +50,7 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
-           EXTRA_HELM_FLAGS="${params.extraHelmFlags}" VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y WITH_SIM_ADAPTERS=n FANCY=0 ./voltha up
+           EXTRA_HELM_FLAGS="${params.extraHelmFlags}" WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y WITH_SIM_ADAPTERS=n FANCY=0 ./voltha up
            """
       }
     }
@@ -49,12 +59,12 @@ pipeline {
       steps {
         sh '''
            git clone https://gerrit.opencord.org/voltha-system-tests
-           cd kind-voltha/
+           pushd kind-voltha/
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=$WORKSPACE/kind-voltha/bin:$PATH
-           cd $WORKSPACE/voltha-system-tests/tests/sanity
-           make -C $WORKSPACE/voltha-system-tests sanity-kind || true
+           popd
+           pushd $WORKSPACE/voltha-system-tests
+           make sanity-kind || true
+           popd
            '''
       }
     }
@@ -64,17 +74,21 @@ pipeline {
     always {
       sh '''
          # copy robot logs
-         if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
+         if [ -d RobotLogs ]
+         then
+           rm -r RobotLogs
+         fi
+
+         mkdir RobotLogs
          cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/
+         cd kind-voltha/install-minimal.log $WORKSPACE/
+
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-         export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-         export PATH=$WORKSPACE/kind-voltha/bin:$PATH
          kubectl get pods --all-namespaces -o jsonpath="{..image}" |tr -s "[[:space:]]" "\n" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
+
          ## get default pod logs
          for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
          do
@@ -84,6 +98,7 @@ pipeline {
              kubectl logs \$pod> $WORKSPACE/\$pod.log;
            fi
          done
+
          ## get voltha pod logs
          for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
          do
@@ -93,6 +108,7 @@ pipeline {
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
            fi
          done
+
          ## clean up node
          WAIT_ON_DOWN=y ./voltha down
          cd $WORKSPACE/

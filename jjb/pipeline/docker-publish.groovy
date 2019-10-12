@@ -15,9 +15,9 @@
 /* docker-publish pipeline */
 pipeline {
 
-  /* no label, executor is determined by JJB */
+  /* executor is determined by JJB */
   agent {
-    label "${params.executorNode}"
+    label "${params.buildNode}"
   }
   stages {
 
