@@ -3,28 +3,27 @@
 
 - project:
     name: voltha-e2e
-
-    project-name: '{name}'
+    pipeline-script: 'voltha-go-tests.groovy'
 
     jobs:
-      - 'voltha-periodic-test':
-          name: 'voltha-system-tests'
-          pipeline: 'voltha-go-tests.groovy'
+      - 'voltha-e2e-periodic-test':
           default-image-tag: 'voltha-2.1'
-      - 'voltha-periodic-test':
-          name: 'voltha-system-tests-master'
-          pipeline: 'voltha-go-tests.groovy'
+      - 'voltha-e2e-periodic-test':
           default-image-tag: 'master'
 
 - job-template:
-    id: 'voltha-periodic-test'
-    name: '{name}'
+    id: 'voltha-e2e-periodic-test'
+    name: 'periodic_voltha-system-tests_{default-image-tag}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/voltha-e2e.yaml  <br /><br />
+      Created by {id} job-template from jjb/voltha-e2e.yaml using script jjb/pipeline/{pipeline-script} <br /><br />
       E2E Validation for Voltha 2.X
 
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 H * * * *
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
@@ -37,7 +36,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -69,21 +68,25 @@
     project-type: pipeline
     concurrent: false
 
-    dsl: !include-raw-escape: pipeline/{pipeline}
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
 
-    triggers:
-      - timed: |
-                 TZ=America/Los_Angeles
-                 H/30 * * * *
 
 - job-template:
-    id: 'voltha-patch-test'
-    name: '{project}_sanity-system-test'
+    id: 'voltha-sanity'
+    name: 'verify_{project}_sanity-test'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/voltha-e2e.yaml  <br /><br />
+      Created by {id} job-template from jjb/voltha-e2e.yaml using script jjb/pipeline/{pipeline-script} <br /><br />
       E2E Validation for Voltha 2.X
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
 
     properties:
       - cord-infra-properties:
@@ -97,7 +100,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -149,12 +152,4 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline}
-
-    triggers:
-      - cord-infra-gerrit-trigger-patchset:
-          gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '^{project}$'
-          branch-regexp: '{branch-regexp}'
-          dependency-jobs: '{dependency-jobs}'
-          file-include-regexp: '{all-files-regexp}'
+    dsl: !include-raw-escape: pipeline/{pipeline-script}

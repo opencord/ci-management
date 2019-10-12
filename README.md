@@ -7,9 +7,17 @@ The best way to work with this repo is to check it out with `repo`, per these
 instructions: [Downloading testing and QA
 repositories](https://guide.opencord.org/developer/getting_the_code.html#testing-and-qa-repositories)
 
-> NOTE: This repo uses git submodules. If you have trouble with the tests or
-> other tasks, please run: `git submodule init && git submodule update` to
-> obtain these submodules, as `repo` won't do this automatically for you.
+> NOTE: This repo uses git submodules. If you get an error like this when
+> testing:
+>
+>     jenkins_jobs.errors.JenkinsJobsException: Failed to find suitable template named '{project-name}-ci-jobs'
+>
+> or have trouble with the other tasks, please run:
+>
+>     git submodule init && git submodule update
+>
+> to obtain these submodules, as a clone of the repo won't automatically
+> checkout these submodules.
 
 ## Jenkins Job Builder (JJB) Documentation
 

@@ -22,8 +22,8 @@
           dest-gopath: "github.com/opencord"
           junit-allow-empty-results: true
           build-node: 'ubuntu16.04-basebuild-1c-2g'
-      - 'voltha-patch-test':
-          pipeline: 'voltha-bbsim-tests.groovy'
+      - 'voltha-pipeline':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-bbsim-jobs'

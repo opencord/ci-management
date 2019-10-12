@@ -32,7 +32,7 @@
           junit-allow-empty-results: true
           build-node: 'ubuntu16.04-basebuild-2c-4g'
       - 'voltha-patch-test':
-          pipeline: 'voltha-bbsim-tests.groovy'
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-openolt-adapter-jobs'
