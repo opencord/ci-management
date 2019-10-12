@@ -6,7 +6,7 @@
     name: 'verify_{project}{name-extension}_triggered-api-test'
     description: |
       Triggers an api test in a pipeline post-merge and on a schedule.
-      Created by {id} job-template from ci-management/jjb/triggered-api-test.yaml, using pipeline: {pipeline_script}
+      Created by {id} job-template from ci-management/jjb/triggered-api-test.yaml, using script: {pipeline-script}
 
     triggers:
       - cord-infra-gerrit-trigger-merge:
@@ -29,7 +29,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -46,4 +46,4 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline_script}
+    dsl: !include-raw-escape: pipeline/{pipeline-script}

@@ -18,7 +18,7 @@
 # generic OMEC test-case jobs, shared by other projects and triggered within pipelines
 - project:
     name: omec
-    executor_node: 'intel-102'
+    build-node: 'intel-102'
 
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
@@ -33,7 +33,7 @@
     name: ngic-rtc
     project: '{name}'
 
-    executor_node: 'intel-102'
+    build-node: 'intel-102'
 
     github-organization: 'omec-project'
 
@@ -56,7 +56,7 @@
     name: c3po
     project: '{name}'
 
-    executor_node: 'intel-102'
+    build-node: 'intel-102'
 
     github-organization: 'omec-project'
 
@@ -82,7 +82,7 @@
     name: openmme
     project: '{name}'
 
-    executor_node: 'intel-102'
+    build-nod: 'intel-102'
 
     github-organization: 'omec-project'
 
@@ -128,8 +128,8 @@
 
     parameters:
       - string:
-          name: executorNode
-          default: '{executor_node}'
+          name: buildNode
+          default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
@@ -177,8 +177,8 @@
 
     parameters:
       - string:
-          name: executorNode
-          default: '{executor_node}'
+          name: buildNode
+          default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
@@ -218,8 +218,8 @@
 
     parameters:
       - string:
-          name: executorNode
-          default: '{executor_node}'
+          name: buildNode
+          default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
 
     concurrent: false
@@ -253,8 +253,8 @@
 
     parameters:
       - string:
-          name: executorNode
-          default: '{executor_node}'
+          name: buildNode
+          default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
 
     concurrent: false

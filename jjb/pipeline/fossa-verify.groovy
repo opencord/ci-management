@@ -17,7 +17,7 @@ pipeline {
 
   /* no label, executor is determined by JJB */
   agent {
-    label "${params.executorNode}"
+    label "${buildNode}"
   }
 
   // Set so that fossa will know where to run golang tools from
@@ -91,7 +91,7 @@ pipeline {
       }
     }
 
-    stage ("fossa") {
+    stage ("Run FOSSA") {
       steps {
         // catch any errors that occur so that logs can be saved in the next stage
         // docs: https://jenkins.io/doc/pipeline/steps/workflow-basic-steps/#catcherror-catch-error-and-set-build-result-to-failure

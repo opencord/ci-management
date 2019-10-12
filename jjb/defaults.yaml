@@ -18,7 +18,8 @@
     destination-dir: ''
     basedir: ''
 
-    # used to rename jobs if required
+    # used to rename jobs as is required, if running same job more than once
+    # for a project
     name-extension: ''
 
     # How long to keep builds and artifacts
@@ -40,8 +41,8 @@
     twice-a-day: "H */12 * * *"
     once-a-day: "H 0 * * *"
 
-    # The most frequently used type of build node
-    # see other build node types under "Cloud > Amazon EC2" at
+    # The most frequently used type of Build Executor. Name is per the LF global-jjb.
+    # See build node types under "Cloud > Amazon EC2" at
     #  https://jenkins.opencord.org/configure
     build-node: ubuntu16.04-basebuild-1c-1g
 

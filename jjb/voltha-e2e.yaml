@@ -9,7 +9,7 @@
     jobs:
       - 'voltha-periodic-test':
           name: 'voltha-system-tests'
-          pipeline: 'voltha-go-tests.groovy'
+          pipeline-script: 'voltha-go-tests.groovy'
           default-image-tag: 'master'
 
 - job-template:
@@ -33,7 +33,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -70,7 +70,7 @@
     project-type: pipeline
     concurrent: false
 
-    dsl: !include-raw-escape: pipeline/{pipeline}
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
 
     triggers:
       - timed: |
@@ -98,7 +98,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -155,7 +155,7 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline}
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:

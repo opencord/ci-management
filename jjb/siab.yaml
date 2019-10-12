@@ -33,7 +33,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'qct-pod3-node1'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -83,7 +83,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'qct-pod3-node1'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -133,7 +133,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'qct-pod3-node1'
           description: 'Name of the Jenkins node to run the job on'
 
@@ -184,7 +184,7 @@
 
     parameters:
       - string:
-          name: executorNode
+          name: buildNode
           default: 'qct-pod1-node2'
           description: 'Name of the Jenkins node to run the job on'
 

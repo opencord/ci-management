@@ -23,7 +23,7 @@
           junit-allow-empty-results: true
           build-timeout: 15
       - 'voltha-patch-test':
-          pipeline: 'voltha-bbsim-tests.groovy'
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-openonu-adapter-jobs'

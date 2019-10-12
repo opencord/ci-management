@@ -17,7 +17,7 @@ pipeline {
 
   /* no label, executor is determined by JJB */
   agent {
-    label "${params.executorNode}"
+    label "${params.buildNode}"
   }
 
   // Set so that synopsys_detect will know where to run golang tools from
