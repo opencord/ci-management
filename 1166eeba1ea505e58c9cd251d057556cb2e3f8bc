@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "10439eba_d9c8fa50",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-10-14T16:31:56Z",
+      "side": 1,
+      "message": "Don\u0027t do this step for voltha-system-tests patches either",
+      "range": {
+        "startLine": 71,
+        "startChar": 0,
+        "endLine": 71,
+        "endChar": 66
+      },
+      "revId": "1166eeba1ea505e58c9cd251d057556cb2e3f8bc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "961fe12a_c6547ddf",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-10-14T16:31:56Z",
+      "side": 1,
+      "message": "Same comment as above",
+      "range": {
+        "startLine": 82,
+        "startChar": 0,
+        "endLine": 82,
+        "endChar": 66
+      },
+      "revId": "1166eeba1ea505e58c9cd251d057556cb2e3f8bc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
