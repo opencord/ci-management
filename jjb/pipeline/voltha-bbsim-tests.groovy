@@ -156,7 +156,8 @@ pipeline {
          set +e
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
+         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.html ./RobotLogs || true
+         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.xml ./RobotLogs || true
          cd kind-voltha/
          cp install-minimal.log $WORKSPACE/
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
@@ -187,7 +188,7 @@ pipeline {
          ## clean up node
 	 FANCY=0 WAIT_ON_DOWN=y ./voltha down
 	 cd $WORKSPACE/
-	 rm -rf kind-voltha/ voltha-system-tests/ || true
+	 rm -rf kind-voltha/ voltha/ || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
