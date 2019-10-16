@@ -95,7 +95,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh '''
-           HELM_FLAG="--set defaults.image_tag=voltha-2.1,wpa_wait=10,dhcp_wait=10 "
+           HELM_FLAG="${params.extraHelmFlags} "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
              HELM_FLAG+="-f $WORKSPACE/voltha/voltha-system-tests/tests/data/ci-test.yaml "
@@ -116,7 +116,7 @@ pipeline {
            if [ "${gerritProject}" = "voltha-api-server" ]; then
              HELM_FLAG+="--set images.afrouter.tag=citest,images.afrouter.pullPolicy=Never,images.afrouterd.tag=citest,images.afrouterd.pullPolicy=Never "
            else
-             # afrouter is disaggregated from the core, and lacks voltha-2.1 tags
+             # afrouter only has master branch at present
              HELM_FLAG+="--set images.afrouter.tag=master,images.afrouterd.tag=master "
            fi
 

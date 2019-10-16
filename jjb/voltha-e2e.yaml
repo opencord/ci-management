@@ -10,10 +10,6 @@
       - 'voltha-periodic-test':
           name: 'voltha-system-tests'
           pipeline: 'voltha-go-tests.groovy'
-          default-image-tag: 'voltha-2.1'
-      - 'voltha-periodic-test':
-          name: 'voltha-system-tests-master'
-          pipeline: 'voltha-go-tests.groovy'
           default-image-tag: 'master'
 
 - job-template:
@@ -63,7 +59,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag},images.afrouter.tag=master,images.afrouterd.tag=master,wpa_wait=10,dhcp_wait=10'
+          default: '--set defaults.image_tag={default-image-tag}'
           description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
@@ -145,6 +141,11 @@
           name: testTags
           default: '-e notready'
           description: 'test tags'
+
+      - string:
+          name: extraHelmFlags
+          default: '--set defaults.image_tag=$GERRIT_BRANCH'
+          description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
     concurrent: true
