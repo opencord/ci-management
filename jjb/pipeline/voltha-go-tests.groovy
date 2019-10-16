@@ -53,7 +53,6 @@ pipeline {
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=$WORKSPACE/kind-voltha/bin:$PATH
-           cd $WORKSPACE/voltha-system-tests/tests/sanity
            make -C $WORKSPACE/voltha-system-tests sanity-kind || true
            '''
       }
@@ -65,7 +64,8 @@ pipeline {
       sh '''
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
+         cp -r $WORKSPACE/voltha-system-tests/tests/*/*.html ./RobotLogs || true
+         cp -r $WORKSPACE/voltha-system-tests/tests/*/*.xml ./RobotLogs || true
          cd kind-voltha/
          cp install-minimal.log $WORKSPACE/
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
