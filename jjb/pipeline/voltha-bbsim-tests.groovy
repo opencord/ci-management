@@ -95,7 +95,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh '''
-           HELM_FLAG="${params.extraHelmFlags} "
+           HELM_FLAG="${extraHelmFlags} "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
              HELM_FLAG+="-f $WORKSPACE/voltha/voltha-system-tests/tests/data/ci-test.yaml "
