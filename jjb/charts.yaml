@@ -14,7 +14,7 @@
     id: publish-helm-repo
     name: 'publish-helm-repo'
     description: |
-      Created by publish-helm-repo job-template from ci-management/jjb/helm.yaml
+      Created by publish-helm-repo job-template from ci-management/jjb/charts.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-merge:
@@ -119,7 +119,7 @@
     id: verify-helm-lint
     name: 'verify_{project}_helm-lint'
     description: |
-      Created by verify-helm-lint job-template from ci-management/jjb/lint.yaml
+      Created by verify-helm-lint job-template from ci-management/jjb/charts.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:

@@ -77,7 +77,7 @@
     id: version-tag
     name: "version-tag"
     description: |
-      Created by {id} job-template from ci-management/jjb/release.yaml
+      Created by {id} job-template from ci-management/jjb/versioning.yaml
       When a patch is merged, check if it contains a SemVer released version
       file and if so tags the commit in git with that same version.
 
