@@ -90,6 +90,8 @@ pipeline {
          do
            if [[ \$pod == *"-api-"* ]]; then
              kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
+           elif [[ \$pod == "bbsim-"* ]]; then
+             kubectl logs \$pod -n voltha -p > $WORKSPACE/\$pod.log;
            else
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
            fi
