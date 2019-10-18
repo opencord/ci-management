@@ -40,6 +40,7 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
+           export DESIRED_VERSION=v2.14.3    # For Helm
            EXTRA_HELM_FLAGS="${params.extraHelmFlags}" VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y WITH_SIM_ADAPTERS=n FANCY=0 ./voltha up
            """
       }

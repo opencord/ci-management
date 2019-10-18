@@ -60,6 +60,7 @@ pipeline {
         sh """
            git clone https://github.com/ciena/kind-voltha.git
            cd kind-voltha/
+           export DESIRED_VERSION=v2.14.3    # For Helm
            DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up
            """
       }
