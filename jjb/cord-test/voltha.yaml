@@ -50,3 +50,13 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
+      # Menlo DEMO-POD
+      - 'build_pod_manual':
+          testvm: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: '2.1'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
