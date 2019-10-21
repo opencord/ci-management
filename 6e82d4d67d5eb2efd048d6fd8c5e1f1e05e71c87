@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f4a7f87a_034a9fb2",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-10-21T22:49:39Z",
+      "side": 0,
+      "message": "Why remove this?  Could someone now check in a change that would break the docker image build?\n\nAlso, if you want to run the scale test on checkin (might be nice, if it\u0027s short and uses the artifact) you can trigger one job in multiple ways, both periodically and as a verify job.",
+      "range": {
+        "startLine": 23,
+        "startChar": 35,
+        "endLine": 23,
+        "endChar": 47
+      },
+      "revId": "6e82d4d67d5eb2efd048d6fd8c5e1f1e05e71c87",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
