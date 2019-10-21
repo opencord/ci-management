@@ -53,6 +53,15 @@
           Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
           oltDebVersion: 'openolt-master.deb'
 
+     # Flex POD build 2.0
+      - 'build_pod_manual_release':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.0'
+          branch: 'master'
+          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+          oltDebVersion: 'openolt-master.deb'
+
           # # flex OCP pod with olt/onu - release 2.0 build job
           # - 'build_pod_release':
           #     testvm: 'qa-testvm-pod'
