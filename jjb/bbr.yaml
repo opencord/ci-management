@@ -1,0 +1,39 @@
+---
+# verification jobs for 'voltha-bbsim' repo
+
+- project:
+    name: bbr
+    project: '{name}'
+
+    jobs:
+      - 'bbr-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+
+- job-group:
+    name: 'bbr-jobs'
+    jobs:
+      - 'bbsim_scale_test'
+
+- job-template:
+    name: 'bbsim_scale_test'
+    id: bbsim_scale_test
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Interval scale tests for BBSim using BBR <br />
+                  Created from job-template bbsim_scale_test from ci-management/jjb/bbr.yaml <br />
+                  Created by Matteo Scandolo, teo@opennetworking.org <br />
+                  Copyright (c) 2017 Open Networking Foundation (ONF)
+    disabled: false
+
+    pipeline-scm:
+      script-path: '{Jenkinsfile}'
+      scm:
+        - git:
+            url: 'https://gerrit.opencord.org/bbsim'
+            branches:
+              - 'master'
+
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 H * * * *
