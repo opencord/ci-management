@@ -29,3 +29,7 @@
       - 'docker-publish':
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
+      - 'github-release':
+           dependency-jobs: 'version-tag'
+           github-organization: 'opencord'
+           artifact-glob: 'release/*'
