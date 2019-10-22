@@ -16,6 +16,7 @@
           branch-regexp: '^(mcast-1.4)$'
           jdk-distribution: 'java-1.8.0-amazon-corretto'
           name-extension: '-jdk8'
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'mcast-jobs-common'
