@@ -791,7 +791,7 @@
               - '{branch}'
 
 - job-template:
-    name: 'build_{config-pod}_voltha_{release}'
+    name: 'build_{config-pod}_{profile}_voltha_{release}'
     id: build_voltha_pod_release
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -839,6 +839,11 @@
           description: 'The config file'
 
       - string:
+          name: profile
+          default: '{profile}'
+          description: 'Technology Profile pushed to the ETCD'
+
+      - string:
           name: oltDebVersion
           default: '{oltDebVersion}'
           description: 'OLT Software version to install'
@@ -883,7 +888,7 @@
                  H H/3 * * *
 
 - job-template:
-    name: 'build_{config-pod}_voltha_{release}_test'
+    name: 'build_{config-pod}_{profile}_voltha_{release}_test'
     id: build_voltha_pod_test
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -928,6 +933,11 @@
           name: configFileName
           default: '{config-pod}'
           description: 'The config file'
+
+      - string:
+          name: profile
+          default: '{profile}'
+          description: 'Technology Profile pushed to the ETCD'
 
       - string:
           name: branch
