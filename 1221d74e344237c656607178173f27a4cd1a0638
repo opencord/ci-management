@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f7b60076_96ecfc62",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000436
+      },
+      "writtenOn": "2019-10-23T15:45:05Z",
+      "side": 1,
+      "message": "voltha-python-base?",
+      "range": {
+        "startLine": 88,
+        "startChar": 901,
+        "endLine": 88,
+        "endChar": 907
+      },
+      "revId": "1221d74e344237c656607178173f27a4cd1a0638",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
