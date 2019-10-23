@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0aef2ca1_98c75762",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2019-10-23T20:39:47Z",
+      "side": 1,
+      "message": "This one should be Jenkinsfile-voltha-test",
+      "revId": "44eee5e9e450c7b96aa4574d6751848361fa578d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0a9ec90a_1ca76e27",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 116,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2019-10-23T20:39:47Z",
+      "side": 1,
+      "message": "Jenkinsfile-voltha-build",
+      "revId": "44eee5e9e450c7b96aa4574d6751848361fa578d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4a0c3499_68187358",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2019-10-23T20:39:47Z",
+      "side": 1,
+      "message": "Jenkinsfile-voltha-test",
+      "revId": "44eee5e9e450c7b96aa4574d6751848361fa578d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
