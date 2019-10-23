@@ -84,14 +84,26 @@
           profile: '1T4GEM'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
-      # Menlo DEMO-POD
+      # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile
       - 'build_pod_manual':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          release: '2.1'
+          release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt-seba-2.0.deb'
           configurePod: true
           profile: '1T4GEM'
+
+      # Menlo DEMO-POD - Default TechProfile
+      - 'build_voltha_pod_test':
+          testvm: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          profile: 'Default'
