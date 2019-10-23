@@ -28,8 +28,8 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-seba-2.0.deb'
-          profile: 'multipleGem'
+          oltDebVersion: 'openolt_asfvolt16.deb'
+          profile: '1T4GEM-bal31'
 
       # flex pod1 test job - using voltha branch
       - 'build_pod_test':
@@ -40,7 +40,7 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
-      # flex OCP pod with olt/onu - timer based job
+      # flex OCP pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release':
           testvm: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
@@ -52,15 +52,37 @@
           configurePod: true
           profile: 'Default'
 
-      # flex pod1 test job - using voltha branch
+      # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           testvm: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
           profile: 'Default'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+
+      # flex OCP pod with olt/onu - uses 1TCONT/4GEMs tech profile on voltha - timer based job
+      - 'build_voltha_pod_release':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          profile: '1T4GEM'
+
+      # flex pod1 test job - test job uses 1TCONT/4GEMs tech profile - using voltha branch
+      - 'build_voltha_pod_test':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Menlo DEMO-POD
       - 'build_pod_manual':
@@ -72,4 +94,4 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt-seba-2.0.deb'
           configurePod: true
-          profile: 'multipleGem'
+          profile: '1T4GEM'
