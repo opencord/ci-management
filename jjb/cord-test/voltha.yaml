@@ -97,7 +97,7 @@
           profile: '1T4GEM'
 
       # Menlo DEMO-POD - Default TechProfile
-      - 'build_voltha_pod_test':
+      - 'build_pod_manual':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
