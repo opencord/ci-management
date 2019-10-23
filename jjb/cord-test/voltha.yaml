@@ -20,6 +20,15 @@
           oltDebVersion: 'openolt-seba-2.0.deb'
           profile: '1T4GEM'
 
+      # flex pod1 test job - using voltha branch
+      - 'build_pod_test':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          profile: '1T4GEM'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+
       # onlab pod1 OCP pod with olt/onu - testing BAL3.1 release voltha master build job
       - 'build_pod_manual':
           testvm: 'onf-build'
@@ -31,11 +40,11 @@
           oltDebVersion: 'openolt_asfvolt16.deb'
           profile: '1T4GEM-bal31'
 
-      # flex pod1 test job - using voltha branch
+      # onlab pod1 test job - BAL3.1 tests using voltha branch
       - 'build_pod_test':
-          testvm: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          profile: 'multipleGem'
+          testvm: 'onf-build'
+          config-pod: 'onlab-pod1'
+          profile: '1T4GEM'
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
