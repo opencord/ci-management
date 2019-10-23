@@ -960,6 +960,6 @@
 
     triggers:
       - reverse:
-          jobs: 'build_{config-pod}_voltha_{release}'
+          jobs: 'build_{config-pod}_{profile}_voltha_{release}'
           result: 'success'
 
