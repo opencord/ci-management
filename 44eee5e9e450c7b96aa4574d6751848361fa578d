@@ -50,6 +50,29 @@
       "revId": "44eee5e9e450c7b96aa4574d6751848361fa578d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "aa2ee9c8_547e6fb1",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2019-10-23T20:45:31Z",
+      "side": 1,
+      "message": "these are not valid for `build_pod_test` template.",
+      "range": {
+        "startLine": 127,
+        "startChar": 8,
+        "endLine": 128,
+        "endChar": 28
+      },
+      "revId": "44eee5e9e450c7b96aa4574d6751848361fa578d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
