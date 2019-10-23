@@ -29,7 +29,7 @@
     archive-artifacts: ''
 
     # build timeout (minutes)
-    build-timeout: 10
+    build-timeout: 20
 
     # timed trigger defaults, crontab syntax
     # H = random value hashed by name of job
