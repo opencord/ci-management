@@ -40,6 +40,7 @@ mkdir -p "$RELEASE_TEMP"
 # Use "release" as the default makefile target, can be a space separated list
 RELEASE_TARGETS=${RELEASE_TARGETS:-release}
 
+
 # check that we're on a semver released version, or exit
 pushd "$GERRIT_PROJECT"
   GIT_VERSION=$(git tag -l --points-at HEAD)
@@ -55,7 +56,11 @@ pushd "$GERRIT_PROJECT"
   fi
 popd
 
-# To support golang projects create a GOPATH
+# Set and handle GOPATH and PATH
+export GOPATH=${GOPATH:-$WORKSPACE/go}
+export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
+
+# To support golang projects that require GOPATH to be set and code checked out there
 # If $DEST_GOPATH is not an empty string:
 # - create GOPATH within WORKSPACE, and destination directory within
 # - set PATH to include $GOPATH/bin and the system go binaries
@@ -64,9 +69,7 @@ popd
 
 DEST_GOPATH=${DEST_GOPATH:-}
 if [ ! -z "$DEST_GOPATH" ]; then
-  export GOPATH=${GOPATH:-$WORKSPACE/go}
   mkdir -p "$GOPATH/src/$DEST_GOPATH"
-  export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
   release_path="$GOPATH/src/$DEST_GOPATH/$GERRIT_PROJECT"
   mv "$WORKSPACE/$GERRIT_PROJECT" "$release_path"
 else
