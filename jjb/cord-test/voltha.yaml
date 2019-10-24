@@ -60,6 +60,7 @@
           oltDebVersion: 'openolt-seba-2.0.deb'
           configurePod: true
           profile: 'Default'
+          time: '1'
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -82,6 +83,7 @@
           oltDebVersion: 'openolt-seba-2.0.deb'
           configurePod: true
           profile: '1T4GEM'
+          time: '2'
 
       # flex pod1 test job - test job uses 1TCONT/4GEMs tech profile - using voltha branch
       - 'build_voltha_pod_test':
