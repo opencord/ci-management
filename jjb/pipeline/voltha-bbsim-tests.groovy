@@ -109,7 +109,7 @@ pipeline {
              HELM_FLAG+="--set images.adapter_open_onu.tag=citest,images.adapter_open_onu.pullPolicy=Never "
            fi
 
-           if [ "${gerritProject}" = "voltha-bbsim" ]; then
+           if [ "${gerritProject}" = "bbsim" ]; then
              HELM_FLAG+="--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never "
            fi
 
