@@ -12,6 +12,27 @@
           pipeline-script: 'voltha-go-tests.groovy'
           default-image-tag: 'master'
 
+      # Per-patchset Pod builds on Tucson pod
+      - 'build_physical_voltha_patchset':
+          testvm: 'tucson-pod'
+          config-pod: 'tucson-pod'
+          branch: 'master'
+          release: 'patchset'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          profile: 'Default'
+
+      - 'build_physical_voltha_patchset_test':
+          testvm: 'tucson-pod'
+          config-pod: 'tucson-pod'
+          branch: 'master'
+          release: 'patchset'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+          profile: 'Default'
+
 - job-template:
     id: 'voltha-periodic-test'
     name: '{name}'
@@ -164,3 +185,196 @@
           branch-regexp: '{branch-regexp}'
           dependency-jobs: '{dependency-jobs}'
           file-include-regexp: '{all-files-regexp}'
+
+# POD Per Patchset Pipeline Jobs
+
+- job-template:
+    name: 'build_physical_voltha_patchset'
+    id: build_physical_voltha_patchset
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/per-patch-pipeline.yaml <br />
+                  Created by Andy Bavier, andy@opennetworking.org <br />
+                  Copyright (c) 2019 Open Networking Foundation (ONF)
+    project-type: pipeline
+    sandbox: true
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+          name: TestNodeName
+          default: '{testvm}'
+          description: 'Jenkins node name of TestVM Node'
+
+      - string:
+          name: manifestUrl
+          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
+          description: 'URL to the repo manifest'
+
+      - string:
+          name: manifestBranch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the repo branch to use'
+
+      - string:
+          name: gerritProject
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the Gerrit project'
+
+      - string:
+          name: gerritChangeNumber
+          default: '$GERRIT_CHANGE_NUMBER'
+          description: 'Changeset number in Gerrit'
+
+      - string:
+          name: gerritPatchsetNumber
+          default: '$GERRIT_PATCHSET_NUMBER'
+          description: 'PatchSet number in Gerrit'
+
+      - string:
+          name: cordRepoUrl
+          default: '{gerrit-server-url}'
+          description: 'The URL of the CORD Project repository'
+
+      - string:
+          name: configBaseDir
+          default: 'pod-configs'
+          description: 'The directory inside the POD configs repository'
+
+      - string:
+          name: configDeploymentDir
+          default: 'deployment-configs'
+          description: 'The deployment configs folder'
+
+      - string:
+          name: configKubernetesDir
+          default: 'kubernetes-configs'
+          description: 'The kubernetes config folder'
+
+      - string:
+          name: configFileName
+          default: '{config-pod}'
+          description: 'The config file'
+
+      - string:
+          name: oltDebVersion
+          default: '{oltDebVersion}'
+          description: 'OLT Software version to install'
+
+      - string:
+          name: branch
+          default: '{branch}'
+
+      - string:
+          name: profile
+          default: '{profile}'
+          description: 'Technology Profile pushed to the ETCD'
+
+      - string:
+          name: notificationEmail
+          default: 'andy@opennetworking.org'
+          description: ''
+
+      - bool:
+          name: reinstallOlt
+          default: true
+          description: "Re-install OLT software"
+
+      - bool:
+          name: withPatchset
+          default: true
+          description: "Apply a Gerrit patchset during the build"
+
+    concurrent: true
+
+    pipeline-scm:
+      script-path: '{Jenkinsfile}'
+      scm:
+        - git:
+            url: '{gerrit-server-url}/{test-repo}'
+            branches:
+              - '{branch}'
+
+- job-template:
+    name: 'build_physical_voltha_patchset_test'
+    id: build_physical_voltha_patchset_test
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/per-patch-pipeline.yaml <br />
+                  Created by Andy Bavier, andy@opennetworking.org <br />
+                  Copyright (c) 2019 Open Networking Foundation (ONF)
+
+    project-type: pipeline
+
+    sandbox: true
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+          name: TestNodeName
+          default: '{testvm}'
+          description: 'Jenkins node name of TestVM Node'
+
+      - string:
+          name: cordRepoUrl
+          default: '{gerrit-server-url}'
+          description: 'The URL of the CORD Project repository'
+
+      - string:
+          name: configBaseDir
+          default: 'pod-configs'
+          description: 'The directory inside the POD configs repository'
+
+      - string:
+          name: configDeploymentDir
+          default: 'deployment-configs'
+          description: 'The deployment configs folder'
+
+      - string:
+          name: configKubernetesDir
+          default: 'kubernetes-configs'
+          description: 'The kubernetes config folder'
+
+      - string:
+          name: configFileName
+          default: '{config-pod}'
+          description: 'The config file'
+
+      - string:
+          name: profile
+          default: '{profile}'
+          description: 'Technology Profile pushed to the ETCD'
+
+      - string:
+          name: branch
+          default: '{branch}'
+
+      - string:
+          name: notificationEmail
+          default: 'andy@opennetworking.org'
+          description: ''
+
+    concurrent: true
+
+    pipeline-scm:
+      script-path: '{Jenkinsfile}'
+      scm:
+        - git:
+            url: '{gerrit-server-url}/{test-repo}'
+            branches:
+              - '{branch}'
+
+    triggers:
+      - reverse:
+          jobs: 'build_physical_voltha_patchset'
+          result: 'success'

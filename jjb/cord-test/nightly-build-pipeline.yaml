@@ -872,6 +872,11 @@
           default: true
           description: "Re-install olt software bringing up CORD"
 
+      - bool:
+          name: withPatchset
+          default: false
+          description: "Apply a Gerrit patchset during the build"
+
     concurrent: true
 
     pipeline-scm:
