@@ -125,10 +125,24 @@
           oltDebVersion: 'openolt-seba-2.0.deb'
           configurePod: true
           profile: 'Default'
+
+      # ONF DEMO  pod with olt/onu - voltha dev job - timer based 
+      - 'build_pod_timer':
+         testvm: 'menlo-demo-pod'
+         config-pod: 'onf-demo-pod'
+         profile: 'Default'
+         branch: 'master'
+         test-repo: 'voltha-system-tests'
+         Jenkinsfile: 'Jenkinsfile-voltha-build'
+         oltDebVersion: 'openolt-seba-2.0.deb'
+         configurePod: true
+         time: '3'
+
+      # ONF DEM) OCP test job - voltha-master branch - timer based
       - 'build_pod_test':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          profile: 'Default'
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
-          profile: 'Default'
