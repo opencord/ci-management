@@ -59,8 +59,13 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag}'
+          default: '--set defaults.image_tag={default-image-tag},onu=2,pon=2'
           description: 'Helm flags to pass to ./voltha up'
+
+      - string:
+          name: robotVarFile
+          default: 'bbsim-kind-2x2.yaml'
+          description: 'Pod config file to use for tests'
 
     project-type: pipeline
     concurrent: false
