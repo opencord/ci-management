@@ -43,5 +43,5 @@
     parameters:
       - string:
           name: executorNode
-          default: 'ubuntu16.04-basebuild-1c-2g'
+          default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
