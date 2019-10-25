@@ -799,6 +799,12 @@
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
+    manifestUrl: ""
+    manifestBranch: ""
+    gerritProject: ""
+    gerritChangeNumber: ""
+    gerritPatchsetNumber: ""
+    withPatchset: false
 
     <<: *test-pipe-job-boiler-plate
 
@@ -871,6 +877,36 @@
           name: reinstallOlt
           default: true
           description: "Re-install olt software bringing up CORD"
+
+      - string:
+          name: manifestUrl
+          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
+          description: 'URL to the repo manifest'
+
+      - string:
+          name: manifestBranch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the repo branch to use'
+
+      - string:
+          name: gerritProject
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the Gerrit project'
+
+      - string:
+          name: gerritChangeNumber
+          default: '$GERRIT_CHANGE_NUMBER'
+          description: 'Changeset number in Gerrit'
+
+      - string:
+          name: gerritPatchsetNumber
+          default: '$GERRIT_PATCHSET_NUMBER'
+          description: 'PatchSet number in Gerrit'
+
+      - bool:
+          name: withPatchset
+          default: {withPatchset}
+          description: "Apply a Gerrit patchset during the build"
 
     concurrent: true
 

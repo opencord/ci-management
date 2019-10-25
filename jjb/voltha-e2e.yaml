@@ -12,6 +12,28 @@
           pipeline-script: 'voltha-go-tests.groovy'
           default-image-tag: 'master'
 
+      # Per-patchset Pod builds on Tucson pod
+      - 'build_voltha_pod_release':
+          testvm: 'tucson-mgmt'
+          config-pod: 'tucson-pod'
+          branch: 'master'
+          release: 'patchset'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          profile: 'Default'
+          withPatchset: true
+
+      - 'build_voltha_pod_test':
+          testvm: 'tucson-mgmt'
+          config-pod: 'tucson-pod'
+          branch: 'master'
+          release: 'patchset'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+          profile: 'Default'
+
 - job-template:
     id: 'voltha-periodic-test'
     name: '{name}'
