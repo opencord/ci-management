@@ -136,7 +136,6 @@
          Jenkinsfile: 'Jenkinsfile-voltha-build'
          oltDebVersion: 'openolt-seba-2.0.deb'
          configurePod: true
-         time: '3'
 
       # ONF DEM) OCP test job - voltha-master branch - timer based
       - 'build_pod_test':
