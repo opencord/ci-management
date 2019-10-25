@@ -132,3 +132,21 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
           profile: 'Default'
+
+      # Per-patchset Pod builds on Flex
+      - 'build_voltha_pod_patchset':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          profile: 'Default'
+      - 'build_voltha_pod_patchset_test':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+          profile: 'Default'
