@@ -11,6 +11,7 @@
 
       - 'mcast-jobs':
           branch-regexp: '^(master)$'
+          junit-allow-empty-results: true
 
       - 'mcast-jobs-legacy':
           branch-regexp: '^(mcast-1.4)$'
