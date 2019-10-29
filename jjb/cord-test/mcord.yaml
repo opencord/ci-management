@@ -11,14 +11,14 @@
     jobs:
       # onlab mcord-pod1 build
       - 'build_mcord_pod_manual':
-          testvm: 'onf-build'
+          build-node: 'onf-build'
           config-pod: 'onf-mcord-pod1'
           profile: 'mcord'
           branch: 'master'
           Jenkinsfile: 'Jenkinsfile-mcord-local-build'
 
       - 'build_mcord_pod_manual':
-          testvm: 'onf-build'
+          build-node: 'onf-build'
           config-pod: 'onf-mcord-pod2'
           profile: 'mcord'
           branch: 'master'
@@ -26,7 +26,7 @@
           Jenkinsfile: 'Jenkinsfile-mcord-remote-build'
 
       - 'build_mcord_pod_manual':
-          testvm: 'mcord-dt'
+          build-node: 'mcord-dt'
           config-pod: 'mcord-barcellona-remote-dt'
           profile: 'mcord'
           branch: 'master'

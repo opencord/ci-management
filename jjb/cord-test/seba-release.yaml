@@ -11,7 +11,7 @@
     jobs:
       # onlab pod1 build 1.0
       - 'build_pod_manual_release':
-          testvm: 'onf-build'
+          build-node: 'onf-build'
           config-pod: 'onlab-pod1-voltha16'
           release: '1.0'
           branch: 'cord-6.1'
@@ -20,7 +20,7 @@
 
       # onlab pod1 build 2.0
       - 'build_pod_manual_release':
-          testvm: 'onf-build'
+          build-node: 'onf-build'
           config-pod: 'onlab-pod1'
           release: '2.0'
           branch: 'master'
@@ -29,7 +29,7 @@
 
       # onlab pod1 test job - release 2.0 test job
       - 'build_pod_release_test':
-          testvm: 'onf-build'
+          build-node: 'onf-build'
           config-pod: 'onlab-pod1'
           release: '2.0'
           branch: 'master'
@@ -37,7 +37,7 @@
 
       # onlab pod2 build
       - 'build_pod_manual_release':
-          testvm: 'onf-build'
+          build-node: 'onf-build'
           config-pod: 'onlab-pod2'
           release: '1.0'
           branch: 'cord-6.1'
@@ -46,7 +46,7 @@
 
       # onlab pod2 build 2.0
       - 'build_pod_manual_release':
-          testvm: 'onf-build'
+          build-node: 'onf-build'
           config-pod: 'onlab-pod2'
           release: '2.0'
           branch: 'master'
@@ -55,7 +55,7 @@
 
      # Flex POD build 2.0
       - 'build_pod_manual_release':
-          testvm: 'qa-testvm-pod'
+          build-node: 'qa-testvm-pod  '
           config-pod: 'flex-ocp-cord'
           release: '2.0'
           branch: 'master'
@@ -64,7 +64,7 @@
 
           # # flex OCP pod with olt/onu - release 2.0 build job
           # - 'build_pod_release':
-          #     testvm: 'qa-testvm-pod'
+          #     build-node: 'qa-testvm-pod  '
           #     config-pod: 'flex-ocp-cord'
           #     release: '1.0'
           #     branch: 'cord-6.1'
@@ -74,7 +74,7 @@
 
           # # flex OCP pod with olt/onu - release 2.0 build job
           # - 'build_pod_release':
-          #     testvm: 'qa-testvm-pod'
+          #     build-node: 'qa-testvm-pod  '
           #     config-pod: 'flex-ocp-cord'
           #     release: '2.0'
           #     branch: 'master'
@@ -84,7 +84,7 @@
           #
           # # flex OCP POD with olt/onu - release 1.0 test job
           # - 'build_pod_release_test':
-          #     testvm: 'qa-testvm-pod'
+          #     build-node: 'qa-testvm-pod  '
           #     config-pod: 'flex-ocp-cord'
           #     release: '1.0'
           #     branch: 'cord-6.1'
@@ -92,7 +92,7 @@
           #
           # # flex OCP POD with olt/onu - release 2.0 test job
           # - 'build_pod_release_test':
-          #     testvm: 'qa-testvm-pod'
+          #     build-node: 'qa-testvm-pod  '
           #     config-pod: 'flex-ocp-cord'
           #     release: '2.0'
           #     branch: 'master'
@@ -100,7 +100,7 @@
           #
           # # flex OCP pod with olt/onu : using voltha latest(master)
           # - 'build_pod_release':
-          #     testvm: 'qa-testvm-pod'
+          #     build-node: 'qa-testvm-pod  '
           #     config-pod: 'flex-ocp-cord'
           #     release: '2.0-microcharts'
           #     branch: 'master'
@@ -110,7 +110,7 @@
           #
           # # flex OCP test job - release 2.0 test job
           # - 'build_pod_release_test':
-          #     testvm: 'qa-testvm-pod'
+          #     build-node: 'qa-testvm-pod  '
           #     config-pod: 'flex-ocp-cord'
           #     release: '2.0-microcharts'
           #     branch: 'master'
