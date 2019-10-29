@@ -28,9 +28,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -136,9 +141,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -243,9 +253,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -315,9 +330,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -382,9 +402,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -474,9 +499,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -576,9 +606,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -649,9 +684,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -722,9 +762,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -804,9 +849,14 @@
 
     parameters:
       - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
           name: TestNodeName
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
@@ -921,8 +971,13 @@
     parameters:
       - string:
           name: buildNode
-          default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: TestNodeName
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
 
       - string:
           name: cordRepoUrl
