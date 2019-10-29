@@ -22,6 +22,15 @@ pipeline {
   agent {
     label "${params.buildNode}"
   }
+
+  environment {
+    PATH = "$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin/:$WORKSPACE/go/bin:$WORKSPACE/kind-voltha/bin"
+    GOPATH = "$WORKSPACE/go"
+    TYPE = "minimal"
+    VOLTCONFIG = "/home/jenkins/.volt/config-minimal"
+    VOLTHA_LOG_LEVEL = "DEBUG"
+  }
+
   options {
       timeout(time: 90, unit: 'MINUTES')
   }
@@ -59,8 +68,10 @@ pipeline {
       steps {
         sh """
            git clone https://github.com/ciena/kind-voltha.git
-           cd kind-voltha/
+
+           pushd kind-voltha/
            DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up
+           popd
            """
       }
     }
@@ -80,14 +91,14 @@ pipeline {
       steps {
         sh '''
            if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
-             export GOROOT=/usr/local/go
-             export GOPATH=\$(pwd)
-             export TYPE=minimal
+
              export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-             export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-             export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
+
              docker images | grep citest
-             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
+             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}");
+             do
+               echo "Pushing \$image to nodes";
+               kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
            fi
            '''
       }
@@ -132,7 +143,7 @@ pipeline {
 
            cd $WORKSPACE/kind-voltha/
            echo \$HELM_FLAG
-           EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 WITH_SIM_ADAPTERS=n ./voltha up
+           EXTRA_HELM_FLAGS=\$HELM_FLAG  WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=y FANCY=0 WITH_SIM_ADAPTERS=n ./voltha up
            '''
       }
     }
@@ -142,8 +153,7 @@ pipeline {
         sh '''
            cd kind-voltha/
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
+
            make -C $WORKSPACE/voltha/voltha-system-tests sanity-kind || true
            '''
       }
@@ -154,19 +164,24 @@ pipeline {
     always {
       sh '''
          set +e
+
          # copy robot logs
-         if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.html ./RobotLogs || true
-         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.xml ./RobotLogs || true
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/
+         if [ -d RobotLogs ];
+         then
+           rm -r RobotLogs;
+         fi
+         mkdir -p RobotLogs
+
+         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/sanity/*ml ./RobotLogs || true
+
+         cp kind-voltha/install-minimal.log $WORKSPACE
+
          export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-         export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-         export PATH=/w/workspace/${gerritProject}_sanity-system-test/kind-voltha/bin:$PATH
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
+
          ## get default pod logs
          for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
          do
@@ -176,6 +191,7 @@ pipeline {
              kubectl logs \$pod> $WORKSPACE/\$pod.log;
            fi
          done
+
          ## get voltha pod logs
          for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
          do
@@ -187,11 +203,13 @@ pipeline {
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
            fi
          done
+
          ## clean up node
 	 FANCY=0 WAIT_ON_DOWN=y ./voltha down
 	 cd $WORKSPACE/
 	 rm -rf kind-voltha/ voltha/ || true
          '''
+
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
             logFileName: 'RobotLogs/log*.html',
@@ -202,7 +220,6 @@ pipeline {
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
-
     }
   }
 }
