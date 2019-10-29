@@ -28,9 +28,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -136,9 +136,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -243,9 +243,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -315,9 +315,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -382,9 +382,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -474,9 +474,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -576,9 +576,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -649,9 +649,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -722,9 +722,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -804,9 +804,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
@@ -911,7 +911,7 @@
       - string:
           name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
           name: cordRepoUrl
