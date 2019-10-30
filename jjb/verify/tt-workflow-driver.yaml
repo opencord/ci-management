@@ -25,5 +25,6 @@
     name: 'publish-tt-workflow-driver-jobs'
     jobs:
       - 'docker-publish':
+          maintainers: "teo@opennetworking.org, andy@opennetworking.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag'

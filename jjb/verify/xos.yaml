@@ -44,6 +44,7 @@
           pypi-index: 'pypi'
           dependency-jobs: 'version-tag'
       - 'docker-publish':
+          maintainers: "teo@opennetworking.org, andy@opennetworking.org, scottb@opennetworking.org"
           build-timeout: 30
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag'

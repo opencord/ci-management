@@ -26,5 +26,6 @@
     name: 'publish-fabric-crossconnect-jobs'
     jobs:
       - 'docker-publish':
+          maintainers: "teo@opennetworking.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag'
