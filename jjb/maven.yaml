@@ -102,13 +102,20 @@
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
     scm:
-      - lf-infra-gerrit-scm:
+      - cord-infra-gerrit-scm:
           git-url: '$GIT_URL/$GERRIT_PROJECT'
           refspec: '$GERRIT_REFSPEC'
           branch: '$GERRIT_BRANCH'
           submodule-recursive: 'false'
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: '{project}'
+
+    wrappers:
+      - credentials-binding:
+        - file:
+            credential-id: 'gpg-creds-maven'
+            variable: 'GNUPG'
 
     builders:
       # Set JDK version
@@ -119,9 +126,13 @@
           sudo update-java-alternatives -s $jdkDistro
           echo "Java Version:"
           java -version
+          echo "Unpacking GPG Keys"
+          tar -xvf $GNUPG -C ~
 
       - maven-target:
-          pom: pom.xml
+          pom: "{project}/pom.xml"
           settings: onoscord-apps
           settings-type: cfp
-          goals: 'clean deploy'
+          global-settings: global-onos-cord-settings
+          global-settings-type: cfp
+          goals: '-Prelease clean deploy'
