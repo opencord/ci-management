@@ -110,6 +110,12 @@
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
+    wrappers:
+      - credentials-binding:
+        - file:
+            credential-id: 'gpg-creds-maven'
+            variable: 'GNUPG'
+
     builders:
       # Set JDK version
       - shell: |
@@ -119,6 +125,8 @@
           sudo update-java-alternatives -s $jdkDistro
           echo "Java Version:"
           java -version
+          echo "Unpacking GPG Keys"
+          tar -xvf $GNUPG -C ~
 
       - maven-target:
           pom: pom.xml
