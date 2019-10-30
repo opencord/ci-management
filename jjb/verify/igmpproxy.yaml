@@ -14,7 +14,7 @@
           junit-allow-empty-results: true
 
       - 'igmpproxy-jobs-legacy':
-          branch-regexp: '^(igmpproxy-1.3)$'
+          branch-regexp: '^(igmpproxy-1.2)$'
           jdk-distribution: 'java-1.8.0-amazon-corretto'
           name-extension: '-jdk8'
           junit-allow-empty-results: true
