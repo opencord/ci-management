@@ -95,7 +95,30 @@
           profile: '1T4GEM'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
-      # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile
+      # Menlo pod with olt/onu - Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          testvm: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          profile: 'Default'
+          time: '1'
+
+      # Menlo pod test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          testvm: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+
+      # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile - Manual build and test job
       - 'build_pod_manual':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
@@ -114,7 +137,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
           profile: '1T4GEM'
 
-      # Menlo DEMO-POD - Default TechProfile
+      # Menlo DEMO-POD - Default TechProfile - manual build job
       - 'build_pod_manual':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
@@ -126,19 +149,7 @@
           configurePod: true
           profile: 'Default'
 
-      # ONF DEMO  pod with olt/onu - voltha dev job - timer based 
-      - 'build_pod_timer':
-         testvm: 'menlo-demo-pod'
-         config-pod: 'onf-demo-pod'
-         profile: 'Default'
-         branch: 'master'
-         test-repo: 'voltha-system-tests'
-         Jenkinsfile: 'Jenkinsfile-voltha-build'
-         oltDebVersion: 'openolt-seba-2.0.deb'
-         configurePod: true
-         time: '3'
-
-      # ONF DEM) OCP test job - voltha-master branch - timer based
+      # ONF DEM) OCP test job - voltha-master branch 
       - 'build_pod_test':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
