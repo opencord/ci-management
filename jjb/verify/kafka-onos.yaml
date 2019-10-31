@@ -11,11 +11,13 @@
 
       - 'kafka-onos-jobs':
           branch-regexp: '^(master)$'
+          junit-allow-empty-results: true
 
       - 'kafka-onos-jobs-legacy':
           branch-regexp: '^(kafka-onos-1.1|kafka-onos-1.2)$'
           jdk-distribution: 'java-1.8.0-amazon-corretto'
           name-extension: '-jdk8'
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'kafka-onos-jobs-common'
