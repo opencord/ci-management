@@ -52,7 +52,7 @@
       # run tests and install
       - maven-target:
           pom: pom.xml
-          settings: cord-apps-maven-settings
+          settings: 'cord-apps-maven-settings'
           settings-type: cfp
           goals: 'clean test install'
 
@@ -122,6 +122,6 @@
 
       - maven-target:
           pom: pom.xml
-          settings: cord-apps-maven-settings
+          settings: 'cord-apps-maven-settings'
           settings-type: cfp
           goals: 'clean deploy'
