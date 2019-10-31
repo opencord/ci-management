@@ -13,7 +13,7 @@
           branch-regexp: '^(master)$'
 
       - 'kafka-onos-jobs-legacy':
-          branch-regexp: '^(kafka-onos-1.1)$'
+          branch-regexp: '^(kafka-onos-1.1|kafka-onos-1.2)$'
           jdk-distribution: 'java-1.8.0-amazon-corretto'
           name-extension: '-jdk8'
 
@@ -34,4 +34,3 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
-
