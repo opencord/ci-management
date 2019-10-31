@@ -50,6 +50,30 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # flex OCP pod with olt/onu - Default tech profile and timer based job
+      # Uses the images specified in the charts
+      - 'build_voltha_pod_release':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord-released'
+          release: 'released'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          configurePod: true
+          profile: 'Default'
+          time: '0'
+
+      # flex pod1 test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          testvm: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord-released'
+          release: 'released'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+
+      # flex OCP pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release':
           testvm: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
