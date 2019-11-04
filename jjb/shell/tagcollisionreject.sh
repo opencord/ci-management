@@ -140,7 +140,7 @@ function dockerfile_parentcheck {
 
     done
 
-  done  < <( find "${WORKSPACE}" -name 'Dockerfile*' ! -path "*/vendor/*" -print0 )
+  done  < <( find "${WORKSPACE}" -name 'Dockerfile*' ! -path "*/vendor/*" ! -name "*dockerignore" -print0 )
 }
 
 echo "Checking git repo with remotes:"
