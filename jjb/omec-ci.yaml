@@ -3,18 +3,6 @@
 # Uses github pull request builder to trigger and Jenkinsfiles from this repo
 #  https://github.com/omec-project/omec-project-ci
 
-# license check
-- project:
-    name: omec-license-check
-
-    blackduck-project: omec
-
-    jobs:
-      - 'synopsys-periodic-check':
-          github-organization: 'omec-project'
-          build-node: "ubuntu16.04-basebuild-2c-4g"
-          git-server-url: "https://github.com/omec-project"
-
 # generic OMEC test-case jobs, shared by other projects and triggered within pipelines
 - project:
     name: omec
