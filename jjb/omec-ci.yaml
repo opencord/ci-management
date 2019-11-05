@@ -70,7 +70,7 @@
     name: openmme
     project: '{name}'
 
-    build-nod: 'intel-102'
+    build-node: 'intel-102'
 
     github-organization: 'omec-project'
 
