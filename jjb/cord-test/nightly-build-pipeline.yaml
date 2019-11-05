@@ -863,6 +863,11 @@
           description: ''
 
       - bool:
+          name: released
+          default: false
+          description: "Pulls released version images when true"
+
+      - bool:
           name: configurePod
           default: true
           description: "Configure POD via TOSCA post build"
