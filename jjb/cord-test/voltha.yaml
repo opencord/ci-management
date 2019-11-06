@@ -99,7 +99,7 @@
       - 'build_voltha_pod_release':
           testvm: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: '2.2.1'
+          release: 'release'
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
@@ -113,7 +113,7 @@
       - 'build_voltha_pod_test':
           testvm: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: '2.2.1'
+          release: 'release'
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
