@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff861067_2110b3ee",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T17:30:45Z",
+      "side": 1,
+      "message": "You might want this to be `false` - it would put a \"I\u0027ve started\" message in the gerrit messages when the jobs triggers, which might be nice for a manually triggered job.",
+      "range": {
+        "startLine": 312,
+        "startChar": 10,
+        "endLine": 312,
+        "endChar": 28
+      },
+      "revId": "b4f657bd399fe48a91a0393d61626a8b4bd53493",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c6f00d2_43876985",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T17:30:45Z",
+      "side": 1,
+      "message": "Could this possibly apply to other branches?",
+      "range": {
+        "startLine": 321,
+        "startChar": 34,
+        "endLine": 321,
+        "endChar": 42
+      },
+      "revId": "b4f657bd399fe48a91a0393d61626a8b4bd53493",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
