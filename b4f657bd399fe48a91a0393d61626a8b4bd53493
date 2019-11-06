@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a1f29d65_589df780",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 312,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-06T17:52:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ff861067_2110b3ee",
+      "range": {
+        "startLine": 312,
+        "startChar": 10,
+        "endLine": 312,
+        "endChar": 28
+      },
+      "revId": "b4f657bd399fe48a91a0393d61626a8b4bd53493",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4c6f00d2_43876985",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2019-11-06T17:30:45Z",
       "side": 1,
       "message": "Could this possibly apply to other branches?",
+      "range": {
+        "startLine": 321,
+        "startChar": 34,
+        "endLine": 321,
+        "endChar": 42
+      },
+      "revId": "b4f657bd399fe48a91a0393d61626a8b4bd53493",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3e1f9d7e_0a32859a",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-06T17:52:14Z",
+      "side": 1,
+      "message": "Right now it only applies to master I think.  We can expand it later if necessary.",
+      "parentUuid": "4c6f00d2_43876985",
       "range": {
         "startLine": 321,
         "startChar": 34,
