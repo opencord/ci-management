@@ -1,0 +1,28 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "551443e8_c50ab80a",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 321,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T18:00:15Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "3e1f9d7e_0a32859a",
+      "range": {
+        "startLine": 321,
+        "startChar": 34,
+        "endLine": 321,
+        "endChar": 42
+      },
+      "revId": "1f465598b6a0a9f6d07f7d000e035ae83df1dfee",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
