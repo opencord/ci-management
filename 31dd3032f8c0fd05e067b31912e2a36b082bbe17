@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3e6bc896_b520c9fc",
+        "filename": "jjb/bbsim-e2e-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T20:44:11Z",
+      "side": 1,
+      "message": "These don\u0027t seem to be used.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 52
+      },
+      "revId": "31dd3032f8c0fd05e067b31912e2a36b082bbe17",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c682f50c_4e6a6fb0",
+        "filename": "jjb/pipeline/bbsim-scale.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T20:44:11Z",
+      "side": 1,
+      "message": "These should be defined as parameters",
+      "range": {
+        "startLine": 20,
+        "startChar": 36,
+        "endLine": 22,
+        "endChar": 57
+      },
+      "revId": "31dd3032f8c0fd05e067b31912e2a36b082bbe17",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e9f3b70_e120938f",
+        "filename": "jjb/pipeline/bbsim-scale.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T20:44:11Z",
+      "side": 1,
+      "message": "stage\n\n(probably would be caught by running jjb/shell/jflint.sh on this script)",
+      "range": {
+        "startLine": 45,
+        "startChar": 4,
+        "endLine": 45,
+        "endChar": 8
+      },
+      "revId": "31dd3032f8c0fd05e067b31912e2a36b082bbe17",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d85fa957_1b1028af",
+        "filename": "jjb/pipeline/bbsim-scale.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T20:44:11Z",
+      "side": 1,
+      "message": "For environmental variables that don\u0027t change, it\u0027s better to put them in an `environment {}` section early int the pipeline.",
+      "range": {
+        "startLine": 50,
+        "startChar": 11,
+        "endLine": 50,
+        "endChar": 165
+      },
+      "revId": "31dd3032f8c0fd05e067b31912e2a36b082bbe17",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
