@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7d217921_874e1358",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 210,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-06T22:28:03Z",
+      "side": 1,
+      "message": "This looks right, per: https://docs.openstack.org/infra/jenkins-job-builder/properties.html#properties.build-blocker\n\nDo you want to specify\n\n    block-level: \u0027NODE\u0027\n\nSo when we get multiple nodes jobs are only blocked from running on the same node, not globally?",
+      "range": {
+        "startLine": 207,
+        "startChar": 5,
+        "endLine": 210,
+        "endChar": 31
+      },
+      "revId": "888005b76a770aa3a386b1e198474a483ee6871c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
