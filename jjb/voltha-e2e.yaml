@@ -13,7 +13,7 @@
           default-image-tag: 'master'
 
       # Per-patchset Pod builds on Tucson pod
-      - 'build_physical_voltha_patchset':
+      - 'verify_physical_voltha_patchset':
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
@@ -24,7 +24,7 @@
           configurePod: true
           profile: 'Default'
 
-      - 'build_physical_voltha_patchset_test':
+      - 'verify_physical_voltha_patchset_test':
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
@@ -189,12 +189,12 @@
 # POD Per Patchset Pipeline Jobs
 
 - job-template:
-    name: 'build_physical_voltha_patchset'
-    id: build_physical_voltha_patchset
+    name: 'verify_physical_voltha_patchset'
+    id: verify_physical_voltha_patchset
     description: |
                   <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/per-patch-pipeline.yaml <br />
+                  Automated build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
                   Created by Andy Bavier, andy@opennetworking.org <br />
                   Copyright (c) 2019 Open Networking Foundation (ONF)
     project-type: pipeline
@@ -204,6 +204,11 @@
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
+      - build-blocker:
+          blocking-jobs:
+            - 'verify_physical_voltha_patchset_test'
+          block-level: 'NODE'
+          queue-scanning: 'ALL'
 
     parameters:
       - string:
@@ -295,7 +300,7 @@
           default: false
           description: "Pulls released version images when true"
 
-    concurrent: true
+    concurrent: false
 
     pipeline-scm:
       script-path: '{Jenkinsfile}'
@@ -324,12 +329,12 @@
                   branch-pattern: 'master'
 
 - job-template:
-    name: 'build_physical_voltha_patchset_test'
-    id: build_physical_voltha_patchset_test
+    name: 'verify_physical_voltha_patchset_test'
+    id: verify_physical_voltha_patchset_test
     description: |
                   <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/per-patch-pipeline.yaml <br />
+                  Run tests on {config-pod}, triggered by verify_physical_voltha_patchset <br /><br />
+                  Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
                   Created by Andy Bavier, andy@opennetworking.org <br />
                   Copyright (c) 2019 Open Networking Foundation (ONF)
 
@@ -387,7 +392,7 @@
           default: 'andy@opennetworking.org'
           description: ''
 
-    concurrent: true
+    concurrent: false
 
     pipeline-scm:
       script-path: '{Jenkinsfile}'
@@ -399,5 +404,5 @@
 
     triggers:
       - reverse:
-          jobs: 'build_physical_voltha_patchset'
+          jobs: 'verify_physical_voltha_patchset'
           result: 'success'
