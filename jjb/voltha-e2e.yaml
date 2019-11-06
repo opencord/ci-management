@@ -290,6 +290,11 @@
           default: true
           description: "Apply a Gerrit patchset during the build"
 
+      - bool:
+          name: released
+          default: false
+          description: "Pulls released version images when true"
+
     concurrent: true
 
     pipeline-scm:
@@ -299,6 +304,21 @@
             url: '{gerrit-server-url}/{test-repo}'
             branches:
               - '{branch}'
+
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: true
+          trigger-on:
+            - comment-added-contains-event:
+                comment-contains-value: '^hardware test$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-helm-charts|voltha-system-tests)$'
+              branches:
+                - branch-compare-type: PLAIN
+                  branch-pattern: 'master'
 
 - job-template:
     name: 'build_physical_voltha_patchset_test'
