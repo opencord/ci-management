@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1fb337f0_4feccade",
+        "filename": "jjb/bbsim-e2e-scale.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-07T05:44:39Z",
+      "side": 1,
+      "message": "Is this going to run on a physical pod?  Or in EC2 (use one of the ubuntu-* executors in that case)?",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "d5e41f4f75e358c797b4a9d6058bd205fcba5c44",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
