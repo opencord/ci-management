@@ -22,6 +22,30 @@
       "revId": "d5e41f4f75e358c797b4a9d6058bd205fcba5c44",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b1b95d19_c48ae8ed",
+        "filename": "jjb/bbsim-e2e-scale.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000455
+      },
+      "writtenOn": "2019-11-07T15:37:16Z",
+      "side": 1,
+      "message": "I think EC2 would be appropriate for this.",
+      "parentUuid": "1fb337f0_4feccade",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "d5e41f4f75e358c797b4a9d6058bd205fcba5c44",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
