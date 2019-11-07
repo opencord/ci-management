@@ -186,3 +186,7 @@
     # maintainers
     # Used to notify users in supported tests
     maintainers: 'zdw@opennetworking.org'
+
+    # release name
+    # Used in some testing jobs, the default release value
+    release: ''

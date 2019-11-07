@@ -72,6 +72,10 @@
           default: '{branch}'
 
       - string:
+          name: release
+          default: '{release}'
+
+      - string:
           name: helmRepoUrl
           default: 'https://charts.opencord.org'
           description: 'URL where helm-charts are published'
@@ -858,6 +862,10 @@
           default: '{branch}'
 
       - string:
+          name: release
+          default: '{release}'
+
+      - string:
           name: notificationEmail
           default: 'you@opennetworking.org, suchitra@opennetworking.org'
           description: ''
@@ -952,6 +960,10 @@
       - string:
           name: branch
           default: '{branch}'
+
+      - string:
+          name: release
+          default: '{release}'
 
       - string:
           name: notificationEmail
