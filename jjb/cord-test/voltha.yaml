@@ -55,6 +55,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt-seba-2.0.deb'
@@ -78,6 +79,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt-seba-2.0.deb'
@@ -125,6 +127,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt-seba-2.0.deb'

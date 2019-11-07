@@ -864,7 +864,7 @@
 
       - bool:
           name: released
-          default: false
+          default: '{released}'
           description: "Pulls released version images when true"
 
       - bool:
