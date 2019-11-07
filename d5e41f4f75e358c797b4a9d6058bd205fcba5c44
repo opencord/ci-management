@@ -46,6 +46,30 @@
       "revId": "d5e41f4f75e358c797b4a9d6058bd205fcba5c44",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "00545e42_e7a57025",
+        "filename": "jjb/bbsim-e2e-scale.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000455
+      },
+      "writtenOn": "2019-11-07T15:44:13Z",
+      "side": 1,
+      "message": "Since this is for scale testing, I think larger would be more appropriate, ie the 4c 8g ones. Is there guidance for how I should select the default?",
+      "parentUuid": "b1b95d19_c48ae8ed",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "d5e41f4f75e358c797b4a9d6058bd205fcba5c44",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
