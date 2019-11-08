@@ -70,6 +70,30 @@
       "revId": "d5e41f4f75e358c797b4a9d6058bd205fcba5c44",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56a58db8_4c81f829",
+        "filename": "jjb/bbsim-e2e-scale.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-11-08T17:06:23Z",
+      "side": 1,
+      "message": "Matteo would know better, but the BBr test uses ubuntu16.04-basebuild-4c-8g, so that seems reasonable.",
+      "parentUuid": "00545e42_e7a57025",
+      "range": {
+        "startLine": 34,
+        "startChar": 19,
+        "endLine": 34,
+        "endChar": 35
+      },
+      "revId": "d5e41f4f75e358c797b4a9d6058bd205fcba5c44",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
