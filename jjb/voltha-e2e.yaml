@@ -197,9 +197,9 @@
 
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
-          description: 'Jenkins node name of TestVM Node'
+          description: 'Pod management node'
 
       - string:
           name: manifestUrl
