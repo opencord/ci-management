@@ -14,14 +14,28 @@
 
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset':
+          name: 'verify_physical_voltha_patchset'
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build-and-test'
           oltDebVersion: 'openolt-seba-2.0.deb'
-          configurePod: true
           profile: 'Default'
+          withPatchset: true
+
+      # Manual build job for Tucson pod
+      # Allow local testing without disrupting above job
+      - 'verify_physical_voltha_patchset':
+          name: 'build_tucson-pod_manual'
+          testvm: 'tucson-pod'
+          config-pod: 'tucson-pod'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build-and-test'
+          oltDebVersion: 'openolt-seba-2.0.deb'
+          profile: 'Default'
+          withPatchset: false
 
 - job-template:
     id: 'voltha-periodic-test'
@@ -179,7 +193,7 @@
 # POD Per Patchset Pipeline Jobs
 
 - job-template:
-    name: 'verify_physical_voltha_patchset'
+    name: '{name}'
     id: verify_physical_voltha_patchset
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -274,6 +288,11 @@
           name: reinstallOlt
           default: true
           description: "Re-install OLT software"
+
+      - bool:
+          name: withPatchset
+          default: {withPatchset}
+          description: "Build the pod using a Gerrit patchset"
 
     concurrent: true
 
