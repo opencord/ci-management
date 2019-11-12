@@ -18,21 +18,19 @@
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build-and-test'
+          pipeline-script: 'voltha-physical-tests.groovy'
           oltDebVersion: 'openolt-seba-2.0.deb'
           profile: 'Default'
           withPatchset: true
 
       # Manual build job for Tucson pod
       # Allow local testing without disrupting above job
-      - 'verify_physical_voltha_patchset':
+      - 'build_physical_voltha_manual':
           name: 'build_tucson-pod_manual'
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build-and-test'
+          pipeline-script: 'voltha-physical-tests.groovy'
           oltDebVersion: 'openolt-seba-2.0.deb'
           profile: 'Default'
           withPatchset: false
@@ -246,24 +244,33 @@
           description: 'The URL of the CORD Project repository'
 
       - string:
-          name: configBaseDir
-          default: 'pod-configs'
-          description: 'The directory inside the POD configs repository'
-
-      - string:
-          name: configDeploymentDir
-          default: 'deployment-configs'
-          description: 'The deployment configs folder'
-
-      - string:
-          name: configKubernetesDir
-          default: 'kubernetes-configs'
-          description: 'The kubernetes config folder'
-
-      - string:
-          name: configFileName
+          name: podName
           default: '{config-pod}'
-          description: 'The config file'
+
+      - string:
+          name: deploymentConfigFile
+          default: 'pod-configs/deployment-configs/{config-pod}.yaml'
+          description: 'Path of deployment config file'
+
+      - string:
+          name: kindVolthaValuesFile
+          default: 'pod-configs/kubernetes-configs/voltha/{config-pod}.yml'
+          description: 'Path of kind-voltha values override file'
+
+      - string:
+          name: sadisConfigFile
+          default: 'voltha/voltha-system-tests/tests/data/{config-pod}-sadis.json'
+          description: 'Path of SADIS config to load'
+
+      - string:
+          name: localConfigDir
+          default: null
+          description: 'If specified, config file paths are relative to this dir; otherwise $WORKSPACE'
+
+      - string:
+          name: configRepo
+          default: 'pod-configs'
+          description: 'A repository containing the config files, will be checked out if specified'
 
       - string:
           name: oltDebVersion
@@ -291,18 +298,13 @@
 
       - bool:
           name: withPatchset
-          default: {withPatchset}
-          description: "Build the pod using a Gerrit patchset"
+          default: true
+          description: "Build with Gerrit patchset"
 
+    project-type: pipeline
     concurrent: true
 
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-            url: '{gerrit-server-url}/{test-repo}'
-            branches:
-              - '{branch}'
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
 
     triggers:
       - gerrit:
@@ -321,3 +323,119 @@
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
+
+- job-template:
+    name: '{name}'
+    id: build_physical_voltha_manual
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Automated build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
+                  Created by Andy Bavier, andy@opennetworking.org <br />
+                  Copyright (c) 2019 Open Networking Foundation (ONF)
+    project-type: pipeline
+    sandbox: true
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{testvm}'
+          description: 'Pod management node'
+
+      - string:
+          name: manifestUrl
+          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
+          description: 'URL to the repo manifest'
+
+      - string:
+          name: manifestBranch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the repo branch to use'
+
+      - string:
+          name: gerritProject
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the Gerrit project'
+
+      - string:
+          name: gerritChangeNumber
+          default: '$GERRIT_CHANGE_NUMBER'
+          description: 'Changeset number in Gerrit'
+
+      - string:
+          name: gerritPatchsetNumber
+          default: '$GERRIT_PATCHSET_NUMBER'
+          description: 'PatchSet number in Gerrit'
+
+      - string:
+          name: cordRepoUrl
+          default: '{gerrit-server-url}'
+          description: 'The URL of the CORD Project repository'
+
+      - string:
+          name: podName
+          default: '{config-pod}'
+
+      - string:
+          name: deploymentConfigFile
+          default: 'pod-configs/deployment-configs/{config-pod}.yaml'
+          description: 'Path of deployment config file'
+
+      - string:
+          name: kindVolthaValuesFile
+          default: 'pod-configs/kubernetes-configs/voltha/{config-pod}.yml'
+          description: 'Path of kind-voltha values override file'
+
+      - string:
+          name: sadisConfigFile
+          default: 'voltha/voltha-system-tests/tests/data/{config-pod}-sadis.json'
+          description: 'Path of SADIS config to load'
+
+      - string:
+          name: localConfigDir
+          default: null
+          description: 'If specified, config file paths are relative to this dir; otherwise $WORKSPACE'
+
+      - string:
+          name: configRepo
+          default: 'pod-configs'
+          description: 'A repository containing the config files, will be checked out if specified'
+
+      - string:
+          name: oltDebVersion
+          default: '{oltDebVersion}'
+          description: 'OLT Software version to install'
+
+      - string:
+          name: branch
+          default: '{branch}'
+
+      - string:
+          name: profile
+          default: '{profile}'
+          description: 'Technology Profile pushed to the ETCD'
+
+      - string:
+          name: notificationEmail
+          default: 'andy@opennetworking.org'
+          description: ''
+
+      - bool:
+          name: reinstallOlt
+          default: false
+          description: "Re-install OLT software"
+
+      - bool:
+          name: withPatchset
+          default: false
+          description: "Build with Gerrit patchset"
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
