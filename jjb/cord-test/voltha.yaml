@@ -37,7 +37,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt-2.2.deb'
           profile: '1T4GEM-bal31'
 
       # onlab pod1 test job - BAL3.1 tests using voltha branch
@@ -129,8 +129,8 @@
           branch: 'master'
           released: false
           test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-seba-2.0.deb'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt-2.2.deb'
           configurePod: true
           profile: 'Default'
           time: '1'
@@ -152,8 +152,8 @@
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-seba-2.0.deb'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt-2.2.deb'
           configurePod: true
           profile: '1T4GEM'
       - 'build_pod_test':
@@ -171,12 +171,12 @@
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-seba-2.0.deb'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt-2.2.deb'
           configurePod: true
           profile: 'Default'
 
-      # ONF DEM) OCP test job - voltha-master branch 
+      # ONF DEMO OCP test job - voltha-master branch 
       - 'build_pod_test':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
