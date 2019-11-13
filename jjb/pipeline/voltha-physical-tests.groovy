@@ -67,16 +67,6 @@ pipeline {
             git clone -b ${branch} ${cordRepoUrl}/voltha-system-tests
             """
           }
-          try {
-            deployment_config = readYaml file: "${localDeploymentConfigFile}"
-          } catch (err) {
-            echo "Error reading ${localDeploymentConfigFile}"
-            throw err
-          }
-          sh returnStdout: false, script: """
-          if [ ! -e ${localKindVolthaValuesFile} ]; then echo "${localKindVolthaValuesFile} not found"; exit 1; fi
-          if [ ! -e ${localSadisConfigFile} ]; then echo "${localSadisConfigFile} not found"; exit 1; fi
-          """
         }
       }
     }
@@ -103,6 +93,21 @@ pipeline {
         cd voltha
         PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
         repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+        """
+      }
+    }
+
+    stage('Check config files') {
+      steps {
+        try {
+          deployment_config = readYaml file: "${localDeploymentConfigFile}"
+        } catch (err) {
+          echo "Error reading ${localDeploymentConfigFile}"
+          throw err
+        }
+        sh returnStdout: false, script: """
+        if [ ! -e ${localKindVolthaValuesFile} ]; then echo "${localKindVolthaValuesFile} not found"; exit 1; fi
+        if [ ! -e ${localSadisConfigFile} ]; then echo "${localSadisConfigFile} not found"; exit 1; fi
         """
       }
     }
