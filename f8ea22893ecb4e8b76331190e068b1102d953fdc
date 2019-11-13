@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "5501a506_1adb3556",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2019-11-13T17:52:35Z",
+      "side": 1,
+      "message": "I get it. This same file handles both sanity and now scale targets. Like you say the default sadis file loaded as part of onos deployment, the sadis file loaded as part of scale testing will overwrite some elements which will be OK",
+      "parentUuid": "24f7d333_23824448",
+      "revId": "f8ea22893ecb4e8b76331190e068b1102d953fdc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a3821b0f_fde8c1f1",
         "filename": "jjb/pipeline/voltha-go-tests.groovy",
         "patchSetId": 3
