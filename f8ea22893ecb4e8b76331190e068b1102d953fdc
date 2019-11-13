@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "24f7d333_23824448",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-13T17:39:44Z",
+      "side": 1,
+      "message": "But the sanity test still needs it, because it doesn\u0027t load its own SADIS config.  I don\u0027t think it does any harm in your case.",
+      "parentUuid": "d545efda_07fcc85c",
+      "revId": "f8ea22893ecb4e8b76331190e068b1102d953fdc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a3821b0f_fde8c1f1",
         "filename": "jjb/pipeline/voltha-go-tests.groovy",
         "patchSetId": 3
@@ -30,6 +48,24 @@
       "writtenOn": "2019-11-13T17:35:33Z",
       "side": 1,
       "message": "What is this \"cd kind-voltha\" providing\nShouldn\u0027t this be \"cd voltha-system-test\" whereever it is being deployed?",
+      "revId": "f8ea22893ecb4e8b76331190e068b1102d953fdc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9bfdeb39_16461f99",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-13T17:39:44Z",
+      "side": 1,
+      "message": "You\u0027re right, we don\u0027t need this.  Will remove.",
+      "parentUuid": "a3821b0f_fde8c1f1",
       "revId": "f8ea22893ecb4e8b76331190e068b1102d953fdc",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
