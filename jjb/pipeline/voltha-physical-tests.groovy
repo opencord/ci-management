@@ -257,8 +257,9 @@ pipeline {
 
     stage('Run E2E Tests') {
       environment {
-        ROBOT_VAR_FILE="${localDeploymentConfigFile}"
+        ROBOT_CONFIG_FILE="${localDeploymentConfigFile}"
         ROBOT_MISC_ARGS="--removekeywords wuks -d $WORKSPACE/RobotLogs"
+        ROBOT_FILE="Voltha_PODTests.robot"
       }
       steps {
         sh returnStdout: false, script: """
@@ -266,7 +267,7 @@ pipeline {
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
         git clone -b ${branch} ${cordRepoUrl}/voltha # VOL-2104 recommends we get rid of this
         mkdir -p $WORKSPACE/RobotLogs
-        make -C $WORKSPACE/voltha/voltha-system-tests voltha-podtest || true
+        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
     }
