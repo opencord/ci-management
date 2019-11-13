@@ -99,16 +99,18 @@ pipeline {
 
     stage('Check config files') {
       steps {
-        try {
-          deployment_config = readYaml file: "${localDeploymentConfigFile}"
-        } catch (err) {
-          echo "Error reading ${localDeploymentConfigFile}"
-          throw err
+        script {
+          try {
+            deployment_config = readYaml file: "${localDeploymentConfigFile}"
+          } catch (err) {
+            echo "Error reading ${localDeploymentConfigFile}"
+            throw err
+          }
+          sh returnStdout: false, script: """
+          if [ ! -e ${localKindVolthaValuesFile} ]; then echo "${localKindVolthaValuesFile} not found"; exit 1; fi
+          if [ ! -e ${localSadisConfigFile} ]; then echo "${localSadisConfigFile} not found"; exit 1; fi
+          """
         }
-        sh returnStdout: false, script: """
-        if [ ! -e ${localKindVolthaValuesFile} ]; then echo "${localKindVolthaValuesFile} not found"; exit 1; fi
-        if [ ! -e ${localSadisConfigFile} ]; then echo "${localSadisConfigFile} not found"; exit 1; fi
-        """
       }
     }
 
