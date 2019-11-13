@@ -8,9 +8,22 @@
 
     jobs:
       - 'voltha-periodic-test':
-          name: 'voltha-system-tests'
+          name: 'periodic-voltha-sanity-test'
           pipeline-script: 'voltha-go-tests.groovy'
           default-image-tag: 'master'
+          make-target: sanity-multi-kind
+          onus: 2
+          pons: 2
+          time-trigger: "H H/3 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-scale-test'
+          pipeline-script: 'voltha-go-tests.groovy'
+          default-image-tag: 'master'
+          make-target: scale-multi-kind
+          onus: 2
+          pons: 8
+          time-trigger: "H H/3 * * *"
 
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset':
@@ -61,34 +74,19 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
-          name: numOnus
-          default: '1'
-          description: 'Number of onus per pon port'
-
-      - string:
-          name: emulationMode
-          default: '--set emulation_mode=both'
-          description: 'Emulation for BBSIM (both|aaa)'
-
-      - string:
           name: testTimeout
           default: '90'
           description: 'timeout for olt/onu validations'
 
       - string:
-          name: testTags
-          default: '-e notready'
-          description: 'test tags'
-
-      - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag},onu=2,pon=2'
+          default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons}'
           description: 'Helm flags to pass to ./voltha up'
 
       - string:
-          name: robotVarFile
-          default: 'bbsim-kind-2x2.yaml'
-          description: 'Pod config file to use for tests'
+          name: makeTarget
+          default: '{make-target}'
+          description: 'Makefile target to invoke during test'
 
     project-type: pipeline
     concurrent: false
@@ -98,7 +96,7 @@
     triggers:
       - timed: |
                  TZ=America/Los_Angeles
-                 H/30 * * * *
+                 {time-trigger}
 
 - job-template:
     id: 'voltha-patch-test'
