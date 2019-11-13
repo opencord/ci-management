@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d545efda_07fcc85c",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2019-11-13T17:35:33Z",
+      "side": 1,
+      "message": "I do not need the minimal sadis config that is deployed as part of Onos deployment. So this should be \"n\"",
+      "revId": "f8ea22893ecb4e8b76331190e068b1102d953fdc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a3821b0f_fde8c1f1",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000457
+      },
+      "writtenOn": "2019-11-13T17:35:33Z",
+      "side": 1,
+      "message": "What is this \"cd kind-voltha\" providing\nShouldn\u0027t this be \"cd voltha-system-test\" whereever it is being deployed?",
+      "revId": "f8ea22893ecb4e8b76331190e068b1102d953fdc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
