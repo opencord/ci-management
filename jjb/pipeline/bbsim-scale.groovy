@@ -44,8 +44,24 @@ pipeline {
       }
     }
 
-
-  }
+    stage('Run E2E Test') {
+      steps {
+        sh '''
+           cd kind-voltha/
+           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
+           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
+           export DEVICE_ID=$(voltctl device create -t openolt -H 10.64.1.131:50060)
+           voltctl device enable $DEVICE_ID
+           i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
+           until [ $i -eq 1 ]
+           do
+                echo $i
+                sleep 2
+                i=$(voltctl -c .volt/config-compose device list | grep -v OLT | grep ACTIVE | wc -l)
+                done
+           '''
+      }
+    }
 
     post {
         always {
