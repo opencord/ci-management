@@ -11,11 +11,13 @@
 
       - 'config-jobs':
           branch-regexp: '^(master)$'
+          junit-allow-empty-results: true
 
       - 'config-jobs-legacy':
           branch-regexp: '^(config-1.5)$'
           jdk-distribution: 'java-1.8.0-amazon-corretto'
           name-extension: '-jdk8'
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'config-jobs-common'
