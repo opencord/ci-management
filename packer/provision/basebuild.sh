@@ -154,7 +154,7 @@ EOF
 
     # install ruby gems
     gem install \
-        mdl
+        mdl -v 0.5.0
         # end of gem install list
 
     # install npm modules
