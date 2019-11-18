@@ -32,7 +32,7 @@
           config-pod: 'tucson-pod'
           branch: 'master'
           pipeline-script: 'voltha-physical-tests.groovy'
-          oltDebVersion: 'openolt-seba-2.0.deb'
+          oltDebVersion: 'openolt_asfvolt16.deb'
           profile: 'Default'
           withPatchset: true
 
@@ -44,7 +44,7 @@
           config-pod: 'tucson-pod'
           branch: 'master'
           pipeline-script: 'voltha-physical-tests.groovy'
-          oltDebVersion: 'openolt-seba-2.0.deb'
+          oltDebVersion: 'openolt_asfvolt16.deb'
           profile: 'Default'
           withPatchset: false
 
