@@ -42,6 +42,7 @@ pipeline {
     //VOL-2194 ONOS SSH and REST ports hardcoded to 30115/30120 in tests
     ONOS_SSH_PORT=30115
     ONOS_API_PORT=30120
+    BAL_DAEMON="dev_mgmt_daemon"
   }
 
   stages {
@@ -219,8 +220,8 @@ pipeline {
       steps {
         script {
           deployment_config.olts.each { olt ->
-            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service bal_core_dist stop' || true"
-            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service bal_core_dist stop' || true"
+            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service $BAL_DAEMON stop' || true"
+            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true"
             sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --remove asfvolt16 && dpkg --purge asfvolt16'"
             waitUntil {
               olt_sw_present = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --list | grep asfvolt16 | wc -l'"
@@ -246,10 +247,10 @@ pipeline {
           deployment_config.olts.each { olt ->
             sh returnStdout: true, script: """
             ssh-keyscan -H ${olt.ip} >> ~/.ssh/known_hosts
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service bal_core_dist stop' || true
+            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service $BAL_DAEMON stop' || true
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'rm -f /var/log/bal_core_dist.log /var/log/openolt.log'
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service bal_core_dist start &'
+            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service $BAL_DAEMON start &'
             sleep 5
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt start &'
             """
