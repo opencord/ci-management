@@ -145,6 +145,30 @@
           profile: 'Default'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
+      # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
+      - 'build_voltha_pod_release':
+          testvm: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          released: false
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt_asfvolt16.deb'
+          configurePod: true
+          profile: '1T4GEM-bal31'
+          time: '2'
+
+      # Menlo pod test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          testvm: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM-bal31'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+
       # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile - Manual build and test job
       - 'build_pod_manual':
           testvm: 'menlo-demo-pod'
@@ -155,14 +179,14 @@
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16.deb'
           configurePod: true
-          profile: '1T4GEM'
+          profile: '1T4GEM-bal31'
       - 'build_pod_test':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
-          profile: '1T4GEM'
+          profile: '1T4GEM-bal31'
 
       # Menlo DEMO-POD - Default TechProfile - manual build job
       - 'build_pod_manual':
