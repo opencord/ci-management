@@ -60,14 +60,25 @@ pipeline {
           localDeploymentConfigFile = "${env.localConfigDir}/${params.deploymentConfigFile}"
           localKindVolthaValuesFile = "${env.localConfigDir}/${params.kindVolthaValuesFile}"
           localSadisConfigFile = "${env.localConfigDir}/${params.sadisConfigFile}"
-          if ( ! params.withPatchset ) {
-            sh returnStdout: false, script: """
-            mkdir -p voltha
-            cd voltha
-            git clone -b ${branch} ${cordRepoUrl}/voltha-system-tests
-            """
-          }
         }
+      }
+    }
+
+    stage('Repo') {
+      steps {
+        checkout(changelog: true,
+          poll: false,
+          scm: [$class: 'RepoScm',
+            manifestRepositoryUrl: "${params.manifestUrl}",
+            manifestBranch: "${params.manifestBranch}",
+            currentBranch: true,
+            destinationDir: 'voltha',
+            forceSync: true,
+            resetFirst: true,
+            quiet: true,
+            jobs: 4,
+            showAllChanges: true]
+          )
       }
     }
 
@@ -76,19 +87,6 @@ pipeline {
         expression { params.withPatchset }
       }
       steps {
-        checkout(changelog: false, \
-          poll: false,
-          scm: [$class: 'RepoScm', \
-            manifestRepositoryUrl: "${params.manifestUrl}", \
-            manifestBranch: "${params.manifestBranch}", \
-            currentBranch: true, \
-            destinationDir: 'voltha', \
-            forceSync: true,
-            resetFirst: true, \
-            quiet: true, \
-            jobs: 4, \
-            showAllChanges: true] \
-          )
         sh returnStdout: false, script: """
         cd voltha
         PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
