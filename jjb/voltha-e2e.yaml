@@ -14,7 +14,18 @@
           make-target: sanity-multi-kind
           onus: 2
           pons: 2
+          etcdClusterSize: 1
           time-trigger: "H H/3 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'voltha-system-bbsim-test'
+          pipeline-script: 'voltha-system-bbsim-test.groovy'
+          default-image-tag: 'master'
+          make-target: sanity-multi-kind
+          onus: 2
+          pons: 2
+          etcdClusterSize: 3
+          time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-scale-test'
@@ -23,6 +34,7 @@
           make-target: scale-multi-kind
           onus: 2
           pons: 8
+          etcdClusterSize: 1
           time-trigger: "H H/3 * * *"
 
       # Per-patchset Pod builds on Tucson pod
@@ -80,7 +92,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons}'
+          default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons},voltha-etcd-cluster.clusterSize={etcdClusterSize}'
           description: 'Helm flags to pass to ./voltha up'
 
       - string:
