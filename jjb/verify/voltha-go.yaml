@@ -22,7 +22,7 @@
           build-timeout: 20
           dest-gopath: "github.com/opencord"
           name-extension: "-lint"
-          unit-test-targets: 'lint'
+          unit-test-targets: 'lint sca'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
       - 'make-unit-test':
