@@ -46,6 +46,30 @@
       "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "50a275f6_57b1c8fb",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2019-11-20T18:37:45Z",
+      "side": 1,
+      "message": "Yes, ideally that is best but in this case.  Based on our discussion, we wanted to continue this way because we need to find a good way to call another tests into an existing test.  I am not sure if Hung had found a way to do it in a single Robot Testcase.  If we strictly want to have in a single test case then we should be adding a test scenario in `Voltha_PODTests.robot` file",
+      "parentUuid": "02b2c1ed_fcb81734",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
