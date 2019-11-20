@@ -70,6 +70,30 @@
       "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b72630f_5078c821",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-20T19:01:18Z",
+      "side": 1,
+      "message": "I feel like we should consider refactoring the tests to (1) make them more readable, and (2) make it easier to call common functionality between different tests.   As an example of (1), I think it would be really nice if the basic sanity test looked something like:\n\nFOR    ${I}    IN RANGE    0    ${num_onus}\n        ${src}\u003d    Set Variable    ${hosts.src[${I}]}\n        ${dst}\u003d    Set Variable    ${hosts.dst[${I}]}\n        Authenticate RG    ${src}\n        Add Subscriber    ${src}\n        Get IP Address and Ping BNG    ${src}    ${dst}\nEND\n\nFor (2), can we move common functionality (e.g., Setup Suite) into Keywords that live in libraries?  Also the keywords above could live in a library that\u0027s imported by the other tests.",
+      "parentUuid": "50a275f6_57b1c8fb",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
