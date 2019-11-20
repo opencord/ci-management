@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2aeafa90_e36ab605",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-20T18:00:03Z",
+      "side": 1,
+      "message": "The approach I would favor is to do all this inside a Robot test.  We could use the \"Reboot radius and re-authenticate\" test as an example.  To me it seems cleaner to have all test functionality contained within Robot rather than split between Robot and Jenkins.",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
