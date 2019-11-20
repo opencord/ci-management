@@ -94,6 +94,30 @@
       "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c69bc3e_22233ffb",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2019-11-20T21:23:30Z",
+      "side": 1,
+      "message": "Agreed, we should refactor the exiting testing to make it reusable. I think we have two ways here.\n1. Hold on this patch and modify the repo voltha-system-test first and then come back here once we finish.\n2. Merge this patch first and then start to refactor the voltha-system-test.\n\nBoth look fine to me. any concerns?",
+      "parentUuid": "7b72630f_5078c821",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
