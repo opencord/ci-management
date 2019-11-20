@@ -142,6 +142,30 @@
       "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a494d2f_adaacefe",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2019-11-20T22:27:10Z",
+      "side": 1,
+      "message": "My preference is to discuss about the options before we go forward.  We have been using some SEBA framework here and that will affect many Regression Tests as well.",
+      "parentUuid": "6d14dc93_69fa5db9",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
