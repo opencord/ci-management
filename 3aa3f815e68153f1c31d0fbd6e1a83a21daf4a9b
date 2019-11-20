@@ -118,6 +118,30 @@
       "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d14dc93_69fa5db9",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-20T21:56:03Z",
+      "side": 1,
+      "message": "My preference is that we should hold off on this patch and refactor first (option 1).  The refactor will change the approach we take in this test. Let\u0027s not spend time getting this pipeline working if we are going to immediately change the implementation strategy afterwards.\n\nHowever if it\u0027s urgent to start testing etcd scaling ASAP then I guess option 2 would be fine as well.",
+      "parentUuid": "7c69bc3e_22233ffb",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
