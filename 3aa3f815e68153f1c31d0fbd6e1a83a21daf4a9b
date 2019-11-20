@@ -22,6 +22,30 @@
       "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02b2c1ed_fcb81734",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2019-11-20T18:30:32Z",
+      "side": 1,
+      "message": "Get it, one question about the file structure, should I put this function in the same PODTest or a new file?\nIf I create a new one and then import the PODTests as a library, \nis it work to call the `Setup Suite` and `Teardown Suite` from PODTest?\nI\u0027m not sure what initializations I need to have if the testing is for BBSIM only.",
+      "parentUuid": "2aeafa90_e36ab605",
+      "range": {
+        "startLine": 74,
+        "startChar": 1,
+        "endLine": 80,
+        "endChar": 95
+      },
+      "revId": "3aa3f815e68153f1c31d0fbd6e1a83a21daf4a9b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
