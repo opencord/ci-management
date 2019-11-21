@@ -218,7 +218,7 @@ pipeline {
         script {
           deployment_config.olts.each { olt ->
             sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true"
-            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true"
+            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} '/etc/init.d/dev_mgmt_daemon stop' || true"
             sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --remove asfvolt16 && dpkg --purge asfvolt16'"
             waitUntil {
               olt_sw_present = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --list | grep asfvolt16 | wc -l'"
@@ -245,9 +245,9 @@ pipeline {
             sh returnStdout: true, script: """
             ssh-keyscan -H ${olt.ip} >> ~/.ssh/known_hosts
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true
+            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} '/etc/init.d/dev_mgmt_daemon stop' || true
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'rm -f /var/log/openolt.log'
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service dev_mgmt_daemon start &'
+            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} '/etc/init.d/dev_mgmt_daemon start &'
             sleep 5
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt start &'
             """
