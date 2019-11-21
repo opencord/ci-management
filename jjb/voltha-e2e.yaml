@@ -74,11 +74,6 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
-          name: testTimeout
-          default: '90'
-          description: 'timeout for olt/onu validations'
-
-      - string:
           name: extraHelmFlags
           default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons}'
           description: 'Helm flags to pass to ./voltha up'
@@ -100,7 +95,8 @@
 
 - job-template:
     id: 'voltha-patch-test'
-    name: '{project}_sanity-system-test'
+    name: 'verify_{project}_sanity-test'
+    extra-helm-flags: '--set defaults.image_tag=$GERRIT_BRANCH'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -149,28 +145,8 @@
           description: 'PatchSet number in Gerrit'
 
       - string:
-          name: numOnus
-          default: '1'
-          description: 'Number of onus per pon port'
-
-      - string:
-          name: emulationMode
-          default: '--set emulation_mode=both'
-          description: 'Emulation for BBSIM (both|aaa)'
-
-      - string:
-          name: testTimeout
-          default: '90'
-          description: 'timeout for olt/onu validations'
-
-      - string:
-          name: testTags
-          default: '-e notready'
-          description: 'test tags'
-
-      - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag=$GERRIT_BRANCH'
+          default: '{extra-helm-flags}'
           description: 'Helm flags to pass to ./voltha up'
 
     project-type: pipeline
