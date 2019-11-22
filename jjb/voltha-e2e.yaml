@@ -9,8 +9,9 @@
     jobs:
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test'
-          pipeline-script: 'voltha-go-tests.groovy'
+          build-node: 'qct-pod4-node2'
           default-image-tag: 'master'
+          code-branch: 'master'
           make-target: sanity-multi-kind
           onus: 2
           pons: 2
@@ -18,8 +19,9 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-scale-test'
-          pipeline-script: 'voltha-go-tests.groovy'
+          build-node: 'qct-pod4-node2'
           default-image-tag: 'master'
+          code-branch: 'master'
           make-target: scale-multi-kind
           onus: 2
           pons: 8
@@ -51,6 +53,7 @@
 - job-template:
     id: 'voltha-periodic-test'
     name: '{name}'
+    pipeline-script: 'voltha-go-tests.groovy'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -82,6 +85,16 @@
           name: makeTarget
           default: '{make-target}'
           description: 'Makefile target to invoke during test'
+
+      - string:
+          name: manifestUrl
+          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
+          description: 'Repo manifest URL for code checkout (so we can display changes in Jenkins)'
+
+      - string:
+          name: manifestBranch
+          default: '{code-branch}'
+          description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
 
     project-type: pipeline
     concurrent: false
