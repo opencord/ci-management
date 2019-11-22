@@ -31,7 +31,6 @@
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
-          pipeline-script: 'voltha-physical-tests.groovy'
           oltDebVersion: 'openolt_asfvolt16.deb'
           profile: 'Default'
           withPatchset: true
@@ -43,7 +42,6 @@
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
-          pipeline-script: 'voltha-physical-tests.groovy'
           oltDebVersion: 'openolt_asfvolt16.deb'
           profile: 'Default'
           withPatchset: false
@@ -84,7 +82,7 @@
           description: 'Makefile target to invoke during test'
 
     project-type: pipeline
-    concurrent: false
+    concurrent: true
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
@@ -175,6 +173,7 @@
                   Copyright (c) 2019 Open Networking Foundation (ONF)
     project-type: pipeline
     sandbox: true
+    pipeline-script: 'voltha-physical-build-and-tests.groovy'
 
     properties:
       - cord-infra-properties:
@@ -309,6 +308,7 @@
                   Copyright (c) 2019 Open Networking Foundation (ONF)
     project-type: pipeline
     sandbox: true
+    pipeline-script: 'voltha-physical-build-and-tests.groovy'
 
     properties:
       - cord-infra-properties:
