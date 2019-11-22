@@ -903,9 +903,13 @@
                   Copyright (c) 2017 Open Networking Foundation (ONF)
 
     <<: *test-pipe-job-boiler-plate
+    pipeline-script: 'voltha-physical-tests.groovy'
+    manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
+    manifest-branch: 'master'
+
     parameters:
       - string:
-          name: TestNodeName
+          name: buildNode
           default: '{testvm}'
           description: 'Jenkins node name of TestVM Node'
 
@@ -947,21 +951,23 @@
       - string:
           name: branch
           default: '{branch}'
+          description: 'Branch of the test libraries to check out'
 
       - string:
-          name: notificationEmail
-          default: 'you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
+          name: manifestUrl
+          default: '{manifest-url}'
+          description: 'Repo manifest URL for code checkout (so we can display changes in Jenkins)'
+
+      - string:
+          name: manifestBranch
+          default: '{manifest-branch}'
+          description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
+
 
     concurrent: true
 
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-            url: '{gerrit-server-url}/voltha-system-tests'
-            branches:
-              - '{branch}'
+    project-type: pipeline
+    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
 
     triggers:
       - reverse:
