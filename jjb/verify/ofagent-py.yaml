@@ -1,0 +1,27 @@
+---
+# verification jobs for 'ofagent-py' repo
+
+- project:
+    name: ofagent-py
+    project: '{name}'
+
+    jobs:
+      - 'verify-ofagent-py-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-ofagent-py-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-ofagent-py-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-ofagent-py-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
