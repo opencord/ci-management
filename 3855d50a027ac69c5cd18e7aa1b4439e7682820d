@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7e9a990a_2a7a613d",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2019-11-23T00:09:20Z",
+      "side": 1,
+      "message": "There are older templates that still refer to the `voltha-system-tests`.  Is there a plan to change them?  These are merely used for testing the patch sets for QA engineers",
+      "range": {
+        "startLine": 30,
+        "startChar": 24,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "3855d50a027ac69c5cd18e7aa1b4439e7682820d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
