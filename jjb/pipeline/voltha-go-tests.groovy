@@ -44,6 +44,7 @@ pipeline {
 
     stage('Repo') {
       steps {
+        step([$class: 'WsCleanup'])
         checkout(changelog: true,
           poll: false,
           scm: [$class: 'RepoScm',
@@ -80,7 +81,7 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
-           rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
+           mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
            make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
            '''
@@ -118,10 +119,8 @@ pipeline {
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
            fi
          done
-         ## clean up node
+         ## shut down voltha
          WAIT_ON_DOWN=y ./voltha down
-         cd $WORKSPACE/
-         rm -rf kind-voltha/ voltha-system-tests/ || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
