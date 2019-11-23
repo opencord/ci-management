@@ -44,6 +44,7 @@ pipeline {
 
     stage('Repo') {
       steps {
+        step([$class: 'WsCleanup'])
         checkout(changelog: true,
           poll: false,
           scm: [$class: 'RepoScm',
@@ -118,10 +119,8 @@ pipeline {
              kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
            fi
          done
-         ## clean up node
+         ## shut down voltha
          WAIT_ON_DOWN=y ./voltha down
-         cd $WORKSPACE/
-         rm -rf kind-voltha/ voltha-system-tests/ || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
