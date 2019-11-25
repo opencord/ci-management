@@ -20,6 +20,7 @@
       - 'make-unit-test':
           unit-test-targets: 'build'
           junit-allow-empty-results: true
+          dependency-jobs: 'verify_voltha-onos_tag-collision'
 
 - job-group:
     name: 'publish-voltha-onos-jobs'

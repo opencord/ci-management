@@ -22,8 +22,10 @@
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
+          dependency-jobs: 'verify_bbsim_tag-collision'
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
+          dependency-jobs: 'verify_bbsim_unit-test'
 
 - job-group:
     name: 'publish-bbsim-jobs'

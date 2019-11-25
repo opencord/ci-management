@@ -20,6 +20,7 @@
           build-timeout: 30
           unit-test-targets: 'docker-build'
           junit-allow-empty-results: true
+          dependency-jobs: 'verify_voltha-python-base_tag-collision'
 
 - job-group:
     name: 'publish-voltha-python-base-jobs'

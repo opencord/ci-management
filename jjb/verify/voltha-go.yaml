@@ -21,19 +21,14 @@
           build-node: 'ubuntu16.04-basebuild-2c-4g'
           build-timeout: 20
           dest-gopath: "github.com/opencord"
-          name-extension: "-lint"
-          unit-test-targets: 'lint sca'
+          unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
-      - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
-          dest-gopath: "github.com/opencord"
-          name-extension: "-tests"
-          unit-test-targets: 'test'
-          unit-test-keep-going: 'true'
+          dependency-jobs: 'verify_voltha-go_tag-collision'
       - 'voltha-patch-test':
           buildImages: true
           pipeline-script: 'voltha-bbsim-tests.groovy'
+          dependency-jobs: 'verify_voltha-go_unit-test'
 
 - job-group:
     name: 'publish-voltha-go-jobs'
