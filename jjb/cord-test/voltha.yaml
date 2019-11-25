@@ -9,15 +9,15 @@
     build-timeout: '300'
 
     jobs:
-      # flex OCP pod with olt/onu - release voltha master build job
+      # flex OCP pod with olt/onu - manual test job, voltha master build job
       - 'build_pod_manual':
           testvm: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-seba-2.0.deb'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt_asfvolt16.deb'
           profile: '1T4GEM'
 
       # flex pod1 test job - using voltha branch
