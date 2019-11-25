@@ -71,7 +71,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # flex OCP pod with olt/onu - uses 1TCONT/4GEMs tech profile on voltha - timer based job
       - 'build_voltha_pod_release':
@@ -95,7 +94,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -119,7 +117,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -143,7 +140,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -167,7 +163,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-bal31'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile - Manual build and test job
       - 'build_pod_manual':
