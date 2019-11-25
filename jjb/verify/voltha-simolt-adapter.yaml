@@ -20,6 +20,7 @@
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           unit-test-keep-going: 'true'
+          dependency-jobs: 'verify_voltha-simolt-adapter_tag-collision'
 
 - job-group:
     name: 'publish-voltha-simolt-adapter-jobs'
