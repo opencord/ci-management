@@ -22,6 +22,30 @@
       "revId": "3855d50a027ac69c5cd18e7aa1b4439e7682820d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "970043b5_be752a3e",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-11-25T18:16:00Z",
+      "side": 1,
+      "message": "The only job template I changed is build_voltha_pod_test.  Should this job be using that template instead of build_pod_test?",
+      "parentUuid": "7e9a990a_2a7a613d",
+      "range": {
+        "startLine": 30,
+        "startChar": 24,
+        "endLine": 30,
+        "endChar": 47
+      },
+      "revId": "3855d50a027ac69c5cd18e7aa1b4439e7682820d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
