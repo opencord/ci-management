@@ -19,20 +19,16 @@
           dependency-jobs: 'verify_voltha-openolt-adapter_licensed'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
-          name-extension: "-lint"
-          unit-test-targets: 'lint sca'
+          unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
           build-node: 'ubuntu16.04-basebuild-2c-4g'
-      - 'make-unit-test':
-          dest-gopath: "github.com/opencord"
-          name-extension: "-tests"
-          unit-test-targets: 'test'
-          unit-test-keep-going: 'true'
-          junit-allow-empty-results: true
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          dependency-jobs: 'verify_voltha-openolt-adapter_tag-collision'
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
+          dependency-jobs: 'verify_voltha-openolt-adapter_unit-test'
+      - 'verify_physical_voltha_patchset':
+          dependency-jobs: 'verify_voltha-openolt-adapter_sanity-test'
 
 - job-group:
     name: 'publish-voltha-openolt-adapter-jobs'

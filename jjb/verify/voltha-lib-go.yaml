@@ -21,3 +21,5 @@
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint test'
           unit-test-keep-going: 'true'
+          dependency-jobs: 'verify_voltha-lib-go_tag-collision'
+

@@ -23,3 +23,5 @@
           build-timeout: 20
           pipeline-script: 'voltha-bbsim-tests.groovy'
           dependency-jobs: 'verify_voltha-system-tests_unit-test'
+      - 'verify_physical_voltha_patchset':
+          dependency-jobs: 'verify_voltha-system-tests_sanity-test'

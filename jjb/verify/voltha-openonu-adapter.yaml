@@ -22,8 +22,12 @@
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
           build-timeout: 15
+          dependency-jobs: 'verify_voltha-openonu-adapter_tag-collision'
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
+          dependency-jobs: 'verify_voltha-openonu-adapter_unit-test'
+      - 'verify_physical_voltha_patchset':
+          dependency-jobs: 'verify_voltha-openonu-adapter_sanity-test'
 
 - job-group:
     name: 'publish-voltha-openonu-adapter-jobs'
