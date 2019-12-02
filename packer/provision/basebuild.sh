@@ -91,7 +91,7 @@ EOF
         ebtables \
         ethtool \
         git \
-        golang-1.12-go \
+        golang-1.13-go \
         httpie \
         jq \
         kafkacat \
