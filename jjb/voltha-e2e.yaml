@@ -18,6 +18,15 @@
           time-trigger: "H H/3 * * *"
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-system-test'
+          pipeline-script: 'voltha-system-test-bbsim.groovy'
+          default-image-tag: 'master'
+          make-target: sanity-multi-kind
+          onus: 2
+          pons: 2
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-scale-test'
           build-node: 'qct-pod4-node2'
           default-image-tag: 'master'
