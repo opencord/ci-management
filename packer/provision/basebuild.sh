@@ -13,8 +13,24 @@ rh_systems() {
 ubuntu_systems() {
     DISTRO=$(lsb_release -cs)
 
-    apt-get clean
+    # machine type
+    MACHINE=$(uname -m)
 
+    # other machine/arch naming schemes, used by golang, protoc, etc.
+    if [ "$MACHINE" == "x86_64" ];
+    then
+      ARCH_GO="amd64"
+      ARCH_UNDER="x86_64"
+    elif [ "$MACHINE" == "aarch64" ];
+    then
+      ARCH_GO="arm64"
+      ARCH_UNDER="aarch_64"
+    else
+      echo "Unsupported machine type: $MACHINE"
+      exit 1
+    fi
+
+    apt-get clean
     # get prereqs for PPA and apt-over-HTTPS support
     apt-get update
     apt-get install -y apt-transport-https software-properties-common
@@ -92,6 +108,7 @@ EOF
         ethtool \
         git \
         golang-1.12-go \
+        graphviz \
         httpie \
         jq \
         kafkacat \
@@ -180,7 +197,7 @@ EOF
     # dep for go package dependencies w/versioning, version 0.5.2, adapted from:
     #  https://golang.github.io/dep/docs/installation.html#install-from-source
     go get -d -u github.com/golang/dep
-    pushd $(go env GOPATH)/src/github.com/golang/dep
+    pushd "$(go env GOPATH)/src/github.com/golang/dep"
       git checkout "0.5.2"
       go install -ldflags="-X main.version=0.5.2" ./cmd/dep
     popd
@@ -192,7 +209,7 @@ EOF
     # protoc-gen-go - Golang protbuf compiler extension for protoc (installed
     # below)
     go get -d -u github.com/golang/protobuf/protoc-gen-go
-    pushd $(go env GOPATH)/src/github.com/golang/protobuf
+    pushd "$(go env GOPATH)/src/github.com/golang/protobuf"
       git checkout "v1.3.1"
       go install ./protoc-gen-go
     popd
@@ -204,53 +221,81 @@ EOF
     mv /tmp/repo /usr/local/bin/repo
     chmod a+x /usr/local/bin/repo
 
-    # install sonarqube scanner
-    # dl link: https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
-    SONAR_SCANNER_CLI_VERSION="3.2.0.1227"
-    SONAR_SCANNER_CLI_SHA256SUM="07a50ec270a36cb83f26fe93233819c53c145248c638f4591880f1bd36e331d6"
-    curl -L -o /tmp/sonarscanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip"
-    echo "$SONAR_SCANNER_CLI_SHA256SUM  /tmp/sonarscanner.zip" | sha256sum -c -
-    pushd /opt
-    unzip /tmp/sonarscanner.zip
-    mv sonar-scanner-${SONAR_SCANNER_CLI_VERSION}-linux sonar-scanner
-    rm -f /tmp/sonarscanner.zip
-    popd
-
     # install helm
     HELM_VERSION="2.14.2"
-    HELM_SHA256SUM="9f50e69cf5cfa7268b28686728ad0227507a169e52bf59c99ada872ddd9679f0"
-    HELM_PLATFORM="linux-amd64"
-    curl -L -o /tmp/helm.tgz "https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz"
-    echo "$HELM_SHA256SUM  /tmp/helm.tgz" | sha256sum -c -
+    # architectures are same as golang defaults: https://github.com/golang/go/wiki/MinimumRequirements#architectures
+    HELM_SHA256SUM_amd64="9f50e69cf5cfa7268b28686728ad0227507a169e52bf59c99ada872ddd9679f0"
+    HELM_SHA256SUM_arm64="1f86fc294382365f4dfd9fa08c62337d248f7c8662e3166e24ce083264f105f2"
+    curl -L -o /tmp/helm.tgz "https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-linux-${ARCH_GO}.tar.gz"
+    echo "${HELM_SHA256SUM}_${ARCH_GO}  /tmp/helm.tgz" | sha256sum -c -
     pushd /tmp
     tar -xzvf helm.tgz
-    mv ${HELM_PLATFORM}/helm /usr/local/bin/helm
+    mv linux-${ARCH_GO}/helm /usr/local/bin/helm
     chmod a+x /usr/local/bin/helm
-    rm -rf helm.tgz ${HELM_PLATFORM}
-    popd
-
-    # install minikube
-    MINIKUBE_VERSION="0.30.0"
-    MINIKUBE_DEB_VERSION="$(echo ${MINIKUBE_VERSION} | sed -n 's/\(.*\)\.\(.*\)/\1-\2/p')"
-    MINIKUBE_SHA256SUM="c6c5aa5956f8ad5f61d426e9b8601ba95965a9c30bb80a9fe7525c64e6dd12fd"
-    curl -L -o /tmp/minikube.deb "https://storage.googleapis.com/minikube/releases/v${MINIKUBE_VERSION}/minikube_${MINIKUBE_DEB_VERSION}.deb"
-    echo "$MINIKUBE_SHA256SUM  /tmp/minikube.deb" | sha256sum -c -
-    pushd /tmp
-    dpkg -i minikube.deb
-    rm -f minikube.deb
+    rm -rf helm.tgz "linux-${ARCH_GO}"
     popd
 
     # install protobufs
     PROTOC_VERSION="3.7.0"
-    PROTOC_SHA256SUM="a1b8ed22d6dc53c5b8680a6f1760a305b33ef471bece482e92728f00ba2a2969"
-    curl -L -o /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-x86_64.zip
-    echo "$PROTOC_SHA256SUM  /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip" | sha256sum -c -
-    unzip /tmp/protoc-${PROTOC_VERSION}-linux-x86_64.zip -d /tmp/protoc3
+    # machine specific checksums - corresponds to ARCH_UNDER above
+    PROTOC_SHA256SUM_x86_64="a1b8ed22d6dc53c5b8680a6f1760a305b33ef471bece482e92728f00ba2a2969"
+    PROTOC_SHA256SUM_aarch_64="e1b5a2bf02bb6512859fc08600a1a212fb6b7bbbc461e155803d4a2bea399fde"
+    curl -L -o "/tmp/protoc-${PROTOC_VERSION}-linux-${MACHINE}.zip" "https://github.com/google/protobuf/releases/download/v${PROTOC_VERSION}/protoc-${PROTOC_VERSION}-linux-${ARCH_UNDER}.zip"
+    echo "${PROTOC_SHA256SUM}_${ARCH_UNDER}  /tmp/protoc-${PROTOC_VERSION}-linux-${ARCH_UNDER}.zip" | sha256sum -c -
+    unzip "/tmp/protoc-${PROTOC_VERSION}-linux-${ARCH_UNDER}.zip" -d /tmp/protoc3
     mv /tmp/protoc3/bin/* /usr/local/bin/
     mv /tmp/protoc3/include/* /usr/local/include/
     # fix permissions on files
     chmod -R a+rx /usr/local/bin/*
     chmod -R a+rX /usr/local/include/
+    # cleanup
+    rm -rf /tmp/protoc3
+
+    # x86_64 architecture specific installations
+    if [ "$MACHINE" == "x86_64" ];
+    then
+
+        # install sonarqube scanner
+        # dl link: https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner
+        SONAR_SCANNER_CLI_VERSION="3.2.0.1227"
+        SONAR_SCANNER_CLI_SHA256SUM="07a50ec270a36cb83f26fe93233819c53c145248c638f4591880f1bd36e331d6"
+        curl -L -o /tmp/sonarscanner.zip "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_CLI_VERSION}-linux.zip"
+        echo "$SONAR_SCANNER_CLI_SHA256SUM  /tmp/sonarscanner.zip" | sha256sum -c -
+        pushd /opt
+        unzip /tmp/sonarscanner.zip
+        mv sonar-scanner-${SONAR_SCANNER_CLI_VERSION}-linux sonar-scanner
+        rm -f /tmp/sonarscanner.zip
+        popd
+
+        # install minikube
+        MINIKUBE_VERSION="0.30.0"
+        MINIKUBE_DEB_VERSION="$(echo ${MINIKUBE_VERSION} | sed -n 's/\(.*\)\.\(.*\)/\1-\2/p')"
+        MINIKUBE_SHA256SUM="c6c5aa5956f8ad5f61d426e9b8601ba95965a9c30bb80a9fe7525c64e6dd12fd"
+        curl -L -o /tmp/minikube.deb "https://storage.googleapis.com/minikube/releases/v${MINIKUBE_VERSION}/minikube_${MINIKUBE_DEB_VERSION}.deb"
+        echo "$MINIKUBE_SHA256SUM  /tmp/minikube.deb" | sha256sum -c -
+        pushd /tmp
+        dpkg -i minikube.deb
+        rm -f minikube.deb
+        popd
+
+        # install hadolint (Dockerfile checker)
+        HADOLINT_VERSION="1.17.3"
+        HADOLINT_SHA256SUM="59635ef4cfeac298a038254168c60492a92d16fa7e9dfbaf1f1edb488b5aae4b"
+        curl -L -o /tmp/hadolint https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64
+        echo "$HADOLINT_SHA256SUM  /tmp/hadolint" | sha256sum -c -
+        mv /tmp/hadolint /usr/local/bin/hadolint
+        chmod -R a+rx /usr/local/bin/hadolint
+
+        # install pandoc (document converter)
+        PANDOC_VERSION="2.8.0.1"
+        PANDOC_SHA256SUM="2f8f3bf120e9766e6e79f7a86fed8ede55ebbf2042175b68a7c899a74eabbf34"
+        curl -L -o /tmp/pandoc.deb "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb"
+        echo "$PANDOC_SHA256SUM  /tmp/hadolint" | sha256sum -c -
+        pushd /tmp
+        dpkg -i pandoc.deb
+        rm -f pandoc.deb
+        popd
+    fi
 
     # give sudo permissions on minikube and protoc to jenkins user
     cat <<EOF >/etc/sudoers.d/88-jenkins-minikube-protoc
@@ -258,14 +303,6 @@ Cmnd_Alias CMDS = /usr/local/bin/protoc, /usr/bin/minikube
 Defaults:jenkins !requiretty
 jenkins ALL=(ALL) NOPASSWD:SETENV: CMDS
 EOF
-
-    # install hadolint (Dockerfile checker)
-    HADOLINT_VERSION="1.17.1"
-    HADOLINT_SHA256SUM="2f8f3bf120e9766e6e79f7a86fed8ede55ebbf2042175b68a7c899a74eabbf34"
-    curl -L -o /tmp/hadolint https://github.com/hadolint/hadolint/releases/download/v${HADOLINT_VERSION}/hadolint-Linux-x86_64
-    echo "$HADOLINT_SHA256SUM  /tmp/hadolint" | sha256sum -c -
-    mv /tmp/hadolint /usr/local/bin/hadolint
-    chmod -R a+rx /usr/local/bin/hadolint
 
     # remove apparmor
     service apparmor stop
