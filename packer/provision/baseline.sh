@@ -181,6 +181,20 @@ EOF
 }
 
 ubuntu_systems() {
+    DISTRO=$(lsb_release -cs)
+
+    # machine type
+    MACHINE=$(uname -m)
+
+    # other machine/arch naming schemes, used to download Java
+    if [ "$MACHINE" == "x86_64" ];
+    then
+      ARCH_JAVA="amd64"
+    elif [ "$MACHINE" == aarch64 ];
+    then
+      ARCH_JAVA="arm64"
+    fi
+
     # Ignore SELinux since slamming that onto Ubuntu leads to
     # frustration
 
@@ -214,24 +228,27 @@ EOF
 
     echo "---> Updating operating system"
 
-    # added 2019-09-20 as apt-add-repository and software-properties-common weren't working
-    cat <<EOF >/etc/apt/sources.list.d/packer.list
+    if [ "$MACHINE" == x86_64 ];
+    then
+      # added 2019-09-20 as apt-add-repository and software-properties-common weren't working
+      cat <<EOF >/etc/apt/sources.list.d/packer.list
 # created by packer
 deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse
 
 EOF
 
-    # remove these as the fix seems to be broken now? zdw, 2019-09-20
-    # # Change made 2018-07-09 by zdw
-    # # per discussion on #lf-releng, the upstream Ubuntu image changed to be
-    # # missing add-apt-repository, so the next command failed.
-    # apt-get update -m
-    # # added 2019-09-20, sometimes upstream repos are broken w/this package, try to determine why
-    # apt-cache madison software-properties-common
-    # apt-get install -y software-properties-common
+      # remove these as the fix seems to be broken now? zdw, 2019-09-20
+      # # Change made 2018-07-09 by zdw
+      # # per discussion on #lf-releng, the upstream Ubuntu image changed to be
+      # # missing add-apt-repository, so the next command failed.
+      # apt-get update -m
+      # # added 2019-09-20, sometimes upstream repos are broken w/this package, try to determine why
+      # apt-cache madison software-properties-common
+      # apt-get install -y software-properties-common
 
-    # add additional repositories
-    # add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse"
+      # add additional repositories
+      # add-apt-repository "deb http://us.archive.ubuntu.com/ubuntu $(lsb_release -sc) main universe restricted multiverse"
+    fi
 
     echo "---> Installing base packages"
     apt-get clean
@@ -274,17 +291,23 @@ EOF
     apt-get install java-common
 
     # install Java8
-    CORRETTO_JAVA8_VERSION="8.222.10-1"
-    CORRETTO_JAVA8_SHA256SUM="e5fd6c6f2d1a1fc5e6926f7a543e67ad0f0e0389ddc5d2deb5890bdeb21ea445"
-    curl -L -o /tmp/corretto_java8.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA8_VERSION | tr - .)/java-1.8.0-amazon-corretto-jdk_${CORRETTO_JAVA8_VERSION}_amd64.deb"
-    echo "$CORRETTO_JAVA8_SHA256SUM  /tmp/corretto_java8.deb" | sha256sum -c -
+    CORRETTO_JAVA8_VERSION="8.232.09-1"
+    # machine specific checksums - corresponds to ARCH_JAVA above
+    CORRETTO_JAVA8_SHA256SUM_amd64="6d6e520555e32f5de6f1d5944560096b46658ee8383bb28f718f688d1d41e76e"
+    CORRETTO_JAVA8_SHA256SUM_arm64="af7e9ee6459ff6ae2d0d8ba372b6caa7cdb01d34778c981bc61c84fb29748356"
+    CORRETTO_JAVA8_SHA256SUM="CORRETTO_JAVA8_SHA256SUM_${ARCH_JAVA}"
+    curl -L -o /tmp/corretto_java8.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA8_VERSION | tr - .)/java-1.8.0-amazon-corretto-jdk_${CORRETTO_JAVA8_VERSION}_${ARCH_JAVA}.deb"
+    echo "${!CORRETTO_JAVA8_SHA256SUM}  /tmp/corretto_java8.deb" | sha256sum -c -
     dpkg -i /tmp/corretto_java8.deb
 
     # install Java11
-    CORRETTO_JAVA11_VERSION="11.0.4.11-1"
-    CORRETTO_JAVA11_SHA256SUM="f47c77f8f9ee5a80804765236c11dc749d351d3b8f57186c6e6b58a6c4019d3e"
-    curl -L -o /tmp/corretto_java11.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA11_VERSION | tr - .)/java-11-amazon-corretto-jdk_${CORRETTO_JAVA11_VERSION}_amd64.deb"
-    echo "$CORRETTO_JAVA11_SHA256SUM  /tmp/corretto_java11.deb" | sha256sum -c -
+    CORRETTO_JAVA11_VERSION="11.0.5.10-1"
+    # machine specific checksums - corresponds to ARCH_JAVA above
+    CORRETTO_JAVA11_SHA256SUM_amd64="de87ead922d571a3aca509bc1f11a6e8efce9e9151cc5d2bbbc137492b1aaa0a"
+    CORRETTO_JAVA11_SHA256SUM_arm64="fecf2354ee4e3ba563b742dba50a4d01270bf5db06806c6bd0ffc6834af74a2c"
+    CORRETTO_JAVA11_SHA256SUM="CORRETTO_JAVA11_SHA256SUM_${ARCH_JAVA}"
+    curl -L -o /tmp/corretto_java11.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA11_VERSION | tr - .)/java-11-amazon-corretto-jdk_${CORRETTO_JAVA11_VERSION}_${ARCH_JAVA}.deb"
+    echo "${!CORRETTO_JAVA11_SHA256SUM}  /tmp/corretto_java11.deb" | sha256sum -c -
     dpkg -i /tmp/corretto_java11.deb
 
     # Fix corretto 11 lack of jinfo that prevents update-java-alternatives from working
@@ -354,10 +377,12 @@ EOF
     # pulling down the packages in a way similar to this ansible role, rather than using cabal:
     # https://github.com/lfit/ansible-roles-shellcheck-install/blob/master/tasks/main.yml
 
-    SHELLCHECK_VERSION="v0.6.0"
-    SHELLCHECK_SHA256SUM="95c7d6e8320d285a9f026b5241f48f1c02d225a1b08908660e8b84e58e9c7dce"
-    curl -L -o /tmp/shellcheck.tar.xz https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz
-    echo "$SHELLCHECK_SHA256SUM  /tmp/shellcheck.tar.xz" | sha256sum -c -
+    SHELLCHECK_VERSION="v0.7.0"
+    SHELLCHECK_SHA256SUM_x86_64="39c501aaca6aae3f3c7fc125b3c3af779ddbe4e67e4ebdc44c2ae5cba76c847f"
+    SHELLCHECK_SHA256SUM_aarch64="012100d9778cfa7ea73bf42ab55b3e02cda7f75d65aab32c6445012398c89b54"
+    SHELLCHECK_SHA256SUM="SHELLCHECK_SHA256SUM_${MACHINE}"
+    curl -L -o /tmp/shellcheck.tar.xz https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.${MACHINE}.tar.xz
+    echo "${!SHELLCHECK_SHA256SUM}  /tmp/shellcheck.tar.xz" | sha256sum -c -
     pushd /tmp
     tar -xJvf shellcheck.tar.xz
     cp shellcheck-${SHELLCHECK_VERSION}/shellcheck /usr/local/bin/shellcheck
