@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc0c9a1f_e4a1a7b9",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-12-03T22:21:11Z",
+      "side": 1,
+      "message": "I\u0027ll guess we\u0027ll need to update the pipelines these jobs invoke.  Is that in another patch?",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 25
+      },
+      "revId": "e98971ac8cb0b47316a634e20714c5cfaf93f7e0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "50891942_2b1c211e",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-12-03T22:21:11Z",
+      "side": 1,
+      "message": "Move this to next line?",
+      "range": {
+        "startLine": 107,
+        "startChar": 126,
+        "endLine": 107,
+        "endChar": 130
+      },
+      "revId": "e98971ac8cb0b47316a634e20714c5cfaf93f7e0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "04cc53b2_2ca6183e",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-12-03T22:21:11Z",
+      "side": 1,
+      "message": "It\u0027s probably cleaner to just write the test logs directly into the RobotLogs directory when we run the tests; to do it, add to environment:\n        ROBOT_MISC_ARGS\u003d\"-d $WORKSPACE/RobotLogs\"",
+      "range": {
+        "startLine": 181,
+        "startChar": 0,
+        "endLine": 181,
+        "endChar": 89
+      },
+      "revId": "e98971ac8cb0b47316a634e20714c5cfaf93f7e0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fc0aa515_5ad1671b",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-12-03T22:21:11Z",
+      "side": 1,
+      "message": "Run instead?\n         step([$class: \u0027WsCleanup\u0027])",
+      "range": {
+        "startLine": 217,
+        "startChar": 0,
+        "endLine": 217,
+        "endChar": 37
+      },
+      "revId": "e98971ac8cb0b47316a634e20714c5cfaf93f7e0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
