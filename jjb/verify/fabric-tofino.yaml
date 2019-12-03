@@ -1,0 +1,25 @@
+---
+# jobs for 'fabric-tofino' repo
+
+- project:
+    name: fabric-tofino
+    project: '{name}'
+
+    jobs:
+      - 'fabric-tofino-jobs-common':
+          branch-regexp: '^(.*)$'
+
+      - 'fabric-tofino-jobs':
+          branch-regexp: '^(master)$'
+
+- job-group:
+    name: 'fabric-tofino-jobs-common'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+
+- job-group:
+    name: 'fabric-tofino-jobs'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'
