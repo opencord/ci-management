@@ -42,6 +42,23 @@ pipeline {
   }
   stages {
 
+    stage('Repo') {
+      steps {
+        checkout(changelog: true,
+          poll: false,
+          scm: [$class: 'RepoScm',
+            manifestRepositoryUrl: "${params.manifestUrl}",
+            manifestBranch: "${params.manifestBranch}",
+            currentBranch: true,
+            destinationDir: 'voltha',
+            forceSync: true,
+            resetFirst: true,
+            quiet: true,
+            jobs: 4,
+            showAllChanges: true]
+          )
+      }
+    }
     stage('Download kind-voltha') {
       steps {
         sh """
