@@ -53,8 +53,9 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
-           cd kind-voltha/
+           pushd kind-voltha/
            ./voltha up
+           popd
            """
       }
     }
@@ -73,9 +74,10 @@ pipeline {
     stage('Deploy Voltha Again') {
       steps {
         sh """
-           cd kind-voltha/
+           pushd kind-voltha/
            ./voltha down
            ./voltha up
+           popd
            """
       }
     }

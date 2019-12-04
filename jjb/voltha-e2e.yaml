@@ -20,9 +20,10 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-system-test'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
           default-image-tag: 'master'
           code-branch: 'master'
-          make-target: sanity-multi-kind
+          make-target: sanity-single-kind
           onus: 2
           pons: 2
           time-trigger: "H H/12 * * *"
