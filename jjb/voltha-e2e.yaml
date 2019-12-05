@@ -314,9 +314,12 @@
           trigger-on:
             - comment-added-contains-event:
                 comment-contains-value: '^hardware test$'
+            - comment-added-event:
+                approval-category: 'Code-Review'
+                approval-value: '+2'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests)$'
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-helm-charts|voltha-system-tests)$'
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
