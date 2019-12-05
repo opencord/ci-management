@@ -45,6 +45,75 @@
       "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e6ef31b5_f833ace0",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 230,
+      "author": {
+        "id": 1000639
+      },
+      "writtenOn": "2019-12-05T17:32:08Z",
+      "side": 1,
+      "message": "This doesn\u0027t work, I propose something like\nHELM_SHA256SUM\u003d\"HELM_SHA256SUM_${ARCH_GO}\"\n...\necho \"${!HELM_SHA256SUM}  /tmp/helm.tgz\" | sha256sum -c -",
+      "range": {
+        "startLine": 230,
+        "startChar": 9,
+        "endLine": 230,
+        "endChar": 38
+      },
+      "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "02b688fe_9aaa5f53",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000639
+      },
+      "writtenOn": "2019-12-05T17:32:08Z",
+      "side": 1,
+      "message": "This introduces some confusion, because MACHINE for arm64 is aarch64, not aarch_64 like how it will be used below.\nShould be replaced with ${ARCH_UNDER} for consistency",
+      "range": {
+        "startLine": 243,
+        "startChar": 52,
+        "endLine": 243,
+        "endChar": 62
+      },
+      "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "2956882b_158e4a77",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000639
+      },
+      "writtenOn": "2019-12-05T17:32:08Z",
+      "side": 1,
+      "message": "Same as before",
+      "range": {
+        "startLine": 244,
+        "startChar": 10,
+        "endLine": 244,
+        "endChar": 43
+      },
+      "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
