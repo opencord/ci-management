@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6ac198c_96a4ba32",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000639
+      },
+      "writtenOn": "2019-12-05T14:15:17Z",
+      "side": 1,
+      "message": "Hardcoded arch",
+      "range": {
+        "startLine": 44,
+        "startChar": 19,
+        "endLine": 44,
+        "endChar": 24
+      },
+      "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4c905338_e6a2ca4c",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000639
+      },
+      "writtenOn": "2019-12-05T14:15:17Z",
+      "side": 1,
+      "message": "For arm64 we need something like 17.09*, at the very least:\nhttps://download.docker.com/linux/ubuntu/dists/xenial/pool/stable/arm64/",
+      "range": {
+        "startLine": 101,
+        "startChar": 19,
+        "endLine": 101,
+        "endChar": 24
+      },
+      "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
