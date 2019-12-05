@@ -14,5 +14,5 @@
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject'
-      - 'maven-install'
+      - 'maven-test'
       - 'maven-publish'
