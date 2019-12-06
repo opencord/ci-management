@@ -47,7 +47,7 @@ pipeline {
   stages {
     stage ('Initialize') {
       steps {
-        sh returnStdout: true, script: """
+        sh returnStdout: false, script: """
         test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
         cd $WORKSPACE
         rm -rf $WORKSPACE/*
@@ -55,7 +55,7 @@ pipeline {
         script {
           if (env.configRepo && ! env.localConfigDir) {
             env.localConfigDir = "$WORKSPACE"
-            sh returnStdout: true, script: "git clone -b master ${cordRepoUrl}/${configRepo}"
+            sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configRepo}"
           }
           localDeploymentConfigFile = "${env.localConfigDir}/${params.deploymentConfigFile}"
           localKindVolthaValuesFile = "${env.localConfigDir}/${params.kindVolthaValuesFile}"
@@ -217,21 +217,21 @@ pipeline {
       steps {
         script {
           deployment_config.olts.each { olt ->
-            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true"
-            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true"
-            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --remove asfvolt16 && dpkg --purge asfvolt16'"
+            sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true"
+            sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true"
+            sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --remove asfvolt16 && dpkg --purge asfvolt16'"
             waitUntil {
               olt_sw_present = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --list | grep asfvolt16 | wc -l'"
               return olt_sw_present.toInteger() == 0
             }
-            sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --install ${oltDebVersion}'"
+            sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --install ${oltDebVersion}'"
             waitUntil {
               olt_sw_present = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --list | grep asfvolt16 | wc -l'"
               return olt_sw_present.toInteger() == 1
             }
             if ( olt.fortygig ) {
               // If the OLT is connected to a 40G switch interface, set the NNI port to be downgraded
-              sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'echo port ce128 sp=40000 >> /broadcom/qax.soc ; /opt/bcm68620/svk_init.sh'"
+              sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'echo port ce128 sp=40000 >> /broadcom/qax.soc ; /opt/bcm68620/svk_init.sh'"
             }
           }
         }
@@ -242,7 +242,7 @@ pipeline {
       steps {
         script {
           deployment_config.olts.each { olt ->
-            sh returnStdout: true, script: """
+            sh returnStdout: false, script: """
             ssh-keyscan -H ${olt.ip} >> ~/.ssh/known_hosts
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true
@@ -280,7 +280,7 @@ pipeline {
 
   post {
     always {
-      sh returnStdout: true, script: """
+      sh returnStdout: false, script: """
       set +e
       cp kind-voltha/install-minimal.log $WORKSPACE/
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
@@ -310,7 +310,7 @@ pipeline {
       """
       script {
         deployment_config.olts.each { olt ->
-          sh returnStdout: true, script: """
+          sh returnStdout: false, script: """
           sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/openolt.log $WORKSPACE/openolt-${olt.ip}.log || true
           sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.ip}.log  # Remove escape sequences
           """

@@ -36,7 +36,7 @@ pipeline {
     stage ('Initialize') {
       steps {
         step([$class: 'WsCleanup'])
-        sh returnStdout: true, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
         script {
           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
         }
@@ -54,7 +54,7 @@ pipeline {
             jobs: 4,
             showAllChanges: true]
           )
-        sh returnStdout: true, script: """
+        sh returnStdout: false, script: """
         cd voltha
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
         git clone -b ${branch} ${cordRepoUrl}/voltha # NOTE do we need the voltha source code??
@@ -78,7 +78,7 @@ pipeline {
 
   post {
     always {
-      sh returnStdout: true, script: """
+      sh returnStdout: false, script: """
       set +e
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
       kubectl get nodes -o wide
@@ -104,7 +104,7 @@ pipeline {
       """
       script {
         deployment_config.olts.each { olt ->
-          sh returnStdout: true, script: """
+          sh returnStdout: false, script: """
           sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/openolt.log $WORKSPACE/openolt-${olt.ip}.log || true
           sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.ip}.log  # Remove escape sequences
           """
