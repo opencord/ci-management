@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7d6d8469_3c6d059e",
+        "filename": "jjb/pipeline/onos-app-release.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-12-06T17:17:12Z",
+      "side": 1,
+      "message": "All other groovy files use the declarative pipeline syntax, not scripted.",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 0
+      },
+      "revId": "85d5bf37e7874ef03a860e41acdc799b5767685f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a33926a8_fdcc5a9f",
+        "filename": "jjb/pipeline/onos-app-release.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2019-12-06T17:17:12Z",
+      "side": 1,
+      "message": "Jenkins can supply config files, and has a copy of the known_hosts file. \n\nUse that with config_file_provider: https://jenkins.io/doc/pipeline/steps/config-file-provider/",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 81
+      },
+      "revId": "85d5bf37e7874ef03a860e41acdc799b5767685f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
