@@ -11,6 +11,7 @@
 
       - 'fabric-tofino-jobs':
           branch-regexp: '^(master)$'
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'fabric-tofino-jobs-common'
@@ -22,4 +23,6 @@
     name: 'fabric-tofino-jobs'
     jobs:
       - 'maven-test'
-      - 'maven-publish'
+      # Do not publish as the generated .oar is useless without the output of
+      # the Tofino compiler.
+      # - 'maven-publish'
