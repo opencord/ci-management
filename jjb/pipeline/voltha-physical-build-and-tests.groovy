@@ -263,7 +263,7 @@ pipeline {
     stage('Run E2E Tests') {
       environment {
         ROBOT_CONFIG_FILE="${localDeploymentConfigFile}"
-        ROBOT_MISC_ARGS="--removekeywords wuks -d $WORKSPACE/RobotLogs"
+        ROBOT_MISC_ARGS="--removekeywords wuks -d $WORKSPACE/RobotLogs -e bbsim"
         ROBOT_FILE="Voltha_PODTests.robot"
       }
       steps {
