@@ -98,7 +98,11 @@ pipeline {
            HELM_FLAG="${extraHelmFlags} "
 
            if [ "${gerritProject}" = "voltha-go" ]; then
-             HELM_FLAG+="-f $WORKSPACE/voltha/voltha-system-tests/tests/data/ci-test.yaml "
+             HELM_FLAG+="--set images.rw_core.tag=citest,images.rw_core.pullPolicy=Never,images.ro_core.tag=citest,images.ro_core.pullPolicy=Never "
+           fi
+
+           if [ "${gerritProject}" = "ofagent-py" ]; then
+             HELM_FLAG+="--set images.ofagent.tag=citest,images.ofagent.pullPolicy=Never "
            fi
 
            if [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
