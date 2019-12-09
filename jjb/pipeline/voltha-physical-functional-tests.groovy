@@ -64,7 +64,7 @@ pipeline {
     stage('Subscriber Validation and Ping Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
-        ROBOT_MISC_ARGS="--removekeywords wuks -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
+        ROBOT_MISC_ARGS="--removekeywords wuks -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -e bbsim"
         ROBOT_FILE="Voltha_PODTests.robot"
       }
       steps {
