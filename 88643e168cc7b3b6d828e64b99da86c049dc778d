@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c08cdd02_ddf7a3dd",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-12-09T23:07:25Z",
+      "side": 1,
+      "message": "Since there are so few containers being built in this repo now, let\u0027s just get rid of this and use --set commands like the other repos.",
+      "range": {
+        "startLine": 101,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 91
+      },
+      "revId": "88643e168cc7b3b6d828e64b99da86c049dc778d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
