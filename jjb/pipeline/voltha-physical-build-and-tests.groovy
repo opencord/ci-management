@@ -157,7 +157,9 @@ pipeline {
 
             IMAGES=""
             if [ "${gerritProject}" = "voltha-go" ]; then
-                IMAGES="cli ofagent rw_core ro_core "
+                IMAGES="rw_core ro_core "
+            elif [ "${gerritProject}" = "ofagent-py" ]; then
+                IMAGES="ofagent "
             elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
                 IMAGES="adapter_open_olt "
             elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then

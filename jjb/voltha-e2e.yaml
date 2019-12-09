@@ -319,7 +319,7 @@
                 approval-value: '+2'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests)$'
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py)$'
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
