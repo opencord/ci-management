@@ -101,6 +101,10 @@ pipeline {
              HELM_FLAG+="-f $WORKSPACE/voltha/voltha-system-tests/tests/data/ci-test.yaml "
            fi
 
+           if [ "${gerritProject}" = "ofagent-py" ]; then
+             HELM_FLAG+="--set images.ofagent.tag=citest,images.ofagent.pullPolicy=Never "
+           fi
+
            if [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
              HELM_FLAG+="--set images.adapter_open_olt.tag=citest,images.adapter_open_olt.pullPolicy=Never "
            fi
