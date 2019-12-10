@@ -29,6 +29,17 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-sanity-test-multi-runs'
+          build-node: 'qct-pod4-node2'
+          default-image-tag: 'master'
+          code-branch: 'master'
+          make-target: sanity-multi-kind
+          onus: 1
+          pons: 1
+          test-runs: 3
+          time-trigger: "H H/3 * * *"
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-scale-test'
           build-node: 'qct-pod4-node2'
           default-image-tag: 'master'
@@ -36,6 +47,7 @@
           make-target: scale-multi-kind
           onus: 2
           pons: 8
+          robot-args: '-v teardown_device:False'
           time-trigger: "H H/3 * * *"
 
       # Per-patchset Pod builds on Tucson pod
@@ -63,6 +75,8 @@
     id: 'voltha-periodic-test'
     name: '{name}'
     pipeline-script: 'voltha-go-tests.groovy'
+    test-runs: 1
+    robot-args: ''
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -104,6 +118,17 @@
           name: manifestBranch
           default: '{code-branch}'
           description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
+
+      - string:
+          name: testRuns
+          default: '{test-runs}'
+          description: 'How many times to repeat the tests'
+
+      - string:
+          name: extraRobotArgs
+          default: '{robot-args}'
+          description: 'Arguments to pass to robot'
+
 
     project-type: pipeline
     concurrent: true
