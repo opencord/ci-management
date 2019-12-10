@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5e8571b6_6d44bba1",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2019-12-10T21:41:32Z",
+      "side": 1,
+      "message": "I think \u0027-e\u0027 option needs to be given earlier, right after \u0027--removekeywords wuks\u0027",
+      "range": {
+        "startLine": 67,
+        "startChar": 178,
+        "endLine": 67,
+        "endChar": 186
+      },
+      "revId": "68e757116ab3f526efebff3d32f5eb2921bbb462",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
