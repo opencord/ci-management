@@ -83,7 +83,13 @@ pipeline {
         sh '''
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
-           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
+           for i in {1..${testRuns}}
+           do
+             make -C $WORKSPACE/voltha-system-tests ${makeTarget}
+             kubectl -n voltha delete pod -lapp=bbsim  # VOL-2342
+             http -a karaf:karaf --ignore-stdin DELETE http://localhost:8101/onos/v1/applications/org.opencord.dhcpl2relay/active  # VOL-2343
+             http -a karaf:karaf --ignore-stdin  POST  http://localhost:8101/onos/v1/applications/org.opencord.dhcpl2relay/active  # VOL-2343
+           done
            '''
       }
     }

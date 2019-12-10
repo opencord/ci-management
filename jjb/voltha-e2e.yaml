@@ -105,6 +105,11 @@
           default: '{code-branch}'
           description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
 
+      - string:
+          name: testRuns
+          default: 1
+          description: 'How many times to repeat the tests'
+
     project-type: pipeline
     concurrent: true
 
