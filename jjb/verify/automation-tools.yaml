@@ -8,6 +8,7 @@
     jobs:
       - 'verify-automation-tools-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-automation-tools-base-jobs'
 
 - job-group:
     name: 'verify-automation-tools-jobs'
@@ -20,6 +21,11 @@
           dependency-jobs: 'verify_automation-tools_tag-collision'
       - 'verify-shellcheck':
           dependency-jobs: 'verify_automation-tools_ansible-lint'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_automation-tools_shellcheck'
 
+- job-group:
+    name: 'publish-automation-tools-base-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'opencord'
+          dependency-jobs: 'version-tag'
