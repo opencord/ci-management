@@ -148,6 +148,7 @@ pipeline {
            export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
            export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
            export PATH=$WORKSPACE/kind-voltha/bin:$PATH
+           export ROBOT_MISC_ARGS="-v teardown_device:False"
            make -C $WORKSPACE/voltha/voltha-system-tests sanity-kind || true
            '''
       }
