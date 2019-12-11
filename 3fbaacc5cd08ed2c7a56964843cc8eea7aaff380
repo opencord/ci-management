@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a60941e3_ded1f1d3",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 6
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2019-12-11T22:00:53Z",
+      "side": 1,
+      "message": "Do we need to wait for the container to respawn as a running status before the next testing?",
+      "revId": "3fbaacc5cd08ed2c7a56964843cc8eea7aaff380",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
