@@ -114,6 +114,52 @@
       "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b04926fe_4a6388a2",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000639
+      },
+      "writtenOn": "2019-12-11T14:49:37Z",
+      "side": 1,
+      "message": "Old SHA256SUM form hadolint 1.17.1. Here is the correct one\n81cca90353dced1e285888b73f2bee55ed388d34b6b0624d76a2eba2344eaba9",
+      "range": {
+        "startLine": 291,
+        "startChar": 26,
+        "endLine": 291,
+        "endChar": 90
+      },
+      "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "213a72d0_43f20cf0",
+        "filename": "packer/provision/basebuild.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 293,
+      "author": {
+        "id": 1000639
+      },
+      "writtenOn": "2019-12-11T14:49:37Z",
+      "side": 1,
+      "message": "s/hadolint/pandoc.deb",
+      "range": {
+        "startLine": 293,
+        "startChar": 38,
+        "endLine": 293,
+        "endChar": 46
+      },
+      "revId": "f4a8cd55c72eb28996fc72331b41ad98ded2d22b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
