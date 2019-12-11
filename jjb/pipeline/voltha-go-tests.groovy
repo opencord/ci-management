@@ -88,8 +88,9 @@ pipeline {
              make -C $WORKSPACE/voltha-system-tests ${makeTarget}
              kubectl -n voltha delete pod -lapp=bbsim  # VOL-2342
              kubectl -n voltha wait pod -lapp=bbsim --for condition=Ready --timeout=60s # VOL-2342
-             http -a karaf:karaf --ignore-stdin DELETE http://localhost:8101/onos/v1/applications/org.opencord.dhcpl2relay/active > /dev/null  # VOL-2343
-             http -a karaf:karaf --ignore-stdin  POST  http://localhost:8101/onos/v1/applications/org.opencord.dhcpl2relay/active > /dev/null  # VOL-2343
+             http -a karaf:karaf --ignore-stdin DELETE http://localhost:8181/onos/v1/applications/org.opencord.dhcpl2relay/active > /dev/null  # VOL-2343
+             http -a karaf:karaf --ignore-stdin  POST  http://localhost:8181/onos/v1/applications/org.opencord.dhcpl2relay/active > /dev/null  # VOL-2343
+             sleep 10
            done
            '''
       }
