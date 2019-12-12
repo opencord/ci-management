@@ -28,6 +28,7 @@
     name: 'post-submit-voltctl-jobs'
     jobs:
       - 'github-release':
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
           dependency-jobs: 'version-tag'
           github-organization: 'opencord'
           artifact-glob: 'release/*'
