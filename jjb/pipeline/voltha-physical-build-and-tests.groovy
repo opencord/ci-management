@@ -309,6 +309,10 @@ pipeline {
           kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
         fi
       done
+      ## collect events
+      helm install -n voltha-kafka-dump --wait cord/voltha-kafka-dump
+      VOLTHA_KAFKA_DUMP=`kubectl get pods | grep -i voltha-kafka-dump | grep -i running | cut -f1 -d " "`
+      kubectl exec -it $VOLTHA_KAFKA_DUMP ./voltha-dump-events.sh > $WORKSPACE/voltha-events.log
       """
       script {
         deployment_config.olts.each { olt ->
