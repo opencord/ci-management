@@ -191,6 +191,18 @@ pipeline {
       }
     }
 
+    stage('Deploy Kafka Dump Chart') {
+      steps {
+        script {
+          sh returnStdout: false, script: """
+              helm repo add cord https://charts.opencord.org
+              helm repo update
+              helm install -n voltha-kafka-dump cord/voltha-kafka-dump
+          """
+        }
+      }
+    }
+
     stage('Push Tech-Profile') {
       when {
         expression { params.profile != "Default" }
@@ -309,6 +321,11 @@ pipeline {
           kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
         fi
       done
+      ## collect events, the chart should be running by now
+      kubectl get pods | grep -i voltha-kafka-dump | grep -i running
+      if [[ $? == 0 ]]; then
+         kubectl exec -it `kubectl get pods | grep -i voltha-kafka-dump | grep -i running | cut -f1 -d " "` ./voltha-dump-events.sh > $WORKSPACE/voltha-events.log
+      fi
       """
       script {
         deployment_config.olts.each { olt ->
