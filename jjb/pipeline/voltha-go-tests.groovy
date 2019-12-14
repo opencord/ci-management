@@ -90,6 +90,8 @@ pipeline {
              kubectl -n voltha wait pod -lapp=bbsim --for condition=Ready --timeout=60s # VOL-2342
              http -a karaf:karaf --ignore-stdin DELETE http://localhost:8181/onos/v1/applications/org.opencord.dhcpl2relay/active > /dev/null  # VOL-2343
              http -a karaf:karaf --ignore-stdin  POST  http://localhost:8181/onos/v1/applications/org.opencord.dhcpl2relay/active > /dev/null  # VOL-2343
+             http -a karaf:karaf --ignore-stdin DELETE http://localhost:8181/onos/v1/applications/org.opencord.aaa/active > /dev/null  # VOL-2363
+             http -a karaf:karaf --ignore-stdin  POST  http://localhost:8181/onos/v1/applications/org.opencord.aaa/active > /dev/null  # VOL-2363
              sleep 10
            done
            '''
