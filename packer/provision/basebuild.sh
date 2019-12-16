@@ -197,10 +197,11 @@ EOF
       go install ./protoc-gen-go
     popd
 
-    # install repo
-    REPO_SHA256SUM="394d93ac7261d59db58afa49bb5f88386fea8518792491ee3db8baab49c3ecda"
-    curl -o /tmp/repo 'https://gerrit.opencord.org/gitweb?p=repo.git;a=blob_plain;f=repo;hb=refs/heads/stable'
-    echo "$REPO_SHA256SUM  /tmp/repo" | sha256sum -c -
+    # install repo launcher v1.13.8
+    REPO_B64_SHA256SUM="ac7058283b4e2b51db31a79632c3e2f809d8f6270217d280fcc52f1325e69960"
+    curl -o /tmp/repo.b64 'https://gerrit.googlesource.com/git-repo/+/refs/tags/v1.13.8/repo?format=TEXT'
+    echo "$REPO_B64_SHA256SUM  /tmp/repo.b64" | sha256sum -c -
+    base64 --decode /tmp/repo.b64 > /tmp/repo
     mv /tmp/repo /usr/local/bin/repo
     chmod a+x /usr/local/bin/repo
 
