@@ -147,7 +147,7 @@
           config-pod: 'onf-demo-pod'
           release: 'release'
           branch: 'master'
-          released: false
+          released: true
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16_old.deb'
