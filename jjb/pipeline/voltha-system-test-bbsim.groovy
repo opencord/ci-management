@@ -71,12 +71,12 @@ pipeline {
     }
 
     //Remove this stage once https://jira.opencord.org/browse/VOL-1977 be resolved
-    stage('Deploy Voltha Again') {
+    stage('Deploy Voltha Again for Functional Tests') {
       steps {
         sh """
            pushd kind-voltha/
-           ./voltha down
-           ./voltha up
+           DEPLOY_K8S=no ./voltha down
+           DEPLOY_K8S=no ./voltha up
            popd
            """
       }
@@ -89,6 +89,28 @@ pipeline {
            '''
       }
     }
+
+    //Remove this stage once https://jira.opencord.org/browse/VOL-1977 be resolved
+    stage('Deploy Voltha Again for Failure Scenario Tests') {
+      steps {
+        sh """
+           pushd kind-voltha/
+           DEPLOY_K8S=no ./voltha down
+           DEPLOY_K8S=no ./voltha up
+           popd
+           """
+      }
+    }
+
+    stage('Kubernetes Failure Scenario Tests') {
+      steps {
+        sh '''
+           rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
+           make -C $WORKSPACE/voltha-system-tests system-scale-test || true
+           '''
+      }
+    }
+
   }
 
   post {
