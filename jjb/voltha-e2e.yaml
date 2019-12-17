@@ -51,8 +51,18 @@
           time-trigger: "H H/3 * * *"
 
       # Per-patchset Pod builds on Tucson pod
-      - 'verify_physical_voltha_patchset':
-          name: 'verify_physical_voltha_patchset'
+      - 'verify_physical_voltha_patchset_auto':
+          name: 'verify_physical_voltha_patchset_auto'
+          testvm: 'tucson-pod'
+          config-pod: 'tucson-pod'
+          branch: 'master'
+          oltDebVersion: 'openolt_asfvolt16.deb'
+          profile: 'Default'
+          withPatchset: true
+
+      # Per-patchset Pod builds on Tucson pod
+      - 'verify_physical_voltha_patchset_manual':
+          name: 'verify_physical_voltha_patchset_manual'
           testvm: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
@@ -211,9 +221,152 @@
 
 # POD Per Patchset Pipeline Jobs
 
+
 - job-template:
     name: '{name}'
-    id: verify_physical_voltha_patchset
+    id: verify_physical_voltha_patchset_auto
+    description: |
+                  <!-- Managed by Jenkins Job Builder -->
+                  Automated build on POD {config-pod} using {pipeline-script} <br /><br />
+                  Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
+                  Created by Andy Bavier, andy@opennetworking.org <br />
+                  Copyright (c) 2019 Open Networking Foundation (ONF)
+    project-type: pipeline
+    sandbox: true
+    pipeline-script: 'voltha-physical-build-and-tests.groovy'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{testvm}'
+          description: 'Pod management node'
+
+      - string:
+          name: manifestUrl
+          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
+          description: 'URL to the repo manifest'
+
+      - string:
+          name: manifestBranch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the repo branch to use'
+
+      - string:
+          name: gerritProject
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the Gerrit project'
+
+      - string:
+          name: gerritChangeNumber
+          default: '$GERRIT_CHANGE_NUMBER'
+          description: 'Changeset number in Gerrit'
+
+      - string:
+          name: gerritPatchsetNumber
+          default: '$GERRIT_PATCHSET_NUMBER'
+          description: 'PatchSet number in Gerrit'
+
+      - string:
+          name: cordRepoUrl
+          default: '{gerrit-server-url}'
+          description: 'The URL of the CORD Project repository'
+
+      - string:
+          name: podName
+          default: '{config-pod}'
+
+      - string:
+          name: deploymentConfigFile
+          default: 'pod-configs/deployment-configs/{config-pod}.yaml'
+          description: 'Path of deployment config file'
+
+      - string:
+          name: kindVolthaValuesFile
+          default: 'pod-configs/kubernetes-configs/voltha/{config-pod}.yml'
+          description: 'Path of kind-voltha values override file'
+
+      - string:
+          name: sadisConfigFile
+          default: 'voltha/voltha-system-tests/tests/data/{config-pod}-sadis.json'
+          description: 'Path of SADIS config to load'
+
+      - string:
+          name: localConfigDir
+          default: null
+          description: 'If specified, config file paths are relative to this dir; otherwise $WORKSPACE'
+
+      - string:
+          name: configRepo
+          default: 'pod-configs'
+          description: 'A repository containing the config files, will be checked out if specified'
+
+      - string:
+          name: oltDebVersion
+          default: '{oltDebVersion}'
+          description: 'OLT Software version to install'
+
+      - string:
+          name: branch
+          default: '{branch}'
+
+      - string:
+          name: profile
+          default: '{profile}'
+          description: 'Technology Profile pushed to the ETCD'
+
+      - string:
+          name: notificationEmail
+          default: 'andy@opennetworking.org'
+          description: ''
+
+      - bool:
+          name: reinstallOlt
+          default: true
+          description: "Re-install OLT software"
+
+      - bool:
+          name: withPatchset
+          default: true
+          description: "Build with Gerrit patchset"
+
+      - string:
+          name: extraRobotArgs
+          default: '-i sanity'
+          description: 'Arguments to pass to robot'
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: false
+          successful-message: "PASSED hardware test"
+          failure-message: "FAILED hardware test"
+          unstable-message: "UNSTABLE hardware test"
+          trigger-on:
+            - comment-added-event:
+                approval-category: 'Code-Review'
+                approval-value: '+2'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter)$'
+              branches:
+                - branch-compare-type: PLAIN
+                  branch-pattern: 'master'
+
+
+- job-template:
+    name: '{name}'
+    id: verify_physical_voltha_patchset_manual
     description: |
                   <!-- Managed by Jenkins Job Builder -->
                   Automated build on POD {config-pod} using {pipeline-script} <br /><br />
@@ -350,23 +503,7 @@
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
-      - gerrit:
-          server-name: '{gerrit-server-name}'
-          dependency-jobs: '{dependency-jobs}'
-          silent-start: false
-          successful-message: "PASSED hardware test"
-          failure-message: "FAILED hardware test"
-          unstable-message: "UNSTABLE hardware test"
-          trigger-on:
-            - comment-added-event:
-                approval-category: 'Code-Review'
-                approval-value: '+2'
-          projects:
-            - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter)$'
-              branches:
-                - branch-compare-type: PLAIN
-                  branch-pattern: 'master'
+
 
 - job-template:
     name: '{name}'
