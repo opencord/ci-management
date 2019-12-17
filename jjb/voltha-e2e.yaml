@@ -323,6 +323,11 @@
           default: true
           description: "Build with Gerrit patchset"
 
+      - string:
+          name: extraRobotArgs
+          default: '-i sanity'
+          description: 'Arguments to pass to robot'
+
     project-type: pipeline
     concurrent: true
 
@@ -339,12 +344,26 @@
           trigger-on:
             - comment-added-contains-event:
                 comment-contains-value: '^hardware test$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py)$'
+              branches:
+                - branch-compare-type: PLAIN
+                  branch-pattern: 'master'
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: false
+          successful-message: "PASSED hardware test"
+          failure-message: "FAILED hardware test"
+          unstable-message: "UNSTABLE hardware test"
+          trigger-on:
             - comment-added-event:
                 approval-category: 'Code-Review'
                 approval-value: '+2'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py)$'
+              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter)$'
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
@@ -460,6 +479,11 @@
           name: withPatchset
           default: false
           description: "Build with Gerrit patchset"
+
+      - string:
+          name: extraRobotArgs
+          default: '-e bbsim'
+          description: 'Arguments to pass to robot'
 
     project-type: pipeline
     concurrent: true
