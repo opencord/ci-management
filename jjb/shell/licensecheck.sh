@@ -20,6 +20,7 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -name "*.PNG" \
   ! -name "*.asc" \
   ! -name "*.bat" \
+  ! -name "*.bin" \
   ! -name "*.cert" \
   ! -name "*.cfg" \
   ! -name "*.cnf" \
