@@ -92,6 +92,7 @@ EOF
         ethtool \
         git \
         golang-1.12-go \
+        graphviz \
         httpie \
         jq \
         kafkacat \
@@ -267,6 +268,14 @@ EOF
     echo "$HADOLINT_SHA256SUM  /tmp/hadolint" | sha256sum -c -
     mv /tmp/hadolint /usr/local/bin/hadolint
     chmod -R a+rx /usr/local/bin/hadolint
+
+    # install pandoc (document converter)
+    PANDOC_VERSION="2.8.0.1"
+    PANDOC_SHA256SUM="81cca90353dced1e285888b73f2bee55ed388d34b6b0624d76a2eba2344eaba9"
+    curl -L -o /tmp/pandoc.deb "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-1-amd64.deb"
+    echo "$PANDOC_SHA256SUM  /tmp/pandoc.deb" | sha256sum -c -
+    dpkg -i /tmp/pandoc.deb
+    rm -f /tmp/pandoc.deb
 
     # remove apparmor
     service apparmor stop
