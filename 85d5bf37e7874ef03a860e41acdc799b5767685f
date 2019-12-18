@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "975d7297_fea1b32b",
+        "filename": "jjb/pipeline/onos-app-release.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2019-12-18T00:11:30Z",
+      "side": 1,
+      "message": "Unfortunately, I don\u0027t have much experience with Groovy and Jenkins APIs, so this is something that would require some time to practice. I added a TODO comment. Is it ok if we target this as a later task?",
+      "parentUuid": "7d6d8469_3c6d059e",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 0
+      },
+      "revId": "85d5bf37e7874ef03a860e41acdc799b5767685f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a33926a8_fdcc5a9f",
         "filename": "jjb/pipeline/onos-app-release.groovy",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2019-12-06T17:17:12Z",
       "side": 1,
       "message": "Jenkins can supply config files, and has a copy of the known_hosts file. \n\nUse that with config_file_provider: https://jenkins.io/doc/pipeline/steps/config-file-provider/",
+      "range": {
+        "startLine": 44,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 81
+      },
+      "revId": "85d5bf37e7874ef03a860e41acdc799b5767685f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "88b7a298_de31509c",
+        "filename": "jjb/pipeline/onos-app-release.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2019-12-18T00:11:30Z",
+      "side": 1,
+      "message": "Agreed. Added a FIXME comment because of the same reason above.",
+      "parentUuid": "a33926a8_fdcc5a9f",
       "range": {
         "startLine": 44,
         "startChar": 0,
