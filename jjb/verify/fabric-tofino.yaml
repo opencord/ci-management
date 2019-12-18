@@ -23,6 +23,4 @@
     name: 'fabric-tofino-jobs'
     jobs:
       - 'maven-test'
-      # Do not publish as the generated .oar is useless without the output of
-      # the Tofino compiler.
-      # - 'maven-publish'
+      - 'maven-publish'
