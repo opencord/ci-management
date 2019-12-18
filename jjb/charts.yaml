@@ -43,7 +43,7 @@
           choosing-strategy: 'gerrit'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: '{build-node}'
+    node: 'ubuntu16.04-basebuild-2c-4g'
     project-type: freestyle
     concurrent: false
 
@@ -148,7 +148,7 @@
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: '{build-node}'
+    node: 'ubuntu16.04-basebuild-2c-4g'
     project-type: freestyle
     concurrent: true
 
