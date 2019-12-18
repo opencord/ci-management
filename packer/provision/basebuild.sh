@@ -89,6 +89,7 @@ EOF
         bzip2 \
         curl \
         ebtables \
+        enchant \
         ethtool \
         git \
         golang-1.12-go \
