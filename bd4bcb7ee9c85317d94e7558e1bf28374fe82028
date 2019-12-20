@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "12908ebd_74b38024",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2019-12-20T17:04:38Z",
+      "side": 1,
+      "message": "This is not necessary.  The Makefile already ignores tests marked \"-e notready\".\nhttps://github.com/opencord/voltha-system-tests/blob/master/Makefile#L85-L86",
+      "range": {
+        "startLine": 67,
+        "startChar": 56,
+        "endLine": 67,
+        "endChar": 67
+      },
+      "revId": "bd4bcb7ee9c85317d94e7558e1bf28374fe82028",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
