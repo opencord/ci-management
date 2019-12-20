@@ -15,7 +15,6 @@
     name: 'verify-voltha-docs-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'make-unit-test':
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
