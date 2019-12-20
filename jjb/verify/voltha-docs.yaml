@@ -24,8 +24,7 @@
     name: 'post-submit-voltha-docs-jobs'
     jobs:
       - 'sync-dir':
-          dependency-jobs: 'version-tag'
-          build-command: 'make html'
-          build-output-path: '_build/html/'
+          build-command: 'make versioned'
+          build-output-path: '_build/'
           sync-target-server: 'guide.opencord.org'
           sync-target-path: '/var/www/voltha-docs/'
