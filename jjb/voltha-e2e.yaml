@@ -358,7 +358,7 @@
                 approval-value: '+2'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter)$'
+              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-onos)$'
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
@@ -499,7 +499,7 @@
                 comment-contains-value: '^hardware test$'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py)$'
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|voltha-onos)$'
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
