@@ -101,6 +101,10 @@ pipeline {
              HELM_FLAG+="--set images.rw_core.tag=citest,images.rw_core.pullPolicy=Never,images.ro_core.tag=citest,images.ro_core.pullPolicy=Never "
            fi
 
+           if [ "${gerritProject}" = "voltha-onos" ]; then
+             HELM_FLAG+="--set images.onos.tag=citest,images.onos.pullPolicy=Never "
+           fi
+
            if [ "${gerritProject}" = "ofagent-py" ]; then
              HELM_FLAG+="--set images.ofagent.tag=citest,images.ofagent.pullPolicy=Never "
            fi
@@ -209,4 +213,3 @@ pipeline {
     }
   }
 }
-
