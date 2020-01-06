@@ -160,6 +160,8 @@ pipeline {
                 IMAGES="rw_core ro_core "
             elif [ "${gerritProject}" = "ofagent-py" ]; then
                 IMAGES="ofagent "
+            elif [ "${gerritProject}" = "voltha-onos" ]; then
+                IMAGES="voltha-onos "
             elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
                 IMAGES="adapter_open_olt "
             elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
