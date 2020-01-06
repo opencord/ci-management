@@ -20,6 +20,8 @@
       - 'make-unit-test':
           unit-test-targets: 'build'
           junit-allow-empty-results: true
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-onos-jobs'
