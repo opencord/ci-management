@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "82e894de_59564685",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-01-06T21:50:14Z",
+      "side": 1,
+      "message": "AFAIK the hardware test is only supposed to run automatically for patches to the adapter repos.",
+      "range": {
+        "startLine": 361,
+        "startChar": 80,
+        "endLine": 361,
+        "endChar": 91
+      },
+      "revId": "761c00b80213c3e896c1ff158cd7e8065dc05c4e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
