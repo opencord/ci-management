@@ -263,6 +263,7 @@ pipeline {
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'rm -f /var/log/openolt.log'
+            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'rm -f /var/log/dev_mgmt_daemon.log'
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service dev_mgmt_daemon start &'
             sleep 5
             sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt start &'
@@ -334,6 +335,8 @@ pipeline {
           sh returnStdout: false, script: """
           sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/openolt.log $WORKSPACE/openolt-${olt.ip}.log || true
           sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.ip}.log  # Remove escape sequences
+          sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/dev_mgmt_daemon.log $WORKSPACE/dev_mgmt_daemon-${olt.ip}.log || true
+          sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/dev_mgmt_daemon-${olt.ip}.log  # Remove escape sequences
           """
         }
       }
