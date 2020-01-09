@@ -292,6 +292,14 @@ pipeline {
         """
       }
     }
+
+    stage('After-Test Delay') {
+      steps {
+        sh returnStdout: false, script: """
+        [[ $GERRIT_EVENT_COMMENT_TEXT =~ "capture events\$" ]] && sleep 10m
+        """
+      }
+    }
   }
 
   post {
