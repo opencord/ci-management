@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a03d2f6a_25c5f7a1",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-01-09T00:03:13Z",
+      "side": 1,
+      "message": "Is this to make sure the tests are pushing their sadis config?",
+      "range": {
+        "startLine": 143,
+        "startChar": 123,
+        "endLine": 143,
+        "endChar": 137
+      },
+      "revId": "0088c219656d6b412aa6e3c351a7a39deac32224",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
