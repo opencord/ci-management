@@ -497,6 +497,8 @@
           trigger-on:
             - comment-added-contains-event:
                 comment-contains-value: '^hardware test$'
+            - comment-added-contains-event:
+                comment-contains-value: '^hardware test with delay$'
           projects:
             - project-compare-type: REG_EXP
               project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|voltha-onos)$'

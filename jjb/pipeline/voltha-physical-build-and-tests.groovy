@@ -292,6 +292,16 @@ pipeline {
         """
       }
     }
+
+    stage('After-Test Delay') {
+      steps {
+        sh returnStdout: false, script: """
+        # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+        REGEX="hardware test with delay\$" 
+        [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]] && sleep 10m || true
+        """
+      }
+    }
   }
 
   post {
