@@ -38,7 +38,7 @@ pipeline {
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="n"
     EXTRA_HELM_FLAGS="${params.extraHelmFlags}"
-    ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs -v teardown_device:False"
+    ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs"
   }
   stages {
 
@@ -102,20 +102,6 @@ pipeline {
              then
                # For testing multiple back-to-back runs
                # Doing some manual cleanup to work around known issues in BBSim and ONOS apps
-
-               OLT=\$( voltctl device list -f Type=openolt -q )
-               ONU=\$( voltctl device list -f Type=brcm_openomci_onu -q )
-
-               voltctl device disable \$OLT
-               wait_for_state_change OLT openolt DISABLED UNKNOWN REACHABLE
-               wait_for_state_change ONU brcm_openomci_onu ENABLED DISCOVERED UNREACHABLE
-
-               voltctl device disable \$ONU
-               wait_for_state_change ONU brcm_openomci_onu DISABLED UNKNOWN UNREACHABLE
-
-               voltctl device delete \$OLT
-
-               timeout 60 bash -c 'until voltctl device list -q | wc -l | grep -q 0; do echo "Waiting for all devices to be deleted"; voltctl device list; echo ""; sleep 5; done'
 
                helm delete --purge bbsim # VOL-2342
                helm delete --purge onos # VOL-2343, VOL-2363
