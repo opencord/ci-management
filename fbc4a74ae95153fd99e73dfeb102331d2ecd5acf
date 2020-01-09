@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a806234_97d81cfc",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-01-09T01:21:27Z",
+      "side": 1,
+      "message": "You can also specify default values in the job template, so that you don\u0027t need to add them to each job definition.  For example:\nhttps://github.com/opencord/ci-management/blob/master/jjb/voltha-e2e.yaml#L378",
+      "range": {
+        "startLine": 72,
+        "startChar": 0,
+        "endLine": 72,
+        "endChar": 25
+      },
+      "revId": "fbc4a74ae95153fd99e73dfeb102331d2ecd5acf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
