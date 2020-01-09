@@ -292,6 +292,15 @@ pipeline {
         """
       }
     }
+
+    stage('After-Test Delay') {
+      steps {
+        sh returnStdout: false, script: """
+        # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+        [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ "capture events\$" ]] && sleep 10m || true
+        """
+      }
+    }
   }
 
   post {
