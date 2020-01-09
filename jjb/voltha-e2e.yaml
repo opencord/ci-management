@@ -34,9 +34,9 @@
           build-node: 'qct-pod4-node2'
           default-image-tag: 'master'
           code-branch: 'master'
-          make-target: sanity-kind
-          onus: 1
-          pons: 1
+          make-target: sanity-multi-kind
+          onus: 2
+          pons: 2
           test-runs: 5
           time-trigger: "H H/3 * * *"
 
