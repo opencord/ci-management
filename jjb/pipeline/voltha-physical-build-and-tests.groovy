@@ -292,6 +292,14 @@ pipeline {
         """
       }
     }
+
+    stage('After-Test Delay') {
+      steps {
+        sh returnStdout: false, script: """
+        [ -z "${afterTestDelay}" ] || sleep "${afterTestDelay}s"
+        """
+      }
+    }
   }
 
   post {
