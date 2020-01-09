@@ -948,6 +948,11 @@
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
 
+      - bool:
+          name: released
+          default: '{released}'
+          description: "Pulls released version images when true"
+
       - string:
           name: branch
           default: '{branch}'

@@ -29,7 +29,7 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
-      # onlab pod1 OCP pod with olt/onu - testing BAL3.1 release voltha master build job
+      # onlab pod1 OCP pod with olt/onu - Manual testing BAL3.1 release voltha master build job
       - 'build_pod_manual':
           testvm: 'onf-build'
           config-pod: 'onlab-pod1'
@@ -69,6 +69,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          released: false
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
@@ -92,6 +93,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          released: false
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-bal31'
 
@@ -115,6 +117,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'release'
           branch: 'master'
+          released: true
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
@@ -138,6 +141,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          released: false
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
@@ -161,6 +165,7 @@
           config-pod: 'onf-demo-pod'
           release: 'release'
           branch: 'master'
+          released: true
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
@@ -184,6 +189,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          released: false
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-bal31'
 
