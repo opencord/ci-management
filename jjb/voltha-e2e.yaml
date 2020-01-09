@@ -30,6 +30,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs'
+          pipeline-script: 'voltha-go-multi-tests.groovy'
           build-node: 'qct-pod4-node2'
           default-image-tag: 'master'
           code-branch: 'master'
