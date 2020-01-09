@@ -64,12 +64,16 @@ pipeline {
     stage('Subscriber Validation and Ping Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
-        ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         ROBOT_FILE="Voltha_PODTests.robot"
       }
       steps {
         sh """
         mkdir -p $WORKSPACE/RobotLogs
+        if  ( ${released} ); then
+            export ROBOT_MISC_ARGS="--removekeywords wuks -i released -i sanity -e bbsim -e notready -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
+        else
+            export ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
+        fi
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }

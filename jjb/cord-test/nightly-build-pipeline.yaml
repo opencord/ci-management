@@ -948,6 +948,11 @@
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
 
+      - bool:
+          name: released
+          default: '{released}'
+          description: "Pulls tests that are tagged with released as identifier"
+
       - string:
           name: branch
           default: '{branch}'
