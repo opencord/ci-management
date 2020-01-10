@@ -232,3 +232,27 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
+
+      # Infosys pod with olt/onu - Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          testvm: 'infosys-test-pod'
+          config-pod: 'infosys-pod'
+          release: 'master'
+          branch: 'master'
+          released: false
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt_asfvolt16.deb'
+          configurePod: true
+          profile: 'Default'
+          time: '1'
+
+      # infosys test job - uses Default tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          testvm: 'infosys-test-pod'
+          config-pod: 'infosys-pod'
+          release: 'master'
+          branch: 'master'
+          released: false
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
