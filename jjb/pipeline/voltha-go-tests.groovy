@@ -81,9 +81,15 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
+           set +e
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
+           cd $WORKSPACE/kind-voltha/scripts
+           ./log-collector.sh > $WORKSPACE/log-collector.log &
            make -C $WORKSPACE/voltha-system-tests ${makeTarget}
+           sleep 20
+           pkill log-collector
+           timeout 10 ./log-combine.sh > $WORKSPACE/log-combine.log
            '''
       }
     }
@@ -99,24 +105,7 @@ pipeline {
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-         do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           fi
-         done
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-         do
-           if [[ \$pod == *"-api-"* ]]; then
-             kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-           fi
-         done
+         cp scripts/logger/combined/* $WORKSPACE/
          ## shut down voltha
          WAIT_ON_DOWN=y ./voltha down
          '''
@@ -129,7 +118,7 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
-         archiveArtifacts artifacts: '*.log'
+         archiveArtifacts artifacts: '*.log*'
 
     }
   }
