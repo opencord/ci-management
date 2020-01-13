@@ -287,8 +287,10 @@ pipeline {
         sh returnStdout: false, script: """
         cd voltha
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
-        git clone -b ${branch} ${cordRepoUrl}/voltha # VOL-2104 recommends we get rid of this
+        git clone -b ${branch} ${cordRepoUrl}/voltha # VOL-2194 recommends we get rid of this
         mkdir -p $WORKSPACE/RobotLogs
+        cd $WORKSPACE/kind-voltha/scripts
+        ./log-collector.sh > $WORKSPACE/log-collector.log &
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
@@ -309,31 +311,23 @@ pipeline {
     always {
       sh returnStdout: false, script: """
       set +e
-      cp kind-voltha/install-minimal.log $WORKSPACE/
+      cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
       kubectl get nodes -o wide
       kubectl get pods -o wide
       kubectl get pods -n voltha -o wide
-      ## get default pod logs
-      for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+
+      sleep 20
+      pkill log-collector || true
+      cd $WORKSPACE/kind-voltha/scripts/
+      timeout 10 ./log-combine.sh > $WORKSPACE/log-combine.log || true
+      cp ./logger/combined/* $WORKSPACE/
+      for LOGFILE in $WORKSPACE/*.0001
       do
-        if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-          kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-        else
-          kubectl logs \$pod> $WORKSPACE/\$pod.log;
-        fi
+        NEWNAME=\${LOGFILE%.0001}
+        mv \$LOGFILE \$NEWNAME
       done
-      ## get voltha pod logs
-      for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-      do
-        if [[ \$pod == *"-api-"* ]]; then
-          kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-        elif [[ \$pod == "bbsim-"* ]]; then
-          kubectl logs \$pod -n voltha -p > $WORKSPACE/\$pod.log;
-        else
-          kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-        fi
-      done
+
       ## collect events, the chart should be running by now
       kubectl get pods | grep -i voltha-kafka-dump | grep -i running
       if [[ \$? == 0 ]]; then
