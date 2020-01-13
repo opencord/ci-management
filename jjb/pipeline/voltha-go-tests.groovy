@@ -81,9 +81,12 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
+           set +e
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
-           make -C $WORKSPACE/voltha-system-tests ${makeTarget}
+           cd $WORKSPACE/kind-voltha/scripts/
+           ./log-collector.sh > $WORKSPACE/log-collector.log &
+           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
            '''
       }
     }
@@ -93,31 +96,47 @@ pipeline {
     always {
       sh '''
          set +e
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/
+         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+
+         sleep 20
+         pkill log-collector || true
+         cd $WORKSPACE/kind-voltha/scripts/
+         timeout 10 ./log-combine.sh > $WORKSPACE/log-combine.log || true
+         cp ./logger/combined/* $WORKSPACE/
+         for LOGFILE in $WORKSPACE/*.0001
          do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           fi
+           NEWNAME=\${LOGFILE%.0001}
+           mv \$LOGFILE \$NEWNAME
          done
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-         do
-           if [[ \$pod == *"-api-"* ]]; then
-             kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-           fi
-         done
+
+         ## Pull out errors from log files
+         extract_errors_go() {
+           echo
+           echo "*** BEGIN Errors in $1 logs ***"
+           grep '"level":"error"' $WORKSPACE/$1* | cut -d ' ' -f 2- | jq '.'
+           echo "***  END  Errors in $1 logs ***"
+           echo
+         }
+
+         extract_errors_python() {
+           echo
+           echo "*** BEGIN Errors in $1 logs ***"
+           grep 'ERROR' $WORKSPACE/$1*
+           echo "***  END  Errors in $1 logs ***"
+           echo
+         }
+
+         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
+         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
+         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
+         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+
          ## shut down voltha
+         cd $WORKSPACE/kind-voltha/
          WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
