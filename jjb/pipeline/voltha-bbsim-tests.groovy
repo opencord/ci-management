@@ -23,13 +23,28 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 90, unit: 'MINUTES')
+    timeout(time: 90, unit: 'MINUTES')
+  }
+  environment {
+    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
+    VOLTCONFIG="$HOME/.volt/config-minimal"
+    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    TYPE="minimal"
+    FANCY=0
+    WITH_SIM_ADAPTERS="n"
+    WITH_RADIUS="y"
+    WITH_BBSIM="y"
+    DEPLOY_K8S="y"
+    VOLTHA_LOG_LEVEL="DEBUG"
+    CONFIG_SADIS="n"
+    ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
   }
 
   stages {
 
     stage('Repo') {
       steps {
+        step([$class: 'WsCleanup'])
         checkout(changelog: false, \
           poll: false,
           scm: [$class: 'RepoScm', \
@@ -82,10 +97,6 @@ pipeline {
            if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
-             export TYPE=minimal
-             export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-             export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-             export PATH=$WORKSPACE/kind-voltha/bin:$PATH
              docker images | grep citest
              for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
            fi
@@ -140,7 +151,7 @@ pipeline {
 
            cd $WORKSPACE/kind-voltha/
            echo \$HELM_FLAG
-           EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=n FANCY=0 WITH_SIM_ADAPTERS=n ./voltha up
+           EXTRA_HELM_FLAGS=\$HELM_FLAG ./voltha up
            '''
       }
     }
@@ -148,11 +159,9 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
-           cd kind-voltha/
-           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=$WORKSPACE/kind-voltha/bin:$PATH
-           export ROBOT_MISC_ARGS="-v teardown_device:False"
+           mkdir -p $WORKSPACE/RobotLogs
+           cd $WORKSPACE/kind-voltha/scripts/
+           ./log-collector.sh > $WORKSPACE/log-collector.log &
            make -C $WORKSPACE/voltha/voltha-system-tests sanity-kind || true
            '''
       }
@@ -163,41 +172,26 @@ pipeline {
     always {
       sh '''
          set +e
-         # copy robot logs
-         if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.html ./RobotLogs || true
-         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.xml ./RobotLogs || true
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/
-         export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-         export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-         export PATH=$WORKSPACE/kind-voltha/bin:$PATH
+         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+
+         sleep 20
+         pkill log-collector || true
+         cd $WORKSPACE/kind-voltha/scripts/
+         timeout 10 ./log-combine.sh > $WORKSPACE/log-combine.log || true
+         cp ./logger/combined/* $WORKSPACE/
+         for LOGFILE in $WORKSPACE/*.0001
          do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           fi
+           NEWNAME=\${LOGFILE%.0001}
+           mv \$LOGFILE \$NEWNAME
          done
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-         do
-           if [[ \$pod == *"-api-"* ]]; then
-             kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-           fi
-         done
-         ## clean up node
-	 FANCY=0 WAIT_ON_DOWN=y ./voltha down
-	 cd $WORKSPACE/
-	 rm -rf kind-voltha/ voltha/ || true
+
+         ## shut down voltha
+         cd $WORKSPACE/kind-voltha/
+         WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,

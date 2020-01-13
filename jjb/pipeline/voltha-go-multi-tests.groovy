@@ -86,13 +86,11 @@ pipeline {
              kubectl -n voltha exec $(kubectl -n voltha get pods -lapp=etcd -o=name) -- sh -c "ETCDCTL_API=3 etcdctl del --prefix $1"
            }
 
-           wait_for_state_change() {
-             timeout 60 bash -c "until voltctl device list -f Type=$2,AdminState=$3,OperStatus=$4,ConnectStatus=$5 -q | wc -l | grep -q 1; do echo Waiting for $1 to change states; voltctl device list; echo; sleep 5; done"
-           }
-
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
-           cd kind-voltha
+           cd $WORKSPACE/kind-voltha/scripts/
+           ./log-collector.sh > $WORKSPACE/log-collector.log &
+           cd $WORKSPACE/kind-voltha
            for i in \$(seq 1 ${testRuns})
            do
              make -C $WORKSPACE/voltha-system-tests ${makeTarget}
@@ -109,6 +107,7 @@ pipeline {
                clear_etcd service/voltha/openolt
                clear_etcd service/voltha/devices
                sleep 30
+
                DEPLOY_K8S=no ./voltha up  # Will just re-deploy BBSim and ONOS
              fi
            done
@@ -121,30 +120,23 @@ pipeline {
     always {
       sh '''
          set +e
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/
+         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+
+         sleep 20
+         pkill log-collector || true
+         cd $WORKSPACE/kind-voltha/scripts/
+         timeout 10 ./log-combine.sh > $WORKSPACE/log-combine.log || true
+         cp ./logger/combined/* $WORKSPACE/
+         for LOGFILE in $WORKSPACE/*.0001
          do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           fi
+           NEWNAME=\${LOGFILE%.0001}
+           mv \$LOGFILE \$NEWNAME
          done
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-         do
-           if [[ \$pod == *"-api-"* ]]; then
-             kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-           fi
-         done
+
          ## shut down voltha
          WAIT_ON_DOWN=y ./voltha down
          '''
