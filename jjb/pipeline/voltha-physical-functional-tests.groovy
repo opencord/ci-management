@@ -57,7 +57,6 @@ pipeline {
         sh returnStdout: false, script: """
         cd voltha
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
-        git clone -b ${branch} ${cordRepoUrl}/voltha # NOTE do we need the voltha source code??
         """
       }
     }

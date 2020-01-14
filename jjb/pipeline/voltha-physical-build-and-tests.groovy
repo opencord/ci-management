@@ -287,7 +287,6 @@ pipeline {
         sh returnStdout: false, script: """
         cd voltha
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
-        git clone -b ${branch} ${cordRepoUrl}/voltha # VOL-2104 recommends we get rid of this
         mkdir -p $WORKSPACE/RobotLogs
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
