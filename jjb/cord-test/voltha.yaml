@@ -85,7 +85,7 @@
           oltDebVersion: 'openolt_asfvolt16.deb'
           configurePod: true
           profile: '1T4GEM-bal31'
-          time: '2'
+          time: '3'
 
       # flex pod1 test job - test job uses 1TCONT/4GEMs tech profile - using voltha branch
       - 'build_voltha_pod_test':
@@ -109,7 +109,7 @@
           configurePod: true
           released: true
           profile: 'Default'
-          time: '3'
+          time: '4'
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -157,7 +157,7 @@
           oltDebVersion: 'openolt_asfvolt16.deb'
           configurePod: true
           profile: 'Default'
-          time: '2'
+          time: '3'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -181,7 +181,7 @@
           oltDebVersion: 'openolt_asfvolt16.deb'
           configurePod: true
           profile: '1T4GEM-bal31'
-          time: '2'
+          time: '4'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
