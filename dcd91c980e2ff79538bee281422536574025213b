@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bbfe6db4_46a3fda7",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 8
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-01-14T18:45:11Z",
+      "side": 1,
+      "message": "Could we comment why we need to sleep here?",
+      "revId": "dcd91c980e2ff79538bee281422536574025213b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
