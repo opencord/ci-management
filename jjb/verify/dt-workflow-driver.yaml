@@ -1,28 +1,30 @@
 ---
-# verification jobs for 'dt-wrokflow-driver' repo
+# verification jobs for 'dt-workflow-driver' repo
 
 - project:
-    name: dt-wrokflow-driver
+    name: dt-workflow-driver
     project: '{name}'
 
     jobs:
-      - 'verify-dt-wrokflow-driver-jobs':
+      - 'verify-dt-workflow-driver-jobs':
           branch-regexp: '{all-branches-regexp}'
-      - 'publish-dt-wrokflow-driver-jobs'
+      - 'publish-dt-workflow-driver-jobs'
 
 - job-group:
-    name: 'verify-dt-wrokflow-driver-jobs'
+    name: 'verify-dt-workflow-driver-jobs'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject':
-          dependency-jobs: 'verify_dt-wrokflow-driver_licensed'
+          dependency-jobs: 'verify_dt-workflow-driver_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_dt-workflow-driver_tag-collision'
       - 'xos-unit-test':
-          dependency-jobs: 'verify_dt-wrokflow-driver_tag-collision'
+          dependency-jobs: 'verify_dt-workflow-driver_sonarqube'
       - 'xos-service-upgrade':
-          dependency-jobs: 'verify_dt-wrokflow-driver-unit-test'
+          dependency-jobs: 'verify_dt-workflow-driver-unit-test'
 
 - job-group:
-    name: 'publish-dt-wrokflow-driver-jobs'
+    name: 'publish-dt-workflow-driver-jobs'
     jobs:
       - 'docker-publish':
           maintainers: "carmelo@opennetworking.org, daniele@opennetworking.org"
