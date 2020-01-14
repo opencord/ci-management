@@ -1,0 +1,30 @@
+---
+# verification jobs for 'dt-wrokflow-driver' repo
+
+- project:
+    name: dt-wrokflow-driver
+    project: '{name}'
+
+    jobs:
+      - 'verify-dt-wrokflow-driver-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-dt-wrokflow-driver-jobs'
+
+- job-group:
+    name: 'verify-dt-wrokflow-driver-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_dt-wrokflow-driver_licensed'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_dt-wrokflow-driver_tag-collision'
+      - 'xos-service-upgrade':
+          dependency-jobs: 'verify_dt-wrokflow-driver-unit-test'
+
+- job-group:
+    name: 'publish-dt-wrokflow-driver-jobs'
+    jobs:
+      - 'docker-publish':
+          maintainers: "carmelo@opennetworking.org, daniele@opennetworking.org"
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'
