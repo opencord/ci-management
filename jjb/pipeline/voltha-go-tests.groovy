@@ -37,7 +37,7 @@ pipeline {
     DEPLOY_K8S="y"
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="n"
-    EXTRA_HELM_FLAGS="${params.extraHelmFlags}"
+    EXTRA_HELM_FLAGS="--set log_agent.enabled=False ${params.extraHelmFlags}"
     ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs"
   }
   stages {
@@ -73,6 +73,8 @@ pipeline {
       steps {
         sh """
            cd kind-voltha/
+           JUST_K8S=y ./voltha up
+           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
            ./voltha up
            """
       }
@@ -81,9 +83,10 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
+           set +e
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
-           make -C $WORKSPACE/voltha-system-tests ${makeTarget}
+           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
            '''
       }
     }
@@ -93,31 +96,37 @@ pipeline {
     always {
       sh '''
          set +e
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/
+         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-         do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           fi
-         done
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-         do
-           if [[ \$pod == *"-api-"* ]]; then
-             kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-           fi
-         done
+
+         sync
+         pkill kail || true
+
+         ## Pull out errors from log files
+         extract_errors_go() {
+           echo
+           echo "Error summary for $1:"
+           grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
+           echo
+         }
+
+         extract_errors_python() {
+           echo
+           echo "Error summary for $1:"
+           grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
+           echo
+         }
+
+         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
+         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
+         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
+         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+
          ## shut down voltha
+         cd $WORKSPACE/kind-voltha/
          WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
