@@ -194,7 +194,7 @@
 
       - string:
           name: manifestBranch
-          default: '$GERRIT_BRANCH'
+          default: 'master'
           description: 'Name of the repo branch to use'
 
       - string:
@@ -264,7 +264,7 @@
 
       - string:
           name: manifestBranch
-          default: '$GERRIT_BRANCH'
+          default: master
           description: 'Name of the repo branch to use'
 
       - string:
@@ -406,7 +406,7 @@
 
       - string:
           name: manifestBranch
-          default: '$GERRIT_BRANCH'
+          default: master
           description: 'Name of the repo branch to use'
 
       - string:
@@ -549,7 +549,7 @@
 
       - string:
           name: manifestBranch
-          default: 'master'
+          default: master
           description: 'Name of the repo branch to use (change to $GERRIT_BRANCH if testing a patchset)'
 
       - string:
