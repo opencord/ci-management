@@ -23,13 +23,28 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 90, unit: 'MINUTES')
+    timeout(time: 90, unit: 'MINUTES')
+  }
+  environment {
+    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
+    VOLTCONFIG="$HOME/.volt/config-minimal"
+    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    TYPE="minimal"
+    FANCY=0
+    WITH_SIM_ADAPTERS="n"
+    WITH_RADIUS="y"
+    WITH_BBSIM="y"
+    DEPLOY_K8S="y"
+    VOLTHA_LOG_LEVEL="DEBUG"
+    CONFIG_SADIS="n"
+    ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
   }
 
   stages {
 
     stage('Repo') {
       steps {
+        step([$class: 'WsCleanup'])
         checkout(changelog: false, \
           poll: false,
           scm: [$class: 'RepoScm', \
@@ -60,7 +75,8 @@ pipeline {
         sh """
            git clone https://github.com/ciena/kind-voltha.git
            cd kind-voltha/
-           DEPLOY_K8S=y JUST_K8S=y FANCY=0 ./voltha up
+           JUST_K8S=y ./voltha up
+           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
            """
       }
     }
@@ -82,10 +98,6 @@ pipeline {
            if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
-             export TYPE=minimal
-             export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-             export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-             export PATH=$WORKSPACE/kind-voltha/bin:$PATH
              docker images | grep citest
              for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
            fi
@@ -95,38 +107,31 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh '''
-           HELM_FLAG="${extraHelmFlags} "
+           export EXTRA_HELM_FLAGS="--set log_agent.enabled=False ${extraHelmFlags} "
 
+           IMAGES=""
            if [ "${gerritProject}" = "voltha-go" ]; then
-             HELM_FLAG+="--set images.rw_core.tag=citest,images.rw_core.pullPolicy=Never,images.ro_core.tag=citest,images.ro_core.pullPolicy=Never "
-           fi
-
-           if [ "${gerritProject}" = "voltha-onos" ]; then
-             HELM_FLAG+="--set images.onos.tag=citest,images.onos.pullPolicy=Never "
-           fi
-
-           if [ "${gerritProject}" = "ofagent-py" ]; then
-             HELM_FLAG+="--set images.ofagent.tag=citest,images.ofagent.pullPolicy=Never "
-           fi
-
-           if [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
-             HELM_FLAG+="--set images.adapter_open_olt.tag=citest,images.adapter_open_olt.pullPolicy=Never "
-           fi
-
-           if [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
-             HELM_FLAG+="--set images.adapter_open_onu.tag=citest,images.adapter_open_onu.pullPolicy=Never "
-           fi
-
-           if [ "${gerritProject}" = "bbsim" ]; then
-             HELM_FLAG+="--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never "
-           fi
-
-           if [ "${gerritProject}" = "voltha-api-server" ]; then
-             HELM_FLAG+="--set images.afrouter.tag=citest,images.afrouter.pullPolicy=Never,images.afrouterd.tag=citest,images.afrouterd.pullPolicy=Never "
+             IMAGES="rw_core ro_core "
+           elif [ "${gerritProject}" = "ofagent-py" ]; then
+             IMAGES="ofagent "
+           elif [ "${gerritProject}" = "voltha-onos" ]; then
+             IMAGES="onos "
+           elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
+             IMAGES="adapter_open_olt "
+           elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
+             IMAGES="adapter_open_onu "
+           elif [ "${gerritProject}" = "voltha-api-server" ]; then
+             IMAGES="afrouter afrouterd "
+           elif [ "${gerritProject}" = "bbsim" ]; then
+             IMAGES="bbsim "
            else
-             # afrouter only has master branch at present
-             HELM_FLAG+="--set images.afrouter.tag=master,images.afrouterd.tag=master "
+             echo "No images to push"
            fi
+
+           for I in \$IMAGES
+           do
+             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+           done
 
            if [ "${gerritProject}" = "voltha-helm-charts" ]; then
              export CHART_PATH=$WORKSPACE/voltha/voltha-helm-charts
@@ -139,8 +144,9 @@ pipeline {
            fi
 
            cd $WORKSPACE/kind-voltha/
-           echo \$HELM_FLAG
-           EXTRA_HELM_FLAGS=\$HELM_FLAG VOLTHA_LOG_LEVEL=DEBUG TYPE=minimal WITH_RADIUS=y WITH_BBSIM=y INSTALL_ONOS_APPS=y CONFIG_SADIS=n FANCY=0 WITH_SIM_ADAPTERS=n ./voltha up
+           echo \$EXTRA_HELM_FLAGS
+           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
+           ./voltha up
            '''
       }
     }
@@ -148,11 +154,7 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
-           cd kind-voltha/
-           export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-           export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-           export PATH=$WORKSPACE/kind-voltha/bin:$PATH
-           export ROBOT_MISC_ARGS="-v teardown_device:False"
+           mkdir -p $WORKSPACE/RobotLogs
            make -C $WORKSPACE/voltha/voltha-system-tests sanity-kind || true
            '''
       }
@@ -163,41 +165,38 @@ pipeline {
     always {
       sh '''
          set +e
-         # copy robot logs
-         if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.html ./RobotLogs || true
-         cp -r $WORKSPACE/voltha/voltha-system-tests/tests/*/*.xml ./RobotLogs || true
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/
-         export KUBECONFIG="$(./bin/kind get kubeconfig-path --name="voltha-minimal")"
-         export VOLTCONFIG="/home/jenkins/.volt/config-minimal"
-         export PATH=$WORKSPACE/kind-voltha/bin:$PATH
+         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-         do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           fi
-         done
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-         do
-           if [[ \$pod == *"-api-"* ]]; then
-             kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-           else
-             kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-           fi
-         done
-         ## clean up node
-	 FANCY=0 WAIT_ON_DOWN=y ./voltha down
-	 cd $WORKSPACE/
-	 rm -rf kind-voltha/ voltha/ || true
+
+         sync
+         pkill kail || true
+
+         ## Pull out errors from log files
+         extract_errors_go() {
+           echo
+           echo "Error summary for $1:"
+           grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
+           echo
+         }
+
+         extract_errors_python() {
+           echo
+           echo "Error summary for $1:"
+           grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
+           echo
+         }
+
+         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
+         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
+         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
+         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+
+         ## shut down kind-voltha
+         cd $WORKSPACE/kind-voltha
+	       WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,

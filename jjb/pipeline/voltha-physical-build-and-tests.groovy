@@ -153,7 +153,7 @@ pipeline {
         script {
           if ( params.withPatchset ) {
             sh returnStdout: false, script: """
-            export EXTRA_HELM_FLAGS='-f ${localKindVolthaValuesFile} '
+            export EXTRA_HELM_FLAGS='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
 
             IMAGES=""
             if [ "${gerritProject}" = "voltha-go" ]; then
@@ -179,13 +179,15 @@ pipeline {
 
             cd $WORKSPACE/kind-voltha/
             echo \$EXTRA_HELM_FLAGS
+            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
             ./voltha up
             """
           } else {
             sh returnStdout: false, script: """
-            export EXTRA_HELM_FLAGS='-f ${localKindVolthaValuesFile} '
+            export EXTRA_HELM_FLAGS='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
             cd $WORKSPACE/kind-voltha/
             echo \$EXTRA_HELM_FLAGS
+            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
             ./voltha up
             """
           }
@@ -295,6 +297,9 @@ pipeline {
     }
 
     stage('After-Test Delay') {
+      when {
+        expression { params.withPatchset }
+      }
       steps {
         sh returnStdout: false, script: """
         # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
@@ -307,39 +312,43 @@ pipeline {
 
   post {
     always {
-      sh returnStdout: false, script: """
+      sh returnStdout: false, script: '''
       set +e
       cp kind-voltha/install-minimal.log $WORKSPACE/
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
       kubectl get nodes -o wide
       kubectl get pods -o wide
       kubectl get pods -n voltha -o wide
-      ## get default pod logs
-      for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-      do
-        if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-          kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-        else
-          kubectl logs \$pod> $WORKSPACE/\$pod.log;
-        fi
-      done
-      ## get voltha pod logs
-      for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-      do
-        if [[ \$pod == *"-api-"* ]]; then
-          kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-        elif [[ \$pod == "bbsim-"* ]]; then
-          kubectl logs \$pod -n voltha -p > $WORKSPACE/\$pod.log;
-        else
-          kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-        fi
-      done
+
+      sync
+      pkill kail || true
+
+      ## Pull out errors from log files
+      extract_errors_go() {
+        echo
+        echo "Error summary for $1:"
+        grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
+        echo
+      }
+
+      extract_errors_python() {
+        echo
+        echo "Error summary for $1:"
+        grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
+        echo
+      }
+
+      extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
+      extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
+      extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
+      extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+
       ## collect events, the chart should be running by now
       kubectl get pods | grep -i voltha-kafka-dump | grep -i running
-      if [[ \$? == 0 ]]; then
+      if [[ $? == 0 ]]; then
          kubectl exec -it `kubectl get pods | grep -i voltha-kafka-dump | grep -i running | cut -f1 -d " "` ./voltha-dump-events.sh > $WORKSPACE/voltha-events.log
       fi
-      """
+      '''
       script {
         deployment_config.olts.each { olt ->
           sh returnStdout: false, script: """
