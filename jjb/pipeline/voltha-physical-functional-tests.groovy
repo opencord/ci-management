@@ -29,7 +29,7 @@ pipeline {
   environment {
     KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$WORKSPACE/kind-voltha/bin"
+    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$WORKSPACE/bin"
   }
 
   stages {
@@ -57,7 +57,8 @@ pipeline {
         sh returnStdout: false, script: """
         cd voltha
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
-        git clone -b ${branch} ${cordRepoUrl}/voltha # NOTE do we need the voltha source code??
+        mkdir -p $WORKSPACE/bin
+        bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         """
       }
     }
@@ -74,6 +75,7 @@ pipeline {
         else
             export ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         fi
+        kail -n voltha -n default --since=20m > $WORKSPACE/onos-voltha-combined.log &
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
@@ -82,30 +84,35 @@ pipeline {
 
   post {
     always {
-      sh returnStdout: false, script: """
+      sh returnStdout: false, script: '''
       set +e
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
       kubectl get nodes -o wide
       kubectl get pods -n voltha -o wide
-      ## get default pod logs
-      for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-      do
-        if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-          kubectl logs \$pod onos> $WORKSPACE/\$pod.log;
-        else
-          kubectl logs \$pod> $WORKSPACE/\$pod.log;
-        fi
-      done
-      ## get voltha pod logs
-      for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-      do
-        if [[ \$pod == *"-api-"* ]]; then
-          kubectl logs \$pod arouter -n voltha > $WORKSPACE/\$pod.log;
-        else
-          kubectl logs \$pod -n voltha > $WORKSPACE/\$pod.log;
-        fi
-      done
-      """
+
+      sync
+      pkill kail || true
+
+      ## Pull out errors from log files
+      extract_errors_go() {
+        echo
+        echo "Error summary for $1:"
+        grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
+        echo
+      }
+
+      extract_errors_python() {
+        echo
+        echo "Error summary for $1:"
+        grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
+        echo
+      }
+
+      extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
+      extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
+      extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
+      extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+      '''
       script {
         deployment_config.olts.each { olt ->
           sh returnStdout: false, script: """
