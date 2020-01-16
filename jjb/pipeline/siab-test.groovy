@@ -47,6 +47,17 @@ pipeline {
       }
     }
 
+    // FIXME: remove once Zack completes cord-tester refactoring, as master is
+    //  currently broken for siab tests.
+    stage('Cord-tester fix') {
+      steps {
+        sh """
+           pushd $WORKSPACE/cord/test/cord-tester
+           git checkout -b foo 7b3f901659a22c09e4759e343ad693b80125e06b
+           popd
+           """
+      }
+    }
 
     stage ('Reset Kubeadm') {
       steps {
