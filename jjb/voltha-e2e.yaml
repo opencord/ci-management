@@ -164,7 +164,7 @@
 - job-template:
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test'
-    extra-helm-flags: '--set defaults.image_tag=$GERRIT_BRANCH'
+    extra-helm-flags: ''
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
