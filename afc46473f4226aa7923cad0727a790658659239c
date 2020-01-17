@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8a95ca30_e4a08191",
+        "filename": "jjb/pipeline/siab-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-01-17T00:08:40Z",
+      "side": 1,
+      "message": "Is specifying a branch needed?",
+      "range": {
+        "startLine": 56,
+        "startChar": 24,
+        "endLine": 56,
+        "endChar": 30
+      },
+      "revId": "afc46473f4226aa7923cad0727a790658659239c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
