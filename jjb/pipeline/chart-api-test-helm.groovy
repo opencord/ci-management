@@ -73,6 +73,7 @@ pipeline {
            helm init
            sleep 60
            helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
+           helm repo add cord https://charts.opencord.org
            '''
       }
     }
