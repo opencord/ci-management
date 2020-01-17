@@ -127,7 +127,7 @@ pipeline {
 
          ## shut down voltha
          cd $WORKSPACE/kind-voltha/
-         WAIT_ON_DOWN=y ./voltha down
+         WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
