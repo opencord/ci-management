@@ -22,6 +22,30 @@
       "revId": "afc46473f4226aa7923cad0727a790658659239c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7aa85c7a_4a2339a7",
+        "filename": "jjb/pipeline/siab-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2020-01-17T00:12:04Z",
+      "side": 1,
+      "message": "It is not needed, but desirable to reduce console output. Otherwise, it prints ~20 lines warning saying \"You are in \u0027detached HEAD\u0027 state...\"",
+      "parentUuid": "8a95ca30_e4a08191",
+      "range": {
+        "startLine": 56,
+        "startChar": 24,
+        "endLine": 56,
+        "endChar": 30
+      },
+      "revId": "afc46473f4226aa7923cad0727a790658659239c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
