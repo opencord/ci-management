@@ -99,15 +99,8 @@ pipeline {
              if [[ \$i -lt ${testRuns} ]]
              then
                # For testing multiple back-to-back runs
-               # Doing some manual cleanup to work around known issues in BBSim and ONOS apps
-
-               helm delete --purge bbsim # VOL-2342
-               helm delete --purge onos # VOL-2343, VOL-2363
-               clear_etcd service/voltha/resource_manager
-               clear_etcd service/voltha/openolt
-               clear_etcd service/voltha/devices
-               sleep 30
-               DEPLOY_K8S=no ./voltha up  # Will just re-deploy BBSim and ONOS
+               # Work around a known issue in BBSim
+               kubectl -n voltha delete pod -lapp=bbsim
              fi
            done
            '''
