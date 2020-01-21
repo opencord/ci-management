@@ -21,7 +21,7 @@
       sh """
          set +e
          cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/${prefix}_instsall-minimal.log
+         cp install-full.log $WORKSPACE/${prefix}_instsall-full.log
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
@@ -60,10 +60,10 @@ pipeline {
       timeout(time: 80, unit: 'MINUTES')
   }
   environment {
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
-    VOLTCONFIG="$HOME/.volt/config-minimal"
+    KUBECONFIG="$HOME/.kube/kind-config-voltha-full"
+    VOLTCONFIG="$HOME/.volt/config-full"
     PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$WORKSPACE/kind-voltha/bin"
-    TYPE="minimal"
+    TYPE="full"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
     WITH_RADIUS="y"
@@ -169,8 +169,7 @@ pipeline {
     aborted {
         logKubernetes('last')
     }
-    always {
-
+    cleanup {
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
             logFileName: 'RobotLogs/*log*.html',
