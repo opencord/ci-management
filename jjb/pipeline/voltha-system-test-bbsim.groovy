@@ -169,8 +169,7 @@ pipeline {
     aborted {
         logKubernetes('last')
     }
-    always {
-
+    cleanup {
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
             logFileName: 'RobotLogs/*log*.html',
