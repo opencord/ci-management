@@ -18,14 +18,14 @@
           time-trigger: "H H/3 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-sanity-test-single-onu'
+          name: 'periodic-voltha-functional-test
           build-node: 'qct-pod4-node2'
           default-image-tag: 'master'
           code-branch: 'master'
-          make-target: sanity-kind
+          make-target: functional-single-kind
           onus: 1
           pons: 1
-          time-trigger: "H H/3 * * *"
+          time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-system-test'
