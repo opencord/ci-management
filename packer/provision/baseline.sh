@@ -112,7 +112,8 @@ EOF
     # group with dnf based systems (F21+) will fail the install if such
     # a group does not exist
     yum install -y unzip xz puppet git git-review perl-XML-XPath
-    yum install -y python-{devel,virtualenv,setuptools,pip}
+    yum install -y python-{devel,virtualenv}
+    yum install -y python3-{devel,setuptools,pip}
 
     # All of our systems require Java (because of Jenkins)
     # Install all versions of the OpenJDK devel but force 1.7.0 to be the
@@ -161,16 +162,16 @@ EOF
     # Used by lftools scripts to parse XML
     yum install -y xmlstarlet
 
-    # Haskel Packages
-    # Cabal update fails on a 1G system so workaround that with a swap file
-    dd if=/dev/zero of=/tmp/swap bs=1M count=1024
-    mkswap /tmp/swap
-    swapon /tmp/swap
-
-    yum install -y cabal-install
-    cabal update
-    cabal install "Cabal<1.18"  # Pull Cabal version that is capable of building shellcheck
-    cabal install --bindir=/usr/local/bin "shellcheck-0.4.6"  # Pin shellcheck version
+     # Install Shellcheck from archive
+     SHELLCHECK_VERSION="v0.6.0"
+     SHELLCHECK_SHA256SUM="95c7d6e8320d285a9f026b5241f48f1c02d225a1b08908660e8b84e58e9c7dce"
+     curl -L -o /tmp/shellcheck.tar.xz https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz
+     echo "$SHELLCHECK_SHA256SUM  /tmp/shellcheck.tar.xz" | sha256sum -c -
+     pushd /tmp
+     tar -xJvf shellcheck.tar.xz
+     cp shellcheck-${SHELLCHECK_VERSION}/shellcheck /usr/local/bin/shellcheck
+     chmod a+x /usr/local/bin/shellcheck
+     popd
 
     # --- END LFTOOLS DEPS
     ######################
