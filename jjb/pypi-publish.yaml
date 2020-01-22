@@ -31,7 +31,9 @@
           git-url: '$GIT_URL/$GERRIT_PROJECT'
           refspec: ''
           branch: '$GERRIT_BRANCH'
+          submodule-disable: '{submodule-disable}'
           submodule-recursive: 'false'
+          submodule-timeout: '{submodule-timeout}'
           choosing-strategy: 'gerrit'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
