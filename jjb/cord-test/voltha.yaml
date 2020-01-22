@@ -224,7 +224,7 @@
           configurePod: true
           profile: 'Default'
 
-      # ONF DEMO OCP test job - voltha-master branch 
+      # ONF DEMO OCP test job - voltha-master branch
       - 'build_pod_test':
           testvm: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
