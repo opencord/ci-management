@@ -3,12 +3,12 @@
 .PHONY: test clean
 
 VENV_DIR      ?= venv-jjb
-JJB_VERSION   ?= 2.0.5
+JJB_VERSION   ?= 3.2.0
 JOBCONFIG_DIR ?= job-configs
 
 $(VENV_DIR):
 	@echo "Setting up virtualenv for JJB testing"
-	virtualenv $@
+	virtualenv -p python3 $@
 	$@/bin/pip install jenkins-job-builder==$(JJB_VERSION) pipdeptree
 
 $(JOBCONFIG_DIR):

@@ -7,6 +7,10 @@
     # lftools
     lftools-version: '~=0.26.2'
 
+    # LF templates require these to be set in later versions of global-jjb
+    submodule-disable: 'false'
+    submodule-timeout: 10
+
     # name of the SSH key to use in most cases
     jenkins-ssh-credential: 'cord-jenkins-ssh'
     gerrit-ssh-credential: 'gerrit-jenkins-user'
