@@ -83,11 +83,6 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
-
-           clear_etcd() {
-             kubectl -n voltha exec $(kubectl -n voltha get pods -lapp=etcd -o=name) -- sh -c "ETCDCTL_API=3 etcdctl del --prefix $1"
-           }
-
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
            cd kind-voltha
@@ -96,12 +91,6 @@ pipeline {
              make -C $WORKSPACE/voltha-system-tests ${makeTarget}
              echo "Completed run: \$i"
              echo ""
-             if [[ \$i -lt ${testRuns} ]]
-             then
-               # For testing multiple back-to-back runs
-               # Work around a known issue in BBSim
-               kubectl -n voltha delete pod -lapp=bbsim
-             fi
            done
            '''
       }
