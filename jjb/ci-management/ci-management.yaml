@@ -18,5 +18,5 @@
     project: 'ci-management'
     project-name: 'ci-management'
 
-    jjb-version: 2.0.5
+    jjb-version: 3.2.0
     packer-version: 1.2.4
