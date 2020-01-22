@@ -17,37 +17,37 @@
 // uses bbsim to simulate OLT/ONUs
 
 
-  def logKubernetes(prefix) {
-      sh """
-         set +e
-         cd kind-voltha/
-         cp install-minimal.log $WORKSPACE/${prefix}_instsall-minimal.log
-         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
-         kubectl get nodes -o wide
-         kubectl get pods -o wide
-         kubectl get pods -n voltha -o wide
-         ## get default pod logs
-         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-         do
-           if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-             kubectl logs \$pod onos> $WORKSPACE/${prefix}_\$pod.log;
-           else
-             kubectl logs \$pod> $WORKSPACE/${prefix}_\$pod.log;
-           fi
-         done
-         ## get voltha pod logs
-         for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-         do
-           if [[ \$pod == *"-api-"* ]]; then
-             kubectl logs \$pod arouter -n voltha > $WORKSPACE/${prefix}_\$pod.log;
-           elif [[ \$pod == "bbsim-"* ]]; then
-             kubectl logs \$pod -n voltha -p > $WORKSPACE/${prefix}_\$pod.log;
-           else
-             kubectl logs \$pod -n voltha > $WORKSPACE/${prefix}_\$pod.log;
-           fi
-         done
-         """
-  }
+def logKubernetes(prefix) {
+    sh """
+        set +e
+        cd kind-voltha/
+        cp install-minimal.log $WORKSPACE/${prefix}_instsall-minimal.log
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+        kubectl get nodes -o wide
+        kubectl get pods -o wide
+        kubectl get pods -n voltha -o wide
+        ## get default pod logs
+        for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+    do
+        if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
+            kubectl logs \$pod onos> $WORKSPACE/${prefix}_\$pod.log;
+        else
+            kubectl logs \$pod> $WORKSPACE/${prefix}_\$pod.log;
+    fi
+        done
+        ## get voltha pod logs
+        for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
+    do
+        if [[ \$pod == *"-api-"* ]]; then
+            kubectl logs \$pod arouter -n voltha > $WORKSPACE/${prefix}_\$pod.log;
+    elif [[ \$pod == "bbsim-"* ]]; then
+        kubectl logs \$pod -n voltha -p > $WORKSPACE/${prefix}_\$pod.log;
+        else
+            kubectl logs \$pod -n voltha > $WORKSPACE/${prefix}_\$pod.log;
+    fi
+        done
+        """
+}
 
 
 pipeline {
@@ -169,7 +169,7 @@ pipeline {
     aborted {
         logKubernetes('last')
     }
-    always {
+    cleanup {
 
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
