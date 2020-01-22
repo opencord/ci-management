@@ -59,6 +59,7 @@ pipeline {
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+        kail -n voltha -n default --since=20m > $WORKSPACE/onos-voltha-combined.log &
         """
       }
     }
@@ -66,16 +67,34 @@ pipeline {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
         ROBOT_FILE="Voltha_PODTests.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/SanityTest"
       }
       steps {
         sh """
-        mkdir -p $WORKSPACE/RobotLogs
+        mkdir -p $ROBOT_LOGS_DIR
         if  ( ${released} ); then
-            export ROBOT_MISC_ARGS="--removekeywords wuks -i released -i sanity -e bbsim -e notready -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
+            export ROBOT_MISC_ARGS="--removekeywords wuks -i released -i sanity -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         else
-            export ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $WORKSPACE/RobotLogs -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
+            export ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         fi
-        kail -n voltha -n default --since=20m > $WORKSPACE/onos-voltha-combined.log &
+        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        """
+      }
+    }
+
+    stage('Error Scenario Tests') {
+      when {
+        expression { ! params.released }
+      }
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
+        ROBOT_FILE="Voltha_ErrorScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ErrorScenarios"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -d $ROBOT_LOGS_DIR -T -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
@@ -123,12 +142,12 @@ pipeline {
       }
       step([$class: 'RobotPublisher',
         disableArchiveOutput: false,
-        logFileName: 'RobotLogs/log*.html',
+        logFileName: '**/log.html',
         otherFiles: '',
-        outputFileName: 'RobotLogs/output*.xml',
-        outputPath: '.',
+        outputFileName: '**/output.xml',
+        outputPath: 'RobotLogs',
         passThreshold: 100,
-        reportFileName: 'RobotLogs/report*.html',
+        reportFileName: '**/report.html',
         unstableThreshold: 0
         ]);
       archiveArtifacts artifacts: '*.log'
