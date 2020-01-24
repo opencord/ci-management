@@ -99,7 +99,6 @@ pipeline {
         """
       }
     }
-  }
 
     stage('Failure/Recovery Tests') {
       when {
