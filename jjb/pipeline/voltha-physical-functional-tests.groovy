@@ -101,6 +101,24 @@ pipeline {
     }
   }
 
+    stage('Failure/Recovery Tests') {
+      when {
+        expression { ! params.released }
+      }
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
+        ROBOT_FILE="Voltha_FailureScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureScenarios"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
+        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        """
+      }
+    }
+  }
   post {
     always {
       sh returnStdout: false, script: '''
