@@ -271,6 +271,7 @@
           released: true
           profile: 'Default'
           time: '9'
+          withKind: true
 
       # Berlin POD test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
