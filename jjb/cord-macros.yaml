@@ -133,7 +133,7 @@
           cancel-builds-on-update: true
           auto-close-on-fail: false
           only-trigger-phrase: false
-          status-context: 'CORD Jenkins'  # Name of testing system in PR
+          status-context: '{status_context}'  # Name of testing system in PR
           permit-all: false  # don't trigger on every PR
           org-list: '{obj:github_pr_org_list}'
           allow-whitelist-orgs-as-admins: true
@@ -179,4 +179,3 @@
           files:
             - file-id: known_hosts
               target: '$HOME/.ssh/known_hosts'
-
