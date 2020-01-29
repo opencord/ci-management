@@ -46,6 +46,30 @@
       "revId": "32a76043bae20aac3b5f8d82aaec4be9c01f0b9e",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11906cfc_2424f42a",
+        "filename": "jjb/verify/kafka-topic-exporter.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-01-29T20:17:09Z",
+      "side": 1,
+      "message": "Either way works.  If there is no valid `test` target, changing this to be just `docker-build` would be fine.",
+      "parentUuid": "0c15ffb3_76ffebfe",
+      "range": {
+        "startLine": 21,
+        "startChar": 9,
+        "endLine": 21,
+        "endChar": 35
+      },
+      "revId": "32a76043bae20aac3b5f8d82aaec4be9c01f0b9e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
