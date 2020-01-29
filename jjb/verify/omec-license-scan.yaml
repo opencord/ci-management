@@ -1,0 +1,82 @@
+---
+# verification jobs for 'omec-license scan'
+
+- job-type-plate:
+    name: omec-projects-scan
+    omec-project:
+        - openmme
+        - c3po
+        - ngic-rtc
+        - il_trafficgen
+        - upf-epc
+        - freediameter
+
+- project:
+    name: omec-license-scan
+    project: '{name}'
+
+    <<: *omec-projects-scan
+
+    jobs:
+      - 'verify-omec-{omec-project}-fossa-scan'
+      - 'verify-omec-{omec-project}-reuse-scan'
+
+- job-template:
+    id: 'verify-omec-openmme-fossa-scan'
+    name: 'verify-omec-openmme-fossa-scan'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/verify/omec-license-scan.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: 'jjb/pipeline/omec-fossa-scan.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/opencord/ci-management'
+            branches:
+              - 'master'
+
+- job-template:
+    id: 'verify-omec-openmme-reuse-scan'
+    name: 'verify-omec-openmme-reuse-scan'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/verify/omec-license-scan.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: 'jjb/pipeline/omec-reuse-scan.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/opencord/ci-management'
+            branches:
+              - 'master'
