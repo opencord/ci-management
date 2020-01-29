@@ -87,6 +87,7 @@ pipeline {
            sleep 60
            helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
            helm repo add cord https://charts.opencord.org
+           helm repo update
            '''
       }
     }
@@ -96,9 +97,6 @@ pipeline {
           script {
           if (serviceName == "olt-service") {
             serviceName = "volt"
-          }
-          else if (serviceName == "onos-service") {
-            serviceName = "onos"
           }
           else if (serviceName == "kubernetes-service") {
             serviceName = "kubernetes"
