@@ -22,6 +22,30 @@
       "revId": "32a76043bae20aac3b5f8d82aaec4be9c01f0b9e",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0c15ffb3_76ffebfe",
+        "filename": "jjb/verify/kafka-topic-exporter.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000461
+      },
+      "writtenOn": "2020-01-29T19:30:25Z",
+      "side": 1,
+      "message": "The current test target of kafka-topic-exporter Makefile calls already docker-build target (no unit tests are available). Should I modify the kafka-topic-exporter removing the docker-build target and leave here `test docker-build`?",
+      "parentUuid": "94ede57d_4be610f5",
+      "range": {
+        "startLine": 21,
+        "startChar": 9,
+        "endLine": 21,
+        "endChar": 35
+      },
+      "revId": "32a76043bae20aac3b5f8d82aaec4be9c01f0b9e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
