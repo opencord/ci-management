@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d367b94d_e622e5e2",
+        "filename": "jjb/pipeline/omec-fossa-scan.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-01-30T23:40:29Z",
+      "side": 1,
+      "message": "Generally you shouldn\u0027t use a shell command to checkout code - if you use the Groovy `checkout` syntax it will show the list of changes in the UI.   \n\nThe syntax for this is here: https://jenkins.io/doc/pipeline/steps/workflow-scm-step/\n\nExample: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/pipeline/docker-publish.groovy#l26",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 13
+      },
+      "revId": "cdc4a85e8f38a1b67ac80a772d5a48e0cedc890f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
