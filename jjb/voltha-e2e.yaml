@@ -241,7 +241,6 @@
                   Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
                   Created by Andy Bavier, andy@opennetworking.org <br />
                   Copyright (c) 2019 Open Networking Foundation (ONF)
-    project-type: pipeline
     sandbox: true
     pipeline-script: 'voltha-physical-build-and-tests.groovy'
 
@@ -383,7 +382,6 @@
                   Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
                   Created by Andy Bavier, andy@opennetworking.org <br />
                   Copyright (c) 2019 Open Networking Foundation (ONF)
-    project-type: pipeline
     sandbox: true
     pipeline-script: 'voltha-physical-build-and-tests.groovy'
 
@@ -526,7 +524,6 @@
                   Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
                   Created by Andy Bavier, andy@opennetworking.org <br />
                   Copyright (c) 2019 Open Networking Foundation (ONF)
-    project-type: pipeline
     sandbox: true
     pipeline-script: 'voltha-physical-build-and-tests.groovy'
 
