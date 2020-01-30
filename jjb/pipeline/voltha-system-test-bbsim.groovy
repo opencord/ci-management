@@ -98,7 +98,7 @@ pipeline {
         sh '''
            rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
-           make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_result.html -o sanity_result.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
+           make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_report.html -o sanity_output.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
            '''
       }
     }
@@ -108,22 +108,11 @@ pipeline {
         logKubernetes('sanity_test')
       }
     }
-    //Remove this stage once https://jira.opencord.org/browse/VOL-1977 be resolved
-    stage('Deploy Voltha Again for Functional Tests') {
-      steps {
-        sh """
-           pushd kind-voltha/
-           WAIT_ON_DOWN=yes  DEPLOY_K8S=no ./voltha down
-           DEPLOY_K8S=no ./voltha up
-           popd
-           """
-      }
-    }
 
     stage('Kubernetes Functional Tests') {
       steps {
         sh '''
-           make ROBOT_DEBUG_LOG_OPT="-l functional_log.html -r functional_result.html -o functional_output.xml" -C $WORKSPACE/voltha-system-tests system-scale-test
+           make ROBOT_DEBUG_LOG_OPT="-l functional_log.html -r functional_report.html -o functional_output.xml" -C $WORKSPACE/voltha-system-tests system-scale-test
            '''
       }
     }
@@ -134,22 +123,10 @@ pipeline {
       }
     }
 
-    //Remove this stage once https://jira.opencord.org/browse/VOL-1977 be resolved
-    stage('Deploy Voltha Again for Failure Scenario Tests') {
-      steps {
-        sh """
-           pushd kind-voltha/
-           WAIT_ON_DOWN=yes  DEPLOY_K8S=no ./voltha down
-           DEPLOY_K8S=no ./voltha up
-           popd
-           """
-      }
-    }
-
     stage('Kubernetes Failure Scenario Tests') {
       steps {
         sh '''
-           make ROBOT_DEBUG_LOG_OPT="-l failure_log.html -r failure_result.html -o failure_output.xml"  -C $WORKSPACE/voltha-system-tests failure-test
+           make ROBOT_DEBUG_LOG_OPT="-l failure_log.html -r failure_report.html -o failure_output.xml"  -C $WORKSPACE/voltha-system-tests failure-test
            '''
       }
     }
