@@ -17,39 +17,6 @@
 // uses bbsim to simulate OLT/ONUs
 
 
-def logKubernetes(prefix) {
-    sh """
-        set +e
-        cd kind-voltha/
-        cp install-minimal.log $WORKSPACE/${prefix}_instsall-minimal.log
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
-        kubectl get nodes -o wide
-        kubectl get pods -o wide
-        kubectl get pods -n voltha -o wide
-        ## get default pod logs
-        for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-    do
-        if [[ \$pod == *"onos"* && \$pod != *"onos-service"* ]]; then
-            kubectl logs \$pod onos> $WORKSPACE/${prefix}_\$pod.log;
-        else
-            kubectl logs \$pod> $WORKSPACE/${prefix}_\$pod.log;
-    fi
-        done
-        ## get voltha pod logs
-        for pod in \$(kubectl get pods --no-headers -n voltha | awk '{print \$1}');
-    do
-        if [[ \$pod == *"-api-"* ]]; then
-            kubectl logs \$pod arouter -n voltha > $WORKSPACE/${prefix}_\$pod.log;
-    elif [[ \$pod == "bbsim-"* ]]; then
-        kubectl logs \$pod -n voltha -p > $WORKSPACE/${prefix}_\$pod.log;
-        else
-            kubectl logs \$pod -n voltha > $WORKSPACE/${prefix}_\$pod.log;
-    fi
-        done
-        """
-}
-
-
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -60,10 +27,10 @@ pipeline {
       timeout(time: 80, unit: 'MINUTES')
   }
   environment {
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
-    VOLTCONFIG="$HOME/.volt/config-minimal"
+    KUBECONFIG="$HOME/.kube/kind-config-voltha-full"
+    VOLTCONFIG="$HOME/.volt/config-full"
     PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$WORKSPACE/kind-voltha/bin"
-    TYPE="minimal"
+    TYPE="full"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
     WITH_RADIUS="y"
@@ -74,20 +41,15 @@ pipeline {
     EXTRA_HELM_FLAGS="${params.extraHelmFlags} --set voltha-etcd-cluster.clusterSize=3"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
   }
+
   stages {
-    stage('Download kind-voltha') {
+    stage('Create K8s Cluster') {
       steps {
         sh """
            git clone https://github.com/ciena/kind-voltha.git
-           """
-      }
-    }
-
-    stage('Deploy Voltha') {
-      steps {
-        sh """
            pushd kind-voltha/
            ./voltha up
+           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
            popd
            """
       }
@@ -98,79 +60,67 @@ pipeline {
         sh '''
            rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
-           make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_result.html -o sanity_result.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
+           make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_report.html -o sanity_output.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
            '''
-      }
-    }
-
-    stage('Log the kubernetes for sanity-test') {
-      steps {
-        logKubernetes('sanity_test')
-      }
-    }
-    //Remove this stage once https://jira.opencord.org/browse/VOL-1977 be resolved
-    stage('Deploy Voltha Again for Functional Tests') {
-      steps {
-        sh """
-           pushd kind-voltha/
-           WAIT_ON_DOWN=yes  DEPLOY_K8S=no ./voltha down
-           DEPLOY_K8S=no ./voltha up
-           popd
-           """
       }
     }
 
     stage('Kubernetes Functional Tests') {
       steps {
         sh '''
-           make ROBOT_DEBUG_LOG_OPT="-l functional_log.html -r functional_result.html -o functional_output.xml" -C $WORKSPACE/voltha-system-tests system-scale-test
+           make ROBOT_DEBUG_LOG_OPT="-l functional_log.html -r functional_report.html -o functional_output.xml" -C $WORKSPACE/voltha-system-tests system-scale-test
            '''
-      }
-    }
-
-    stage('Log the kubernetes for functional-test') {
-      steps {
-        logKubernetes('functional')
-      }
-    }
-
-    //Remove this stage once https://jira.opencord.org/browse/VOL-1977 be resolved
-    stage('Deploy Voltha Again for Failure Scenario Tests') {
-      steps {
-        sh """
-           pushd kind-voltha/
-           WAIT_ON_DOWN=yes  DEPLOY_K8S=no ./voltha down
-           DEPLOY_K8S=no ./voltha up
-           popd
-           """
       }
     }
 
     stage('Kubernetes Failure Scenario Tests') {
       steps {
         sh '''
-           make ROBOT_DEBUG_LOG_OPT="-l failure_log.html -r failure_result.html -o failure_output.xml"  -C $WORKSPACE/voltha-system-tests failure-test
+           make ROBOT_DEBUG_LOG_OPT="-l failure_log.html -r failure_report.html -o failure_output.xml"  -C $WORKSPACE/voltha-system-tests failure-test
            '''
-      }
-    }
-
-    stage('Log the kubernetes for failure scenario test') {
-      steps {
-        logKubernetes('failure')
       }
     }
 
   }
 
   post {
-    failure {
-        logKubernetes('last')
-    }
-    aborted {
-        logKubernetes('last')
-    }
-    cleanup {
+    always {
+      sh '''
+         set +e
+         cp $WORKSPACE/kind-voltha/install-full.log $WORKSPACE/
+         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+         kubectl get nodes -o wide
+         kubectl get pods -o wide
+         kubectl get pods -n voltha -o wide
 
+         sync
+         pkill kail || true
+
+         ## Pull out errors from log files
+         extract_errors_go() {
+           echo
+           echo "Error summary for $1:"
+           grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
+           echo
+         }
+
+         extract_errors_python() {
+           echo
+           echo "Error summary for $1:"
+           grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
+           echo
+         }
+
+         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
+         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
+         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
+         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+
+         ## shut down kind-voltha
+         cd $WORKSPACE/kind-voltha
+	       WAIT_ON_DOWN=y ./voltha down
+
+         '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
             logFileName: 'RobotLogs/*log*.html',
