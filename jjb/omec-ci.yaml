@@ -36,9 +36,11 @@
           sub-project: '{name}'
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
       - 'omec-fossa':
-          pipeline-file: 'jjb/pipeline/omec-fossa-scan.groovy'
+          pipeline-file: 'omec-fossa-scan.groovy'
+          build-node: 'omec-qa'
       - 'omec-reuse':
-          pipeline-file: 'jjb/pipeline/omec-reuse-scan.groovy'
+          pipeline-file: 'omec-reuse-scan.groovy'
+          build-node: 'omec-qa'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -66,9 +68,11 @@
           sub-project: 'c3po-hss'
           pipeline-file: 'Jenkinsfile-omec-install-c3po-hss-vnf.groovy'
       - 'omec-fossa':
-          pipeline-file: 'jjb/pipeline/omec-fossa-scan.groovy'
+          pipeline-file: 'omec-fossa-scan.groovy'
+          build-node: 'omec-qa'
       - 'omec-reuse':
-          pipeline-file: 'jjb/pipeline/omec-reuse-scan.groovy'
+          pipeline-file: 'omec-reuse-scan.groovy'
+          build-node: 'omec-qa'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -93,9 +97,11 @@
           sub-project: '{name}'
           pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
       - 'omec-fossa':
-          pipeline-file: 'jjb/pipeline/omec-fossa-scan.groovy'
+          pipeline-file: 'omec-fossa-scan.groovy'
+          build-node: 'omec-qa'
       - 'omec-reuse':
-          pipeline-file: 'jjb/pipeline/omec-reuse-scan.groovy'
+          pipeline-file: 'omec-reuse-scan.groovy'
+          build-node: 'omec-qa'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -238,13 +244,8 @@
 
     concurrent: false
 
-    pipeline-scm:
-      script-path: '{pipeline-file}'
-      scm:
-        - git:
-            url: 'https://github.com/{github-organization}/ci-management'
-            branches:
-              - 'master'
+    project-type: pipeline
+    dsl: !include-raw-escape: pipeline/{pipeline-file}
 
 # REUSE License Scan
 - job-template:
@@ -283,17 +284,12 @@
       - cord-infra-github-pr-trigger:
           github_pr_org_list: '{obj:github_pr_org_list}'
           github_pr_auth_id: '{github_pr_auth_id}'
-          status_context: 'CORD Jenkins - REUSE Verification'
+          status_context: 'CORD Jenkins - Licenses Verification'
 
     concurrent: false
 
-    pipeline-scm:
-      script-path: '{pipeline-file}'
-      scm:
-        - git:
-            url: 'https://github.com/{github-organization}/ci-management'
-            branches:
-              - 'master'
+    project-type: pipeline
+    dsl: !include-raw-escape: pipeline/{pipeline-file}
 
 # tests
 - job-template:
