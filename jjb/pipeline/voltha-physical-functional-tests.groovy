@@ -82,14 +82,14 @@ pipeline {
       }
     }
 
-    stage('Error Scenario Tests') {
+    stage('Failure/Recovery Tests') {
       when {
         expression { ! params.released }
       }
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
-        ROBOT_FILE="Voltha_ErrorScenarios.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ErrorScenarios"
+        ROBOT_FILE="Voltha_FailureScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureScenarios"
       }
       steps {
         sh """
@@ -100,14 +100,14 @@ pipeline {
       }
     }
 
-    stage('Failure/Recovery Tests') {
+    stage('Error Scenario Tests') {
       when {
         expression { ! params.released }
       }
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
-        ROBOT_FILE="Voltha_FailureScenarios.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureScenarios"
+        ROBOT_FILE="Voltha_ErrorScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ErrorScenarios"
       }
       steps {
         sh """
