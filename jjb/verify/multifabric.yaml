@@ -1,0 +1,30 @@
+---
+# verification jobs for 'multifabric' repo
+
+- project:
+    name: multifabric
+    project: '{name}'
+
+    jobs:
+      - 'verify-multifabric-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-multifabric-jobs'
+
+- job-group:
+    name: 'verify-multifabric-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          unit-test-targets: 'test docker-build'
+          junit-allow-empty-results: true
+      - 'xos-service-upgrade':
+          dependency-jobs: 'verify_multifabric_unit-test'
+
+- job-group:
+    name: 'publish-multifabric-jobs'
+    jobs:
+      - 'docker-publish':
+          maintainers: "hyunsun@opennetworking.org"
+          docker-repo: 'opencord'
+          dependency-jobs: 'version-tag'
