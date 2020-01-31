@@ -22,6 +22,7 @@
     project: '{name}'
 
     build-node: 'intel-102'
+    build-node-qa: 'omec-qa'
 
     github-organization: 'omec-project'
 
@@ -49,6 +50,7 @@
     project: '{name}'
 
     build-node: 'intel-102'
+    build-node-qa: 'omec-qa'
 
     github-organization: 'omec-project'
 
@@ -79,6 +81,7 @@
     project: '{name}'
 
     build-node: 'intel-102'
+    build-node-qa: 'omec-qa'
 
     github-organization: 'omec-project'
 
@@ -222,7 +225,7 @@
     parameters:
       - string:
           name: buildNode
-          default: '{build-node}'
+          default: '{build-node-qa}'
           description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
@@ -242,7 +245,7 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-            url: 'https://github.com/{github-organization}/ci-management'
+            url: 'https://github.com/opencord/ci-management'
             branches:
               - 'master'
 
@@ -271,7 +274,7 @@
     parameters:
       - string:
           name: buildNode
-          default: '{build-node}'
+          default: '{build-node-qa}'
           description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
@@ -283,7 +286,7 @@
       - cord-infra-github-pr-trigger:
           github_pr_org_list: '{obj:github_pr_org_list}'
           github_pr_auth_id: '{github_pr_auth_id}'
-          status_context: 'CORD Jenkins - REUSE Verification'
+          status_context: 'CORD Jenkins - Licenses Verification'
 
     concurrent: false
 
@@ -291,7 +294,7 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-            url: 'https://github.com/{github-organization}/ci-management'
+            url: 'https://github.com/opencord/ci-management'
             branches:
               - 'master'
 
