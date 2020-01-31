@@ -35,6 +35,10 @@
       - 'omec-install':
           sub-project: '{name}'
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
+      - 'omec-fossa':
+          pipeline-file: 'jjb/pipeline/omec-fossa-scan.groovy'
+      - 'omec-reuse':
+          pipeline-file: 'jjb/pipeline/omec-reuse-scan.groovy'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -61,6 +65,10 @@
       - 'omec-install':
           sub-project: 'c3po-hss'
           pipeline-file: 'Jenkinsfile-omec-install-c3po-hss-vnf.groovy'
+      - 'omec-fossa':
+          pipeline-file: 'jjb/pipeline/omec-fossa-scan.groovy'
+      - 'omec-reuse':
+          pipeline-file: 'jjb/pipeline/omec-reuse-scan.groovy'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -84,6 +92,10 @@
       - 'omec-install':
           sub-project: '{name}'
           pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
+      - 'omec-fossa':
+          pipeline-file: 'jjb/pipeline/omec-fossa-scan.groovy'
+      - 'omec-reuse':
+          pipeline-file: 'jjb/pipeline/omec-reuse-scan.groovy'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -129,6 +141,7 @@
       - cord-infra-github-pr-trigger:
           github_pr_org_list: '{obj:github_pr_org_list}'
           github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - Combined Steps Verification'
 
     concurrent: false
 
@@ -181,6 +194,104 @@
       scm:
         - git:
             url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
+
+# FOSSA License Scan
+- job-template:
+    id: 'omec-fossa'
+    name: 'omec_{project}_fossa'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - FOSSA Verification'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: '{pipeline-file}'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/ci-management'
+            branches:
+              - 'master'
+
+# REUSE License Scan
+- job-template:
+    id: 'omec-reuse'
+    name: 'omec_{project}_reuse'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - REUSE Verification'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: '{pipeline-file}'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/ci-management'
             branches:
               - 'master'
 
@@ -254,4 +365,3 @@
             url: 'https://github.com/omec-project/omec-project-ci'
             branches:
               - 'master'
-
