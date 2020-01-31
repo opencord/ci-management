@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c74b8810_51abe645",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-01-31T22:44:26Z",
+      "side": 1,
+      "message": "This variable is defined in the defaults.yaml, so I\u0027d rather not use another variable for it.  Eventually the FOSSA and REUSE jobs may be made more universal thus we\u0027d want to use the same variable name.",
+      "range": {
+        "startLine": 84,
+        "startChar": 2,
+        "endLine": 84,
+        "endChar": 28
+      },
+      "revId": "307e4ab65b15217d55524a68b9b4ad9cf2dc3e8b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89dbfdc6_282fea12",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-01-31T22:44:26Z",
+      "side": 1,
+      "message": "Set `build-node` as an argument to both of these jobs, and it should override the config set above. \n\nYou can check this by running `make test`, then looking in job-configs/\u003cjobname\u003e/config.xml for the name of the build node.\n\nSee also below on which paths to specify for `pipeline-file`",
+      "range": {
+        "startLine": 98,
+        "startChar": 0,
+        "endLine": 101,
+        "endChar": 62
+      },
+      "revId": "307e4ab65b15217d55524a68b9b4ad9cf2dc3e8b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "09f226c0_ff04d106",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-01-31T22:44:26Z",
+      "side": 1,
+      "message": "As this is in ci-management, you can use `pipeline`, not `pipeline-scm`, which makes the job simpler: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/api-test.yaml#l60\n\nThe path specified to `pipeline-file` would become simpler.\n\nAlso, Gerrit is the official source for `ci-management`, and GitHub is just a mirror.",
+      "range": {
+        "startLine": 244,
+        "startChar": 0,
+        "endLine": 250,
+        "endChar": 24
+      },
+      "revId": "307e4ab65b15217d55524a68b9b4ad9cf2dc3e8b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
