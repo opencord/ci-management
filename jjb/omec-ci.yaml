@@ -242,7 +242,7 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-            url: 'https://github.com/{github-organization}/ci-management'
+            url: 'https://github.com/opencord/ci-management'
             branches:
               - 'master'
 
@@ -283,7 +283,7 @@
       - cord-infra-github-pr-trigger:
           github_pr_org_list: '{obj:github_pr_org_list}'
           github_pr_auth_id: '{github_pr_auth_id}'
-          status_context: 'CORD Jenkins - REUSE Verification'
+          status_context: 'CORD Jenkins - Licenses Verification'
 
     concurrent: false
 
@@ -291,7 +291,7 @@
       script-path: '{pipeline-file}'
       scm:
         - git:
-            url: 'https://github.com/{github-organization}/ci-management'
+            url: 'https://github.com/opencord/ci-management'
             branches:
               - 'master'
 
