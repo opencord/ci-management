@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ad27e52e_6cbd4727",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 879,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-03T16:30:31Z",
+      "side": 1,
+      "message": "Remove EOL whitespace",
+      "range": {
+        "startLine": 879,
+        "startChar": 0,
+        "endLine": 879,
+        "endChar": 4
+      },
+      "revId": "1a863097e4544c54236f220b4866682aa5540b42",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
