@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "84444baa_db4c5ca7",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 882,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-03T16:39:30Z",
+      "side": 1,
+      "message": "Change to lowercase `false` - this is \"Truthy\" -  this will be flagged the next time someone runs `make lint` on the repo (yamllint).",
+      "range": {
+        "startLine": 882,
+        "startChar": 19,
+        "endLine": 882,
+        "endChar": 24
+      },
+      "revId": "be4c0ad6d24679b99b5c70ef479ce8c6e9eb90b2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
