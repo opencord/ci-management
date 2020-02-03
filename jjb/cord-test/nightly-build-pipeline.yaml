@@ -876,6 +876,11 @@
           name: reinstallOlt
           default: true
           description: "Re-install olt software bringing up CORD"
+    
+      - bool:
+          name: withKind
+          default: False
+          description: "The pods uses kind and a physical fabric thus port forward to the management is needed"
 
     concurrent: true
 
