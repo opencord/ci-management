@@ -43,13 +43,24 @@ pipeline {
   }
 
   stages {
-    stage('Create K8s Cluster') {
+    stage('Create Kubernetes Cluster') {
       steps {
         sh """
            git clone https://github.com/ciena/kind-voltha.git
            pushd kind-voltha/
-           ./voltha up
+           JUST_K8S=y ./voltha up
            bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
+           popd
+           """
+      }
+    }
+
+    stage('Deploy Voltha') {
+      steps {
+        sh """
+           pushd kind-voltha/
+           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
+           ./voltha up
            popd
            """
       }
