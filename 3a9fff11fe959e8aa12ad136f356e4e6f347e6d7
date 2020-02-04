@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4a602d52_02b59135",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-04T21:30:17Z",
+      "side": 1,
+      "message": "the",
+      "range": {
+        "startLine": 163,
+        "startChar": 16,
+        "endLine": 163,
+        "endChar": 20
+      },
+      "revId": "3a9fff11fe959e8aa12ad136f356e4e6f347e6d7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
