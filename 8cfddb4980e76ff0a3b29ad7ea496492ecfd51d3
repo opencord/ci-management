@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae4c5a97_c2b4bacc",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-04T19:18:06Z",
+      "side": 1,
+      "message": "Could you structure this as an `if [[]] then; \u003cstuff\u003e fi` so it\u0027s more obvious what\u0027s going on, and provide some explanation of the make targets?",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 161,
+        "endChar": 101
+      },
+      "revId": "8cfddb4980e76ff0a3b29ad7ea496492ecfd51d3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
