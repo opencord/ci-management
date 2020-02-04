@@ -155,7 +155,11 @@ pipeline {
       steps {
         sh '''
            mkdir -p $WORKSPACE/RobotLogs
-           make -C $WORKSPACE/voltha/voltha-system-tests sanity-kind || true
+           export MAKETARGET=sanity-kind
+           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+           REGEX="^functional tests\$"
+           [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]] && MAKETARGET=functional-single-kind || true
+           make -C $WORKSPACE/voltha/voltha-system-tests \$MAKETARGET || true
            '''
       }
     }
