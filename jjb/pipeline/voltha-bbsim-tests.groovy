@@ -155,7 +155,20 @@ pipeline {
       steps {
         sh '''
            mkdir -p $WORKSPACE/RobotLogs
-           make -C $WORKSPACE/voltha/voltha-system-tests sanity-kind || true
+
+           # By default, all tests tagged 'sanity' are run.  This covers basic functionality
+           # like running through the ATT workflow for a single subscriber.
+           export TEST_TAGS=sanity
+
+           # If the Gerrit comment contains a line with "functional tests" then run the full
+           # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
+           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+           REGEX="^functional tests\$"
+           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+             TEST_TAGS=sanityORfunctional
+           fi
+
+           make -C $WORKSPACE/voltha/voltha-system-tests single-kind || true
            '''
       }
     }
