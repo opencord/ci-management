@@ -59,7 +59,6 @@ pipeline {
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
-        kail -n voltha -n default --since=20m > $WORKSPACE/onos-voltha-combined.log &
         """
       }
     }
@@ -71,6 +70,7 @@ pipeline {
       }
       steps {
         sh """
+        kail -n voltha -n default --since=20m > $WORKSPACE/Functional_onos-voltha-combined.log &
         mkdir -p $ROBOT_LOGS_DIR
         if  ( ${released} ); then
             export ROBOT_MISC_ARGS="--removekeywords wuks -i released -i sanity -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
@@ -78,6 +78,8 @@ pipeline {
             export ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         fi
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        sync
+        pkill kail || true
         """
       }
     }
@@ -93,9 +95,12 @@ pipeline {
       }
       steps {
         sh """
+        kail -n voltha -n default > $WORKSPACE/FailureScenarios_onos-voltha-combined.log &
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        sync
+        pkill kail || true
         """
       }
     }
@@ -111,9 +116,12 @@ pipeline {
       }
       steps {
         sh """
+        kail -n voltha -n default > $WORKSPACE/ErrorScenarios_onos-voltha-combined.log &
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir}"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        sync
+        pkill kail || true
         """
       }
     }
@@ -133,14 +141,14 @@ pipeline {
       extract_errors_go() {
         echo
         echo "Error summary for $1:"
-        grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
+        grep $1 $WORKSPACE/*onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
         echo
       }
 
       extract_errors_python() {
         echo
         echo "Error summary for $1:"
-        grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
+        grep $1 $WORKSPACE/*onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
         echo
       }
 
