@@ -1,0 +1,117 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff71b392_4853502e",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T21:30:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f0fd38bc_b05a4d54",
+      "range": {
+        "startLine": 10,
+        "startChar": 3,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "f2e486a9078a1c410613f7cfb699c106848e0cc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1747ac9a_4291b325",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T21:30:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e81c394e_948b3fa6",
+      "revId": "f2e486a9078a1c410613f7cfb699c106848e0cc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "788322f5_34430dba",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T21:30:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4b17e426_dd73380c",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 5
+      },
+      "revId": "f2e486a9078a1c410613f7cfb699c106848e0cc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "f6fd82a3_b0a1c170",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T21:30:13Z",
+      "side": 1,
+      "message": "Hung-Wei discovered that `cleanup` is better than `always`:  https://gerrit.opencord.org/c/17133/",
+      "range": {
+        "startLine": 38,
+        "startChar": 3,
+        "endLine": 38,
+        "endChar": 12
+      },
+      "revId": "f2e486a9078a1c410613f7cfb699c106848e0cc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07576650_dd31ffd9",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T21:30:13Z",
+      "side": 1,
+      "message": "You can put the actual {pipeline-script} variable in the description to avoid having to update it manually.",
+      "parentUuid": "c55bc980_00106786",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 39
+      },
+      "revId": "f2e486a9078a1c410613f7cfb699c106848e0cc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
