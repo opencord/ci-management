@@ -862,6 +862,11 @@
           default: 'you@opennetworking.org, suchitra@opennetworking.org'
           description: ''
 
+      - string:
+          name: onosVersion
+          default: '1.13.9'
+          description: 'ONOS version that needs to be installed'
+
       - bool:
           name: released
           default: '{released}'

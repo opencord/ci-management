@@ -55,6 +55,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          onosVersion: '2.2'
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
@@ -175,6 +176,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          onosVersion: '1.13.10'
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
@@ -199,6 +201,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          onosVersion: '1.13.10'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16.deb'
