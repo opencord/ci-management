@@ -91,6 +91,30 @@
     },
     {
       "key": {
+        "uuid": "4d89876a_810d273e",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-05T21:37:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f6fd82a3_b0a1c170",
+      "range": {
+        "startLine": 38,
+        "startChar": 3,
+        "endLine": 38,
+        "endChar": 12
+      },
+      "revId": "f2e486a9078a1c410613f7cfb699c106848e0cc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "07576650_dd31ffd9",
         "filename": "jjb/voltha-scale.yaml",
         "patchSetId": 2
@@ -103,6 +127,30 @@
       "side": 1,
       "message": "You can put the actual {pipeline-script} variable in the description to avoid having to update it manually.",
       "parentUuid": "c55bc980_00106786",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 39
+      },
+      "revId": "f2e486a9078a1c410613f7cfb699c106848e0cc6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bdc62f06_7b5b7728",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-05T21:37:51Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "07576650_dd31ffd9",
       "range": {
         "startLine": 20,
         "startChar": 0,
