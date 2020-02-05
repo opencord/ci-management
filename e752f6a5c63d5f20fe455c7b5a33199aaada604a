@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "52b671a5_68934a4d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T20:21:40Z",
+      "side": 1,
+      "message": "skeleton",
+      "range": {
+        "startLine": 7,
+        "startChar": 6,
+        "endLine": 7,
+        "endChar": 16
+      },
+      "revId": "e752f6a5c63d5f20fe455c7b5a33199aaada604a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f0fd38bc_b05a4d54",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T20:21:40Z",
+      "side": 1,
+      "message": "You\u0027d want to checkout the repo before doing anything, probably in a separate stage named \"checkout\" or something.  It\u0027s best to use groovy syntax so that changes are listed in the Jenkins UI between runs.\n\nExample with repo: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/pipeline/voltha-go-tests.groovy;#l45\n\nExample with single repo using plain git (may need different params as link is to a post-submit job): https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/pipeline/docker-publish.groovy#l26",
+      "range": {
+        "startLine": 10,
+        "startChar": 3,
+        "endLine": 10,
+        "endChar": 20
+      },
+      "revId": "e752f6a5c63d5f20fe455c7b5a33199aaada604a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e81c394e_948b3fa6",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T20:21:40Z",
+      "side": 1,
+      "message": "Might want the bash boilerplate `set -euo pipefail` here so the script exits quickly on error.",
+      "revId": "e752f6a5c63d5f20fe455c7b5a33199aaada604a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b17e426_dd73380c",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T20:21:40Z",
+      "side": 1,
+      "message": "After you\u0027d want to collect results or log artifacts with a `post{}` step.  See the other groovy files for examples.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 5
+      },
+      "revId": "e752f6a5c63d5f20fe455c7b5a33199aaada604a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c55bc980_00106786",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T20:21:40Z",
+      "side": 1,
+      "message": "Convention is to mention the {pipeline-script} name in the description so it\u0027s easier to identify the components that go into a job.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 39
+      },
+      "revId": "e752f6a5c63d5f20fe455c7b5a33199aaada604a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
