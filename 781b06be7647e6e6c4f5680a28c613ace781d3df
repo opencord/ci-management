@@ -1,0 +1,113 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8c42a703_8e887dc3",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T23:30:02Z",
+      "side": 1,
+      "message": "{onos-version}",
+      "range": {
+        "startLine": 867,
+        "startChar": 20,
+        "endLine": 867,
+        "endChar": 26
+      },
+      "revId": "781b06be7647e6e6c4f5680a28c613ace781d3df",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b152476_569169b7",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T23:30:02Z",
+      "side": 1,
+      "message": "could set `onos-version: \u00271.13.9\u0027` here under `project:` to be the default for all items in `jobs:` listed below, except where overridden.",
+      "revId": "781b06be7647e6e6c4f5680a28c613ace781d3df",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "021aae60_8b25ff29",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T23:30:02Z",
+      "side": 1,
+      "message": "onos-version",
+      "range": {
+        "startLine": 58,
+        "startChar": 10,
+        "endLine": 58,
+        "endChar": 21
+      },
+      "revId": "781b06be7647e6e6c4f5680a28c613ace781d3df",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6b18327_1f31f720",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T23:30:02Z",
+      "side": 1,
+      "message": "onos-version",
+      "range": {
+        "startLine": 179,
+        "startChar": 10,
+        "endLine": 179,
+        "endChar": 21
+      },
+      "revId": "781b06be7647e6e6c4f5680a28c613ace781d3df",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e67ecf28_cfa5d0e4",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 204,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-05T23:30:02Z",
+      "side": 1,
+      "message": "onos-version",
+      "range": {
+        "startLine": 204,
+        "startChar": 10,
+        "endLine": 204,
+        "endChar": 21
+      },
+      "revId": "781b06be7647e6e6c4f5680a28c613ace781d3df",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
