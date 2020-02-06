@@ -130,6 +130,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          onos-version: '1.13.10'
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
