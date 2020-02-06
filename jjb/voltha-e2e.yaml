@@ -121,7 +121,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons}'
+          default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons},use_ofagent_go=True,images.ofagent.repository=voltha/ofagent-go,images.ofagent.tag=master'
           description: 'Helm flags to pass to ./voltha up'
 
       - string:
