@@ -45,6 +45,30 @@
       "revId": "9c88885f1e79f355689033f77571c3280b1beea9",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "94a1e764_3d0250b4",
+        "filename": "jjb/pipeline/voltha-system-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-02-06T19:31:09Z",
+      "side": 1,
+      "message": "Yes, I create a new stage for called \"log collector\" to make it clear.",
+      "parentUuid": "0ec7728e_29aa9a80",
+      "range": {
+        "startLine": 62,
+        "startChar": 11,
+        "endLine": 62,
+        "endChar": 76
+      },
+      "revId": "9c88885f1e79f355689033f77571c3280b1beea9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
