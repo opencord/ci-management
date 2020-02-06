@@ -290,6 +290,17 @@ pipeline {
         cd voltha
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/RobotLogs
+
+        if ( ${withPatchset} ); then
+          # If the Gerrit comment contains a line with "functional tests" then run the full
+          # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
+          # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+          REGEX="functional tests"
+          if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+            ROBOT_MISC_ARGS += "-i functional"
+          fi
+        fi
+
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
