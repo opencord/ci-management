@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8b5adf0b_be2d756c",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-06T19:29:13Z",
+      "side": 1,
+      "message": "This will pull in the history of kind-voltha - is that desired, or would changes in another repo\u0027s history be more helpful to track as this job runs?",
+      "range": {
+        "startLine": 11,
+        "startChar": 27,
+        "endLine": 17,
+        "endChar": 92
+      },
+      "revId": "1ebd532945f3365643e9213db3c00e061afae4e8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
