@@ -125,6 +125,8 @@ pipeline {
          extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
          extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
 
+         gzip $WORKSPACE/onos-voltha-combined.log
+
          ## shut down voltha
          cd $WORKSPACE/kind-voltha/
          WAIT_ON_DOWN=y ./voltha down
@@ -138,7 +140,7 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
-         archiveArtifacts artifacts: '*.log'
+         archiveArtifacts artifacts: '*.log,*.gz'
 
     }
   }

@@ -347,6 +347,8 @@ pipeline {
       extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
       extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
 
+      gzip $WORKSPACE/onos-voltha-combined.log
+
       ## collect events, the chart should be running by now
       kubectl get pods | grep -i voltha-kafka-dump | grep -i running
       if [[ $? == 0 ]]; then
@@ -372,7 +374,7 @@ pipeline {
         passThreshold: 80,
         reportFileName: 'RobotLogs/report*.html',
         unstableThreshold: 0]);
-      archiveArtifacts artifacts: '*.log'
+      archiveArtifacts artifacts: '*.log,*.gz'
     }
   }
 }

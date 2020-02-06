@@ -156,6 +156,9 @@ pipeline {
       extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
       extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
       extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+
+      gzip $WORKSPACE/*onos-voltha-combined.log
+
       '''
       script {
         deployment_config.olts.each { olt ->
@@ -175,7 +178,7 @@ pipeline {
         reportFileName: '**/report*.html',
         unstableThreshold: 0
         ]);
-      archiveArtifacts artifacts: '*.log'
+      archiveArtifacts artifacts: '*.log,*.gz'
     }
     unstable {
       step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
