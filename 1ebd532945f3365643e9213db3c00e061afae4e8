@@ -22,6 +22,30 @@
       "revId": "1ebd532945f3365643e9213db3c00e061afae4e8",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a9472e3a_f880f759",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-06T20:20:04Z",
+      "side": 1,
+      "message": "This test will run on master of every component, is there a good way to track that?\n\nIt\u0027s a similar situation to the physical nightly test",
+      "parentUuid": "8b5adf0b_be2d756c",
+      "range": {
+        "startLine": 11,
+        "startChar": 27,
+        "endLine": 17,
+        "endChar": 92
+      },
+      "revId": "1ebd532945f3365643e9213db3c00e061afae4e8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
