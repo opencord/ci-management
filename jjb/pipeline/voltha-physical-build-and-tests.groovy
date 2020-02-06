@@ -15,12 +15,18 @@
 // deploy VOLTHA built from patchset on a physical pod and run e2e test
 // uses kind-voltha to deploy voltha-2.X
 
-node {
-    // Need this so that deployment_config has global scope when it's read later
-    deployment_config = null
-    localDeploymentConfigFile = null
-    localKindVolthaValuesFile = null
-    localSadisConfigFile = null
+// Need this so that deployment_config has global scope when it's read later
+deployment_config = null
+localDeploymentConfigFile = null
+localKindVolthaValuesFile = null
+localSadisConfigFile = null
+
+// The pipeline assumes these variables are always defined
+if ( ! params.withPatchset ) {
+  GERRIT_EVENT_COMMENT_TEXT = ""
+  GERRIT_PROJECT = ""
+  GERRIT_CHANGE_NUMBER = ""
+  GERRIT_PATCHSET_NUMBER = ""
 }
 
 pipeline {
@@ -151,46 +157,36 @@ pipeline {
       }
       steps {
         script {
-          if ( params.withPatchset ) {
-            sh returnStdout: false, script: """
-            export EXTRA_HELM_FLAGS='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
+          sh returnStdout: false, script: """
+          export EXTRA_HELM_FLAGS='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
 
-            IMAGES=""
-            if [ "${gerritProject}" = "voltha-go" ]; then
-                IMAGES="rw_core ro_core "
-            elif [ "${gerritProject}" = "ofagent-py" ]; then
-                IMAGES="ofagent "
-            elif [ "${gerritProject}" = "voltha-onos" ]; then
-                IMAGES="onos "
-            elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
-                IMAGES="adapter_open_olt "
-            elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
-                IMAGES="adapter_open_onu "
-            elif [ "${gerritProject}" = "voltha-api-server" ]; then
-                IMAGES="afrouter afrouterd "
-            else
-                echo "No images to push"
-            fi
+          IMAGES=""
+          if [ "${gerritProject}" = "voltha-go" ]; then
+              IMAGES="rw_core ro_core "
+          elif [ "${gerritProject}" = "ofagent-py" ]; then
+              IMAGES="ofagent "
+          elif [ "${gerritProject}" = "voltha-onos" ]; then
+              IMAGES="onos "
+          elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
+              IMAGES="adapter_open_olt "
+          elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
+              IMAGES="adapter_open_onu "
+          elif [ "${gerritProject}" = "voltha-api-server" ]; then
+              IMAGES="afrouter afrouterd "
+          else
+              echo "No images to push"
+          fi
 
-            for I in \$IMAGES
-            do
-                EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
-            done
+          for I in \$IMAGES
+          do
+              EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+          done
 
-            cd $WORKSPACE/kind-voltha/
-            echo \$EXTRA_HELM_FLAGS
-            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
-            ./voltha up
-            """
-          } else {
-            sh returnStdout: false, script: """
-            export EXTRA_HELM_FLAGS='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
-            cd $WORKSPACE/kind-voltha/
-            echo \$EXTRA_HELM_FLAGS
-            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
-            ./voltha up
-            """
-          }
+          cd $WORKSPACE/kind-voltha/
+          echo \$EXTRA_HELM_FLAGS
+          kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
+          ./voltha up
+          """
         }
       }
     }
@@ -290,6 +286,15 @@ pipeline {
         cd voltha
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/RobotLogs
+
+        # If the Gerrit comment contains a line with "functional tests" then run the full
+        # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
+        # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+        REGEX="functional tests"
+        if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+          ROBOT_MISC_ARGS += "-i functional"
+        fi
+
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
