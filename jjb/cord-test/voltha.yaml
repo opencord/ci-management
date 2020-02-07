@@ -272,12 +272,12 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
           configurePod: true
           released: true
           profile: 'Default'
-          time: '9'
           withKind: true
+          time: '9'
 
       # Berlin POD test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
