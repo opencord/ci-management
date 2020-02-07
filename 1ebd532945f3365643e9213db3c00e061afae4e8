@@ -46,6 +46,30 @@
       "revId": "1ebd532945f3365643e9213db3c00e061afae4e8",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2b87e186_4ca600d8",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-07T00:20:38Z",
+      "side": 1,
+      "message": "Andy would be the one to ask about that.  You\u0027d probably be checking out the code with `repo` then?",
+      "parentUuid": "a9472e3a_f880f759",
+      "range": {
+        "startLine": 11,
+        "startChar": 27,
+        "endLine": 17,
+        "endChar": 92
+      },
+      "revId": "1ebd532945f3365643e9213db3c00e061afae4e8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
