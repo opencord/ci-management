@@ -884,7 +884,7 @@
 
       - bool:
           name: withKind
-          default: false
+          default: '{with-kind}'
           description: "The pods uses kind and a physical fabric thus port forward to the management is needed"
 
     concurrent: true
