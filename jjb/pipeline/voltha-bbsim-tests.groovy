@@ -37,7 +37,7 @@ pipeline {
     DEPLOY_K8S="y"
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="n"
-    ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
+    ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False -v container_log_dir:$WORKSPACE"
   }
 
   stages {
