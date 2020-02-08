@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "09e57795_1f16a82c",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-08T04:25:26Z",
+      "side": 1,
+      "message": "this is not needed in this step as we\u0027re not connecting to ONOS",
+      "range": {
+        "startLine": 62,
+        "startChar": 10,
+        "endLine": 62,
+        "endChar": 30
+      },
+      "revId": "00ff5c409b6c1d05560d774bb5431df85181c83b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
