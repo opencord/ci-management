@@ -865,7 +865,7 @@
       - string:
           name: onosVersion
           default: '{onos-version}'
-          description: 'ONOS version that needs to be installed'
+          description: 'ONOS version that needs to be configured'
 
       - bool:
           name: released
@@ -988,4 +988,3 @@
       - reverse:
           jobs: 'build_{config-pod}_{profile}_voltha_{release}'
           result: 'success'
-
