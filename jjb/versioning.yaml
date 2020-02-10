@@ -29,7 +29,7 @@
 
 - job-template:
     id: tag-collision-reject
-    name: "verify_{project}_tag-collision"
+    name: "verify_{project}_tag-collision{name-extension}"
     description: |
       Created by {id} job-template from ci-management/jjb/versioning.yaml
       Checks for changes to version files, and that they don't duplicate tags
@@ -121,4 +121,3 @@
           properties-content:
             SEMVER_STRICT={semver-strict}
       - shell: !include-raw-escape: shell/versiontag.sh
-
