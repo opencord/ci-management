@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2d15d87_dd722da2",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-10T23:57:06Z",
+      "side": 1,
+      "message": "Are we only publishing on branches?   Are no releases happening on master?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 52
+      },
+      "revId": "27260f4bb812459e600c1a95efd953bd3e9fd08c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "741a5c34_40cfc0bc",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-10T23:57:06Z",
+      "side": 1,
+      "message": "where is this job group called as a job?",
+      "range": {
+        "startLine": 27,
+        "startChar": 10,
+        "endLine": 27,
+        "endChar": 44
+      },
+      "revId": "27260f4bb812459e600c1a95efd953bd3e9fd08c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
