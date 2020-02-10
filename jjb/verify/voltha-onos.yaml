@@ -6,13 +6,15 @@
     project: '{name}'
 
     jobs:
-      - 'verify-voltha-onos-jobs':
-          branch-regexp: '{all-branches-regexp}'
-      - 'publish-voltha-onos-jobs':
-          branch-regexp: '{all-branches-regexp}'
+      - 'verify-voltha-onos-jobs-master':
+          branch-regexp: 'master'
+      - 'publish-voltha-onos-jobs-master':
+          branch-regexp: 'master'
+      - 'verify-voltha-onos-jobs-branches':
+          branch-regexp: '^(onos-1.13.10|onos-2.2)$'
 
 - job-group:
-    name: 'verify-voltha-onos-jobs'
+    name: 'verify-voltha-onos-jobs-master'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject':
@@ -24,7 +26,20 @@
           pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
-    name: 'publish-voltha-onos-jobs'
+    name: 'verify-voltha-onos-jobs-branches'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-onos_licensed'
+      - 'make-unit-test':
+          unit-test-targets: 'build'
+          junit-allow-empty-results: true
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
+          onos-version: '1.13.10'
+
+- job-group:
+    name: 'publish-voltha-onos-jobs-master'
     jobs:
       - 'docker-publish':
           docker-repo: 'voltha'
