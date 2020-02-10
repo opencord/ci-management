@@ -75,7 +75,7 @@ pipeline {
           until [ $i -eq $onuTarget ]
           do
             echo "$i ONUs ACTIVE of $onuTarget expected (time: $SECONDS)"
-            sleep 20
+            sleep $pollInterval
             i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
           done
           echo "$onuTarget ONUs Activated in $SECONDS seconds (time: $SECONDS)"

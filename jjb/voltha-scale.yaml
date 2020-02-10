@@ -53,6 +53,11 @@
           default: 1
           description: 'Expected number of activated ONUs'
 
+      - string:
+          name: pollInterval
+          default: 20
+          description: 'Sleep time between ONU activation checks'
+
     project-type: pipeline
     concurrent: true
 
