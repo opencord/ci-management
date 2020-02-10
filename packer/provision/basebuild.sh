@@ -22,6 +22,9 @@ ubuntu_systems() {
     # set up ansible repo
     apt-add-repository -y ppa:ansible/ansible
 
+    # set up git backports repo
+    add-apt-repository -y  ppa:git-core/ppa
+
     # set up docker repo
     apt-key adv --keyserver keyserver.ubuntu.com --recv 0EBFCD88
     add-apt-repository \
@@ -199,9 +202,9 @@ EOF
       go install ./protoc-gen-go
     popd
 
-    # install repo launcher v1.13.8
-    REPO_B64_SHA256SUM="ac7058283b4e2b51db31a79632c3e2f809d8f6270217d280fcc52f1325e69960"
-    curl -o /tmp/repo.b64 'https://gerrit.googlesource.com/git-repo/+/refs/tags/v1.13.8/repo?format=TEXT'
+    # install repo launcher v2.0
+    REPO_B64_SHA256SUM="f34b0743ae46105df575f116fc6535a5d9db10c575e03e11e2932e2a8745061e"
+    curl -o /tmp/repo.b64 'https://gerrit.googlesource.com/git-repo/+/refs/tags/v2.0/repo?format=TEXT'
     echo "$REPO_B64_SHA256SUM  /tmp/repo.b64" | sha256sum -c -
     base64 --decode /tmp/repo.b64 > /tmp/repo
     mv /tmp/repo /usr/local/bin/repo
