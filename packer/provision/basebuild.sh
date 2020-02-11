@@ -128,6 +128,8 @@ EOF
         # end of apt-get install list
 
     # install python modules
+    # upgrade pip or other installations may fail in unusual ways
+    pip install --upgrade pip
     pip install \
         Jinja2 \
         ansible-lint \
