@@ -110,14 +110,8 @@ EOF
         maven \
         nodejs \
         python \
-        python-certifi \
-        python-cryptography \
         python-dev \
-        python-idna \
-        python-netaddr \
-        python-openssl \
         python-pip \
-        python-urllib3 \
         python3-dev \
         ruby \
         screen \
@@ -127,6 +121,19 @@ EOF
         zip
         # end of apt-get install list
 
+    # remove apt installed incompatible python tools
+    apt-get -y remove \
+      python-enum34 \
+      python-cryptography \
+      python-openssl \
+      python-ndg-httpsclient \
+      python-requests \
+      python3-requests \
+      python-six \
+      python3-six \
+      python-urllib3 \
+      python3-urllib3
+
     # install python modules
     # upgrade pip or other installations may fail in unusual ways
     pip install --upgrade pip
@@ -135,6 +142,8 @@ EOF
         ansible-lint \
         astroid==1.* \
         coverage \
+        certifi \
+        cryptography \
         docker-compose==1.20.1 \
         docker==3.2.1 \
         gitpython \
@@ -144,18 +153,24 @@ EOF
         linkchecker \
         more-itertools==5.0.0 \
         mock \
+        netaddr \
+        ndg-httpsclient \
         nose2 \
+        pyopenssl \
         pexpect \
         pylint==1.* \
         pyyaml \
+        requests \
         robotframework \
         robotframework-httplibrary \
         robotframework-kafkalibrary \
         robotframework-lint \
         robotframework-requests \
         robotframework-sshlibrary \
+        six \
         tox \
         twine==1.15.0 \
+        urllib3 \
         virtualenv
         # end of pip install list
 
