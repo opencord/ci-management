@@ -57,6 +57,17 @@
           name: pollInterval
           default: 20
           description: 'Sleep time between ONU activation checks'
+      
+      - bool:
+          name: withOnosApps
+          default: false
+          description: 'Option to deactivate certain ONOS apps'
+
+      - bool:
+          name: withMibTemplate
+          default: false
+          description: 'Option to trigger MIB template command'
+    
 
     project-type: pipeline
     concurrent: true

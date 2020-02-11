@@ -46,7 +46,6 @@ pipeline {
           '''
       }
     }
-
     stage('deploy-voltha') {
       steps {
         sh '''
@@ -55,6 +54,29 @@ pipeline {
           EXTRA_HELM_FLAGS="--set onu=${onuCount},pon=${ponCount}" ./voltha up
 
           '''
+      }
+    }
+    stage('MIB-template') {
+      steps {
+        sh '''
+          if [ "$withMibTemplate" = true ] ; then
+            git clone https://github.com/opencord/voltha-openonu-adapter.git
+            cat voltha-openonu-adapter/templates/BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+            rm -rf voltha-openonu-adapter
+          fi
+        '''
+      }
+    }
+    stage('disable-ONOS-apps') {
+      steps {
+         sh '''
+          #Check withOnosApps and disable apps accordingly
+          if [ "$withOnosApps" = false ] ; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
+          fi
+         '''
       }
     }
     stage('activate-ONUs') {
@@ -84,19 +106,6 @@ pipeline {
         '''
       }
     }
-    stage('disable-ONOS-apps') {
-      steps {
-         sh '''
-          #Check withOnosApps and disable apps accordingly
-          if [ "$withOnosApps" = false ] ; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.olt
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
-          fi
-         '''
-      }
-    }
-
     stage('ONOS-ports') {
       steps {
         sh '''    
