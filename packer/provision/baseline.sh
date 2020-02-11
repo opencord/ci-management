@@ -341,7 +341,7 @@ EOF
     # --- START LFTOOLS DEPS
 
     # Used by various scripts to push patches to Gerrit
-    ensure_ubuntu_install git-review
+    # ensure_ubuntu_install git-review
 
     # Needed to parse OpenStack commands used by opendaylight-infra stack commands
     # to initialize Heat template based systems.

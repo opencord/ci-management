@@ -19,9 +19,6 @@ ubuntu_systems() {
     apt-get update
     apt-get install -y apt-transport-https software-properties-common
 
-    # set up ansible repo
-    apt-add-repository -y ppa:ansible/ansible
-
     # set up git backports repo
     add-apt-repository -y  ppa:git-core/ppa
 
@@ -87,7 +84,6 @@ EOF
     apt-get install -y \
         "docker-ce=17.06*" \
         apt-transport-https \
-        ansible \
         build-essential \
         bzip2 \
         curl \
@@ -97,7 +93,6 @@ EOF
         git \
         golang-1.12-go \
         graphviz \
-        httpie \
         jq \
         kafkacat \
         "kubeadm=1.12.7-*" \
@@ -122,23 +117,22 @@ EOF
         # end of apt-get install list
 
     # remove apt installed incompatible python tools
+    # NOTE: Python3 versions are not removed, as cloud-init depends on them
     apt-get -y remove \
       python-enum34 \
       python-cryptography \
       python-openssl \
       python-ndg-httpsclient \
       python-requests \
-      python3-requests \
       python-six \
-      python3-six \
-      python-urllib3 \
-      python3-urllib3
+      python-urllib3
 
     # install python modules
     # upgrade pip or other installations may fail in unusual ways
     pip install --upgrade pip
     pip install \
         Jinja2 \
+        ansible \
         ansible-lint \
         astroid==1.* \
         coverage \
@@ -147,8 +141,10 @@ EOF
         docker-compose==1.20.1 \
         docker==3.2.1 \
         gitpython \
+        git-review \
         graphviz \
         grpcio-tools \
+        httpie==1.0.3 \
         isort \
         linkchecker \
         more-itertools==5.0.0 \
