@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "335923ca_c881f224",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-11T18:10:48Z",
+      "side": 1,
+      "message": "Put these in a common job-group, rather than modifying the licensing/versioning jobs with extensions.",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 41
+      },
+      "revId": "8bca703c84e09bc1c170a0f25dee6f0e41fd007e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3088439f_5cc43e72",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-11T18:10:48Z",
+      "side": 1,
+      "message": "Does this have the {extension} applied?",
+      "range": {
+        "startLine": 38,
+        "startChar": 7,
+        "endLine": 38,
+        "endChar": 27
+      },
+      "revId": "8bca703c84e09bc1c170a0f25dee6f0e41fd007e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
