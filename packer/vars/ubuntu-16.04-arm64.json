@@ -5,7 +5,7 @@
   "ssh_user": "ubuntu",
 
   "distro": "Ubuntu 16.04",
-  "arch": "x86_64",
-  "instance_type": "t2.micro",
+  "arch": "arm64",
+  "instance_type": "a1.large",
   "cloud_user_data": "provision/null_data.sh"
 }
