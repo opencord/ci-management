@@ -60,8 +60,13 @@
       
       - boolean:
           name: withOnosApps
-          default: false
+          default: False
           description: 'Option to deactivate certain ONOS apps'
+
+      - boolean:
+          name: withMibTemplate
+          default: False
+          description: 'Option to trigger MIB template command'
     
 
     project-type: pipeline
