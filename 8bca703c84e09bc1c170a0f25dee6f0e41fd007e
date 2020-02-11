@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "958519d3_0f297414",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-11T18:22:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "335923ca_c881f224",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 41
+      },
+      "revId": "8bca703c84e09bc1c170a0f25dee6f0e41fd007e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3088439f_5cc43e72",
         "filename": "jjb/verify/voltha-onos.yaml",
         "patchSetId": 9
@@ -36,6 +60,30 @@
       "writtenOn": "2020-02-11T18:10:48Z",
       "side": 1,
       "message": "Does this have the {extension} applied?",
+      "range": {
+        "startLine": 38,
+        "startChar": 7,
+        "endLine": 38,
+        "endChar": 27
+      },
+      "revId": "8bca703c84e09bc1c170a0f25dee6f0e41fd007e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0e46a9da_baeb19f9",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 9
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-11T18:22:07Z",
+      "side": 1,
+      "message": "Yes it does: name: \u0027verify_{project}_sanity-test{name-extension}\u0027",
+      "parentUuid": "3088439f_5cc43e72",
       "range": {
         "startLine": 38,
         "startChar": 7,
