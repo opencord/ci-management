@@ -57,6 +57,7 @@ pipeline {
           '''
       }
     }
+
     stage('activate-ONUs') {
       steps {
         sh '''
@@ -84,6 +85,7 @@ pipeline {
         '''
       }
     }
+    
     stage('disable-ONOS-apps') {
       steps {
          sh '''
