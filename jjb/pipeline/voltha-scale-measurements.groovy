@@ -17,6 +17,7 @@ pipeline {
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="n"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
+    SSHPASS="karaf"
   }
 
   stages {
@@ -59,7 +60,6 @@ pipeline {
     stage('activate-ONUs') {
       steps {
         sh '''
-          export SSHPASS=karaf
           if [ -z "$onuTarget" ]
           then
             echo -e "You need to set the target ONU number\n"
@@ -79,8 +79,23 @@ pipeline {
             i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
           done
           echo "$onuTarget ONUs Activated in $SECONDS seconds (time: $SECONDS)"
-          exit 0
+          #exit 0
 
+        '''
+      }
+    }
+    stage('ONOS-ports') {
+      steps {
+        sh '''    
+          # Check ports showed up in ONOS
+          z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost ports -e | grep BBSM | wc -l)
+          until [ $z -eq "$onuTarget" ]
+          do
+            echo "${z} enabled ports of "$onuTarget" expected (time: $SECONDS)"
+            sleep $pollInterval
+            z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost ports -e | grep BBSM | wc -l)
+          done
+          echo "$onuTarget ports enabled in $SECONDS seconds (time: $SECONDS)"
         '''
       }
     }
