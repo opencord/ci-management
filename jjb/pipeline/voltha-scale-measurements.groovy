@@ -84,6 +84,19 @@ pipeline {
         '''
       }
     }
+    stage('disable-ONOS-apps') {
+      steps {
+         sh '''
+          #Check withOnosApps and disable apps accordingly
+          if [ "$withOnosApps" = false ] ; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
+          fi
+         '''
+      }
+    }
+
     stage('ONOS-ports') {
       steps {
         sh '''    
