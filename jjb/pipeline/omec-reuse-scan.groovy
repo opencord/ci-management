@@ -52,6 +52,8 @@ pipeline {
                     #!/usr/bin/env bash
 
                     git checkout FETCH_HEAD
+                    git show
+
                     reuse lint
                     """
             }
