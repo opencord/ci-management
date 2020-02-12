@@ -86,6 +86,10 @@ pipeline {
            set +e
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
+
+           cd $WORKSPACE/kind-voltha/scripts
+           ./log-collector.sh > /dev/null &
+
            make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
            '''
       }
@@ -102,30 +106,15 @@ pipeline {
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
 
-         sync
-         pkill kail || true
+         sleep 15 # Wait for log-collector to complete
+         cd $WORKSPACE/kind-voltha/scripts
+         timeout 10 ./log-combine.sh
 
-         ## Pull out errors from log files
-         extract_errors_go() {
-           echo
-           echo "Error summary for $1:"
-           grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
-           echo
-         }
+         cd $WORKSPACE
+         cp $WORKSPACE/kind-voltha/scripts/logger/combined/*.0001 $WORKSPACE
+         tar czf container-logs.tgz *.0001
 
-         extract_errors_python() {
-           echo
-           echo "Error summary for $1:"
-           grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
-           echo
-         }
-
-         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
-         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
-         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
-
-         gzip $WORKSPACE/onos-voltha-combined.log
+         gzip *-combined.log
 
          ## shut down voltha
          cd $WORKSPACE/kind-voltha/
@@ -140,7 +129,7 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
-         archiveArtifacts artifacts: '*.log,*.gz'
+         archiveArtifacts artifacts: '*.log,*.gz,*.tgz'
 
     }
   }

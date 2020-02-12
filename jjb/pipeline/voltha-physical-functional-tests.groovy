@@ -70,7 +70,9 @@ pipeline {
       }
       steps {
         sh """
-        kail -n voltha -n default --since=20m > $WORKSPACE/Functional_onos-voltha-combined.log &
+        cd $WORKSPACE/kind-voltha/scripts
+        ./log-collector.sh > /dev/null &
+
         mkdir -p $ROBOT_LOGS_DIR
         if  ( ${released} ); then
             export ROBOT_MISC_ARGS="--removekeywords wuks -i released -i sanity -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
@@ -78,8 +80,6 @@ pipeline {
             export ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         fi
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
-        sync
-        pkill kail || true
         """
       }
     }
@@ -95,12 +95,9 @@ pipeline {
       }
       steps {
         sh """
-        kail -n voltha -n default > $WORKSPACE/FailureScenarios_onos-voltha-combined.log &
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
-        sync
-        pkill kail || true
         """
       }
     }
@@ -116,12 +113,9 @@ pipeline {
       }
       steps {
         sh """
-        kail -n voltha -n default > $WORKSPACE/ErrorScenarios_onos-voltha-combined.log &
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
-        sync
-        pkill kail || true
         """
       }
     }
@@ -134,31 +128,15 @@ pipeline {
       kubectl get nodes -o wide
       kubectl get pods -n voltha -o wide
 
-      sync
-      pkill kail || true
+      sleep 15 # Wait for log-collector to complete
+      cd $WORKSPACE/kind-voltha/scripts
+      timeout 10 ./log-combine.sh
 
-      ## Pull out errors from log files
-      extract_errors_go() {
-        echo
-        echo "Error summary for $1:"
-        grep $1 $WORKSPACE/*onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
-        echo
-      }
+      cd $WORKSPACE
+      cp $WORKSPACE/kind-voltha/scripts/logger/combined/*.0001 $WORKSPACE
+      tar czf container-logs.tgz *.0001
 
-      extract_errors_python() {
-        echo
-        echo "Error summary for $1:"
-        grep $1 $WORKSPACE/*onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
-        echo
-      }
-
-      extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
-      extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
-      extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-      extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
-
-      gzip $WORKSPACE/*onos-voltha-combined.log
-
+      gzip *-combined.log
       '''
       script {
         deployment_config.olts.each { olt ->
@@ -178,7 +156,7 @@ pipeline {
         reportFileName: '**/report*.html',
         unstableThreshold: 0
         ]);
-      archiveArtifacts artifacts: '*.log,*.gz'
+      archiveArtifacts artifacts: '*.log,*.gz,*.tgz'
     }
     unstable {
       step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
