@@ -39,23 +39,23 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
-          name: onuCount
+          name: onuPerPon
           default: 1
           description: 'Number of ONUs to provision'
 
       - string:
-          name: ponCount
+          name: ponPorts
           default: 1
           description: 'Number of PONs to provision'
 
       - string:
-          name: onuTarget
+          name: expectedOnus
           default: 1
           description: 'Expected number of activated ONUs'
 
       - string:
           name: pollInterval
-          default: 20
+          default: 5
           description: 'Sleep time between ONU activation checks'
       
       - bool:
@@ -67,6 +67,29 @@
           name: withMibTemplate
           default: false
           description: 'Option to trigger MIB template command'
+      
+      - bool:
+          name: setLinkDiscovery
+          default: false
+          description: 'Option to toggle Link Discovery'
+
+      - string:
+          name: BBSIMdelay
+          default: 200
+          description: 'BBSIM Delay, milliseconds'
+
+      - string:
+          name: flowStatInterval
+          default: 600
+          description: 'Flow Stats Collection Interval, milliseconds'
+    
+      - string:
+          name: portsStatInterval
+          default: 600
+          description: 'Ports Stats Collection Interval, milliseconds'
+
+
+      
     
 
     project-type: pipeline
