@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6ebca9b6_95ab10e7",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-02-12T21:12:49Z",
+      "side": 1,
+      "message": "This may need to be ROBOT_MISC_ARGS+\u003d\"-v ...\"",
+      "range": {
+        "startLine": 187,
+        "startChar": 14,
+        "endLine": 187,
+        "endChar": 24
+      },
+      "revId": "ee1d3e0bdc58dfdc27981e140c16953996b7ec59",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "223ba15b_e0cfab7e",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-02-12T21:12:49Z",
+      "side": 1,
+      "message": "I think this needs to be a \u0027:\u0027",
+      "range": {
+        "startLine": 187,
+        "startChar": 39,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "ee1d3e0bdc58dfdc27981e140c16953996b7ec59",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
