@@ -162,7 +162,7 @@
 
 - job-template:
     id: 'voltha-patch-test'
-    name: 'verify_{project}_sanity-test'
+    name: 'verify_{project}_sanity-test{name-extension}'
     extra-helm-flags: ''
 
     description: |
@@ -215,6 +215,11 @@
           name: extraHelmFlags
           default: '{extra-helm-flags}'
           description: 'Helm flags to pass to ./voltha up'
+
+      - string:
+          name: onosVersion
+          default: '{onos-version}'
+          description: 'ONOS version that needs to be configured'
 
     project-type: pipeline
     concurrent: true

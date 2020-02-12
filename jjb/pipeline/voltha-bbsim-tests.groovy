@@ -160,6 +160,82 @@ pipeline {
       }
     }
 
+    stage('ONOS Config') {
+      steps {
+        sh '''
+          if [[ ${onosVersion} == "1.13.10" ]]; then
+            curl -sSL --user karaf:karaf \
+              -X POST \
+              -H Content-Type:application/json \
+              http://localhost:8181/onos/v1/network/configuration/apps \
+              --data @- << EOF
+              {
+                 "org.opencord.sadis":{
+                    "sadis":{
+                       "integration":{
+                          "cache":{
+                             "enabled":false,
+                             "maxsize":50,
+                             "ttl":"PT0m"
+                          }
+                       },
+                       "entries":[
+                          {
+                             "id":"BBSIM_OLT_0",
+                             "hardwareIdentifier":"0f:f1:ce:c0:ff:ee",
+                             "nasId":"BBSIMOLT000",
+                             "uplinkPort":1048576
+                          },
+                          {
+                             "id":"BBSM00000001-1",
+                             "nasPortId":"BBSM00000001-1",
+                             "circuitId":"BBSM00000001-1",
+                             "remoteId":"BBSM00000001-1",
+                             "uniTagList":[
+                                {
+                                   "ponCTag":900,
+                                   "ponSTag":900,
+                                   "technologyProfileId":64,
+                                   "downstreamBandwidthProfile":"Default",
+                                   "upstreamBandwidthProfile":"Default",
+                                   "isDhcpRequired":true
+                                }
+                             ]
+                          }
+                       ]
+                    },
+                    "bandwidthprofile":{
+                       "integration":{
+                          "cache":{
+                             "enabled":true,
+                             "maxsize":40,
+                             "ttl":"PT1m"
+                          }
+                       },
+                       "entries":[
+                          {
+                             "id":"Default",
+                             "cir":1000000,
+                             "cbs":1001,
+                             "eir":1002,
+                             "ebs":1003,
+                             "air":1004
+                          }
+                       ]
+                    }
+                 }
+              }
+            EOF
+            sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "cfg set org.opencord.olt.impl.OltFlowService enableDhcpOnProvisioning true"
+            sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "cfg set org.opencord.olt.impl.OltFlowService enableDhcpV4 true"
+            sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "cfg set org.opencord.olt.impl.OltFlowService enableEapol true"
+        else
+            echo "Using kind-voltha defaults"
+        fi
+        '''
+      }
+    }
+
     stage('Run E2E Tests') {
       steps {
         sh '''
