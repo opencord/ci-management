@@ -225,7 +225,7 @@ pipeline {
                     }
                  }
               }
-            EOF
+EOF
             sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "cfg set org.opencord.olt.impl.OltFlowService enableDhcpOnProvisioning true"
             sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "cfg set org.opencord.olt.impl.OltFlowService enableDhcpV4 true"
             sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "cfg set org.opencord.olt.impl.OltFlowService enableEapol true"
