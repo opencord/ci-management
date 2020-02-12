@@ -51,9 +51,7 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-
           EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay}" ./voltha up
-
           '''
       }
     }
