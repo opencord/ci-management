@@ -229,6 +229,29 @@
       "revId": "5970a0575e9dcd7db3421e36c962c87f80856250",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9b96b7cb_2e0b048d",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-12T05:11:25Z",
+      "side": 1,
+      "message": "Please remove EOL whitespace.  Most editors can be configured to highlight this.",
+      "range": {
+        "startLine": 70,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 6
+      },
+      "revId": "5970a0575e9dcd7db3421e36c962c87f80856250",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
