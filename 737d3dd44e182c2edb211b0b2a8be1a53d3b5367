@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7e07fa27_e52b4b61",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-12T18:46:01Z",
+      "side": 1,
+      "message": "this needs to be $1, it\u0027s an \"awk\" parameter,\nif you run the build with expectedOnus !\u003d 1 then it will fail",
+      "range": {
+        "startLine": 65,
+        "startChar": 195,
+        "endLine": 65,
+        "endChar": 210
+      },
+      "revId": "737d3dd44e182c2edb211b0b2a8be1a53d3b5367",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
