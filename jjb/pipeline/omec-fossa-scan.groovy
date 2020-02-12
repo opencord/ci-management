@@ -53,6 +53,8 @@ pipeline {
                         #!/usr/bin/env bash
 
                         git checkout FETCH_HEAD
+                        git show
+
                         echo "Testing project: ${params.project}"
 
                         echo "Run 'fossa init'"
