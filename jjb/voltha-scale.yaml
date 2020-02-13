@@ -88,6 +88,16 @@
           default: 600
           description: 'Ports Stats Collection Interval, milliseconds'
 
+      - string:
+          name: bbsimEapol
+          default: true
+          description: 'Option to toggle BBSIM EAPOL true/false'
+
+      - string:
+          name: bbsimDhcp
+          default: true
+          description: 'Option to toggle BBSIM DHCP true/false'
+
     project-type: pipeline
     concurrent: true
 
