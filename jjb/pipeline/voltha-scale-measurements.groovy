@@ -23,7 +23,6 @@ pipeline {
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
     SSHPASS="karaf"
   }
-
   stages {
     stage('checkout') {
       steps {
@@ -54,7 +53,7 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-          DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay}" ./voltha up
+          DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimEapol},dhcp=${bbsimDhcp}" ./voltha up
           '''
       }
     }
@@ -62,10 +61,8 @@ pipeline {
       steps {
         sh '''
           if [ ${withMibTemplate} = true ] ; then
-            rm -rf voltha-openonu-adapter
-            git clone https://github.com/opencord/voltha-openonu-adapter.git
-            cat voltha-openonu-adapter/templates/BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
-            rm -rf voltha-openonu-adapter
+            wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
+            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
         '''
       }
@@ -136,13 +133,6 @@ pipeline {
         '''
       }
     }
-    stage('') {
-      steps {
-        sh '''
-
-        '''
-      }
-    }
   }
   post {
     cleanup {
@@ -150,8 +140,7 @@ pipeline {
         #!/usr/bin/env bash
         set -euo pipefail
         cd $WORKSPACE/kind-voltha
-
-        DEPLOY_K8S=no WAIT_ON_DOWN=y ./voltha down
+        DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
         cd $WORKSPACE/
         rm -rf kind-voltha/ || true
       '''
