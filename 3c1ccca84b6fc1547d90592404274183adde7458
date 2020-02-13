@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "063deb0b_957458c4",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-02-13T00:08:01Z",
+      "side": 1,
+      "message": "Can we remove lines 60-61 if we don\u0027t use kail?",
+      "revId": "3c1ccca84b6fc1547d90592404274183adde7458",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
