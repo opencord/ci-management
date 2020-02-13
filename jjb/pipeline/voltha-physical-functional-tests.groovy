@@ -74,6 +74,7 @@ pipeline {
         sh """
         cd $WORKSPACE/kind-voltha/scripts
         ./log-collector.sh > /dev/null &
+        ./log-combine.sh > /dev/null &
 
         mkdir -p $ROBOT_LOGS_DIR
         if  ( ${released} ); then
@@ -130,14 +131,12 @@ pipeline {
       kubectl get nodes -o wide
       kubectl get pods -n voltha -o wide
 
-      sleep 15 # Wait for log-collector to complete
-      cd $WORKSPACE/kind-voltha/scripts
-      timeout 10 ./log-combine.sh
+      sleep 60 # Wait for log-collector and log-combine to complete
+
+      cd $WORKSPACE/kind-voltha/scripts/logger/combined/
+      tar czf $WORKSPACE/container-logs.tgz *
 
       cd $WORKSPACE
-      cp $WORKSPACE/kind-voltha/scripts/logger/combined/*.0001 $WORKSPACE
-      tar czf container-logs.tgz *.0001
-
       gzip *-combined.log || true
       '''
       script {
