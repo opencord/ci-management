@@ -151,20 +151,6 @@ pipeline {
       }
     }
 
-    stage('ONOS Config') {
-      steps {
-        sh '''
-          if [[ ${onosVersion} == "1.13.10" ]]; then
-            sshpass -p karaf ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 "cfg set org.opencord.olt.impl.OltFlowService enableDhcpOnProvisioning true"
-            sshpass -p karaf ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 "cfg set org.opencord.olt.impl.OltFlowService enableDhcpV4 true"
-            sshpass -p karaf ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 "cfg set org.opencord.olt.impl.OltFlowService enableEapol true"
-        else
-            echo "Using kind-voltha defaults"
-        fi
-        '''
-      }
-    }
-
     stage('Run E2E Tests') {
       steps {
         sh '''
@@ -180,10 +166,6 @@ pipeline {
            REGEX="functional tests"
            if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
              TEST_TAGS=sanityORfunctional
-           fi
-
-           if [[ ${onosVersion} == "1.13.10" ]]; then
-              ROBOT_MISC_ARGS+=" -v sadis.file:../data/onos-sadis-bbsim-new-apps.json"
            fi
 
            make -C $WORKSPACE/voltha/voltha-system-tests single-kind || true

@@ -216,11 +216,6 @@
           default: '{extra-helm-flags}'
           description: 'Helm flags to pass to ./voltha up'
 
-      - string:
-          name: onosVersion
-          default: '{onos-version}'
-          description: 'ONOS version that needs to be configured'
-
     project-type: pipeline
     concurrent: true
 

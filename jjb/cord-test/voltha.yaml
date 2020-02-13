@@ -8,7 +8,6 @@
 
     build-timeout: '300'
 
-    onos-version: '1.13.9'
     with-kind: false
 
     jobs:
@@ -58,7 +57,6 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
-          onos-version: '2.2'
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
@@ -84,7 +82,6 @@
           release: 'master'
           branch: 'master'
           released: false
-          onos-version: '2.2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
@@ -132,7 +129,6 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
-          onos-version: '1.13.10'
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
@@ -181,7 +177,6 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
-          onos-version: '1.13.10'
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
@@ -206,7 +201,6 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
-          onos-version: '1.13.10'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16.deb'
@@ -291,4 +285,3 @@
           released: true
           test-repo: 'voltha-system-tests'
           profile: 'Default'
-

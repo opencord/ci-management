@@ -193,8 +193,3 @@
     # maintainers
     # Used to notify users in supported tests
     maintainers: 'zdw@opennetworking.org'
-
-    # onos version
-    # is used by the voltha-bbsim-tests.groovy and physical pod pipelines to
-    # know which sadis config needs to be pushed
-    onos-version: '1.13.9'
