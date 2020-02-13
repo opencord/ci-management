@@ -59,6 +59,7 @@ pipeline {
         git clone -b ${branch} ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+        git clone https://github.com/ciena/kind-voltha.git
         """
       }
     }
