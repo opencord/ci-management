@@ -74,7 +74,6 @@ pipeline {
         sh """
            cd kind-voltha/
            JUST_K8S=y ./voltha up
-           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
            ./voltha up
            """
       }
@@ -114,7 +113,7 @@ pipeline {
          cp $WORKSPACE/kind-voltha/scripts/logger/combined/*.0001 $WORKSPACE
          tar czf container-logs.tgz *.0001
 
-         gzip *-combined.log
+         gzip *-combined.log || true
 
          ## shut down voltha
          cd $WORKSPACE/kind-voltha/

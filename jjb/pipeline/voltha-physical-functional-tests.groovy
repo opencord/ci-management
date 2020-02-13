@@ -138,7 +138,7 @@ pipeline {
       cp $WORKSPACE/kind-voltha/scripts/logger/combined/*.0001 $WORKSPACE
       tar czf container-logs.tgz *.0001
 
-      gzip *-combined.log
+      gzip *-combined.log || true
       '''
       script {
         deployment_config.olts.each { olt ->
