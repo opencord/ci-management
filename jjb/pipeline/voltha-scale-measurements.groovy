@@ -4,6 +4,10 @@ pipeline {
   agent {
     label "${params.buildNode}"
   }
+  options {
+        /* Default unit: Minutes */
+        timeout(time: 10) 
+    }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
@@ -14,7 +18,6 @@ pipeline {
     WITH_SIM_ADAPTERS="n"
     WITH_RADIUS="y"
     WITH_BBSIM="y"
-    DEPLOY_K8S="y"
     VOLTHA_LOG_LEVEL="WARN"
     CONFIG_SADIS="n"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
@@ -51,7 +54,7 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-          EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay}" ./voltha up
+          DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay}" ./voltha up
           '''
       }
     }
@@ -59,6 +62,7 @@ pipeline {
       steps {
         sh '''
           if [ ${withMibTemplate} = true ] ; then
+            rm -rf voltha-openonu-adapter
             git clone https://github.com/opencord/voltha-openonu-adapter.git
             cat voltha-openonu-adapter/templates/BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
             rm -rf voltha-openonu-adapter
@@ -132,6 +136,13 @@ pipeline {
         '''
       }
     }
+    stage('') {
+      steps {
+        sh '''
+
+        '''
+      }
+    }
   }
   post {
     cleanup {
@@ -140,7 +151,7 @@ pipeline {
         set -euo pipefail
         cd $WORKSPACE/kind-voltha
 
-        WAIT_ON_DOWN=y ./voltha down
+        DEPLOY_K8S=no WAIT_ON_DOWN=y ./voltha down
         cd $WORKSPACE/
         rm -rf kind-voltha/ || true
       '''
