@@ -1,0 +1,30 @@
+---
+# verification jobs for 'openolt-test' repo
+
+- project:
+    name: openolt-test
+    project: '{name}'
+
+    jobs:
+      - 'verify-openolt-test-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-openolt-test-jobs'
+
+- job-group:
+    name: 'verify-openolt-test-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-timeout: 60
+          unit-test-targets: 'lint docker-build'
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'publish-openolt-test-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 60
+          docker-repo: 'opencord'
+          dependency-jobs: 'version-tag'
