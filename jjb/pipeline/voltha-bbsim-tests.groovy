@@ -155,68 +155,6 @@ pipeline {
       steps {
         sh '''
           if [[ ${onosVersion} == "1.13.10" ]]; then
-            curl -sSL --user karaf:karaf \
-              -X POST \
-              -H Content-Type:application/json \
-              http://localhost:8181/onos/v1/network/configuration/apps \
-              --data @- << EOF
-              {
-                 "org.opencord.sadis":{
-                    "sadis":{
-                       "integration":{
-                          "cache":{
-                             "enabled":false,
-                             "maxsize":50,
-                             "ttl":"PT0m"
-                          }
-                       },
-                       "entries":[
-                          {
-                             "id":"BBSIM_OLT_0",
-                             "hardwareIdentifier":"0f:f1:ce:c0:ff:ee",
-                             "nasId":"BBSIMOLT000",
-                             "uplinkPort":1048576
-                          },
-                          {
-                             "id":"BBSM00000001-1",
-                             "nasPortId":"BBSM00000001-1",
-                             "circuitId":"BBSM00000001-1",
-                             "remoteId":"BBSM00000001-1",
-                             "uniTagList":[
-                                {
-                                   "ponCTag":900,
-                                   "ponSTag":900,
-                                   "technologyProfileId":64,
-                                   "downstreamBandwidthProfile":"Default",
-                                   "upstreamBandwidthProfile":"Default",
-                                   "isDhcpRequired":true
-                                }
-                             ]
-                          }
-                       ]
-                    },
-                    "bandwidthprofile":{
-                       "integration":{
-                          "cache":{
-                             "enabled":true,
-                             "maxsize":40,
-                             "ttl":"PT1m"
-                          }
-                       },
-                       "entries":[
-                          {
-                             "id":"Default",
-                             "cir":1000000,
-                             "cbs":1001,
-                             "eir":1002,
-                             "ebs":1003,
-                             "air":1004
-                          }
-                       ]
-                    }
-                 }
-              }
-EOF
             sshpass -p karaf ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 "cfg set org.opencord.olt.impl.OltFlowService enableDhcpOnProvisioning true"
             sshpass -p karaf ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 "cfg set org.opencord.olt.impl.OltFlowService enableDhcpV4 true"
             sshpass -p karaf ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 "cfg set org.opencord.olt.impl.OltFlowService enableEapol true"
@@ -242,6 +180,10 @@ EOF
            REGEX="functional tests"
            if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
              TEST_TAGS=sanityORfunctional
+           fi
+
+           if [[ ${onosVersion} == "1.13.10" ]]; then
+              ROBOT_MISC_ARGS+=" -v sadis.file:../data/onos-sadis-bbsim-new-apps.json"
            fi
 
            make -C $WORKSPACE/voltha/voltha-system-tests single-kind || true
