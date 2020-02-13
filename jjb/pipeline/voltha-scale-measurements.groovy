@@ -51,9 +51,7 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-
           EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay}" ./voltha up
-
           '''
       }
     }
@@ -62,7 +60,7 @@ pipeline {
         sh '''
           if [ ${withMibTemplate} = true ] ; then
             git clone https://github.com/opencord/voltha-openonu-adapter.git
-            cat voltha-openonu-adapter/templates/BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+            cat voltha-openonu-adapter/templates/BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
             rm -rf voltha-openonu-adapter
           fi
         '''
@@ -85,7 +83,7 @@ pipeline {
         sh '''
           #Setting LOG level to WARN
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost log:set WARN
-          #kubectl exec -n voltha $(kubectl get pods -n voltha | grep bbsim | awk 'NR==1{print $1') bbsimctl log warn false
+          kubectl exec -n voltha $(kubectl get pods -n voltha | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
           #Setting link discovery
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
           #Setting the flow stats collection interval

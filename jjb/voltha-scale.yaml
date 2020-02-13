@@ -65,7 +65,7 @@
 
       - bool:
           name: withMibTemplate
-          default: false
+          default: true
           description: 'Option to trigger MIB template command'
 
       - bool:
