@@ -95,7 +95,14 @@ pipeline {
     stage('Push Images') {
       steps {
         sh '''
-           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
+           if [ "${gerritProject}" = "pyvoltha" ]; then
+             cd $WORKSPACE/voltha/pyvoltha/
+             make dist
+             cd $WORKSPACE/voltha/voltha-openonu-adapter
+             export LOCAL_PYVOLTHA=$WORKSPACE/voltha/pyvoltha/
+             make local-pyvoltha
+             make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+           elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
              docker images | grep citest
@@ -124,6 +131,8 @@ pipeline {
              IMAGES="afrouter afrouterd "
            elif [ "${gerritProject}" = "bbsim" ]; then
              IMAGES="bbsim "
+           elif [ "${gerritProject}" = "pyvoltha" ]; then
+             IMAGES="adapter_open_onu "
            else
              echo "No images to push"
            fi
