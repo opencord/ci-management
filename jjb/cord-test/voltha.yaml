@@ -9,6 +9,7 @@
     build-timeout: '300'
 
     with-kind: false
+    onos-version: '2.2'
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
@@ -105,6 +106,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'release'
           branch: 'master'
+          onos-version: '1.13.9'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16.deb'
@@ -153,6 +155,7 @@
           config-pod: 'onf-demo-pod'
           release: 'release'
           branch: 'master'
+          onos-version: '1.13.9'
           released: true
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
@@ -266,6 +269,7 @@
           config-pod: 'dt-berlin-pod'
           release: 'release'
           branch: 'master'
+          onos-version: '1.13.9'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
