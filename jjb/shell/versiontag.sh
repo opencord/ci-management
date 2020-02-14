@@ -108,7 +108,7 @@ function dockerfile_parentcheck {
     for df_parent in "${df_parents[@]}"
     do
 
-      df_pattern="FROM (.*):(.*)"
+      df_pattern="FROM ([^:]*):(.*)"
       if [[ "$df_parent" =~ $df_pattern ]]
       then
 
@@ -118,6 +118,10 @@ function dockerfile_parentcheck {
         if [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
         then
           echo "  OK: Parent '$p_image:$p_version' is a released SemVer version"
+        elif [[ "${p_version}" =~ ^.*@sha256:[0-9a-f]{64}.*$ ]]
+        then
+          # allow sha256 hashes to be used as version specifiers
+          echo "  OK: Parent '$p_image:$p_version' is using a specific sha256 hash as a version"
         elif [[ "${p_version}" =~ ^.*([0-9]+)\.([0-9]+).*$ ]]
         then
           # handle non-SemVer versions that have a Major.Minor version specifier in the name
