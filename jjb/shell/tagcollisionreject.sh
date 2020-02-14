@@ -107,7 +107,7 @@ function dockerfile_parentcheck {
     for df_parent in "${df_parents[@]}"
     do
 
-      df_pattern="FROM (.*):(.*)"
+      df_pattern="FROM ([^:]*):(.*)"
       if [[ "$df_parent" =~ $df_pattern ]]
       then
 
