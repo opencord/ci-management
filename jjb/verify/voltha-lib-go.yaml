@@ -21,3 +21,6 @@
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint test'
           unit-test-keep-going: 'true'
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
+          skip-vote: true

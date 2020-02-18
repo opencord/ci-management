@@ -22,6 +22,7 @@
           dependency-jobs: 'verify_pyvoltha_tag-collision'
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
+          skip-vote: true
 
 - job-group:
     name: 'publish-pyvoltha-jobs'
