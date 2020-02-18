@@ -84,7 +84,7 @@ pipeline {
     stage('Build Images') {
       steps {
         sh """
-           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
+           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests|pyvoltha)\$ ]]; then
              cd $WORKSPACE/voltha/${gerritProject}/
              make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
            fi
