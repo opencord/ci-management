@@ -84,16 +84,27 @@ pipeline {
     stage('Build Images') {
       steps {
         sh """
+           make-local () {
+             make -C $WORKSPACE/voltha/\$1 DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+           }
            if [ "${gerritProject}" = "pyvoltha" ]; then
-             cd $WORKSPACE/voltha/pyvoltha/
-             make dist
-             cd $WORKSPACE/voltha/voltha-openonu-adapter
+             make -C $WORKSPACE/voltha/pyvoltha/ dist
              export LOCAL_PYVOLTHA=$WORKSPACE/voltha/pyvoltha/
-             make local-pyvoltha
-             make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+             make-local voltha-openonu-adapter
+           elif [ "${gerritProject}" = "voltha-lib-go" ]; then
+             make -C $WORKSPACE/voltha/voltha-lib-go/ build
+             export LOCAL_LIB_GO=$WORKSPACE/voltha/voltha-lib-go/
+             make-local voltha-go
+             make-local voltha-openolt-adapter
+           elif [ "${gerritProject}" = "voltha-protos" ]; then
+             make -C $WORKSPACE/voltha/voltha-protos/ build
+             export LOCAL_PROTOS=$WORKSPACE/voltha/voltha-protos/
+             make-local voltha-go
+             make-local voltha-openolt-adapter
+             make-local voltha-openonu-adapter
+             make-local ofagent-py
            elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
-             cd $WORKSPACE/voltha/${gerritProject}/
-             make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+             make-local ${gerritProject}
            fi
            """
       }
@@ -133,6 +144,10 @@ pipeline {
              IMAGES="bbsim "
            elif [ "${gerritProject}" = "pyvoltha" ]; then
              IMAGES="adapter_open_onu "
+           elif [ "${gerritProject}" = "voltha-lib-go" ]; then
+             IMAGES="rw_core ro_core adapter_open_olt "
+           elif [ "${gerritProject}" = "voltha-protos" ]; then
+             IMAGES="rw_core ro_core adapter_open_olt adapter_open_onu ofagent "
            else
              echo "No images to push"
            fi
@@ -232,7 +247,6 @@ pipeline {
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log,*.gz'
-
     }
   }
 }

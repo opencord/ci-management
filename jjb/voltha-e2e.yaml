@@ -164,6 +164,7 @@
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
     extra-helm-flags: ''
+    skip-vote: false
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -222,15 +223,34 @@
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
     triggers:
-      - cord-infra-gerrit-trigger-patchset:
-          gerrit-server-name: '{gerrit-server-name}'
-          project-regexp: '^{project}$'
-          branch-regexp: '{branch-regexp}'
+      - gerrit:
+          server-name: '{gerrit-server-name}'
           dependency-jobs: '{dependency-jobs}'
-          file-include-regexp: '{all-files-regexp}'
+          silent-start: true
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: true
+                exclude-trivial-rebase: false
+                exclude-no-code-change: true
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*recheck$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '^{project}$'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '^{project}$'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '{all-files-regexp}'
+          skip-vote:
+            success: {skip-vote}
+            failed: {skip-vote}
+            unstable: {skip-vote}
+            notbuilt: {skip-vote}
 
 # POD Per Patchset Pipeline Jobs
-
 
 - job-template:
     name: '{name}'
