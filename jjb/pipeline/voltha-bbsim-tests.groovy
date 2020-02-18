@@ -91,6 +91,16 @@ pipeline {
              export LOCAL_PYVOLTHA=$WORKSPACE/voltha/pyvoltha/
              make local-pyvoltha
              make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+           elif [ "${gerritProject}" = "voltha-lib-go" ]; then
+             cd $WORKSPACE/voltha/voltha-lib-go/
+             make build
+             cd $WORKSPACE/voltha/voltha-go
+             export LOCAL_LIB_GO=$WORKSPACE/voltha/voltha-lib-go/
+             make local-lib-go
+             make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+             cd $WORKSPACE/voltha/voltha-openolt-adapter
+             make local-lib-go
+             make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
            elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              cd $WORKSPACE/voltha/${gerritProject}/
              make DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
@@ -133,6 +143,8 @@ pipeline {
              IMAGES="bbsim "
            elif [ "${gerritProject}" = "pyvoltha" ]; then
              IMAGES="adapter_open_onu "
+           elif [ "${gerritProject}" = "voltha-lib-go" ]; then
+             IMAGES="rw_core ro_core adapter_open_olt "
            else
              echo "No images to push"
            fi
