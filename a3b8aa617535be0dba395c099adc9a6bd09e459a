@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3339906b_2a68541d",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000663
+      },
+      "writtenOn": "2020-02-18T20:27:59Z",
+      "side": 1,
+      "message": "These are nested stages, it was the only way to implement a cumulative timeout for a subset of stages (following VOLTHA deployment)",
+      "parentUuid": "89117165_1dbd8f6f",
+      "range": {
+        "startLine": 56,
+        "startChar": 3,
+        "endLine": 56,
+        "endChar": 12
+      },
+      "revId": "a3b8aa617535be0dba395c099adc9a6bd09e459a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4bf0c340_d2efa0c0",
         "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
         "patchSetId": 3
