@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "89117165_1dbd8f6f",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-18T20:07:11Z",
+      "side": 1,
+      "message": "Is `stages` duplicated w/line 22 above?",
+      "range": {
+        "startLine": 56,
+        "startChar": 3,
+        "endLine": 56,
+        "endChar": 12
+      },
+      "revId": "a3b8aa617535be0dba395c099adc9a6bd09e459a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bf0c340_d2efa0c0",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-18T20:07:11Z",
+      "side": 1,
+      "message": "unnecessary whitespace",
+      "range": {
+        "startLine": 123,
+        "startChar": 18,
+        "endLine": 123,
+        "endChar": 22
+      },
+      "revId": "a3b8aa617535be0dba395c099adc9a6bd09e459a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
