@@ -26,5 +26,5 @@
     jobs:
       - 'docker-publish':
           build-timeout: 60
-          docker-repo: 'opencord'
+          docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
