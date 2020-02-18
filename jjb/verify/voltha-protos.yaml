@@ -23,6 +23,9 @@
           build-timeout: 20
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
+          skip-vote: true
 
 - job-group:
     name: 'post-merge-voltha-protos-jobs'
