@@ -20,6 +20,13 @@ pipeline {
     SSHPASS="karaf"
   }
   stages {
+    stage('set-description') {
+      steps {
+        script {
+          currentBuild.description = "${onuPerPon} ONU x ${ponPorts} PON"
+        }
+      }
+    }
     stage('checkout') {
       steps {
         checkout([
@@ -93,7 +100,7 @@ pipeline {
     stage('cpu-usage') {
       steps {
         sh '''
-          psrecord $(ps aux | grep -v "grep" | grep rw_core | awk 'NR==1{print $2}') --log activity.txt &
+          psrecord $(ps aux | grep -v "grep" | grep rw_core | awk 'NR==1{print $2}') --log activity.txt --interval 1 &
         '''
       }
     }
@@ -101,56 +108,76 @@ pipeline {
       options {
         timeout(time:10)
       }
-    stages {
-      stage('ONUs-enabled') {
-        options {
-              timeout(time: 10) 
-        }
-        steps {
-          sh '''
-            if [ -z ${expectedOnus} ]
-            then
-              echo -e "You need to set the target ONU number\n"
-              exit 1
-            fi
+      stages {
+        stage('ONUs-enabled') {
+          steps {
+            sh '''
+              if [ -z ${expectedOnus} ]
+              then
+                echo -e "You need to set the target ONU number\n"
+                exit 1
+              fi
 
-            voltctl device create -t openolt -H bbsim:50060
-            voltctl device enable $(voltctl device list --filter Type~openolt -q)
-            # check ONUs reached Active State in VOLTHA
-            i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-            until [ $i -eq ${expectedOnus} ]
-            do
-              echo "$i ONUs ACTIVE of ${expectedOnus} expected (time: $SECONDS)"
-              sleep ${pollInterval}
+              voltctl device create -t openolt -H bbsim:50060
+              voltctl device enable $(voltctl device list --filter Type~openolt -q)
+              # check ONUs reached Active State in VOLTHA
               i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-            done
-            echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
-          '''
+              until [ $i -eq ${expectedOnus} ]
+              do
+                echo "$i ONUs ACTIVE of ${expectedOnus} expected (time: $SECONDS)"
+                sleep ${pollInterval}
+                i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
+              done
+              echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
+              echo $SECONDS > activation-time.txt
+            '''
+          }
         }
-      }
-      stage('ONOS-ports') {
-        steps {
-          sh '''    
-            # Check ports showed up in ONOS
-            z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost ports -e | grep BBSM | wc -l)
-            until [ $z -eq ${expectedOnus} ]
-            do
-              echo "${z} enabled ports of ${expectedOnus} expected (time: $SECONDS)"
-              sleep ${pollInterval}
+        stage('ONOS-ports') {
+          steps {
+            sh '''
+              # Check ports showed up in ONOS
               z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost ports -e | grep BBSM | wc -l)
-            done
-            echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
-          '''
+              until [ $z -eq ${expectedOnus} ]
+              do
+                echo "${z} enabled ports of ${expectedOnus} expected (time: $SECONDS)"
+                sleep ${pollInterval}
+                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost ports -e | grep BBSM | wc -l)
+              done
+              echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
+              echo $SECONDS > port-recognition.txt
+              echo "Duration" > time.txt
+              echo "Duration" > onu-activation.txt
+              cat activation-time.txt >> onu-activation.txt
+              paste activation-time.txt port-recognition.txt | awk '{print ($1 + $2)}' >> time.txt
+            '''
+          }
         }
       }
-    }
     }
   }
   post {
+    always {
+      plot([
+        csvFileName: 'plot-be1e0007-f8db-43ed-bd15-8eb27d1aa85e.csv', 
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'onu-activation.txt', inclusionFlag: 'OFF', url: '']],
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'ONU Activation Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
+      ])
+
+      plot([
+        csvFileName: 'plot-8864f2e9-d622-4bbb-9cd1-d450a86af4e6.csv', 
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'time.txt', inclusionFlag: 'OFF', url: '']], 
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Port Recognition Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
+      ])
+    }
     cleanup {
       sh '''
         #!/usr/bin/env bash
         set -euo pipefail
+        rm onu-activation.txt
+        rm time.txt
+        rm port-recognition.txt
+        rm activation-time.txt
         cd $WORKSPACE/kind-voltha
         DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
         cd $WORKSPACE/
