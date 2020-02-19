@@ -245,10 +245,10 @@
                 - compare-type: REG_EXP
                   pattern: '{all-files-regexp}'
           skip-vote:
-            success: {skip-vote}
-            failed: {skip-vote}
-            unstable: {skip-vote}
-            notbuilt: {skip-vote}
+            successful: '{skip-vote}'
+            failed: '{skip-vote}'
+            unstable: '{skip-vote}'
+            notbuilt: '{skip-vote}'
 
 # POD Per Patchset Pipeline Jobs
 
