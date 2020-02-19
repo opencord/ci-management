@@ -269,7 +269,7 @@
           config-pod: 'dt-berlin-pod'
           release: 'release'
           branch: 'master'
-          onos-version: '1.13.9'
+          onos-version: '2.2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
