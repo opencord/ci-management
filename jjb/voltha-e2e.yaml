@@ -240,7 +240,7 @@
               project-pattern: '^{project}$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '^{project}$'
+                  branch-pattern: '{branch-regexp}'
               file-paths:
                 - compare-type: REG_EXP
                   pattern: '{all-files-regexp}'
