@@ -979,6 +979,10 @@
           default: '{manifest-branch}'
           description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
 
+      - bool:
+          name: powerSwitch
+          default: '{power-switch}'
+          description: "Indicate whether POD has power switch to reboot ONUs/OLT remotely"
 
     concurrent: true
 
