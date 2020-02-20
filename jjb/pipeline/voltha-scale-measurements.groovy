@@ -56,7 +56,7 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-          DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimEapol},dhcp=${bbsimDhcp}" ./voltha up
+          DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimEapol},dhcp=${bbsimDhcp},images.bbsim.repository=${bbsimImgRepo},images.bbsim.tag=${bbsimImgTag},images.bbsim.pullPolicy=${bbsimImgPull}" ./voltha up
           '''
       }
     }
@@ -157,6 +157,9 @@ pipeline {
     }
   }
   post {
+    success {
+      archiveArtifacts artifacts: '*.log,*.txt'
+    }
     always {
       plot([
         csvFileName: 'plot-onu-activation.csv',
