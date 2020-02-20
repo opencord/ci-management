@@ -56,7 +56,19 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-          DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimEapol},dhcp=${bbsimDhcp}" ./voltha up
+          if [ -z ${bbsimImgTag} ] && [ -z ${bbsimImgRepo} ] && [ -z ${volthaImgRepo} ] && [ -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp}" ./voltha up
+          elif [ ! -z ${bbsimImgTag} ] && [ ! -z ${bbsimImgRepo} ] && [ -z ${volthaImgRepo} ] && [ -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp},images.bbsim.repository=${bbsimImgRepo},images.bbsim.tag=${bbsimImgTag}" ./voltha up
+          elif [ -z ${bbsimImgTag} ] && [ -z ${bbsimImgRepo} ] && [ ! -z ${volthaImgRepo} ] && [ ! -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp},images.voltha.repository=${volthaImgRepo},images.voltha.tag=${volthaImgTag}" ./voltha up
+          elif [ ! -z ${bbsimImgTag} ] && [ ! -z ${bbsimImgRepo} ] && [ ! -z ${volthaImgRepo} ] && [ ! -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp},images.voltha.repository=${volthaImgRepo},images.voltha.tag=${volthaImgTag},images.bbsim.repository=${bbsimImgRepo},images.bbsim.tag=${bbsimImgTag}" ./voltha up
+          fi
           '''
       }
     }
@@ -75,7 +87,7 @@ pipeline {
         sh '''
           #Check withOnosApps and disable apps accordingly
           if [ ${withOnosApps} = false ] ; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app dfctivate org.opencord.olt
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
           fi
@@ -170,14 +182,22 @@ pipeline {
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Port Recognition Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
       ])
     }
-    cleanup {
+    success {
       sh '''
         #!/usr/bin/env bash
-        set -euo pipefail
+        set +e
         rm onu-activation.txt
         rm total-time.txt
         rm port-recognition.txt
         rm activation-time.txt
+        cp kind-voltha/install-minimal.log $WORKSPACE/
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+        archiveArtifacts artifacts: '*.log,*.txt'
+      '''
+    }
+    cleanup {
+      sh '''
+        set -euo pipefail
         cd $WORKSPACE/kind-voltha
         DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
         cd $WORKSPACE/

@@ -57,7 +57,7 @@
           name: pollInterval
           default: 5
           description: 'Sleep time between ONU activation checks'
-      
+
       - bool:
           name: withOnosApps
           default: false
@@ -88,15 +88,35 @@
           default: 600
           description: 'Ports Stats Collection Interval, milliseconds'
 
-      - string:
-          name: bbsimEapol
+      - bool:
+          name: bbsimAuth
           default: true
-          description: 'Option to toggle BBSIM EAPOL true/false'
+          description: 'Option to toggle BBSIM AUTH true/false'
 
-      - string:
+      - bool:
           name: bbsimDhcp
           default: true
           description: 'Option to toggle BBSIM DHCP true/false'
+
+      - string:
+          name: bbsimImgRepo
+          default:
+          description: 'Use custom image for BBSIM (Repository)'
+
+      - string:
+          name: bbsimImgTag
+          default:
+          description: 'Use custom image for BBSIM (Tag)'
+
+      - string:
+          name: volthaImgRepo
+          default:
+          description: 'Use custom image for VOLTHA (Repository)'
+
+      - string:
+          name: volthaImgTag
+          default:
+          description: 'Use custom image for VOLTHA (Tag)'
 
     project-type: pipeline
     concurrent: true
