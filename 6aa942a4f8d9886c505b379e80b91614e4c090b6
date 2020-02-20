@@ -22,6 +22,30 @@
       "revId": "6aa942a4f8d9886c505b379e80b91614e4c090b6",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d63348c9_f2fcfebe",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000663
+      },
+      "writtenOn": "2020-02-20T18:33:41Z",
+      "side": 1,
+      "message": "The filenames are randomly generated, will update them to be more relevant.\nMy apologies for the repeated EOL whitespace, will rectify and maintain so in the future.",
+      "parentUuid": "cf694157_49b71436",
+      "range": {
+        "startLine": 162,
+        "startChar": 7,
+        "endLine": 162,
+        "endChar": 70
+      },
+      "revId": "6aa942a4f8d9886c505b379e80b91614e4c090b6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
