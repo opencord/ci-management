@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf694157_49b71436",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-20T17:43:40Z",
+      "side": 1,
+      "message": "where do these filenames come from (also, EOL whitespace)",
+      "range": {
+        "startLine": 162,
+        "startChar": 7,
+        "endLine": 162,
+        "endChar": 70
+      },
+      "revId": "6aa942a4f8d9886c505b379e80b91614e4c090b6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
