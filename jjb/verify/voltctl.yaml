@@ -20,7 +20,7 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltctl_licensed'
       - 'make-unit-test':
-          unit-test-targets: 'lint test'
+          unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
           dependency-jobs: 'verify_voltctl_tag-collision'
 
