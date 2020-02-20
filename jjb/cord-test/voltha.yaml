@@ -10,6 +10,7 @@
 
     with-kind: false
     onos-version: '2.2'
+    power-switch: False
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
@@ -73,6 +74,7 @@
           release: 'master'
           branch: 'master'
           released: false
+          power-switch: True
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
@@ -97,6 +99,7 @@
           release: 'master'
           branch: 'master'
           released: false
+          power-switch: True
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-bal31'
 
