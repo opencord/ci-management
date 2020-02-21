@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe3d3bfd_a4965153",
+        "filename": "jjb/verify/cord-tester.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-21T01:17:14Z",
+      "side": 1,
+      "message": "need to add a `publish-cord-tester-jobs` to this list, so it runs that job-group below",
+      "range": {
+        "startLine": 8,
+        "startChar": 4,
+        "endLine": 8,
+        "endChar": 9
+      },
+      "revId": "f3d542dc19cf43f183cc3ae6561c4ad6db769244",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "69f088d7_a9846b49",
+        "filename": "jjb/verify/cord-tester.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-21T01:17:14Z",
+      "side": 1,
+      "message": "This job is likely going away soon - the `make-unit-test`  job replaces it.",
+      "range": {
+        "startLine": 18,
+        "startChar": 8,
+        "endLine": 18,
+        "endChar": 27
+      },
+      "revId": "f3d542dc19cf43f183cc3ae6561c4ad6db769244",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
