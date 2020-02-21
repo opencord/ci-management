@@ -21,6 +21,7 @@
       - 'make-unit-test':
           dependency-jobs: 'verify_cord-tester_tag-collision'
           unit-test-targets: 'lint test'
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'publish-cord-tester-jobs'
