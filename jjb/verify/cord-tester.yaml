@@ -15,3 +15,13 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_cord-tester_licensed'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_cord-tester_tag-collision'
+
+- job-group:
+    name: 'publish-cord-tester-jobs'
+    jobs:
+      - 'pypi-publish':
+          pypi-module-dirs: 'cord-robot'
+          project-regexp: '^{name}$'
+          dependency-jobs: 'version-tag'
