@@ -8,6 +8,9 @@
     jobs:
       - 'verify-cord-tester-jobs':
           branch-regexp: '{supported-branches-regexp}'
+      - 'publish-cord-tester-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+          pypi-index: 'pypi'
 
 - job-group:
     name: 'verify-cord-tester-jobs'
@@ -15,3 +18,14 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_cord-tester_licensed'
+      - 'make-unit-test':
+          dependency-jobs: 'verify_cord-tester_tag-collision'
+          unit-test-targets: 'test'
+
+- job-group:
+    name: 'publish-cord-tester-jobs'
+    jobs:
+      - 'pypi-publish':
+          pypi-module-dirs: 'cord-robot'
+          project-regexp: '^{name}$'
+          dependency-jobs: 'version-tag'
