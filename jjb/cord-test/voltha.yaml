@@ -111,10 +111,10 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
           configurePod: true
           released: true
-          profile: 'Default'
+          profile: '1T4GEM-bal31'
           time: '4'
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
@@ -125,7 +125,7 @@
           branch: 'master'
           released: true
           test-repo: 'voltha-system-tests'
-          profile: 'Default'
+          profile: '1T4GEM-bal31'
 
       # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -160,7 +160,7 @@
           released: true
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
           configurePod: true
           profile: 'Default'
           time: '3'
@@ -207,7 +207,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
           configurePod: true
           profile: '1T4GEM-bal31'
       - 'build_pod_test':
@@ -226,7 +226,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
           configurePod: true
           profile: 'Default'
 
