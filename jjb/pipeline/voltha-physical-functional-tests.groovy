@@ -89,7 +89,7 @@ pipeline {
 
     stage('Failure/Recovery Tests') {
       when {
-        expression { ! params.released }
+        expression { params.released }
       }
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
@@ -113,7 +113,7 @@ pipeline {
 
     stage('Error Scenario Tests') {
       when {
-        expression { ! params.released }
+        expression { params.released }
       }
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
@@ -127,6 +127,7 @@ pipeline {
             export ROBOT_MISC_ARGS="--removekeywords wuks -i released -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         else
             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        fi
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
