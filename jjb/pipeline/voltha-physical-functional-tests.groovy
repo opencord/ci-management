@@ -88,9 +88,6 @@ pipeline {
     }
 
     stage('Failure/Recovery Tests') {
-      when {
-        expression { params.released }
-      }
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
         ROBOT_FILE="Voltha_FailureScenarios.robot"
@@ -112,9 +109,6 @@ pipeline {
     }
 
     stage('Error Scenario Tests') {
-      when {
-        expression { params.released }
-      }
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
         ROBOT_FILE="Voltha_ErrorScenarios.robot"
