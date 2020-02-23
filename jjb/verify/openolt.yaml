@@ -13,10 +13,14 @@
     name: 'verify-openolt-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_openolt_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_openolt_tag-collision'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          unit-test-targets: 'test'
+
+# This and the job-template below were written in October 2018
+#
+# Unknown if it is still relevant - the executor in Jenkins does not exist.
+#
 #      - 'openolt-tests':
 #          dependency-jobs: 'verify_openolt_sonarqube'
 
