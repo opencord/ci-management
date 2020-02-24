@@ -146,7 +146,7 @@ EOF
         grpcio-tools \
         httpie==1.0.3 \
         isort \
-        linkchecker \
+        git+https://github.com/linkchecker/linkchecker.git@v9.4.0
         more-itertools==5.0.0 \
         mock \
         netaddr \
