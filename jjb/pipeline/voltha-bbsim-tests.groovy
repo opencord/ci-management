@@ -64,8 +64,7 @@ pipeline {
       steps {
         sh """
            pushd voltha
-           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
-           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           repo download "${gerritProject}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
            popd
            """
       }
