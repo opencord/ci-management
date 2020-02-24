@@ -56,7 +56,7 @@
           allow-empty-results: '{junit-allow-empty-results}'
       - xunit:
           types:
-            - gunit:
+            - gtest:
                 pattern: "**/*xunit.xml"
                 deleteoutput: false
                 skip-if-no-test-files: '{xunit-skip-if-no-test-files}'
