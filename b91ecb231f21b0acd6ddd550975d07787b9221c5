@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69c6f8b5_83cc9f06",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-02-24T17:45:44Z",
+      "side": 1,
+      "message": "what about VOLTHA images?\n\nalso we don\u0027t need to change the pullPolicy, it\u0027s already set to \"Always\": https://github.com/opencord/helm-charts/blob/master/bbsim/values.yaml#L38",
+      "range": {
+        "startLine": 59,
+        "startChar": 136,
+        "endLine": 59,
+        "endChar": 248
+      },
+      "revId": "b91ecb231f21b0acd6ddd550975d07787b9221c5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
