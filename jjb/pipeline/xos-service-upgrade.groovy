@@ -136,7 +136,7 @@ pipeline {
            ## get pod logs
            for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
            do
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
+             kubectl logs \${pod} > $WORKSPACE/\${pod}_pre.log;
            done
            """
       }
@@ -241,12 +241,6 @@ pipeline {
            echo \$SERVICES
            cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${serviceName}_library.robot \$i\$testname"; sleep 2; done || true
-
-           ## get pod logs
-           for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-           do
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           done || true
            """
       }
     }
@@ -297,6 +291,12 @@ pipeline {
   post {
     always {
       sh """
+         ## get pod logs
+         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+         do
+           kubectl logs \${pod} > $WORKSPACE/\${pod}_post.log;
+         done
+
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
          cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
