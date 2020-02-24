@@ -158,8 +158,8 @@ pipeline {
               done
               echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
               echo $SECONDS > port-recognition.txt
-              echo "Duration" > total-time.txt
-              echo "Duration" > onu-activation.txt
+              echo "Duration(s)" > total-time.txt
+              echo "Duration(s)" > onu-activation.txt
               cat activation-time.txt >> onu-activation.txt
               paste activation-time.txt port-recognition.txt | awk '{print ($1 + $2)}' >> total-time.txt
             '''
@@ -185,6 +185,7 @@ pipeline {
     success {
       sh '''
         #!/usr/bin/env bash
+        archiveArtifacts artifacts: '*.log,*.txt'
         set +e
         rm onu-activation.txt
         rm total-time.txt
@@ -192,7 +193,6 @@ pipeline {
         rm activation-time.txt
         cp kind-voltha/install-minimal.log $WORKSPACE/
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
-        archiveArtifacts artifacts: '*.log,*.txt'
       '''
     }
     cleanup {
