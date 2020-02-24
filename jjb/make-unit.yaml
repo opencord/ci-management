@@ -54,6 +54,12 @@
       - junit:
           results: "**/*results.xml,**/*report.xml"
           allow-empty-results: '{junit-allow-empty-results}'
+      - xunit:
+          types:
+            - gunit:
+                pattern: "**/*xunit.xml"
+                deleteoutput: false
+                skip-if-no-test-files: '{xunit-skip-if-no-test-files}'
       - cobertura:
           report-file: "**/*coverage.xml"
           targets:
