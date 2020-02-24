@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5327fe06_3e911ba8",
+        "filename": "jjb/pipeline/xos-core.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2020-02-24T19:51:05Z",
+      "side": 1,
+      "message": "I think it\u0027s too many backslashes",
+      "range": {
+        "startLine": 167,
+        "startChar": 26,
+        "endLine": 167,
+        "endChar": 28
+      },
+      "revId": "7a3f637968d37eb5c0fc9721c593865320c44872",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c3570462_9623d3f2",
+        "filename": "jjb/pipeline/xos-core.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2020-02-24T19:51:05Z",
+      "side": 1,
+      "message": "same here",
+      "range": {
+        "startLine": 167,
+        "startChar": 45,
+        "endLine": 167,
+        "endChar": 47
+      },
+      "revId": "7a3f637968d37eb5c0fc9721c593865320c44872",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
