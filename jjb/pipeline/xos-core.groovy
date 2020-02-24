@@ -156,6 +156,19 @@ pipeline {
            """
       }
     }
+    stage ('Archive Artifacts') {
+      when { expression { return params.ArchiveLogs } }
+      steps {
+          sh '''
+           kubectl get pods --all-namespaces
+           ## get default pod logs
+           for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+           do
+             kubectl logs \$pod> $WORKSPACE/\$pod.log;
+           done
+           '''
+      }
+    }
   }
   post {
     always {
@@ -186,6 +199,7 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
+         archiveArtifacts artifacts: '*.log'
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, teo@opennetworking.org", sendToIndividuals: false])
 
     }
