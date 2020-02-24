@@ -145,8 +145,14 @@
     siab-projects-regexp: '^(xos-core/.*|xos-profiles/seba-services/.*|xos-profiles/base-kubernetes/.*|xos-profiles/ponsim-pod/.*|workflows/att-workflow/.*|voltha/.*|onos/.*|mininet/.*|configs/seba-ponsim.yaml)$'
 
     # Optionally allow JUnit results to be empty when test framework is set up,
-    # but no tests exist. Default behavior is to fail when test results are empty.
+    # but no tests exist. Default behavior is to fail when test results are
+    # empty. Also will not vote if no test output exists - good for repos where
+    # tests or test output generation may not yet exist.
     junit-allow-empty-results: false
+
+    # Allow xunit to not vote if no test files exist. Default is true because
+    # jUnit is the more commonly supported output format.
+    xunit-skip-if-no-test-files: true
 
     # Unit test targets
     # List of targets to run when testing a patchset, run with make or similar

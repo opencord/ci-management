@@ -16,6 +16,9 @@
       - 'tag-collision-reject'
       - 'make-unit-test':
           unit-test-targets: 'test'
+          # openolt uses gtest which outputs in xunit format
+          junit-allow-empty-results: true
+          xunit-skip-if-no-test-files: false
 
 # This and the job-template below were written in October 2018
 #
