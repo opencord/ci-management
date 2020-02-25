@@ -88,15 +88,25 @@
           default: 600
           description: 'Ports Stats Collection Interval, milliseconds'
 
-      - string:
-          name: bbsimEapol
+      - bool:
+          name: bbsimAuth
           default: true
           description: 'Option to toggle BBSIM EAPOL true/false'
 
-      - string:
+      - bool:
           name: bbsimDhcp
           default: true
           description: 'Option to toggle BBSIM DHCP true/false'
+
+      - string:
+          name: bbsimImg
+          default:
+          description: 'Custom image selection for BBSIM (repo:tag)'
+
+      - string:
+          name: volthaImg
+          default:
+          description: 'Custom image selection for VOLTHA (repo:tag)'
 
     project-type: pipeline
     concurrent: true
