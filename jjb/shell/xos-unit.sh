@@ -22,7 +22,7 @@ WORKSPACE=${WORKSPACE:-.}
 GERRIT_PROJECT=${GERRIT_PROJECT:-xos}
 
 # find the path to the project that is checked out
-PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" cord/.repo/manifest.xml)
+PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" cord/.repo/manifests/default.xml)
 
 if [ -f "$WORKSPACE/cord/$PROJECT_PATH/Makefile" ]; then
   # assume newer testing method which uses Makefile
