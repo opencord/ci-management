@@ -97,7 +97,7 @@
           mkdir -p docs/repos
 
           # Find path to the repo, copy into docs
-          PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" .repo/manifest.xml)
+          PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"$GERRIT_PROJECT\"]/@path)" .repo/manifests/default.xml)
           cp -r "$PROJECT_PATH" "docs/repos/$GERRIT_PROJECT"
 
           # build docs, don't touch checkout under test, capture test result

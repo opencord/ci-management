@@ -82,7 +82,7 @@ pipeline {
            }
 
            pushd cord
-           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifests/default.xml)
            repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
 
            pushd \$PROJECT_PATH

@@ -31,7 +31,7 @@ pushd "${DESTINATION_DIR}"
 echo "Checking out a patchset with repo, using repo version:"
 repo version
 
-PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"${GERRIT_PROJECT}\"]/@path)" .repo/manifest.xml)
+PROJECT_PATH=$(xmllint --xpath "string(//project[@name=\"${GERRIT_PROJECT}\"]/@path)" .repo/manifests/default.xml)
 
 if [ -z "$PROJECT_PATH" ]
 then
