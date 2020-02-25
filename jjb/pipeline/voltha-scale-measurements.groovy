@@ -20,6 +20,13 @@ pipeline {
     SSHPASS="karaf"
   }
   stages {
+    stage('set-description') {
+      steps {
+        script {
+          currentBuild.description = "${onuPerPon} ONU x ${ponPorts} PON"
+        }
+      }
+    }
     stage('checkout') {
       steps {
         checkout([
@@ -49,52 +56,71 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-          DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimEapol},dhcp=${bbsimDhcp}" ./voltha up
+          if [ -z ${bbsimImgTag} ] && [ -z ${bbsimImgRepo} ] && [ -z ${volthaImgRepo} ] && [ -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp}" ./voltha up
+          elif [ ! -z ${bbsimImgTag} ] && [ ! -z ${bbsimImgRepo} ] && [ -z ${volthaImgRepo} ] && [ -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp},images.bbsim.repository=${bbsimImgRepo},images.bbsim.tag=${bbsimImgTag}" ./voltha up
+          elif [ -z ${bbsimImgTag} ] && [ -z ${bbsimImgRepo} ] && [ ! -z ${volthaImgRepo} ] && [ ! -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp},images.voltha.repository=${volthaImgRepo},images.voltha.tag=${volthaImgTag}" ./voltha up
+          elif [ ! -z ${bbsimImgTag} ] && [ ! -z ${bbsimImgRepo} ] && [ ! -z ${volthaImgRepo} ] && [ ! -z ${volthaImgTag} ];
+          then
+            DEPLOY_K8S=n EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp},images.voltha.repository=${volthaImgRepo},images.voltha.tag=${volthaImgTag},images.bbsim.repository=${bbsimImgRepo},images.bbsim.tag=${bbsimImgTag}" ./voltha up
+          fi
           '''
       }
     }
-    stages {
-      stage('MIB-template') {
-        steps {
-          sh '''
-            if [ ${withMibTemplate} = true ] ; then
-              wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-              cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
-            fi
-          '''
-        }
+    stage('MIB-template') {
+      steps {
+        sh '''
+          if [ ${withMibTemplate} = true ] ; then
+            wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
+            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it -n voltha $(kubectl get pods -n voltha | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+          fi
+        '''
       }
-      stage('disable-ONOS-apps') {
-        steps {
-          sh '''
-            #Check withOnosApps and disable apps accordingly
-            if [ ${withOnosApps} = false ] ; then
-              sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.olt
-              sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
-              sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
-            fi
-          '''
-        }
+    }
+    stage('disable-ONOS-apps') {
+      steps {
+        sh '''
+          #Check withOnosApps and disable apps accordingly
+          if [ ${withOnosApps} = false ] ; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app dfctivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
+          fi
+        '''
       }
-      stage('configuration') {
-        steps {
-          sh '''
-            #Setting LOG level to WARN
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost log:set WARN
-            kubectl exec -n voltha $(kubectl get pods -n voltha | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
-            #Setting link discovery
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
-            #Setting the flow stats collection interval
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
-            #Setting the ports stats collection interval
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
-          '''
-        }
+    }
+    stage('configuration') {
+      steps {
+        sh '''
+          #Setting LOG level to WARN
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost log:set WARN
+          kubectl exec -n voltha $(kubectl get pods -n voltha | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
+          #Setting link discovery
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
+          #Setting the flow stats collection interval
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
+          #Setting the ports stats collection interval
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
+        '''
       }
-      stage('execute') {
-        options {
-            timeout(time:10)
-          }
+    }
+    stage('cpu-usage') {
+      steps {
+        sh '''
+          psrecord $(ps aux | grep -v "grep" | grep rw_core | awk 'NR==1{print $2}') --log rwcore-activity.txt --interval 1 &
+        '''
+      }
+    }
+    stage('execute') {
+      options {
+        timeout(time:10)
+      }
+      stages {
         stage('ONUs-enabled') {
           steps {
             sh '''
@@ -115,12 +141,13 @@ pipeline {
                 i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
               done
               echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
+              echo $SECONDS > activation-time.txt
             '''
           }
         }
         stage('ONOS-ports') {
           steps {
-            sh '''    
+            sh '''
               # Check ports showed up in ONOS
               z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost ports -e | grep BBSM | wc -l)
               until [ $z -eq ${expectedOnus} ]
@@ -130,6 +157,11 @@ pipeline {
                 z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost ports -e | grep BBSM | wc -l)
               done
               echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
+              echo $SECONDS > port-recognition.txt
+              echo "Duration(s)" > total-time.txt
+              echo "Duration(s)" > onu-activation.txt
+              cat activation-time.txt >> onu-activation.txt
+              paste activation-time.txt port-recognition.txt | awk '{print ($1 + $2)}' >> total-time.txt
             '''
           }
         }
@@ -137,9 +169,34 @@ pipeline {
     }
   }
   post {
-    cleanup {
+    always {
+      plot([
+        csvFileName: 'plot-onu-activation.csv',
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'onu-activation.txt', inclusionFlag: 'OFF', url: '']],
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'ONU Activation Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
+      ])
+
+      plot([
+        csvFileName: 'plot-total-time.csv',
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'total-time.txt', inclusionFlag: 'OFF', url: '']],
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Port Recognition Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
+      ])
+    }
+    success {
       sh '''
         #!/usr/bin/env bash
+        archiveArtifacts artifacts: '*.log,*.txt'
+        set +e
+        rm onu-activation.txt
+        rm total-time.txt
+        rm port-recognition.txt
+        rm activation-time.txt
+        cp kind-voltha/install-minimal.log $WORKSPACE/
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+      '''
+    }
+    cleanup {
+      sh '''
         set -euo pipefail
         cd $WORKSPACE/kind-voltha
         DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
