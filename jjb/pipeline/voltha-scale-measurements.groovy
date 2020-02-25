@@ -19,6 +19,10 @@ pipeline {
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
     SSHPASS="karaf"
     DEPLOY_K8S="n"
+<<<<<<< HEAD
+=======
+    EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp}"
+>>>>>>> b91f536... VOL-2603/2604/2605/2607/2608 ONU Configuration fix
   }
   stages {
     stage('set-description') {
@@ -57,7 +61,6 @@ pipeline {
       steps {
         sh '''
           cd kind-voltha
-          EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp}"
           if [ ! -z ${bbsimImg} ];
           then
             IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
@@ -87,7 +90,7 @@ pipeline {
         sh '''
           #Check withOnosApps and disable apps accordingly
           if [ ${withOnosApps} = false ] ; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app dfctivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deativate org.opencord.olt
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
           fi
