@@ -10,6 +10,9 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-manual'
           build-node: 'voltha-scale'
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-dev'
+          build-node: 'voltha-scale-dev'
 
 - job-template:
     id: 'voltha-scale-measurements'
@@ -57,7 +60,7 @@
           name: pollInterval
           default: 5
           description: 'Sleep time between ONU activation checks'
-      
+
       - bool:
           name: withOnosApps
           default: false
