@@ -112,7 +112,7 @@ pipeline {
     stage('cpu-usage') {
       steps {
         sh '''
-          psrecord $(ps aux | grep -v "grep" | grep rw_core | awk 'NR==1{print $2}') --log activity.txt --interval 1 &
+          psrecord $(ps aux | grep -v "grep" | grep rw_core | awk 'NR==1{print $2}') --log rwcore-activity.txt --interval 1 &
         '''
       }
     }
