@@ -1,6 +1,7 @@
 {
   "source_ami_filter_name": "*ubuntu*16.04*",
-  "source_ami_filter_owner": "099720109477",
+  "source_ami_filter_owner": "aws-marketplace",
+  "source_ami_filter_product_code": "csv6h7oyg29b7epjzg7qdr7no",
 
   "ssh_user": "ubuntu",
 

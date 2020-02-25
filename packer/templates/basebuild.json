@@ -1,10 +1,12 @@
 {
   "variables": {
+    "instance_type": "t2.medium",
     "aws_access_key": null,
     "aws_security_key": null,
     "security_group_id": null,
     "source_ami_filter_name": null,
     "source_ami_filter_owner": null,
+    "source_ami_filter_product_code": "",
     "subnet_id": null,
     "ssh_user": null,
     "distro": null,
@@ -15,13 +17,14 @@
     {
       "access_key": "{{user `aws_access_key`}}",
       "ami_name": "{{user `distro`}} - basebuild - {{user `arch`}} - {{isotime \"20060102-1504\"}}",
-      "instance_type": "t2.micro",
+      "instance_type": "{{user `instance_type`}}",
       "region": "us-west-2",
       "secret_key": "{{user `aws_security_key`}}",
       "security_group_id": "{{user `security_group_id`}}",
       "source_ami_filter": {
         "filters": {
           "name": "{{user `source_ami_filter_name`}}",
+          "product-code": "{{user `source_ami_filter_product_code`}}",
           "architecture": "{{user `arch`}}",
           "root-device-type": "ebs",
           "virtualization-type": "hvm"
