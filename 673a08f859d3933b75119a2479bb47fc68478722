@@ -22,6 +22,30 @@
       "revId": "673a08f859d3933b75119a2479bb47fc68478722",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0761c489_44480927",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-26T18:17:39Z",
+      "side": 1,
+      "message": "After this is merged the pipeline scripts in other repos will be updated to use \u0027buildNode\u0027, then once that\u0027s done another patch on ci-management to remove \u0027TestNodeName\u0027",
+      "parentUuid": "570000aa_520e5ec7",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 25
+      },
+      "revId": "673a08f859d3933b75119a2479bb47fc68478722",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
