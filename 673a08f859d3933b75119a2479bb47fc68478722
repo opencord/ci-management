@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "570000aa_520e5ec7",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-02-26T01:28:39Z",
+      "side": 1,
+      "message": "Changes look good.  When is the plan to update Jenkins build pipeline scripts?",
+      "range": {
+        "startLine": 31,
+        "startChar": 16,
+        "endLine": 31,
+        "endChar": 25
+      },
+      "revId": "673a08f859d3933b75119a2479bb47fc68478722",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
