@@ -106,6 +106,8 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
           #Setting the ports stats collection interval
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
+          # extending voltctl timeout
+          sed -i 's/timeout: 10s/timeout: 5m/g' /home/cord/.volt/config-minimal
         '''
       }
     }
