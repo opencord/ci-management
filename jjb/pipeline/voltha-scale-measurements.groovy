@@ -87,7 +87,7 @@ pipeline {
         sh '''
           #Check withOnosApps and disable apps accordingly
           if [ ${withOnosApps} = false ] ; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deativate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.olt
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.aaa
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost app deactivate org.opencord.dhcpl2relay
           fi
@@ -184,7 +184,12 @@ pipeline {
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Port Recognition Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
       ])
       archiveArtifacts artifacts: '*.log,*.txt'
+      script {
+        sh '''
+          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+        '''
       }
+    }
     success {
       sh '''
         #!/usr/bin/env bash
@@ -194,7 +199,6 @@ pipeline {
         rm port-recognition.txt
         rm activation-time.txt
         cp kind-voltha/install-minimal.log $WORKSPACE/
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
       '''
     }
     cleanup {
