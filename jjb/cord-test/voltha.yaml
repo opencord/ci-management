@@ -21,7 +21,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           profile: '1T4GEM-bal31'
 
       # flex pod1 test job - using voltha branch
@@ -41,7 +41,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           profile: '1T4GEM-bal31'
 
       # onlab pod1 test job - BAL3.1 tests using voltha branch
@@ -62,7 +62,7 @@
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: 'Default'
           time: '1'
@@ -87,7 +87,7 @@
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: '1T4GEM-bal31'
           time: '3'
@@ -111,7 +111,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           released: true
           profile: '1T4GEM-bal31'
@@ -136,7 +136,7 @@
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: 'Default'
           time: '1'
@@ -160,7 +160,7 @@
           released: true
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: 'Default'
           time: '3'
@@ -184,7 +184,7 @@
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: '1T4GEM-bal31'
           time: '4'
@@ -207,7 +207,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: '1T4GEM-bal31'
       - 'build_pod_test':
@@ -226,7 +226,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: 'Default'
 
