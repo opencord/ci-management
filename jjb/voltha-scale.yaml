@@ -7,12 +7,123 @@
     project-name: '{name}'
 
     jobs:
-      - 'voltha-scale-measurements':
+      - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-manual'
           build-node: 'onf-pod1-head-node'
+          time-trigger: "H * * * *"
+          onuPerPon: 32
+          ponPorts: 8
+          expectedOnus: 256
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale-dev'
+
+- job-template:
+    id: 'voltha-scale-measurements-periodic'
+    name: '{name}'
+    pipeline-script: 'voltha-scale-measurements.groovy'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/voltha-scale.yaml  <br /><br />
+      Using pipeline {pipeline-script} <br/><br/>
+      Scale measurements for VOLTHA 2.x
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: onuPerPon
+          default: 1
+          description: 'Number of ONUs to provision'
+
+      - string:
+          name: ponPorts
+          default: 1
+          description: 'Number of PONs to provision'
+
+      - string:
+          name: expectedOnus
+          default: 1
+          description: 'Expected number of activated ONUs'
+
+      - string:
+          name: pollInterval
+          default: 5
+          description: 'Sleep time between ONU activation checks'
+
+      - bool:
+          name: withOnosApps
+          default: false
+          description: 'Option to deactivate certain ONOS apps'
+
+      - bool:
+          name: withMibTemplate
+          default: true
+          description: 'Option to trigger MIB template command'
+
+      - bool:
+          name: setLinkDiscovery
+          default: false
+          description: 'Option to toggle Link Discovery'
+
+      - string:
+          name: BBSIMdelay
+          default: 200
+          description: 'BBSIM Delay, milliseconds'
+
+      - string:
+          name: flowStatInterval
+          default: 600
+          description: 'Flow Stats Collection Interval, milliseconds'
+
+      - string:
+          name: portsStatInterval
+          default: 600
+          description: 'Ports Stats Collection Interval, milliseconds'
+
+      - bool:
+          name: bbsimAuth
+          default: true
+          description: 'Option to toggle BBSIM EAPOL true/false'
+
+      - bool:
+          name: bbsimDhcp
+          default: true
+          description: 'Option to toggle BBSIM DHCP true/false'
+
+      - string:
+          name: bbsimImg
+          default:
+          description: 'Custom image selection for BBSIM (repo:tag)'
+
+      - string:
+          name: volthaImg
+          default:
+          description: 'Custom image selection for VOLTHA (repo:tag)'
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
 
 - job-template:
     id: 'voltha-scale-measurements'
@@ -112,6 +223,6 @@
           description: 'Custom image selection for VOLTHA (repo:tag)'
 
     project-type: pipeline
-    concurrent: true
+    concurrent: false
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
