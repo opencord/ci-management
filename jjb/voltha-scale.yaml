@@ -14,9 +14,14 @@
           onuPerPon: 32
           ponPorts: 8
           expectedOnus: 256
+          BBSIMdelay: 200
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale-dev'
+          onuPerPon: 16
+          ponPorts: 1
+          expectedOnus: 16
+          BBSIMdelay: 200
 
 - job-template:
     id: 'voltha-scale-measurements-periodic'
@@ -47,17 +52,17 @@
 
       - string:
           name: onuPerPon
-          default: 1
+          default: {onuPerPon}
           description: 'Number of ONUs to provision'
 
       - string:
           name: ponPorts
-          default: 1
+          default: {ponPorts}
           description: 'Number of PONs to provision'
 
       - string:
           name: expectedOnus
-          default: 1
+          default: {expectedOnus}
           description: 'Expected number of activated ONUs'
 
       - string:
@@ -82,7 +87,7 @@
 
       - string:
           name: BBSIMdelay
-          default: 200
+          default: {BBSIMdelay}
           description: 'BBSIM Delay, milliseconds'
 
       - string:
