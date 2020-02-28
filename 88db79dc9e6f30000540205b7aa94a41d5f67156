@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "450b1df7_ffdf82ad",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-28T01:09:33Z",
+      "side": 1,
+      "message": "This looks right for once per hour",
+      "range": {
+        "startLine": 13,
+        "startChar": 10,
+        "endLine": 13,
+        "endChar": 35
+      },
+      "revId": "88db79dc9e6f30000540205b7aa94a41d5f67156",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d7d02727_cb4ce9fb",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-02-28T01:09:33Z",
+      "side": 1,
+      "message": "I don\u0027t think the TZ is needed.  Upstream docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.timed",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 31
+      },
+      "revId": "88db79dc9e6f30000540205b7aa94a41d5f67156",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
