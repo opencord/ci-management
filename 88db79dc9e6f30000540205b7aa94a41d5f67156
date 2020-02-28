@@ -25,6 +25,29 @@
     },
     {
       "key": {
+        "uuid": "8927f080_587c57a8",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-02-28T01:15:54Z",
+      "side": 1,
+      "message": "This should work. This is how we specify in QA jobs too.",
+      "range": {
+        "startLine": 125,
+        "startChar": 17,
+        "endLine": 125,
+        "endChar": 39
+      },
+      "revId": "88db79dc9e6f30000540205b7aa94a41d5f67156",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d7d02727_cb4ce9fb",
         "filename": "jjb/voltha-scale.yaml",
         "patchSetId": 1
