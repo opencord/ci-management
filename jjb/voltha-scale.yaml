@@ -9,7 +9,7 @@
     jobs:
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-manual'
-          build-node: 'voltha-scale'
+          build-node: 'onf-pod1-head-node'
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale-dev'
