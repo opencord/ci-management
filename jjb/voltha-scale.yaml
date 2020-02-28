@@ -10,6 +10,10 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-manual'
           build-node: 'onf-pod1-head-node'
+          time-trigger: "H * * * *"
+          onuPerPon: 32
+          ponPorts: 8
+          expectedOnus: 256
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale-dev'
@@ -112,6 +116,11 @@
           description: 'Custom image selection for VOLTHA (repo:tag)'
 
     project-type: pipeline
-    concurrent: true
+    concurrent: false
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
