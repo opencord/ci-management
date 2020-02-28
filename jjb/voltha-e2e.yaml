@@ -63,7 +63,7 @@
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
-          testvm: 'tucson-pod'
+          build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
           oltDebVersion: 'openolt_asfvolt16.deb'
@@ -73,7 +73,7 @@
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset_manual':
           name: 'verify_physical_voltha_patchset_manual'
-          testvm: 'tucson-pod'
+          build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
           oltDebVersion: 'openolt_asfvolt16.deb'
@@ -84,7 +84,7 @@
       # Allow local testing without disrupting above job
       - 'build_physical_voltha_manual':
           name: 'build_tucson-pod_manual'
-          testvm: 'tucson-pod'
+          build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
           branch: 'master'
           oltDebVersion: 'openolt_asfvolt16.deb'
@@ -272,7 +272,7 @@
     parameters:
       - string:
           name: buildNode
-          default: '{testvm}'
+          default: '{build-node}'
           description: 'Pod management node'
 
       - string:
@@ -413,7 +413,7 @@
     parameters:
       - string:
           name: buildNode
-          default: '{testvm}'
+          default: '{build-node}'
           description: 'Pod management node'
 
       - string:
@@ -555,7 +555,7 @@
     parameters:
       - string:
           name: buildNode
-          default: '{testvm}'
+          default: '{build-node}'
           description: 'Pod management node'
 
       - string:
