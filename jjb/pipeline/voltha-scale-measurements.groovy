@@ -32,7 +32,11 @@ pipeline {
     stage('cleanup') {
       steps {
         sh '''
-          helm del --purge onos voltha openolt openonu bbsim radius
+          for hchart in \$(helm list -q | grep -E -v 'docker-registry|cord-kafka|etcd-operator');
+          do
+              echo "Purging chart: \${hchart}"
+              helm delete --purge "\${hchart}"
+          done
           bash /home/cord/voltha-scale/wait_for_pods.sh
           bash /home/cord/voltha-scale/stop_port_forward.sh
         '''
