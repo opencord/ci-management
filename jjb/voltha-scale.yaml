@@ -52,17 +52,17 @@
 
       - string:
           name: onuPerPon
-          default: {onuPerPon}
+          default: '{onuPerPon}'
           description: 'Number of ONUs to provision'
 
       - string:
           name: ponPorts
-          default: {ponPorts}
+          default: '{ponPorts}'
           description: 'Number of PONs to provision'
 
       - string:
           name: expectedOnus
-          default: {expectedOnus}
+          default: '{expectedOnus}'
           description: 'Expected number of activated ONUs'
 
       - string:
@@ -87,7 +87,7 @@
 
       - string:
           name: BBSIMdelay
-          default: {BBSIMdelay}
+          default: '{BBSIMdelay}'
           description: 'BBSIM Delay, milliseconds'
 
       - string:
