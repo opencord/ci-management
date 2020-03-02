@@ -8,13 +8,37 @@
 
     jobs:
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-manual'
+          name: 'voltha-scale-measurements-periodic-256-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H * * * *"
           onuPerPon: 32
           ponPorts: 8
           expectedOnus: 256
           BBSIMdelay: 200
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-128-200ms'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H * * * *"
+          onuPerPon: 32
+          ponPorts: 4
+          expectedOnus: 128
+          BBSIMdelay: 200
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-256-1000ms'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H * * * *"
+          onuPerPon: 32
+          ponPorts: 8
+          expectedOnus: 256
+          BBSIMdelay: 1000
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-128-1000ms'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H * * * *"
+          onuPerPon: 32
+          ponPorts: 4
+          expectedOnus: 128
+          BBSIMdelay: 1000
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale-dev'
