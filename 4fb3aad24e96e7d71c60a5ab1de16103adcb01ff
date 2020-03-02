@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c53264c_00780573",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-02T20:00:02Z",
+      "side": 1,
+      "message": "Did you want \"deterministic based on job name\" here, or a set time (15,30,45,etc) after each hour?   If the latter, use the minute after the hour instead of H",
+      "range": {
+        "startLine": 21,
+        "startChar": 24,
+        "endLine": 21,
+        "endChar": 26
+      },
+      "revId": "4fb3aad24e96e7d71c60a5ab1de16103adcb01ff",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
