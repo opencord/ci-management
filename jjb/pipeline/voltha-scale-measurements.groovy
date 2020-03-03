@@ -175,21 +175,23 @@ pipeline {
         csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'onu-activation.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'total-time.txt', inclusionFlag: 'OFF', url: '']],
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
       ])
-      archiveArtifacts artifacts: '*.log,*.txt'
       script {
         sh '''
           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+          voltctl device list -o json > device-list.json
+          python -m json.tool device-list.json > volt-device-list.json
+          rm device-list.json
+          rm port-recognition.txt
+          rm activation-time.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
         '''
       }
+      archiveArtifacts artifacts: '*.log,*.json,*txt'
     }
     success {
       sh '''
         #!/usr/bin/env bash
         set +e
-        rm onu-activation.txt
-        rm total-time.txt
-        rm port-recognition.txt
-        rm activation-time.txt
       '''
     }
   }
