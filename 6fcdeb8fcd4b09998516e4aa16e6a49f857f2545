@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ecbcb08b_c5c18e4c",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-03-03T20:45:38Z",
+      "side": 1,
+      "message": "Can you integrate this as part of the \u0027Initialize\u0027 stage? Otherwise, view for the older jenkins jobs will be erased",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 79,
+        "endChar": 5
+      },
+      "revId": "6fcdeb8fcd4b09998516e4aa16e6a49f857f2545",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
