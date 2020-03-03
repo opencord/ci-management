@@ -60,6 +60,16 @@
           pons: 8
           time-trigger: "H H/3 * * *"
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-alarm-test'
+          build-node: 'qct-pod4-node2'
+          default-image-tag: 'master'
+          code-branch: 'master'
+          make-target: bbsim-alarms-kind
+          onus: 1
+          pons: 1
+          time-trigger: "H H/3 * * *"
+
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
