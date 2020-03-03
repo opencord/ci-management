@@ -54,11 +54,18 @@ pipeline {
       steps {
         sh '''
           helm install -n onos onf/onos --set images.onos.repository=voltha/voltha-onos --set images.onos.tag=4.0.1
-          helm install -n voltha onf/voltha -f /home/cord/voltha-scale/voltha-values.yaml
-          helm install -n openolt onf/voltha-adapter-openolt -f /home/cord/voltha-scale/voltha-values.yaml
-          helm install -n openonu onf/voltha-adapter-openonu -f /home/cord/voltha-scale/voltha-values.yaml
 
-          helm install -n bbsim onf/bbsim --set pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay}
+          IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
+          helm install -n voltha onf/voltha -f /home/cord/voltha-scale/voltha-values.yaml --set images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag}
+
+          IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
+          helm install -n openolt onf/voltha-adapter-openolt -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag}
+
+          IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
+          helm install -n openonu onf/voltha-adapter-openonu -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openonuAdapterRepo},images.adapter_open_olt.tag=${openonuAdapterTag}
+
+          IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
+          helm install -n bbsim onf/bbsim --set pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag}
           helm install -n radius onf/freeradius
 
           if [ ! -z ${bbsimImg} ];
