@@ -29,7 +29,7 @@ pipeline {
   environment {
     KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$WORKSPACE/bin"
+    PATH="$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   }
 
   stages {
@@ -61,9 +61,20 @@ pipeline {
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
         git clone https://github.com/ciena/kind-voltha.git
+
+        VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
+        HOSTOS=\$(uname -s | tr "[:upper:]" "[:lower:"])
+        HOSTARCH=\$(uname -m | tr "[:upper:]" "[:lower:"])
+        if [ \$HOSTARCH == "x86_64" ]; then
+            HOSTARCH="amd64"
+        fi
+        curl -o $WORKSPACE/bin/voltctl -sSL https://github.com/opencord/voltctl/releases/download/v\${VC_VERSION}/voltctl-\${VC_VERSION}-\${HOSTOS}-\${HOSTARCH}
+        chmod 755 $WORKSPACE/bin/voltctl
+        voltctl version --clientonly
         """
       }
     }
+
     stage('Functional Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
