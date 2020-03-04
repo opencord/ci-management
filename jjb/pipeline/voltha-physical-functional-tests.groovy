@@ -137,6 +137,9 @@ pipeline {
 
       sleep 60 # Wait for log-collector and log-combine to complete
 
+      # Clean up "announcer" pod used by the tests if present
+      kubectl delete pod announcer || true
+
       ## Pull out errors from log files
       extract_errors_go() {
         echo
