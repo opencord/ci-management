@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a792e8d9_a6aabcef",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-03-04T00:30:37Z",
+      "side": 1,
+      "message": "How about onos?",
+      "range": {
+        "startLine": 126,
+        "startChar": 9,
+        "endLine": 129,
+        "endChar": 72
+      },
+      "revId": "65484577fb10b0b59571e0101f5b0bfbb1230018",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
