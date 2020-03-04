@@ -181,7 +181,7 @@ pipeline {
           voltctl device list -o json > device-list.json
           python -m json.tool device-list.json > volt-device-list.json
           rm device-list.json
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
         '''
       }
       archiveArtifacts artifacts: '*.log,*.json,*txt'
