@@ -5,7 +5,7 @@ pipeline {
     label "${params.buildNode}"
   }
   environment {
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
+    KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config-minimal"
     PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
@@ -25,7 +25,7 @@ pipeline {
     stage('set-description') {
       steps {
         script {
-          currentBuild.description = "${onuPerPon} ONU x ${ponPorts} PON - BBSIM Delay ${BBSIMdelay}"
+          currentBuild.description = "$BUILD_TIMESTAMP"
         }
       }
     }
@@ -179,9 +179,9 @@ pipeline {
   post {
     always {
       plot([
-        csvFileName: 'plot-onu-activation.csv',
+        csvFileName: 'plot-onu-activation-${BBSIMdelay}.csv',
         csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'onu-activation.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'total-time.txt', inclusionFlag: 'OFF', url: '']],
-        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Time (${BBSIMdelay} Delay)', yaxis: 'Time (s)'
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
       ])
       script {
         sh '''
