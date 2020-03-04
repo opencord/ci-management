@@ -137,6 +137,8 @@ pipeline {
 
       sleep 60 # Wait for log-collector and log-combine to complete
 
+      kubectl delete pod announcer || true
+
       cd $WORKSPACE/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
 
