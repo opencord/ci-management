@@ -173,7 +173,7 @@ pipeline {
       plot([
         csvFileName: 'plot-onu-activation.csv',
         csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'onu-activation.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'total-time.txt', inclusionFlag: 'OFF', url: '']],
-        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Time (200ms Delay)', useDescr: true, yaxis: 'Time (s)'
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: 'Time (${BBSIMdelay} Delay)', yaxis: 'Time (s)'
       ])
       script {
         sh '''
