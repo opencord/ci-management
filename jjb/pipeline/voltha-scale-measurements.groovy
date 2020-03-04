@@ -141,7 +141,7 @@ pipeline {
                 i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
               done
               echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
-              echo $SECONDS > activation-time.txt
+              echo $SECONDS > voltha-devices.txt
             '''
           }
         }
@@ -157,11 +157,11 @@ pipeline {
                 z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l)
               done
               echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
-              echo $SECONDS > port-recognition.txt
+              echo $SECONDS > onos-ports.txt
               echo "ONOS-Duration(s)" > total-time.txt
               echo "VOLTHA-Duration(s)" > onu-activation.txt
-              cat activation-time.txt >> onu-activation.txt
-              paste activation-time.txt port-recognition.txt | awk '{print ($1 + $2)}' >> total-time.txt
+              cat voltha-devices.txt >> onu-activation.txt
+              paste voltha-devices.txt onos-ports.txt | awk '{print ($1 + $2)}' >> total-time.txt
             '''
           }
         }
@@ -181,8 +181,6 @@ pipeline {
           voltctl device list -o json > device-list.json
           python -m json.tool device-list.json > volt-device-list.json
           rm device-list.json
-          rm port-recognition.txt
-          rm activation-time.txt
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
         '''
       }
