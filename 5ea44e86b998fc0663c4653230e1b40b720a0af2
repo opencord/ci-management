@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66f191b6_1236dfe9",
+        "filename": "jjb/siab.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-04T15:48:10Z",
+      "side": 1,
+      "message": "siab",
+      "range": {
+        "startLine": 71,
+        "startChar": 58,
+        "endLine": 71,
+        "endChar": 62
+      },
+      "revId": "5ea44e86b998fc0663c4653230e1b40b720a0af2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "812b3d6e_eadf3a2e",
+        "filename": "jjb/siab.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-04T15:48:10Z",
+      "side": 1,
+      "message": "siab",
+      "range": {
+        "startLine": 121,
+        "startChar": 58,
+        "endLine": 121,
+        "endChar": 62
+      },
+      "revId": "5ea44e86b998fc0663c4653230e1b40b720a0af2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f32ec4c6_7e8e6d56",
+        "filename": "jjb/siab.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-04T15:48:10Z",
+      "side": 1,
+      "message": "siab",
+      "range": {
+        "startLine": 172,
+        "startChar": 58,
+        "endLine": 172,
+        "endChar": 62
+      },
+      "revId": "5ea44e86b998fc0663c4653230e1b40b720a0af2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
