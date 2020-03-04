@@ -45,7 +45,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 32
           ponPorts: 16
-          expectedOnus: 128
+          expectedOnus: 512
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-16-32-1000ms'
@@ -53,7 +53,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 32
           ponPorts: 16
-          expectedOnus: 128
+          expectedOnus: 512
           BBSIMdelay: 1000
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-64-200ms'
@@ -77,7 +77,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 128
           ponPorts: 4
-          expectedOnus: 256
+          expectedOnus: 512
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-128-1000ms'
@@ -85,7 +85,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 128
           ponPorts: 4
-          expectedOnus: 256
+          expectedOnus: 512
           BBSIMdelay: 1000
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-128-200ms'
@@ -93,7 +93,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 128
           ponPorts: 1
-          expectedOnus: 256
+          expectedOnus: 128
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-128-1000ms'
@@ -101,7 +101,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 128
           ponPorts: 1
-          expectedOnus: 256
+          expectedOnus: 128
           BBSIMdelay: 1000
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-64-200ms'
@@ -109,7 +109,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 64
           ponPorts: 1
-          expectedOnus: 256
+          expectedOnus: 64
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-64-1000ms'
@@ -117,7 +117,7 @@
           time-trigger: "H H/3 * * *"
           onuPerPon: 64
           ponPorts: 1
-          expectedOnus: 256
+          expectedOnus: 64
           BBSIMdelay: 1000
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
