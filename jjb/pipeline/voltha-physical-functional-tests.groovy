@@ -137,6 +137,26 @@ pipeline {
 
       sleep 60 # Wait for log-collector and log-combine to complete
 
+      ## Pull out errors from log files
+      extract_errors_go() {
+        echo
+        echo "Error summary for $1:"
+        grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
+        echo
+      }
+
+      extract_errors_python() {
+        echo
+        echo "Error summary for $1:"
+        grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
+        echo
+      }
+
+      extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
+      extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
+      extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
+      extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+
       cd $WORKSPACE/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
 
