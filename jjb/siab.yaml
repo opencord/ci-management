@@ -18,7 +18,7 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/siba.yaml  <br /><br />
+      Created by {id} job-template from ci-management/jjb/siab.yaml  <br /><br />
       E2E Validation for Seba-in-a-Box
 
     properties:
@@ -68,7 +68,7 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/siba.yaml  <br /><br />
+      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipleine: siab.groovy <br /><br />
       E2E Validation for Seba-in-a-Box
 
     properties:
@@ -118,7 +118,7 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/siba.yaml  <br /><br />
+      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipleine: siab.groovy <br /><br />
       E2E Validation for Seba-in-a-Box
 
     properties:
@@ -169,7 +169,7 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/siba.yaml  <br /><br />
+      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipleine: siab-test.groovy <br /><br />
       E2E Validation for Seba-in-a-Box
 
     properties:
