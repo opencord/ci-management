@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf18d759_488435dd",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-03-05T19:47:18Z",
+      "side": 1,
+      "message": "this needs to be `master`",
+      "range": {
+        "startLine": 271,
+        "startChar": 20,
+        "endLine": 271,
+        "endChar": 27
+      },
+      "revId": "9a6653f72e82bc66c8c906497e79a317a9027f10",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9420ae18_10003011",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-03-05T19:47:18Z",
+      "side": 1,
+      "message": "change this to `master`",
+      "range": {
+        "startLine": 288,
+        "startChar": 20,
+        "endLine": 288,
+        "endChar": 27
+      },
+      "revId": "9a6653f72e82bc66c8c906497e79a317a9027f10",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
