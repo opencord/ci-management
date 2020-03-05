@@ -836,7 +836,7 @@
               - '{branch}'
 
 - job-template:
-    name: 'build_{config-pod}_{profile}_voltha_{release}'
+    name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}'
     id: build_voltha_pod_release
     description: |
                   <!-- Managed by Jenkins Job Builder -->
@@ -938,6 +938,11 @@
           default: '{with-kind}'
           description: "The pods uses kind and a physical fabric thus port forward to the management is needed"
 
+      - bool:
+          name: goVersion
+          default: '{with-go}'
+          description: "Installs POD with go version when true"
+
     concurrent: true
 
     pipeline-scm:
@@ -954,7 +959,7 @@
                  H {time} * * *
 
 - job-template:
-    name: 'build_{config-pod}_{profile}_voltha_{release}_test'
+    name: 'build_{config-pod}_{profile}_voltha{name-extension}_{release}_test'
     id: build_voltha_pod_test
     description: |
                   <!-- Managed by Jenkins Job Builder -->
