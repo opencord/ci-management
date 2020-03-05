@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "175179fe_2ee9d035",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 943,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-05T20:11:03Z",
+      "side": 1,
+      "message": "use-ofagent-go ?",
+      "range": {
+        "startLine": 943,
+        "startChar": 9,
+        "endLine": 943,
+        "endChar": 30
+      },
+      "revId": "83263cc4ebb5cad4977577c520a3641e54b3f526",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "277b143d_3d5daee4",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-05T20:11:03Z",
+      "side": 1,
+      "message": "use-ofagent-go ?",
+      "range": {
+        "startLine": 12,
+        "startChar": 4,
+        "endLine": 12,
+        "endChar": 18
+      },
+      "revId": "83263cc4ebb5cad4977577c520a3641e54b3f526",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
