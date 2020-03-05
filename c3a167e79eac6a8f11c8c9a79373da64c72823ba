@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2db74510_f0f0f76f",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-05T16:41:36Z",
+      "side": 1,
+      "message": "Is this to switch to `ofagent-go`?  If so, it would be more clear if the boolean was named `with-ofagent-go` or just `ofagent-go`.",
+      "range": {
+        "startLine": 209,
+        "startChar": 10,
+        "endLine": 209,
+        "endChar": 23
+      },
+      "revId": "c3a167e79eac6a8f11c8c9a79373da64c72823ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
