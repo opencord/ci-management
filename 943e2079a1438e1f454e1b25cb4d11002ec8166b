@@ -22,6 +22,30 @@
       "revId": "943e2079a1438e1f454e1b25cb4d11002ec8166b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d419aed6_413437b3",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000663
+      },
+      "writtenOn": "2020-03-05T22:38:46Z",
+      "side": 1,
+      "message": "This does seem like the best way to assign the builds individual labels based on their descriptions.",
+      "parentUuid": "29fff5b2_4e2e0e37",
+      "range": {
+        "startLine": 184,
+        "startChar": 129,
+        "endLine": 184,
+        "endChar": 143
+      },
+      "revId": "943e2079a1438e1f454e1b25cb4d11002ec8166b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
