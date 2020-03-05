@@ -32,6 +32,7 @@ pipeline {
     stage('cleanup') {
       steps {
         sh '''
+          rm -rf voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt
           for hchart in \$(helm list -q | grep -E -v 'docker-registry|cord-kafka|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
