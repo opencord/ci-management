@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "27ec102f_aa0e714d",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 271,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-03-05T20:28:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "cf18d759_488435dd",
+      "range": {
+        "startLine": 271,
+        "startChar": 20,
+        "endLine": 271,
+        "endChar": 27
+      },
+      "revId": "9a6653f72e82bc66c8c906497e79a317a9027f10",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dc0761fd_b47d3c9e",
         "filename": "jjb/cord-test/voltha.yaml",
         "patchSetId": 1
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "0ad51e2f_0829f573",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 278,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-03-05T20:28:45Z",
+      "side": 1,
+      "message": "that is a good question, but I know less about it than you do. If I can say so probably not.",
+      "parentUuid": "dc0761fd_b47d3c9e",
+      "range": {
+        "startLine": 278,
+        "startChar": 3,
+        "endLine": 278,
+        "endChar": 25
+      },
+      "revId": "9a6653f72e82bc66c8c906497e79a317a9027f10",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9420ae18_10003011",
         "filename": "jjb/cord-test/voltha.yaml",
         "patchSetId": 1
@@ -59,6 +107,30 @@
       "writtenOn": "2020-03-05T19:47:18Z",
       "side": 1,
       "message": "change this to `master`",
+      "range": {
+        "startLine": 288,
+        "startChar": 20,
+        "endLine": 288,
+        "endChar": 27
+      },
+      "revId": "9a6653f72e82bc66c8c906497e79a317a9027f10",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca770c9d_6cc2dc35",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 288,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-03-05T20:28:45Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "9420ae18_10003011",
       "range": {
         "startLine": 288,
         "startChar": 20,
