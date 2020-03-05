@@ -216,12 +216,12 @@
 
       - string:
           name: bbsimImg
-          default:
+          default: 'voltha/bbsim:master'
           description: 'Custom image selection for BBSIM (repo:tag)'
 
       - string:
           name: volthaImg
-          default:
+          default: 'voltha/voltha-rw-core:master'
           description: 'Custom image selection for VOLTHA (repo:tag)'
 
     project-type: pipeline
@@ -323,13 +323,23 @@
 
       - string:
           name: bbsimImg
-          default:
+          default: voltha/bbsim:master
           description: 'Custom image selection for BBSIM (repo:tag)'
 
       - string:
           name: volthaImg
-          default:
+          default: voltha/voltha-rw-core:master
           description: 'Custom image selection for VOLTHA (repo:tag)'
+
+      - string:
+          name: openoltAdapterImg
+          default: voltha/voltha-openolt-adapter:master
+          description: 'Custom image selection for Openolt Adapter (repo:tag)'
+
+      - string:
+          name: openonuAdapterImg
+          default: voltha/voltha-openonu-adapter:master
+          description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
     project-type: pipeline
     concurrent: false
