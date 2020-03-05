@@ -264,7 +264,7 @@
           profile: 'Default'
 
 
-      # Berlin pod with olt/onu - Released versions Default tech profile and timer based job
+      # Berlin pod with olt/onu - master versions Default tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
@@ -275,18 +275,18 @@
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
           configurePod: true
-          released: true
+          released: false
           profile: 'Default'
           with-kind: true
           time: '9'
 
 
-      # Berlin POD test job - released versions: uses tech profile on voltha branch
+      # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
           release: 'release'
           branch: 'master'
-          released: true
+          released: false
           test-repo: 'voltha-system-tests'
           profile: 'Default'
