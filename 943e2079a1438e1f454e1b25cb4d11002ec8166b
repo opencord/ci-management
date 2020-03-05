@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "29fff5b2_4e2e0e37",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 184,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-05T21:54:16Z",
+      "side": 1,
+      "message": "Is this the only way we have to assign a label on the xAxis?",
+      "range": {
+        "startLine": 184,
+        "startChar": 129,
+        "endLine": 184,
+        "endChar": 143
+      },
+      "revId": "943e2079a1438e1f454e1b25cb4d11002ec8166b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
