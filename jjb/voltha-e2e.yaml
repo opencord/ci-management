@@ -397,7 +397,7 @@
                 approval-value: '+2'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter)$'
+              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-go)$'
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
