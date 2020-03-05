@@ -9,6 +9,7 @@
     build-timeout: '300'
 
     with-kind: false
+    use-ofagent-go: false
     onos-version: '2.2'
     power-switch: False
 
@@ -189,12 +190,66 @@
           profile: '1T4GEM-bal31'
           time: '4'
 
+      # Menlo pod test job - master test job uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          released: false
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM-bal31'
+
+      # Menlo pod with olt/onu - Uses GO Version - Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_GO'
+          use-ofagent-go: true
+          released: false
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          configurePod: true
+          profile: 'Default'
+          time: '6'
+
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          name-extension: '_GO'
+          released: false
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+
+      # Menlo pod with olt/onu - Uses GO Version - Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_GO'
+          use-ofagent-go: true
+          released: false
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          configurePod: true
+          profile: '1T4GEM-bal31'
+          time: '8'
+
+      # Menlo pod test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_GO'
           released: false
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-bal31'
