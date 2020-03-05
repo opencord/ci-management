@@ -177,28 +177,41 @@ pipeline {
     }
   }
   post {
-    always {
+    success {
       plot([
         csvFileName: 'plot-onu-activation.csv',
         csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'onu-activation.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'total-time.txt', inclusionFlag: 'OFF', url: '']],
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
       ])
+    }
+    always {
+      sh '''
+        echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) > onus.txt
+        echo "#-of-ONUs" > no_onus.txt
+        cat onus.txt >> no_onus.txt
+
+        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l) > ports.txt
+        echo "#-of-ports" > no_ports.txt
+        cat ports.txt >> no_ports.txt
+
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+        voltctl device list -o json > device-list.json
+        python -m json.tool device-list.json > volt-device-list.json
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
+        '''
+      plot([
+        csvFileName: 'plot-numbers.csv',
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'no_onus.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'no_ports.txt', inclusionFlag: 'OFF', url: '']],
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Activated ONUs and Recognized Ports", yaxis: 'Number of Ports/ONUs', useDescr: true
+      ])
+
+      archiveArtifacts artifacts: '*.log,*.json,*txt'
+
       script {
         sh '''
-          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
-          voltctl device list -o json > device-list.json
-          python -m json.tool device-list.json > volt-device-list.json
-          rm device-list.json
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
+          rm -rf onus.txt ports.txt voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt device-list.json
         '''
       }
-      archiveArtifacts artifacts: '*.log,*.json,*txt'
-    }
-    success {
-      sh '''
-        #!/usr/bin/env bash
-        set +e
-      '''
     }
   }
 }
