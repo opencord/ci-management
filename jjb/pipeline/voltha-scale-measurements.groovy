@@ -79,6 +79,8 @@ pipeline {
             IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
             EXTRA_HELM_FLAGS+=",images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag}"
           fi
+          voltctl adapter list | grep openolt | wc -l == 1
+          voltctl adapter list | grep brcm_openomci_onu | wc -l == 1
           bash /home/cord/voltha-scale/wait_for_pods.sh
           bash /home/cord/voltha-scale/start_port_forward.sh
           '''
@@ -193,11 +195,6 @@ pipeline {
         echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l) > ports.txt
         echo "#-of-ports" > no_ports.txt
         cat ports.txt >> no_ports.txt
-
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
-        voltctl device list -o json > device-list.json
-        python -m json.tool device-list.json > volt-device-list.json
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
         '''
       plot([
         csvFileName: 'plot-numbers.csv',
@@ -209,6 +206,10 @@ pipeline {
 
       script {
         sh '''
+          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+          voltctl device list -o json > device-list.json
+          python -m json.tool device-list.json > volt-device-list.json
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
           rm -rf onus.txt ports.txt voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt device-list.json
         '''
       }
