@@ -11,6 +11,8 @@
       - 'publish-pyvoltha-jobs':
           branch-regexp: '{all-branches-regexp}'
           pypi-index: 'pypi'
+      - 'pyvoltha-compat-jobs':
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-pyvoltha-jobs'
@@ -20,9 +22,6 @@
           dependency-jobs: 'verify_pyvoltha_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_pyvoltha_tag-collision'
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha-bbsim-tests.groovy'
-          skip-vote: true
 
 - job-group:
     name: 'publish-pyvoltha-jobs'
@@ -30,3 +29,17 @@
       - 'pypi-publish':
           project-regexp: '^{name}$'
           dependency-jobs: 'version-tag'
+
+- job-group:
+    name: 'pyvoltha-compat-jobs'
+    jobs:
+      - 'voltha-periodic-test':
+          name: 'nightly-pyvoltha-compatibility-test'
+          pipeline-script: 'voltha-bbsim-tests.groovy'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          default-image-tag: 'master'
+          code-branch: 'master'
+          make-target: sanity-single-kind
+          onus: 1
+          pons: 1
+          time-trigger: "@daily"
