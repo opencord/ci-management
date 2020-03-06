@@ -72,7 +72,7 @@ pipeline {
           timeout(3) {
             waitUntil {
               sleep 5
-              def kc_ret = sh script: "kubectl get po", returnStatus: true
+              def kc_ret = sh script: "kubectl get pods", returnStatus: true
               return (kc_ret == 0);
             }
           }
@@ -166,7 +166,13 @@ pipeline {
     stage('Test Pre-Upgrade') {
       steps {
         sh """
-           pushd cord/test/cord-tester/src/test/cord-api/Tests
+           #!/usr/bin/env bash
+           set -ex -o pipefail
+
+           pushd cord/test/cord-tester
+           make venv_cord
+           source venv_cord/bin/activate
+           cd src/test/cord-api/Tests
 
            CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
            CHAM_CONTAINER=\$(docker ps | grep k8s_xos-chameleon | awk '{print \$1}')
@@ -197,6 +203,7 @@ pipeline {
         sh """
            #!/usr/bin/env bash
            set -eu -o pipefail
+
            pushd $WORKSPACE/cord/orchestration/xos-services/${gerritProject}
            export DOCKER_TAG=\$(cat VERSION)-test
            export DOCKER_REPOSITORY=xosproject/
@@ -233,13 +240,20 @@ pipeline {
     stage('Test Post-Upgrade') {
       steps {
         sh """
+           #!/usr/bin/env bash
+           set -ex -o pipefail
+
+           cd cord/test/cord-tester
+           make venv_cord
+           source venv_cord/bin/activate
+           cd src/test/cord-api/Tests
+
            CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
 
            export testname=_service_api.robot
            export library=_library.robot
            SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
            echo \$SERVICES
-           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
            for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${serviceName}_library.robot \$i\$testname"; sleep 2; done || true
            """
       }
@@ -264,13 +278,18 @@ pipeline {
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"core\\").state'| grep -q present; do echo 'Waiting for Core to be loaded'; sleep 5; done"
            timeout 300 bash -c "until http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status | jq '.services[] | select(.name==\\"${gerritProject}\\").state'| grep -q present; do echo 'Waiting for Service to be loaded'; sleep 5; done"
            sleep 120
-           cd $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests
+
+           cd $WORKSPACE/cord/test/cord-tester
+           make venv_cord
+           source venv_cord/bin/activate
+           cd src/test/cord-api/Tests
 
            CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
 
            export testname=_service_api.robot
            export library=_library.robot
            SERVICES=\$(docker exec -i \$CORE_CONTAINER /bin/bash -c "cd /opt/xos/dynamic_services/;find -name '*.xproto'" | awk -F[//] '{print \$2}')
+
            echo \$SERVICES
            for i in \$SERVICES; do bash -c "robot -v SETUP_FLAG:Setup -i get -d Log -T -v TESTLIBRARY:${gerritProject}_library.robot \$i\$testname"; sleep 2; done || true
 
@@ -325,7 +344,7 @@ pipeline {
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
-         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, scottb@opennetworking.org", sendToIndividuals: false])
+         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "scottb@opennetworking.org", sendToIndividuals: false])
     }
   }
 }
