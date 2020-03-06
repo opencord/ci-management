@@ -128,6 +128,33 @@
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-bal31'
 
+    # flex OCP pod with olt/onu - OFAGENT GO job, uses 1TCONT/4GEMs tech profile on voltha - timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          released: false
+          name-extension: '_GO'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          configurePod: true
+          profile: '1T4GEM-bal31'
+          time: '6'
+
+      # flex pod1 test job - OFAGENT GO job, test job uses 1TCONT/4GEMs tech profile - using voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_GO'
+          released: false
+          power-switch: True
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM-bal31'
+
       # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
