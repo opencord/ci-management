@@ -107,6 +107,8 @@
     pipeline-script: 'voltha-go-tests.groovy'
     test-runs: 1
     robot-args: ''
+    gerrit-project: ''
+
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -148,6 +150,21 @@
           name: manifestBranch
           default: '{code-branch}'
           description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
+
+      - string:
+          name: gerritProject
+          default: '{gerrit-project}'
+          description: 'Name of the Gerrit project'
+
+      - string:
+          name: gerritChangeNumber
+          default: ''
+          description: 'Changeset number in Gerrit'
+
+      - string:
+          name: gerritPatchsetNumber
+          default: ''
+          description: 'PatchSet number in Gerrit'
 
       - string:
           name: testRuns

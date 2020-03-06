@@ -20,9 +20,17 @@
           dependency-jobs: 'verify_pyvoltha_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_pyvoltha_tag-collision'
-      - 'voltha-patch-test':
+      - 'voltha-periodic-test':
+          name: 'nightly-pyvoltha-compatibility-test'
           pipeline-script: 'voltha-bbsim-tests.groovy'
-          skip-vote: true
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          default-image-tag: 'master'
+          code-branch: 'master'
+          make-target: sanity-single-kind
+          gerrit-project: pyvoltha
+          onus: 1
+          pons: 1
+          time-trigger: "@daily"
 
 - job-group:
     name: 'publish-pyvoltha-jobs'
