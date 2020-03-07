@@ -64,7 +64,12 @@ pipeline {
       steps {
         sh """
            pushd voltha
-           repo download "${gerritProject}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           if [ "${gerritProject}" != "" -a "${gerritChangeNumber}" != "" -a "${gerritPatchsetNumber}" != "" ]
+           then
+             repo download "${gerritProject}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           else
+             echo "No patchset to download!"
+           fi
            popd
            """
       }
