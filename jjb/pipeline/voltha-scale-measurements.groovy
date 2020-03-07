@@ -84,6 +84,23 @@ pipeline {
           '''
       }
     }
+    stage('wait for adapters to be registered') {
+      steps{
+        waitUntil {
+          script {
+            openolt_res = sh returnStdout: true, script: """
+            voltctl adapter list | grep openolt | wc -l
+            """
+
+            openonu_res = sh returnStdout: true, script: """
+            voltctl adapter list | grep brcm_openomci_onu | wc -l
+            """
+
+            return openolt_res.toInteger() == 1 && openonu_res.toInteger() == 1
+          }
+        }
+      }
+    }
     stage('MIB-template') {
       steps {
         sh '''
