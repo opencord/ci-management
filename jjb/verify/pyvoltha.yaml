@@ -11,15 +11,6 @@
       - 'publish-pyvoltha-jobs':
           branch-regexp: '{all-branches-regexp}'
           pypi-index: 'pypi'
-
-- job-group:
-    name: 'verify-pyvoltha-jobs'
-    jobs:
-      - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_pyvoltha_licensed'
-      - 'python-unit-test':
-          dependency-jobs: 'verify_pyvoltha_tag-collision'
       - 'voltha-periodic-test':
           name: 'nightly-pyvoltha-compatibility-test'
           pipeline-script: 'voltha-bbsim-tests.groovy'
@@ -31,6 +22,16 @@
           onus: 1
           pons: 1
           time-trigger: "@daily"
+
+- job-group:
+    name: 'verify-pyvoltha-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_pyvoltha_licensed'
+      - 'python-unit-test':
+          dependency-jobs: 'verify_pyvoltha_tag-collision'
+
 
 - job-group:
     name: 'publish-pyvoltha-jobs'

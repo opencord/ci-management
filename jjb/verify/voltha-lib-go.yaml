@@ -8,6 +8,17 @@
     jobs:
       - 'verify-voltha-lib-go-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'voltha-periodic-test':
+          name: 'nightly-voltha-lib-go-compatibility-test'
+          pipeline-script: 'voltha-bbsim-tests.groovy'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          default-image-tag: 'master'
+          code-branch: 'master'
+          make-target: sanity-single-kind
+          gerrit-project: voltha-lib-go
+          onus: 1
+          pons: 1
+          time-trigger: "@daily"
 
 - job-group:
     name: 'verify-voltha-lib-go-jobs'
@@ -21,14 +32,3 @@
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
-      - 'voltha-periodic-test':
-          name: 'nightly-voltha-lib-go-compatibility-test'
-          pipeline-script: 'voltha-bbsim-tests.groovy'
-          build-node: 'ubuntu16.04-basebuild-4c-8g'
-          default-image-tag: 'master'
-          code-branch: 'master'
-          make-target: sanity-single-kind
-          gerrit-project: voltha-lib-go
-          onus: 1
-          pons: 1
-          time-trigger: "@daily"

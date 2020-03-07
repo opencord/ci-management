@@ -12,17 +12,6 @@
           branch-regexp: '{all-branches-regexp}'
           pypi-index: 'pypi'
           pypi-prep-commands: 'make python-protos'
-
-- job-group:
-    name: 'verify-voltha-protos-jobs'
-    jobs:
-      - 'verify-licensed'
-      - 'tag-collision-reject':
-      - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
-          build-timeout: 20
-          unit-test-targets: 'test'
-          unit-test-keep-going: 'true'
       - 'voltha-periodic-test':
           name: 'nightly-voltha-protos-compatibility-test'
           pipeline-script: 'voltha-bbsim-tests.groovy'
@@ -34,6 +23,17 @@
           onus: 1
           pons: 1
           time-trigger: "@daily"
+
+- job-group:
+    name: 'verify-voltha-protos-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-timeout: 20
+          unit-test-targets: 'test'
+          unit-test-keep-going: 'true'
 
 - job-group:
     name: 'post-merge-voltha-protos-jobs'
