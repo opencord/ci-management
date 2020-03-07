@@ -136,6 +136,7 @@
           branch: 'master'
           released: false
           name-extension: '_GO'
+          use-ofagent-go: true
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
