@@ -52,6 +52,9 @@ pipeline {
       }
     }
     stage('deploy-voltha') {
+      options {
+        timeout(time:10)
+      }
       steps {
         sh '''
           helm install -n onos onf/onos --set images.onos.repository=voltha/voltha-onos --set images.onos.tag=4.0.1
@@ -85,6 +88,9 @@ pipeline {
       }
     }
     stage('wait for adapters to be registered') {
+      options {
+        timeout(time:5)
+      }
       steps{
         waitUntil {
           script {
