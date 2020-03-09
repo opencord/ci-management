@@ -189,7 +189,7 @@
           released: true
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
           configurePod: true
           profile: 'Default'
           time: '3'
