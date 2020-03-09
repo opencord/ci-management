@@ -32,7 +32,11 @@ pipeline {
     stage('cleanup') {
       steps {
         sh '''
+<<<<<<< HEAD
           rm -rf voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt
+=======
+          rm -rf onus.txt ports.txt voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt device-list.json
+>>>>>>> 05211db... Fixed bug in plot for ONU activation time
           for hchart in \$(helm list -q | grep -E -v 'docker-registry|cord-kafka|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
@@ -61,6 +65,7 @@ pipeline {
 
           IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
           helm install -n voltha onf/voltha -f /home/cord/voltha-scale/voltha-values.yaml --set images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag}
+<<<<<<< HEAD
 
           IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
           helm install -n openolt onf/voltha-adapter-openolt -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag}
@@ -72,6 +77,19 @@ pipeline {
           helm install -n bbsim onf/bbsim --set pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag}
           helm install -n radius onf/freeradius
 
+=======
+
+          IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
+          helm install -n openolt onf/voltha-adapter-openolt -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag}
+
+          IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
+          helm install -n openonu onf/voltha-adapter-openonu -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openonuAdapterRepo},images.adapter_open_olt.tag=${openonuAdapterTag}
+
+          IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
+          helm install -n bbsim onf/bbsim --set pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag}
+          helm install -n radius onf/freeradius
+
+>>>>>>> 05211db... Fixed bug in plot for ONU activation time
           if [ ! -z ${bbsimImg} ];
           then
             IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
@@ -114,6 +132,7 @@ pipeline {
             rm -f BBSM-12345123451234512345-00000000000001-v1.json
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
             cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+<<<<<<< HEAD
           fi
         '''
       }
@@ -126,10 +145,27 @@ pipeline {
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.olt
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.aaa
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.dhcpl2relay
+=======
+>>>>>>> 05211db... Fixed bug in plot for ONU activation time
           fi
         '''
       }
     }
+<<<<<<< HEAD
+=======
+    stage('disable-ONOS-apps') {
+      steps {
+        sh '''
+          #Check withOnosApps and disable apps accordingly
+          if [ ${withOnosApps} = false ] ; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.dhcpl2relay
+          fi
+        '''
+      }
+    }
+>>>>>>> 05211db... Fixed bug in plot for ONU activation time
     stage('configuration') {
       steps {
         sh '''
@@ -216,6 +252,7 @@ pipeline {
         echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l) > ports.txt
         echo "#-of-ports" > no_ports.txt
         cat ports.txt >> no_ports.txt
+<<<<<<< HEAD
 
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
         voltctl device list -o json > device-list.json
@@ -235,6 +272,22 @@ pipeline {
           rm -rf onus.txt ports.txt voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt device-list.json
         '''
       }
+=======
+
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+        voltctl device list -o json > device-list.json
+        python -m json.tool device-list.json > volt-device-list.json
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
+        '''
+      plot([
+        csvFileName: 'plot-numbers.csv',
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'no_onus.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'no_ports.txt', inclusionFlag: 'OFF', url: '']],
+        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Activated ONUs and Recognized Ports", yaxis: 'Number of Ports/ONUs', useDescr: true
+      ])
+
+      archiveArtifacts artifacts: '*.log,*.json,*txt'
+
+>>>>>>> 05211db... Fixed bug in plot for ONU activation time
     }
   }
 }

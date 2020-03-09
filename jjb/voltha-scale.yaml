@@ -323,7 +323,7 @@
           default: 5
           description: 'Sleep time between ONU activation checks'
 
-      - bool:
+          - bool:
           name: withOnosApps
           default: false
           description: 'Option to deactivate certain ONOS apps'
