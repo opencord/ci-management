@@ -32,7 +32,7 @@ pipeline {
     stage('cleanup') {
       steps {
         sh '''
-          rm -rf voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt
+          rm -rf onus.txt ports.txt voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt device-list.json
           for hchart in \$(helm list -q | grep -E -v 'docker-registry|cord-kafka|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
@@ -230,11 +230,6 @@ pipeline {
 
       archiveArtifacts artifacts: '*.log,*.json,*txt'
 
-      script {
-        sh '''
-          rm -rf onus.txt ports.txt voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt device-list.json
-        '''
-      }
     }
   }
 }
