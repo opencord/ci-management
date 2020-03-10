@@ -153,7 +153,7 @@
           BBSIMdelay: 1000
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
-          build-node: 'voltha-scale-dev'
+          build-node: 'voltha-scale'
           onuPerPon: 16
           ponPorts: 1
           expectedOnus: 16
