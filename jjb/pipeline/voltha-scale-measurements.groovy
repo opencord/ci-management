@@ -32,7 +32,7 @@ pipeline {
     stage('cleanup') {
       steps {
         sh '''
-          rm -rf onus.txt ports.txt voltha-devices.txt onos-ports.txt total-time.txt onu-activation.txt device-list.json
+          rm -rf voltha-devices-count.txt voltha-devices-time.txt onos-ports-count.txt onos-ports-time.txt onos-ports-list.txt voltha-devices-list.json onos-ports-time-num.txt voltha-devices-time-num.txt
           for hchart in \$(helm list -q | grep -E -v 'docker-registry|cord-kafka|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
@@ -172,7 +172,7 @@ pipeline {
                 i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
               done
               echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
-              echo $SECONDS > voltha-devices.txt
+              echo $SECONDS > voltha-devices-time-num.txt
             '''
           }
         }
@@ -188,11 +188,12 @@ pipeline {
                 z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l)
               done
               echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
-              echo $SECONDS > onos-ports.txt
-              echo "ONOS-Duration(s)" > total-time.txt
-              echo "VOLTHA-Duration(s)" > onu-activation.txt
-              cat voltha-devices.txt >> onu-activation.txt
-              paste voltha-devices.txt onos-ports.txt | awk '{print ($1 + $2)}' >> total-time.txt
+              echo $SECONDS > temp.txt
+              paste voltha-devices-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-ports-time-num.txt
+              echo "ONOS-Duration(s)" > onos-ports-time.txt
+              echo "VOLTHA-Duration(s)" > voltha-devices-time.txt
+              cat voltha-devices-time-num.txt >> voltha-devices-time.txt
+              cat onos-ports-time-num.txt >> onos-ports-time.txt
             '''
           }
         }
@@ -203,28 +204,30 @@ pipeline {
     success {
       plot([
         csvFileName: 'plot-onu-activation.csv',
-        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'onu-activation.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'total-time.txt', inclusionFlag: 'OFF', url: '']],
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-time.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-time.txt', inclusionFlag: 'OFF', url: '']],
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
       ])
     }
     always {
       sh '''
         echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) > onus.txt
-        echo "#-of-ONUs" > no_onus.txt
-        cat onus.txt >> no_onus.txt
+        echo "#-of-ONUs" > voltha-devices-count.txt
+        cat onus.txt >> voltha-devices-count.txt
 
         echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l) > ports.txt
-        echo "#-of-ports" > no_ports.txt
-        cat ports.txt >> no_ports.txt
+        echo "#-of-ports" > onos-ports-count.txt
+        cat ports.txt >> onos-ports-count.txt
 
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
         voltctl device list -o json > device-list.json
-        python -m json.tool device-list.json > volt-device-list.json
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports.txt
+        python -m json.tool device-list.json > voltha-devices-list.json
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
+
+        rm -rf BBSM-12345123451234512345-00000000000001-v1.json device-list.json onus.txt ports.txt temp.txt
         '''
       plot([
         csvFileName: 'plot-numbers.csv',
-        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'no_onus.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'no_ports.txt', inclusionFlag: 'OFF', url: '']],
+        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-count.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-count.txt', inclusionFlag: 'OFF', url: '']],
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Activated ONUs and Recognized Ports", yaxis: 'Number of Ports/ONUs', useDescr: true
       ])
 
