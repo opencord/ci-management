@@ -19,7 +19,6 @@ pipeline {
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
     SSHPASS="karaf"
     DEPLOY_K8S="n"
-    EXTRA_HELM_FLAGS="--set onu=${onuPerPon},pon=${ponPorts},delay=${BBSIMdelay},auth=${bbsimAuth},dhcp=${bbsimDhcp}"
   }
   stages {
     stage('set-description') {
@@ -57,31 +56,23 @@ pipeline {
       }
       steps {
         sh '''
-          helm install -n onos onf/onos --set images.onos.repository=voltha/voltha-onos --set images.onos.tag=4.0.1
+          IFS=: read -r onosRepo onosTag <<< ${onosImg}
+          helm install -n onos onf/onos --set images.onos.repository=${onosRepo} --set images.onos.tag=${onosTag} ${extraHelmFlags}
 
           IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
-          helm install -n voltha onf/voltha -f /home/cord/voltha-scale/voltha-values.yaml --set images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag}
+          IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
+          helm install -n voltha onf/voltha -f /home/cord/voltha-scale/voltha-values.yaml --set images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag},images.ofagent.repository=${ofAgentRepo},images.ofagent.tag=${ofAgentTag} ${extraHelmFlags}
 
           IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
-          helm install -n openolt onf/voltha-adapter-openolt -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag}
+          helm install -n openolt onf/voltha-adapter-openolt -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag} ${extraHelmFlags}
 
           IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
-          helm install -n openonu onf/voltha-adapter-openonu -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openonuAdapterRepo},images.adapter_open_olt.tag=${openonuAdapterTag}
+          helm install -n openonu onf/voltha-adapter-openonu -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openonuAdapterRepo},images.adapter_open_olt.tag=${openonuAdapterTag} ${extraHelmFlags}
 
           IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-          helm install -n bbsim onf/bbsim --set pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag}
-          helm install -n radius onf/freeradius
+          helm install -n bbsim onf/bbsim --set pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} ${extraHelmFlags}
+          helm install -n radius onf/freeradius ${extraHelmFlags}
 
-          if [ ! -z ${bbsimImg} ];
-          then
-            IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-            EXTRA_HELM_FLAGS+=",images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag}"
-          fi
-          if [ ! -z ${volthaImg} ];
-          then
-            IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
-            EXTRA_HELM_FLAGS+=",images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag}"
-          fi
           bash /home/cord/voltha-scale/wait_for_pods.sh
           bash /home/cord/voltha-scale/start_port_forward.sh
           '''
