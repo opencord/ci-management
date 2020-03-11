@@ -257,6 +257,11 @@
           description: 'Custom image selection for VOLTHA (repo:tag)'
 
       - string:
+          name: ofAgentImg
+          default: 'voltha/voltha-ofagent:master'
+          description: 'Custom image selection for OfAgent (repo:tag)'
+
+      - string:
           name: openoltAdapterImg
           default: voltha/voltha-openolt-adapter:master
           description: 'Custom image selection for Openolt Adapter (repo:tag)'
@@ -265,6 +270,16 @@
           name: openonuAdapterImg
           default: voltha/voltha-openonu-adapter:master
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
+
+      - string:
+          name: onosImg
+          default: voltha/voltha-onos:4.0.1
+          description: 'Custom image selection for Openonu Adapter (repo:tag)'
+
+      - string:
+          name: extraHelmFlags
+          default: ''
+          description: 'Any extra helm parameters you want (passed to every helm install command)'
 
     project-type: pipeline
     concurrent: false
