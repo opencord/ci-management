@@ -216,6 +216,9 @@ pipeline {
         python -m json.tool device-list.json > voltha-devices-list.json
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
         curl -s -X GET -G http://127.0.0.1:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod)' | jq . > cpu-usage.json
+        kubectl logs $(kubectl get pods --all-namespaces | grep "adapter-open-olt" | awk '{ print $2 }') > open-olt-logs.txt
+        kubectl logs $(kubectl get pods --all-namespaces | grep "adapter-open-onu" | awk '{ print $2 }') > open-onu-logs.txt
+        kubectl logs $(kubectl get pods --all-namespaces | grep "voltha-rw" | awk '{ print $2 }') > voltha-rw-core-logs.txt
         rm -rf BBSM-12345123451234512345-00000000000001-v1.json device-list.json onus.txt ports.txt temp.txt
         '''
       plot([
