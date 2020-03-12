@@ -24,20 +24,20 @@
           expectedOnus: 256
           BBSIMdelay: 1000
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-8-48-200ms'
+          name: 'voltha-scale-measurements-periodic-10-20-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          onuPerPon: 48
-          ponPorts: 8
-          expectedOnus: 384
+          onuPerPon: 20
+          ponPorts: 10
+          expectedOnus: 200
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-8-48-1000ms'
+          name: 'voltha-scale-measurements-periodic-10-20-1000ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          onuPerPon: 48
-          ponPorts: 8
-          expectedOnus: 384
+          onuPerPon: 20
+          ponPorts: 10
+          expectedOnus: 200
           BBSIMdelay: 1000
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-32-200ms'
