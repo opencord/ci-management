@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ea4a456d_fac1c5a0",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-12T23:17:11Z",
+      "side": 1,
+      "message": "any reason to have this in a different script block and no together with the other?",
+      "range": {
+        "startLine": 227,
+        "startChar": 6,
+        "endLine": 227,
+        "endChar": 14
+      },
+      "revId": "6f68cf10db2666ed5892867f72d67a67c2b844ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1a7467cd_eaaa8ffd",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-12T23:17:11Z",
+      "side": 1,
+      "message": "would \"127.0.0.1\" work? it would be better not to hardcode environment specific IPs in the pipeline",
+      "range": {
+        "startLine": 229,
+        "startChar": 37,
+        "endLine": 229,
+        "endChar": 48
+      },
+      "revId": "6f68cf10db2666ed5892867f72d67a67c2b844ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
