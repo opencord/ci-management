@@ -56,6 +56,8 @@ pipeline {
       }
       steps {
         sh '''
+          helm install -n nem-monitoring cord/nem-monitoring
+
           IFS=: read -r onosRepo onosTag <<< ${onosImg}
           helm install -n onos onf/onos --set images.onos.repository=${onosRepo} --set images.onos.tag=${onosTag} ${extraHelmFlags}
 
@@ -221,6 +223,12 @@ pipeline {
         csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-count.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-count.txt', inclusionFlag: 'OFF', url: '']],
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Activated ONUs and Recognized Ports", yaxis: 'Number of Ports/ONUs', useDescr: true
       ])
+
+      script {
+          sh '''
+            curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod)' | jq . > cpu-usage.json
+          '''
+      }
 
       archiveArtifacts artifacts: '*.log,*.json,*txt'
 
