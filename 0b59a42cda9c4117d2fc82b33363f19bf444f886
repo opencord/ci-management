@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d81cb33a_0430e87c",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-12T23:17:55Z",
+      "side": 1,
+      "message": "pipe the logs to a file and store them with the artifacts",
+      "range": {
+        "startLine": 231,
+        "startChar": 12,
+        "endLine": 233,
+        "endChar": 101
+      },
+      "revId": "0b59a42cda9c4117d2fc82b33363f19bf444f886",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
