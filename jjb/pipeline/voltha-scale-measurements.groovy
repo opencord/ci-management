@@ -227,7 +227,11 @@ pipeline {
       script {
           sh '''
             curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod)' | jq . > cpu-usage.json
-          '''
+
+            kubectl logs $(kubectl get pods --all-namespaces | grep "adapter-open-olt" | awk '{ print $2 }')
+            kubectl logs $(kubectl get pods --all-namespaces | grep "adapter-open-onu" | awk '{ print $2 }')
+            kubectl logs $(kubectl get pods --all-namespaces | grep "voltha-rw" | awk '{ print $2 }')
+            '''
       }
 
       archiveArtifacts artifacts: '*.log,*.json,*txt'
