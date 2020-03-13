@@ -56,6 +56,8 @@ pipeline {
       }
       steps {
         sh '''
+          helm install -n nem-monitoring cord/nem-monitoring
+
           IFS=: read -r onosRepo onosTag <<< ${onosImg}
           helm install -n onos onf/onos --set images.onos.repository=${onosRepo} --set images.onos.tag=${onosTag} ${extraHelmFlags}
 
@@ -213,7 +215,7 @@ pipeline {
         voltctl device list -o json > device-list.json
         python -m json.tool device-list.json > voltha-devices-list.json
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
-
+        curl -s -X GET -G http://127.0.0.1:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod)' | jq . > cpu-usage.json
         rm -rf BBSM-12345123451234512345-00000000000001-v1.json device-list.json onus.txt ports.txt temp.txt
         '''
       plot([
