@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fc838579_0784a070",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-13T04:20:58Z",
+      "side": 1,
+      "message": "Do you need the `work-flow` variable when a different pipeline is used?",
+      "range": {
+        "startLine": 281,
+        "startChar": 9,
+        "endLine": 287,
+        "endChar": 0
+      },
+      "revId": "ab4480004afe89849e94cd389f167c5fe63e1c71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14104592_d7cbe574",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-13T04:20:58Z",
+      "side": 1,
+      "message": "This doesn\u0027t seem to use the `params.workFlow` defined above - is it needed?",
+      "revId": "ab4480004afe89849e94cd389f167c5fe63e1c71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
