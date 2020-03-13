@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe76592d_3c5c6233",
+        "filename": "jjb/cord-macros.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 157,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-13T19:33:39Z",
+      "side": 1,
+      "message": "Could this be the `project` variable, rather than a separate variable?",
+      "range": {
+        "startLine": 157,
+        "startChar": 20,
+        "endLine": 157,
+        "endChar": 52
+      },
+      "revId": "d994534f8dec669b7bfde0681828201894d88693",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
