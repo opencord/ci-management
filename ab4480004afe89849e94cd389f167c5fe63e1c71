@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3c73cabf_a2ea8085",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 287,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-03-13T06:35:39Z",
+      "side": 1,
+      "message": "But if you noticed we are still using the older templates, it\u0027s just that the pipeline is different for DT",
+      "parentUuid": "fc838579_0784a070",
+      "range": {
+        "startLine": 281,
+        "startChar": 9,
+        "endLine": 287,
+        "endChar": 0
+      },
+      "revId": "ab4480004afe89849e94cd389f167c5fe63e1c71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "14104592_d7cbe574",
         "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
         "patchSetId": 1
