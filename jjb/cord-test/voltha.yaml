@@ -12,6 +12,7 @@
     use-ofagent-go: false
     onos-version: '2.2'
     power-switch: False
+    work-flow: ''
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
@@ -261,14 +262,14 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
-          name-extension: '_GO'
-          use-ofagent-go: true
+          name-extension: '_DT'
+          work-flow: 'DT'
           released: false
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
           oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
-          profile: '1T4GEM-bal31'
+          profile: '1T8GEM'
           time: '8'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -277,10 +278,11 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
-          name-extension: '_GO'
+          name-extension: '_DT'
           released: false
           test-repo: 'voltha-system-tests'
-          profile: '1T4GEM-bal31'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
       # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile - Manual build and test job
       - 'build_pod_manual':

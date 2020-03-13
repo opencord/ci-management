@@ -917,6 +917,10 @@
           default: '{onos-version}'
           description: 'ONOS version that needs to be configured'
 
+      - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Installs the specified work flow on the POD'
 
       - bool:
           name: released
