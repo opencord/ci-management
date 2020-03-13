@@ -16,7 +16,8 @@
           display-status: 'docker-publish'
 
     triggers:
-      - github
+      - cord-infra-github-pr-trigger-merge:
+          generic-webhook-trigger-token: '{generic-webhook-trigger-token}'
 
     wrappers:
       - lf-infra-wrappers:

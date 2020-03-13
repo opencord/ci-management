@@ -44,6 +44,7 @@
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
+          generic-webhook-trigger-token: 'ngic-rtc'
 
 # for c3po
 - project:
@@ -76,6 +77,7 @@
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
+          generic-webhook-trigger-token: 'c3po'
 
 # for openmme
 - project:
@@ -105,6 +107,7 @@
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
+          generic-webhook-trigger-token: 'openmme'
 
 # for nucleus
 - project:

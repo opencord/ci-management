@@ -138,6 +138,24 @@
           org-list: '{obj:github_pr_org_list}'
           allow-whitelist-orgs-as-admins: true
 
+# Trigger on GitHub PR merge
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.generic-webhook-trigger
+- trigger:
+    name: cord-infra-github-pr-trigger-merge
+    triggers:
+      - generic-webhook-trigger:
+            post-content-params:
+                - type: JSONPath
+                  key: action
+                  value: $.action
+                - type: JSONPath
+                  key: merged
+                  value: $.pull_request.merged
+            regex-filter-text: $action,$merged
+            regex-filter-expression: ^(closed,true)$
+            cause: Generic Cause
+            token: '{generic-webhook-trigger-token}'
+
 # wrapper to provide pypi config file
 
 - wrapper:
