@@ -99,6 +99,24 @@
       "revId": "ab4480004afe89849e94cd389f167c5fe63e1c71",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d5b4e8ae_00415af9",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-03-13T19:03:04Z",
+      "side": 1,
+      "message": "That\u0027s true.. I agree.  For the test job we don\u0027t need as it has a different pipeline.",
+      "parentUuid": "42474071_927adcc9",
+      "revId": "ab4480004afe89849e94cd389f167c5fe63e1c71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
