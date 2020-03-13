@@ -917,6 +917,10 @@
           default: '{onos-version}'
           description: 'ONOS version that needs to be configured'
 
+      - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Installs the specified work flow on the POD'
 
       - bool:
           name: released
@@ -1038,6 +1042,11 @@
           name: manifestBranch
           default: '{manifest-branch}'
           description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
+
+      - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Use this parameter to identify the right deployment file to be used in the tests'
 
       - bool:
           name: powerSwitch
