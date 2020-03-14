@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "22cf9e2a_bc8cb162",
+        "filename": "jjb/docker-publish-github.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-14T02:32:42Z",
+      "side": 1,
+      "message": "i don\u0027t think this needs to be redefined here.",
+      "range": {
+        "startLine": 19,
+        "startChar": 42,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "b3abfeb0f3e6fee367e60b71bf018a4b8eeeba2c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2a87cf31_86dd340f",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-14T02:32:42Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be needed anymore with the change to use `project`",
+      "range": {
+        "startLine": 47,
+        "startChar": 6,
+        "endLine": 47,
+        "endChar": 51
+      },
+      "revId": "b3abfeb0f3e6fee367e60b71bf018a4b8eeeba2c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
