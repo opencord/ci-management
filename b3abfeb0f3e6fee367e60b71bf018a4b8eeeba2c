@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "e8fdb073_580c8fa5",
+        "filename": "jjb/docker-publish-github.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2020-03-14T02:54:16Z",
+      "side": 1,
+      "message": "When this is removed the xml file shows \"\u003ctoken\u003e{project}\u003c/token\u003e\"",
+      "parentUuid": "22cf9e2a_bc8cb162",
+      "range": {
+        "startLine": 19,
+        "startChar": 42,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "b3abfeb0f3e6fee367e60b71bf018a4b8eeeba2c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2a87cf31_86dd340f",
         "filename": "jjb/omec-ci.yaml",
         "patchSetId": 2
