@@ -22,6 +22,30 @@
       "revId": "8d180ab1ce8f5fa3c75b223548c57a70f7b1bead",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d54119e6_0ea9a097",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-03-14T22:05:00Z",
+      "side": 1,
+      "message": "We are not removing GO ones yet, this particular combination on the POD is being used by DT",
+      "parentUuid": "a8a3d521_78dd6dc4",
+      "range": {
+        "startLine": 259,
+        "startChar": 6,
+        "endLine": 259,
+        "endChar": 91
+      },
+      "revId": "8d180ab1ce8f5fa3c75b223548c57a70f7b1bead",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
