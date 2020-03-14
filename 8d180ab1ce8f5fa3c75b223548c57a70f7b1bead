@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a8a3d521_78dd6dc4",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 259,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-03-14T09:11:42Z",
+      "side": 1,
+      "message": "are we removing the GO ones ?",
+      "range": {
+        "startLine": 259,
+        "startChar": 6,
+        "endLine": 259,
+        "endChar": 91
+      },
+      "revId": "8d180ab1ce8f5fa3c75b223548c57a70f7b1bead",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
