@@ -108,7 +108,7 @@
     test-runs: 1
     robot-args: ''
     gerrit-project: ''
-
+    extra-helm-flags: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons},use_ofagent_go=True,images.ofagent.repository=voltha/ofagent-go,images.ofagent.tag=master'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -190,7 +190,7 @@
 - job-template:
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
-    extra-helm-flags: ''
+    extra-helm-flags: '--set defaults.image_tag=master,use_ofagent_go=True,images.ofagent.repository=voltha/ofagent-go,images.ofagent.tag=master'
     skip-vote: false
 
     description: |
