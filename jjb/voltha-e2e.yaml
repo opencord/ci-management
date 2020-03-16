@@ -109,7 +109,6 @@
     robot-args: ''
     gerrit-project: ''
 
-
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/voltha-e2e.yaml  <br /><br />
@@ -190,7 +189,7 @@
 - job-template:
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
-    extra-helm-flags: ''
+    extra-helm-flags: '--set defaults.image_tag=master,use_ofagent_go=True,images.ofagent.repository=voltha/ofagent-go,images.ofagent.tag=master'
     skip-vote: false
 
     description: |
