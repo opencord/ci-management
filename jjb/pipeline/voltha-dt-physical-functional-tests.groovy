@@ -77,7 +77,7 @@ pipeline {
 
     stage('Functional Tests') {
       environment {
-        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         ROBOT_FILE="Voltha_DT_PODTests.robot"
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow"
       }
