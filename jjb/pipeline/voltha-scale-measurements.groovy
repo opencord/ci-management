@@ -72,7 +72,7 @@ pipeline {
           helm install -n openonu ${openonuAdapterChart} -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_onu.repository=${openonuAdapterRepo},images.adapter_open_onu.tag=${openonuAdapterTag} ${extraHelmFlags}
 
           IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-          helm install -n bbsim ${bbsimChart} --set pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} ${extraHelmFlags}
+          helm install -n bbsim ${bbsimChart} --set enablePerf=true,pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} ${extraHelmFlags}
 
           helm install -n radius onf/freeradius ${extraHelmFlags}
 
