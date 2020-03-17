@@ -93,6 +93,7 @@ pipeline {
            ./log-collector.sh > /dev/null &
            ./log-combine.sh > /dev/null &
 
+           for i in \$(seq 1 ${testRuns})
            do
              make -C $WORKSPACE/voltha-system-tests ${makeTarget}
              echo "Completed run: \$i"
