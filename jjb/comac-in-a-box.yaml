@@ -1,0 +1,69 @@
+# COMAC in a box test for helm-charts repo
+
+- job-template:
+    id: 'comac-in-a-box'
+    name: '{name}'
+    project-type: pipeline
+
+    pipeline-script: 'comac-in-a-box.groovy'
+
+    description: |
+      Automated build on AMI executor using {pipeline-script}. <br /><br />
+      Created from job-template {id} from ci-management/jjb/charts.yaml <br />
+      Created by Jeremy Ronquillo, jeremyr@opennetworking.org <br />
+      Copyright (c) 2020 Open Networking Foundation (ONF)
+
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: true
+                exclude-trivial-rebase: false
+                exclude-no-code-change: true
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*recheck$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: 'helm-charts'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{all-branches-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: 'omec/.*'
+                - compare-type: REG_EXP
+                  pattern: 'aether-apps/.*'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: 'comac_in_a_box'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+    scm:
+      - lf-infra-gerrit-scm:
+          git-url: '$GIT_URL/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-disable: '{submodule-disable}'
+          submodule-recursive: 'false'
+          submodule-timeout: '{submodule-timeout}'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}

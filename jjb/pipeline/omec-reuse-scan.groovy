@@ -57,10 +57,13 @@ pipeline {
                     git show
 
                     mkdir ../jenkins-license-scan
-                    modifiedFiles=$(git diff-tree --no-commit-id --name-only -r HEAD)
+                    modifiedFiles=""
+                    
+
+                    modifiedFiles=$(git diff-tree --no-commit-id --name-only -r HEAD | tr "\n" " ")
                     if [ -n "$modifiedFiles" ]
                     then
-                        cp --parents "$modifiedFiles" ../jenkins-license-scan
+                        cp --parents $modifiedFiles ../jenkins-license-scan
                         cd ../jenkins-license-scan
 
                         reuse download --all
