@@ -28,7 +28,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$WORKSPACE/kind-voltha/bin"
+    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/kind-voltha/bin"
     TYPE="minimal"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
@@ -64,7 +64,10 @@ pipeline {
     stage('Download kind-voltha') {
       steps {
         sh """
-           git clone https://github.com/ciena/kind-voltha.git
+           cd $HOME
+           [ -d kind-voltha ] || git clone https://github.com/ciena/kind-voltha.git
+           cd $HOME/kind-voltha
+           git pull
            """
       }
     }
@@ -72,9 +75,8 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
-           cd kind-voltha/
-           JUST_K8S=y ./voltha up
-           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
+           cd $HOME/kind-voltha/
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
            ./voltha up
            """
       }
@@ -83,10 +85,14 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
+           set +e
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
-           cd kind-voltha
-           for i in \$(seq 1 ${testRuns})
+
+           cd $HOME/kind-voltha/scripts
+           ./log-collector.sh > /dev/null &
+           ./log-combine.sh > /dev/null &
+
            do
              make -C $WORKSPACE/voltha-system-tests ${makeTarget}
              echo "Completed run: \$i"
@@ -101,39 +107,43 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
+         cp $HOME/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide
 
-         sync
-         pkill kail || true
+         sleep 60 # Wait for log-collector and log-combine to complete
 
          ## Pull out errors from log files
          extract_errors_go() {
            echo
            echo "Error summary for $1:"
-           grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
+           grep '"level":"error"' $HOME/kind-voltha/scripts/logger/combined/$1*
            echo
          }
 
          extract_errors_python() {
            echo
            echo "Error summary for $1:"
-           grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
+           grep 'ERROR' $HOME/kind-voltha/scripts/logger/combined/$1*
            echo
          }
 
          extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
          extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
          extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+         extract_errors_go voltha-ofagent >> $WORKSPACE/error-report.log
+         extract_errors_python onos >> $WORKSPACE/error-report.log
 
-         gzip $WORKSPACE/onos-voltha-combined.log
+         cd $HOME/kind-voltha/scripts/logger/combined/
+         tar czf $WORKSPACE/container-logs.tgz *
+
+         cd $WORKSPACE
+         gzip *-combined.log || true
 
          ## shut down voltha
-         cd $WORKSPACE/kind-voltha/
+         cd $HOME/kind-voltha/
          WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
@@ -145,7 +155,7 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
-         archiveArtifacts artifacts: '*.log,*.gz'
+         archiveArtifacts artifacts: '*.log,*.gz,*.tgz'
 
     }
   }

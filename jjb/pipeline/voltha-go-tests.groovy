@@ -28,7 +28,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$WORKSPACE/kind-voltha/bin"
+    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/kind-voltha/bin"
     TYPE="minimal"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
@@ -64,7 +64,10 @@ pipeline {
     stage('Download kind-voltha') {
       steps {
         sh """
-           git clone https://github.com/ciena/kind-voltha.git
+           cd $HOME
+           [ -d kind-voltha ] || git clone https://github.com/ciena/kind-voltha.git
+           cd $HOME/kind-voltha
+           git pull
            """
       }
     }
@@ -72,8 +75,8 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
-           cd kind-voltha/
-           JUST_K8S=y ./voltha up
+           cd $HOME/kind-voltha/
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
            ./voltha up
            """
       }
@@ -86,7 +89,7 @@ pipeline {
            mkdir -p $WORKSPACE/RobotLogs
            git clone https://gerrit.opencord.org/voltha-system-tests
 
-           cd $WORKSPACE/kind-voltha/scripts
+           cd $HOME/kind-voltha/scripts
            ./log-collector.sh > /dev/null &
            ./log-combine.sh > /dev/null &
 
@@ -100,7 +103,7 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
+         cp $HOME/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
@@ -112,14 +115,14 @@ pipeline {
          extract_errors_go() {
            echo
            echo "Error summary for $1:"
-           grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
+           grep '"level":"error"' $HOME/kind-voltha/scripts/logger/combined/$1*
            echo
          }
 
          extract_errors_python() {
            echo
            echo "Error summary for $1:"
-           grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
+           grep 'ERROR' $HOME/kind-voltha/scripts/logger/combined/$1*
            echo
          }
 
@@ -129,14 +132,14 @@ pipeline {
          extract_errors_go voltha-ofagent >> $WORKSPACE/error-report.log
          extract_errors_python onos >> $WORKSPACE/error-report.log
 
-         cd $WORKSPACE/kind-voltha/scripts/logger/combined/
+         cd $HOME/kind-voltha/scripts/logger/combined/
          tar czf $WORKSPACE/container-logs.tgz *
 
          cd $WORKSPACE
          gzip *-combined.log || true
 
          ## shut down voltha
-         cd $WORKSPACE/kind-voltha/
+         cd $HOME/kind-voltha/
          WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
