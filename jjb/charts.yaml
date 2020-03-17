@@ -177,3 +177,64 @@
           # Check for chart version conflicts by building the repo (don't upload)
           git clone ssh://jenkins@gerrit.opencord.org:29418/cord-charts-repo.git
           ./helm-repo-tools/helmrepo.sh
+
+- job-template:
+    id: 'helm-ciab-test'
+    name: '{name}'
+    project-type: pipeline
+
+    pipeline-script: 'ciab.groovy'
+
+    description: |
+      Automated build on AMI executor using {pipeline-script}. <br /><br />
+      Created from job-template {id} from ci-management/jjb/charts.yaml <br />
+      Created by Jeremy Ronquillo, jeremyr@opennetworking.org <br />
+      Copyright (c) 2020 Open Networking Foundation (ONF)
+
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: true
+                exclude-trivial-rebase: false
+                exclude-no-code-change: true
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*recheck$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: 'helm-charts'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{all-branches-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: 'omec/.*'
+                - compare-type: REG_EXP
+                  pattern: 'aether-apps/.*'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: 'ciab'
+          description: 'Name of the Jenkins executor node to run the job on'
+      - string:
+          name: GERRIT_CHANGE_NUMBER
+          default: ''
+          description: '5-digit change number to check in Gerrit.'
+
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
