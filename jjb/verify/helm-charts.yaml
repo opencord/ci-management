@@ -16,6 +16,8 @@
           branch: 'cord-6.0'
           name-extension: '-cord6.0'
           timed-trigger: '{once-a-day}'
+      - 'comac-in-a-box':
+          name: 'comac-in-a-box'
 
 - job-group:
     name: 'verify-helm-charts-jobs'
