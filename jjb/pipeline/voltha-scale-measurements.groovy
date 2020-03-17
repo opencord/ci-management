@@ -56,6 +56,7 @@ pipeline {
       }
       steps {
         sh '''
+          helm repo update
           helm install -n nem-monitoring cord/nem-monitoring
 
           IFS=: read -r onosRepo onosTag <<< ${onosImg}
