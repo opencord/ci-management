@@ -16,6 +16,8 @@
           branch: 'cord-6.0'
           name-extension: '-cord6.0'
           timed-trigger: '{once-a-day}'
+      - 'helm-ciab-test':
+          name: 'helm-ciab-test'
 
 - job-group:
     name: 'verify-helm-charts-jobs'
