@@ -252,6 +252,11 @@
           description: 'Custom image selection for BBSIM (repo:tag)'
 
       - string:
+          name: bbsimChart
+          default: onf/bbsim
+          description: 'BBSim chart name (or location on file system)'
+
+      - string:
           name: volthaImg
           default: 'voltha/voltha-rw-core:master'
           description: 'Custom image selection for VOLTHA (repo:tag)'
@@ -262,14 +267,29 @@
           description: 'Custom image selection for OfAgent (repo:tag)'
 
       - string:
+          name: volthaChart
+          default: onf/voltha
+          description: 'VOLTHA chart name (or location on file system)'
+
+      - string:
           name: openoltAdapterImg
           default: voltha/voltha-openolt-adapter:master
           description: 'Custom image selection for Openolt Adapter (repo:tag)'
 
       - string:
+          name: openoltAdapterChart
+          default: onf/voltha-adapter-openolt
+          description: 'OpenOLT chart name (or location on file system)'
+
+      - string:
           name: openonuAdapterImg
           default: voltha/voltha-openonu-adapter:master
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
+
+      - string:
+          name: openonuAdapterChart
+          default: onf/voltha-adapter-openonu
+          description: 'OpenONU chart name (or location on file system)'
 
       - string:
           name: onosImg
@@ -384,6 +404,11 @@
           description: 'Custom image selection for BBSIM (repo:tag)'
 
       - string:
+          name: bbsimChart
+          default: onf/bbsim
+          description: 'BBSim chart name (or location on file system)'
+
+      - string:
           name: volthaImg
           default: voltha/voltha-rw-core:master
           description: 'Custom image selection for VOLTHA (repo:tag)'
@@ -394,14 +419,29 @@
           description: 'Custom image selection for OfAgent (repo:tag)'
 
       - string:
+          name: volthaChart
+          default: onf/voltha
+          description: 'VOLTHA chart name (or location on file system)'
+
+      - string:
           name: openoltAdapterImg
           default: voltha/voltha-openolt-adapter:master
           description: 'Custom image selection for Openolt Adapter (repo:tag)'
 
       - string:
+          name: openoltAdapterChart
+          default: onf/voltha-adapter-openolt
+          description: 'OpenOLT chart name (or location on file system)'
+
+      - string:
           name: openonuAdapterImg
           default: voltha/voltha-openonu-adapter:master
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
+
+      - string:
+          name: openonuAdapterChart
+          default: onf/voltha-adapter-openonu
+          description: 'OpenONU chart name (or location on file system)'
 
       - string:
           name: onosImg
