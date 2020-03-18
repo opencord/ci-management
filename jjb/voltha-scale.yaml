@@ -8,6 +8,22 @@
 
     jobs:
       - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-8-16-200ms'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          onuPerPon: 16
+          ponPorts: 8
+          expectedOnus: 128
+          BBSIMdelay: 200
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-8-16-1000ms'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          onuPerPon: 16
+          ponPorts: 8
+          expectedOnus: 128
+          BBSIMdelay: 1000
+      - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-8-32-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -187,6 +203,11 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
+          name: logLevel
+          default: 'WARN'
+          description: 'Log level for all the components'
+
+      - string:
           name: onuPerPon
           default: '{onuPerPon}'
           description: 'Number of ONUs to provision'
@@ -337,6 +358,11 @@
           name: buildNode
           default: '{build-node}'
           description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: logLevel
+          default: 'WARN'
+          description: 'Log level for all the components'
 
       - string:
           name: onuPerPon

@@ -7,16 +7,6 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    TYPE="minimal"
-    FANCY=0
-    SECONDS=0
-    WITH_SIM_ADAPTERS="n"
-    WITH_RADIUS="y"
-    WITH_BBSIM="y"
-    VOLTHA_LOG_LEVEL="WARN"
-    CONFIG_SADIS="n"
-    ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs -v teardown_device:False"
     SSHPASS="karaf"
     DEPLOY_K8S="n"
   }
@@ -64,13 +54,13 @@ pipeline {
 
           IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
           IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-          helm install -n voltha ${volthaChart} -f /home/cord/voltha-scale/voltha-values.yaml --set images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag},images.ofagent.repository=${ofAgentRepo},images.ofagent.tag=${ofAgentTag} ${extraHelmFlags}
+          helm install -n voltha ${volthaChart} -f /home/cord/voltha-scale/voltha-values.yaml --set defaults.log_level=${logLevel},images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag},images.ofagent.repository=${ofAgentRepo},images.ofagent.tag=${ofAgentTag} ${extraHelmFlags}
 
           IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
-          helm install -n openolt ${openoltAdapterChart} -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag} ${extraHelmFlags}
+          helm install -n openolt ${openoltAdapterChart} -f /home/cord/voltha-scale/voltha-values.yaml --set defaults.log_level=${logLevel},images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag} ${extraHelmFlags}
 
           IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
-          helm install -n openonu ${openonuAdapterChart} -f /home/cord/voltha-scale/voltha-values.yaml --set images.adapter_open_onu.repository=${openonuAdapterRepo},images.adapter_open_onu.tag=${openonuAdapterTag} ${extraHelmFlags}
+          helm install -n openonu ${openonuAdapterChart} -f /home/cord/voltha-scale/voltha-values.yaml --set defaults.log_level=${logLevel},images.adapter_open_onu.repository=${openonuAdapterRepo},images.adapter_open_onu.tag=${openonuAdapterTag} ${extraHelmFlags}
 
           IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
           helm install -n bbsim ${bbsimChart} --set enablePerf=true,pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} ${extraHelmFlags}
@@ -128,8 +118,8 @@ pipeline {
     stage('configuration') {
       steps {
         sh '''
-          #Setting LOG level to WARN
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost log:set WARN
+          #Setting LOG level to ${logLevel}
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost log:set ${logLevel}
           kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
           #Setting link discovery
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
@@ -213,7 +203,7 @@ pipeline {
         echo "#-of-ports" > onos-ports-count.txt
         cat ports.txt >> onos-ports-count.txt
 
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+        kubectl get pods -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
         voltctl device list -o json > device-list.json
         python -m json.tool device-list.json > voltha-devices-list.json
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
