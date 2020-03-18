@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9e92faca_0326eee0",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000012
+      },
+      "writtenOn": "2020-03-18T18:16:00Z",
+      "side": 1,
+      "message": "This has been removed, too. Sorry, I haven\u0027t compared all the lines with the latest CiaB script. You may want to double check.",
+      "range": {
+        "startLine": 34,
+        "startChar": 39,
+        "endLine": 34,
+        "endChar": 57
+      },
+      "revId": "f7b57328f146e8f94ef0bf36ab058bb434ffbe1e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
