@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c20ac54c_60820808",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-03-18T17:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "39a42c0e_671fd038",
+      "range": {
+        "startLine": 44,
+        "startChar": 79,
+        "endLine": 44,
+        "endChar": 85
+      },
+      "revId": "10c4ed830a730be2aa83fad5da47517abd8379f9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2060c327_686ddc12",
         "filename": "jjb/pipeline/ciab.groovy",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-03-18T00:11:34Z",
       "side": 1,
       "message": "Same here. These subnets have been changed to private ranges.",
+      "range": {
+        "startLine": 91,
+        "startChar": 54,
+        "endLine": 91,
+        "endChar": 77
+      },
+      "revId": "10c4ed830a730be2aa83fad5da47517abd8379f9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3df72806_fe8fdffe",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-03-18T17:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2060c327_686ddc12",
       "range": {
         "startLine": 91,
         "startChar": 54,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "d11da4f4_3f6cd83f",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-03-18T17:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a4b8810_bd6a7746",
+      "range": {
+        "startLine": 143,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 55
+      },
+      "revId": "10c4ed830a730be2aa83fad5da47517abd8379f9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "661b9add_e2d233ed",
         "filename": "jjb/pipeline/ciab.groovy",
         "patchSetId": 1
@@ -82,6 +154,30 @@
       "writtenOn": "2020-03-18T00:11:34Z",
       "side": 1,
       "message": "You\u0027ll need to fix here, too.",
+      "range": {
+        "startLine": 221,
+        "startChar": 23,
+        "endLine": 221,
+        "endChar": 33
+      },
+      "revId": "10c4ed830a730be2aa83fad5da47517abd8379f9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c7b41ab6_94acce43",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-03-18T17:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "661b9add_e2d233ed",
       "range": {
         "startLine": 221,
         "startChar": 23,
