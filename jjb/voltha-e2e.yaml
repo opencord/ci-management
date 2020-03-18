@@ -132,7 +132,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons},use_ofagent_go=True,images.ofagent.repository=voltha/ofagent-go,images.ofagent.tag=master'
+          default: '--set defaults.image_tag={default-image-tag},onu={onus},pon={pons}'
           description: 'Helm flags to pass to ./voltha up'
 
       - string:
@@ -189,7 +189,7 @@
 - job-template:
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
-    extra-helm-flags: '--set defaults.image_tag=master,use_ofagent_go=True,images.ofagent.repository=voltha/ofagent-go,images.ofagent.tag=master'
+    extra-helm-flags: ''
     skip-vote: false
 
     description: |
