@@ -16,7 +16,7 @@
 
 # ansiblelint.sh - check all yaml files that they pass the ansible-lint tool
 
-set +e -u -o pipefail
+set +e -o pipefail
 
 fail_ansible=0
 
@@ -30,15 +30,15 @@ echo "=> Linting Ansible Code with $(ansible-lint --version)"
 
 # allow directories to be skipped
 # space separated directory list expected in SKIP_DIRS
-
-SKIP_DIRS=""
 SKIP_REGEX=""
 
-if [[ -n $SKIP_DIRS ]]; then
+if [ -n "$SKIP_DIRS" ]; then
   echo "=> Skipping files matching these directories: $SKIP_DIRS"
   # prefix with ./ as find generates, swap spaces for pipes
-  SKIP_REGEX=$(echo $SKIP_DIRS | sed 's/[^ ]*/.\/&\//g' | sed 's/ /|/g')
+  SKIP_REGEX=$(echo "$SKIP_DIRS" | sed 's/[^ ]*/.\/&\//g' | sed 's/ /|/g')
 fi
+
+set -u
 
 while IFS= read -r -d '' yf
 do
