@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "053cc698_234f943c",
+        "filename": "jjb/charts.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000012
+      },
+      "writtenOn": "2020-03-19T16:12:38Z",
+      "side": 1,
+      "message": "Does this mean helm-ciab-test is triggered for all helm-charts repo changes? helm-ciab-test is valid only for omec related helm charts.",
+      "range": {
+        "startLine": 195,
+        "startChar": 10,
+        "endLine": 195,
+        "endChar": 39
+      },
+      "revId": "7035b03eee6021f7b8293ab9e48d42876781b6b3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
