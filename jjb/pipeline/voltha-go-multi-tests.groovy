@@ -66,6 +66,7 @@ pipeline {
         sh """
            cd $HOME
            [ -d kind-voltha ] || git clone https://github.com/ciena/kind-voltha.git
+           rm -rf $HOME/kind-voltha/scripts/logger
            cd $HOME/kind-voltha
            git pull
            """
