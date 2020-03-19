@@ -284,7 +284,7 @@
 
       - string:
           name: ofAgentImg
-          default: 'voltha/voltha-ofagent:master'
+          default: 'voltha/ofagent-go:master'
           description: 'Custom image selection for OfAgent (repo:tag)'
 
       - string:
@@ -441,7 +441,7 @@
 
       - string:
           name: ofAgentImg
-          default: 'voltha/voltha-ofagent:master'
+          default: 'voltha/ofagent-go:master'
           description: 'Custom image selection for OfAgent (repo:tag)'
 
       - string:
