@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7e0ef17_00dc9799",
+        "filename": "jjb/charts.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-20T17:25:06Z",
+      "side": 1,
+      "message": "This job definition should probably be in this file instead: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/verify/helm-charts.yaml;",
+      "range": {
+        "startLine": 8,
+        "startChar": 9,
+        "endLine": 10,
+        "endChar": 54
+      },
+      "revId": "e28d098eaff939b628e41c8539d42dd9ffd6a51e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "166448e4_584437f2",
+        "filename": "jjb/charts.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-20T17:25:06Z",
+      "side": 1,
+      "message": "not needed",
+      "range": {
+        "startLine": 189,
+        "startChar": 0,
+        "endLine": 189,
+        "endChar": 45
+      },
+      "revId": "e28d098eaff939b628e41c8539d42dd9ffd6a51e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c31355dc_bb0f8a9e",
+        "filename": "jjb/charts.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-20T17:25:06Z",
+      "side": 1,
+      "message": "If using a pipeline, please pass the pipeline name to the job, and specify in the comment, like this: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/voltha-e2e.yaml;hb\u003dHEAD#l286\n\nThis convention helps someone who comes across a job more easily find the code that went into it.",
+      "range": {
+        "startLine": 190,
+        "startChar": 1,
+        "endLine": 191,
+        "endChar": 0
+      },
+      "revId": "e28d098eaff939b628e41c8539d42dd9ffd6a51e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "32cb39e5_6d8f7be9",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-20T17:25:06Z",
+      "side": 1,
+      "message": "This should be combined - see https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/pipeline/docker-publish.groovy;hb\u003dHEAD#l27 for additional parameters. \n\nIn that pipeline, gitRef and gitURL are set in this way: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/docker-publish.yaml;#l34",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 13
+      },
+      "revId": "e28d098eaff939b628e41c8539d42dd9ffd6a51e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
