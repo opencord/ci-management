@@ -403,3 +403,81 @@
             url: 'https://github.com/omec-project/omec-project-ci'
             branches:
               - 'master'
+
+# Deploy staging
+- job-template:
+    id: 'omec-deploy-staging'
+    name: 'omec-deploy-staging'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: 'omec-staging'
+          description: 'Name of the Jenkins executor node to run the job on.'
+      - string:
+          name: hssdb_registry
+          default: ''
+          description: 'Registry for hssdb. Leave hssdb registry and tag blank to omit changing.'
+      - string:
+          name: hssdb_tag
+          default: ''
+          description: 'Tag for hssdb. Leave hssdb registry and tag blank to omit changing.'
+      - string:
+          name: hss_registry
+          default: ''
+          description: 'Registry for hss. Leave hss registry and tag blank to omit changing.'
+      - string:
+          name: hss_tag
+          default: ''
+          description: 'Tag for hss. Leave hss registry and tag blank to omit changing.'
+      - string:
+          name: mme_registry
+          default: ''
+          description: 'Registry for mme. Leave mme registry and tag blank to omit changing.'
+      - string:
+          name: mme_tag
+          default: ''
+          description: 'Tag for mme. Leave mme registry and tag blank to omit changing.'
+      - string:
+          name: mmeExporter_registry
+          default: ''
+          description: 'Registry for mmeExporter. Leave mmeExporter registry and tag blank to omit changing.'
+      - string:
+          name: mmeExporter_tag
+          default: ''
+          description: 'Tag for mmeExporter. Leave mmeExporter registry and tag blank to omit changing.'
+      - string:
+          name: spgwc_registry
+          default: ''
+          description: 'Registry for spgwc. Leave spgwc registry and tag blank to omit changing.'
+      - string:
+          name: spgwc_tag
+          default: ''
+          description: 'Tag for spgwc. Leave spgwc registry and tag blank to omit changing.'
+      - string:
+          name: spgwu_registry
+          default: ''
+          description: 'Registry for spgwu. Leave spgwu registry and tag blank to omit changing.'
+      - string:
+          name: spgwu_tag
+          default: ''
+          description: 'Tag for spgwu. Leave spgwu registry and tag blank to omit changing.'
+
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/omec-deploy-staging.groovy
