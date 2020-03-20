@@ -403,3 +403,57 @@
             url: 'https://github.com/omec-project/omec-project-ci'
             branches:
               - 'master'
+
+# Deploy staging
+- job-template:
+    id: 'omec-deploy-staging'
+    name: 'omec-deploy-staging'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: 'omec-staging'
+          description: 'Name of the Jenkins executor node to run the job on'
+      - string:
+          name: hssdb_tag
+          default: 'registry.central.aetherproject.net/c3po-hssdb:master'
+          description: 'Tag for hssdb. Leave blank to use default from file.'
+      - string:
+          name: hss_tag
+          default: 'registry.central.aetherproject.net/c3po-hss:master'
+          description: 'Tag for hss. Leave blank to use default from file.'
+      - string:
+          name: mme_tag
+          default: 'registry.central.aetherproject.net/openmme:master'
+          description: 'Tag for mme. Leave blank to use default from file.'
+      - string:
+          name: mmeExporter_tag
+          default: 'registry.central.aetherproject.net/mme-exporter:master'
+          description: 'Tag for mmeExporter. Leave blank to use default from file.'
+      - string:
+          name: spgwc_tag
+          default: 'registry.central.aetherproject.net/ngic-cp:master'
+          description: 'Tag for spgwc. Leave blank to use default from file.'
+      - string:
+          name: spgwu_tag
+          default: 'registry.central.aetherproject.net/ngic-dp:master'
+          description: 'Tag for spgwu. Leave blank to use default from file.'
+
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/omec-deploy-staging.groovy
