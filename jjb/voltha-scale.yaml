@@ -71,6 +71,7 @@
           ponPorts: 4
           expectedOnus: 128
           BBSIMdelay: 1000
+
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-16-32-200ms'
           build-node: 'onf-pod1-head-node'
@@ -79,14 +80,29 @@
           ponPorts: 16
           expectedOnus: 512
           BBSIMdelay: 200
+          # multi-adapter-tmp-changes
+          volthaImg: matteoscandolo/voltha-rw-core:partition
+          ofAgentImg: voltha/ofagent-go:master
+          openoltAdapterImg:  matteoscandolo/voltha-openolt-adapter:partition
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:partition
+          openonuAdapterChart: /home/cord/voltha-helm-charts/voltha-adapter-openonu
+          extraHelmFlags: --set use_ofagent_go=true -f /home/cord/partition-values.yaml
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-16-32-1000ms'
+          name: 'voltha-scale-measurements-periodic-16-64-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          onuPerPon: 32
+          onuPerPon: 64
           ponPorts: 16
-          expectedOnus: 512
-          BBSIMdelay: 1000
+          expectedOnus: 1024
+          BBSIMdelay: 200
+          # multi-adapter-tmp-changes
+          volthaImg: matteoscandolo/voltha-rw-core:partition
+          ofAgentImg: voltha/ofagent-go:master
+          openoltAdapterImg:  matteoscandolo/voltha-openolt-adapter:partition
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:partition
+          openonuAdapterChart: /home/cord/voltha-helm-charts/voltha-adapter-openonu
+          extraHelmFlags: --set use_ofagent_go=true -f /home/cord/partition-values.yaml
+
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-64-200ms'
           build-node: 'onf-pod1-head-node'
