@@ -212,6 +212,19 @@
           build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
+    # default parameters
+    bbsimImg: voltha/bbsim:master
+    bbsimChart: onf/bbsim
+    volthaImg: voltha/voltha-rw-core:master
+    ofAgentImg: voltha/voltha-ofagent:master
+    volthaChart: onf/voltha
+    openoltAdapterImg:  voltha/voltha-openolt-adapter:master
+    openoltAdapterChart: onf/voltha-adapter-openolt
+    openonuAdapterImg: voltha/voltha-openonu-adapter:master
+    openonuAdapterChart: onf/voltha-adapter-openonu
+    onosImg: voltha/voltha-onos:4.0.1
+    extraHelmFlags: ''
+
     parameters:
       - string:
           name: buildNode
@@ -285,57 +298,57 @@
 
       - string:
           name: bbsimImg
-          default: 'voltha/bbsim:master'
+          default: '{bbsimImg}'
           description: 'Custom image selection for BBSIM (repo:tag)'
 
       - string:
           name: bbsimChart
-          default: onf/bbsim
+          default: '{bbsimChart}'
           description: 'BBSim chart name (or location on file system)'
 
       - string:
           name: volthaImg
-          default: 'voltha/voltha-rw-core:master'
+          default: '{volthaImg}'
           description: 'Custom image selection for VOLTHA (repo:tag)'
 
       - string:
           name: ofAgentImg
-          default: 'voltha/voltha-ofagent:master'
+          default: '{ofAgentImg}'
           description: 'Custom image selection for OfAgent (repo:tag)'
 
       - string:
           name: volthaChart
-          default: onf/voltha
+          default: '{volthaChart}'
           description: 'VOLTHA chart name (or location on file system)'
 
       - string:
           name: openoltAdapterImg
-          default: voltha/voltha-openolt-adapter:master
+          default: '{openoltAdapterImg}'
           description: 'Custom image selection for Openolt Adapter (repo:tag)'
 
       - string:
           name: openoltAdapterChart
-          default: onf/voltha-adapter-openolt
+          default: '{openoltAdapterChart}'
           description: 'OpenOLT chart name (or location on file system)'
 
       - string:
           name: openonuAdapterImg
-          default: voltha/voltha-openonu-adapter:master
+          default: '{openonuAdapterImg}'
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
       - string:
           name: openonuAdapterChart
-          default: onf/voltha-adapter-openonu
+          default: '{openonuAdapterChart}'
           description: 'OpenONU chart name (or location on file system)'
 
       - string:
           name: onosImg
-          default: voltha/voltha-onos:4.0.1
+          default: '{onosImg}'
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
       - string:
           name: extraHelmFlags
-          default: ''
+          default: '{extraHelmFlags}'
           description: 'Any extra helm parameters you want (passed to every helm install command)'
 
     project-type: pipeline
@@ -368,6 +381,19 @@
       - lf-infra-wrappers:
           build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    # default parameters
+    bbsimImg: voltha/bbsim:master
+    bbsimChart: onf/bbsim
+    volthaImg: voltha/voltha-rw-core:master
+    ofAgentImg: voltha/voltha-ofagent:master
+    volthaChart: onf/voltha
+    openoltAdapterImg:  voltha/voltha-openolt-adapter:master
+    openoltAdapterChart: onf/voltha-adapter-openolt
+    openonuAdapterImg: voltha/voltha-openonu-adapter:master
+    openonuAdapterChart: onf/voltha-adapter-openonu
+    onosImg: voltha/voltha-onos:4.0.1
+    extraHelmFlags: ''
 
     parameters:
       - string:
@@ -442,57 +468,57 @@
 
       - string:
           name: bbsimImg
-          default: voltha/bbsim:master
+          default: '{bbsimImg}'
           description: 'Custom image selection for BBSIM (repo:tag)'
 
       - string:
           name: bbsimChart
-          default: onf/bbsim
+          default: '{bbsimChart}'
           description: 'BBSim chart name (or location on file system)'
 
       - string:
           name: volthaImg
-          default: voltha/voltha-rw-core:master
+          default: '{volthaImg}'
           description: 'Custom image selection for VOLTHA (repo:tag)'
 
       - string:
           name: ofAgentImg
-          default: 'voltha/voltha-ofagent:master'
+          default: '{ofAgentImg}'
           description: 'Custom image selection for OfAgent (repo:tag)'
 
       - string:
           name: volthaChart
-          default: onf/voltha
+          default: '{volthaChart}'
           description: 'VOLTHA chart name (or location on file system)'
 
       - string:
           name: openoltAdapterImg
-          default: voltha/voltha-openolt-adapter:master
+          default: '{openoltAdapterImg}'
           description: 'Custom image selection for Openolt Adapter (repo:tag)'
 
       - string:
           name: openoltAdapterChart
-          default: onf/voltha-adapter-openolt
+          default: '{openoltAdapterChart}'
           description: 'OpenOLT chart name (or location on file system)'
 
       - string:
           name: openonuAdapterImg
-          default: voltha/voltha-openonu-adapter:master
+          default: '{openonuAdapterImg}'
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
       - string:
           name: openonuAdapterChart
-          default: onf/voltha-adapter-openonu
+          default: '{openonuAdapterChart}'
           description: 'OpenONU chart name (or location on file system)'
 
       - string:
           name: onosImg
-          default: voltha/voltha-onos:4.0.1
+          default: '{onosImg}'
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
       - string:
           name: extraHelmFlags
-          default: ''
+          default: '{extraHelmFlags}'
           description: 'Any extra helm parameters you want (passed to every helm install command)'
 
     project-type: pipeline
