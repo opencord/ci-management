@@ -40,7 +40,8 @@ pipeline {
             steps {
                 checkout([
                     $class: 'GitSCM',
-                    userRemoteConfigs: [[ url: "https://github.com/${params.ghprbGhRepository}", refspec: "+refs/pull/${params.ghprbPullId}/merge" ]],
+                    userRemoteConfigs: [[ url: "https://github.com/${params.ghprbGhRepository}", refspec: "pull/${params.ghprbPullId}/head" ]],
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.project}"]],
                     ],
                 )
             }
@@ -51,9 +52,15 @@ pipeline {
                 sh  """
                     #!/usr/bin/env bash
 
+                    cd ${params.project}
                     git checkout FETCH_HEAD
                     git show
 
+                    mkdir ../jenkins-license-scan
+                    cp --parents $(git diff-tree --no-commit-id --name-only -r HEAD) ../jenkins-license-scan
+                    cd ../jenkins-license-scan
+
+                    reuse download --all
                     reuse lint
                     """
             }

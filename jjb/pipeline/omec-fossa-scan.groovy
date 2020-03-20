@@ -40,7 +40,8 @@ pipeline {
             steps {
                 checkout([
                     $class: 'GitSCM',
-                    userRemoteConfigs: [[ url: "https://github.com/${params.ghprbGhRepository}", refspec: "+refs/pull/${params.ghprbPullId}/merge" ]],
+                    userRemoteConfigs: [[ url: "https://github.com/${params.ghprbGhRepository}", refspec: "pull/${params.ghprbPullId}/head" ]],
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.project}"]],
                     ],
                 )
             }
@@ -52,6 +53,7 @@ pipeline {
                     sh  """
                         #!/usr/bin/env bash
 
+                        cd ${params.project}
                         git checkout FETCH_HEAD
                         git show
 
