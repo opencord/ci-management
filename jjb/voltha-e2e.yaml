@@ -28,6 +28,16 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-errorscenarios-test'
+          build-node: 'qct-pod4-node2'
+          default-image-tag: 'master'
+          code-branch: 'master'
+          make-target: bbsim-errorscenarios
+          onus: 1
+          pons: 1
+          time-trigger: "H H/6 * * *"
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-system-test'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-4c-8g'
