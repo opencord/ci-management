@@ -135,10 +135,10 @@ pipeline {
            if [ "${gerritProject}" = "voltha-go" ]; then
              IMAGES="rw_core ro_core "
            elif [ "${gerritProject}" = "ofagent-py" ]; then
-             IMAGES="ofagent "
-             EXTRA_HELM_FLAGS+="--set use_ofagent_go=false,images.ofagent.repository=voltha/voltha-ofagent-py "
+             IMAGES="ofagent_py "
+             EXTRA_HELM_FLAGS+="--set use_ofagent_go=false "
            elif [ "${gerritProject}" = "ofagent-go" ]; then
-             IMAGES="ofagent "
+             IMAGES="ofagent_go "
            elif [ "${gerritProject}" = "voltha-onos" ]; then
              IMAGES="onos "
            elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
