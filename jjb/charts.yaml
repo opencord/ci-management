@@ -69,7 +69,7 @@
           # Setup helm and external repos
           helm init --client-only
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
-          helm repo add rook-beta https://charts.rook.io/beta
+          helm repo add rook-release https://charts.rook.io/release
           helm repo add cord https://charts.opencord.org
 
           # Update the repo
@@ -164,7 +164,7 @@
           # Setup helm and external repos
           helm init --client-only
           helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
-          helm repo add rook-beta https://charts.rook.io/beta
+          helm repo add rook-release https://charts.rook.io/release
           helm repo add cord https://charts.opencord.org
 
           git clone https://gerrit.opencord.org/helm-repo-tools
