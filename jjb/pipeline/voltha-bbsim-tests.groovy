@@ -136,6 +136,9 @@ pipeline {
              IMAGES="rw_core ro_core "
            elif [ "${gerritProject}" = "ofagent-py" ]; then
              IMAGES="ofagent "
+             EXTRA_HELM_FLAGS+="--set use_ofagent_go=false,images.ofagent.repository=voltha/voltha-ofagent-py "
+           elif [ "${gerritProject}" = "ofagent-go" ]; then
+             IMAGES="ofagent "
            elif [ "${gerritProject}" = "voltha-onos" ]; then
              IMAGES="onos "
            elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then

@@ -23,6 +23,8 @@
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-ofagent-go-jobs'
