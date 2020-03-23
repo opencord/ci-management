@@ -81,12 +81,12 @@
           expectedOnus: 512
           BBSIMdelay: 200
           # multi-adapter-tmp-changes
-          volthaImg: matteoscandolo/voltha-rw-core:partition
-          ofAgentImg: voltha/ofagent-go:master
-          openoltAdapterImg:  matteoscandolo/voltha-openolt-adapter:partition
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:partition
-          openonuAdapterChart: /home/cord/voltha-helm-charts/voltha-adapter-openonu
-          extraHelmFlags: --set use_ofagent_go=true -f /home/cord/partition-values.yaml
+          volthaImg: "matteoscandolo/voltha-rw-core:partition"
+          ofAgentImg: "voltha/ofagent-go:master"
+          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:partition"
+          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:partition"
+          openonuAdapterChart: "/home/cord/voltha-helm-charts/voltha-adapter-openonu"
+          extraHelmFlags: "--set use_ofagent_go=true -f /home/cord/partition-values.yaml"
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-16-64-200ms'
           build-node: 'onf-pod1-head-node'
@@ -96,12 +96,12 @@
           expectedOnus: 1024
           BBSIMdelay: 200
           # multi-adapter-tmp-changes
-          volthaImg: matteoscandolo/voltha-rw-core:partition
-          ofAgentImg: voltha/ofagent-go:master
-          openoltAdapterImg:  matteoscandolo/voltha-openolt-adapter:partition
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:partition
-          openonuAdapterChart: /home/cord/voltha-helm-charts/voltha-adapter-openonu
-          extraHelmFlags: --set use_ofagent_go=true -f /home/cord/partition-values.yaml
+          volthaImg: "matteoscandolo/voltha-rw-core:partition"
+          ofAgentImg: "voltha/ofagent-go:master"
+          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:partition"
+          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:partition"
+          openonuAdapterChart: "/home/cord/voltha-helm-charts/voltha-adapter-openonu"
+          extraHelmFlags: "--set use_ofagent_go=true -f /home/cord/partition-values.yaml"
 
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-64-200ms'
@@ -383,16 +383,16 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default parameters
-    bbsimImg: voltha/bbsim:master
-    bbsimChart: onf/bbsim
-    volthaImg: voltha/voltha-rw-core:master
-    ofAgentImg: voltha/voltha-ofagent:master
-    volthaChart: onf/voltha
-    openoltAdapterImg:  voltha/voltha-openolt-adapter:master
-    openoltAdapterChart: onf/voltha-adapter-openolt
-    openonuAdapterImg: voltha/voltha-openonu-adapter:master
-    openonuAdapterChart: onf/voltha-adapter-openonu
-    onosImg: voltha/voltha-onos:4.0.1
+    bbsimImg: "voltha/bbsim:master"
+    bbsimChart: "onf/bbsim"
+    volthaImg: "voltha/voltha-rw-core:master"
+    ofAgentImg: "voltha/voltha-ofagent:master"
+    volthaChart: "onf/voltha"
+    openoltAdapterImg: "voltha/voltha-openolt-adapter:master"
+    openoltAdapterChart: "onf/voltha-adapter-openolt"
+    openonuAdapterImg: "voltha/voltha-openonu-adapter:master"
+    openonuAdapterChart: "onf/voltha-adapter-openonu"
+    onosImg: "voltha/voltha-onos:4.0.1"
     extraHelmFlags: ''
 
     parameters:
