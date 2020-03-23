@@ -302,7 +302,7 @@
           onos-version: '2.2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-bal31-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           released: false
           profile: 'Default'
