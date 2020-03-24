@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "04787e16_ab3a8b6e",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-24T18:25:13Z",
+      "side": 1,
+      "message": "is this needed?",
+      "range": {
+        "startLine": 115,
+        "startChar": 49,
+        "endLine": 115,
+        "endChar": 59
+      },
+      "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
