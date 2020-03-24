@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "c1842c5e_da85d5d3",
+        "filename": "jjb/docker-publish-github.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-24T15:10:48Z",
+      "side": 1,
+      "message": "If it works with double quotes, lets go with that.",
+      "parentUuid": "e727f06e_92358b1c",
+      "range": {
+        "startLine": 19,
+        "startChar": 42,
+        "endLine": 21,
+        "endChar": 0
+      },
+      "revId": "b3abfeb0f3e6fee367e60b71bf018a4b8eeeba2c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2a87cf31_86dd340f",
         "filename": "jjb/omec-ci.yaml",
         "patchSetId": 2
