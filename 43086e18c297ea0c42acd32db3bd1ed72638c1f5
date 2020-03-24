@@ -22,6 +22,29 @@
       "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d0df206_1f37ec23",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-24T18:27:54Z",
+      "side": 1,
+      "message": "shouldn\u0027t we only mark it a success if the Major version of the core is different?\n\nI mean, if a service was depending on core 4.12.2 and we move it to 4.13.1 because we need a new API the auto update still should work.",
+      "range": {
+        "startLine": 143,
+        "startChar": 12,
+        "endLine": 143,
+        "endChar": 114
+      },
+      "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
