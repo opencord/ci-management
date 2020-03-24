@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0062f0f2_aa5db61d",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2020-03-24T18:33:47Z",
+      "side": 1,
+      "message": "I remember you asked the same question some time ago in a different patch. Not required, but useful to reduce stdout clutter. Without, this would be the output:\n\n\t➜  dt-workflow-driver git:(master) git checkout tags/1.0.0\n\tNote: switching to \u0027tags/1.0.0\u0027.\n\n\tYou are in \u0027detached HEAD\u0027 state. You can look around, make experimental\n\tchanges and commit them, and you can discard any commits you make in this\n\tstate without impacting any branches by switching back to a branch.\n\n\tIf you want to create a new branch to retain commits you create, you may\n\tdo so (now or later) by using -c with the switch command. Example:\n\n\t  git switch -c \u003cnew-branch-name\u003e\n\n\tOr undo this operation with:\n\n\t  git switch -\n\n\tTurn off this advice by setting config variable advice.detachedHead to false\n\n\tHEAD is now at 27fbd78 Release 1.0.0",
+      "parentUuid": "04787e16_ab3a8b6e",
+      "range": {
+        "startLine": 115,
+        "startChar": 49,
+        "endLine": 115,
+        "endChar": 59
+      },
+      "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d0df206_1f37ec23",
         "filename": "jjb/pipeline/xos-service-upgrade.groovy",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2020-03-24T18:27:54Z",
       "side": 1,
       "message": "shouldn\u0027t we only mark it a success if the Major version of the core is different?\n\nI mean, if a service was depending on core 4.12.2 and we move it to 4.13.1 because we need a new API the auto update still should work.",
+      "range": {
+        "startLine": 143,
+        "startChar": 12,
+        "endLine": 143,
+        "endChar": 114
+      },
+      "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6b253aae_0532b142",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2020-03-24T18:33:47Z",
+      "side": 1,
+      "message": "See the commit message. Parsing the string version requirements would require some extra complexity, also there\u0027s an assumption that we are diligent with following semver. Are we?",
+      "parentUuid": "3d0df206_1f37ec23",
       "range": {
         "startLine": 143,
         "startChar": 12,
