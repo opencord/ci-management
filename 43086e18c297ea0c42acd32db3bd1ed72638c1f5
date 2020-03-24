@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "18e59f1c_c4b6f3aa",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2020-03-24T18:38:43Z",
+      "side": 1,
+      "message": "Perhaps a different name than \"foobar\", such as \"released_service\".",
+      "parentUuid": "0062f0f2_aa5db61d",
+      "range": {
+        "startLine": 115,
+        "startChar": 49,
+        "endLine": 115,
+        "endChar": 59
+      },
+      "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3d0df206_1f37ec23",
         "filename": "jjb/pipeline/xos-service-upgrade.groovy",
         "patchSetId": 2
@@ -83,6 +107,30 @@
       "writtenOn": "2020-03-24T18:33:47Z",
       "side": 1,
       "message": "See the commit message. Parsing the string version requirements would require some extra complexity, also there\u0027s an assumption that we are diligent with following semver. Are we?",
+      "parentUuid": "3d0df206_1f37ec23",
+      "range": {
+        "startLine": 143,
+        "startChar": 12,
+        "endLine": 143,
+        "endChar": 114
+      },
+      "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "59434b5b_30a102fd",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2020-03-24T18:38:43Z",
+      "side": 1,
+      "message": "This would encourage developers to obey semantic versioning rules. However, I do feel that we could defer the additional parsing complexity for now, tackle it in a future refinement if we wish to do so.",
       "parentUuid": "3d0df206_1f37ec23",
       "range": {
         "startLine": 143,
