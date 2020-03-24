@@ -21,7 +21,7 @@ pipeline {
     stage('cleanup') {
       steps {
         sh '''
-          rm -rf voltha-devices-count.txt voltha-devices-time.txt onos-ports-count.txt onos-ports-time.txt onos-ports-list.txt voltha-devices-list.json onos-ports-time-num.txt voltha-devices-time-num.txt
+          rm -rf voltha-devices-count.txt voltha-devices-time.txt onos-ports-count.txt onos-ports-time.txt onos-ports-list.txt voltha-devices-list.json onos-ports-time-num.txt voltha-devices-time-num.txt $WORKSPACE/ONU-detection.py
           for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
@@ -71,7 +71,7 @@ pipeline {
           IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
 
           for i in $(seq 1 $((${numOfBbsim}))); do
-            helm install -n bbsim-$i ${bbsimChart} --set olt_id=$i,enablePerf=true,pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} ${extraHelmFlags}
+            helm install -n bbsim-$i ${bbsimChart} --set olt_id=$i,enablePerf=true,pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag},enableEvents=true,kafkaAddress=cord-kafka:9092 ${extraHelmFlags}
           done
 
           bash /home/cord/voltha-scale/wait_for_pods.sh
@@ -126,8 +126,8 @@ pipeline {
       steps {
         sh '''
           #Setting LOG level to ${logLevel}
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel}
-          kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost log:set ${logLevel}
+          kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log ${logLevel} false
           #Setting link discovery
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
           #Setting the flow stats collection interval
@@ -136,6 +136,27 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
           # extending voltctl timeout
           sed -i 's/timeout: 10s/timeout: 5m/g' /home/cord/.volt/config
+
+          #Creating Python script for ONU Detection
+          cat << EOF > $WORKSPACE/ONU-detection.py
+import os
+import fileinput
+import time
+import sys
+start_time = time.time()
+count = 0
+targetOnus = int(sys.argv[1])
+for line in fileinput.input():
+	if "ONU-activate-indication-received" in line:
+		count+=1
+	if count == targetOnus:
+    file1 = open("voltha-devices-time-num.txt","a")
+    file1.write("%s" % (time.time() - start_time))
+		print(str(targetOnus) + " ONUs Activated in " + "%s seconds" % (time.time() - start_time))
+		break
+  pass
+sys.exit(0)
+EOF
         '''
       }
     }
@@ -162,17 +183,10 @@ pipeline {
                 echo -e "You need to set the target ONU number\n"
                 exit 1
               fi
-
-              # check ONUs reached Active State in VOLTHA
-              i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-              until [ $i -eq ${expectedOnus} ]
-              do
-                echo "$i ONUs ACTIVE of ${expectedOnus} expected (time: $SECONDS)"
-                sleep ${pollInterval}
-                i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-              done
-              echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
-              echo $SECONDS > voltha-devices-time-num.txt
+              dt=$(date -u +"%s")
+              voltctl device enable $(voltctl device list --filter Type~openolt -q)
+              kafkacat=$(kubectl get pods --all-namespaces | grep "kafkacat" | awk '{print $2}')
+              kubectl exec -it $kafkacat -- kafkacat -b cord-kafka -C -t BBSim-OLT-0-Events -o s@$dt | python $WORKSPACE/ONU-detection.py $expectedOnus
             '''
           }
         }
