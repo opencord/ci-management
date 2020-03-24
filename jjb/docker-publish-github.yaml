@@ -16,7 +16,8 @@
           display-status: 'docker-publish'
 
     triggers:
-      - github
+      - cord-infra-github-pr-trigger-merge:
+          project: '{project}'
 
     wrappers:
       - lf-infra-wrappers:
