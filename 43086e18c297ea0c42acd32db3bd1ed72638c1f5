@@ -141,6 +141,30 @@
       "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1a4ed2a_5d33a086",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-24T18:58:35Z",
+      "side": 1,
+      "message": "Agreed, we can make this smarter in the future if needed",
+      "parentUuid": "59434b5b_30a102fd",
+      "range": {
+        "startLine": 143,
+        "startChar": 12,
+        "endLine": 143,
+        "endChar": 114
+      },
+      "revId": "43086e18c297ea0c42acd32db3bd1ed72638c1f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
