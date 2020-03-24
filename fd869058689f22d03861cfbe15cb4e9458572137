@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3099360_35d31331",
+        "filename": "jjb/docker-publish-github.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000676
+      },
+      "writtenOn": "2020-03-24T17:38:00Z",
+      "side": 1,
+      "message": "Sorry but I was wrong with the double quotes. I tried again today and it doesn\u0027t make any difference with single or double quotes. So I guess we\u0027ll need to keep this",
+      "range": {
+        "startLine": 20,
+        "startChar": 10,
+        "endLine": 20,
+        "endChar": 30
+      },
+      "revId": "fd869058689f22d03861cfbe15cb4e9458572137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
