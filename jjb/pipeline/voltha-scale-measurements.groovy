@@ -54,7 +54,7 @@ pipeline {
 
           IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
           IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-          helm install -n voltha ${volthaChart} -f /home/cord/voltha-scale/voltha-values.yaml --set defaults.log_level=${logLevel},images.voltha.repository=${volthaRepo},images.voltha.tag=${volthaTag},images.ofagent.repository=${ofAgentRepo},images.ofagent.tag=${ofAgentTag} ${extraHelmFlags}
+          helm install -n voltha ${volthaChart} -f /home/cord/voltha-scale/voltha-values.yaml --set defaults.log_level=${logLevel},images.rw_core.repository=${volthaRepo},images.rw_core.tag=${volthaTag},images.ofagent_go.repository=${ofAgentRepo},images.ofagent_go.tag=${ofAgentTag} ${extraHelmFlags}
 
           IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
           helm install -n openolt ${openoltAdapterChart} -f /home/cord/voltha-scale/voltha-values.yaml --set defaults.log_level=${logLevel},images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag} ${extraHelmFlags}

@@ -314,7 +314,7 @@
       - string:
           name: ofAgentImg
           default: '{ofAgentImg}'
-          description: 'Custom image selection for OfAgent (repo:tag)'
+          description: 'Custom image selection for OfAgent (repo:tag), only supports the go version'
 
       - string:
           name: volthaChart
@@ -484,7 +484,7 @@
       - string:
           name: ofAgentImg
           default: '{ofAgentImg}'
-          description: 'Custom image selection for OfAgent (repo:tag)'
+          description: 'Custom image selection for OfAgent (repo:tag), only supports the go version'
 
       - string:
           name: volthaChart
