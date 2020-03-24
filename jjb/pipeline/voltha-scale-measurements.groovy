@@ -22,7 +22,7 @@ pipeline {
       steps {
         sh '''
           rm -rf voltha-devices-count.txt voltha-devices-time.txt onos-ports-count.txt onos-ports-time.txt onos-ports-list.txt voltha-devices-list.json onos-ports-time-num.txt voltha-devices-time-num.txt
-          for hchart in \$(helm list -q | grep -E -v 'docker-registry|cord-kafka|etcd-operator');
+          for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
               helm delete --purge "\${hchart}"
@@ -47,7 +47,8 @@ pipeline {
       steps {
         sh '''
           helm repo update
-          helm install -n nem-monitoring cord/nem-monitoring
+          helm install -n cord-kafka incubator/kafka -f /home/cord/voltha-scale/voltha-values.yaml --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false
+          helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
 
           IFS=: read -r onosRepo onosTag <<< ${onosImg}
           helm install -n onos onf/onos --set images.onos.repository=${onosRepo} --set images.onos.tag=${onosTag} ${extraHelmFlags}
@@ -120,7 +121,7 @@ pipeline {
         sh '''
           #Setting LOG level to ${logLevel}
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost log:set ${logLevel}
-          kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
+          kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log ${logLevel} false
           #Setting link discovery
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
           #Setting the flow stats collection interval
@@ -129,6 +130,27 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
           # extending voltctl timeout
           sed -i 's/timeout: 10s/timeout: 5m/g' /home/cord/.volt/config
+
+          #Creating Python script for ONU Detection
+          cat << EOF > /home/cord/ONU-detection.py
+import os
+import fileinput
+import time
+import sys
+start_time = time.time()
+count = 0
+targetOnus = int(os.environ["expectedOnu"])
+for line in fileinput.input():
+	if "ONU-activate-indication-received" in line:
+		count+=1
+	if count == targetOnus:
+    file1 = open("voltha-devices-time-num.txt","a")
+    file1.write("%s" % (time.time() - start_time))
+		print(str(targetOnus) + " ONUs Activated in " + "%s seconds" % (time.time() - start_time))
+		break
+  pass
+sys.exit(0)
+EOF
         '''
       }
     }
@@ -145,19 +167,12 @@ pipeline {
                 echo -e "You need to set the target ONU number\n"
                 exit 1
               fi
-
+              dt=$(date -u +"%s")
               voltctl device create -t openolt -H bbsim:50060
               voltctl device enable $(voltctl device list --filter Type~openolt -q)
-              # check ONUs reached Active State in VOLTHA
-              i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-              until [ $i -eq ${expectedOnus} ]
-              do
-                echo "$i ONUs ACTIVE of ${expectedOnus} expected (time: $SECONDS)"
-                sleep ${pollInterval}
-                i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-              done
-              echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
-              echo $SECONDS > voltha-devices-time-num.txt
+              export expectedOnu=${expectedOnus}
+              kafkacat=$(kubectl get pods --all-namespaces | grep "kafkacat" | awk '{print $2}')
+              kubectl exec -it $kafkacat -- kafkacat -b cord-kafka -C -t BBSim-OLT-0-Events -o s@$dt | python /home/cord/ONU-detection.py
             '''
           }
         }
@@ -198,24 +213,33 @@ pipeline {
         echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) > onus.txt
         echo "#-of-ONUs" > voltha-devices-count.txt
         cat onus.txt >> voltha-devices-count.txt
-
+      '''
+      sh '''
         echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l) > ports.txt
         echo "#-of-ports" > onos-ports-count.txt
         cat ports.txt >> onos-ports-count.txt
-
+      '''
+      sh '''
         kubectl get pods -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+      '''
+      sh '''
         voltctl device list -o json > device-list.json
         python -m json.tool device-list.json > voltha-devices-list.json
+      '''
+      sh '''
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
         curl -s -X GET -G http://127.0.0.1:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod_name)' | jq . > cpu-usage.json
-        kubectl log deployment/adapter-open-olt > open-olt-logs.txt
-        kubectl log deployment/adapter-open-onu > open-onu-logs.txt
-        kubectl log deployment/voltha-rw-core > voltha-rw-core-logs.txt
-        kubectl log deployment/voltha-ofagent > voltha-ofagent-logs.txt
-        kubectl log deployment/bbsim > bbsim-logs.txt
-
+      '''
+      sh '''
+        kubectl logs deployment/adapter-open-olt > open-olt-logs.txt
+        kubectl logs deployment/adapter-open-onu > open-onu-logs.txt
+        kubectl logs deployment/voltha-rw-core > voltha-rw-core-logs.txt
+        kubectl logs deployment/voltha-ofagent > voltha-ofagent-logs.txt
+        kubectl logs deployment/bbsim > bbsim-logs.txt
+      '''
+      sh '''
         rm -rf BBSM-12345123451234512345-00000000000001-v1.json device-list.json onus.txt ports.txt temp.txt
-        '''
+      '''
       plot([
         csvFileName: 'plot-numbers.csv',
         csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-count.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-count.txt', inclusionFlag: 'OFF', url: '']],
