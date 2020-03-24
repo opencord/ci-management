@@ -16,6 +16,7 @@
 // Checks functionality of the helm-chart, without overriding the version/tag used
 
 def serviceName = "${gerritProject}"
+def xosCoreVersionMismatch = false
 
 pipeline {
 
@@ -41,17 +42,6 @@ pipeline {
             jobs: 4, \
             showAllChanges: true] \
           )
-      }
-    }
-
-    stage('patch') {
-      steps {
-        sh '''
-           pushd cord
-           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifests/default.xml)
-           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-           popd
-           '''
       }
     }
 
@@ -91,9 +81,85 @@ pipeline {
       }
     }
 
+    stage('Verify xos-core version requirements') {
+      steps {
+        script {
+          if (serviceName == "olt-service") {
+            serviceName = "volt"
+          }
+          else if (serviceName == "onos-service") {
+            serviceName = "onos"
+          }
+          else if (serviceName == "kubernetes-service") {
+            serviceName = "kubernetes"
+          }
+        }
+        result = sh returnStdout: true, script: """
+           #!/usr/bin/env bash
+           set -eu -o pipefail
+
+           # Obtain git tag correspsonding to the the docker image used in the
+           # latest released version of the service chart.
+           pushd cord/helm-charts
+           helm fetch xos-services/${serviceName} --untar --untardir /tmp/service-chart
+           export RELEASED_GIT_TAG=\$(echo -e "import yaml\\nwith open('/tmp/service-chart/Chart.yaml', 'r') as f: print yaml.safe_load(f)['appVersion']" | python)
+           popd
+
+           # Obtain the xos-core version requirement from the config.yaml of the
+           # released service.
+           pushd cord
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+           pushd \${PROJECT_PATH}
+           git fetch --all --tags
+           git checkout tags/\${RELEASED_GIT_TAG} -b foobar
+           export RELEASED_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
+           popd
+           popd
+
+           # Do the same for the patchset we want to verify.
+           pushd cord
+           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           pushd \${PROJECT_PATH}
+           export PATCHSET_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
+           popd
+           popd
+
+           echo "RELEASED_CORE_VER_REQ: \${RELEASED_CORE_VER_REQ}"
+           echo "PATCHSET_CORE_VER_REQ: \${PATCHSET_CORE_VER_REQ}"
+
+           if [ "\${PATCHSET_CORE_VER_REQ}" == "\${RELEASED_CORE_VER_REQ}" ]; then
+             echo 0
+           else
+             # xosCoreVersionMismatch is true
+             echo 1
+           fi
+           """
+        xosCoreVersionMismatch = result.toBoolean()
+      }
+    }
+
+    if( xosCoreVersionMismatch ) {
+      echo "Detected xos-core version requirements mismatch. Will skip the rest of the pipeline and return SUCCESS"
+      currentBuild.result = 'SUCCESS'
+      return
+    }
+
+    // The patchset should be already checked out, but for consistency with
+    // other pipeline jobs, we re-do the same here.
+    stage('patch') {
+      steps {
+        sh '''
+           pushd cord
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+           popd
+           '''
+      }
+    }
+
     stage('Install XOS w/Service') {
       steps {
-          script {
+        script {
           if (serviceName == "olt-service") {
             serviceName = "volt"
           }
