@@ -153,18 +153,12 @@ pipeline {
                 echo -e "You need to set the target ONU number\n"
                 exit 1
               fi
-
+              dt=$(date -u +"%s")
               voltctl device create -t openolt -H bbsim:50060
               voltctl device enable $(voltctl device list --filter Type~openolt -q)
-              # check ONUs reached Active State in VOLTHA
-              i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-              until [ $i -eq ${expectedOnus} ]
-              do
-                echo "$i ONUs ACTIVE of ${expectedOnus} expected (time: $SECONDS)"
-                sleep ${pollInterval}
-                i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
-              done
-              echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
+              export expectedOnus
+              kafkacat=$(kubectl get pods --all-namespaces | grep "kafkacat" | awk '{print $2}')
+              kubectl exec -it $kafkacat -- kafkacat -b cord-kafka -C -t BBSim-OLT-0-Events -o s@$dt | python /home/cord/ONU-detection.py
               echo $SECONDS > voltha-devices-time-num.txt
             '''
           }
