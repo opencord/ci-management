@@ -97,7 +97,7 @@
           BBSIMdelay: 200
           # multi-adapter-tmp-changes
           volthaImg: "matteoscandolo/voltha-rw-core:partition"
-          ofAgentImg: "voltha/ofagent-go:master"
+          ofAgentImg: "voltha/voltha-ofagent-go:master"
           openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:partition"
           openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:partition"
           openonuAdapterChart: "/home/cord/voltha-helm-charts/voltha-adapter-openonu"
@@ -216,7 +216,7 @@
     bbsimImg: voltha/bbsim:master
     bbsimChart: onf/bbsim
     volthaImg: voltha/voltha-rw-core:master
-    ofAgentImg: voltha/voltha-ofagent:master
+    ofAgentImg: voltha/voltha-ofagent-go:master
     volthaChart: onf/voltha
     openoltAdapterImg:  voltha/voltha-openolt-adapter:master
     openoltAdapterChart: onf/voltha-adapter-openolt
