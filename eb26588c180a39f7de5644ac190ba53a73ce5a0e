@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e84ca0db_6a8de52a",
+        "filename": "jjb/verify/aaa.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-25T22:15:24Z",
+      "side": 1,
+      "message": "I interpret this as \"not the legacy branch\" which is given below?",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 46
+      },
+      "revId": "eb26588c180a39f7de5644ac190ba53a73ce5a0e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
