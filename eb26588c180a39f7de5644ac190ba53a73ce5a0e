@@ -22,6 +22,30 @@
       "revId": "eb26588c180a39f7de5644ac190ba53a73ce5a0e",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "047678bf_52358623",
+        "filename": "jjb/verify/aaa.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-25T22:17:22Z",
+      "side": 1,
+      "message": "correct",
+      "parentUuid": "e84ca0db_6a8de52a",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 46
+      },
+      "revId": "eb26588c180a39f7de5644ac190ba53a73ce5a0e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
