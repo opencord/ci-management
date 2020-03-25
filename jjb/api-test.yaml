@@ -57,11 +57,6 @@
           default: '$GERRIT_PATCHSET_NUMBER'
           description: 'PatchSet number in Gerrit'
 
-      - bool:
-          name: ArchiveLogs
-          default: true
-          description: 'Archive all pod logs after test run'
-
     project-type: pipeline
     concurrent: true
 

@@ -156,28 +156,20 @@ pipeline {
            """
       }
     }
-    stage ('Archive Artifacts') {
-      when { expression { return params.ArchiveLogs } }
-      steps {
-          sh '''
-           kubectl get pods --all-namespaces
-           ## get default pod logs
-           for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
-           do
-             kubectl logs \$pod> $WORKSPACE/\$pod.log;
-           done
-           '''
-      }
-    }
   }
   post {
     always {
       sh """
          kubectl get pods --all-namespaces
+         ## get default pod logs
+         for pod in \$(kubectl get pods --no-headers | awk '{print \$1}');
+         do
+           kubectl logs \$pod> $WORKSPACE/\$pod.log;
+         done
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/xos-test-service/*ml ./RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/xos-test-service/*ml ./RobotLogs || true
          echo "# removing helm deployments"
          kubectl get pods
          helm list
@@ -201,7 +193,6 @@ pipeline {
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, teo@opennetworking.org", sendToIndividuals: false])
-
     }
   }
 }
