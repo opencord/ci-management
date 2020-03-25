@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'sadis-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!sadis-3\.1).*)$'
 
       - 'sadis-jobs-legacy':
           branch-regexp: '^(sadis-3.1)$'
@@ -34,4 +34,3 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
-

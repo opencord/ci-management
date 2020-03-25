@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'aaa-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!aaa-1\.10).*)$'
 
       - 'aaa-jobs-legacy':
           branch-regexp: '^(aaa-1.10)$'

@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'kafka-onos-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!kafka-onos-1\..).*)$'
           junit-allow-empty-results: true
 
       - 'kafka-onos-jobs-legacy':

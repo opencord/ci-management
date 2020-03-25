@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'igmp-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!igmp-1\.4).*)$'
 
       - 'igmp-jobs-legacy':
           branch-regexp: '^(igmp-1.4)$'
@@ -34,4 +34,3 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
-

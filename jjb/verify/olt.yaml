@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'olt-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!olt-3\.0).*)$'
 
       - 'olt-jobs-legacy':
           branch-regexp: '^(olt-3.0)$'
@@ -34,4 +34,3 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
-

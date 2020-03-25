@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'dhcpl2relay-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!dhcpl2relay-1\.6).*)$'
 
       - 'dhcpl2relay-jobs-legacy':
           branch-regexp: '^(dhcpl2relay-1.6)$'
@@ -34,4 +34,3 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
-

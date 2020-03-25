@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'mcast-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!mcast-1\.4).*)$'
           junit-allow-empty-results: true
 
       - 'mcast-jobs-legacy':
@@ -36,4 +36,3 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
-
