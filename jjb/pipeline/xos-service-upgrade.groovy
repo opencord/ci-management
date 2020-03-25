@@ -93,56 +93,62 @@ pipeline {
           else if (serviceName == "kubernetes-service") {
             serviceName = "kubernetes"
           }
+          def result = sh returnStdout: true, script: """
+             #!/usr/bin/env bash
+             set -eu -o pipefail
+
+             # Obtain git tag of the service corresponding to the the docker image
+             # used in the latest released version of the helm chart (i.e., HEAD
+             # of cord/helm-charts master branch, which should be already checked
+             # out by repo).
+             pushd cord/helm-charts
+             export RELEASED_GIT_TAG=\$(echo -e "import yaml\\nwith open('xos-services/${serviceName}/Chart.yaml', 'r') as f: print yaml.safe_load(f)['appVersion']" | python)
+             popd
+
+             # Obtain the xos-core version requirement from the config.yaml of the
+             # released service.
+             pushd cord
+             PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+             pushd \${PROJECT_PATH}
+             git fetch --all --tags
+             git checkout tags/\${RELEASED_GIT_TAG} -b foobar
+             export RELEASED_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
+             popd
+             popd
+
+             # Do the same for the patchset we want to verify.
+             pushd cord
+             repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+             pushd \${PROJECT_PATH}
+             export PATCHSET_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
+             popd
+             popd
+
+             echo "RELEASED_CORE_VER_REQ: \${RELEASED_CORE_VER_REQ}"
+             echo "PATCHSET_CORE_VER_REQ: \${PATCHSET_CORE_VER_REQ}"
+
+             if [ "\${PATCHSET_CORE_VER_REQ}" == "\${RELEASED_CORE_VER_REQ}" ]; then
+               echo 0
+             else
+               # xosCoreVersionMismatch is true
+               echo 1
+             fi
+             """
+          xosCoreVersionMismatch = result.toBoolean()
         }
-        result = sh returnStdout: true, script: """
-           #!/usr/bin/env bash
-           set -eu -o pipefail
-
-           # Obtain git tag of the service corresponding to the the docker image
-           # used in the latest released version of the helm chart (i.e., HEAD
-           # of cord/helm-charts master branch, which should be already checked
-           # out by repo).
-           pushd cord/helm-charts
-           export RELEASED_GIT_TAG=\$(echo -e "import yaml\\nwith open('xos-services/${serviceName}/Chart.yaml', 'r') as f: print yaml.safe_load(f)['appVersion']" | python)
-           popd
-
-           # Obtain the xos-core version requirement from the config.yaml of the
-           # released service.
-           pushd cord
-           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
-           pushd \${PROJECT_PATH}
-           git fetch --all --tags
-           git checkout tags/\${RELEASED_GIT_TAG} -b foobar
-           export RELEASED_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
-           popd
-           popd
-
-           # Do the same for the patchset we want to verify.
-           pushd cord
-           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-           pushd \${PROJECT_PATH}
-           export PATCHSET_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
-           popd
-           popd
-
-           echo "RELEASED_CORE_VER_REQ: \${RELEASED_CORE_VER_REQ}"
-           echo "PATCHSET_CORE_VER_REQ: \${PATCHSET_CORE_VER_REQ}"
-
-           if [ "\${PATCHSET_CORE_VER_REQ}" == "\${RELEASED_CORE_VER_REQ}" ]; then
-             echo 0
-           else
-             # xosCoreVersionMismatch is true
-             echo 1
-           fi
-           """
-        xosCoreVersionMismatch = result.toBoolean()
       }
     }
 
-    if( xosCoreVersionMismatch ) {
-      echo "Detected xos-core version requirements mismatch. Will skip the rest of the pipeline and return SUCCESS"
-      currentBuild.result = 'SUCCESS'
-      return
+    stage('Should Continue?') {
+      when {
+        expression { xosCoreVersionMismatch  }
+      }
+      steps {
+        sh '''
+           echo "Detected xos-core version requirements mismatch. Will skip the rest of the pipeline and return SUCCESS"
+           exit 0
+           '''
+      }
     }
 
     // The patchset should be already checked out, but for consistency with
