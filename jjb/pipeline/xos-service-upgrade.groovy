@@ -16,7 +16,7 @@
 // Checks functionality of the helm-chart, without overriding the version/tag used
 
 def serviceName = "${gerritProject}"
-def xosCoreVersionMismatch = false
+def doTest = true
 
 pipeline {
 
@@ -93,65 +93,68 @@ pipeline {
           else if (serviceName == "kubernetes-service") {
             serviceName = "kubernetes"
           }
+          def result = sh returnStdout: true, script: """
+             #!/usr/bin/env bash
+             set -eu -o pipefail
+
+             # Obtain git tag of the service corresponding to the the docker image
+             # used in the latest released version of the helm chart (i.e., HEAD
+             # of cord/helm-charts master branch, which should be already checked
+             # out by repo).
+             pushd cord/helm-charts
+             export RELEASED_GIT_TAG=\$(echo -e "import yaml\\nwith open('xos-services/${serviceName}/Chart.yaml', 'r') as f: print yaml.safe_load(f)['appVersion']" | python)
+             popd
+
+             # Obtain the xos-core version requirement from the config.yaml of the
+             # released service.
+             pushd cord
+             PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifests/default.xml)
+             pushd \${PROJECT_PATH}
+             git fetch --all --tags
+             git checkout tags/\${RELEASED_GIT_TAG} -b foobar
+             export RELEASED_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: print yaml.safe_load(f)['core_version']" | python)
+             popd
+             popd
+
+             # Do the same for the patchset we want to verify.
+             pushd cord
+             repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
+             pushd \${PROJECT_PATH}
+             export PATCHSET_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: print yaml.safe_load(f)['core_version']" | python)
+             popd
+             popd
+
+             # We need to produce at least one log file so the archiveArtifacts
+             # step later won't complain.
+             echo "RELEASED_CORE_VER_REQ: \${RELEASED_CORE_VER_REQ}" >> $WORKSPACE/version_requirements.log
+             echo "PATCHSET_CORE_VER_REQ: \${PATCHSET_CORE_VER_REQ}" >> $WORKSPACE/version_requirements.log
+
+             if [ "\${PATCHSET_CORE_VER_REQ}" == "\${RELEASED_CORE_VER_REQ}" ]; then
+               echo 0
+             else
+               # versionMismatch is true
+               echo 1
+             fi
+             """
+          def versionMismatch = result.readLines().last().toBoolean()
+          if (versionMismatch) {
+            echo "Detected xos-core version requirements mismatch. Will skip the rest of the pipeline and return SUCCESS"
+          }
+          doTest = !versionMismatch
         }
-        result = sh returnStdout: true, script: """
-           #!/usr/bin/env bash
-           set -eu -o pipefail
-
-           # Obtain git tag of the service corresponding to the the docker image
-           # used in the latest released version of the helm chart (i.e., HEAD
-           # of cord/helm-charts master branch, which should be already checked
-           # out by repo).
-           pushd cord/helm-charts
-           export RELEASED_GIT_TAG=\$(echo -e "import yaml\\nwith open('xos-services/${serviceName}/Chart.yaml', 'r') as f: print yaml.safe_load(f)['appVersion']" | python)
-           popd
-
-           # Obtain the xos-core version requirement from the config.yaml of the
-           # released service.
-           pushd cord
-           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
-           pushd \${PROJECT_PATH}
-           git fetch --all --tags
-           git checkout tags/\${RELEASED_GIT_TAG} -b foobar
-           export RELEASED_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
-           popd
-           popd
-
-           # Do the same for the patchset we want to verify.
-           pushd cord
-           repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-           pushd \${PROJECT_PATH}
-           export PATCHSET_CORE_VER_REQ=\$(echo -e "import yaml\\nwith open('xos/synchronizer/config.yaml', 'r') as f: yaml.safe_load(f)['core_version']" | python)
-           popd
-           popd
-
-           echo "RELEASED_CORE_VER_REQ: \${RELEASED_CORE_VER_REQ}"
-           echo "PATCHSET_CORE_VER_REQ: \${PATCHSET_CORE_VER_REQ}"
-
-           if [ "\${PATCHSET_CORE_VER_REQ}" == "\${RELEASED_CORE_VER_REQ}" ]; then
-             echo 0
-           else
-             # xosCoreVersionMismatch is true
-             echo 1
-           fi
-           """
-        xosCoreVersionMismatch = result.toBoolean()
       }
-    }
-
-    if( xosCoreVersionMismatch ) {
-      echo "Detected xos-core version requirements mismatch. Will skip the rest of the pipeline and return SUCCESS"
-      currentBuild.result = 'SUCCESS'
-      return
     }
 
     // The patchset should be already checked out, but for consistency with
     // other pipeline jobs, we re-do the same here.
     stage('patch') {
+      when {
+        expression { doTest  }
+      }
       steps {
         sh '''
            pushd cord
-           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifest.xml)
+           PROJECT_PATH=\$(xmllint --xpath "string(//project[@name=\\\"${gerritProject}\\\"]/@path)" .repo/manifests/default.xml)
            repo download "\$PROJECT_PATH" "${gerritChangeNumber}/${gerritPatchsetNumber}"
            popd
            '''
@@ -159,6 +162,9 @@ pipeline {
     }
 
     stage('Install XOS w/Service') {
+      when {
+        expression { doTest  }
+      }
       steps {
         script {
           if (serviceName == "olt-service") {
@@ -189,6 +195,9 @@ pipeline {
       }
     }
     stage('Verify') {
+      when {
+        expression { doTest  }
+      }
       steps {
         echo "serviceName: ${serviceName}"
         sh """
@@ -209,6 +218,9 @@ pipeline {
       }
     }
     stage('Generate Model API Tests') {
+      when {
+        expression { doTest  }
+      }
       steps {
         sh """
            CORE_CONTAINER=\$(docker ps | grep k8s_xos-core | awk '{print \$1}')
@@ -231,6 +243,9 @@ pipeline {
     }
 
     stage('Test Pre-Upgrade') {
+      when {
+        expression { doTest  }
+      }
       steps {
         sh """
            #!/usr/bin/env bash
@@ -266,6 +281,9 @@ pipeline {
     }
 
     stage('Build/Install New Service') {
+      when {
+        expression { doTest  }
+      }
       steps {
         sh """
            #!/usr/bin/env bash
@@ -289,6 +307,9 @@ pipeline {
     }
 
     stage('Verify Service Upgrade') {
+      when {
+        expression { doTest  }
+      }
       steps {
         sh """
            #!/usr/bin/env bash
@@ -305,6 +326,9 @@ pipeline {
     }
 
     stage('Test Post-Upgrade') {
+      when {
+        expression { doTest  }
+      }
       steps {
         sh """
            #!/usr/bin/env bash
@@ -328,6 +352,9 @@ pipeline {
 
     /* Disable the downgrade step because the core doesn't support reverse migrations
     stage('Downgrade Service') {
+      when {
+        expression { doTest  }
+      }
       steps {
         sh """
            #!/usr/bin/env bash
@@ -385,10 +412,14 @@ pipeline {
 
          # copy robot logs
          if [ -d RobotLogs ]; then rm -r RobotLogs; fi; mkdir RobotLogs
-         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs
+         cp -r $WORKSPACE/cord/test/cord-tester/src/test/cord-api/Tests/Log/*ml ./RobotLogs || true
+         # Workaorund for when doTest is false and there's no Robot output to
+         # process. Without this file, RobotPublisher below will fail marking
+         # the build as FAILED.
+         if [ ! -f RobotLogs/output.xml ]; then echo '<xml></xml>' > RobotLogs/output.xml; fi;
          kubectl get pods --all-namespaces
          kubectl describe pods
-         http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status
+         http -a admin@opencord.org:letmein GET http://127.0.0.1:30001/xosapi/v1/dynamicload/load_status || true
          echo "# removing helm deployments"
          kubectl get pods
          helm list
