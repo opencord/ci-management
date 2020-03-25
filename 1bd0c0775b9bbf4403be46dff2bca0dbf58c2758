@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "959ad3b5_f4379b51",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 161,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-03-25T21:18:42Z",
+      "side": 1,
+      "message": "we\u0027ll need to commit this script somewhere, maybe @zdw has ideas on how to integrate that in JJB",
+      "range": {
+        "startLine": 161,
+        "startChar": 110,
+        "endLine": 161,
+        "endChar": 137
+      },
+      "revId": "1bd0c0775b9bbf4403be46dff2bca0dbf58c2758",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "8f28a455_841cc34d",
         "filename": "jjb/voltha-scale.yaml",
         "patchSetId": 4
