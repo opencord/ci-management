@@ -10,7 +10,7 @@
           branch-regexp: '^(.*)$'
 
       - 'igmpproxy-jobs':
-          branch-regexp: '^(master)$'
+          branch-regexp: '^((?!igmpproxy-1\.2).*)$'
           junit-allow-empty-results: true
 
       - 'igmpproxy-jobs-legacy':
@@ -36,4 +36,3 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
-
