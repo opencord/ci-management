@@ -280,7 +280,7 @@
           oltDebVersion: 'openolt_asfvolt16.deb'
           configurePod: true
           profile: 'Default'
-          time: '1'
+          time: '7'
 
       # infosys test job - uses Default tech profile on voltha branch
       - 'build_voltha_pod_test':
