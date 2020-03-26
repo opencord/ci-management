@@ -17,9 +17,11 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-onos_licensed'
-      - 'make-unit-test':
-          unit-test-targets: 'build'
-          junit-allow-empty-results: true
+      # No need to build the container as part of the unit-tests as it's
+      # built in 'voltha-patch-test'
+      # - 'make-unit-test':
+      #     unit-test-targets: 'build'
+      #     junit-allow-empty-results: true
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
 
