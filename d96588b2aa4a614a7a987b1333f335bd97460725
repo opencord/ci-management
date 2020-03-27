@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1eb2dd2_8218bd71",
+        "filename": "jjb/verify/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-27T17:05:55Z",
+      "side": 0,
+      "message": "This is here to ensure that we install the container versions in the charts when testing the charts.  Is that still a requirement / desirable?",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 123
+      },
+      "revId": "d96588b2aa4a614a7a987b1333f335bd97460725",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "094afd57_49eb8a8d",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-27T17:05:55Z",
+      "side": 1,
+      "message": "+\u003d",
+      "range": {
+        "startLine": 154,
+        "startChar": 34,
+        "endLine": 154,
+        "endChar": 35
+      },
+      "revId": "7a776ea3f54fc00e67e8597ba6a0a59add4ef554",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "15711fd3_3d75d8a8",
+        "filename": "jjb/pipeline/voltha-physical-build-and-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-27T17:05:55Z",
+      "side": 1,
+      "message": "We also run this pipeline without a patchset.  We will need to set GERRIT_BRANCH to some value (e.g., \"master\"), or else override the default value of params.branch",
+      "range": {
+        "startLine": 25,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 30
+      },
+      "revId": "7a776ea3f54fc00e67e8597ba6a0a59add4ef554",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e206d85_7c2cd7c0",
+        "filename": "jjb/pipeline/voltha-physical-build-and-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-27T17:05:55Z",
+      "side": 1,
+      "message": "+\u003d",
+      "range": {
+        "startLine": 183,
+        "startChar": 33,
+        "endLine": 183,
+        "endChar": 34
+      },
+      "revId": "7a776ea3f54fc00e67e8597ba6a0a59add4ef554",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
