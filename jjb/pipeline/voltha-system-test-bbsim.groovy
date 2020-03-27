@@ -66,6 +66,13 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
+          if [ "${manifestBranch}" != "master" ]; then
+             echo "on branch: ${manifestBranch}, sourcing kind-voltha/releases/${manifestBranch}"
+             source "$HOME/kind-voltha/releases/${manifestBranch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
            pushd kind-voltha/
            ./voltha up
            popd
@@ -77,7 +84,7 @@ pipeline {
       steps {
         sh '''
            rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
-           git clone https://gerrit.opencord.org/voltha-system-tests
+           git clone -b ${manifestBranch} https://gerrit.opencord.org/voltha-system-tests
            make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_report.html -o sanity_output.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
            '''
       }
