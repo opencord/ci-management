@@ -91,7 +91,7 @@ pipeline {
 
     stage('Get Patch') {
       when {
-        expression { params.manualBranch != "" }
+        expression { params.manualBranch == "" }
       }
       steps {
         sh returnStdout: false, script: """
@@ -138,7 +138,7 @@ pipeline {
 
     stage('Build and Push Images') {
       when {
-        expression { params.manualBranch != "" }
+        expression { params.manualBranch == "" }
       }
       steps {
         sh returnStdout: false, script: """
@@ -324,7 +324,7 @@ pipeline {
 
     stage('After-Test Delay') {
       when {
-        expression { params.manualBranch != "" }
+        expression { params.manualBranch == "" }
       }
       steps {
         sh returnStdout: false, script: """

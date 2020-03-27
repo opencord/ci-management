@@ -555,7 +555,7 @@
             - project-compare-type: REG_EXP
               project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos)$'
               branches:
-                - branch-compare-type: PLAIN
+                - branch-compare-type: REG_EXP
                   branch-pattern: '^(master|voltha-2.3)$'
 
 
