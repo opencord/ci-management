@@ -913,19 +913,9 @@
           description: ''
 
       - string:
-          name: onosVersion
-          default: '{onos-version}'
-          description: 'ONOS version that needs to be configured'
-
-      - string:
           name: workFlow
           default: '{work-flow}'
           description: 'Installs the specified work flow on the POD'
-
-      - bool:
-          name: released
-          default: '{released}'
-          description: "Pulls released version images when true"
 
       - bool:
           name: configurePod
@@ -1017,11 +1007,6 @@
           name: profile
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
-
-      - bool:
-          name: released
-          default: '{released}'
-          description: "Pulls tests that are tagged with released as identifier"
 
       - string:
           name: branch
