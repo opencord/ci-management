@@ -37,7 +37,6 @@ pipeline {
     DEPLOY_K8S="y"
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="n"
-    EXTRA_HELM_FLAGS="--set log_agent.enabled=False ${params.extraHelmFlags}"
     ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs"
   }
   stages {
@@ -76,6 +75,15 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
+           if [ "${manifestBranch}" != "master" ]; then
+             echo "on branch: ${manifestBranch}, sourcing kind-voltha/releases/${manifestBranch}"
+             source "$HOME/kind-voltha/releases/${manifestBranch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
+           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
+
            cd $HOME/kind-voltha/
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
            ./voltha up
