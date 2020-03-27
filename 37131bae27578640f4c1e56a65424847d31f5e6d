@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "1b91b658_5dc14f50",
+        "filename": "jjb/pipeline/voltha-physical-build-and-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-27T18:12:45Z",
+      "side": 1,
+      "message": "Next patchset I replaced withPatchset  with manualBranch, making the manual branch more specific",
+      "parentUuid": "ca8cac6e_8956fc0a",
+      "range": {
+        "startLine": 28,
+        "startChar": 19,
+        "endLine": 28,
+        "endChar": 35
+      },
+      "revId": "37131bae27578640f4c1e56a65424847d31f5e6d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "08e3cd95_8fdd4f46",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 2
@@ -36,6 +60,30 @@
       "writtenOn": "2020-03-27T17:38:43Z",
       "side": 1,
       "message": "Do we need to change this to match other branches besides \u0027master\u0027?",
+      "range": {
+        "startLine": 563,
+        "startChar": 35,
+        "endLine": 563,
+        "endChar": 41
+      },
+      "revId": "37131bae27578640f4c1e56a65424847d31f5e6d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "461a9aea_b5c1e282",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-27T18:12:45Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08e3cd95_8fdd4f46",
       "range": {
         "startLine": 563,
         "startChar": 35,
