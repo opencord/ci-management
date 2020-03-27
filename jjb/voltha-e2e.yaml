@@ -5,6 +5,7 @@
     name: voltha-e2e
 
     project-name: '{name}'
+    manualBranch: ''
 
     jobs:
       - 'voltha-periodic-test':
@@ -85,20 +86,16 @@
           name: 'verify_physical_voltha_patchset_auto'
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
-          branch: 'master'
           oltDebVersion: 'openolt_asfvolt16.deb'
           profile: 'Default'
-          withPatchset: true
 
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset_manual':
           name: 'verify_physical_voltha_patchset_manual'
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
-          branch: 'master'
           oltDebVersion: 'openolt_asfvolt16.deb'
           profile: 'Default'
-          withPatchset: true
 
       # Manual build job for Tucson pod
       # Allow local testing without disrupting above job
@@ -106,10 +103,9 @@
           name: 'build_tucson-pod_manual'
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
-          branch: 'master'
+          manualBranch: 'master'
           oltDebVersion: 'openolt_asfvolt16.deb'
           profile: 'Default'
-          withPatchset: false
 
 - job-template:
     id: 'voltha-periodic-test'
@@ -229,9 +225,9 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: 'master'
-          description: 'Name of the repo branch to use'
+          name: branch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the branch to use'
 
       - string:
           name: gerritProject
@@ -317,9 +313,9 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: master
-          description: 'Name of the repo branch to use'
+          name: branch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the branch to use'
 
       - string:
           name: gerritProject
@@ -376,10 +372,6 @@
           description: 'OLT Software version to install'
 
       - string:
-          name: branch
-          default: '{branch}'
-
-      - string:
           name: profile
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
@@ -394,10 +386,10 @@
           default: true
           description: "Re-install OLT software"
 
-      - bool:
-          name: withPatchset
-          default: true
-          description: "Build with Gerrit patchset"
+      - string:
+          name: manualBranch
+          default: '{manualBranch}'
+          description: "If a non-empty string, build manually as a specific branch, not with a specific patchset"
 
       - string:
           name: extraRobotArgs
@@ -458,8 +450,8 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: master
+          name: branch
+          default: '$GERRIT_BRANCH'
           description: 'Name of the repo branch to use'
 
       - string:
@@ -517,10 +509,6 @@
           description: 'OLT Software version to install'
 
       - string:
-          name: branch
-          default: '{branch}'
-
-      - string:
           name: profile
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
@@ -535,10 +523,10 @@
           default: true
           description: "Re-install OLT software"
 
-      - bool:
-          name: withPatchset
-          default: true
-          description: "Build with Gerrit patchset"
+      - string:
+          name: manualBranch
+          default: '{manualBranch}'
+          description: "If a non-empty string, build manually on a specific branch, not with a specific patchset"
 
       - string:
           name: extraRobotArgs
@@ -565,10 +553,10 @@
                 comment-contains-value: '^hardware test with delay$'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|voltha-onos)$'
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos)$'
               branches:
                 - branch-compare-type: PLAIN
-                  branch-pattern: 'master'
+                  branch-pattern: '^(master|voltha-2.3)$'
 
 
 - job-template:
@@ -600,9 +588,9 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: master
-          description: 'Name of the repo branch to use (change to $GERRIT_BRANCH if testing a patchset)'
+          name: branch
+          default: "$GERRIT_BRANCH"
+          description: 'Name of the repo manifest branch to use'
 
       - string:
           name: gerritProject
@@ -659,10 +647,6 @@
           description: 'OLT Software version to install'
 
       - string:
-          name: branch
-          default: '{branch}'
-
-      - string:
           name: profile
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
@@ -677,10 +661,10 @@
           default: false
           description: "Re-install OLT software"
 
-      - bool:
-          name: withPatchset
-          default: false
-          description: "Build with Gerrit patchset"
+      - string:
+          name: manualBranch
+          default: '{manualBranch}'
+          description: "If a non-empty string, build manually on a specific branch, not with a specific patchset"
 
       - string:
           name: extraRobotArgs

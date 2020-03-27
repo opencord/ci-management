@@ -35,5 +35,5 @@
       - 'github-release':
            dependency-jobs: 'version-tag'
            github-organization: 'opencord'
-           release-targets: 'dep release'
+           release-targets: 'release'
            artifact-glob: 'release/*'
