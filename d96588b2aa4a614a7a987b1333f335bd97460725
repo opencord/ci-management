@@ -22,6 +22,30 @@
       "revId": "d96588b2aa4a614a7a987b1333f335bd97460725",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7a4ecd74_4fe880b2",
+        "filename": "jjb/verify/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-27T17:14:54Z",
+      "side": 0,
+      "message": "I was thinking that this conflicted with: https://github.com/ciena/kind-voltha/blob/master/releases/voltha-2.3#L13",
+      "parentUuid": "f1eb2dd2_8218bd71",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 123
+      },
+      "revId": "d96588b2aa4a614a7a987b1333f335bd97460725",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
