@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca8cac6e_8956fc0a",
+        "filename": "jjb/pipeline/voltha-physical-build-and-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-03-27T17:25:05Z",
+      "side": 1,
+      "message": "Is the value of params.branch $GERRIT_BRANCH?",
+      "range": {
+        "startLine": 28,
+        "startChar": 19,
+        "endLine": 28,
+        "endChar": 35
+      },
+      "revId": "37131bae27578640f4c1e56a65424847d31f5e6d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
