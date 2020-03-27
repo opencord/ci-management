@@ -107,7 +107,7 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: '1T4GEM'
           time: '4'
@@ -151,7 +151,7 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16_bal3.2.deb'
+          oltDebVersion: 'openolt-2.3.0.deb'
           configurePod: true
           profile: 'Default'
           time: '3'
