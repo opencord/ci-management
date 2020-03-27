@@ -22,7 +22,7 @@ pipeline {
       steps {
         sh '''
           rm -rf voltha-devices-count.txt voltha-devices-time.txt onos-ports-count.txt onos-ports-time.txt onos-ports-list.txt voltha-devices-list.json onos-ports-time-num.txt voltha-devices-time-num.txt
-          for hchart in \$(helm list -q | grep -E -v 'docker-registry|cord-kafka|etcd-operator');
+          for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
               helm delete --purge "\${hchart}"
@@ -47,6 +47,7 @@ pipeline {
       steps {
         sh '''
           helm repo update
+          helm install -n cord-kafka incubator/kafka -f /home/cord/voltha-scale/voltha-values.yaml --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false
           helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
 
           IFS=: read -r onosRepo onosTag <<< ${onosImg}
