@@ -41,7 +41,7 @@ pipeline {
                 checkout([
                     $class: 'GitSCM',
                     userRemoteConfigs: [[ url: "https://github.com/${params.ghprbGhRepository}", refspec: "pull/${params.ghprbPullId}/head" ]],
-                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.project}"]],
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "project"]],
                     ],
                 )
             }
@@ -49,20 +49,26 @@ pipeline {
 
         stage("Run REUSE Linter"){
             steps {
-                sh  """
+                sh  '''
                     #!/usr/bin/env bash
 
-                    cd ${params.project}
+                    cd project
                     git checkout FETCH_HEAD
                     git show
 
                     mkdir ../jenkins-license-scan
-                    cp --parents $(git diff-tree --no-commit-id --name-only -r HEAD) ../jenkins-license-scan
-                    cd ../jenkins-license-scan
+                    modifiedFiles=$(git diff-tree --no-commit-id --name-only -r HEAD)
+                    if [ -n "$modifiedFiles" ]
+                    then
+                        cp --parents $modifiedFiles ../jenkins-license-scan
+                        cd ../jenkins-license-scan
 
-                    reuse download --all
-                    reuse lint
-                    """
+                        reuse download --all
+                        reuse lint
+                    else
+                        echo "There were no files to check. Skipping REUSE scan."
+                    fi
+                    '''
             }
         }
     }
