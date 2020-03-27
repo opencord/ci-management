@@ -229,9 +229,9 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: 'master'
-          description: 'Name of the repo branch to use'
+          name: branch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the branch to use'
 
       - string:
           name: gerritProject
@@ -317,9 +317,9 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: master
-          description: 'Name of the repo branch to use'
+          name: branch
+          default: '$GERRIT_BRANCH'
+          description: 'Name of the branch to use'
 
       - string:
           name: gerritProject
@@ -374,10 +374,6 @@
           name: oltDebVersion
           default: '{oltDebVersion}'
           description: 'OLT Software version to install'
-
-      - string:
-          name: branch
-          default: '{branch}'
 
       - string:
           name: profile
@@ -458,8 +454,8 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: master
+          name: branch
+          default: '$GERRIT_BRANCH'
           description: 'Name of the repo branch to use'
 
       - string:
@@ -517,10 +513,6 @@
           description: 'OLT Software version to install'
 
       - string:
-          name: branch
-          default: '{branch}'
-
-      - string:
           name: profile
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
@@ -565,7 +557,7 @@
                 comment-contains-value: '^hardware test with delay$'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|voltha-onos)$'
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos)$'
               branches:
                 - branch-compare-type: PLAIN
                   branch-pattern: 'master'
@@ -600,9 +592,9 @@
           description: 'URL to the repo manifest'
 
       - string:
-          name: manifestBranch
-          default: master
-          description: 'Name of the repo branch to use (change to $GERRIT_BRANCH if testing a patchset)'
+          name: branch
+          default: "$GERRIT_BRANCH"
+          description: 'Name of the repo manifest branch to use'
 
       - string:
           name: gerritProject
@@ -657,10 +649,6 @@
           name: oltDebVersion
           default: '{oltDebVersion}'
           description: 'OLT Software version to install'
-
-      - string:
-          name: branch
-          default: '{branch}'
 
       - string:
           name: profile

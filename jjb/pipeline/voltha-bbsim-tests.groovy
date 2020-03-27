@@ -49,7 +49,7 @@ pipeline {
           poll: false,
           scm: [$class: 'RepoScm', \
             manifestRepositoryUrl: "${params.manifestUrl}", \
-            manifestBranch: "${params.manifestBranch}", \
+            manifestBranch: "${params.branch}", \
             currentBranch: true, \
             destinationDir: 'voltha', \
             forceSync: true,
@@ -78,6 +78,14 @@ pipeline {
       steps {
         sh """
            git clone https://github.com/ciena/kind-voltha.git
+
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
            cd kind-voltha/
            JUST_K8S=y ./voltha up
            bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
@@ -117,6 +125,13 @@ pipeline {
     stage('Push Images') {
       steps {
         sh '''
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
            if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
@@ -129,7 +144,14 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh '''
-           export EXTRA_HELM_FLAGS="--set log_agent.enabled=False ${extraHelmFlags} "
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
+           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
            IMAGES=""
            if [ "${gerritProject}" = "voltha-go" ]; then
@@ -240,7 +262,15 @@ pipeline {
 
          gzip $WORKSPACE/onos-voltha-combined.log
 
+
          ## shut down kind-voltha
+         if [ "${branch}" != "master" ]; then
+           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+           source "kind-voltha/releases/${branch}"
+         else
+           echo "on master, using default settings for kind-voltha"
+         fi
+
          cd $WORKSPACE/kind-voltha
 	       WAIT_ON_DOWN=y ./voltha down
          '''

@@ -25,6 +25,7 @@ localSadisConfigFile = null
 if ( ! params.withPatchset ) {
   GERRIT_EVENT_COMMENT_TEXT = ""
   GERRIT_PROJECT = ""
+  GERRIT_BRANCH = "${params.branch}"
   GERRIT_CHANGE_NUMBER = ""
   GERRIT_PATCHSET_NUMBER = ""
 }
@@ -76,7 +77,7 @@ pipeline {
           poll: false,
           scm: [$class: 'RepoScm',
             manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.manifestBranch}",
+            manifestBranch: "${params.branch}",
             currentBranch: true,
             destinationDir: 'voltha',
             forceSync: true,
@@ -121,6 +122,14 @@ pipeline {
       steps {
         sh returnStdout: false, script: """
         git clone https://github.com/ciena/kind-voltha.git
+
+        if [ "${branch}" != "master" ]; then
+          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+          source "kind-voltha/releases/${branch}"
+        else
+          echo "on master, using default settings for kind-voltha"
+        fi
+
         cd kind-voltha/
         JUST_K8S=y ./voltha up
         """
@@ -133,6 +142,14 @@ pipeline {
       }
       steps {
         sh returnStdout: false, script: """
+
+        if [ "${branch}" != "master" ]; then
+          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+          source "kind-voltha/releases/${branch}"
+        else
+          echo "on master, using default settings for kind-voltha"
+        fi
+
         if ! [[ "${gerritProject}" =~ ^(voltha-system-tests)\$ ]]; then
           make -C $WORKSPACE/voltha/${gerritProject} DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
           docker images | grep citest
@@ -157,7 +174,14 @@ pipeline {
       steps {
         script {
           sh returnStdout: false, script: """
-          export EXTRA_HELM_FLAGS='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
+          if [ "${branch}" != "master" ]; then
+            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+            source "kind-voltha/releases/${branch}"
+          else
+            echo "on master, using default settings for kind-voltha"
+          fi
+
+          export EXTRA_HELM_FLAGS+='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
 
           IMAGES=""
           if [ "${gerritProject}" = "voltha-go" ]; then
@@ -283,7 +307,6 @@ pipeline {
       steps {
         sh returnStdout: false, script: """
         cd voltha
-        git clone -b ${branch} ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/RobotLogs
 
         # If the Gerrit comment contains a line with "functional tests" then run the full

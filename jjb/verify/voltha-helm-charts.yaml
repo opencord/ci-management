@@ -21,4 +21,3 @@
           dependency-jobs: 'verify_voltha-helm-charts_helm-lint'
           build-timeout: 20
           pipeline-script: 'voltha-bbsim-tests.groovy'
-          extra-helm-flags: '--set defaults.image_tag=null,images.onos.tag=4.0.0,images.onos.repository=voltha/voltha-onos'
