@@ -36,7 +36,7 @@ pipeline {
     stage ('Initialize') {
       steps {
         step([$class: 'WsCleanup'])
-        sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
@@ -45,7 +45,7 @@ pipeline {
           poll: false,
           scm: [$class: 'RepoScm',
             manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.manifestBranch}",
+            manifestBranch: "${params.branch}",
             currentBranch: true,
             destinationDir: 'voltha',
             forceSync: true,
@@ -88,11 +88,7 @@ pipeline {
         ./log-combine.sh > /dev/null &
 
         mkdir -p $ROBOT_LOGS_DIR
-        if  ( ${released} ); then
-            export ROBOT_MISC_ARGS="--removekeywords wuks -i released -i sanityDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-        else
-            export ROBOT_MISC_ARGS="--removekeywords wuks -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-        fi
+        export ROBOT_MISC_ARGS="--removekeywords wuks -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         """
       }
