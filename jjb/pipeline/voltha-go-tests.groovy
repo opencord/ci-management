@@ -75,6 +75,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
+           export EXTRA_HELM_FLAGS=""
            if [ "${manifestBranch}" != "master" ]; then
              echo "on branch: ${manifestBranch}, sourcing kind-voltha/releases/${manifestBranch}"
              source "$HOME/kind-voltha/releases/${manifestBranch}"
