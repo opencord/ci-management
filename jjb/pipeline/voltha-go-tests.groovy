@@ -38,6 +38,7 @@ pipeline {
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="n"
     ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs"
+    EXTRA_HELM_FLAGS=""
   }
   stages {
 
