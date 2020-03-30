@@ -200,12 +200,12 @@
       - string:
           name: manifestUrl
           default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
-          description: 'Repo manifest URL for code checkout (so we can display changes in Jenkins)'
+          description: 'Repo manifest URL for code checkout'
 
       - string:
-          name: manifestBranch
+          name: branch
           default: '{code-branch}'
-          description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
+          description: 'Repo manifest branch for code checkout'
 
       - string:
           name: gerritProject

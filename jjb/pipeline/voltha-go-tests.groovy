@@ -48,7 +48,7 @@ pipeline {
           poll: false,
           scm: [$class: 'RepoScm',
             manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.manifestBranch}",
+            manifestBranch: "${params.branch}",
             currentBranch: true,
             destinationDir: 'voltha',
             forceSync: true,
@@ -76,9 +76,9 @@ pipeline {
       steps {
         sh """
            export EXTRA_HELM_FLAGS=""
-           if [ "${manifestBranch}" != "master" ]; then
-             echo "on branch: ${manifestBranch}, sourcing kind-voltha/releases/${manifestBranch}"
-             source "$HOME/kind-voltha/releases/${manifestBranch}"
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$HOME/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
