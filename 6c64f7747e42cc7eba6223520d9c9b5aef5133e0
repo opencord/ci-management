@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "032682f3_b16a6ec5",
+        "filename": "jjb/pipeline/omec-reuse-scan.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-30T16:28:52Z",
+      "side": 1,
+      "message": "What\u0027s the reason for this change?  Is params.project not being set correctly by the trigger?",
+      "range": {
+        "startLine": 44,
+        "startChar": 87,
+        "endLine": 44,
+        "endChar": 100
+      },
+      "revId": "6c64f7747e42cc7eba6223520d9c9b5aef5133e0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
