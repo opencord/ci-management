@@ -68,7 +68,7 @@ pipeline {
         sh """
           if [ "${manifestBranch}" != "master" ]; then
              echo "on branch: ${manifestBranch}, sourcing kind-voltha/releases/${manifestBranch}"
-             source "$HOME/kind-voltha/releases/${manifestBranch}"
+             source "$WORKSPACE/kind-voltha/releases/${manifestBranch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
