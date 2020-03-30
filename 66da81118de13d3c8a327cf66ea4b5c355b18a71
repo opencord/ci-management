@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b7e8239b_def3d8b0",
+        "filename": "jjb/pipeline/omec-deploy-staging.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-30T19:34:18Z",
+      "side": 1,
+      "message": "extraneous whitespace",
+      "range": {
+        "startLine": 45,
+        "startChar": 0,
+        "endLine": 45,
+        "endChar": 12
+      },
+      "revId": "66da81118de13d3c8a327cf66ea4b5c355b18a71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
