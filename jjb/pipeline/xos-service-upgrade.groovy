@@ -87,9 +87,6 @@ pipeline {
           if (serviceName == "olt-service") {
             serviceName = "volt"
           }
-          else if (serviceName == "onos-service") {
-            serviceName = "onos"
-          }
           else if (serviceName == "kubernetes-service") {
             serviceName = "kubernetes"
           }
