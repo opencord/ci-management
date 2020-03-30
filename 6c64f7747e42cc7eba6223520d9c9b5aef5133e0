@@ -70,6 +70,30 @@
       "revId": "6c64f7747e42cc7eba6223520d9c9b5aef5133e0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c74fa6d4_678ed650",
+        "filename": "jjb/pipeline/omec-reuse-scan.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-03-30T16:58:40Z",
+      "side": 1,
+      "message": "Fixed. What I meant about the removal of params.project is that Jenkins has trouble when there is both ${...} and $(...) in the same shell script. Here\u0027s the Jenkins console output for the base file: https://jenkins.opencord.org/view/OMEC/job/omec_openmme_reuse/107/console",
+      "parentUuid": "4564c210_f804fe5d",
+      "range": {
+        "startLine": 44,
+        "startChar": 87,
+        "endLine": 44,
+        "endChar": 100
+      },
+      "revId": "6c64f7747e42cc7eba6223520d9c9b5aef5133e0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
