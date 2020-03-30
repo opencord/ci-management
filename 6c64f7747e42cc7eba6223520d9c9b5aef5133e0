@@ -46,6 +46,30 @@
       "revId": "6c64f7747e42cc7eba6223520d9c9b5aef5133e0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4564c210_f804fe5d",
+        "filename": "jjb/pipeline/omec-reuse-scan.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-30T16:43:52Z",
+      "side": 1,
+      "message": "You might copy the shell script into a file and run https://github.com/koalaman/shellcheck  on it - you may have some quoting issues with that cp command that could be found with that tool.",
+      "parentUuid": "469e5e40_47b65fb2",
+      "range": {
+        "startLine": 44,
+        "startChar": 87,
+        "endLine": 44,
+        "endChar": 100
+      },
+      "revId": "6c64f7747e42cc7eba6223520d9c9b5aef5133e0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
