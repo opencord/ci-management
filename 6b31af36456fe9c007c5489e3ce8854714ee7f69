@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f2bc2f97_d001d402",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-30T16:32:43Z",
+      "side": 1,
+      "message": "This doesn\u0027t exist yet?  Could it be put in the ci-management repo?  It\u0027s easier to edit the Jenkinsfiles inline in the job than in an external repo.",
+      "range": {
+        "startLine": 436,
+        "startChar": 19,
+        "endLine": 436,
+        "endChar": 59
+      },
+      "revId": "6b31af36456fe9c007c5489e3ce8854714ee7f69",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
