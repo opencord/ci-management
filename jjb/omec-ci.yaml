@@ -148,6 +148,27 @@
           pipeline-file: 'omec-reuse-scan.groovy'
           build-node: 'omec-qa'
 
+# for ignite
+- project:
+    name: ignite
+    project: '{name}'
+
+    build-node: 'intel-102'
+
+    github-organization: 'omec-project'
+
+    github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
+    github_pr_org_list:
+      - 'omec-project'
+
+    jobs:
+      - 'omec-fossa':
+          pipeline-file: 'omec-fossa-scan.groovy'
+          build-node: 'omec-qa'
+      - 'omec-reuse':
+          pipeline-file: 'omec-reuse-scan.groovy'
+          build-node: 'omec-qa'
+
 # Combined pipeline
 - job-template:
     id: 'omec-combined'
@@ -200,7 +221,6 @@
             url: 'https://github.com/{github-organization}/omec-project-ci'
             branches:
               - 'master'
-
 
 # install jobs, run for each project
 - job-template:
