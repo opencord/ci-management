@@ -22,6 +22,30 @@
       "revId": "dc8bc2c4ce21923e8811ffed47907891d8982b71",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e489f0e1_3b4a10b8",
+        "filename": "jjb/pipeline/xos-service-upgrade.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1000461
+      },
+      "writtenOn": "2020-03-30T16:52:09Z",
+      "side": 0,
+      "message": "I might be wrong. But it seems it has always been `onos-service`.",
+      "parentUuid": "1da23945_80a1c947",
+      "range": {
+        "startLine": 90,
+        "startChar": 9,
+        "endLine": 91,
+        "endChar": 32
+      },
+      "revId": "dc8bc2c4ce21923e8811ffed47907891d8982b71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
