@@ -22,6 +22,30 @@
       "revId": "6b31af36456fe9c007c5489e3ce8854714ee7f69",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6c2ae028_57add89c",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 436,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-03-30T16:46:50Z",
+      "side": 1,
+      "message": "Sure I can add it to ci-management",
+      "parentUuid": "f2bc2f97_d001d402",
+      "range": {
+        "startLine": 436,
+        "startChar": 19,
+        "endLine": 436,
+        "endChar": 59
+      },
+      "revId": "6b31af36456fe9c007c5489e3ce8854714ee7f69",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
