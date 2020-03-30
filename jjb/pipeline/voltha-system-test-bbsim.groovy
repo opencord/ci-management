@@ -38,7 +38,6 @@ pipeline {
     DEPLOY_K8S="y"
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="y"
-    EXTRA_HELM_FLAGS="${params.extraHelmFlags} --set voltha-etcd-cluster.clusterSize=3"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
   }
 
@@ -66,12 +65,15 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
-          if [ "${manifestBranch}" != "master" ]; then
+           EXTRA_HELM_FLAGS=""
+           if [ "${manifestBranch}" != "master" ]; then
              echo "on branch: ${manifestBranch}, sourcing kind-voltha/releases/${manifestBranch}"
-             source "$HOME/kind-voltha/releases/${manifestBranch}"
+             source "$WORKSPACE/kind-voltha/releases/${manifestBranch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
+
+           EXTRA_HELM_FLAGS+="${params.extraHelmFlags} --set voltha-etcd-cluster.clusterSize=3 "
 
            pushd kind-voltha/
            ./voltha up
