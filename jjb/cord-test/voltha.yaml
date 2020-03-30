@@ -118,6 +118,7 @@
           config-pod: 'flex-ocp-cord'
           release: '2.3'
           branch: 'voltha-2.3'
+          power-switch: True
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
 
