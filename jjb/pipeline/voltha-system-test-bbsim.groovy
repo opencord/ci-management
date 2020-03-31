@@ -65,7 +65,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh """
-           EXTRA_HELM_FLAGS=""
+           export EXTRA_HELM_FLAGS=""
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
              source "$WORKSPACE/kind-voltha/releases/${branch}"
@@ -74,6 +74,7 @@ pipeline {
            fi
 
            EXTRA_HELM_FLAGS+="${params.extraHelmFlags} --set voltha-etcd-cluster.clusterSize=3 "
+           echo \$EXTRA_HELM_FLAGS
 
            pushd kind-voltha/
            ./voltha up
