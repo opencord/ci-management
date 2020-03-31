@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "636bfcf0_782df55e",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-03-31T17:54:49Z",
+      "side": 1,
+      "message": "I\u0027m assuming the name of the container doesn\u0027t change, but the registry and tag might?   Should the registry be a separate variable?",
+      "parentUuid": "e6cdbd67_8f162bd8",
+      "range": {
+        "startLine": 434,
+        "startChar": 20,
+        "endLine": 434,
+        "endChar": 72
+      },
+      "revId": "66da81118de13d3c8a327cf66ea4b5c355b18a71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b7e8239b_def3d8b0",
         "filename": "jjb/pipeline/omec-deploy-staging.groovy",
         "patchSetId": 3
