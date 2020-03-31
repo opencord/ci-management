@@ -66,9 +66,9 @@ pipeline {
       steps {
         sh """
            EXTRA_HELM_FLAGS=""
-           if [ "${manifestBranch}" != "master" ]; then
-             echo "on branch: ${manifestBranch}, sourcing kind-voltha/releases/${manifestBranch}"
-             source "$WORKSPACE/kind-voltha/releases/${manifestBranch}"
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
@@ -86,7 +86,7 @@ pipeline {
       steps {
         sh '''
            rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
-           git clone -b ${manifestBranch} https://gerrit.opencord.org/voltha-system-tests
+           git clone -b ${branch} https://gerrit.opencord.org/voltha-system-tests
            make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_report.html -o sanity_output.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
            '''
       }
