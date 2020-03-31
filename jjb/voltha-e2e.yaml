@@ -132,6 +132,15 @@
           pons: 1
           time-trigger: "H H/3 * * *"
 
+      - 'voltha-periodic-test':
+          name: 'nightly-voltha-DTflow-sanity-test'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          code-branch: 'master'
+          make-target: sanity-kind-dt
+          onus: 1
+          pons: 1
+          time-trigger: "@daily"
+
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
