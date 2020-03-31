@@ -70,6 +70,9 @@ pipeline {
 
                         echo "Get FOSSA test results with 'fossa test'"
                         fossa test --no-ansi --verbose
+
+                        echo "Display list of licenses detected by FOSSA using 'fossa report licenses'"
+                        fossa report licenses
                         """
 
                 }
