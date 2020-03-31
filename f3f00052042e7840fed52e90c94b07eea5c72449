@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "f1ce7291_ed8357a2",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-03-31T19:57:27Z",
+      "side": 1,
+      "message": "Right, but there are three jobs name with prefix `nightly` for VOLTHA in Jenkins now, all of them are scheduled to run at midnight (@daily).\n\nAfter discussing with Suchitra, we want this job to be a nightly job (run every midnight) and that\u0027s the reason I named it `nightly` not `periodic`.\n\nIt\u0027s fine for me to change to `periodic`, but I think we should have a rule for naming, `nightly` is part of `periodic`, maybe we should change all `nightly` to `periodic` with a specific time setting",
+      "parentUuid": "d2e0a42c_601b8dd9",
+      "range": {
+        "startLine": 136,
+        "startChar": 16,
+        "endLine": 136,
+        "endChar": 25
+      },
+      "revId": "f3f00052042e7840fed52e90c94b07eea5c72449",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "74c7cac0_43ae5745",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 1
