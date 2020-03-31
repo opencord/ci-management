@@ -188,7 +188,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
 
-      # Menlo pod with olt/onu - Uses GO Version - Default tech profile and timer based job
+      # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
@@ -276,6 +276,28 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
+     # Infosys pod with olt/onu - voltha-2.3 Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'infosys-test-pod'
+          config-pod: 'infosys-pod'
+          release: '2.3'
+          branch: 'voltha-2.3'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt_asfvolt16.deb'
+          configurePod: true
+          profile: 'Default'
+          time: '10'
+
+      # infosys test job - voltha-2.3 release job, uses Default tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'infosys-test-pod'
+          config-pod: 'infosys-pod'
+          release: '2.3'
+          branch: 'voltha-2.3'
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+
 
       # Berlin pod with olt/onu - master versions Default tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -298,6 +320,31 @@
           config-pod: 'dt-berlin-pod'
           release: 'master'
           branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+          power-switch: True
+
+     # Berlin pod with olt/onu - voltha-2.3 Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod'
+          release: '2.3'
+          branch: 'voltha-2.3'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt-2.3.0.deb'
+          configurePod: true
+          profile: 'Default'
+          with-kind: true
+          time: '11'
+
+
+      # Berlin POD test job - master versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod'
+          release: '2.3'
+          branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
           power-switch: True
