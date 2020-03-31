@@ -97,6 +97,30 @@
     },
     {
       "key": {
+        "uuid": "c25d4ba8_b8cf2c22",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 434,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-03-31T20:43:48Z",
+      "side": 1,
+      "message": "I added registry variable for each, in the off chance that 2 images need to be tested that come from different registries.",
+      "parentUuid": "5e27e2a5_7e49c61c",
+      "range": {
+        "startLine": 434,
+        "startChar": 20,
+        "endLine": 434,
+        "endChar": 72
+      },
+      "revId": "66da81118de13d3c8a327cf66ea4b5c355b18a71",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "b7e8239b_def3d8b0",
         "filename": "jjb/pipeline/omec-deploy-staging.groovy",
         "patchSetId": 3
