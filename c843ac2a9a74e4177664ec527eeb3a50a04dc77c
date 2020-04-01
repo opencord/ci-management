@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "303c7c90_084eca36",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-01T22:48:33Z",
+      "side": 1,
+      "message": "Does this need to be set for building the docker image? It\u0027s reset on the fossa/reuse jobs below.",
+      "range": {
+        "startLine": 177,
+        "startChar": 0,
+        "endLine": 177,
+        "endChar": 27
+      },
+      "revId": "c843ac2a9a74e4177664ec527eeb3a50a04dc77c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
