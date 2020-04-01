@@ -115,6 +115,8 @@ pipeline {
              make-local voltha-openolt-adapter
              make-local voltha-openonu-adapter
              make-local ofagent-py
+           elif [ "${gerritProject}" = "voltctl" ]; then
+             make -C $WORKSPACE/voltha/voltctl/ build
            elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              make-local ${gerritProject}
            fi
@@ -132,7 +134,7 @@ pipeline {
              echo "on master, using default settings for kind-voltha"
            fi
 
-           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
+           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests|voltctl)\$ ]]; then
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
              docker images | grep citest
@@ -196,6 +198,12 @@ pipeline {
              helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
            fi
 
+           if [ "${gerritProject}" = "voltctl" ]; then
+             export VOLTCTL_VERSION=$(cat $WORKSPACE/voltha/voltctl/VERSION)
+             cp $WORKSPACE/voltha/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
+             md5sum $WORKSPACE/kind-voltha/bin/voltctl
+           fi
+
            cd $WORKSPACE/kind-voltha/
            echo \$EXTRA_HELM_FLAGS
            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
@@ -239,6 +247,7 @@ pipeline {
 
          sync
          pkill kail || true
+         md5sum $WORKSPACE/kind-voltha/bin/voltctl
 
          ## Pull out errors from log files
          extract_errors_go() {

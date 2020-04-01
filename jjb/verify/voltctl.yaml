@@ -24,6 +24,8 @@
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
           dependency-jobs: 'verify_voltctl_tag-collision'
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'post-submit-voltctl-jobs'
