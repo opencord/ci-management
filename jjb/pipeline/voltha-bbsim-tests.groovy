@@ -116,6 +116,9 @@ pipeline {
              make-local voltha-openonu-adapter
              make-local ofagent-py
            elif [ "${gerritProject}" = "voltctl" ]; then
+             # Set and handle GOPATH and PATH
+             export GOPATH=\${GOPATH:-$WORKSPACE/go}
+             export PATH=\$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:\$GOPATH/bin
              make -C $WORKSPACE/voltha/voltctl/ build
            elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
              make-local ${gerritProject}
