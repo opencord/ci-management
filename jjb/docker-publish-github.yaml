@@ -27,7 +27,7 @@
     parameters:
       - string:
           name: buildNode
-          default: 'ubuntu16.04-basebuild-1c-2g'
+          default: '{build-node}'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
