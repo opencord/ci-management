@@ -16,6 +16,13 @@
       - 'omec-tc1'
       - 'omec-tc2'
       - 'omec-deploy-staging'
+      - 'omec-postmerge':
+          project: '{name}'
+          build-node: 'omec-qa'
+          c3po-branch-name: 'multiUpfs'
+          ngic-branch-name: 'master'
+          openmme-branch-name: 'paging'
+          pipeline-file: 'omec-postmerge.groovy'
 
 # for ngic-rtc
 - project:
@@ -509,3 +516,76 @@
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/omec-deploy-staging.groovy
+
+# Post-merge job
+# Triggered by Github pull request merge
+- job-template:
+    id: omec-postmerge
+    name: '{project}_postmerge'
+    description: |
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    triggers:
+      - cord-infra-github-pr-trigger-merge:
+          project: '{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: repoName
+          default: ''
+          description: 'Name of the git repo. Populated by Generic Webhook Trigger'
+
+      - string:
+          name: repoUrl
+          default: ''
+          description: 'URL to the git repo. Populated by Generic Webhook Trigger'
+
+      - string:
+          name: branchName
+          default: ''
+          description: 'Branch of the project. Populated by Generic Webhook Trigger'
+
+      - string:
+          name: commitHash
+          default: ''
+          description: 'SHA string of the merged commit. Populated by Generic Webhook Trigger'
+
+      - string:
+          name: c3poBranchName
+          default: '{c3po-branch-name}'
+          description: 'Branch name of c3po repo which we run tests against'
+
+      - string:
+          name: ngicBranchName
+          default: '{ngic-branch-name}'
+          description: 'Branch name of ngic-rtc repo which we run tests against'
+
+      - string:
+          name: openmmeBranchName
+          default: '{openmme-branch-name}'
+          description: 'Branch name of openmme repo which we run tests against'
+
+      - string:
+          name: maintainers
+          default: 'jeremy@opennetworking.org, you@opennetworking.org'
+          description: "The person that sould be notified if this job fails"
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/{pipeline-file}
