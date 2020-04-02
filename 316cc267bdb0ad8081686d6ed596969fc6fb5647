@@ -22,6 +22,30 @@
       "revId": "316cc267bdb0ad8081686d6ed596969fc6fb5647",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e02aea49_2fd4f117",
+        "filename": "jjb/github-postmerge.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2020-04-02T22:30:03Z",
+      "side": 1,
+      "message": "Yeah I\u0027m trying to make it generic",
+      "parentUuid": "2c95025f_ca4b9cc8",
+      "range": {
+        "startLine": 6,
+        "startChar": 7,
+        "endLine": 6,
+        "endChar": 24
+      },
+      "revId": "316cc267bdb0ad8081686d6ed596969fc6fb5647",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
