@@ -172,6 +172,28 @@
           pipeline-file: 'omec-reuse-scan.groovy'
           build-node: 'omec-qa'
 
+# for upf-epc
+- project:
+    name: upf-epc
+    project: '{name}'
+
+    github-organization: 'omec-project'
+
+    github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
+    github_pr_org_list:
+      - 'omec-project'
+
+    jobs:
+      - 'omec-fossa':
+          pipeline-file: 'omec-fossa-scan.groovy'
+          build-node: 'omec-qa'
+      - 'omec-reuse':
+          pipeline-file: 'omec-reuse-scan.groovy'
+          build-node: 'omec-qa'
+      - 'docker-publish-github':
+          build-timeout: 30
+          docker-repo: 'omecproject'
+
 # Combined pipeline
 - job-template:
     id: 'omec-combined'
