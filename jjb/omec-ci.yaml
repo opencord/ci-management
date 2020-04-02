@@ -169,6 +169,16 @@
           pipeline-file: 'omec-reuse-scan.groovy'
           build-node: 'omec-qa'
 
+# Post-merge job
+- project:
+    name: github-postmerge
+
+    jobs:
+      - 'github-postmerge':
+          project: 'omec'
+          build-node: 'omec-qa'
+          pipeline-file: 'omec-postmerge.groovy'
+
 # Combined pipeline
 - job-template:
     id: 'omec-combined'
