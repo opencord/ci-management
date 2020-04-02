@@ -1,0 +1,39 @@
+---
+# Github post-merge job
+# Triggered by Github pull request merge
+
+- job-template:
+    id: github-postmerge
+    name: 'postmerge_{project}'
+    description: |
+      Created by {id} job-template from ci-management/jjb/github-postmerge.yaml
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    triggers:
+      - cord-infra-github-pr-trigger-merge:
+          project: '{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: maintainers
+          default: 'jeremy@opennetworking.org, you@opennetworking.org'
+          description: "The person that sould be notified if this job fails"
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/{pipeline-file}

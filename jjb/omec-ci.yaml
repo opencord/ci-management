@@ -194,6 +194,16 @@
           build-timeout: 30
           docker-repo: 'omecproject'
 
+# Post-merge job
+- project:
+    name: github-postmerge
+
+    jobs:
+      - 'github-postmerge':
+          project: 'omec'
+          build-node: 'omec-qa'
+          pipeline-file: 'omec-postmerge.groovy'
+
 # Combined pipeline
 - job-template:
     id: 'omec-combined'
