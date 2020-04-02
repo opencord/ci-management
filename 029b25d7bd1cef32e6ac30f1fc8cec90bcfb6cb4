@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a21c7d51_d1b1ad2b",
+        "filename": "jjb/pipeline/omec-deploy-staging.groovy",
+        "patchSetId": 8
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-02T22:16:26Z",
+      "side": 1,
+      "message": "This could cause a race condition if the image hasn\u0027t been rebuilt yet.\n\nWhere does the .OMECprimaryBranches.json file come from?",
+      "range": {
+        "startLine": 36,
+        "startChar": 8,
+        "endLine": 43,
+        "endChar": 8
+      },
+      "revId": "029b25d7bd1cef32e6ac30f1fc8cec90bcfb6cb4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e2cfc3a_1ceb62a2",
+        "filename": "jjb/pipeline/omec-deploy-staging.groovy",
+        "patchSetId": 8
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-02T22:16:26Z",
+      "side": 1,
+      "message": "Would it be better to have two separate jobs?",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 55,
+        "endChar": 9
+      },
+      "revId": "029b25d7bd1cef32e6ac30f1fc8cec90bcfb6cb4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
