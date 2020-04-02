@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73e64dbe_c269aabb",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-04-02T21:27:01Z",
+      "side": 1,
+      "message": "if you want to publish the events on kafka you need to configure BBSim to do so \"enableEvents\u003dtrue,kafkaAddress\u003dcord-kafka:9092\"",
+      "range": {
+        "startLine": 67,
+        "startChar": 52,
+        "endLine": 67,
+        "endChar": 67
+      },
+      "revId": "c108b1529cf6cc59cb3b991dc567ca5f6a456148",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "29adf46e_00b19b20",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-04-02T21:27:01Z",
+      "side": 1,
+      "message": "why not reading this from sys.argv?",
+      "range": {
+        "startLine": 142,
+        "startChar": 13,
+        "endLine": 142,
+        "endChar": 43
+      },
+      "revId": "c108b1529cf6cc59cb3b991dc567ca5f6a456148",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
