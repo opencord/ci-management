@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2c95025f_ca4b9cc8",
+        "filename": "jjb/github-postmerge.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-02T22:19:56Z",
+      "side": 1,
+      "message": "Is this intended to be a generic job, which could be reusable with any pipeline script?",
+      "range": {
+        "startLine": 6,
+        "startChar": 7,
+        "endLine": 6,
+        "endChar": 24
+      },
+      "revId": "316cc267bdb0ad8081686d6ed596969fc6fb5647",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
