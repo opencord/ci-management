@@ -7,7 +7,7 @@
 
     jobs:
       - 'verify-voltha-helm-charts-jobs':
-          branch-regexp: '{modern-branches-regexp}'
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-helm-charts-jobs'
