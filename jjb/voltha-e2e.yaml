@@ -330,7 +330,7 @@
               project-pattern: '^{project}$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{branch-regexp}'
+                  branch-pattern: '^(master|voltha-2.3)$'
               file-paths:
                 - compare-type: REG_EXP
                   pattern: '{all-files-regexp}'
@@ -470,8 +470,8 @@
             - project-compare-type: REG_EXP
               project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-go)$'
               branches:
-                - branch-compare-type: PLAIN
-                  branch-pattern: 'master'
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '^(master|voltha-2.3)$'
 
 
 - job-template:
