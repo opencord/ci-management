@@ -222,7 +222,7 @@
     openoltAdapterChart: onf/voltha-adapter-openolt
     openonuAdapterImg: voltha/voltha-openonu-adapter:master
     openonuAdapterChart: onf/voltha-adapter-openonu
-    onosImg: voltha/voltha-onos:4.0.1
+    onosImg: voltha/voltha-onos:master
     extraHelmFlags: ''
 
     parameters:
@@ -398,7 +398,7 @@
     openoltAdapterChart: "onf/voltha-adapter-openolt"
     openonuAdapterImg: "voltha/voltha-openonu-adapter:master"
     openonuAdapterChart: "onf/voltha-adapter-openonu"
-    onosImg: "voltha/voltha-onos:4.0.1"
+    onosImg: "voltha/voltha-onos:master"
     extraHelmFlags: ''
 
     parameters:
