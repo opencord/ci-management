@@ -71,9 +71,9 @@
     # regexp for gerrit triggers
     # list of supported branches, for branch-regexp
     all-branches-regexp: '.*'
-    supported-branches-regexp: '^(master|cord-7.0|cord-6.1|seba-1.0)$'
+    supported-branches-regexp: '^(master|cord-7.0|cord-6.1|seba-1.0|voltha-2.3)$'
     legacy-branches-regexp: '^(cord-5.0|cord-4.1|cord-4.0)$'
-    modern-branches-regexp: '^(master|cord-7.0|cord-6.1|cord-6.0|seba-1.0)$'
+    modern-branches-regexp: '^(master|cord-7.0|cord-6.1|cord-6.0|seba-1.0|voltha-2.3)$'
     platform-branches-regexp: '^(master|cord-7.0|cord-6.1)$'
     seba-branches-regexp: '^(master|cord-7.0|seba-1.0)$'
 
