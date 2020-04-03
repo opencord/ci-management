@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99af681d_a7a85d39",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 401,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-04-03T15:08:35Z",
+      "side": 1,
+      "message": "this should be updated too",
+      "range": {
+        "startLine": 401,
+        "startChar": 14,
+        "endLine": 401,
+        "endChar": 38
+      },
+      "revId": "7b93420cb100440fbf34428351468b3e09836584",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
