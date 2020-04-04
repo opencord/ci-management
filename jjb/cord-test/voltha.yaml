@@ -348,3 +348,32 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
           power-switch: True
+
+      # Berlin pod with gpon olt/onu - master Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt_asgvolt64.deb'
+          configurePod: true
+          profile: '1T8GEM'
+          with-kind: true
+          time: '11'
+
+
+      # Berlin POD test job - master versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          name-extension: '_DT'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
