@@ -21,7 +21,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: '1T4GEM'
 
       # flex pod1 test job - using voltha branch
@@ -41,7 +41,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: '1T4GEM'
 
       # onlab pod1 test job - BAL3.1 tests using voltha branch
@@ -61,7 +61,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '1'
@@ -84,7 +84,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
           time: '3'
@@ -107,7 +107,7 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
           time: '4'
@@ -130,7 +130,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '1'
@@ -152,7 +152,7 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '3'
@@ -174,7 +174,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
           time: '4'
@@ -198,7 +198,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T8GEM'
           time: '6'
@@ -222,7 +222,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
       - 'build_pod_test':
@@ -265,7 +265,7 @@
           oltDebVersion: 'openolt_asfvolt16.deb'
           configurePod: true
           profile: 'Default'
-          time: '7'
+          time: '10'
 
       # infosys test job - uses Default tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -287,7 +287,7 @@
           oltDebVersion: 'openolt_asfvolt16.deb'
           configurePod: true
           profile: 'Default'
-          time: '10'
+          time: '12'
 
       # infosys test job - voltha-2.3 release job, uses Default tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -307,7 +307,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           with-kind: true
@@ -332,7 +332,7 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt-2.3.0.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           with-kind: true
