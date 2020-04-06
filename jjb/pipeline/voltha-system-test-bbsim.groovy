@@ -45,7 +45,7 @@ pipeline {
     stage('Create Kubernetes Cluster') {
       steps {
         sh """
-           git clone https://github.com/ciena/kind-voltha.git
+           git clone https://gerrit.opencord.org/kind-voltha
            pushd kind-voltha/
            JUST_K8S=y ./voltha up
            popd

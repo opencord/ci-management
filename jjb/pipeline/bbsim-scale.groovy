@@ -27,7 +27,7 @@ pipeline {
     stage('Create K8s Cluster') {
       steps {
         sh """
-           git clone https://github.com/ciena/kind-voltha.git
+           git clone https:/gerrit.opencord.org/kind-voltha
            cd kind-voltha/
            DEPLOY_K8S=y JUST_K8S=y ./voltha up
            """
@@ -51,8 +51,8 @@ pipeline {
         always {
           sh '''
              WAIT_ON_DOWN=y ./voltha down
-	 cd $WORKSPACE/
-	 rm -rf kind-voltha/ voltha/ || true
+             cd $WORKSPACE/
+             rm -rf kind-voltha/ voltha/ || true
              '''
         }
         failure {
