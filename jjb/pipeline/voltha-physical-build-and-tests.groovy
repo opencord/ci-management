@@ -43,7 +43,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
     //VOL-2194 ONOS SSH and REST ports hardcoded to 30115/30120 in tests
@@ -55,7 +55,7 @@ pipeline {
     stage ('Initialize') {
       steps {
         sh returnStdout: false, script: """
-        test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
+        test -e $WORKSPACE/voltha/kind-voltha/voltha && cd $WORKSPACE/voltha/kind-voltha && ./voltha down
         cd $WORKSPACE
         rm -rf $WORKSPACE/*
         """
@@ -121,16 +121,14 @@ pipeline {
     stage('Create KinD Cluster') {
       steps {
         sh returnStdout: false, script: """
-        git clone https://github.com/ciena/kind-voltha.git
-
         if [ "${branch}" != "master" ]; then
           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "kind-voltha/releases/${branch}"
+          source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
         else
           echo "on master, using default settings for kind-voltha"
         fi
 
-        cd kind-voltha/
+        cd $WORKSPACE/voltha/kind-voltha/
         JUST_K8S=y ./voltha up
         """
       }
@@ -145,7 +143,7 @@ pipeline {
 
         if [ "${branch}" != "master" ]; then
           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "kind-voltha/releases/${branch}"
+          source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
         else
           echo "on master, using default settings for kind-voltha"
         fi
@@ -176,7 +174,7 @@ pipeline {
           sh returnStdout: false, script: """
           if [ "${branch}" != "master" ]; then
             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-            source "kind-voltha/releases/${branch}"
+            source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
           else
             echo "on master, using default settings for kind-voltha"
           fi
@@ -205,7 +203,7 @@ pipeline {
               EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
           done
 
-          cd $WORKSPACE/kind-voltha/
+          cd $WORKSPACE/voltha/kind-voltha/
           echo \$EXTRA_HELM_FLAGS
           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
           ./voltha up
@@ -340,7 +338,7 @@ pipeline {
     always {
       sh returnStdout: false, script: '''
       set +e
-      cp kind-voltha/install-minimal.log $WORKSPACE/
+      cp $WORKSPACE/voltha/kind-voltha/install-minimal.log $WORKSPACE/
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
       kubectl get nodes -o wide
       kubectl get pods -o wide
