@@ -15,6 +15,7 @@
     jobs:
       - 'omec-tc1'
       - 'omec-tc2'
+      - 'omec-deploy-staging'
 
 # for ngic-rtc
 - project:
