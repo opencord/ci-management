@@ -15,10 +15,6 @@
           url: 'https://github.com/{github-organization}/{project}'
           display-status: 'docker-publish'
 
-    triggers:
-      - cord-infra-github-pr-trigger-merge:
-          project: '{project}'
-
     wrappers:
       - lf-infra-wrappers:
           build-timeout: '{build-timeout}'
