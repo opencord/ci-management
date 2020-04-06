@@ -152,11 +152,17 @@
                   key: merged
                   value: $.pull_request.merged
                 - type: JSONPath
+                  key: repoUrl
+                  value: $.pull_request.base.repo.html_url
+                - type: JSONPath
+                  key: repoName
+                  value: $.pull_request.base.repo.name
+                - type: JSONPath
                   key: branchName
                   value: $.pull_request.base.ref
                 - type: JSONPath
-                  key: gitRef
-                  value: $.pull_request.base.ref
+                  key: commitHash
+                  value: $.pull_request.merge_commit_sha
             regex-filter-text: $action,$merged
             regex-filter-expression: ^(closed,true)$
             cause: Generic Cause
