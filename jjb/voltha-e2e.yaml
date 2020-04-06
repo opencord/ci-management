@@ -146,7 +146,7 @@
           name: 'verify_physical_voltha_patchset_auto'
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: 'Default'
 
       # Per-patchset Pod builds on Tucson pod
@@ -154,7 +154,7 @@
           name: 'verify_physical_voltha_patchset_manual'
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: 'Default'
 
       # Manual build job for Tucson pod
@@ -164,7 +164,7 @@
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
           manualBranch: 'master'
-          oltDebVersion: 'openolt_asfvolt16.deb'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: 'Default'
 
 - job-template:
