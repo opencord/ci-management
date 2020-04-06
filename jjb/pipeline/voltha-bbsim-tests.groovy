@@ -28,7 +28,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
@@ -77,18 +77,16 @@ pipeline {
     stage('Create K8s Cluster') {
       steps {
         sh """
-           git clone https://github.com/ciena/kind-voltha.git
-
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "kind-voltha/releases/${branch}"
+             source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
 
-           cd kind-voltha/
+           cd $WORKSPACE/voltha/kind-voltha/
            JUST_K8S=y ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
+           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/voltha/kind-voltha/bin"
            """
       }
     }
@@ -132,12 +130,12 @@ pipeline {
         sh '''
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "kind-voltha/releases/${branch}"
+             source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
 
-           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests|voltctl)\$ ]]; then
+           if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests|voltctl|kind-voltha)\$ ]]; then
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
              docker images | grep citest
@@ -151,7 +149,7 @@ pipeline {
         sh '''
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "kind-voltha/releases/${branch}"
+             source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
@@ -203,11 +201,11 @@ pipeline {
 
            if [ "${gerritProject}" = "voltctl" ]; then
              export VOLTCTL_VERSION=$(cat $WORKSPACE/voltha/voltctl/VERSION)
-             cp $WORKSPACE/voltha/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
-             md5sum $WORKSPACE/kind-voltha/bin/voltctl
+             cp $WORKSPACE/voltha/voltctl/voltctl $WORKSPACE/voltha/kind-voltha/bin/voltctl
+             md5sum $WORKSPACE/voltha/kind-voltha/bin/voltctl
            fi
 
-           cd $WORKSPACE/kind-voltha/
+           cd $WORKSPACE/voltha/kind-voltha/
            echo \$EXTRA_HELM_FLAGS
            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
            ./voltha up
@@ -242,7 +240,7 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
+         cp $WORKSPACE/voltha/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
          kubectl get nodes -o wide
          kubectl get pods -o wide
@@ -250,7 +248,7 @@ pipeline {
 
          sync
          pkill kail || true
-         md5sum $WORKSPACE/kind-voltha/bin/voltctl
+         md5sum $WORKSPACE/voltha/kind-voltha/bin/voltctl
 
          ## Pull out errors from log files
          extract_errors_go() {
@@ -278,12 +276,12 @@ pipeline {
          ## shut down kind-voltha
          if [ "${branch}" != "master" ]; then
            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-           source "kind-voltha/releases/${branch}"
+           source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
          else
            echo "on master, using default settings for kind-voltha"
          fi
 
-         cd $WORKSPACE/kind-voltha
+         cd $WORKSPACE/voltha/kind-voltha
 	       WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',

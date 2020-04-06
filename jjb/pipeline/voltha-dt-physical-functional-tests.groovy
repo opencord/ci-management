@@ -40,7 +40,7 @@ pipeline {
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
-        // This checkout is just so that we can show changes in Jenkins
+        // This checkout allows us to show changes in Jenkins
         checkout(changelog: true,
           poll: false,
           scm: [$class: 'RepoScm',
@@ -60,7 +60,6 @@ pipeline {
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
-        git clone https://github.com/ciena/kind-voltha.git
 
         VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
         HOSTOS=\$(uname -s | tr "[:upper:]" "[:lower:"])
@@ -83,7 +82,7 @@ pipeline {
       }
       steps {
         sh """
-        cd $WORKSPACE/kind-voltha/scripts
+        cd $WORKSPACE/voltha/kind-voltha/scripts
         ./log-collector.sh > /dev/null &
         ./log-combine.sh > /dev/null &
 
@@ -111,14 +110,14 @@ pipeline {
       extract_errors_go() {
         echo
         echo "Error summary for $1:"
-        grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
+        grep '"level":"error"' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
         echo
       }
 
       extract_errors_python() {
         echo
         echo "Error summary for $1:"
-        grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
+        grep 'ERROR' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
         echo
       }
 
@@ -128,7 +127,7 @@ pipeline {
       extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
       extract_errors_python onos >> $WORKSPACE/error-report.log
 
-      cd $WORKSPACE/kind-voltha/scripts/logger/combined/
+      cd $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
 
       cd $WORKSPACE

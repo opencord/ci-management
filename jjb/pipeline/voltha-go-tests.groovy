@@ -28,7 +28,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/kind-voltha/bin"
+    PATH="$HOME/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
@@ -64,7 +64,7 @@ pipeline {
       steps {
         sh """
            cd $HOME
-           [ -d kind-voltha ] || git clone https://github.com/ciena/kind-voltha.git
+           [ -d kind-voltha ] || git clone https://gerrit.opencord.org/kind-voltha
            rm -rf $HOME/kind-voltha/scripts/logger
            cd $HOME/kind-voltha
            git pull
