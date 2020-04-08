@@ -20,6 +20,7 @@ def hss_tag = ""
 def mme_tag = ""
 def spgwc_tag = ""
 def spgwu_tag = ""
+def quietPeriodTime = 0
 
 pipeline {
 
@@ -61,6 +62,11 @@ pipeline {
             mme_tag = "${branchName}-${commitHash}"
             break
           }
+          def now = new Date()
+          def PDTOffset = 25200000
+          def oneDay = 86400000
+          quietPeriodTime = (oneDay - (now.getTime() - PDTOffset) % oneDay) / 1000.0
+          println "Seconds until midnight: " + quietPeriodTime
         }
         build job: "omec-deploy-staging", parameters: [
               string(name: 'hssdb_tag', value: "${hssdb_tag}"),
@@ -68,7 +74,7 @@ pipeline {
               string(name: 'hss_tag', value: "${mme_tag}"),
               string(name: 'spgwc_tag', value: "${spgwc_tag}"),
               string(name: 'spgwu_tag', value: "${spgwu_tag}"),
-            ]
+            ], quietPeriod: quietPeriodTime
       }
     }
   }
