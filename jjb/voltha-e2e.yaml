@@ -140,6 +140,7 @@
           onus: 1
           pons: 1
           time-trigger: "@daily"
+          work-flow: DT
 
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset_auto':
@@ -174,6 +175,7 @@
     test-runs: 1
     robot-args: ''
     gerrit-project: ''
+    work-flow: ''
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -241,6 +243,10 @@
           default: '{robot-args}'
           description: 'Arguments to pass to robot'
 
+      - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Workflow for testcase'
 
     project-type: pipeline
     concurrent: true
