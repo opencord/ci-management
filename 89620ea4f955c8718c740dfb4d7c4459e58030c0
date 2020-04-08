@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5c96dcd3_d035958c",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-04-08T20:00:18Z",
+      "side": 1,
+      "message": "Got it, Thanks for your help.",
+      "parentUuid": "07ed10d0_a633d975",
+      "revId": "89620ea4f955c8718c740dfb4d7c4459e58030c0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "adc537ff_381d732c",
         "filename": "jjb/pipeline/voltha-go-tests.groovy",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2020-04-08T19:50:06Z",
       "side": 1,
       "message": "Please also add WITH_RADIUS\u003dn for DT to avoid unnecessary components being installed.",
+      "revId": "89620ea4f955c8718c740dfb4d7c4459e58030c0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "28a7bc2b_121f9cfe",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-04-08T20:00:18Z",
+      "side": 1,
+      "message": "Got it, Thanks for your help. Will send patch after test.",
+      "parentUuid": "adc537ff_381d732c",
       "revId": "89620ea4f955c8718c740dfb4d7c4459e58030c0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
