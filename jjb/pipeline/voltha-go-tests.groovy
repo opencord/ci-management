@@ -31,12 +31,12 @@ pipeline {
     PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/kind-voltha/bin"
     TYPE="minimal"
     FANCY=0
-    WITH_SIM_ADAPTERS="n"
-    WITH_RADIUS="y"
-    WITH_BBSIM="y"
-    DEPLOY_K8S="y"
+    WITH_SIM_ADAPTERS="no"
+    WITH_RADIUS="yes"
+    WITH_BBSIM="yes"
+    DEPLOY_K8S="yes"
     VOLTHA_LOG_LEVEL="DEBUG"
-    CONFIG_SADIS="n"
+    CONFIG_SADIS="no"
     ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs"
   }
   stages {
@@ -81,6 +81,13 @@ pipeline {
              source "$HOME/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
+           fi
+
+           if [ "${workflow}" != null -a "${workflow}" == "DT" ]; then
+             export WITH_DHCP=no
+             export WITH_IGMP=no
+             export WITH_EAPOL=no
+             export WITH_RADIUS=no
            fi
 
            EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
