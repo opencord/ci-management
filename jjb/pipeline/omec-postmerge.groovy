@@ -21,6 +21,7 @@ def mme_tag = ""
 def spgwc_tag = ""
 def spgwu_tag = ""
 def abbreviated_commit_hash = ""
+def quietPeriodTime = 0
 
 pipeline {
 
@@ -65,6 +66,14 @@ pipeline {
             mme_tag = "${branchName}-${abbreviated_commit_hash}"
             break
           }
+          // Add quiet period to downstream job. This is to delay running the
+          // deploy staging job until midnight, so it will not interrupt any
+          // development on the staging cluster during the day.
+          def now = Math.floor((new Date()).getTime() / 1000.0) // Get current time in seconds
+          def PDTOffset = 25200                                 // PDT Offset from UTC in seconds
+          def oneDay = 86400                                    // 24 hours in seconds
+          quietPeriodTime = oneDay - (now - PDTOffset) % oneDay // number of seconds until next midnight
+          println "Quiet Period (seconds until next midnight): " + quietPeriodTime
         }
         build job: "omec-deploy-staging", parameters: [
               string(name: 'hssdb_tag', value: "${hssdb_tag}"),
@@ -72,7 +81,7 @@ pipeline {
               string(name: 'hss_tag', value: "${mme_tag}"),
               string(name: 'spgwc_tag', value: "${spgwc_tag}"),
               string(name: 'spgwu_tag', value: "${spgwu_tag}"),
-            ]
+            ], quietPeriod: quietPeriodTime
       }
     }
   }
