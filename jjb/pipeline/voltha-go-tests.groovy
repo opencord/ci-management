@@ -83,6 +83,12 @@ pipeline {
              echo "on master, using default settings for kind-voltha"
            fi
 
+           if [ "${workflow}" != null -a "${workflow}" == "DT" ]; then
+             export WITH_DHCP=n
+             export WITH_IGMP=n
+             export WITH_EAPOL=n
+           fi
+
            EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
 
            cd $HOME/kind-voltha/
