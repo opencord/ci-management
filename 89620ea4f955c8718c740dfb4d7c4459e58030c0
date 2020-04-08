@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "07ed10d0_a633d975",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000514
+      },
+      "writtenOn": "2020-04-08T19:50:06Z",
+      "side": 1,
+      "message": "FYI. Latest kind-voltha takes word \"no\" rather than \"n\". Though this is default value also, so should not be a problem as such here. Also, other valid values are: yes | no | file | bbsim | URL",
+      "revId": "89620ea4f955c8718c740dfb4d7c4459e58030c0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "adc537ff_381d732c",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000514
+      },
+      "writtenOn": "2020-04-08T19:50:06Z",
+      "side": 1,
+      "message": "Please also add WITH_RADIUS\u003dn for DT to avoid unnecessary components being installed.",
+      "revId": "89620ea4f955c8718c740dfb4d7c4459e58030c0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
