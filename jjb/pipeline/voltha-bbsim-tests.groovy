@@ -118,7 +118,7 @@ pipeline {
              export GOPATH=\${GOPATH:-$WORKSPACE/go}
              export PATH=\$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:\$GOPATH/bin
              make -C $WORKSPACE/voltha/voltctl/ build
-           elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests)\$ ]]; then
+           elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests|kind-voltha)\$ ]]; then
              make-local ${gerritProject}
            fi
            """
