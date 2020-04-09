@@ -22,6 +22,30 @@
       "revId": "682702adab10b06aec23b314ec1fd18854041b9a",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a997036_35cf95f5",
+        "filename": "jjb/pipeline/omec-postmerge.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-04-09T21:17:58Z",
+      "side": 1,
+      "message": "This is to delay running the deploy-staging job until midnight, so it won’t interrupt any development on the staging cluster during the day.",
+      "parentUuid": "fe841686_9bf5b34b",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 82
+      },
+      "revId": "682702adab10b06aec23b314ec1fd18854041b9a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
