@@ -467,7 +467,7 @@
     description: |
       Automated build on AMI executor using pipeline/omec-deploy-staging.groovy. <br /><br />
       Created from job-template {id} from ci-management/jjb/charts.yaml <br />
-      Created by Jeremy Ronquillo, jeremyr@opennetworking.org <br />
+      Created by Jeremy Ronquillo - jeremyr@opennetworking.org <br />
       Copyright (c) 2020 Open Networking Foundation (ONF)
 
     properties:
@@ -485,10 +485,14 @@
           name: buildNode
           default: 'omec-staging'
           description: 'Name of the Jenkins executor node to run the job on.'
+      - bool:
+          name: useProductionCluster
+          default: false
+          description: 'Check this option to use the production cluster instead of the staging cluster. <b>Use with caution.</b>'
       - string:
           name: registry
           default: 'omecproject'
-          description: 'Registry for all images.'
+          description: 'Registry for all images that will be changed.'
       - string:
           name: hssdb_tag
           default: ''
