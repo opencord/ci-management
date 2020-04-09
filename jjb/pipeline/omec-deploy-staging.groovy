@@ -30,6 +30,20 @@ pipeline {
   }
 
   stages {
+    stage('Select kubectl Configuration') {
+        steps {
+            sh label: 'Select kubectl Configuration', script: """
+              ssh comac@192.168.122.57 '
+                if ${params.useProductionCluster}
+                then
+                    cp ~/.kube/omec_production_config ~/.kube/config
+                else
+                    cp ~/.kube/omec_staging_config ~/.kube/config
+                fi
+              '
+            """
+        }
+    }
     stage('Change Staging Images Config') {
       steps {
         sh label: 'Change Staging Images Config', script: """
