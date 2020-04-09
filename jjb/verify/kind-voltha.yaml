@@ -1,0 +1,16 @@
+---
+# verification jobs for 'kind-voltha' repo
+
+- project:
+    name: kind-voltha
+    project: '{name}'
+
+    jobs:
+      - 'verify-kind-voltha-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-kind-voltha-jobs'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
