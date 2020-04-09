@@ -20,6 +20,7 @@ def hss_tag = ""
 def mme_tag = ""
 def spgwc_tag = ""
 def spgwu_tag = ""
+def abbreviated_commit_hash = ""
 
 pipeline {
 
@@ -31,10 +32,13 @@ pipeline {
 
     stage('Publish') {
       steps {
+        script {
+          abbreviated_commit_hash = commitHash.substring(0, 7)
+        }
         build job: "docker-publish-github_$repoName", parameters: [
               string(name: 'gitUrl', value: "${repoUrl}"),
               string(name: 'gitRef', value: "${branchName}"),
-              string(name: 'branchName', value: "${branchName}-${commitHash}"),
+              string(name: 'branchName', value: "${branchName}-${abbreviated_commit_hash}"),
               string(name: 'projectName', value: "${repoName}"),
             ]
       }
@@ -50,15 +54,15 @@ pipeline {
           spgwu_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/ngic-dp/tags/' | jq '.results[] | select(.name | contains("${ngicBranchName}")).name' | head -1 | tr -d \\\""""
           switch("${params.repoName}") {
           case "c3po":
-            hssdb_tag = "${branchName}-${commitHash}"
-            hss_tag = "${branchName}-${commitHash}"
+            hssdb_tag = "${branchName}-${abbreviated_commit_hash}"
+            hss_tag = "${branchName}-${abbreviated_commit_hash}"
             break
           case "ngic-rtc":
-            spgwc_tag = "${branchName}-${commitHash}"
-            spgwu_tag = "${branchName}-${commitHash}"
+            spgwc_tag = "${branchName}-${abbreviated_commit_hash}"
+            spgwu_tag = "${branchName}-${abbreviated_commit_hash}"
             break
           case "openmme":
-            mme_tag = "${branchName}-${commitHash}"
+            mme_tag = "${branchName}-${abbreviated_commit_hash}"
             break
           }
         }
