@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fe841686_9bf5b34b",
+        "filename": "jjb/pipeline/omec-postmerge.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-09T21:15:25Z",
+      "side": 1,
+      "message": "Ah, I was unclear - was looking for the answer of \"Why this is needed?\" rather than a description of each line.",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 69,
+        "endChar": 82
+      },
+      "revId": "682702adab10b06aec23b314ec1fd18854041b9a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
