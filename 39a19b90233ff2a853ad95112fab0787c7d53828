@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3198f43d_c2de07f0",
+        "filename": "jjb/pipeline/omec-postmerge.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-09T16:32:04Z",
+      "side": 1,
+      "message": "Could you add comments to this with the intention/reasoning behind this?",
+      "range": {
+        "startLine": 65,
+        "startChar": 10,
+        "endLine": 69,
+        "endChar": 62
+      },
+      "revId": "39a19b90233ff2a853ad95112fab0787c7d53828",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
