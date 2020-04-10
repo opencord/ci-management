@@ -81,12 +81,11 @@
           expectedOnus: 512
           BBSIMdelay: 200
           # multi-adapter-tmp-changes
-          volthaImg: "matteoscandolo/voltha-rw-core:partition"
-          ofAgentImg: "voltha/voltha-ofagent-go:master"
-          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:partition"
-          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:partition"
+          volthaImg: "matteoscandolo/voltha-rw-core:replica"
+          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:replica"
+          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:replica"
           openonuAdapterChart: "/home/cord/voltha-helm-charts/voltha-adapter-openonu"
-          extraHelmFlags: "--set use_ofagent_go=true -f /home/cord/partition-values.yaml"
+          extraHelmFlags: "--set replicas.adapter_open_onu=8"
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-16-64-200ms'
           build-node: 'onf-pod1-head-node'
@@ -96,13 +95,11 @@
           expectedOnus: 1024
           BBSIMdelay: 200
           # multi-adapter-tmp-changes
-          volthaImg: "matteoscandolo/voltha-rw-core:partition"
-          ofAgentImg: "voltha/voltha-ofagent-go:master"
-          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:partition"
-          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:partition"
+          volthaImg: "matteoscandolo/voltha-rw-core:replica"
+          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:replica"
+          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:replica"
           openonuAdapterChart: "/home/cord/voltha-helm-charts/voltha-adapter-openonu"
-          extraHelmFlags: "--set use_ofagent_go=true -f /home/cord/partition-values.yaml"
-
+          extraHelmFlags: "--set replicas.adapter_open_onu=8"
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-64-200ms'
           build-node: 'onf-pod1-head-node'
@@ -119,22 +116,7 @@
           ponPorts: 4
           expectedOnus: 256
           BBSIMdelay: 1000
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-4-128-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 128
-          ponPorts: 4
-          expectedOnus: 512
-          BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-4-128-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 128
-          ponPorts: 4
-          expectedOnus: 512
-          BBSIMdelay: 1000
+
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-128-200ms'
           build-node: 'onf-pod1-head-node'

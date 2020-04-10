@@ -88,7 +88,7 @@ pipeline {
             voltctl adapter list | grep brcm_openomci_onu | wc -l
             """
 
-            return openolt_res.toInteger() == 1 && openonu_res.toInteger() == 1
+            return openolt_res.toInteger() >= 1 && openonu_res.toInteger() >= 1
           }
         }
       }
