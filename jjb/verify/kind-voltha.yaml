@@ -12,6 +12,11 @@
 - job-group:
     name: 'verify-kind-voltha-jobs'
     jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          unit-test-targets: 'test'
+          junit-allow-empty-results: true
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
       - 'voltha-patch-test':
