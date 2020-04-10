@@ -88,7 +88,7 @@ pipeline {
             voltctl adapter list | grep brcm_openomci_onu | wc -l
             """
 
-            return openolt_res.toInteger() == 1 && openonu_res.toInteger() == 1
+            return openolt_res.toInteger() >= 1 && openonu_res.toInteger() >= 1
           }
         }
       }
@@ -217,11 +217,12 @@ pipeline {
         curl -s -X GET -G http://127.0.0.1:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod_name)' | jq . > cpu-usage.json
       '''
       sh '''
-        kubectl logs deployment/adapter-open-olt > open-olt-logs.txt
-        kubectl logs deployment/adapter-open-onu > open-onu-logs.txt
-        kubectl logs deployment/voltha-rw-core > voltha-rw-core-logs.txt
-        kubectl logs deployment/voltha-ofagent > voltha-ofagent-logs.txt
-        kubectl logs deployment/bbsim > bbsim-logs.txt
+      kail -l app=adapter-open-onu | tee openonu.logs
+        kubectl logs -l app=adapter-open-olt > open-olt-logs.txt
+        kubectl logs -l app=adapter-open-onu > open-onu-logs.txt
+        kubectl logs -l app=rw-core > voltha-rw-core-logs.txt
+        kubectl logs -l app=ofagent > voltha-ofagent-logs.txt
+        kubectl logs -l app=bbsim > bbsim-logs.txt
       '''
       sh '''
         rm -rf BBSM-12345123451234512345-00000000000001-v1.json device-list.json onus.txt ports.txt temp.txt
