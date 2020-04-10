@@ -67,6 +67,8 @@ pipeline {
            [ -d kind-voltha ] || git clone https://gerrit.opencord.org/kind-voltha
            rm -rf $HOME/kind-voltha/scripts/logger
            cd $HOME/kind-voltha
+           git fetch
+           git checkout ${params.branch}
            git pull
            """
       }

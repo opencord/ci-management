@@ -261,7 +261,6 @@
 - job-template:
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
-    override-branch: '$GERRIT_BRANCH'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -291,7 +290,7 @@
 
       - string:
           name: branch
-          default: '{override-branch}'
+          default: '$GERRIT_BRANCH'
           description: 'Name of the branch to use'
 
       - string:

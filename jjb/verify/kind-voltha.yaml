@@ -19,7 +19,3 @@
           junit-allow-empty-results: true
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha-bbsim-tests.groovy'
-          name-extension: '-2.3'
-          override-branch: 'voltha-2.3'
