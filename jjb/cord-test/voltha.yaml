@@ -214,6 +214,33 @@
           profile: '1T8GEM'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
+
+      # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: '2.3'
+          branch: 'voltha-2.3'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
+          configurePod: true
+          profile: '1T8GEM'
+          time: '7'
+
+      # Menlo pod test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: '2.3'
+          branch: 'voltha-2.3'
+          name-extension: '_DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
       # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile - Manual build and test job
       - 'build_pod_manual':
           build-node: 'menlo-demo-pod'
