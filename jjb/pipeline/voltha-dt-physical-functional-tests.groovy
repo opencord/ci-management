@@ -56,7 +56,7 @@ pipeline {
           )
         sh returnStdout: false, script: """
         cd voltha
-        git clone -b ${branch} ${cordRepoUrl}/cord-tester
+        git clone -b master ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
