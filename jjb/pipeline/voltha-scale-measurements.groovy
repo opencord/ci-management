@@ -217,7 +217,6 @@ pipeline {
         curl -s -X GET -G http://127.0.0.1:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod_name)' | jq . > cpu-usage.json
       '''
       sh '''
-      kail -l app=adapter-open-onu | tee openonu.logs
         kubectl logs -l app=adapter-open-olt > open-olt-logs.txt
         kubectl logs -l app=adapter-open-onu > open-onu-logs.txt
         kubectl logs -l app=rw-core > voltha-rw-core-logs.txt
