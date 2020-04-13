@@ -121,7 +121,8 @@ pipeline {
       sh '''
          set +e
          cp $HOME/kind-voltha/install-minimal.log $WORKSPACE/
-         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
+         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
          kubectl get nodes -o wide
          kubectl get pods -o wide
          kubectl get pods -n voltha -o wide

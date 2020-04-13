@@ -206,7 +206,8 @@ pipeline {
         cat ports.txt >> onos-ports-count.txt
       '''
       sh '''
-        kubectl get pods -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq -c
+        kubectl get pods -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.image}{'\\n'}" | sort | uniq
+        kubectl get pods -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\t'}{.imageID}{'\\n'}" | sort | uniq
       '''
       sh '''
         voltctl device list -o json > device-list.json
