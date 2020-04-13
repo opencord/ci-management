@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "791bf0e8_31357c0d",
+        "filename": "jjb/charts.yaml",
+        "patchSetId": 11
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-04-13T19:40:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d62a30d_623d7f88",
+      "range": {
+        "startLine": 233,
+        "startChar": 0,
+        "endLine": 236,
+        "endChar": 66
+      },
+      "revId": "188bc9613cccb3061c0633be70b47e1d98e6be9f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "87229f56_f4e1a651",
         "filename": "jjb/pipeline/ciab.groovy",
         "patchSetId": 11
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "30c6f0f8_9e14cc39",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 11
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-04-13T19:40:24Z",
+      "side": 1,
+      "message": "Changed to use ng40 host node instead of vm in qa-fabric-1",
+      "parentUuid": "87229f56_f4e1a651",
+      "range": {
+        "startLine": 25,
+        "startChar": 9,
+        "endLine": 25,
+        "endChar": 36
+      },
+      "revId": "188bc9613cccb3061c0633be70b47e1d98e6be9f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ac614d2f_d9db9f6b",
         "filename": "jjb/pipeline/ciab.groovy",
         "patchSetId": 11
@@ -59,6 +107,30 @@
       "writtenOn": "2020-03-31T17:43:47Z",
       "side": 1,
       "message": "Should this always succeed?  Would we want it to fail if something went wrong?",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 65
+      },
+      "revId": "188bc9613cccb3061c0633be70b47e1d98e6be9f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77acd3ca_7a0bfd84",
+        "filename": "jjb/pipeline/ciab.groovy",
+        "patchSetId": 11
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-04-13T19:40:24Z",
+      "side": 1,
+      "message": "Changed to use GERRIT_REFSPEC",
+      "parentUuid": "ac614d2f_d9db9f6b",
       "range": {
         "startLine": 27,
         "startChar": 0,
