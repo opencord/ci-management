@@ -70,6 +70,14 @@ pipeline {
         curl -o $WORKSPACE/bin/voltctl -sSL https://github.com/opencord/voltctl/releases/download/v\${VC_VERSION}/voltctl-\${VC_VERSION}-\${HOSTOS}-\${HOSTARCH}
         chmod 755 $WORKSPACE/bin/voltctl
         voltctl version --clientonly
+
+        # Remove noise from voltha-core logs
+        voltctl loglevel set WARN read-write-core#github.com/opencord/voltha-go/db/model
+        voltctl loglevel set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+        # Remove noise from openolt logs
+        voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+        voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+        voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         """
       }
     }
