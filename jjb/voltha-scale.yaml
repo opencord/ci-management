@@ -80,11 +80,7 @@
           ponPorts: 16
           expectedOnus: 512
           BBSIMdelay: 200
-          # multi-adapter-tmp-changes
-          volthaImg: "matteoscandolo/voltha-rw-core:replica"
-          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:replica"
-          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:replica"
-          openonuAdapterChart: "/home/cord/voltha-helm-charts/voltha-adapter-openonu"
+          # multi-adapter
           extraHelmFlags: "--set replicas.adapter_open_onu=8"
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-16-64-200ms'
@@ -94,11 +90,7 @@
           ponPorts: 16
           expectedOnus: 1024
           BBSIMdelay: 200
-          # multi-adapter-tmp-changes
-          volthaImg: "matteoscandolo/voltha-rw-core:replica"
-          openoltAdapterImg: "matteoscandolo/voltha-openolt-adapter:replica"
-          openonuAdapterImg: "matteoscandolo/voltha-openonu-adapter:replica"
-          openonuAdapterChart: "/home/cord/voltha-helm-charts/voltha-adapter-openonu"
+          # multi-adapter
           extraHelmFlags: "--set replicas.adapter_open_onu=8"
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-64-200ms'
