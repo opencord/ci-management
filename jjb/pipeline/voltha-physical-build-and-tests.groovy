@@ -164,10 +164,10 @@ pipeline {
 
     stage('Deploy Voltha') {
       environment {
-        WITH_SIM_ADAPTERS="n"
-        WITH_RADIUS="y"
-        DEPLOY_K8S="n"
-        VOLTHA_LOG_LEVEL="debug"
+        WITH_SIM_ADAPTERS="no"
+        WITH_RADIUS="yes"
+        DEPLOY_K8S="no"
+        VOLTHA_LOG_LEVEL="DEBUG"
       }
       steps {
         script {
@@ -207,6 +207,14 @@ pipeline {
           echo \$EXTRA_HELM_FLAGS
           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
           ./voltha up
+
+          # Remove noise from voltha-core logs
+          voltctl loglevel set WARN read-write-core#github.com/opencord/voltha-go/db/model
+          voltctl loglevel set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+          # Remove noise from openolt logs
+          voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+          voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+          voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
           """
         }
       }
