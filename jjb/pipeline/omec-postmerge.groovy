@@ -77,8 +77,8 @@ pipeline {
         }
         build job: "omec-deploy-staging", parameters: [
               string(name: 'hssdb_tag', value: "${hssdb_tag}"),
-              string(name: 'mme_tag', value: "${hss_tag}"),
-              string(name: 'hss_tag', value: "${mme_tag}"),
+              string(name: 'hss_tag', value: "${hss_tag}"),
+              string(name: 'mme_tag', value: "${mme_tag}"),
               string(name: 'spgwc_tag', value: "${spgwc_tag}"),
               string(name: 'spgwu_tag', value: "${spgwu_tag}"),
             ], quietPeriod: quietPeriodTime
