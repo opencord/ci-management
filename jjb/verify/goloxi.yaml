@@ -1,0 +1,19 @@
+---
+# verification jobs for 'goloxi' repo
+
+- project:
+    name: goloxi
+    project: '{name}'
+
+    jobs:
+      - 'verify-goloxi-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-goloxi-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          unit-test-targets: 'test'
+          junit-allow-empty-results: true

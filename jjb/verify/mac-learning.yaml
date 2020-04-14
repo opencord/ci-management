@@ -1,0 +1,18 @@
+---
+# jobs for 'mac-learning' repo
+
+- project:
+    name: mac-learning
+    project: '{name}'
+
+    jobs:
+      - 'mac-learning-jobs':
+          branch-regexp: '^(.*)$'
+
+- job-group:
+    name: 'mac-learning-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'maven-test'
+      - 'maven-publish'
