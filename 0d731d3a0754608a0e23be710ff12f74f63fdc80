@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1532809e_9c93815a",
+        "filename": "jjb/pipeline/omec-deploy-staging.groovy",
+        "patchSetId": 6
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000012
+      },
+      "writtenOn": "2020-04-14T01:12:55Z",
+      "side": 1,
+      "message": "If we can make this stage optional, and use \"helm upgrade --install\" instead of \"helm install\" in the later stages then we can easily do the upgrade test as well. But maybe in the next patch? :)",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 26
+      },
+      "revId": "0d731d3a0754608a0e23be710ff12f74f63fdc80",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
