@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f868ebce_d68fc7c1",
+        "filename": "jjb/charts.yaml",
+        "patchSetId": 13
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-14T19:11:37Z",
+      "side": 1,
+      "message": "If you just set this to {id}, you wouldn\u0027t need to pass the variable through.",
+      "range": {
+        "startLine": 183,
+        "startChar": 3,
+        "endLine": 183,
+        "endChar": 18
+      },
+      "revId": "5770f89fe70cd2890691616605f37a6196f34051",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
