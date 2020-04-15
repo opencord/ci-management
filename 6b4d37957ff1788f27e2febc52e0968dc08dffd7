@@ -16,6 +16,24 @@
       "revId": "6b4d37957ff1788f27e2febc52e0968dc08dffd7",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "db45691c_064e5f62",
+        "filename": "jjb/pipeline/xos-core.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2020-04-15T17:15:39Z",
+      "side": 1,
+      "message": "I think `set -u` will cause unset shell variables to cause an error. It seems like a good thing to have in addition to -x.",
+      "parentUuid": "8921faf7_2fe6453d",
+      "revId": "6b4d37957ff1788f27e2febc52e0968dc08dffd7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
