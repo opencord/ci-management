@@ -42,6 +42,7 @@
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
       - 'omec-install':
           sub-project: '{name}'
+          branch: 'central-cp-multi-upfs'
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
@@ -72,9 +73,11 @@
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
       - 'omec-install':
           sub-project: 'c3po-sgx'
+          branch: 'master'
           pipeline-file: 'Jenkinsfile-omec-install-c3po-sgx-vnf.groovy'
       - 'omec-install':
           sub-project: 'c3po-hss'
+          branch: 'master'
           pipeline-file: 'Jenkinsfile-omec-install-c3po-hss-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
@@ -105,6 +108,7 @@
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
       - 'omec-install':
           sub-project: '{name}'
+          branch: 'paging'
           pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
@@ -288,6 +292,11 @@
           name: project
           default: '{project}'
           description: 'Name of the project'
+
+      - string:
+          name: branch
+          default: '{branch}'
+          description: 'Branch of the project'
 
     concurrent: false
 
