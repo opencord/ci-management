@@ -52,7 +52,14 @@
           name: buildNode
           default: 'comac_in_a_box'
           description: 'Name of the Jenkins executor node to run the job on'
-
+      - string:
+          name: GERRIT_REFSPEC
+          default: '$GERRIT_REFSPEC'
+          description: 'Gerrit ref to fetch.' 
+      - string:
+          name: gitUrl
+          default: '{gerrit-server-url}/$GERRIT_PROJECT'
+          description: 'URL to the git repo'
     scm:
       - lf-infra-gerrit-scm:
           git-url: '$GIT_URL/$GERRIT_PROJECT'
