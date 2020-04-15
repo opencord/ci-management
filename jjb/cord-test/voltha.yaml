@@ -11,6 +11,7 @@
     with-kind: false
     power-switch: False
     work-flow: ''
+    num-of-openonu: ''
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
@@ -59,6 +60,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
@@ -82,6 +84,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
@@ -128,6 +131,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
@@ -172,6 +176,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
@@ -194,6 +199,7 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -287,6 +293,7 @@
           config-pod: 'infosys-pod'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
@@ -332,6 +339,7 @@
           config-pod: 'dt-berlin-pod'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
@@ -382,6 +390,7 @@
           config-pod: 'dt-berlin-pod-gpon'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
