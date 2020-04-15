@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8921faf7_2fe6453d",
+        "filename": "jjb/pipeline/xos-core.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 149,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2020-04-15T17:04:29Z",
+      "side": 1,
+      "message": "I\u0027m not sure what `set -u` does, but it looks to me this is not part of the fix. Just making sure this is not a debugging leftover. Do you want the change from set -u to set -x to be merged?",
+      "revId": "6b4d37957ff1788f27e2febc52e0968dc08dffd7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
