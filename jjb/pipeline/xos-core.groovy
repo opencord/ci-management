@@ -70,7 +70,7 @@ pipeline {
           timeout(3) {
             waitUntil {
               sleep 5
-              def kc_ret = sh script: "kubectl get po", returnStatus: true
+              def kc_ret = sh script: "kubectl get pods", returnStatus: true
               return (kc_ret == 0);
             }
           }
@@ -146,11 +146,13 @@ pipeline {
       steps {
         sh """
            #!/usr/bin/env bash
-           set -eu -o pipefail
-           pushd cord/test/cord-tester/src/test/cord-api/
-           source setup_venv.sh
+           set -ex -o pipefail
 
-           cd Tests/xos-test-service
+           pushd cord/test/cord-tester
+           make venv_cord
+           source venv_cord/bin/activate
+           cd src/test/cord-api/Tests/xos-test-service
+
            robot -e notready test-service.robot || true
            popd
            """
