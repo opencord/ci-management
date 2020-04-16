@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "10a7a4ac_5afc335b",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-04-16T00:36:44Z",
+      "side": 1,
+      "message": "sounds good, will change to `1`",
+      "parentUuid": "97f018d6_a255f6c1",
+      "range": {
+        "startLine": 14,
+        "startChar": 20,
+        "endLine": 14,
+        "endChar": 22
+      },
+      "revId": "9d8dbf6557c3e29d159bda5401947fe2cd9e5240",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "991dd327_259088ab",
         "filename": "jjb/cord-test/voltha.yaml",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-04-16T00:33:21Z",
       "side": 1,
       "message": "shouldn\u0027t we set \"num-of-openonu\" here too?",
+      "range": {
+        "startLine": 18,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 25
+      },
+      "revId": "9d8dbf6557c3e29d159bda5401947fe2cd9e5240",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8454fd37_b7adb6dd",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-04-16T00:36:44Z",
+      "side": 1,
+      "message": "manual job does not have these values because template doesn\u0027t have it.",
+      "parentUuid": "991dd327_259088ab",
       "range": {
         "startLine": 18,
         "startChar": 9,
