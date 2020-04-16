@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// comac-in-a-box build+test
+// comac-in-a-box-gerrit build+test
 // steps taken from https://guide.opencord.org/profiles/comac/install/ciab.html
 
 pipeline {
@@ -27,18 +27,33 @@ pipeline {
   }
 
   stages {
+    stage ("Environment Setup"){
+      steps {
+        sh label: 'Run COMAC-in-a-box make', script: """
+          echo $HOME
+          cd $HOME/automation-tools/comac-in-a-box/
+          sudo make reset-test
+          sudo make   # This does not take any time if make had already run.
+          """
+        sh label: 'helm-charts Repo Fresh Clone', script: """
+          cd $HOME/cord/
+          sudo rm -rf helm-charts/
+          sudo git clone https://gerrit.opencord.org/helm-charts
+          """
+      }
+    }
+
     stage ("Fetch Helm-Charts Changes"){
       steps {
         sh label: 'Fetch helm-charts Gerrit Changes', script: """
-          cd cord/helm-charts/
-          pwd
+          cd $HOME/cord/helm-charts/
           if [ ! -z "${GERRIT_REFSPEC}" ]
           then
             echo "Checking out Gerrit patchset: ${GERRIT_REFSPEC}"
-            git fetch ${gitUrl} ${GERRIT_REFSPEC} && git checkout FETCH_HEAD
+            sudo git fetch ${gitUrl} ${GERRIT_REFSPEC} && git checkout FETCH_HEAD
           else
             echo "GERRIT_REFSPEC not provided. Checking out master branch."
-            git checkout master
+            sudo git checkout master
           fi
           """
       }
@@ -46,12 +61,11 @@ pipeline {
 
     stage ("Run COMAC-in-a-box"){
       steps {
-        sh label: 'Run Makefile', script: '''
-          HOME=$(pwd)
-          cd automation-tools/comac-in-a-box/
+        sh label: 'Run Makefile', script: """
+          cd $HOME/automation-tools/comac-in-a-box/
           sudo make reset-test
           sudo make test
-          '''
+          """
       }
     }
   }
