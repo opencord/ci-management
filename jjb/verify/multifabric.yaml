@@ -14,12 +14,14 @@
     name: 'verify-multifabric-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
-      - 'make-unit-test':
-          unit-test-targets: 'test docker-build'
-          junit-allow-empty-results: true
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_multifabric_licensed'
+      - 'verify-sonarqube':
+          dependency-jobs: 'verify_multifabric_tag-collision'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_multifabric_sonarqube'
       - 'xos-service-upgrade':
-          dependency-jobs: 'verify_multifabric_unit-test'
+          dependency-jobs: 'verify_multifabric-unit-test'
 
 - job-group:
     name: 'publish-multifabric-jobs'
