@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// comac-in-a-box build+test
+// comac-in-a-box-gerrit build+test
 // steps taken from https://guide.opencord.org/profiles/comac/install/ciab.html
 
 pipeline {
@@ -27,11 +27,31 @@ pipeline {
   }
 
   stages {
+    stage ("Environment Setup"){
+      steps {
+        sh label: 'Run COMAC-in-a-box reset-test', script: """
+          echo $HOME
+          cd $HOME/automation-tools/comac-in-a-box/
+          sudo make reset-test
+          """
+        sh label: 'Cleanup Docker Images', script: '''
+          sudo docker rmi -f $(sudo docker images --format '{{.Repository}} {{.ID}}' | grep 'none' | awk '{print $2}') || true
+          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'openmme') || true
+          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'ngic') || true
+          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'c3po') || true
+          '''
+        sh label: 'helm-charts Repo Fresh Clone', script: """
+          cd $HOME/cord/
+          sudo rm -rf helm-charts/
+          git clone https://gerrit.opencord.org/helm-charts
+          """
+      }
+    }
+
     stage ("Fetch Helm-Charts Changes"){
       steps {
         sh label: 'Fetch helm-charts Gerrit Changes', script: """
-          cd cord/helm-charts/
-          pwd
+          cd $HOME/cord/helm-charts/
           if [ ! -z "${GERRIT_REFSPEC}" ]
           then
             echo "Checking out Gerrit patchset: ${GERRIT_REFSPEC}"
@@ -46,12 +66,11 @@ pipeline {
 
     stage ("Run COMAC-in-a-box"){
       steps {
-        sh label: 'Run Makefile', script: '''
-          HOME=$(pwd)
-          cd automation-tools/comac-in-a-box/
+        sh label: 'Run Makefile', script: """
+          cd $HOME/automation-tools/comac-in-a-box/
           sudo make reset-test
           sudo make test
-          '''
+          """
       }
     }
   }
