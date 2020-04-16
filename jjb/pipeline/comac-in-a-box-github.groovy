@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// comac-in-a-box build+test
+// comac-in-a-box-github build+test
 // steps taken from https://guide.opencord.org/profiles/comac/install/ciab.html
 
 pipeline {
@@ -27,20 +27,15 @@ pipeline {
   }
 
   stages {
-    stage ("Fetch Helm-Charts Changes"){
+    stage ("Publish Docker Image"){
       steps {
-        sh label: 'Fetch helm-charts Gerrit Changes', script: """
-          cd cord/helm-charts/
-          pwd
-          if [ ! -z "${GERRIT_REFSPEC}" ]
-          then
-            echo "Checking out Gerrit patchset: ${GERRIT_REFSPEC}"
-            git fetch ${gitUrl} ${GERRIT_REFSPEC} && git checkout FETCH_HEAD
-          else
-            echo "GERRIT_REFSPEC not provided. Checking out master branch."
-            git checkout master
-          fi
-          """
+        // TODO: add docker-publish downstream job
+      }
+    }
+
+    stage ("Change Helm-Charts Docker Tags"){
+      steps {
+        // TODO: change tags
       }
     }
 
