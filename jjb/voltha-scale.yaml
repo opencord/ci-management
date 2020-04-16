@@ -16,14 +16,6 @@
           expectedOnus: 128
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-8-16-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 16
-          ponPorts: 8
-          expectedOnus: 128
-          BBSIMdelay: 1000
-      - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-8-32-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -31,14 +23,6 @@
           ponPorts: 8
           expectedOnus: 256
           BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-8-32-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 32
-          ponPorts: 8
-          expectedOnus: 256
-          BBSIMdelay: 1000
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-10-20-200ms'
           build-node: 'onf-pod1-head-node'
@@ -48,14 +32,6 @@
           expectedOnus: 200
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-10-20-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 20
-          ponPorts: 10
-          expectedOnus: 200
-          BBSIMdelay: 1000
-      - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-4-32-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -63,15 +39,6 @@
           ponPorts: 4
           expectedOnus: 128
           BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-4-32-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 32
-          ponPorts: 4
-          expectedOnus: 128
-          BBSIMdelay: 1000
-
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-16-32-200ms'
           build-node: 'onf-pod1-head-node'
@@ -101,15 +68,6 @@
           expectedOnus: 256
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-4-64-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 64
-          ponPorts: 4
-          expectedOnus: 256
-          BBSIMdelay: 1000
-
-      - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-128-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -117,14 +75,6 @@
           ponPorts: 1
           expectedOnus: 128
           BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-1-128-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 128
-          ponPorts: 1
-          expectedOnus: 128
-          BBSIMdelay: 1000
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-64-200ms'
           build-node: 'onf-pod1-head-node'
@@ -134,14 +84,6 @@
           expectedOnus: 64
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-1-64-1000ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 64
-          ponPorts: 1
-          expectedOnus: 64
-          BBSIMdelay: 1000
-      - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-1-1-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -150,13 +92,14 @@
           expectedOnus: 1
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-1-1-1000ms'
+          name: 'voltha-scale-measurements-periodic-2-OLTs-10-10-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          onuPerPon: 1
-          ponPorts: 1
-          expectedOnus: 1
-          BBSIMdelay: 1000
+          onuPerPon: 10
+          ponPorts: 10
+          numOfBbsim: 2
+          expectedOnus: 200
+          BBSIMdelay: 200
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
@@ -198,6 +141,9 @@
     openonuAdapterChart: onf/voltha-adapter-openonu
     onosImg: voltha/voltha-onos:master
     extraHelmFlags: ''
+    withMibTemplate: true
+    numOfBbsim: 1
+    numOfKafka: 3
 
     parameters:
       - string:
@@ -237,7 +183,7 @@
 
       - bool:
           name: withMibTemplate
-          default: true
+          default: '{withMibTemplate}'
           description: 'Option to trigger MIB template command'
 
       - bool:
@@ -325,6 +271,16 @@
           default: '{extraHelmFlags}'
           description: 'Any extra helm parameters you want (passed to every helm install command)'
 
+      - string:
+          name: numOfBbsim
+          default: '{numOfBbsim}'
+          description: 'How many BBSim instances to run'
+
+      - string:
+          name: numOfKafka
+          default: '{numOfKafka}'
+          description: 'How many Kafka instances to run'
+
     project-type: pipeline
     concurrent: false
 
@@ -368,6 +324,9 @@
     openonuAdapterChart: "onf/voltha-adapter-openonu"
     onosImg: "voltha/voltha-onos:master"
     extraHelmFlags: ''
+    withMibTemplate: true
+    numOfBbsim: 1
+    numOfKafka: 1
 
     parameters:
       - string:
@@ -407,7 +366,7 @@
 
       - bool:
           name: withMibTemplate
-          default: true
+          default: '{withMibTemplate}'
           description: 'Option to trigger MIB template command'
 
       - bool:
@@ -494,6 +453,16 @@
           name: extraHelmFlags
           default: '{extraHelmFlags}'
           description: 'Any extra helm parameters you want (passed to every helm install command)'
+
+      - string:
+          name: numOfBbsim
+          default: '{numOfBbsim}'
+          description: 'How many BBSim instances to run'
+
+      - string:
+          name: numOfKafka
+          default: '{numOfKafka}'
+          description: 'How many Kafka instances to run'
 
     project-type: pipeline
     concurrent: false

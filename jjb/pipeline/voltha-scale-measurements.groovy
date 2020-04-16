@@ -47,8 +47,13 @@ pipeline {
       steps {
         sh '''
           helm repo update
-          helm install -n cord-kafka incubator/kafka -f /home/cord/voltha-scale/voltha-values.yaml --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false
+          helm install -n cord-kafka incubator/kafka -f /home/cord/voltha-scale/voltha-values.yaml --version 0.13.3 --set replicas=${numOfKafka} --set persistence.enabled=false --set zookeeper.replicaCount=${numOfKafka} --set zookeeper.persistence.enabled=false
           helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+
+          helm install -n radius onf/freeradius ${extraHelmFlags}
+
+          # NOTE wait for the infrastructure to be running before installing VOLTHA
+          bash /home/cord/voltha-scale/wait_for_pods.sh
 
           IFS=: read -r onosRepo onosTag <<< ${onosImg}
           helm install -n onos onf/onos --set images.onos.repository=${onosRepo} --set images.onos.tag=${onosTag} ${extraHelmFlags}
@@ -64,9 +69,10 @@ pipeline {
           helm install -n openonu ${openonuAdapterChart} -f /home/cord/voltha-scale/voltha-values.yaml --set defaults.log_level=${logLevel},images.adapter_open_onu.repository=${openonuAdapterRepo},images.adapter_open_onu.tag=${openonuAdapterTag} ${extraHelmFlags}
 
           IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-          helm install -n bbsim ${bbsimChart} --set enablePerf=true,pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} ${extraHelmFlags}
 
-          helm install -n radius onf/freeradius ${extraHelmFlags}
+          for i in $(seq 1 $((${numOfBbsim}))); do
+            helm install -n bbsim-$i ${bbsimChart} --set olt_id=$i,enablePerf=true,pon=${ponPorts},onu=${onuPerPon},auth=${bbsimAuth},dhcp=${bbsimDhcp},delay=${BBSIMdelay},images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} ${extraHelmFlags}
+          done
 
           bash /home/cord/voltha-scale/wait_for_pods.sh
           bash /home/cord/voltha-scale/start_port_forward.sh
@@ -109,9 +115,9 @@ pipeline {
         sh '''
           #Check withOnosApps and disable apps accordingly
           if [ ${withOnosApps} = false ] ; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.olt
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.aaa
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost app deactivate org.opencord.dhcpl2relay
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
           fi
         '''
       }
@@ -120,14 +126,14 @@ pipeline {
       steps {
         sh '''
           #Setting LOG level to ${logLevel}
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost log:set ${logLevel}
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel}
           kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
           #Setting link discovery
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
           #Setting the flow stats collection interval
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
           #Setting the ports stats collection interval
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
           # extending voltctl timeout
           sed -i 's/timeout: 10s/timeout: 5m/g' /home/cord/.volt/config
         '''
@@ -138,6 +144,16 @@ pipeline {
         timeout(time:10)
       }
       stages {
+        stage('Activate OLTs') {
+          steps {
+            sh '''
+            for i in $(seq 1 $((${numOfBbsim}))); do
+              voltctl device create -t openolt -H bbsim-$i:50060 -m 0f:f1:ce:c$i:ff:ee
+            done
+            voltctl device list --filter Type~openolt -q | xargs voltctl device enable
+            '''
+          }
+        }
         stage('ONUs-enabled') {
           steps {
             sh '''
@@ -147,8 +163,6 @@ pipeline {
                 exit 1
               fi
 
-              voltctl device create -t openolt -H bbsim:50060
-              voltctl device enable $(voltctl device list --filter Type~openolt -q)
               # check ONUs reached Active State in VOLTHA
               i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
               until [ $i -eq ${expectedOnus} ]
@@ -166,12 +180,12 @@ pipeline {
           steps {
             sh '''
               # Check ports showed up in ONOS
-              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l)
+              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports -e | grep BBSM | wc -l)
               until [ $z -eq ${expectedOnus} ]
               do
                 echo "${z} enabled ports of ${expectedOnus} expected (time: $SECONDS)"
                 sleep ${pollInterval}
-                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l)
+                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports -e | grep BBSM | wc -l)
               done
               echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
               echo $SECONDS > temp.txt
@@ -201,7 +215,7 @@ pipeline {
         cat onus.txt >> voltha-devices-count.txt
       '''
       sh '''
-        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports -e | grep BBSM | wc -l) > ports.txt
+        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports -e | grep BBSM | wc -l) > ports.txt
         echo "#-of-ports" > onos-ports-count.txt
         cat ports.txt >> onos-ports-count.txt
       '''
@@ -214,7 +228,7 @@ pipeline {
         python -m json.tool device-list.json > voltha-devices-list.json
       '''
       sh '''
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@localhost ports > onos-ports-list.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports > onos-ports-list.txt
         curl -s -X GET -G http://127.0.0.1:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod_name)' | jq . > cpu-usage.json
       '''
       sh '''
