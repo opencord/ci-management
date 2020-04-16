@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// comac-in-a-box build+test
+// comac-in-a-box-gerrit build+test
 // steps taken from https://guide.opencord.org/profiles/comac/install/ciab.html
 
 pipeline {
