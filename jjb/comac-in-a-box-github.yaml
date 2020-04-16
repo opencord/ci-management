@@ -1,0 +1,74 @@
+# COMAC in a box test for the omec projects on github
+
+- job-template:
+    id: 'omec-comac-in-a-box'
+    name: 'omec_{project}_comac-in-a-box'
+    project-type: pipeline
+
+    pipeline-script: 'comac-in-a-box-github.groovy'
+
+    description: |
+      Automated build on AMI executor using {pipeline-script}. <br /><br />
+      Created from job-template {id} from ci-management/jjb/comac-in-a-box-github.yaml <br />
+      Created by Jeremy Ronquillo, jeremyr@opennetworking.org <br />
+      Copyright (c) 2020 Open Networking Foundation (ONF)
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: registry
+          default: 'omecproject'
+          description: 'Registry for all images that will be changed.'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+      - string:
+          name: ghprbPullId
+          default: '$ghprbPullId'
+          description: 'GitHub Pull-Request builder value. Delete default value to test manually.'
+
+      - string:
+          name: ghprbTargetBranch
+          default: '$ghprbTargetBranch'
+          description: 'GitHub Pull-Request builder value. Delete default value to test manually.'
+
+      - string:
+          name: ghprbActualCommit
+          default: '$ghprbActualCommit'
+          description: 'GitHub Pull-Request builder value. Delete default value to test manually.'
+
+      - string:
+          name: ghprbGhRepository
+          default: '$ghprbGhRepository'
+          description: 'GitHub Pull-Request builder value. Delete default value to test manually.'
+
+
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - COMAC-in-a-box'
+
+    concurrent: false
+
+    project-type: pipeline
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
