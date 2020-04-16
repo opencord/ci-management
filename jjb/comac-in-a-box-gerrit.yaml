@@ -1,15 +1,15 @@
 # COMAC in a box test for helm-charts repo
 
 - job-template:
-    id: 'comac-in-a-box'
+    id: 'comac-in-a-box-gerrit'
     name: '{name}'
     project-type: pipeline
 
-    pipeline-script: 'comac-in-a-box.groovy'
+    pipeline-script: 'comac-in-a-box-gerrit.groovy'
 
     description: |
       Automated build on AMI executor using {pipeline-script}. <br /><br />
-      Created from job-template {id} from ci-management/jjb/charts.yaml <br />
+      Created from job-template {id} from ci-management/jjb/comac-in-a-box-gerrit.yaml <br />
       Created by Jeremy Ronquillo, jeremyr@opennetworking.org <br />
       Copyright (c) 2020 Open Networking Foundation (ONF)
 
@@ -55,7 +55,7 @@
       - string:
           name: GERRIT_REFSPEC
           default: '$GERRIT_REFSPEC'
-          description: 'Gerrit ref to fetch.' 
+          description: 'Gerrit ref to fetch.'
       - string:
           name: gitUrl
           default: '{gerrit-server-url}/$GERRIT_PROJECT'
