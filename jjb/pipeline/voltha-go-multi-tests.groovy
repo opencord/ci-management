@@ -97,7 +97,6 @@ pipeline {
         sh '''
            set +e
            mkdir -p $WORKSPACE/RobotLogs
-           git clone https://gerrit.opencord.org/voltha-system-tests
 
            cd $HOME/kind-voltha/scripts
            ./log-collector.sh > /dev/null &
@@ -105,7 +104,7 @@ pipeline {
 
            for i in \$(seq 1 ${testRuns})
            do
-             make -C $WORKSPACE/voltha-system-tests ${makeTarget}
+             make -C $WORKSPACE/voltha/voltha-system-tests ${makeTarget}
              echo "Completed run: \$i"
              echo ""
            done

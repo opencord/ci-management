@@ -104,13 +104,12 @@ pipeline {
         sh '''
            set +e
            mkdir -p $WORKSPACE/RobotLogs
-           git clone https://gerrit.opencord.org/voltha-system-tests
 
            cd $HOME/kind-voltha/scripts
            ./log-collector.sh > /dev/null &
            ./log-combine.sh > /dev/null &
 
-           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
+           make -C $WORKSPACE/voltha/voltha-system-tests ${makeTarget} || true
            '''
       }
     }
