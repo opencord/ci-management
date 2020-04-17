@@ -40,6 +40,7 @@
     jobs:
       - 'omec-combined':
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
+          mme-repo: 'openmme'
       - 'omec-install':
           sub-project: '{name}'
           branch: 'central-cp-multi-upfs'
@@ -71,6 +72,7 @@
     jobs:
       - 'omec-combined':
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
+          mme-repo: 'openmme'
       - 'omec-install':
           sub-project: 'c3po-sgx'
           branch: 'master'
@@ -106,6 +108,7 @@
     jobs:
       - 'omec-combined':
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
+          mme-repo: 'openmme'
       - 'omec-install':
           sub-project: '{name}'
           branch: 'paging'
@@ -135,6 +138,13 @@
       - 'omec-project'
 
     jobs:
+      - 'omec-combined':
+          pipeline-file: 'Jenkinsfile-omec-combined.groovy'
+          mme-repo: 'Nucleus'
+      - 'omec-install':
+          sub-project: '{name}'
+          branch: 'master'
+          pipeline-file: 'Jenkinsfile-omec-install-Nucleus-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
           build-node: 'omec-qa'
@@ -243,6 +253,11 @@
           name: project
           default: '{project}'
           description: 'Name of the project'
+
+      - string:
+          name: mmeRepo
+          default: '{mme-repo}'
+          description: 'Name of the MME repo to test (openmme/Nucleus)'
 
     triggers:
       - cord-infra-github-pr-trigger:
@@ -422,6 +437,11 @@
           default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
 
+      - string:
+          name: mmeRepo
+          default: 'openmme'
+          description: 'Name of the MME repo to test (openmme/Nucleus)'
+
     concurrent: false
 
     pipeline-scm:
@@ -456,6 +476,11 @@
           name: buildNode
           default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: mmeRepo
+          default: 'openmme'
+          description: 'Name of the MME repo to test (openmme/Nucleus)'
 
     concurrent: false
 
