@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "24ce48e4_8b62fcac",
+        "filename": "jjb/pipeline/comac-in-a-box-github.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-17T19:16:13Z",
+      "side": 1,
+      "message": "Are you triggering the build of a docker image here?   Does this not happen through it\u0027s own trigger?",
+      "revId": "5a1e3a6dd85595dbc03049f9413414efc1bcd3b3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
