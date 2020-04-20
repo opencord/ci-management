@@ -5,10 +5,7 @@ pipeline {
     label "${params.buildNode}"
   }
   environment {
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
-    VOLTCONFIG="$HOME/.volt/config-minimal"
     SSHPASS="karaf"
-    DEPLOY_K8S="n"
   }
   stages {
     stage('set-description') {
