@@ -915,7 +915,7 @@
       - string:
           name: workFlow
           default: '{work-flow}'
-          description: 'Installs the specified work flow on the POD'
+          description: 'Installs and uses the specified work flow on the POD'
 
       - string:
           name: NumOfOpenOnu
@@ -1027,6 +1027,11 @@
           name: manifestBranch
           default: '{manifest-branch}'
           description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
+
+     - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Installs and uses the specified work flow on the POD'
 
       - bool:
           name: powerSwitch
