@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "66847e35_912485fe",
+        "filename": "jjb/pipeline/comac-in-a-box-gerrit.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-21T04:25:53Z",
+      "side": 1,
+      "message": "Why change outside of the Jenkins $WORKSPACE?",
+      "range": {
+        "startLine": 48,
+        "startChar": 10,
+        "endLine": 48,
+        "endChar": 19
+      },
+      "revId": "bc6125b7ca3adf7e65e940918b01d038258b8bd2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
