@@ -93,6 +93,25 @@ pipeline {
       }
     }
 
+    stage('Failure/Recovery Tests') {
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+        ROBOT_FILE="Voltha_FailureScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FailureScenarios"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        if ( ${powerSwitch} ); then
+             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -i PowerSwitch -e bbsim -e nonDt -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        else
+             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e PowerSwitch -e bbsim -e nonDt -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        fi
+        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        """
+      }
+    }
+
     stage('Error Scenario Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
