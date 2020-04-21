@@ -106,6 +106,7 @@ pipeline {
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
+    }
   }
   post {
     always {
