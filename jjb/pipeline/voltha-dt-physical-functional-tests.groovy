@@ -78,7 +78,7 @@ pipeline {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         ROBOT_FILE="Voltha_DT_PODTests.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FunctionalTests"
       }
       steps {
         sh """
@@ -92,6 +92,20 @@ pipeline {
         """
       }
     }
+
+    stage('Error Scenario Tests') {
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+        ROBOT_FILE="Voltha_ErrorScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/ErrorScenarios"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        """
+      }
   }
   post {
     always {
