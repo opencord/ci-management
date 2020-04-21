@@ -22,6 +22,30 @@
       "revId": "bc6125b7ca3adf7e65e940918b01d038258b8bd2",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "19a15f06_3dd20242",
+        "filename": "jjb/pipeline/comac-in-a-box-gerrit.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-04-21T17:02:13Z",
+      "side": 1,
+      "message": "This is so that both jobs share the same directories to run COMAC-in-a-box. The helm-charts repo is fresh cloned each time the job is run, so the jobs won\u0027t interfere with each other.",
+      "parentUuid": "66847e35_912485fe",
+      "range": {
+        "startLine": 48,
+        "startChar": 10,
+        "endLine": 48,
+        "endChar": 19
+      },
+      "revId": "bc6125b7ca3adf7e65e940918b01d038258b8bd2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
