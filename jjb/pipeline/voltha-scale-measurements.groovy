@@ -127,6 +127,9 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
 
+          # Always deactivate org.opencord.kafka
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.kafka
+
           #Check withOnosApps and disable apps accordingly
           if [ ${withOnosApps} = false ] ; then
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
@@ -228,14 +231,14 @@ pipeline {
               echo "ONOS Apps are not enabled, nothing to check"
             else
               # wait until all flows are in added state
-              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep PENDING | wc -l)
-              until [ $z -eq 0 ]
+              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep ADDED | wc -l)
+              until [ $z -eq ${expectedFlows} ]
               do
-                echo "${z} flows in PENDING state (time: $SECONDS)"
+                echo "${z} of ${expectedFlows} flows in ADDED state (time: $SECONDS)"
                 sleep ${pollInterval}
-                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep PENDING | wc -l)
+                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep ADDED | wc -l)
               done
-              echo "All flows correctly programmed (time: $SECONDS)"
+              echo "${expectedFlows} flows correctly programmed (time: $SECONDS)"
 
               echo $SECONDS > temp.txt
               paste onos-ports-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-flows-time-num.txt

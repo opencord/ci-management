@@ -111,6 +111,7 @@
           withOnosApps: true
           flowStatInterval: 5
           portsStatInterval: 5
+          expectedFlows: 201
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
@@ -159,6 +160,7 @@
     setLinkDiscovery: false
     flowStatInterval: 600
     portsStatInterval: 600
+    expectedFlows: 0 # by defualt ONOS apps are deactivated
 
     parameters:
       - string:
@@ -185,6 +187,11 @@
           name: expectedOnus
           default: '{expectedOnus}'
           description: 'Expected number of activated ONUs'
+
+      - string:
+          name: expectedFlows
+          default: '{expectedFlows}'
+          description: 'Expected number of flows in ONOS'
 
       - string:
           name: pollInterval
@@ -346,6 +353,7 @@
     setLinkDiscovery: false
     flowStatInterval: 600
     portsStatInterval: 600
+    expectedFlows: 17 # one EAPOL per ONU + 1 LLDP on the NNI
 
     parameters:
       - string:
@@ -373,6 +381,11 @@
           default: 1
           description: 'Expected number of activated ONUs'
 
+      - string:
+          name: expectedFlows
+          default: '{expectedFlows}'
+          description: 'Expected number of flows in ONOS'
+          
       - string:
           name: pollInterval
           default: 5
