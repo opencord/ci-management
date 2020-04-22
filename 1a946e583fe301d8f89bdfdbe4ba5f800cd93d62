@@ -22,6 +22,30 @@
       "revId": "1a946e583fe301d8f89bdfdbe4ba5f800cd93d62",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "82371d5d_48305cd6",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-04-22T19:30:15Z",
+      "side": 1,
+      "message": "It\u0027s a tricky thing as if you set them to a very long value (eg: 600) it will take forever for the flows to be acknowledge in ONOS, but that can be considered \"pilot error\"\n\nLet me move that out",
+      "parentUuid": "986b5153_90edf24e",
+      "range": {
+        "startLine": 133,
+        "startChar": 11,
+        "endLine": 134,
+        "endChar": 229
+      },
+      "revId": "1a946e583fe301d8f89bdfdbe4ba5f800cd93d62",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
