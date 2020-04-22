@@ -8,17 +8,17 @@ pipeline {
     SSHPASS="karaf"
   }
   stages {
-    stage('set-description') {
+    stage('Set build description') {
       steps {
         script {
           currentBuild.description = "$BUILD_TIMESTAMP"
         }
       }
     }
-    stage('cleanup') {
+    stage('Cleanup') {
       steps {
         sh '''
-          rm -rf voltha-devices-count.txt voltha-devices-time.txt onos-ports-count.txt onos-ports-time.txt onos-ports-list.txt voltha-devices-list.json onos-ports-time-num.txt voltha-devices-time-num.txt
+          rm -rf *.txt
           for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
           do
               echo "Purging chart: \${hchart}"
@@ -29,7 +29,7 @@ pipeline {
         '''
       }
     }
-    stage('start') {
+    stage('Start') {
       steps {
         sh '''
           #!/usr/bin/env bash
@@ -37,7 +37,7 @@ pipeline {
           '''
       }
     }
-    stage('deploy-voltha') {
+    stage('Deploy voltha') {
       options {
         timeout(time:10)
       }
@@ -48,6 +48,9 @@ pipeline {
           helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
 
           helm install -n radius onf/freeradius ${extraHelmFlags}
+
+          # Multi BBSim sadis server (to be migrated in ONF and included in the helm-chart)
+          # kubectl create -f https://raw.githubusercontent.com/ciena/bbsim-sadis-server/master/bbsim-sadis-server.yaml
 
           # NOTE wait for the infrastructure to be running before installing VOLTHA
           bash /home/cord/voltha-scale/wait_for_pods.sh
@@ -76,7 +79,7 @@ pipeline {
           '''
       }
     }
-    stage('wait for adapters to be registered') {
+    stage('Wait for Adapters to be registered in VOLTHA') {
       options {
         timeout(time:5)
       }
@@ -96,7 +99,7 @@ pipeline {
         }
       }
     }
-    stage('MIB-template') {
+    stage('Push MIB template to ETCD') {
       steps {
         sh '''
           if [ ${withMibTemplate} = true ] ; then
@@ -107,36 +110,56 @@ pipeline {
         '''
       }
     }
-    stage('disable-ONOS-apps') {
-      steps {
-        sh '''
-          #Check withOnosApps and disable apps accordingly
-          if [ ${withOnosApps} = false ] ; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.aaa
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
-          fi
-        '''
-      }
-    }
-    stage('configuration') {
+    stage('Configure ONOS and VOLTHA') {
       steps {
         sh '''
           #Setting LOG level to ${logLevel}
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel}
           kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log warn false
+
           #Setting link discovery
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${setLinkDiscovery}
-          #Setting the flow stats collection interval
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
-          #Setting the ports stats collection interval
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
+
           # extending voltctl timeout
           sed -i 's/timeout: 10s/timeout: 5m/g' /home/cord/.volt/config
+
+          #Setting the flow and ports stats collection interval
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
+
+          #Check withOnosApps and disable apps accordingly
+          if [ ${withOnosApps} = false ] ; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
+          else
+            curl --fail -sSL --user karaf:karaf -X POST -H Content-Type:application/json "http://127.0.0.1:30120/onos/v1/network/configuration/apps/org.opencord.sadis" --data '{
+              "sadis": {
+                  "integration": {
+                      "url": "http://bbsim-sadis-server.default.svc:58080/subscribers/%s",
+                      "cache": {
+                          "enabled": true,
+                          "maxsize": 50,
+                          "ttl": "PT1m"
+                      }
+                  }
+              },
+              "bandwidthprofile": {
+                  "integration": {
+                      "url": "http://bbsim-sadis-server.default.svc:58080/profiles/%s",
+                      "cache": {
+                          "enabled": true,
+                          "maxsize": 50,
+                          "ttl": "PT1m"
+                      }
+                  }
+              }
+            }'
+          fi
         '''
       }
     }
-    stage('execute') {
+    stage('Set timeout at 10 minutes') {
       options {
         timeout(time:10)
       }
@@ -151,7 +174,7 @@ pipeline {
             '''
           }
         }
-        stage('ONUs-enabled') {
+        stage('Wait for ONUs to be enabled') {
           steps {
             sh '''
               if [ -z ${expectedOnus} ]
@@ -169,11 +192,15 @@ pipeline {
                 i=$(voltctl device list | grep -v OLT | grep ACTIVE | wc -l)
               done
               echo "${expectedOnus} ONUs Activated in $SECONDS seconds (time: $SECONDS)"
+
               echo $SECONDS > voltha-devices-time-num.txt
+
+              echo "VOLTHA Duration(s)" > voltha-devices-time.txt
+              cat voltha-devices-time-num.txt >> voltha-devices-time.txt
             '''
           }
         }
-        stage('ONOS-ports') {
+        stage('Wait for ports to be discovered in ONOS') {
           steps {
             sh '''
               # Check ports showed up in ONOS
@@ -185,12 +212,37 @@ pipeline {
                 z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports -e | grep BBSM | wc -l)
               done
               echo "${expectedOnus} ports enabled in $SECONDS seconds (time: $SECONDS)"
+
               echo $SECONDS > temp.txt
               paste voltha-devices-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-ports-time-num.txt
-              echo "ONOS-Duration(s)" > onos-ports-time.txt
-              echo "VOLTHA-Duration(s)" > voltha-devices-time.txt
-              cat voltha-devices-time-num.txt >> voltha-devices-time.txt
+
+              echo "PORTs Duration(s)" > onos-ports-time.txt
               cat onos-ports-time-num.txt >> onos-ports-time.txt
+            '''
+          }
+        }
+        stage('Wait for flows to be programmed') {
+          steps {
+            sh '''
+            if [ ${withOnosApps} = false ] ; then
+              echo "ONOS Apps are not enabled, nothing to check"
+            else
+              # wait until all flows are in added state
+              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep PENDING | wc -l)
+              until [ $z -eq 0 ]
+              do
+                echo "${z} flows in PENDING state (time: $SECONDS)"
+                sleep ${pollInterval}
+                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep PENDING | wc -l)
+              done
+              echo "All flows correctly programmed (time: $SECONDS)"
+
+              echo $SECONDS > temp.txt
+              paste onos-ports-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-flows-time-num.txt
+
+              echo "FLOWs Duration(s)" > onos-flows-time.txt
+              cat onos-flows-time-num.txt >> onos-flows-time.txt
+            fi
             '''
           }
         }
@@ -201,33 +253,50 @@ pipeline {
     success {
       plot([
         csvFileName: 'plot-onu-activation.csv',
-        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-time.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-time.txt', inclusionFlag: 'OFF', url: '']],
-        group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
+        csvSeries: [
+          [displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-time.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-time.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-flows-time.txt', inclusionFlag: 'OFF', url: '']
+        ],
+        group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
       ])
     }
     always {
+      // count how many ONUs have been activated
       sh '''
-        echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) > onus.txt
         echo "#-of-ONUs" > voltha-devices-count.txt
-        cat onus.txt >> voltha-devices-count.txt
+        echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) >> voltha-devices-count.txt
       '''
+      // count how many ports have been discovered
       sh '''
-        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports -e | grep BBSM | wc -l) > ports.txt
         echo "#-of-ports" > onos-ports-count.txt
-        cat ports.txt >> onos-ports-count.txt
+        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports -e | grep BBSM | wc -l) >> onos-ports-count.txt
       '''
+      // count how many flows have been provisioned
+      sh '''
+        echo "#-of-flows" > onos-flows-count.txt
+        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep ADDED | wc -l) >> onos-flows-count.txt
+      '''
+      // check which containers were used in this build
       sh '''
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
       '''
+      // dump all the VOLTHA devices informations
       sh '''
         voltctl device list -o json > device-list.json
         python -m json.tool device-list.json > voltha-devices-list.json
       '''
+      // get ports and flows from ONOS
       sh '''
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports > onos-ports-list.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s > onos-flows-list.txt
+      '''
+      // collect the CPU usage
+      sh '''
         curl -s -X GET -G http://127.0.0.1:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod_name)' | jq . > cpu-usage.json
       '''
+      // get all the logs from kubernetes PODs
       sh '''
         kubectl get pods -o wide
         kubectl logs -l app=adapter-open-olt > open-olt-logs.txt
@@ -236,12 +305,17 @@ pipeline {
         kubectl logs -l app=ofagent > voltha-ofagent-logs.txt
         kubectl logs -l app=bbsim > bbsim-logs.txt
       '''
+      // cleanup of things we don't want to archive
       sh '''
-        rm -rf BBSM-12345123451234512345-00000000000001-v1.json device-list.json onus.txt ports.txt temp.txt
+        rm -rf BBSM-12345123451234512345-00000000000001-v1.json device-list.json temp.txt
       '''
+      // compile a plot of the activate informations
       plot([
         csvFileName: 'plot-numbers.csv',
-        csvSeries: [[displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-count.txt', inclusionFlag: 'OFF', url: ''], [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-count.txt', inclusionFlag: 'OFF', url: '']],
+        csvSeries: [
+          [displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-count.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-count.txt', inclusionFlag: 'OFF', url: '']
+        ],
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Activated ONUs and Recognized Ports", yaxis: 'Number of Ports/ONUs', useDescr: true
       ])
 
