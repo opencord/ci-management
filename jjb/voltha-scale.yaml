@@ -100,6 +100,15 @@
           numOfBbsim: 2
           expectedOnus: 200
           BBSIMdelay: 200
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-10-20-200ms-with-flows'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          onuPerPon: 20
+          ponPorts: 10
+          expectedOnus: 200
+          BBSIMdelay: 200
+          withOnosApps: true
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
@@ -144,6 +153,7 @@
     withMibTemplate: true
     numOfBbsim: 1
     numOfKafka: 3
+    withOnosApps: false
 
     parameters:
       - string:
@@ -178,7 +188,7 @@
 
       - bool:
           name: withOnosApps
-          default: false
+          default: '{withOnosApps}'
           description: 'Option to deactivate certain ONOS apps'
 
       - bool:
@@ -326,7 +336,8 @@
     extraHelmFlags: ''
     withMibTemplate: true
     numOfBbsim: 1
-    numOfKafka: 1
+    numOfKafka: 3
+    withOnosApps: true
 
     parameters:
       - string:
@@ -361,7 +372,7 @@
 
       - bool:
           name: withOnosApps
-          default: false
+          default: '{withOnosApps}'
           description: 'Option to deactivate certain ONOS apps'
 
       - bool:
