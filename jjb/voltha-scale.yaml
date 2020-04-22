@@ -100,6 +100,17 @@
           numOfBbsim: 2
           expectedOnus: 200
           BBSIMdelay: 200
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-10-20-200ms-with-flows'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          onuPerPon: 20
+          ponPorts: 10
+          expectedOnus: 200
+          BBSIMdelay: 200
+          withOnosApps: true
+          flowStatInterval: 5
+          portsStatInterval: 5
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
@@ -144,6 +155,10 @@
     withMibTemplate: true
     numOfBbsim: 1
     numOfKafka: 3
+    withOnosApps: false
+    setLinkDiscovery: false
+    flowStatInterval: 600
+    portsStatInterval: 600
 
     parameters:
       - string:
@@ -178,7 +193,7 @@
 
       - bool:
           name: withOnosApps
-          default: false
+          default: '{withOnosApps}'
           description: 'Option to deactivate certain ONOS apps'
 
       - bool:
@@ -188,7 +203,7 @@
 
       - bool:
           name: setLinkDiscovery
-          default: false
+          default: '{setLinkDiscovery}'
           description: 'Option to toggle Link Discovery'
 
       - string:
@@ -198,12 +213,12 @@
 
       - string:
           name: flowStatInterval
-          default: 600
+          default: '{flowStatInterval}'
           description: 'Flow Stats Collection Interval, milliseconds'
 
       - string:
           name: portsStatInterval
-          default: 600
+          default: {portsStatInterval}
           description: 'Ports Stats Collection Interval, milliseconds'
 
       - bool:
@@ -326,7 +341,11 @@
     extraHelmFlags: ''
     withMibTemplate: true
     numOfBbsim: 1
-    numOfKafka: 1
+    numOfKafka: 3
+    withOnosApps: true
+    setLinkDiscovery: false
+    flowStatInterval: 600
+    portsStatInterval: 600
 
     parameters:
       - string:
@@ -361,7 +380,7 @@
 
       - bool:
           name: withOnosApps
-          default: false
+          default: '{withOnosApps}'
           description: 'Option to deactivate certain ONOS apps'
 
       - bool:
@@ -371,7 +390,7 @@
 
       - bool:
           name: setLinkDiscovery
-          default: false
+          default: '{setLinkDiscovery}'
           description: 'Option to toggle Link Discovery'
 
       - string:
@@ -381,12 +400,12 @@
 
       - string:
           name: flowStatInterval
-          default: 600
+          default: '{flowStatInterval}'
           description: 'Flow Stats Collection Interval, milliseconds'
 
       - string:
           name: portsStatInterval
-          default: 600
+          default: {portsStatInterval}
           description: 'Ports Stats Collection Interval, milliseconds'
 
       - bool:
