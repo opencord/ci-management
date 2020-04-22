@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c52094f3_b755d2d3",
+        "filename": "jjb/pipeline/comac-in-a-box-github.groovy",
+        "patchSetId": 9
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2020-04-22T19:33:40Z",
+      "side": 1,
+      "message": "Maybe we should publish these unverified images to a local registry instead of docker hub. Also this might break the deploy-staging job which takes the \"latest\" image from docker hub and that could be a PR image. We should be able to just setup a local registry and point params.registry to that",
+      "range": {
+        "startLine": 61,
+        "startChar": 8,
+        "endLine": 61,
+        "endChar": 75
+      },
+      "revId": "cce41521833a76b9602755ae1374031858789f9c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
