@@ -127,6 +127,9 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${flowStatInterval}
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${portsStatInterval}
 
+          # Always deactivate org.opencord.kafka
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.kafka
+
           #Check withOnosApps and disable apps accordingly
           if [ ${withOnosApps} = false ] ; then
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
@@ -221,26 +224,65 @@ pipeline {
             '''
           }
         }
-        stage('Wait for flows to be programmed') {
+        stage('Wait for flows to be programmed in VOLTHA') {
+          steps {
+            sh '''
+            if [ ${withOnosApps} = false ] ; then
+              echo "ONOS Apps are not enabled, nothing to check"
+            else
+              function get_flows() {
+                local TOTAL
+                TOTAL=0
+
+                arr=("$@")
+                for id in "${arr[@]}"
+                do
+                  TOTAL=$((TOTAL + $(voltctl logicaldevice flows $id | grep -v ID | wc -l)))
+                done
+                echo $TOTAL
+              }
+
+              LOGICAL_DEVICE_IDS=$(voltctl logicaldevice list | grep BBSIM | awk '{print $1}')
+              IDS=($LOGICAL_DEVICE_IDS)
+
+              FLOWS=$(get_flows "${IDS[@]}")
+
+              until [ $FLOWS -eq ${expectedFlows} ]
+              do
+                echo "${FLOWS} of ${expectedFlows} flows programmed in VOLTHA (time: $SECONDS)"
+                sleep ${pollInterval}
+                FLOWS=$(get_flows "${IDS[@]}")
+              done
+              echo "${expectedFlows} flows correctly programmed (time: $SECONDS)"
+              echo $SECONDS > temp.txt
+              paste onos-ports-time-num.txt temp.txt | awk '{print ($1 + $2)}' > voltha-flows-time-num.txt
+
+              echo "VOLTHA FLOWs Duration(s)" > voltha-flows-time.txt
+              cat voltha-flows-time-num.txt >> voltha-flows-time.txt
+            fi
+            '''
+          }
+        }
+        stage('Wait for flows to be acknowledged in ONOS') {
           steps {
             sh '''
             if [ ${withOnosApps} = false ] ; then
               echo "ONOS Apps are not enabled, nothing to check"
             else
               # wait until all flows are in added state
-              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep PENDING | wc -l)
-              until [ $z -eq 0 ]
+              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep ADDED | wc -l)
+              until [ $z -eq ${expectedFlows} ]
               do
-                echo "${z} flows in PENDING state (time: $SECONDS)"
+                echo "${z} of ${expectedFlows} flows in ADDED state (time: $SECONDS)"
                 sleep ${pollInterval}
-                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep PENDING | wc -l)
+                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep ADDED | wc -l)
               done
-              echo "All flows correctly programmed (time: $SECONDS)"
+              echo "${expectedFlows} flows correctly acknowledged (time: $SECONDS)"
 
               echo $SECONDS > temp.txt
-              paste onos-ports-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-flows-time-num.txt
+              paste voltha-flows-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-flows-time-num.txt
 
-              echo "FLOWs Duration(s)" > onos-flows-time.txt
+              echo "ONOS FLOWs Duration(s)" > onos-flows-time.txt
               cat onos-flows-time-num.txt >> onos-flows-time.txt
             fi
             '''
@@ -256,6 +298,7 @@ pipeline {
         csvSeries: [
           [displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-time.txt', inclusionFlag: 'OFF', url: ''],
           [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-time.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'voltha-flows-time.txt', inclusionFlag: 'OFF', url: ''],
           [displayTableFlag: false, exclusionValues: '', file: 'onos-flows-time.txt', inclusionFlag: 'OFF', url: '']
         ],
         group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
