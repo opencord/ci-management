@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "986b5153_90edf24e",
+        "filename": "jjb/pipeline/voltha-scale-measurements.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-04-22T19:23:23Z",
+      "side": 1,
+      "message": "should we set these independently of withOnosApps ?",
+      "range": {
+        "startLine": 133,
+        "startChar": 11,
+        "endLine": 134,
+        "endChar": 229
+      },
+      "revId": "1a946e583fe301d8f89bdfdbe4ba5f800cd93d62",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
