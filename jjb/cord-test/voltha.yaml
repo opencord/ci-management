@@ -147,6 +147,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
+          power-switch: True
 
       # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -169,6 +170,7 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
+          power-switch: True
 
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -192,6 +194,7 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
+          power-switch: True
 
       # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
       - 'build_voltha_pod_release':
