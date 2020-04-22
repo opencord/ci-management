@@ -74,6 +74,8 @@ pipeline {
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
+        set +e
+
         voltctl loglevel list
         if [ \$? -ne 0 ]
         then
