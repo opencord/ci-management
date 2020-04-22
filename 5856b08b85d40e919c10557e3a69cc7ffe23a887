@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "67845884_11d7e61d",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-04-22T23:38:05Z",
+      "side": 1,
+      "message": "please remove this option for DT",
+      "range": {
+        "startLine": 226,
+        "startChar": 22,
+        "endLine": 226,
+        "endChar": 28
+      },
+      "revId": "5856b08b85d40e919c10557e3a69cc7ffe23a887",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
