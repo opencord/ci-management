@@ -144,6 +144,7 @@
     withMibTemplate: true
     numOfBbsim: 1
     numOfKafka: 3
+    withOnosApps: false
 
     parameters:
       - string:
@@ -178,7 +179,7 @@
 
       - bool:
           name: withOnosApps
-          default: false
+          default: '{withOnosApps}'
           description: 'Option to deactivate certain ONOS apps'
 
       - bool:
@@ -326,7 +327,8 @@
     extraHelmFlags: ''
     withMibTemplate: true
     numOfBbsim: 1
-    numOfKafka: 1
+    numOfKafka: 3
+    withOnosApps: true
 
     parameters:
       - string:
@@ -361,7 +363,7 @@
 
       - bool:
           name: withOnosApps
-          default: false
+          default: '{withOnosApps}'
           description: 'Option to deactivate certain ONOS apps'
 
       - bool:
