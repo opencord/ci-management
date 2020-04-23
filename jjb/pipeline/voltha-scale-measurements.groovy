@@ -347,6 +347,7 @@ pipeline {
         kubectl logs -l app=rw-core > voltha-rw-core-logs.txt
         kubectl logs -l app=ofagent > voltha-ofagent-logs.txt
         kubectl logs -l app=bbsim > bbsim-logs.txt
+        kubectl logs -l app=onos > onos-logs.txt
       '''
       // cleanup of things we don't want to archive
       sh '''
