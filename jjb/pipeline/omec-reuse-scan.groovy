@@ -55,19 +55,7 @@ pipeline {
                     cd $project
                     git checkout FETCH_HEAD
                     git show
-
-                    mkdir ../jenkins-license-scan
-                    modifiedFiles=$(git diff-tree --no-commit-id --name-only -r HEAD)
-                    if [ -n "$modifiedFiles" ]
-                    then
-                        cp --parents "$modifiedFiles" ../jenkins-license-scan
-                        cd ../jenkins-license-scan
-
-                        reuse download --all
-                        reuse lint
-                    else
-                        echo "There were no files to check. Skipping REUSE scan."
-                    fi
+                    reuse lint
                     '''
             }
         }
