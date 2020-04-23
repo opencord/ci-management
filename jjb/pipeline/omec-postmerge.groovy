@@ -76,11 +76,11 @@ pipeline {
           println "Quiet Period (seconds until next midnight): " + quietPeriodTime
         }
         build job: "omec-deploy-staging", parameters: [
-              string(name: 'hssdb_tag', value: "${hssdb_tag}"),
-              string(name: 'hss_tag', value: "${hss_tag}"),
-              string(name: 'mme_tag', value: "${mme_tag}"),
-              string(name: 'spgwc_tag', value: "${spgwc_tag}"),
-              string(name: 'spgwu_tag', value: "${spgwu_tag}"),
+              string(name: 'hssdb_tag', value: "${hssdb_tag.trim()}"),
+              string(name: 'hss_tag', value: "${hss_tag.trim()}"),
+              string(name: 'mme_tag', value: "${mme_tag.trim()}"),
+              string(name: 'spgwc_tag', value: "${spgwc_tag.trim()}"),
+              string(name: 'spgwu_tag', value: "${spgwu_tag.trim()}"),
             ], quietPeriod: quietPeriodTime
       }
     }
