@@ -43,7 +43,7 @@
           mme-repo: 'openmme'
       - 'omec-install':
           sub-project: '{name}'
-          branch: 'central-cp-multi-upfs'
+          branch: 'master'
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
