@@ -70,6 +70,27 @@ pipeline {
         curl -o $WORKSPACE/bin/voltctl -sSL https://github.com/opencord/voltctl/releases/download/v\${VC_VERSION}/voltctl-\${VC_VERSION}-\${HOSTOS}-\${HOSTARCH}
         chmod 755 $WORKSPACE/bin/voltctl
         voltctl version --clientonly
+
+        # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
+        # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
+        # We should change this. In the meantime here is a workaround.
+        set +e
+
+        voltctl loglevel list
+        if [ \$? -ne 0 ]
+        then
+          export KVSTORE="-e \$(kubectl -n voltha get svc voltha-etcd-cluster-client -o jsonpath='{.spec.clusterIP}:{.spec.ports[0].port}')"
+        else
+          export KVSTORE=""
+        fi
+
+        # Remove noise from voltha-core logs
+        voltctl \$KVSTORE loglevel set WARN read-write-core#github.com/opencord/voltha-go/db/model
+        voltctl \$KVSTORE loglevel set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+        # Remove noise from openolt logs
+        voltctl \$KVSTORE loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+        voltctl \$KVSTORE loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+        voltctl \$KVSTORE loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         """
       }
     }

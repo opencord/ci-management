@@ -223,6 +223,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          power-switch: True
 
 
       # Menlo pod with olt/onu - voltha-2.3  branch,  Default tech profile and timer based job
@@ -251,6 +252,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          power-switch: True
 
       # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile - Manual build and test job
       - 'build_pod_manual':
