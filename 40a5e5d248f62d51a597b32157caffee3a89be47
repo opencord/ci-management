@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5021ad20_54d00257",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000514
+      },
+      "writtenOn": "2020-04-24T07:52:29Z",
+      "side": 1,
+      "message": "File name: Voltha_DT_FailureScenarios.robot\nthis is as per the final decision to keep the Failure Scenarios separate for both ATT and DT workflows.\nAlso to merge this only after https://gerrit.opencord.org/#/c/18615/",
+      "range": {
+        "startLine": 99,
+        "startChar": 20,
+        "endLine": 99,
+        "endChar": 49
+      },
+      "revId": "40a5e5d248f62d51a597b32157caffee3a89be47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d1c9b117_9d412d4a",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000514
+      },
+      "writtenOn": "2020-04-24T07:52:29Z",
+      "side": 1,
+      "message": "functionalDt",
+      "range": {
+        "startLine": 108,
+        "startChar": 71,
+        "endLine": 108,
+        "endChar": 81
+      },
+      "revId": "40a5e5d248f62d51a597b32157caffee3a89be47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4ee7cdd8_a39b8034",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000514
+      },
+      "writtenOn": "2020-04-24T07:52:29Z",
+      "side": 1,
+      "message": "Not valid anymore",
+      "range": {
+        "startLine": 108,
+        "startChar": 106,
+        "endLine": 108,
+        "endChar": 114
+      },
+      "revId": "40a5e5d248f62d51a597b32157caffee3a89be47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "56c96977_125b1d0a",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000514
+      },
+      "writtenOn": "2020-04-24T07:52:29Z",
+      "side": 1,
+      "message": "Not required now",
+      "range": {
+        "startLine": 108,
+        "startChar": 176,
+        "endLine": 108,
+        "endChar": 206
+      },
+      "revId": "40a5e5d248f62d51a597b32157caffee3a89be47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d00e46f8_9f16cebe",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000514
+      },
+      "writtenOn": "2020-04-24T07:52:29Z",
+      "side": 1,
+      "message": "voltha-dt-test",
+      "range": {
+        "startLine": 110,
+        "startChar": 54,
+        "endLine": 110,
+        "endChar": 65
+      },
+      "revId": "40a5e5d248f62d51a597b32157caffee3a89be47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
