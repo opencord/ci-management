@@ -347,6 +347,16 @@
 
     parameters:
       - string:
+          name: ghprbPullId
+          default: '$ghprbPullId'
+          description: 'Pull request number to fetch changes from. Leave blank to run manually.'
+
+      - string:
+          name: branch
+          default: '$ghprbTargetBranch'
+          description: 'Branch to run. Only used when manually run.'
+
+      - string:
           name: buildNode
           default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
@@ -355,6 +365,11 @@
           name: project
           default: '{project}'
           description: 'Name of the project'
+
+      - string:
+          name: ghprbGhRepository
+          default: '{github-organization}/{project}'
+          description: 'Repository of the project.'
 
     triggers:
       - cord-infra-github-pr-trigger:
@@ -391,6 +406,16 @@
 
     parameters:
       - string:
+          name: ghprbPullId
+          default: '$ghprbPullId'
+          description: 'Pull request number to fetch changes from. Leave blank to run manually.'
+
+      - string:
+          name: branch
+          default: '$ghprbTargetBranch'
+          description: 'Branch to run. Only used when manually run.'
+
+      - string:
           name: buildNode
           default: '{build-node}'
           description: 'Name of the Jenkins executor node to run the job on'
@@ -399,6 +424,11 @@
           name: project
           default: '{project}'
           description: 'Name of the project'
+
+      - string:
+          name: ghprbGhRepository
+          default: '{github-organization}/{project}'
+          description: 'Repository of the project.'
 
     triggers:
       - cord-infra-github-pr-trigger:

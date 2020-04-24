@@ -37,10 +37,27 @@ pipeline {
         }
 
         stage ("Checkout Pull Request") {
+            when {
+                expression {return params.ghprbPullId != ""}
+            }
             steps {
                 checkout([
                     $class: 'GitSCM',
                     userRemoteConfigs: [[ url: "https://github.com/${params.ghprbGhRepository}", refspec: "pull/${params.ghprbPullId}/head" ]],
+                    extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.project}"]],
+                    ],
+                )
+            }
+        }
+
+        stage ("Checkout Repo (manual)") {
+            when {
+                expression {return params.ghprbPullId == ""}
+            }
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    userRemoteConfigs: [[ url: "https://github.com/${params.ghprbGhRepository}" ]],
                     extensions: [[$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.project}"]],
                     ],
                 )
@@ -54,7 +71,12 @@ pipeline {
                         #!/usr/bin/env bash
 
                         cd ${params.project}
-                        git checkout FETCH_HEAD
+                        if [ ! -Z ${params.ghprbPullId} ]
+                        then
+                          git checkout FETCH_HEAD
+                        else
+                          git checkout ${params.branch}
+                        fi
                         git show
 
                         echo "Testing project: ${params.project}"
