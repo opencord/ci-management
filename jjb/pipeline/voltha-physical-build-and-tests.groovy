@@ -208,13 +208,15 @@ pipeline {
           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
           ./voltha up
 
+          set +e
+
           # Remove noise from voltha-core logs
-          voltctl loglevel set WARN read-write-core#github.com/opencord/voltha-go/db/model
-          voltctl loglevel set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+          voltctl log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
+          voltctl log level set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
           # Remove noise from openolt logs
-          voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
-          voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
-          voltctl loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
           """
         }
       }
