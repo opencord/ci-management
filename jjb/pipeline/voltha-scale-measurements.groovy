@@ -288,6 +288,83 @@ pipeline {
             '''
           }
         }
+        stage('Wait for subscribers to authenticate') {
+          steps {
+            sh '''
+            if [ ${withOnosApps} = false ] ; then
+              echo "ONOS Apps are not enabled, nothing to check"
+            elif [ ${bbsimAuth} = false ] ; then
+              echo "Authentication is disabled, nothing to check"
+            else
+              # wait until all subscribers authenticate
+              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 aaa-users | grep AUTHORIZED_STATE | wc -l)
+              until [ $z -eq ${expectedOnus} ]
+              do
+                echo "${z} of ${expectedOnus} subscribers in AUTHORIZED_STATE state (time: $SECONDS)"
+                sleep ${pollInterval}
+                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 aaa-users | grep AUTHORIZED_STATE | wc -l)
+              done
+              echo "${expectedOnus} subscribers in AUTHORIZED_STATE (time: $SECONDS)"
+
+              echo $SECONDS > temp.txt
+              paste onos-flows-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-auth-time-num.txt
+
+              echo "ONOS Authentication Duration(s)" > onos-auth-time.txt
+              cat onos-auth-time-num.txt >> onos-auth-time.txt
+            fi
+            '''
+          }
+        }
+        stage('Provision subscribers') {
+          steps {
+            sh '''
+            if [ ${withOnosApps} = false ] ; then
+              echo "ONOS Apps are not enabled, nothing to do"
+            elif [ ${bbsimAuth} = false ] ; then
+              echo "Authentication is disabled, nothing to do"
+            else
+              # provision all authenticated subscribers
+              subs=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 aaa-users | grep AUTHORIZED_STATE | grep -o -E "of:[a-z0-9]+/[0-9]+")
+              echo $subs
+              subs=($subs)
+
+              for s in "${subs[@]}"
+              do
+                IFS=/ read -r device port <<< $s
+                echo -e "\n Authenticating subscriber on device $device and port $port "
+                sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 volt-add-subscriber-access $device $port
+              done
+            fi
+            '''
+          }
+        }
+        stage('Wait for subscribers to DHCP') {
+          steps {
+            sh '''
+            if [ ${withOnosApps} = false ] ; then
+              echo "ONOS Apps are not enabled, nothing to check"
+            elif [ ${bbsimDhcp} = false ] ; then
+              echo "DHCP is disabled, nothing to check"
+            else
+              # wait until all subscribers DHCP
+              z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 dhcpl2relay-allocations | grep DHCPACK | wc -l)
+              until [ $z -eq ${expectedOnus} ]
+              do
+                echo "${z} of ${expectedOnus} subscribers received DHCPACK (time: $SECONDS)"
+                sleep ${pollInterval}
+                z=$(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 dhcpl2relay-allocations | grep DHCPACK | wc -l)
+              done
+              echo "${expectedOnus} subscribers received DHCPACK (time: $SECONDS)"
+
+              echo $SECONDS > temp.txt
+              paste onos-auth-time-num.txt temp.txt | awk '{print ($1 + $2)}' > onos-dhcp-time-num.txt
+
+              echo "ONOS DHCP Duration(s)" > onos-dhcp-time.txt
+              cat onos-dhcp-time-num.txt >> onos-dhcp-time.txt
+            fi
+            '''
+          }
+        }
       }
     }
   }
@@ -300,6 +377,8 @@ pipeline {
           [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-time.txt', inclusionFlag: 'OFF', url: ''],
           [displayTableFlag: false, exclusionValues: '', file: 'voltha-flows-time.txt', inclusionFlag: 'OFF', url: ''],
           [displayTableFlag: false, exclusionValues: '', file: 'onos-flows-time.txt', inclusionFlag: 'OFF', url: '']
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-auth-time.txt', inclusionFlag: 'OFF', url: '']
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-dhcp-time.txt', inclusionFlag: 'OFF', url: '']
         ],
         group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
       ])
@@ -319,6 +398,18 @@ pipeline {
       sh '''
         echo "#-of-flows" > onos-flows-count.txt
         echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep ADDED | wc -l) >> onos-flows-count.txt
+      '''
+      // dump the authenticated users
+      sh '''
+        if [ ${withOnosApps} = true ] && [ ${bbsimAuth} ] ; then
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 aaa-users) >> onos-aaa-users.txt
+        fi
+      '''
+      // dump the dhcp users
+      sh '''
+        if [ ${withOnosApps} = true ] && [ ${bbsimAuth} ] ; then
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 dhcpl2relay-allocations) >> onos-dhcp-allocations.txt
+        fi
       '''
       // check which containers were used in this build
       sh '''

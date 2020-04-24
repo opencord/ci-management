@@ -112,6 +112,20 @@
           flowStatInterval: 5
           portsStatInterval: 5
           expectedFlows: 201
+          bbsimAuth: false
+          bbsimDhcp: false
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-10-20-200ms-complete'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          onuPerPon: 16
+          ponPorts: 4
+          expectedOnus: 64
+          BBSIMdelay: 200
+          withOnosApps: true
+          flowStatInterval: 5
+          portsStatInterval: 5
+          expectedFlows: 65
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
@@ -161,6 +175,8 @@
     flowStatInterval: 600
     portsStatInterval: 600
     expectedFlows: 0 # by defualt ONOS apps are deactivated
+    bbsimAuth: true
+    bbsimDhcp: true
 
     parameters:
       - string:
@@ -230,12 +246,12 @@
 
       - bool:
           name: bbsimAuth
-          default: true
+          default: '{bbsimAuth}'
           description: 'Option to toggle BBSIM EAPOL true/false'
 
       - bool:
           name: bbsimDhcp
-          default: true
+          default: '{bbsimDhcp}'
           description: 'Option to toggle BBSIM DHCP true/false'
 
       - string:
@@ -354,6 +370,8 @@
     flowStatInterval: 600
     portsStatInterval: 600
     expectedFlows: 17 # one EAPOL per ONU + 1 LLDP on the NNI
+    bbsimAuth: true
+    bbsimDhcp: true
 
     parameters:
       - string:
@@ -423,12 +441,12 @@
 
       - bool:
           name: bbsimAuth
-          default: true
+          default: '{bbsimAuth}'
           description: 'Option to toggle BBSIM EAPOL true/false'
 
       - bool:
           name: bbsimDhcp
-          default: true
+          default: '{bbsimDhcp}'
           description: 'Option to toggle BBSIM DHCP true/false'
 
       - string:
