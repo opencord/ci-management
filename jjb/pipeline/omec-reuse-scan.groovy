@@ -70,7 +70,7 @@ pipeline {
                     #!/usr/bin/env bash
 
                     cd ${params.project}
-                    if [ ! -Z ${params.ghprbPullId} ]
+                    if [ ! -z ${params.ghprbPullId} ]
                     then
                       git checkout FETCH_HEAD
                     else
