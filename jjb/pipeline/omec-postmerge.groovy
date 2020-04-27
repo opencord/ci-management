@@ -35,13 +35,17 @@ pipeline {
       steps {
         script {
           abbreviated_commit_hash = commitHash.substring(0, 7)
+          tags_to_build = [ "latest",
+                            "${branchName}-${abbreviated_commit_hash}"]
+          tags_to_build.each { tag ->
+            build job: "docker-publish-github_$repoName", parameters: [
+                  string(name: 'gitUrl', value: "${repoUrl}"),
+                  string(name: 'gitRef', value: "${branchName}"),
+                  string(name: 'branchName', value: "${tag}"),
+                  string(name: 'projectName', value: "${repoName}"),
+                ]
+          }
         }
-        build job: "docker-publish-github_$repoName", parameters: [
-              string(name: 'gitUrl', value: "${repoUrl}"),
-              string(name: 'gitRef', value: "${branchName}"),
-              string(name: 'branchName', value: "${branchName}-${abbreviated_commit_hash}"),
-              string(name: 'projectName', value: "${repoName}"),
-            ]
       }
     }
 
