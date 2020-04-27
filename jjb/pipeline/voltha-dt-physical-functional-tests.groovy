@@ -76,7 +76,7 @@ pipeline {
         # We should change this. In the meantime here is a workaround.
         set +e
 
-        voltctl loglevel list
+        voltctl log level list
         if [ \$? -ne 0 ]
         then
           export KVSTORE="-e \$(kubectl -n voltha get svc voltha-etcd-cluster-client -o jsonpath='{.spec.clusterIP}:{.spec.ports[0].port}')"
@@ -85,12 +85,12 @@ pipeline {
         fi
 
         # Remove noise from voltha-core logs
-        voltctl \$KVSTORE loglevel set WARN read-write-core#github.com/opencord/voltha-go/db/model
-        voltctl \$KVSTORE loglevel set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+        voltctl \$KVSTORE log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
+        voltctl \$KVSTORE log level set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         # Remove noise from openolt logs
-        voltctl \$KVSTORE loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
-        voltctl \$KVSTORE loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
-        voltctl \$KVSTORE loglevel set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+        voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+        voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+        voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         """
       }
     }
