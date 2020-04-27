@@ -136,6 +136,7 @@ pipeline {
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.aaa
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
           else
+            # config SADIS
             curl --fail -sSL --user karaf:karaf -X POST -H Content-Type:application/json "http://127.0.0.1:30120/onos/v1/network/configuration/apps/org.opencord.sadis" --data '{
               "sadis": {
                   "integration": {
@@ -156,6 +157,23 @@ pipeline {
                           "ttl": "PT1m"
                       }
                   }
+              }
+            }'
+
+            # config AAA
+            curl --fail -sSL --user karaf:karaf -X POST -H Content-Type:application/json "http://127.0.0.1:30120/onos/v1/network/configuration/apps/org.opencord.aaa" --data '{
+              "AAA": {
+                "radiusConnectionType" : "socket",
+                "radiusHost": "radius.default.svc.cluster.local",
+                "radiusServerPort": "1812",
+                "radiusSecret": "SECRET"
+              }
+            }'
+
+            # config DHCP
+            curl --fail -sSL --user karaf:karaf -X POST -H Content-Type:application/json "http://127.0.0.1:30120/onos/v1/network/configuration/apps/org.opencord.aaa" --data '{
+              "dhcpl2relay" : {
+                "useOltUplinkForServerPktInOut": true
               }
             }'
           fi

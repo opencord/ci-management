@@ -84,13 +84,17 @@
           expectedOnus: 64
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-1-1-200ms'
+          name: 'voltha-scale-measurements-periodic-1-1-200ms-complete'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           onuPerPon: 1
           ponPorts: 1
           expectedOnus: 1
           BBSIMdelay: 200
+          withOnosApps: true
+          flowStatInterval: 5
+          portsStatInterval: 5
+          expectedFlows: 2
       - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-2-OLTs-10-10-200ms'
           build-node: 'onf-pod1-head-node'
@@ -115,7 +119,7 @@
           bbsimAuth: false
           bbsimDhcp: false
       - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-10-20-200ms-complete'
+          name: 'voltha-scale-measurements-periodic-4-16-200ms-complete'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           onuPerPon: 16
