@@ -376,9 +376,9 @@ pipeline {
           [displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-time.txt', inclusionFlag: 'OFF', url: ''],
           [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-time.txt', inclusionFlag: 'OFF', url: ''],
           [displayTableFlag: false, exclusionValues: '', file: 'voltha-flows-time.txt', inclusionFlag: 'OFF', url: ''],
-          [displayTableFlag: false, exclusionValues: '', file: 'onos-flows-time.txt', inclusionFlag: 'OFF', url: '']
-          [displayTableFlag: false, exclusionValues: '', file: 'onos-auth-time.txt', inclusionFlag: 'OFF', url: '']
-          [displayTableFlag: false, exclusionValues: '', file: 'onos-dhcp-time.txt', inclusionFlag: 'OFF', url: '']
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-flows-time.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-auth-time.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-dhcp-time.txt', inclusionFlag: 'OFF', url: ''],
         ],
         group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Time (${BBSIMdelay}s Delay)", yaxis: 'Time (s)', useDescr: true
       ])
