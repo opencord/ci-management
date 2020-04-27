@@ -421,6 +421,10 @@ pipeline {
         voltctl device list -o json > device-list.json
         python -m json.tool device-list.json > voltha-devices-list.json
       '''
+      // dump all the BBSim ONU informations
+      sh '''
+      kubectl exec -t $(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}') bbsimctl onu list > bbsim-device-list.txt
+      '''
       // get ports and flows from ONOS
       sh '''
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 ports > onos-ports-list.txt
