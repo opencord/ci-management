@@ -1,0 +1,58 @@
+# FOSSA License Scan
+- job-template:
+    id: 'omec-fossa'
+    name: 'omec_{project}_fossa'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: ghprbPullId
+          default: '$ghprbPullId'
+          description: 'Pull request number to fetch changes from. Leave blank to run manually.'
+
+      - string:
+          name: branch
+          default: '$ghprbTargetBranch'
+          description: 'Branch to run. Only used when manually run.'
+
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+      - string:
+          name: ghprbGhRepository
+          default: '{github-organization}/{project}'
+          description: 'Repository of the project.'
+
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - FOSSA Verification'
+
+    concurrent: false
+
+    project-type: pipeline
+    dsl: !include-raw-escape: pipeline/{pipeline-file}

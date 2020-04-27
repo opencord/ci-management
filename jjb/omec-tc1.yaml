@@ -1,0 +1,40 @@
+# tests
+- job-template:
+    id: 'omec-tc1'
+    name: 'omec_tc1'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: mmeRepo
+          default: 'openmme'
+          description: 'Name of the MME repo to test (openmme/Nucleus)'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-test-TC1.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/omec-project/omec-project-ci'
+            branches:
+              - 'master'

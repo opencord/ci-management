@@ -1,0 +1,48 @@
+# install jobs, run for each project
+- job-template:
+    id: 'omec-install'
+    name: 'omec_{sub-project}_install'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+      - string:
+          name: branch
+          default: '{branch}'
+          description: 'Branch of the project'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: '{pipeline-file}'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
+              

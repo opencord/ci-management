@@ -1,0 +1,57 @@
+# Combined pipeline
+- job-template:
+    id: 'omec-combined'
+    name: 'omec_{project}_combined'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+      - build-blocker:
+          use-build-blocker: true
+          blocking-jobs:
+            - "omec_.*_combined"
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+      - string:
+          name: mmeRepo
+          default: '{mme-repo}'
+          description: 'Name of the MME repo to test (openmme/Nucleus)'
+
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - Combined Steps Verification'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: '{pipeline-file}'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'

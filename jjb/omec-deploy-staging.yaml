@@ -1,0 +1,63 @@
+# Deploy staging
+- job-template:
+    id: 'omec-deploy-staging'
+    name: 'omec-deploy-staging'
+    project-type: pipeline
+
+    description: |
+      Automated build on AMI executor using pipeline/omec-deploy-staging.groovy. <br /><br />
+      Created from job-template {id} from ci-management/jjb/charts.yaml <br />
+      Created by Jeremy Ronquillo - jeremyr@opennetworking.org <br />
+      Copyright (c) 2020 Open Networking Foundation (ONF)
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: 'omec-staging'
+          description: 'Name of the Jenkins executor node to run the job on.'
+      - bool:
+          name: useProductionCluster
+          default: false
+          description: 'Check this option to use the production cluster instead of the staging cluster. <b>Use with caution.</b>'
+      - string:
+          name: registry
+          default: 'omecproject'
+          description: 'Registry for all images that will be changed.'
+      - string:
+          name: hssdb_tag
+          default: ''
+          description: 'Tag for hssdb. Leave hssdb tag blank to omit changing.'
+      - string:
+          name: hss_tag
+          default: ''
+          description: 'Tag for hss. Leave hss tag blank to omit changing.'
+      - string:
+          name: mme_tag
+          default: ''
+          description: 'Tag for mme. Leave mme tag blank to omit changing.'
+      - string:
+          name: mmeExporter_tag
+          default: ''
+          description: 'Tag for mmeExporter. Leave mmeExporter tag blank to omit changing.'
+      - string:
+          name: spgwc_tag
+          default: ''
+          description: 'Tag for spgwc. Leave spgwc tag blank to omit changing.'
+      - string:
+          name: spgwu_tag
+          default: ''
+          description: 'Tag for spgwu. Leave spgwu tag blank to omit changing.'
+
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/omec-deploy-staging.groovy
