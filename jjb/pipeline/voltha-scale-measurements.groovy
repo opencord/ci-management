@@ -417,16 +417,22 @@ pipeline {
         echo "#-of-flows" > onos-flows-count.txt
         echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 flows -s | grep ADDED | wc -l) >> onos-flows-count.txt
       '''
-      // dump the authenticated users
+      // dump and count the authenticated users
       sh '''
         if [ ${withOnosApps} = true ] && [ ${bbsimAuth} ] ; then
           echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 aaa-users) >> onos-aaa-users.txt
+
+          echo "#-of-authenticated-users" > onos-aaa-count.txt
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 aaa-users | grep AUTHORIZED_STATE | wc -l) >> onos-aaa-count.txt
         fi
       '''
-      // dump the dhcp users
+      // dump and count the dhcp users
       sh '''
-        if [ ${withOnosApps} = true ] && [ ${bbsimAuth} ] ; then
+        if [ ${withOnosApps} = true ] && [ ${bbsimDhcp} ] ; then
           echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 dhcpl2relay-allocations) >> onos-dhcp-allocations.txt
+
+          echo "#-of-dhcp-allocations" > onos-dhcp-count.txt
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 dhcpl2relay-allocations | grep DHCPACK | wc -l) >> onos-dhcp-count.txt
         fi
       '''
       // check which containers were used in this build
@@ -439,9 +445,15 @@ pipeline {
         voltctl device list -o json > device-list.json
         python -m json.tool device-list.json > voltha-devices-list.json
       '''
-      // dump all the BBSim ONU informations
+      // dump all the BBSim(s) ONU informations
       sh '''
-      kubectl exec -t $(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}') bbsimctl onu list > bbsim-device-list.txt
+      BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
+      IDS=($BBSIM_IDS)
+
+      for bbsim in "${IDS[@]}"
+      do
+        kubectl exec -t $bbsim bbsimctl onu list > $bbsim-device-list.txt
+      done
       '''
       // get ports and flows from ONOS
       sh '''
@@ -471,7 +483,10 @@ pipeline {
         csvFileName: 'plot-numbers.csv',
         csvSeries: [
           [displayTableFlag: false, exclusionValues: '', file: 'voltha-devices-count.txt', inclusionFlag: 'OFF', url: ''],
-          [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-count.txt', inclusionFlag: 'OFF', url: '']
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-ports-count.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-flows-count.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-aaa-count.txt', inclusionFlag: 'OFF', url: ''],
+          [displayTableFlag: false, exclusionValues: '', file: 'onos-dhcp-count.txt', inclusionFlag: 'OFF', url: ''],
         ],
         group: 'Voltha-Scale-Numbers', numBuilds: '100', style: 'line', title: "Activated ONUs and Recognized Ports", yaxis: 'Number of Ports/ONUs', useDescr: true
       ])
