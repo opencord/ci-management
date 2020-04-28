@@ -66,11 +66,26 @@ pipeline {
 
     stage ("Run COMAC-in-a-box"){
       steps {
-        sh label: 'Run Makefile', script: """
-          cd $HOME/automation-tools/comac-in-a-box/
-          sudo make reset-test
-          sudo make test
-          """
+        script{
+          try{
+            sh label: 'Run Makefile', script: """
+              cd $HOME/automation-tools/comac-in-a-box/
+              sudo make reset-test
+              sudo make test
+              """
+          } finally {
+            sh label: 'Archive Logs', script: '''
+              mkdir logs
+              mkdir logs/pods
+              kubectl get pods -n omec > logs/kubectl_get_pods_omec.log
+              for pod in $(kubectl get pods -n omec | awk '{print $1}' | tail -n +2)
+              do
+                kubectl logs -n omec $pod --all-containers > logs/pods/$pod.log || true
+              done
+            '''
+            archiveArtifacts artifacts: "logs/**/*.log", allowEmptyArchive: true
+          }
+        }
       }
     }
   }
