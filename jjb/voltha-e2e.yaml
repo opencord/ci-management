@@ -176,6 +176,7 @@
     robot-args: ''
     gerrit-project: ''
     work-flow: ''
+    sandbox: true
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -262,6 +263,7 @@
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
     override-branch: '$GERRIT_BRANCH'
+    sandbox: true
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
