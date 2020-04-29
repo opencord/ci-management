@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2212057b_78ce3092",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-04-29T21:03:49Z",
+      "side": 1,
+      "message": "which namespace would `open-onu` be dployed?\ndefault or voltha ?",
+      "revId": "fd27bfeb825abe34bc7c17887820dca41552328a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
