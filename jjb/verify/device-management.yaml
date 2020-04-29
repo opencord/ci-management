@@ -19,6 +19,8 @@
           dependency-jobs: 'verify_device-management_licensed'
       - 'make-unit-test':
           junit-allow-empty-results: true
+      - 'device-management-patch-test-test':
+          pipeline-script: 'device-management-mock-tests.groovy'
 
 - job-group:
     name: 'publish-device-management-jobs'
