@@ -72,7 +72,13 @@
           default: '{maintainers}'
           description: "The person that sould be notified if this job fails"
 
+      - string:
+          name: extraEnvironmentVars
+          default: '{extraEnvironmentVars}'
+          description: "Provide extra environment variables to the build"
+
     project-type: pipeline
     concurrent: true
+    extraEnvironmentVars: ""
 
     dsl: !include-raw-escape: pipeline/docker-publish.groovy

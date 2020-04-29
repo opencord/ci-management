@@ -54,7 +54,7 @@ pipeline {
 
           # Build w/branch
           echo "Building image with branch"
-          make DOCKER_TAG="$branchName" docker-build 2>&1 | tee "$WORKSPACE/docker-build.log"
+          $extraEnvironmentVars DOCKER_TAG="$branchName" make docker-build 2>&1 | tee "$WORKSPACE/docker-build.log"
 
           # Build w/tags if they exist
           if [ -n "$git_tags" ]
@@ -67,7 +67,7 @@ pipeline {
               # remove leading 'v' on funky golang tags
               clean_tag=\$(echo \$tag | sed 's/^v//g')
               echo "Building image with tag: \$clean_tag (should reuse cached layers)"
-              make DOCKER_TAG="\$clean_tag" docker-build
+              $extraEnvironmentVars DOCKER_TAG="\$clean_tag" make docker-build
             done
           fi
         """)
@@ -91,7 +91,7 @@ pipeline {
 
               # Push w/branch
               echo "Pushing image with branch"
-              make DOCKER_TAG="$branchName" docker-push 2>&1 | tee "$WORKSPACE/docker-push.log"
+              $extraEnvironmentVars DOCKER_TAG="$branchName" make docker-push 2>&1 | tee "$WORKSPACE/docker-push.log"
 
               # Push w/tags if they exist
               if [ -n "$git_tags" ]
@@ -103,7 +103,7 @@ pipeline {
                   # remove leading 'v' on funky golang tags
                   clean_tag=\$(echo \$tag | sed 's/^v//g')
                   echo "Pushing image with tag: \$clean_tag (should reuse cached layers)"
-                  make DOCKER_TAG="\$clean_tag" docker-push
+                  $extraEnvironmentVars DOCKER_TAG="\$clean_tag" make docker-push
                 done
               fi
             """)
