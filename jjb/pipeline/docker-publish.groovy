@@ -54,7 +54,12 @@ pipeline {
 
           # Build w/branch
           echo "Building image with branch"
-          make DOCKER_TAG="$branchName" docker-build 2>&1 | tee "$WORKSPACE/docker-build.log"
+          DOCKER_TAG="$branchName" make docker-build 2>&1 | tee "$WORKSPACE/docker-build.log"
+          if [$buildProfiled=true]
+          then
+            DOCKER_BUILD_ARGS='--build-arg EXTRA_GO_BUILD_TAGS="-tags profile"' DOCKER_TAG="$branchName-profile" make docker-build 2>&1 | tee "$WORKSPACE/docker-build-profile.log"
+          fi
+
 
           # Build w/tags if they exist
           if [ -n "$git_tags" ]
@@ -67,7 +72,11 @@ pipeline {
               # remove leading 'v' on funky golang tags
               clean_tag=\$(echo \$tag | sed 's/^v//g')
               echo "Building image with tag: \$clean_tag (should reuse cached layers)"
-              make DOCKER_TAG="\$clean_tag" docker-build
+              DOCKER_TAG="\$clean_tag" make docker-build
+              if [$buildProfiled=true]
+              then
+                DOCKER_BUILD_ARGS='--build-arg EXTRA_GO_BUILD_TAGS="-tags profile"' DOCKER_TAG="\$clean_tag-profile" make docker-build
+              fi
             done
           fi
         """)
@@ -91,7 +100,11 @@ pipeline {
 
               # Push w/branch
               echo "Pushing image with branch"
-              make DOCKER_TAG="$branchName" docker-push 2>&1 | tee "$WORKSPACE/docker-push.log"
+              DOCKER_TAG="$branchName" make docker-push 2>&1 | tee "$WORKSPACE/docker-push.log"
+              if [$buildProfiled=true]
+              then
+                DOCKER_BUILD_ARGS='--build-arg EXTRA_GO_BUILD_TAGS="-tags profile"' DOCKER_TAG="$branchName-profile" make docker-push 2>&1 | tee "$WORKSPACE/docker-push-profile.log"
+              fi
 
               # Push w/tags if they exist
               if [ -n "$git_tags" ]
@@ -103,7 +116,11 @@ pipeline {
                   # remove leading 'v' on funky golang tags
                   clean_tag=\$(echo \$tag | sed 's/^v//g')
                   echo "Pushing image with tag: \$clean_tag (should reuse cached layers)"
-                  make DOCKER_TAG="\$clean_tag" docker-push
+                  DOCKER_TAG="\$clean_tag" make docker-push
+                  if [$buildProfiled=true]
+                  then
+                    DOCKER_BUILD_ARGS='--build-arg EXTRA_GO_BUILD_TAGS="-tags profile"' DOCKER_TAG="\$clean_tag-profile" make docker-push
+                  fi
                 done
               fi
             """)

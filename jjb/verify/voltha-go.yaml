@@ -41,3 +41,4 @@
           build-timeout: 30
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag'
+          buildProfiled: true
