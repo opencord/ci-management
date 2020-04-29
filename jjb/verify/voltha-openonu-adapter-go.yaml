@@ -17,9 +17,8 @@
       - 'verify-licensed'
       - 'tag-collision-reject'
       - 'make-unit-test'
-# Add this job later when working with kind-voltha and bbsim
-#     - 'voltha-patch-test':
-#         pipeline-script: 'voltha-bbsim-tests.groovy'
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-openonu-go-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-openonu-adapter-go-jobs'
