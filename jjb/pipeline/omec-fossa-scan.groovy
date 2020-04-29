@@ -81,6 +81,12 @@ pipeline {
 
                         echo "Testing project: ${params.project}"
 
+                        if [ ! -f ".fossa.yml" ]
+                        then
+                          echo ".fossa.yml not found. This file is mandatory for the test to proceed."
+                          exit 1
+                        fi
+
                         echo "Run 'fossa init'"
                         fossa init --no-ansi --verbose
 
