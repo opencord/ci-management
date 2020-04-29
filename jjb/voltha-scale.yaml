@@ -136,7 +136,7 @@
           time-trigger: "H H/4 * * *"
           onuPerPon: 20
           ponPorts: 10
-          expectedOnus: 64
+          expectedOnus: 200
           BBSIMdelay: 200
           withOnosApps: true
           flowStatInterval: 5
