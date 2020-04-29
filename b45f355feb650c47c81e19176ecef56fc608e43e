@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ebecfa8b_b8cf07a1",
+        "filename": "jjb/docker-publish.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-29T23:05:09Z",
+      "side": 1,
+      "message": "This seems very specific, and we may want it to be more generic in the future. \n\nCould this be a text field that contains the environmental variables to set?  Then those would be used in the Makefile to change behavior.",
+      "range": {
+        "startLine": 82,
+        "startChar": 3,
+        "endLine": 82,
+        "endChar": 24
+      },
+      "revId": "b45f355feb650c47c81e19176ecef56fc608e43e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5a0fc54b_ab06a4cd",
+        "filename": "jjb/pipeline/docker-publish.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-04-29T23:05:09Z",
+      "side": 1,
+      "message": "this seems like too much special casing in the groovy job, when it could happen in the Makefile.",
+      "range": {
+        "startLine": 58,
+        "startChar": 9,
+        "endLine": 59,
+        "endChar": 14
+      },
+      "revId": "b45f355feb650c47c81e19176ecef56fc608e43e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
