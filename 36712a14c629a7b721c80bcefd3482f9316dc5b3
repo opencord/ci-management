@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "006772b9_4804f631",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-04-30T21:34:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5c906d33_0cfd1a1f",
+      "range": {
+        "startLine": 160,
+        "startChar": 24,
+        "endLine": 160,
+        "endChar": 27
+      },
+      "revId": "36712a14c629a7b721c80bcefd3482f9316dc5b3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a34521e_c0a3050a",
         "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
         "patchSetId": 1
@@ -36,6 +60,30 @@
       "writtenOn": "2020-04-30T15:19:58Z",
       "side": 1,
       "message": "These comments can be updated for DT workflow: sanityDt, functionalDt",
+      "range": {
+        "startLine": 266,
+        "startChar": 38,
+        "endLine": 266,
+        "endChar": 50
+      },
+      "revId": "36712a14c629a7b721c80bcefd3482f9316dc5b3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0ea4ea98_038fef2c",
+        "filename": "jjb/pipeline/voltha-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000010
+      },
+      "writtenOn": "2020-04-30T21:34:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3a34521e_c0a3050a",
       "range": {
         "startLine": 266,
         "startChar": 38,
