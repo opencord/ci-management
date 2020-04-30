@@ -167,7 +167,8 @@ EOF
         tox \
         twine==1.15.0 \
         urllib3 \
-        virtualenv
+        virtualenv \
+        yamllint
         # end of pip install list
 
     # install ruby gems
@@ -293,6 +294,14 @@ EOF
     echo "$PANDOC_SHA256SUM  /tmp/pandoc.deb" | sha256sum -c -
     dpkg -i /tmp/pandoc.deb
     rm -f /tmp/pandoc.deb
+
+    # install yq (YAML query)
+    YQ_VERSION="3.3.0"
+    YQ_SHA256SUM="e70e482e7ddb9cf83b52f5e83b694a19e3aaf36acf6b82512cbe66e41d569201"
+    curl -L -o /tmp/yq https://github.com/mikefarah/yq/releases/download/${YQ_VERSION}/yq_linux_amd64
+    echo "$YQ_SHA256SUM  /tmp/yq" | sha256sum -c -
+    mv /tmp/yq /usr/local/bin/yq
+    chmod -R a+rx /usr/local/bin/yq
 
     # remove apparmor
     service apparmor stop
