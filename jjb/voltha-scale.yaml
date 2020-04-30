@@ -50,6 +50,16 @@
           # multi-adapter
           extraHelmFlags: "--set replicas.adapter_open_onu=8"
       - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-16-32-20s'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          onuPerPon: 32
+          ponPorts: 16
+          expectedOnus: 512
+          BBSIMdelay: 20000
+          # multi-adapter
+          extraHelmFlags: "--set replicas.adapter_open_onu=8"
+      - 'voltha-scale-measurements-periodic':
           name: 'voltha-scale-measurements-periodic-16-64-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -57,6 +67,16 @@
           ponPorts: 16
           expectedOnus: 1024
           BBSIMdelay: 200
+          # multi-adapter
+          extraHelmFlags: "--set replicas.adapter_open_onu=8"
+      - 'voltha-scale-measurements-periodic':
+          name: 'voltha-scale-measurements-periodic-16-64-20s'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          onuPerPon: 64
+          ponPorts: 16
+          expectedOnus: 1024
+          BBSIMdelay: 20000
           # multi-adapter
           extraHelmFlags: "--set replicas.adapter_open_onu=8"
       - 'voltha-scale-measurements-periodic':
@@ -142,6 +162,7 @@
           flowStatInterval: 5
           portsStatInterval: 5
           expectedFlows: 201
+          extraHelmFlags: "--set replicas.adapter_open_onu=2"
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
