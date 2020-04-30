@@ -30,14 +30,9 @@ pipeline {
     VOLTCONFIG="$HOME/.volt/config-minimal"
     PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
+    VOLTHA_LOG_LEVEL="DEBUG"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
-    WITH_RADIUS="y"
-    WITH_BBSIM="y"
-    DEPLOY_K8S="y"
-    VOLTHA_LOG_LEVEL="DEBUG"
-    CONFIG_SADIS="n"
-    ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
   }
 
   stages {
@@ -144,7 +139,11 @@ pipeline {
            '''
       }
     }
-    stage('Deploy Voltha') {
+
+    stage('ATT workflow') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ATTWorkflow"
+      }
       steps {
         sh '''
            if [ "${branch}" != "master" ]; then
@@ -153,6 +152,12 @@ pipeline {
            else
              echo "on master, using default settings for kind-voltha"
            fi
+
+           # Workflow-specific flags
+           export WITH_RADIUS=yes
+           export WITH_BBSIM=yes
+           export DEPLOY_K8S=yes
+           export CONFIG_SADIS=no
 
            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
@@ -205,32 +210,71 @@ pipeline {
              md5sum $WORKSPACE/voltha/kind-voltha/bin/voltctl
            fi
 
-           cd $WORKSPACE/voltha/kind-voltha/
-           echo \$EXTRA_HELM_FLAGS
+           printenv
            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
-           ./voltha up
-           '''
-      }
-    }
 
-    stage('Run E2E Tests') {
-      steps {
-        sh '''
-           mkdir -p $WORKSPACE/RobotLogs
+           cd $WORKSPACE/voltha/kind-voltha/
+           ./voltha up
+
+           # minimal-env.sh contains the environment we used
+           # Save value of EXTRA_HELM_FLAGS there to use in subsequent stages
+           echo export EXTRA_HELM_FLAGS=\\"\$EXTRA_HELM_FLAGS\\" >> minimal-env.sh
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
 
            # By default, all tests tagged 'sanity' are run.  This covers basic functionality
            # like running through the ATT workflow for a single subscriber.
-           export TEST_TAGS=sanity
+           export TARGET=sanity-single-kind
 
            # If the Gerrit comment contains a line with "functional tests" then run the full
            # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
            # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
            REGEX="functional tests"
            if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TEST_TAGS=sanityORfunctional
+             TARGET=functional-single-kind
            fi
 
-           make -C $WORKSPACE/voltha/voltha-system-tests single-kind || true
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
+           '''
+      }
+    }
+
+    stage('DT workflow') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DTWorkflow"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/voltha/kind-voltha/
+           source minimal-env.sh
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+           # Workflow-specific flags
+           export WITH_RADIUS=no
+           export WITH_EAPOL=no
+           export WITH_DHCP=no
+           export WITH_IGMP=no
+           export CONFIG_SADIS=no
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+
+           # By default, all tests tagged 'sanityDt' are run.  This covers basic functionality
+           # like running through the DT workflow for a single subscriber.
+           export TARGET=sanity-kind-dt
+
+           # If the Gerrit comment contains a line with "functional tests" then run the full
+           # functional test suite.  This covers tests tagged either 'sanityDt' or 'functionalDt'.
+           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+           REGEX="functional tests"
+           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+             TARGET=functional-single-kind-dt
+           fi
+
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
            '''
       }
     }
@@ -272,27 +316,15 @@ pipeline {
          extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
 
          gzip $WORKSPACE/onos-voltha-combined.log
-
-
-         ## shut down kind-voltha
-         if [ "${branch}" != "master" ]; then
-           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-           source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
-         else
-           echo "on master, using default settings for kind-voltha"
-         fi
-
-         cd $WORKSPACE/voltha/kind-voltha
-	       WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
-            logFileName: 'RobotLogs/log*.html',
+            logFileName: 'RobotLogs/*/log*.html',
             otherFiles: '',
-            outputFileName: 'RobotLogs/output*.xml',
+            outputFileName: 'RobotLogs/*/output*.xml',
             outputPath: '.',
-            passThreshold: 80,
-            reportFileName: 'RobotLogs/report*.html',
+            passThreshold: 100,
+            reportFileName: 'RobotLogs/*/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log,*.gz'
     }
