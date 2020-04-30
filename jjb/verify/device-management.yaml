@@ -19,6 +19,7 @@
           dependency-jobs: 'verify_device-management_licensed'
       - 'make-unit-test':
           junit-allow-empty-results: true
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
       - 'device-management-patch-test':
           pipeline-script: 'device-management-mock-tests.groovy'
 
