@@ -28,9 +28,9 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-functional-test'
+          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
           code-branch: 'master'
-          make-target: functional-single-kind
           onus: 1
           pons: 1
           time-trigger: "H H/12 * * *"
