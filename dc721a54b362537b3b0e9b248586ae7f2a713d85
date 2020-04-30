@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "685b75b1_1023354b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 8
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2020-04-30T16:19:01Z",
+      "side": 1,
+      "message": "Will update now.",
+      "parentUuid": "bf2a9861_93bdaca1",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 4
+      },
+      "revId": "dc721a54b362537b3b0e9b248586ae7f2a713d85",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "30be59c3_76d8c4c2",
         "filename": "jjb/device-management.yaml",
         "patchSetId": 8
@@ -36,6 +60,30 @@
       "writtenOn": "2020-04-30T16:12:32Z",
       "side": 1,
       "message": "Is this right? No version string after?",
+      "range": {
+        "startLine": 16,
+        "startChar": 0,
+        "endLine": 16,
+        "endChar": 48
+      },
+      "revId": "dc721a54b362537b3b0e9b248586ae7f2a713d85",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "607b5237_f95ce779",
+        "filename": "jjb/device-management.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2020-04-30T16:19:01Z",
+      "side": 1,
+      "message": "I thought I had copied this from voltha-e2e but perhaps it was an older version. I\u0027ll update to the same as master.",
+      "parentUuid": "30be59c3_76d8c4c2",
       "range": {
         "startLine": 16,
         "startChar": 0,
