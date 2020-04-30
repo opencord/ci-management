@@ -54,6 +54,15 @@
           time-trigger: "H H/6 * * *"
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-failurescenarios-test'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          code-branch: 'master'
+          make-target: bbsim-failurescenarios
+          onus: 1
+          pons: 1
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-system-test'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-4c-8g'
