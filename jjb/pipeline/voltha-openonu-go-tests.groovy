@@ -108,7 +108,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         sh '''
-           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags},use_openonu_adapter_go=true "
+           export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
 
            IMAGES="adapter_open_onu_go"
 
@@ -198,15 +198,6 @@ pipeline {
          cd $WORKSPACE/voltha/kind-voltha
 	       WAIT_ON_DOWN=y ./voltha down
          '''
-         step([$class: 'RobotPublisher',
-            disableArchiveOutput: false,
-            logFileName: 'RobotLogs/log*.html',
-            otherFiles: '',
-            outputFileName: 'RobotLogs/output*.xml',
-            outputPath: '.',
-            passThreshold: 80,
-            reportFileName: 'RobotLogs/report*.html',
-            unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log,*.gz'
     }
   }
