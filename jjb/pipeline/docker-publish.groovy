@@ -31,6 +31,7 @@ pipeline {
             [$class: 'WipeWorkspace'],
             [$class: 'RelativeTargetDirectory', relativeTargetDir: "${params.projectName}"],
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+            [$class: 'SubmoduleOption', recursiveSubmodules: true],
           ],
         ])
         script {
