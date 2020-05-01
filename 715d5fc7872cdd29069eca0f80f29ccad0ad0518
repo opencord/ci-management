@@ -22,6 +22,30 @@
       "revId": "715d5fc7872cdd29069eca0f80f29ccad0ad0518",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa80be18_9c38ece0",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000054
+      },
+      "writtenOn": "2020-05-01T15:33:17Z",
+      "side": 1,
+      "message": "Yes we tried all sizes, even 4c-8g fails",
+      "parentUuid": "d59eeabd_201ee3a2",
+      "range": {
+        "startLine": 93,
+        "startChar": 22,
+        "endLine": 93,
+        "endChar": 52
+      },
+      "revId": "715d5fc7872cdd29069eca0f80f29ccad0ad0518",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
