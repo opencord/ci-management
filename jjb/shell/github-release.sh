@@ -95,7 +95,7 @@ else
 
   # create release
   echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
-  gothub release \
+  github-release release \
     --user "$GITHUB_ORGANIZATION" \
     --repo "$GERRIT_PROJECT" \
     --tag  "$GIT_VERSION" \
@@ -116,7 +116,7 @@ else
     for rel_file in *
     do
       echo "Uploading file: $rel_file"
-      gothub upload \
+      github-release upload \
         --user "$GITHUB_ORGANIZATION" \
         --repo "$GERRIT_PROJECT" \
         --tag  "$GIT_VERSION" \
