@@ -42,7 +42,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
     //VOL-2194 ONOS SSH and REST ports hardcoded to 30115/30120 in tests
@@ -54,7 +54,7 @@ pipeline {
     stage ('Initialize') {
       steps {
         sh returnStdout: false, script: """
-        test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
+        test -e $WORKSPACE/voltha/kind-voltha/voltha && cd $WORKSPACE/voltha/kind-voltha && ./voltha down
         cd $WORKSPACE
         rm -rf $WORKSPACE/*
         """
@@ -88,15 +88,17 @@ pipeline {
       }
     }
 
-    stage('Get Patch') {
-      when {
-        expression { params.withPatchset }
-      }
+    stage('Patch') {
       steps {
-        sh returnStdout: false, script: """
-        cd voltha
-        repo download "${gerritProject}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-        """
+        sh """
+           pushd $WORKSPACE/
+           echo "${gerritProject}" "${gerritChangeNumber}" "${gerritPatchsetNumber}"
+           echo "${GERRIT_REFSPEC}"
+           git clone https://gerrit.opencord.org/${gerritProject}
+           cd "${gerritProject}"
+           git fetch https://gerrit.opencord.org/${gerritProject} "${GERRIT_REFSPEC}" && git checkout FETCH_HEAD
+           popd
+           """
       }
     }
 
@@ -121,38 +123,58 @@ pipeline {
       steps {
         sh returnStdout: false, script: """
         git clone https://github.com/ciena/kind-voltha.git
-        cd kind-voltha/
+        cd $WORKSPACE/voltha/kind-voltha/
         JUST_K8S=y ./voltha up
         """
       }
     }
 
-    stage('Build and Push Images') {
-      when {
-        expression { params.withPatchset }
-      }
+    stage('Build Redfish Importer Image') {
       steps {
-        sh returnStdout: false, script: """
-        make -C $WORKSPACE/voltha/\$1 DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
-        docker images | grep citest
-        for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
-        """
+        sh """
+           make -C $WORKSPACE/device-management/\$1 DOCKER_REPOSITORY=opencord/ DOCKER_TAG=citest docker-build-importer
+           """
+      }
+    }
+
+    stage('Build demo_test Image') {
+      steps {
+        sh """
+           make -C $WORKSPACE/device-management/\$1/demo_test DOCKER_REPOSITORY=opencord/ DOCKER_TAG=citest docker-build
+           """
+      }
+    }
+
+    stage('Build mock-redfish-server  Image') {
+      steps {
+        sh """
+           make -C $WORKSPACE/device-management/\$1/mock-redfish-server DOCKER_REPOSITORY=opencord/ DOCKER_TAG=citest docker-build
+           """
+      }
+    }
+
+    stage('Push Images') {
+      steps {
+        sh '''
+             docker images | grep citest
+             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
+           '''
       }
     }
 
     stage('Deploy Voltha') {
       environment {
-        WITH_SIM_ADAPTERS="n"
-        WITH_RADIUS="y"
-        DEPLOY_K8S="n"
-        VOLTHA_LOG_LEVEL="debug"
+        WITH_SIM_ADAPTERS="no"
+        WITH_RADIUS="yes"
+        DEPLOY_K8S="no"
+        VOLTHA_LOG_LEVEL="DEBUG"
       }
       steps {
         script {
           sh returnStdout: false, script: """
           export EXTRA_HELM_FLAGS='--set log_agent.enabled=False -f ${localKindVolthaValuesFile} '
 
-          cd $WORKSPACE/kind-voltha/
+          cd $WORKSPACE/voltha/kind-voltha/
           echo \$EXTRA_HELM_FLAGS
           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
           ./voltha up
@@ -246,22 +268,15 @@ pipeline {
     }
 
     stage('Run E2E Tests') {
-      environment {
-        ROBOT_CONFIG_FILE="${localDeploymentConfigFile}"
-        ROBOT_MISC_ARGS="${params.extraRobotArgs} --removekeywords wuks -d $WORKSPACE/RobotLogs -v container_log_dir:$WORKSPACE "
-        ROBOT_FILE="Voltha_PODTests.robot"
-      }
       steps {
-        sh returnStdout: false, script: """
-        cd voltha
-        git clone -b ${branch} ${cordRepoUrl}/cord-tester
-        mkdir -p $WORKSPACE/RobotLogs
+        sh '''
+           mkdir -p $WORKSPACE/RobotLogs
 
-        # tell the kubernetes script to use images tagged citest and pullPolicy:Never
-        sed -i 's/master/citest/g' $WORKSPACE/voltha/device-management/kubernetes/deploy-redfish-importer.yaml
-        sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' $WORKSPACE/voltha/device-management/kubernetes/deploy-redfish-importer.yaml
-        make -C $WORKSPACE/voltha/device-management functional-mock-test || true
-        """
+           # tell the kubernetes script to use images tagged citest and pullPolicy:Never
+           sed -i 's/master/citest/g' $WORKSPACE/device-management/kubernetes/deploy-redfish-importer.yaml
+           sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' $WORKSPACE/device-management/kubernetes/deploy-redfish-importer.yaml
+           make -C $WORKSPACE/device-management functional-mock-test || true
+           '''
       }
     }
 
