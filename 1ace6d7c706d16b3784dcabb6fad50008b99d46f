@@ -22,6 +22,30 @@
       "revId": "1ace6d7c706d16b3784dcabb6fad50008b99d46f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11ad41e3_a2aa80a0",
+        "filename": "jjb/pipeline/device-management-physical-build-and-tests.groovy",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2020-05-05T15:41:15Z",
+      "side": 1,
+      "message": "After merge, I\u0027ll come back and give that a shot. It does look like a better way to go.",
+      "parentUuid": "f6fb84d2_0e4f65ac",
+      "range": {
+        "startLine": 94,
+        "startChar": 5,
+        "endLine": 101,
+        "endChar": 14
+      },
+      "revId": "1ace6d7c706d16b3784dcabb6fad50008b99d46f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
