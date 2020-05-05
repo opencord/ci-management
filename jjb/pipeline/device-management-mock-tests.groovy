@@ -134,8 +134,8 @@ pipeline {
            mkdir -p $WORKSPACE/RobotLogs
 
            # tell the kubernetes script to use images tagged citest and pullPolicy:Never
-           sed -i 's/master/citest/g' $WORKSPACE/device-management/kubernetes/deploy-redfish-importer.yaml
-           sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' $WORKSPACE/device-management/kubernetes/deploy-redfish-importer.yaml
+           sed -i 's/master/citest/g' $WORKSPACE/device-management/kubernetes/deploy*.yaml
+           sed -i 's/imagePullPolicy: Always/imagePullPolicy: Never/g' $WORKSPACE/device-management/kubernetes/deploy*.yaml
            make -C $WORKSPACE/device-management functional-mock-test || true
            '''
       }
