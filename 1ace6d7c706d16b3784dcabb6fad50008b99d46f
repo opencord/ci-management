@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f6fb84d2_0e4f65ac",
+        "filename": "jjb/pipeline/device-management-physical-build-and-tests.groovy",
+        "patchSetId": 6
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-05-05T15:35:55Z",
+      "side": 1,
+      "message": "It\u0027s better to use the native groovy way to download the patchset - this will report more info in the jenkins UI: https://gerrit.opencord.org/gitweb?p\u003dci-management.git;a\u003dblob;f\u003djjb/pipeline/docker-publish.groovy;#l26",
+      "range": {
+        "startLine": 94,
+        "startChar": 5,
+        "endLine": 101,
+        "endChar": 14
+      },
+      "revId": "1ace6d7c706d16b3784dcabb6fad50008b99d46f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
