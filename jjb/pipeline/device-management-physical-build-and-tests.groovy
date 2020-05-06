@@ -21,14 +21,6 @@ localDeploymentConfigFile = null
 localKindVolthaValuesFile = null
 localSadisConfigFile = null
 
-// The pipeline assumes these variables are always defined
-if ( ! params.withPatchset ) {
-  GERRIT_EVENT_COMMENT_TEXT = ""
-  GERRIT_PROJECT = ""
-  GERRIT_CHANGE_NUMBER = ""
-  GERRIT_PATCHSET_NUMBER = ""
-}
-
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -92,11 +84,11 @@ pipeline {
       steps {
         sh """
            pushd $WORKSPACE/
-           echo "${gerritProject}" "${gerritChangeNumber}" "${gerritPatchsetNumber}"
-           echo "${GERRIT_REFSPEC}"
            git clone https://gerrit.opencord.org/${gerritProject}
            cd "${gerritProject}"
-           git fetch https://gerrit.opencord.org/${gerritProject} "${GERRIT_REFSPEC}" && git checkout FETCH_HEAD
+           if [[ ! -z "${gerritRefSpec}" ]]; then
+               git fetch https://gerrit.opencord.org/${gerritProject} "${gerritRefSpec}" && git checkout FETCH_HEAD
+           fi
            popd
            """
       }
@@ -206,6 +198,7 @@ pipeline {
           sh returnStdout: false, script: """
               helm repo add cord https://charts.opencord.org
               helm repo update
+              helm del --purge voltha-kafka-dump || true
               helm install -n voltha-kafka-dump cord/voltha-kafka-dump
           """
         }
