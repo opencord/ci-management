@@ -110,6 +110,21 @@ pipeline {
       }
     }
 
+    stage('Alarm Tests') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/AlarmTests"
+      }
+      steps {
+        sh '''
+           set +e
+           mkdir -p $WORKSPACE/RobotLogs
+
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           make -C $WORKSPACE/voltha/voltha-system-tests bbsim-alarms-kind || true
+           '''
+      }
+    }
+
     stage('Failure/Recovery Tests') {
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureTests"
@@ -139,8 +154,6 @@ pipeline {
            '''
       }
     }
-
-
   }
 
   post {
