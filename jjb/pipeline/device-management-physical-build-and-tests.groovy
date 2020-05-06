@@ -21,14 +21,6 @@ localDeploymentConfigFile = null
 localKindVolthaValuesFile = null
 localSadisConfigFile = null
 
-// The pipeline assumes these variables are always defined
-if ( ! params.withPatchset ) {
-  GERRIT_EVENT_COMMENT_TEXT = ""
-  GERRIT_PROJECT = ""
-  GERRIT_CHANGE_NUMBER = ""
-  GERRIT_PATCHSET_NUMBER = ""
-}
-
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -92,11 +84,13 @@ pipeline {
       steps {
         sh """
            pushd $WORKSPACE/
-           echo "${gerritProject}" "${gerritChangeNumber}" "${gerritPatchsetNumber}"
-           echo "${GERRIT_REFSPEC}"
-           git clone https://gerrit.opencord.org/${gerritProject}
-           cd "${gerritProject}"
-           git fetch https://gerrit.opencord.org/${gerritProject} "${GERRIT_REFSPEC}" && git checkout FETCH_HEAD
+           GERRIT_PROJECT=${GERRIT_PROJECT:-device-management}
+           GERRIT_REFSPEC=${GERRIT_REFSPEC:-""}
+           git clone https://gerrit.opencord.org/${GERRIT_PROJECT}
+           cd "${GERRIT_PROJECT}"
+           if [[ ! -z "${GERRIT_REFSPEC}" ]]; then
+               git fetch https://gerrit.opencord.org/${GERRIT_PROJECT} "${GERRIT_REFSPEC}" && git checkout FETCH_HEAD
+           fi
            popd
            """
       }
