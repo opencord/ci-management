@@ -163,13 +163,9 @@
           portsStatInterval: 5
           expectedFlows: 201
           extraHelmFlags: "--set replicas.adapter_open_onu=2"
-      - 'voltha-scale-measurements':
+      - 'voltha-scale-measurements-dev':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
-          onuPerPon: 16
-          ponPorts: 1
-          expectedOnus: 16
-          BBSIMdelay: 200
 
 - job-template:
     id: 'voltha-scale-measurements-periodic'
@@ -367,9 +363,9 @@
                  {time-trigger}
 
 - job-template:
-    id: 'voltha-scale-measurements'
+    id: 'voltha-scale-measurements-dev'
     name: '{name}'
-    pipeline-script: 'voltha-scale-measurements.groovy'
+    pipeline-script: 'voltha-scale-test.groovy'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -387,29 +383,6 @@
           build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    # default parameters
-    bbsimImg: "voltha/bbsim:master"
-    bbsimChart: "onf/bbsim"
-    volthaImg: "voltha/voltha-rw-core:master"
-    ofAgentImg: "voltha/voltha-ofagent-go:master"
-    volthaChart: "onf/voltha"
-    openoltAdapterImg: "voltha/voltha-openolt-adapter:master"
-    openoltAdapterChart: "onf/voltha-adapter-openolt"
-    openonuAdapterImg: "voltha/voltha-openonu-adapter:master"
-    openonuAdapterChart: "onf/voltha-adapter-openonu"
-    onosImg: "voltha/voltha-onos:master"
-    extraHelmFlags: ''
-    withMibTemplate: true
-    numOfBbsim: 1
-    numOfKafka: 3
-    withOnosApps: true
-    setLinkDiscovery: false
-    flowStatInterval: 600
-    portsStatInterval: 600
-    expectedFlows: 17 # one EAPOL per ONU + 1 LLDP on the NNI
-    bbsimAuth: true
-    bbsimDhcp: true
-
     parameters:
       - string:
           name: buildNode
@@ -422,134 +395,24 @@
           description: 'Log level for all the components'
 
       - string:
-          name: onuPerPon
-          default: 1
+          name: onus
+          default: 2
           description: 'Number of ONUs to provision'
 
       - string:
-          name: ponPorts
+          name: pons
           default: 1
           description: 'Number of PONs to provision'
 
-      - string:
-          name: expectedOnus
-          default: 1
-          description: 'Expected number of activated ONUs'
-
-      - string:
-          name: expectedFlows
-          default: '{expectedFlows}'
-          description: 'Expected number of flows in ONOS'
-
-      - string:
-          name: pollInterval
-          default: 5
-          description: 'Sleep time between ONU activation checks'
-
-      - bool:
-          name: withOnosApps
-          default: '{withOnosApps}'
-          description: 'Option to deactivate certain ONOS apps'
-
       - bool:
           name: withMibTemplate
-          default: '{withMibTemplate}'
+          default: true
           description: 'Option to trigger MIB template command'
 
-      - bool:
-          name: setLinkDiscovery
-          default: '{setLinkDiscovery}'
-          description: 'Option to toggle Link Discovery'
-
       - string:
-          name: BBSIMdelay
-          default: 200
-          description: 'BBSIM Delay, milliseconds'
-
-      - string:
-          name: flowStatInterval
-          default: '{flowStatInterval}'
-          description: 'Flow Stats Collection Interval, milliseconds'
-
-      - string:
-          name: portsStatInterval
-          default: {portsStatInterval}
-          description: 'Ports Stats Collection Interval, milliseconds'
-
-      - bool:
-          name: bbsimAuth
-          default: '{bbsimAuth}'
-          description: 'Option to toggle BBSIM EAPOL true/false'
-
-      - bool:
-          name: bbsimDhcp
-          default: '{bbsimDhcp}'
-          description: 'Option to toggle BBSIM DHCP true/false'
-
-      - string:
-          name: bbsimImg
-          default: '{bbsimImg}'
-          description: 'Custom image selection for BBSIM (repo:tag)'
-
-      - string:
-          name: bbsimChart
-          default: '{bbsimChart}'
-          description: 'BBSim chart name (or location on file system)'
-
-      - string:
-          name: volthaImg
-          default: '{volthaImg}'
-          description: 'Custom image selection for VOLTHA (repo:tag)'
-
-      - string:
-          name: ofAgentImg
-          default: '{ofAgentImg}'
-          description: 'Custom image selection for OfAgent (repo:tag), only supports the go version'
-
-      - string:
-          name: volthaChart
-          default: '{volthaChart}'
-          description: 'VOLTHA chart name (or location on file system)'
-
-      - string:
-          name: openoltAdapterImg
-          default: '{openoltAdapterImg}'
-          description: 'Custom image selection for Openolt Adapter (repo:tag)'
-
-      - string:
-          name: openoltAdapterChart
-          default: '{openoltAdapterChart}'
-          description: 'OpenOLT chart name (or location on file system)'
-
-      - string:
-          name: openonuAdapterImg
-          default: '{openonuAdapterImg}'
-          description: 'Custom image selection for Openonu Adapter (repo:tag)'
-
-      - string:
-          name: openonuAdapterChart
-          default: '{openonuAdapterChart}'
-          description: 'OpenONU chart name (or location on file system)'
-
-      - string:
-          name: onosImg
-          default: '{onosImg}'
-          description: 'Custom image selection for Openonu Adapter (repo:tag)'
-
-      - string:
-          name: extraHelmFlags
-          default: '{extraHelmFlags}'
-          description: 'Any extra helm parameters you want (passed to every helm install command)'
-
-      - string:
-          name: numOfBbsim
-          default: '{numOfBbsim}'
+          name: olts
+          default: 2
           description: 'How many BBSim instances to run'
-
-      - string:
-          name: numOfKafka
-          default: '{numOfKafka}'
-          description: 'How many Kafka instances to run'
 
     project-type: pipeline
     concurrent: false
