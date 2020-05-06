@@ -15,7 +15,6 @@
           branch: 'master'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: 'Default'
-          withPatchset: true
 
 - job-template:
     id: 'device-management-patch-test'
@@ -144,18 +143,13 @@
 
       - string:
           name: gerritProject
-          default: '$GERRIT_PROJECT'
+          default: 'device-management'
           description: 'Name of the Gerrit project'
 
       - string:
-          name: gerritChangeNumber
-          default: '$GERRIT_CHANGE_NUMBER'
-          description: 'Changeset number in Gerrit'
-
-      - string:
-          name: gerritPatchsetNumber
-          default: '$GERRIT_PATCHSET_NUMBER'
-          description: 'PatchSet number in Gerrit'
+          name: gerritRefSpec
+          default: '$GERRIT_REFSPEC'
+          description: 'Name of the Gerrit project'
 
       - string:
           name: cordRepoUrl
@@ -214,11 +208,6 @@
           name: reinstallOlt
           default: true
           description: "Re-install OLT software"
-
-      - bool:
-          name: withPatchset
-          default: true
-          description: "Build with Gerrit patchset"
 
       - string:
           name: extraRobotArgs
