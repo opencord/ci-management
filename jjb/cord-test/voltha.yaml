@@ -12,6 +12,8 @@
     power-switch: False
     work-flow: ''
     num-of-openonu: '1'
+    num-of-onos: '1'
+    num-of-atomix: '0'
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
@@ -61,6 +63,8 @@
           release: 'master'
           branch: 'master'
           num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'

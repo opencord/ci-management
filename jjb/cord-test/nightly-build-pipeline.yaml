@@ -922,6 +922,16 @@
           default: '{num-of-openonu}'
           description: 'Installs the specified Number of OpenOnu Adapters'
 
+      - string:
+          name: NumOfOnos
+          default: '{num-of-onos}'
+          description: 'Installs the specified Number of ONOS instances'
+
+      - string:
+          name: NumOfAtomix
+          default: '{num-of-atomix}'
+          description: 'Installs the specified Number of Atomix Instances'
+
       - bool:
           name: configurePod
           default: true
