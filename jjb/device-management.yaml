@@ -15,7 +15,9 @@
           branch: 'master'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: 'Default'
-          withPatchset: true
+          # By default, builds without a patchset for the nightly job. When called from gerrit, the
+          # template will override withPatchset and set it to true.
+          withPatchset: false
 
 - job-template:
     id: 'device-management-patch-test'
@@ -143,21 +145,6 @@
           description: 'Name of the repo branch to use'
 
       - string:
-          name: gerritProject
-          default: '$GERRIT_PROJECT'
-          description: 'Name of the Gerrit project'
-
-      - string:
-          name: gerritChangeNumber
-          default: '$GERRIT_CHANGE_NUMBER'
-          description: 'Changeset number in Gerrit'
-
-      - string:
-          name: gerritPatchsetNumber
-          default: '$GERRIT_PATCHSET_NUMBER'
-          description: 'PatchSet number in Gerrit'
-
-      - string:
           name: cordRepoUrl
           default: '{gerrit-server-url}'
           description: 'The URL of the CORD Project repository'
@@ -234,6 +221,7 @@
       - gerrit:
           server-name: '{gerrit-server-name}'
           dependency-jobs: '{dependency-jobs}'
+          withPatchset: true
           silent-start: false
           successful-message: "PASSED hardware test"
           failure-message: "FAILED hardware test"
