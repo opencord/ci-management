@@ -8,6 +8,11 @@
 
     build-timeout: '300'
 
+    work-flow: ''
+    num-of-openonu: '1'
+    num-of-onos: '1'
+    num-of-atomix: '0'
+
     jobs:
       # onlab pod1 build
       - 'build_pod_manual':
