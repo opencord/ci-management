@@ -26,6 +26,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
+    SSHPASS="karaf"
     PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
@@ -36,6 +37,7 @@ pipeline {
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
     WITH_KAFKA="kafka.default.svc.cluster.local"
+    WITH_ETCD="external"
 
     // install everything in the default namespace
     VOLTHA_NS="default"
@@ -64,6 +66,14 @@ pipeline {
       steps {
         sh returnStdout: false, script: """
         test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
+
+        for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
+        do
+            echo "Purging chart: \${hchart}"
+            helm delete --purge "\${hchart}"
+        done
+        bash /home/cord/voltha-scale/wait_for_pods.sh
+
         cd $WORKSPACE
         rm -rf $WORKSPACE/*
         """
@@ -95,22 +105,29 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        // TODO use master once the tests are merged
         script {
-          sh(script:"cd voltha-system-tests; git fetch https://gerrit.opencord.org/voltha-system-tests refs/changes/79/18779/13 && git checkout FETCH_HEAD")
+          sh(script:"""
+            if [ ${volthaSystemTestsChange} != '' ] ; then
+              cd voltha-system-tests;
+              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+            fi
+            """)
         }
       }
     }
     stage('Deploy common infrastructure') {
-      // includes monitoring, kafka, etcd-operator
+      // includes monitoring, kafka
       steps {
         sh '''
-        helm install -n kafka incubator/kafka -f /home/cord/voltha-scale/voltha-values.yaml --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
+        helm install -n kafka incubator/kafka --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
 
         if [ ${withMonitoring} = true ] ; then
-          helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+          helm install -n nem-monitoring cord/nem-monitoring \
+          --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
+          --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
         fi
 
+        # TODO download this file from https://github.com/opencord/helm-charts/blob/master/scripts/wait_for_pods.sh
         bash /home/cord/voltha-scale/wait_for_pods.sh
         '''
       }
@@ -124,24 +141,24 @@ pipeline {
 
             # BBSim custom image handling
             IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-            EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} "
+            EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
 
             # VOLTHA and ofAgent custom image handling
-            IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
+            IFS=: read -r rwCoreRepo rwCoreTag <<< ${rwCoreImg}
             IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=${volthaRepo},images.rw_core.tag=${volthaTag},images.ofagent_go.repository=${ofAgentRepo},images.ofagent_go.tag=${ofAgentTag} "
+            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent_go.repository=\$ofAgentRepo,images.ofagent_go.tag=\$ofAgentTag "
 
             # OpenOLT custom image handling
             IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag} "
+            EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
 
             # OpenONU custom image handling
             IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${openonuAdapterRepo},images.adapter_open_onu.tag=${openonuAdapterTag} "
+            EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
 
             # ONOS custom image handling
             IFS=: read -r onosRepo onosTag <<< ${onosImg}
-            EXTRA_HELM_FLAGS+="--set images.onos.repository=${onosRepo},images.onos.tag=${onosTag} "
+            EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
 
 
             cd $WORKSPACE/kind-voltha/
@@ -162,24 +179,24 @@ pipeline {
 
           #Setting LOG level to ${logLevel}
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set ${logLevel}
-          kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log ${logLevel} false
+          kubectl exec $(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print $1}') -- bbsimctl log ${logLevel} false
 
           if [ ${withEapol} = false ] || [ ${withFlows} = false ]; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.aaa
           fi
 
           if [ ${withDhcp} = false ] || [ ${withFlows} = false ]; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
           fi
 
           if [ ${withIgmp} = false ] || [ ${withFlows} = false ]; then
             # FIXME will actually affected the tests only after VOL-3054 is addressed
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.igmpproxy
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.mcast
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.igmpproxy
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.mcast
           fi
 
           if [ ${withFlows} = false ]; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.olt
           fi
 
           if [ ${withMibTemplate} = true ] ; then
@@ -197,22 +214,26 @@ pipeline {
             -v pon:${pons} \
             -v onu:${onus} \
             -v workflow:${workflow} \
+            -v withEapol:${withEapol} \
+            -v withDhcp:${withDhcp} \
+            -v withIgmp:${withIgmp} \
+            --noncritical non-critical \
             -e teardown "
 
           if [ ${withEapol} = false ] ; then
-            ROBOT_PARAMS+="-e authentication"
+            ROBOT_PARAMS+="-e authentication "
           fi
 
           if [ ${withDhcp} = false ] ; then
-            ROBOT_PARAMS+="-e dhcp"
+            ROBOT_PARAMS+="-e dhcp "
           fi
 
           if [ ${provisionSubscribers} = false ] ; then
-            ROBOT_PARAMS+="-e provision -e flow-after"
+            ROBOT_PARAMS+="-e provision -e flow-after "
           fi
 
           if [ ${withFlows} = false ] ; then
-            ROBOT_PARAMS+="-i setup -i activation"
+            ROBOT_PARAMS+="-i setup -i activation "
           fi
 
           mkdir -p $WORKSPACE/RobotLogs
@@ -230,6 +251,7 @@ pipeline {
           cd voltha-system-tests
           source ./vst_venv/bin/activate
           python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt
+          cat $WORKSPACE/execution-time.txt
         '''
       }
     }
@@ -252,16 +274,74 @@ pipeline {
       ])
       step([$class: 'RobotPublisher',
         disableArchiveOutput: false,
-        logFileName: '$WORKSPACE/RobotLogs/log*.html',
+        logFileName: 'RobotLogs/log.html',
         otherFiles: '',
-        outputFileName: '$WORKSPACE/RobotLogs/output*.xml',
+        outputFileName: 'RobotLogs/output.xml',
         outputPath: '.',
         passThreshold: 100,
-        reportFileName: '$WORKSPACE/RobotLogs/report*.html',
+        reportFileName: 'RobotLogs/report.html',
         unstableThreshold: 0]);
-        // get all the logs from kubernetes PODs
+      // count how many ONUs have been activated
       sh '''
-        mkdir $WORKSPACE/logs
+        mkdir -p $WORKSPACE/logs
+        echo "#-of-ONUs" > $WORKSPACE/logs/voltha-devices-count.txt
+        echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) >> $WORKSPACE/logs/voltha-devices-count.txt
+      '''
+      // count how many ports have been discovered
+      sh '''
+        echo "#-of-ports" > $WORKSPACE/logs/onos-ports-count.txt
+        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports -e | grep BBSM | wc -l) >> $WORKSPACE/logs/onos-ports-count.txt
+      '''
+      // count how many flows have been provisioned
+      sh '''
+        echo "#-of-flows" > $WORKSPACE/logs/onos-flows-count.txt
+        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s | grep ADDED | wc -l) >> $WORKSPACE/logs/onos-flows-count.txt
+      '''
+      // dump and count the authenticated users
+      sh '''
+        if [ ${withOnosApps} = true ] && [ ${bbsimAuth} ] ; then
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users) >> $WORKSPACE/logs/onos-aaa-users.txt
+
+          echo "#-of-authenticated-users" > $WORKSPACE/logs/onos-aaa-count.txt
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users | grep AUTHORIZED_STATE | wc -l) >> $WORKSPACE/logs/onos-aaa-count.txt
+        fi
+      '''
+      // dump and count the dhcp users
+      sh '''
+        if [ ${withOnosApps} = true ] && [ ${bbsimDhcp} ] ; then
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations) >> $WORKSPACE/logs/onos-dhcp-allocations.txt
+
+          echo "#-of-dhcp-allocations" > $WORKSPACE/logs/onos-dhcp-count.txt
+          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations | grep DHCPACK | wc -l) >> $WORKSPACE/logs/onos-dhcp-count.txt
+        fi
+      '''
+      // check which containers were used in this build
+      sh '''
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
+      '''
+      // dump all the VOLTHA devices informations
+      sh '''
+        voltctl device list -o json > $WORKSPACE/logs/device-list.json
+        python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
+      '''
+      // dump all the BBSim(s) ONU informations
+      sh '''
+      BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
+      IDS=($BBSIM_IDS)
+
+      for bbsim in "${IDS[@]}"
+      do
+        kubectl exec -t $bbsim bbsimctl onu list > $WORKSPACE/logs/$bbsim-device-list.txt
+      done
+      '''
+      // get ports and flows from ONOS
+      sh '''
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt
+      '''
+      // get all the logs from kubernetes PODs
+      sh '''
         kubectl get pods -o wide > $WORKSPACE/logs/pods.txt
         kubectl logs -l app=adapter-open-olt > $WORKSPACE/logs/open-olt-logs.logs
         kubectl logs -l app=adapter-open-onu > $WORKSPACE/logs/open-onu-logs.logs
