@@ -410,7 +410,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asgvolt64.deb'
           configurePod: true
-          profile: '1T8GEM'
+          profile: 'Default'
           with-kind: true
           time: '11'
 
@@ -424,6 +424,6 @@
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          profile: '1T8GEM'
+          profile: 'Default'
           power-switch: True
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
