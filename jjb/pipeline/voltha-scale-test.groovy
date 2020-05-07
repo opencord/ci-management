@@ -35,6 +35,7 @@ pipeline {
     LEGACY_BBSIM_INDEX="no"
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
+    WITH_KAFKA="kafka.default.svc.cluster.local"
 
     // install everything in the default namespace
     VOLTHA_NS="default"
@@ -42,29 +43,24 @@ pipeline {
     INFRA_NS="default"
     BBSIM_NS="default"
 
-    // TODO make configurable
+    // configurable options
+    WITH_EAPOL="${withEapol}"
+    WITH_DHCP="${withDhcp}"
+    WITH_IGMP="${withIgmp}"
     VOLTHA_LOG_LEVEL="${logLevel}"
     NUM_OF_BBSIM="${olts}"
-    NUM_OF_OPENONU=4
-    NUM_OF_ONOS=1
-    NUM_OF_ATOMIX=0
+    NUM_OF_OPENONU="${openonuAdapterReplicas}"
+    NUM_OF_ONOS="${onosReplicas}"
+    NUM_OF_ATOMIX="${atomixReplicas}"
 
-    // TODO make charts configurable (low priority)
-    VOLTHA_CHART="onf/voltha"
-    VOLTHA_CHART_VERSION="latest"
-    VOLTHA_BBSIM_CHART="onf/bbsim"
-    VOLTHA_BBSIM_CHART_VERSION="latest"
-    VOLTHA_ADAPTER_SIM_CHART="onf/voltha-adapter-simulated"
-    VOLTHA_ADAPTER_SIM_CHART_VERSION="latest"
-    VOLTHA_ADAPTER_OPEN_OLT_CHART="onf/voltha-adapter-openolt"
-    VOLTHA_ADAPTER_OPEN_OLT_CHART_VERSION="latest"
-    VOLTHA_ADAPTER_OPEN_ONU_CHART="onf/voltha-adapter-openonu"
-    VOLTHA_ADAPTER_OPEN_ONU_CHART_VERSION="latest"
+    VOLTHA_CHART="${volthaChart}"
+    VOLTHA_BBSIM_CHART="${bbsimChart}"
+    VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
+    VOLTHA_ADAPTER_OPEN_ONU_CHART="${openonuAdapterChart}"
   }
 
   stages {
     stage ('Cleanup') {
-      // TODO remove plot files
       steps {
         sh returnStdout: false, script: """
         test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
@@ -105,21 +101,47 @@ pipeline {
         }
       }
     }
-    // stage('Deploy monitoring infrastructure') {
-    //   steps {
-    //     sh '''
-    //     helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
-    //     '''
-    //   }
-    // }
+    stage('Deploy common infrastructure') {
+      // includes monitoring, kafka, etcd-operator
+      steps {
+        sh '''
+        helm install -n kafka incubator/kafka -f /home/cord/voltha-scale/voltha-values.yaml --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
+
+        if [ ${withMonitoring} = true ] ; then
+          helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+        fi
+
+        bash /home/cord/voltha-scale/wait_for_pods.sh
+        '''
+      }
+    }
     stage('Deploy Voltha') {
       steps {
         script {
-          // TODO add support for custom images, see voltha-pyshical-build-and-test.groovy
-          // TODO install kafka outside kind-voltha (can't use 3 instances otherwise)
           // TODO install etcd outside kind-voltha (no need to redeploy the operator everytime)
           sh returnStdout: false, script: """
-            export EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus}'
+            export EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
+
+            # BBSim custom image handling
+            IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
+            EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} "
+
+            # VOLTHA and ofAgent custom image handling
+            IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
+            IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
+            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=${volthaRepo},images.rw_core.tag=${volthaTag},images.ofagent_go.repository=${ofAgentRepo},images.ofagent_go.tag=${ofAgentTag} "
+
+            # OpenOLT custom image handling
+            IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
+            EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag} "
+
+            # OpenONU custom image handling
+            IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
+            EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${openonuAdapterRepo},images.adapter_open_onu.tag=${openonuAdapterTag} "
+
+            # ONOS custom image handling
+            IFS=: read -r onosRepo onosTag <<< ${onosImg}
+            EXTRA_HELM_FLAGS+="--set images.onos.repository=${onosRepo},images.onos.tag=${onosTag} "
 
 
             cd $WORKSPACE/kind-voltha/
@@ -129,9 +151,37 @@ pipeline {
         }
       }
     }
-    stage('Push MIB template to ETCD') {
+    stage('Configuration') {
       steps {
         sh '''
+          # Always deactivate org.opencord.kafka
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.kafka
+
+          #Setting link discovery
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${withLLDP}
+
+          #Setting LOG level to ${logLevel}
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set ${logLevel}
+          kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log ${logLevel} false
+
+          if [ ${withEapol} = false ] || [ ${withFlows} = false ]; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.aaa
+          fi
+
+          if [ ${withDhcp} = false ] || [ ${withFlows} = false ]; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
+          fi
+
+          if [ ${withIgmp} = false ] || [ ${withFlows} = false ]; then
+            # FIXME will actually affected the tests only after VOL-3054 is addressed
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.igmpproxy
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.mcast
+          fi
+
+          if [ ${withFlows} = false ]; then
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
+          fi
+
           if [ ${withMibTemplate} = true ] ; then
             rm -f BBSM-12345123451234512345-00000000000001-v1.json
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
@@ -142,21 +192,35 @@ pipeline {
     }
     stage('Run Test') {
       steps {
-        // TODO use -i/-e in robot to customize runs for:
-        // - runs without flows
-        // - runs without subscriber provisioning
         sh '''
+          ROBOT_PARAMS="-v olt:${olts} \
+            -v pon:${pons} \
+            -v onu:${onus} \
+            -v workflow:${workflow} \
+            -e teardown "
+
+          if [ ${withEapol} = false ] ; then
+            ROBOT_PARAMS+="-e authentication"
+          fi
+
+          if [ ${withDhcp} = false ] ; then
+            ROBOT_PARAMS+="-e dhcp"
+          fi
+
+          if [ ${provisionSubscribers} = false ] ; then
+            ROBOT_PARAMS+="-e provision -e flow-after"
+          fi
+
+          if [ ${withFlows} = false ] ; then
+            ROBOT_PARAMS+="-i setup -i activation"
+          fi
+
           mkdir -p $WORKSPACE/RobotLogs
           cd voltha-system-tests
           make vst_venv
           source ./vst_venv/bin/activate
           robot -d $WORKSPACE/RobotLogs \
-            -v olt:${olts} \
-            -v pon:${pons} \
-            -v onu:${onus} \
-            -v workflow:att \
-            -e teardown \
-            tests/scale/Voltha_Scale_Tests.robot
+          $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
         '''
       }
     }
@@ -165,7 +229,7 @@ pipeline {
         sh '''
           cd voltha-system-tests
           source ./vst_venv/bin/activate
-          python tests/scale/collect-result.py -r ../RobotLogs/output.xml -p ../plots> execution-time.txt
+          python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt
         '''
       }
     }
@@ -175,27 +239,38 @@ pipeline {
       plot([
         csvFileName: 'scale-test.csv',
         csvSeries: [
-          [file: 'plots/plot-voltha-onus.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
-          [file: 'plots/plot-onos-ports.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
-          [file: 'plots/plot-voltha-flows-before.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
-          [file: 'plots/plot-onos-flows-before.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
-          [file: 'plots/plot-onos-auth.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
-          [file: 'plots/plot-voltha-flows-after.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
-          [file: 'plots/plot-onos-flows-after.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
-          [file: 'plots/plot-onos-dhcp.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-voltha-onus.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-onos-ports.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-voltha-flows-before.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-onos-flows-before.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-onos-auth.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-voltha-flows-after.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-onos-flows-after.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
+          [file: '$WORKSPACE/plots/plot-onos-dhcp.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
         ],
         group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Scale Test (OLTs: ${olts}, PONs: ${pons}, ONUs: ${onus})", yaxis: 'Time (s)', useDescr: true
       ])
       step([$class: 'RobotPublisher',
         disableArchiveOutput: false,
-        logFileName: 'RobotLogs/log*.html',
+        logFileName: '$WORKSPACE/RobotLogs/log*.html',
         otherFiles: '',
-        outputFileName: 'RobotLogs/output*.xml',
+        outputFileName: '$WORKSPACE/RobotLogs/output*.xml',
         outputPath: '.',
         passThreshold: 100,
-        reportFileName: 'RobotLogs/report*.html',
+        reportFileName: '$WORKSPACE/RobotLogs/report*.html',
         unstableThreshold: 0]);
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,voltha-system-tests/*.txt'
+        // get all the logs from kubernetes PODs
+      sh '''
+        mkdir $WORKSPACE/logs
+        kubectl get pods -o wide > $WORKSPACE/logs/pods.txt
+        kubectl logs -l app=adapter-open-olt > $WORKSPACE/logs/open-olt-logs.logs
+        kubectl logs -l app=adapter-open-onu > $WORKSPACE/logs/open-onu-logs.logs
+        kubectl logs -l app=rw-core > $WORKSPACE/logs/voltha-rw-core-logs.logs
+        kubectl logs -l app=ofagent > $WORKSPACE/logs/voltha-ofagent-logs.logs
+        kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
+        kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
+      '''
+      archiveArtifacts artifacts: '$WORKSPACE/kind-voltha/install-minimal.log,$WORKSPACE/execution-time.txt,$WORKSPACE/logs/*'
     }
   }
 }
