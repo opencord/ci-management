@@ -414,7 +414,7 @@
 
       - string:
           name: pons
-          default: 1
+          default: 2
           description: 'Number of PONs to provision'
 
       - string:
@@ -449,7 +449,7 @@
 
       - bool:
           name: withIgmp
-          default: true
+          default: false
           description: 'Wheter IGMP is enabled for the test'
 
       - bool:
@@ -472,14 +472,15 @@
           default: 1
           description: 'How many OpenONU adapter instances to run'
 
+      # the dev node is single node cluster, we can't install a clustered ONOS because of the contraints
       - string:
           name: onosReplicas
-          default: 3
+          default: 1
           description: 'How many ONOSes instances to run'
 
       - string:
           name: atomixReplicas
-          default: 3
+          default: 0
           description: 'How many Atomix instances to run'
 
       - string:
@@ -532,7 +533,17 @@
           default: '{onosImg}'
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
+      - string:
+          name: volthaSystemTestsChange
+          default: ''
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
     project-type: pipeline
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 "H H/1 * * *"
