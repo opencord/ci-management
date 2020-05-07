@@ -26,6 +26,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
+    SSHPASS="karaf"
     PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
@@ -36,6 +37,7 @@ pipeline {
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
     WITH_KAFKA="kafka.default.svc.cluster.local"
+    WITH_ETCD="external"
 
     // install everything in the default namespace
     VOLTHA_NS="default"
@@ -64,6 +66,14 @@ pipeline {
       steps {
         sh returnStdout: false, script: """
         test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
+
+        for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
+        do
+            echo "Purging chart: \${hchart}"
+            helm delete --purge "\${hchart}"
+        done
+        bash /home/cord/voltha-scale/wait_for_pods.sh
+
         cd $WORKSPACE
         rm -rf $WORKSPACE/*
         """
@@ -95,22 +105,21 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        // TODO use master once the tests are merged
-        script {
-          sh(script:"cd voltha-system-tests; git fetch https://gerrit.opencord.org/voltha-system-tests refs/changes/79/18779/13 && git checkout FETCH_HEAD")
-        }
       }
     }
     stage('Deploy common infrastructure') {
-      // includes monitoring, kafka, etcd-operator
+      // includes monitoring, kafka
       steps {
         sh '''
-        helm install -n kafka incubator/kafka -f /home/cord/voltha-scale/voltha-values.yaml --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
+        helm install -n kafka incubator/kafka --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
 
         if [ ${withMonitoring} = true ] ; then
-          helm install -n nem-monitoring cord/nem-monitoring --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+          helm install -n nem-monitoring cord/nem-monitoring \
+          --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
+          --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
         fi
 
+        # TODO download this file from https://github.com/opencord/helm-charts/blob/master/scripts/wait_for_pods.sh
         bash /home/cord/voltha-scale/wait_for_pods.sh
         '''
       }
@@ -124,24 +133,24 @@ pipeline {
 
             # BBSim custom image handling
             IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-            EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${bbsimRepo},images.bbsim.tag=${bbsimTag} "
+            EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
 
             # VOLTHA and ofAgent custom image handling
-            IFS=: read -r volthaRepo volthaTag <<< ${volthaImg}
+            IFS=: read -r rwCoreRepo rwCoreTag <<< ${rwCoreImg}
             IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=${volthaRepo},images.rw_core.tag=${volthaTag},images.ofagent_go.repository=${ofAgentRepo},images.ofagent_go.tag=${ofAgentTag} "
+            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent_go.repository=\$ofAgentRepo,images.ofagent_go.tag=\$ofAgentTag "
 
             # OpenOLT custom image handling
             IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=${openoltAdapterRepo},images.adapter_open_olt.tag=${openoltAdapterTag} "
+            EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
 
             # OpenONU custom image handling
             IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${openonuAdapterRepo},images.adapter_open_onu.tag=${openonuAdapterTag} "
+            EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
 
             # ONOS custom image handling
             IFS=: read -r onosRepo onosTag <<< ${onosImg}
-            EXTRA_HELM_FLAGS+="--set images.onos.repository=${onosRepo},images.onos.tag=${onosTag} "
+            EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
 
 
             cd $WORKSPACE/kind-voltha/
@@ -162,24 +171,24 @@ pipeline {
 
           #Setting LOG level to ${logLevel}
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set ${logLevel}
-          kubectl exec $(kubectl get pods | grep bbsim | awk 'NR==1{print $1}') bbsimctl log ${logLevel} false
+          kubectl exec $(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print $1}') -- bbsimctl log ${logLevel} false
 
           if [ ${withEapol} = false ] || [ ${withFlows} = false ]; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.aaa
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.aaa
           fi
 
           if [ ${withDhcp} = false ] || [ ${withFlows} = false ]; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.dhcpl2relay
           fi
 
           if [ ${withIgmp} = false ] || [ ${withFlows} = false ]; then
             # FIXME will actually affected the tests only after VOL-3054 is addressed
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.igmpproxy
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.mcast
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.igmpproxy
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.mcast
           fi
 
           if [ ${withFlows} = false ]; then
-            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
+            sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.olt
           fi
 
           if [ ${withMibTemplate} = true ] ; then
@@ -197,22 +206,23 @@ pipeline {
             -v pon:${pons} \
             -v onu:${onus} \
             -v workflow:${workflow} \
+            --noncritical non-critical \
             -e teardown "
 
           if [ ${withEapol} = false ] ; then
-            ROBOT_PARAMS+="-e authentication"
+            ROBOT_PARAMS+="-e authentication "
           fi
 
           if [ ${withDhcp} = false ] ; then
-            ROBOT_PARAMS+="-e dhcp"
+            ROBOT_PARAMS+="-e dhcp "
           fi
 
           if [ ${provisionSubscribers} = false ] ; then
-            ROBOT_PARAMS+="-e provision -e flow-after"
+            ROBOT_PARAMS+="-e provision -e flow-after "
           fi
 
           if [ ${withFlows} = false ] ; then
-            ROBOT_PARAMS+="-i setup -i activation"
+            ROBOT_PARAMS+="-i setup -i activation "
           fi
 
           mkdir -p $WORKSPACE/RobotLogs
