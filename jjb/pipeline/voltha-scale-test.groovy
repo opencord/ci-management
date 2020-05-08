@@ -350,7 +350,7 @@ pipeline {
         kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
         kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
       '''
-      archiveArtifacts artifacts: '$WORKSPACE/kind-voltha/install-minimal.log,$WORKSPACE/execution-time.txt,$WORKSPACE/logs/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*'
     }
   }
 }
