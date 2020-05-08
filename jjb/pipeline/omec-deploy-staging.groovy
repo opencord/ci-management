@@ -36,27 +36,27 @@ pipeline {
 
   stages {
     stage('Environment Setup') {
-        steps {
-            script {
-                if (params.useProductionCluster) {
-                    dp_context = "production-edge-demo"
-                    omec_cp = "~/pod-configs/deployment-configs/aether/apps/gcp-prd/omec-cp.yaml"
-                    omec_dp = "~/pod-configs/deployment-configs/aether/apps/menlo-demo/omec-dp-cbrs.yaml"
-                    accelleran_cbrs_common = "~/pod-configs/deployment-configs/aether/apps/menlo-demo/accelleran-cbrs-common.yaml"
-                    accelleran_cbrs_cu = "~/pod-configs/deployment-configs/aether/apps/menlo-demo/accelleran-cbrs-cu.yaml"
-                    sh script: "ssh ${env.vm} 'cp ~/.kube/omec_production_config ~/.kube/config'"
-                    println "Using PRODUCTION cluster."
-                } else {
-                    dp_context = "staging-edge-onf-menlo"
-                    omec_cp = "~/pod-configs/deployment-configs/aether/apps/gcp-stg/omec-cp.yaml"
-                    omec_dp = "~/pod-configs/deployment-configs/aether/apps/menlo-stg/omec-dp.yaml"
-                    accelleran_cbrs_common = "~/pod-configs/deployment-configs/aether/apps/menlo-stg/accelleran-cbrs-common.yaml"
-                    accelleran_cbrs_cu = "~/pod-configs/deployment-configs/aether/apps/menlo-stg/accelleran-cbrs-cu.yaml"
-                    sh script: "ssh ${env.vm} 'cp ~/.kube/omec_staging_config ~/.kube/config'"
-                    println "Using STAGING cluster."
-                }
-            }
+      steps {
+        script {
+          if (params.useProductionCluster) {
+            dp_context = "production-edge-demo"
+            omec_cp = "~/pod-configs/deployment-configs/aether/apps/gcp-prd/omec-cp.yaml"
+            omec_dp = "~/pod-configs/deployment-configs/aether/apps/menlo-demo/omec-dp-cbrs.yaml"
+            accelleran_cbrs_common = "~/pod-configs/deployment-configs/aether/apps/menlo-demo/accelleran-cbrs-common.yaml"
+            accelleran_cbrs_cu = "~/pod-configs/deployment-configs/aether/apps/menlo-demo/accelleran-cbrs-cu.yaml"
+            sh script: "ssh ${env.vm} 'cp ~/.kube/omec_production_config ~/.kube/config'"
+            println "Using PRODUCTION cluster."
+          } else {
+            dp_context = "staging-edge-onf-menlo"
+            omec_cp = "~/pod-configs/deployment-configs/aether/apps/gcp-stg/omec-cp.yaml"
+            omec_dp = "~/pod-configs/deployment-configs/aether/apps/menlo-stg/omec-dp.yaml"
+            accelleran_cbrs_common = "~/pod-configs/deployment-configs/aether/apps/menlo-stg/accelleran-cbrs-common.yaml"
+            accelleran_cbrs_cu = "~/pod-configs/deployment-configs/aether/apps/menlo-stg/accelleran-cbrs-cu.yaml"
+            sh script: "ssh ${env.vm} 'cp ~/.kube/omec_staging_config ~/.kube/config'"
+            println "Using STAGING cluster."
+          }
         }
+      }
     }
     stage('Reset Staging') {
       steps {
@@ -212,6 +212,20 @@ pipeline {
                          --for=condition=Ready \
                          --timeout=300s \
                          pod -l app=accelleran-cbrs-cu
+            '
+          """
+      }
+    }
+
+    stage('Wait for Pods') {
+      steps {
+        sh label: 'Wait for pods', script: """
+          ssh ${env.vm} '
+              kubectl config use-context staging-central-gcp
+              ~/helm-charts/scripts/wait_for_pods.sh omec
+
+              kubectl config use-context ${dp_context}
+              ~/helm-charts/scripts/wait_for_pods.sh omec
             '
           """
       }
