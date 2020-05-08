@@ -7,23 +7,7 @@
     project-name: '{name}'
 
     jobs:
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-8-16-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 16
-          ponPorts: 8
-          expectedOnus: 128
-          BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-8-32-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 32
-          ponPorts: 8
-          expectedOnus: 256
-          BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
+      - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-10-20-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -31,15 +15,7 @@
           ponPorts: 10
           expectedOnus: 200
           BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-4-32-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 32
-          ponPorts: 4
-          expectedOnus: 128
-          BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
+      - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-16-32-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -49,17 +25,7 @@
           BBSIMdelay: 200
           # multi-adapter
           extraHelmFlags: "--set replicas.adapter_open_onu=8"
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-16-32-20s'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 32
-          ponPorts: 16
-          expectedOnus: 512
-          BBSIMdelay: 20000
-          # multi-adapter
-          extraHelmFlags: "--set replicas.adapter_open_onu=8"
-      - 'voltha-scale-measurements-periodic':
+      - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-16-64-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -69,33 +35,7 @@
           BBSIMdelay: 200
           # multi-adapter
           extraHelmFlags: "--set replicas.adapter_open_onu=8"
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-16-64-20s'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 64
-          ponPorts: 16
-          expectedOnus: 1024
-          BBSIMdelay: 20000
-          # multi-adapter
-          extraHelmFlags: "--set replicas.adapter_open_onu=8"
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-4-64-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 64
-          ponPorts: 4
-          expectedOnus: 256
-          BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-1-128-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 128
-          ponPorts: 1
-          expectedOnus: 128
-          BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
+      - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-1-64-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -103,19 +43,7 @@
           ponPorts: 1
           expectedOnus: 64
           BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-1-1-200ms-complete'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 1
-          ponPorts: 1
-          expectedOnus: 1
-          BBSIMdelay: 200
-          withOnosApps: true
-          flowStatInterval: 5
-          portsStatInterval: 5
-          expectedFlows: 2
-      - 'voltha-scale-measurements-periodic':
+      - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-2-OLTs-10-10-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -124,7 +52,7 @@
           numOfBbsim: 2
           expectedOnus: 200
           BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic':
+      - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-10-20-200ms-with-flows'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -138,37 +66,163 @@
           expectedFlows: 201
           bbsimAuth: false
           bbsimDhcp: false
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-4-16-200ms-complete'
+
+      # new Jobs
+      # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
+      # needed for comparison with the openonu-go adapter
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-2-32-activation-no-mib'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          onuPerPon: 16
-          ponPorts: 4
-          expectedOnus: 64
-          BBSIMdelay: 200
-          withOnosApps: true
-          flowStatInterval: 5
-          portsStatInterval: 5
-          expectedFlows: 65
-      - 'voltha-scale-measurements-periodic':
-          name: 'voltha-scale-measurements-periodic-10-20-200ms-complete'
+          olts: 1
+          pons: 2
+          onus: 32
+          withFlows: false
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          withMibTemplate: false
+
+      # jobs for 200 ONUs with a single openonu-adapter
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-10-20-activation'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          onuPerPon: 20
-          ponPorts: 10
-          expectedOnus: 200
-          BBSIMdelay: 200
-          withOnosApps: true
-          flowStatInterval: 5
-          portsStatInterval: 5
-          expectedFlows: 201
-          extraHelmFlags: "--set replicas.adapter_open_onu=2"
+          olts: 1
+          pons: 10
+          onus: 20
+          withFlows: false
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-10-20-flows'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 10
+          onus: 20
+          withFlows: true
+          provisionSubscribers: false
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-10-20-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 10
+          onus: 20
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+
+      # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-16-32-activation'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: false
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-16-32-flows'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: false
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-16-32-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+
+      # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-2-16-32-activation'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: false
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-2-16-32-flows'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: false
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-2-16-32-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+
+      # development pipeline
       - 'voltha-scale-measurements-dev':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
 
 - job-template:
-    id: 'voltha-scale-measurements-periodic'
+    id: 'voltha-scale-measurements-periodic-legacy'
     name: '{name}'
     pipeline-script: 'voltha-scale-measurements.groovy'
 
@@ -363,6 +417,191 @@
                  {time-trigger}
 
 - job-template:
+    id: 'voltha-scale-measurements'
+    name: '{name}'
+    pipeline-script: 'voltha-scale-test.groovy'
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/voltha-scale.yaml  <br /><br />
+      Using pipeline {pipeline-script} <br/><br/>
+      Scale measurements for VOLTHA 2.x
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    # default values
+    bbsimImg: voltha/bbsim:master
+    rwCoreImg: voltha/voltha-rw-core:master
+    ofAgentImg: voltha/voltha-ofagent-go:master
+    openoltAdapterImg:  voltha/voltha-openolt-adapter:master
+    openonuAdapterImg: voltha/voltha-openonu-adapter:master
+    onosImg: voltha/voltha-onos:master
+
+    bbsimChart: onf/bbsim
+    volthaChart: onf/voltha
+    openoltAdapterChart: onf/voltha-adapter-openolt
+    openonuAdapterChart: onf/voltha-adapter-openonu
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: logLevel
+          default: 'WARN'
+          description: 'Log level for all the components'
+
+      - string:
+          name: onus
+          default: 2
+          description: 'Number of ONUs to provision'
+
+      - string:
+          name: pons
+          default: 2
+          description: 'Number of PONs to provision'
+
+      - string:
+          name: olts
+          default: 2
+          description: 'How many BBSim instances to run'
+
+      - string:
+          name: workflow
+          default: att
+          description: 'Which workflow are we testing (att, dt, tt)'
+
+      - bool:
+          name: withFlows
+          default: false
+          description: 'Wheter to push flows from ONOS'
+
+      - bool:
+          name: provisionSubscribers
+          default: false
+          description: 'Wheter to provision subscribers durint the tests'
+
+      - bool:
+          name: withEapol
+          default: true
+          description: 'Wheter EAPOL is enabled for the test'
+
+      - bool:
+          name: withDhcp
+          default: true
+          description: 'Wheter DHCP is enabled for the test'
+
+      - bool:
+          name: withIgmp
+          default: false
+          description: 'Wheter IGMP is enabled for the test'
+
+      - bool:
+          name: withLLDP
+          default: false
+          description: 'Wheter Link Discovery is enabled for the test'
+
+      - bool:
+          name: withMibTemplate
+          default: true
+          description: 'Option to trigger MIB template command'
+
+      - bool:
+          name: withMonitoring
+          default: true
+          description: 'Option to install Prometheus'
+
+      - string:
+          name: openonuAdapterReplicas
+          default: 1
+          description: 'How many OpenONU adapter instances to run'
+
+      - string:
+          name: onosReplicas
+          default: 1
+          description: 'How many ONOSes instances to run'
+
+      - string:
+          name: atomixReplicas
+          default: 0
+          description: 'How many Atomix instances to run'
+
+      - string:
+          name: bbsimImg
+          default: '{bbsimImg}'
+          description: 'Custom image selection for BBSIM (repo:tag)'
+
+      - string:
+          name: bbsimChart
+          default: '{bbsimChart}'
+          description: 'BBSim chart name (or location on file system)'
+
+      - string:
+          name: rwCoreImg
+          default: '{rwCoreImg}'
+          description: 'Custom image selection for VOLTHA (repo:tag)'
+
+      - string:
+          name: ofAgentImg
+          default: '{ofAgentImg}'
+          description: 'Custom image selection for OfAgent (repo:tag), only supports the go version'
+
+      - string:
+          name: volthaChart
+          default: '{volthaChart}'
+          description: 'VOLTHA chart name (or location on file system)'
+
+      - string:
+          name: openoltAdapterImg
+          default: '{openoltAdapterImg}'
+          description: 'Custom image selection for Openolt Adapter (repo:tag)'
+
+      - string:
+          name: openoltAdapterChart
+          default: '{openoltAdapterChart}'
+          description: 'OpenOLT chart name (or location on file system)'
+
+      - string:
+          name: openonuAdapterImg
+          default: '{openonuAdapterImg}'
+          description: 'Custom image selection for Openonu Adapter (repo:tag)'
+
+      - string:
+          name: openonuAdapterChart
+          default: '{openonuAdapterChart}'
+          description: 'OpenONU chart name (or location on file system)'
+
+      - string:
+          name: onosImg
+          default: '{onosImg}'
+          description: 'Custom image selection for Openonu Adapter (repo:tag)'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: ''
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+    project-type: pipeline
+    concurrent: false
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
+
+- job-template:
     id: 'voltha-scale-measurements-dev'
     name: '{name}'
     pipeline-script: 'voltha-scale-test.groovy'
@@ -542,8 +781,3 @@
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
-
-    triggers:
-      - timed: |
-                 TZ=America/Los_Angeles
-                 "H H/1 * * *"
