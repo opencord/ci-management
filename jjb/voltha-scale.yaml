@@ -450,6 +450,22 @@
     openoltAdapterChart: onf/voltha-adapter-openolt
     openonuAdapterChart: onf/voltha-adapter-openonu
 
+    olts: 2
+    pons: 2
+    onus: 2
+    workflow: att
+    withFlows: false
+    provisionSubscribers: false
+    withEapol: true
+    withDhcp: true
+    withIgmp: false
+    withLLDP: false
+    withMibTemplate: true
+    withMonitoring: true
+    openonuAdapterReplicas: 1
+    onosReplicas: 1
+    atomixReplicas: 0
+
     parameters:
       - string:
           name: buildNode
@@ -463,77 +479,77 @@
 
       - string:
           name: onus
-          default: 2
+          default: '{onus}'
           description: 'Number of ONUs to provision'
 
       - string:
           name: pons
-          default: 2
+          default: '{pons}'
           description: 'Number of PONs to provision'
 
       - string:
           name: olts
-          default: 2
+          default: '{olts}'
           description: 'How many BBSim instances to run'
 
       - string:
           name: workflow
-          default: att
+          default: '{workflow}'
           description: 'Which workflow are we testing (att, dt, tt)'
 
       - bool:
           name: withFlows
-          default: false
+          default: '{withFlows}'
           description: 'Wheter to push flows from ONOS'
 
       - bool:
           name: provisionSubscribers
-          default: false
+          default: '{provisionSubscribers}'
           description: 'Wheter to provision subscribers durint the tests'
 
       - bool:
           name: withEapol
-          default: true
+          default: '{withEapol}'
           description: 'Wheter EAPOL is enabled for the test'
 
       - bool:
           name: withDhcp
-          default: true
+          default: '{withDhcp}'
           description: 'Wheter DHCP is enabled for the test'
 
       - bool:
           name: withIgmp
-          default: false
+          default: '{withIgmp}'
           description: 'Wheter IGMP is enabled for the test'
 
       - bool:
           name: withLLDP
-          default: false
+          default: '{withLLDP}'
           description: 'Wheter Link Discovery is enabled for the test'
 
       - bool:
           name: withMibTemplate
-          default: true
+          default: '{withMibTemplate}'
           description: 'Option to trigger MIB template command'
 
       - bool:
           name: withMonitoring
-          default: true
+          default: '{withMonitoring}'
           description: 'Option to install Prometheus'
 
       - string:
           name: openonuAdapterReplicas
-          default: 1
+          default: '{openonuAdapterReplicas}'
           description: 'How many OpenONU adapter instances to run'
 
       - string:
           name: onosReplicas
-          default: 1
+          default: '{onosReplicas}'
           description: 'How many ONOSes instances to run'
 
       - string:
           name: atomixReplicas
-          default: 0
+          default: '{atomixReplicas}'
           description: 'How many Atomix instances to run'
 
       - string:
