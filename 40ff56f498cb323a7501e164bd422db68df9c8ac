@@ -22,6 +22,30 @@
       "revId": "40ff56f498cb323a7501e164bd422db68df9c8ac",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3f1a33e3_021f8d92",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-05-11T15:35:41Z",
+      "side": 1,
+      "message": "It appears to be so in every pipeline. I believe the outcome is actually established by passThreshold: 100 later in the publishing stage",
+      "parentUuid": "c451b725_5bd1cc3a",
+      "range": {
+        "startLine": 138,
+        "startChar": 66,
+        "endLine": 138,
+        "endChar": 73
+      },
+      "revId": "40ff56f498cb323a7501e164bd422db68df9c8ac",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
