@@ -54,6 +54,8 @@ pipeline {
     NUM_OF_OPENONU="${openonuAdapterReplicas}"
     NUM_OF_ONOS="${onosReplicas}"
     NUM_OF_ATOMIX="${atomixReplicas}"
+    WITH_PPROF="${withProfiling}"
+    EXTRA_HELM_FLAGS="${extraHelmFlags}"
 
     VOLTHA_CHART="${volthaChart}"
     VOLTHA_BBSIM_CHART="${bbsimChart}"
@@ -64,19 +66,21 @@ pipeline {
   stages {
     stage ('Cleanup') {
       steps {
-        sh returnStdout: false, script: """
-        test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
+        timeout(time: 11, unit: 'MINUTES') {
+          sh returnStdout: false, script: """
+            test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
-        for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
-        do
-            echo "Purging chart: \${hchart}"
-            helm delete --purge "\${hchart}"
-        done
-        bash /home/cord/voltha-scale/wait_for_pods.sh
+            for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
+            do
+                echo "Purging chart: \${hchart}"
+                helm delete --purge "\${hchart}"
+            done
+            bash /home/cord/voltha-scale/wait_for_pods.sh
 
-        cd $WORKSPACE
-        rm -rf $WORKSPACE/*
-        """
+            cd $WORKSPACE
+            rm -rf $WORKSPACE/*
+          """
+        }
       }
     }
     stage('Clone kind-voltha') {
@@ -211,6 +215,30 @@ pipeline {
     }
     stage('Run Test') {
       steps {
+        sh '''
+          mkdir -p $WORKSPACE/RobotLogs
+          cd $WORKSPACE/voltha-system-tests
+          make vst_venv
+        '''
+        sh '''
+          if [ ${withProfiling} = true ] ; then
+            mkdir -p $WORKSPACE/logs/pprof
+
+            #Creating Python script for ONU Detection
+            cat << EOF > $WORKSPACE/pprof.sh
+i=0
+while [[ true ]]; do
+  ((i++))
+  go tool pprof -png http://127.0.0.1:6060/debug/pprof/heap > $WORKSPACE/logs/pprof/rw-core-heap-\\$i.png
+  go tool pprof -png http://127.0.0.1:6061/debug/pprof/heap > $WORKSPACE/logs/pprof/openolt-heap-\\$i.png
+  sleep 10
+done
+EOF
+
+            _TAG="pprof"
+            _TAG=$_TAG bash $WORKSPACE/pprof.sh &
+          fi
+        '''
         timeout(time: 11, unit: 'MINUTES') {
           sh '''
             ROBOT_PARAMS="-v olt:${olts} \
@@ -239,9 +267,7 @@ pipeline {
               ROBOT_PARAMS+="-i setup -i activation "
             fi
 
-            mkdir -p $WORKSPACE/RobotLogs
-            cd voltha-system-tests
-            make vst_venv
+            cd $WORKSPACE/voltha-system-tests
             source ./vst_venv/bin/activate
             robot -d $WORKSPACE/RobotLogs \
             $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
@@ -262,6 +288,18 @@ pipeline {
   }
   post {
     always {
+      sh '''
+        if [ ${withProfiling} = true ] ; then
+          _TAG="pprof"
+          P_IDS="$(ps e -ww -A | grep "_TAG=$_TAG" | grep -v grep | awk '{print $1}')"
+          if [ -n "$P_IDS" ]; then
+            echo $P_IDS
+            for P_ID in $P_IDS; do
+              kill -9 $P_ID
+            done
+          fi
+        fi
+      '''
       plot([
         csvFileName: 'scale-test.csv',
         csvSeries: [
@@ -354,7 +392,7 @@ pipeline {
         kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
         kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*.png'
     }
   }
 }
