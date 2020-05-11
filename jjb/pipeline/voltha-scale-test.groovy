@@ -37,7 +37,7 @@ pipeline {
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
     WITH_KAFKA="kafka.default.svc.cluster.local"
-    WITH_ETCD="external"
+    WITH_ETCD="etcd-cluster-client.default.svc.cluster.local"
 
     // install everything in the default namespace
     VOLTHA_NS="default"
@@ -116,10 +116,12 @@ pipeline {
       }
     }
     stage('Deploy common infrastructure') {
-      // includes monitoring, kafka
+      // includes monitoring, kafka, etcd
       steps {
         sh '''
         helm install -n kafka incubator/kafka --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
+
+        helm install --set clusterName=etcd-cluster --set autoCompactionRetention=1 --set clusterSize=3 --set defaults.log_level=WARN --namespace default -n etcd-cluster onf/voltha-etcd-cluster
 
         if [ ${withMonitoring} = true ] ; then
           helm install -n nem-monitoring cord/nem-monitoring \
