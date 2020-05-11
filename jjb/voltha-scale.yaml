@@ -7,7 +7,6 @@
     project-name: '{name}'
 
     jobs:
-      # new Jobs
       # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
       # needed for comparison with the openonu-go adapter
       - 'voltha-scale-measurements':
@@ -61,6 +60,20 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-10-20-subscribers-profiled'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 10
+          onus: 20
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          withProfiling: true
+          extraHelmFlags: '--set profiler.enabled=true '
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS
       - 'voltha-scale-measurements':
@@ -207,9 +220,11 @@
     withLLDP: false
     withMibTemplate: true
     withMonitoring: true
+    withProfiling: false
     openonuAdapterReplicas: 1
     onosReplicas: 1
     atomixReplicas: 0
+    extraHelmFlags: ''
 
     parameters:
       - string:
@@ -281,6 +296,16 @@
           name: withMonitoring
           default: '{withMonitoring}'
           description: 'Option to install Prometheus'
+
+      - bool:
+          name: withProfiling
+          default: '{withProfiling}'
+          description: 'Option to collect profiling informations from rw-core and openolt (note that the appropriate -profile images needs to be used)'
+
+      - string:
+          name: extraHelmFlags
+          default: '{extraHelmFlags}'
+          description: 'Any extra helm parameters you want (passed to every helm install command)'
 
       - string:
           name: openonuAdapterReplicas
@@ -466,6 +491,16 @@
           name: withMonitoring
           default: true
           description: 'Option to install Prometheus'
+
+      - bool:
+          name: withProfiling
+          default: false
+          description: 'Option to collect profiling informations from rw-core and openolt (note that the appropriate -profile images needs to be used)'
+
+      - string:
+          name: extraHelmFlags
+          default: ' '
+          description: 'Any extra helm parameters you want (passed to every helm install command)'
 
       - string:
           name: openonuAdapterReplicas
