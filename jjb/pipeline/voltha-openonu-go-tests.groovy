@@ -147,6 +147,19 @@ pipeline {
         '''
       }
     }
+
+    stage('Sanity Test'){
+      steps {
+        sh '''
+        mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           export TARGET=openonu-go-adapter-test
+
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
+        '''
+      }
+    }
+
   }
 
   post {
