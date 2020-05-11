@@ -16,41 +16,12 @@
           expectedOnus: 200
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic-legacy':
-          name: 'voltha-scale-measurements-periodic-16-32-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 32
-          ponPorts: 16
-          expectedOnus: 512
-          BBSIMdelay: 200
-          # multi-adapter
-          extraHelmFlags: "--set replicas.adapter_open_onu=8"
-      - 'voltha-scale-measurements-periodic-legacy':
-          name: 'voltha-scale-measurements-periodic-16-64-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 64
-          ponPorts: 16
-          expectedOnus: 1024
-          BBSIMdelay: 200
-          # multi-adapter
-          extraHelmFlags: "--set replicas.adapter_open_onu=8"
-      - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-1-64-200ms'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           onuPerPon: 64
           ponPorts: 1
           expectedOnus: 64
-          BBSIMdelay: 200
-      - 'voltha-scale-measurements-periodic-legacy':
-          name: 'voltha-scale-measurements-periodic-2-OLTs-10-10-200ms'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          onuPerPon: 10
-          ponPorts: 10
-          numOfBbsim: 2
-          expectedOnus: 200
           BBSIMdelay: 200
       - 'voltha-scale-measurements-periodic-legacy':
           name: 'voltha-scale-measurements-periodic-10-20-200ms-with-flows'

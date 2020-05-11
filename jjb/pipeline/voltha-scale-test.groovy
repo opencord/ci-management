@@ -209,40 +209,42 @@ pipeline {
     }
     stage('Run Test') {
       steps {
-        sh '''
-          ROBOT_PARAMS="-v olt:${olts} \
-            -v pon:${pons} \
-            -v onu:${onus} \
-            -v workflow:${workflow} \
-            -v withEapol:${withEapol} \
-            -v withDhcp:${withDhcp} \
-            -v withIgmp:${withIgmp} \
-            --noncritical non-critical \
-            -e teardown "
+        timeout(time: 11, unit: 'MINUTES') {
+          sh '''
+            ROBOT_PARAMS="-v olt:${olts} \
+              -v pon:${pons} \
+              -v onu:${onus} \
+              -v workflow:${workflow} \
+              -v withEapol:${withEapol} \
+              -v withDhcp:${withDhcp} \
+              -v withIgmp:${withIgmp} \
+              --noncritical non-critical \
+              -e teardown "
 
-          if [ ${withEapol} = false ] ; then
-            ROBOT_PARAMS+="-e authentication "
-          fi
+            if [ ${withEapol} = false ] ; then
+              ROBOT_PARAMS+="-e authentication "
+            fi
 
-          if [ ${withDhcp} = false ] ; then
-            ROBOT_PARAMS+="-e dhcp "
-          fi
+            if [ ${withDhcp} = false ] ; then
+              ROBOT_PARAMS+="-e dhcp "
+            fi
 
-          if [ ${provisionSubscribers} = false ] ; then
-            ROBOT_PARAMS+="-e provision -e flow-after "
-          fi
+            if [ ${provisionSubscribers} = false ] ; then
+              ROBOT_PARAMS+="-e provision -e flow-after "
+            fi
 
-          if [ ${withFlows} = false ] ; then
-            ROBOT_PARAMS+="-i setup -i activation "
-          fi
+            if [ ${withFlows} = false ] ; then
+              ROBOT_PARAMS+="-i setup -i activation "
+            fi
 
-          mkdir -p $WORKSPACE/RobotLogs
-          cd voltha-system-tests
-          make vst_venv
-          source ./vst_venv/bin/activate
-          robot -d $WORKSPACE/RobotLogs \
-          $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
-        '''
+            mkdir -p $WORKSPACE/RobotLogs
+            cd voltha-system-tests
+            make vst_venv
+            source ./vst_venv/bin/activate
+            robot -d $WORKSPACE/RobotLogs \
+            $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+          '''
+        }
       }
     }
     stage('Collect results') {
