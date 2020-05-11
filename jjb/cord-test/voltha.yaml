@@ -22,6 +22,7 @@
           config-pod: 'flex-ocp-cord'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
@@ -345,6 +346,26 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
+
+      # Infosys pod with olt/onu - Manual BUILD/TEST job
+      - 'build_pod_manual':
+          build-node: 'infosys-test-pod'
+          config-pod: 'infosys-pod'
+          release: 'master'
+          branch: 'master'
+          num-of-openonu: '2'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
+          profile: 'Default'
+      # infosys test job - Manual Job
+      - 'build_pod_test':
+          build-node: 'infosys-test-pod'
+          config-pod: 'infosys-pod'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Berlin pod with olt/onu - master versions Default tech profile and timer based job
       - 'build_voltha_pod_release':

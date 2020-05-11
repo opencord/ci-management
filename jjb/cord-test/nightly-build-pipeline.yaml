@@ -116,6 +116,25 @@
           default: '16'
           description: "Onus per PonPort"
 
+      - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Installs and uses the specified work flow on the POD'
+
+      - string:
+          name: NumOfOpenOnu
+          default: '{num-of-openonu}'
+          description: 'Installs the specified Number of OpenOnu Adapters'
+
+      - string:
+          name: NumOfOnos
+          default: '{num-of-onos}'
+          description: 'Installs the specified Number of ONOS instances'
+
+      - string:
+          name: NumOfAtomix
+          default: '{num-of-atomix}'
+          description: 'Installs the specified Number of Atomix Instances'
     concurrent: true
 
     pipeline-scm:
