@@ -108,7 +108,7 @@ pipeline {
         ./log-combine.sh > /dev/null &
 
         mkdir -p $ROBOT_LOGS_DIR
-        export ROBOT_MISC_ARGS="--removekeywords wuks -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        export ROBOT_MISC_ARGS="--removekeywords wuks -i sanity -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
@@ -128,6 +128,21 @@ pipeline {
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         fi
+        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        """
+      }
+    }
+
+    stage('Dataplane Tests') {
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
+        ROBOT_FILE="Voltha_PODTests.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DataplaneTests"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i dataplane -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
