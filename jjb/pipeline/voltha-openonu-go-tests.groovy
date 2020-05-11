@@ -128,25 +128,15 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         sh '''
-          RUNNING=$(kubectl get pods --all-namespaces | grep open-onu | grep 1/1 | wc -l)
-          if [ $RUNNING -eq 1 ]; then
-            echo "Openonu adapter is correctly deployed"
-          else
-            echo "Openonu adapter is not running!"
-            exit 1
-          fi
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           export TARGET=openonu-go-adapter-test
 
-          ADAPTER=$(voltctl adapter list | grep brcm_openomci_onu | wc -l)
-          if [ $ADAPTER -eq 1 ]; then
-            echo "Openonu adapter is correctly registered with VOLTHA core"
-          else
-            echo "Openonu adapter is NOT registered with VOLTHA core"
-            exit 1
-          fi
-          # TODO once we have a test for the openonu golang adapter replace the bash check
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
         '''
       }
     }
+
   }
 
   post {
