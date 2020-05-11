@@ -126,27 +126,20 @@ pipeline {
     }
 
     stage('Run E2E Tests') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go"
+      }
       steps {
         sh '''
-          RUNNING=$(kubectl get pods --all-namespaces | grep open-onu | grep 1/1 | wc -l)
-          if [ $RUNNING -eq 1 ]; then
-            echo "Openonu adapter is correctly deployed"
-          else
-            echo "Openonu adapter is not running!"
-            exit 1
-          fi
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           export TARGET=openonu-go-adapter-test
 
-          ADAPTER=$(voltctl adapter list | grep brcm_openomci_onu | wc -l)
-          if [ $ADAPTER -eq 1 ]; then
-            echo "Openonu adapter is correctly registered with VOLTHA core"
-          else
-            echo "Openonu adapter is NOT registered with VOLTHA core"
-            exit 1
-          fi
-          # TODO once we have a test for the openonu golang adapter replace the bash check
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
         '''
       }
     }
+
   }
 
   post {
@@ -198,6 +191,15 @@ pipeline {
          cd $WORKSPACE/voltha/kind-voltha
 	       WAIT_ON_DOWN=y ./voltha down
          '''
+         step([$class: 'RobotPublisher',
+            disableArchiveOutput: false,
+            logFileName: 'RobotLogs/*/log*.html',
+            otherFiles: '',
+            outputFileName: 'RobotLogs/*/output*.xml',
+            outputPath: '.',
+            passThreshold: 100,
+            reportFileName: 'RobotLogs/*/report*.html',
+            unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log,*.gz'
     }
   }
