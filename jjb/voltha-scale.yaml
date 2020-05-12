@@ -74,6 +74,8 @@
           withIgmp: false
           withProfiling: true
           extraHelmFlags: '--set profiler.enabled=true '
+          rwCoreImg: voltha/voltha-rw-core:master-profile
+          openoltAdapterImg:  voltha/voltha-openolt-adapter:master-profile
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS
       - 'voltha-scale-measurements':
