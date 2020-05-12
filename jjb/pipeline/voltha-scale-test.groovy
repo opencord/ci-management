@@ -231,13 +231,13 @@ while [[ true ]]; do
   ((i++))
   go tool pprof -png http://127.0.0.1:6060/debug/pprof/heap > $WORKSPACE/logs/pprof/rw-core-heap-\\$i.png
   go tool pprof -png http://127.0.0.1:6060/debug/pprof/goroutine > $WORKSPACE/logs/pprof/rw-core-goroutine-\\$i.png
-  go tool pprof -png http://127.0.0.1:6060/debug/pprof/block > $WORKSPACE/logs/pprof/rw-core-block-\\$i.png
-  go tool pprof -png http://127.0.0.1:6060/debug/pprof/mutex > $WORKSPACE/logs/pprof/rw-core-mutex-\\$i.png
+  go tool pprof --seconds 10 -png http://127.0.0.1:6060/debug/pprof/profile > $WORKSPACE/logs/pprof/rw-core-profile-\\$i.png
+  curl -o $WORKSPACE/logs/pprof/rw-core-profile-\\$i.pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=10
 
   go tool pprof -png http://127.0.0.1:6061/debug/pprof/heap > $WORKSPACE/logs/pprof/openolt-heap-\\$i.png
   go tool pprof -png http://127.0.0.1:6061/debug/pprof/goroutine > $WORKSPACE/logs/pprof/openolt-goroutine-\\$i.png
-  go tool pprof -png http://127.0.0.1:6061/debug/pprof/block > $WORKSPACE/logs/pprof/openolt-block-\\$i.png
-  go tool pprof -png http://127.0.0.1:6061/debug/pprof/mutex > $WORKSPACE/logs/pprof/openolt-mutex-\\$i.png
+  go tool pprof --seconds 10 -png http://127.0.0.1:6061/debug/pprof/profile > $WORKSPACE/logs/pprof/openolt-profile-\\$i.png
+  curl -o $WORKSPACE/logs/pprof/openolt-profile-\\$i.pprof http://127.0.0.1:6061/debug/pprof/profile?seconds=10
 
   sleep 10
 done
@@ -305,26 +305,6 @@ EOF
             done
           fi
         fi
-      '''
-      // get some data from pprof
-      sh '''
-      if [ ${withProfiling} = true ] ; then
-        curl -o $WORKSPACE/logs/pprof/rw-core-goroutine.pprof http://127.0.0.1:6060/debug/pprof/goroutine
-        curl -o $WORKSPACE/logs/pprof/rw-core-heap.pprof http://127.0.0.1:6060/debug/pprof/heap
-        curl -o $WORKSPACE/logs/pprof/rw-core-threadcreate.pprof http://127.0.0.1:6060/debug/pprof/threadcreate
-        curl -o $WORKSPACE/logs/pprof/rw-core-block.pprof http://127.0.0.1:6060/debug/pprof/block
-        curl -o $WORKSPACE/logs/pprof/rw-core-mutex.pprof http://127.0.0.1:6060/debug/pprof/mutex
-        curl -o $WORKSPACE/logs/pprof/rw-core-profile.pprof http://127.0.0.1:6060/debug/pprof/profile
-        curl -o $WORKSPACE/logs/pprof/rw-core-trace.trace http://127.0.0.1:6060/debug/pprof/trace?minutes=10
-
-        curl -o $WORKSPACE/logs/pprof/openolt-goroutine.pprof http://127.0.0.1:6061/debug/pprof/goroutine
-        curl -o $WORKSPACE/logs/pprof/openolt-heap.pprof http://127.0.0.1:6061/debug/pprof/heap
-        curl -o $WORKSPACE/logs/pprof/openolt-threadcreate.pprof http://127.0.0.1:6061/debug/pprof/threadcreate
-        curl -o $WORKSPACE/logs/pprof/openolt-block.pprof http://127.0.0.1:6061/debug/pprof/block
-        curl -o $WORKSPACE/logs/pprof/openolt-mutex.pprof http://127.0.0.1:6061/debug/pprof/mutex
-        curl -o $WORKSPACE/logs/pprof/openolt-profile.pprof http://127.0.0.1:6061/debug/pprof/profile
-        curl -o $WORKSPACE/logs/pprof/openolt-trace.trace http://127.0.0.1:6061/debug/pprof/trace?minutes=10
-      fi
       '''
       plot([
         csvFileName: 'scale-test.csv',
