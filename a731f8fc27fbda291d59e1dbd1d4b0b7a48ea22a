@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "980ab339_ccc7c3b0",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-05-12T15:16:45Z",
+      "side": 1,
+      "message": "why two sh scripts ?",
+      "range": {
+        "startLine": 218,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 14
+      },
+      "revId": "a731f8fc27fbda291d59e1dbd1d4b0b7a48ea22a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0242ed4d_6102e552",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-05-12T15:16:45Z",
+      "side": 1,
+      "message": "probably better formatting is needed",
+      "range": {
+        "startLine": 219,
+        "startChar": 0,
+        "endLine": 248,
+        "endChar": 12
+      },
+      "revId": "a731f8fc27fbda291d59e1dbd1d4b0b7a48ea22a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "93a6c066_b3679b94",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 223,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-05-12T15:16:45Z",
+      "side": 1,
+      "message": "if the default is false, why add it here ?",
+      "range": {
+        "startLine": 223,
+        "startChar": 0,
+        "endLine": 223,
+        "endChar": 24
+      },
+      "revId": "a731f8fc27fbda291d59e1dbd1d4b0b7a48ea22a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "be7a04d0_af3c04e2",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 227,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-05-12T15:16:45Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 227,
+        "startChar": 4,
+        "endLine": 227,
+        "endChar": 22
+      },
+      "revId": "a731f8fc27fbda291d59e1dbd1d4b0b7a48ea22a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
