@@ -1,0 +1,9 @@
+Verified+1: Jenkins Jenkins <do-not-reply@opencord.org>
+Code-Review+1: HungWei Chiu <hungwei@opennetworking.org>
+Code-Review+1: Zack Williams <zdw@opennetworking.org>
+Code-Review+2: Matteo Scandolo <teo@opennetworking.org>
+Submitted-by: Matteo Scandolo <teo@opennetworking.org>
+Submitted-at: Tue, 12 May 2020 16:44:12 +0000
+Reviewed-on: https://gerrit.opencord.org/18912
+Project: ci-management
+Branch: refs/heads/master
