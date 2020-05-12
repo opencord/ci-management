@@ -283,19 +283,17 @@ EOF
         }
       }
     }
-    stage('Collect results') {
-      steps {
-        sh '''
-          cd voltha-system-tests
-          source ./vst_venv/bin/activate
-          python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt
-          cat $WORKSPACE/execution-time.txt
-        '''
-      }
-    }
   }
   post {
     always {
+      // collect result, done in the "post" step so it's executed even in the
+      // event of a timeout in the tests
+      sh '''
+        cd voltha-system-tests
+        source ./vst_venv/bin/activate
+        python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt
+        cat $WORKSPACE/execution-time.txt
+      '''
       sh '''
         if [ ${withProfiling} = true ] ; then
           _TAG="pprof"
