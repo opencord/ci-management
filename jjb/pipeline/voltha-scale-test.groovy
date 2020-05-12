@@ -398,7 +398,7 @@ EOF
         kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
         kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*.png'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*.png,RobotLogs/*,plots/*.txt'
     }
   }
 }
