@@ -226,10 +226,14 @@ pipeline {
             echo $PATH
             #Creating Python script for ONU Detection
             cat << EOF > $WORKSPACE/pprof.sh
+timestamp() {
+  date +"%T"
+}
+
 i=0
 while [[ true ]]; do
   ((i++))
-  ts=$(date +"%T")
+  ts=$(timestamp)
   go tool pprof -png http://127.0.0.1:6060/debug/pprof/heap > $WORKSPACE/logs/pprof/rw-core-heap-\\$i-\\$ts.png
   go tool pprof -png http://127.0.0.1:6060/debug/pprof/goroutine > $WORKSPACE/logs/pprof/rw-core-goroutine-\\$i-\\$ts.png
   curl -o $WORKSPACE/logs/pprof/rw-core-profile-\\$i-\\$ts.pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=10
