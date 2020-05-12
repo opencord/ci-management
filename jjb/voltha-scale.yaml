@@ -109,6 +109,24 @@
           onosReplicas: 3
           atomixReplicas: 3
 
+      # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-dt-measurements-1-16-32-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2-16-32-activation'
