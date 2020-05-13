@@ -244,6 +244,11 @@ while [[ true ]]; do
   curl -o $WORKSPACE/logs/pprof/openolt-profile-\\$i-\\$ts.pprof http://127.0.0.1:6061/debug/pprof/profile?seconds=10
   go tool pprof -png $WORKSPACE/logs/pprof/openolt-profile-\\$i-\\$ts.pprof > $WORKSPACE/logs/pprof/openolt-profile-\\$i-\\$ts.png
 
+  go tool pprof -png http://127.0.0.1:6062/debug/pprof/heap > $WORKSPACE/logs/pprof/ofagent-heap-\\$i-\\$ts.png
+  go tool pprof -png http://127.0.0.1:6062/debug/pprof/goroutine > $WORKSPACE/logs/pprof/ofagent-goroutine-\\$i-\\$ts.png
+  curl -o $WORKSPACE/logs/pprof/ofagent-profile-\\$i-\\$ts.pprof http://127.0.0.1:6062/debug/pprof/profile?seconds=10
+  go tool pprof -png $WORKSPACE/logs/pprof/ofagent-profile-\\$i-\\$ts.pprof > $WORKSPACE/logs/pprof/ofagent-profile-\\$i-\\$ts.png
+
   sleep 10
 done
 EOF
