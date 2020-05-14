@@ -22,6 +22,30 @@
       "revId": "9866dd6065cac1d13e327285baffa80fcdfb8f74",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fe550dd1_7a31a8b1",
+        "filename": "jjb/device-management.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000016
+      },
+      "writtenOn": "2020-05-14T20:04:52Z",
+      "side": 1,
+      "message": "triggers is higher up in the file, maybe hidden by yuor diff viewer? The first trigger is gerrit, and the second trigger is timed.",
+      "parentUuid": "7a416a7e_9a2caf26",
+      "range": {
+        "startLine": 247,
+        "startChar": 4,
+        "endLine": 249,
+        "endChar": 31
+      },
+      "revId": "9866dd6065cac1d13e327285baffa80fcdfb8f74",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
