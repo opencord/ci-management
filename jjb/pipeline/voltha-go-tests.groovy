@@ -155,6 +155,14 @@ pipeline {
          cd $WORKSPACE
          gzip *-combined.log || true
 
+         ## Collect ONOS log
+         wget https://raw.githubusercontent.com/opennetworkinglab/onos/master/tools/package/runtime/bin/onos-diagnostics-k8s
+         wget https://raw.githubusercontent.com/opennetworkinglab/onos/master/tools/package/runtime/bin/onos-diagnostics-profile
+         chmod 755 onos-diagnostics-k8s
+         pod_name=$(kubectl get pods -lapp=onos-onos-classic -o name | cut -d '/' -f2 | tr '\n' ' ')
+         ./onos-diagnostics-k8s -k karaf ${pod_names}
+         cp /tmp/onos-diags.tar.gz $WORKSPACE/onos-diags.tar.gz
+
          ## shut down voltha but leave kind-voltha cluster
          cd $HOME/kind-voltha/
          DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
