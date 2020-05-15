@@ -46,6 +46,30 @@
       "revId": "9866dd6065cac1d13e327285baffa80fcdfb8f74",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1dfa3f4e_f5271e3f",
+        "filename": "jjb/device-management.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-05-15T00:09:18Z",
+      "side": 1,
+      "message": "true.. I missed it. Looks good",
+      "parentUuid": "fe550dd1_7a31a8b1",
+      "range": {
+        "startLine": 247,
+        "startChar": 4,
+        "endLine": 249,
+        "endChar": 31
+      },
+      "revId": "9866dd6065cac1d13e327285baffa80fcdfb8f74",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
