@@ -37,7 +37,7 @@
           withDhcp: false
           withIgmp: false
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-flows'
+          name: 'voltha-scale-measurements-1-10-20-att-flows'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -48,8 +48,9 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
+          extraHelmFlags: '--set auth=false '
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-subscribers'
+          name: 'voltha-scale-measurements-1-10-20-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -61,7 +62,7 @@
           withDhcp: true
           withIgmp: false
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-subscribers-profiled'
+          name: 'voltha-scale-measurements-1-10-20-att-subscribers-profiled'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -77,6 +78,21 @@
           rwCoreImg: voltha/voltha-rw-core:master-profile
           openoltAdapterImg:  voltha/voltha-openolt-adapter:master-profile
           ofAgentImg: voltha/voltha-ofagent-go:master-profile
+
+      # jobs for DT with 200 ONUs with a single openonu-adapter
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-10-20-dt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 10
+          onus: 20
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS
       - 'voltha-scale-measurements':
@@ -95,7 +111,7 @@
           onosReplicas: 3
           atomixReplicas: 3
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-flows'
+          name: 'voltha-scale-measurements-1-16-32-att-flows'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -109,8 +125,9 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
+          extraHelmFlags: '--set auth=false '
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-subscribers'
+          name: 'voltha-scale-measurements-1-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -127,7 +144,7 @@
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-dt-measurements-1-16-32-subscribers'
+          name: 'voltha-scale-measurements-1-16-32-dt-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -145,6 +162,7 @@
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
+          disabled: true
           name: 'voltha-scale-measurements-2-16-32-activation'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -160,7 +178,8 @@
           onosReplicas: 3
           atomixReplicas: 3
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-2-16-32-flows'
+          disabled: true
+          name: 'voltha-scale-measurements-2-16-32-att-flows'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -174,8 +193,10 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
+          extraHelmFlags: '--set auth=false '
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-2-16-32-subscribers'
+          disabled: true
+          name: 'voltha-scale-measurements-2-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -246,6 +267,7 @@
     onosReplicas: 1
     atomixReplicas: 0
     extraHelmFlags: ''
+    onosStatInterval: 5
 
     parameters:
       - string:
@@ -342,6 +364,11 @@
           name: atomixReplicas
           default: '{atomixReplicas}'
           description: 'How many Atomix instances to run'
+
+      - string:
+          name: onosStatInterval
+          default: '{onosStatInterval}'
+          description: 'How often ONOS should poll for ports, flows and meters'
 
       - string:
           name: bbsimImg
@@ -538,6 +565,11 @@
           name: atomixReplicas
           default: 0
           description: 'How many Atomix instances to run'
+
+      - string:
+          name: onosStatInterval
+          default: 5
+          description: 'How often ONOS should poll for ports, flows and meters'
 
       - string:
           name: bbsimImg
