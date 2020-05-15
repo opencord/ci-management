@@ -410,6 +410,8 @@ EOF
         kubectl logs -l app=ofagent > $WORKSPACE/logs/voltha-ofagent-logs.logs
         kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
         kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
+        kubectl logs -l app=etcd > $WORKSPACE/logs/etcd-logs.logs
+        kubectl logs -l app=kafka > $WORKSPACE/logs/kafka-logs.logs
       '''
       archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt'
     }
