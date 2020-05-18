@@ -346,9 +346,22 @@ EOF
         passThreshold: 100,
         reportFileName: 'RobotLogs/report.html',
         unstableThreshold: 0]);
-      // count how many ONUs have been activated
+      // get all the logs from kubernetes PODs
       sh '''
         mkdir -p $WORKSPACE/logs
+        kubectl get pods -o wide > $WORKSPACE/logs/pods.txt
+        kubectl logs -l app=adapter-open-olt > $WORKSPACE/logs/open-olt-logs.logs
+        kubectl logs -l app=adapter-open-onu > $WORKSPACE/logs/open-onu-logs.logs
+        kubectl logs -l app=rw-core > $WORKSPACE/logs/voltha-rw-core-logs.logs
+        kubectl logs -l app=ofagent > $WORKSPACE/logs/voltha-ofagent-logs.logs
+        kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
+        kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
+        kubectl logs -l app=onos-onos-classic > $WORKSPACE/logs/onos-onos-classic-logs.logs
+        kubectl logs -l app=etcd > $WORKSPACE/logs/etcd-logs.logs
+        kubectl logs -l app=kafka > $WORKSPACE/logs/kafka-logs.logs
+      '''
+      // count how many ONUs have been activated
+      sh '''
         echo "#-of-ONUs" > $WORKSPACE/logs/voltha-devices-count.txt
         echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) >> $WORKSPACE/logs/voltha-devices-count.txt
       '''
@@ -385,11 +398,6 @@ EOF
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
       '''
-      // dump all the VOLTHA devices informations
-      sh '''
-        voltctl device list -o json > $WORKSPACE/logs/device-list.json
-        python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
-      '''
       // dump all the BBSim(s) ONU informations
       sh '''
       BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
@@ -405,18 +413,19 @@ EOF
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt
       '''
-      // get all the logs from kubernetes PODs
-      sh '''
-        kubectl get pods -o wide > $WORKSPACE/logs/pods.txt
-        kubectl logs -l app=adapter-open-olt > $WORKSPACE/logs/open-olt-logs.logs
-        kubectl logs -l app=adapter-open-onu > $WORKSPACE/logs/open-onu-logs.logs
-        kubectl logs -l app=rw-core > $WORKSPACE/logs/voltha-rw-core-logs.logs
-        kubectl logs -l app=ofagent > $WORKSPACE/logs/voltha-ofagent-logs.logs
-        kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
-        kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
-        kubectl logs -l app=etcd > $WORKSPACE/logs/etcd-logs.logs
-        kubectl logs -l app=kafka > $WORKSPACE/logs/kafka-logs.logs
-      '''
+      // dump all the VOLTHA devices informations
+      script {
+        try {
+          sh '''
+          voltctl device list -o json > $WORKSPACE/logs/device-list.json
+          python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
+          '''
+        } catch(e) {
+          sh '''
+          echo "Can't get device list from voltclt"
+          '''
+        }
+      }
       archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt'
     }
   }
