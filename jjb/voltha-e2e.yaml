@@ -89,24 +89,6 @@
           time-trigger: "H H/6 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-scale-test'
-          build-node: 'qct-pod4-node2'
-          code-branch: 'master'
-          make-target: scale-multi-kind
-          onus: 2
-          pons: 8
-          time-trigger: "H H/6 * * *"
-
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-scale-test-2.3'
-          build-node: 'qct-pod4-node2'
-          code-branch: 'voltha-2.3'
-          make-target: scale-multi-kind
-          onus: 2
-          pons: 8
-          time-trigger: "H H/6 * * *"
-
-      - 'voltha-periodic-test':
           name: 'periodic-voltha-alarm-test'
           build-node: 'qct-pod4-node2'
           code-branch: 'master'
