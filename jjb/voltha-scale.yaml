@@ -9,107 +9,107 @@
     jobs:
       # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
       # needed for comparison with the openonu-go adapter
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-2-32-activation-no-mib'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 2
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          withMibTemplate: false
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-2-32-activation-no-mib'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 2
+      #     onus: 32
+      #     withFlows: false
+      #     provisionSubscribers: false
+      #     withEapol: false
+      #     withDhcp: false
+      #     withIgmp: false
+      #     withMibTemplate: false
 
       # jobs for 200 ONUs with a single openonu-adapter
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-activation'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 10
-          onus: 20
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-att-flows'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 10
-          onus: 20
-          withFlows: true
-          provisionSubscribers: false
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          extraHelmFlags: '--set auth=false '
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-att-subscribers'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 10
-          onus: 20
-          withFlows: true
-          provisionSubscribers: true
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-att-subscribers-profiled'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 10
-          onus: 20
-          withFlows: true
-          provisionSubscribers: true
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          withProfiling: true
-          extraHelmFlags: '--set profiler.enabled=true '
-          rwCoreImg: voltha/voltha-rw-core:master-profile
-          openoltAdapterImg:  voltha/voltha-openolt-adapter:master-profile
-          ofAgentImg: voltha/voltha-ofagent-go:master-profile
-
-      # jobs for DT with 200 ONUs with a single openonu-adapter
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-10-20-dt-subscribers'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 10
-          onus: 20
-          withFlows: true
-          provisionSubscribers: true
-          workflow: dt
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-10-20-activation'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 10
+      #     onus: 20
+      #     withFlows: false
+      #     provisionSubscribers: false
+      #     withEapol: false
+      #     withDhcp: false
+      #     withIgmp: false
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-10-20-att-flows'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 10
+      #     onus: 20
+      #     withFlows: true
+      #     provisionSubscribers: false
+      #     withEapol: true
+      #     withDhcp: true
+      #     withIgmp: false
+      #     extraHelmFlags: '--set auth=false '
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-10-20-att-subscribers'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 10
+      #     onus: 20
+      #     withFlows: true
+      #     provisionSubscribers: true
+      #     withEapol: true
+      #     withDhcp: true
+      #     withIgmp: false
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-10-20-att-subscribers-profiled'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 10
+      #     onus: 20
+      #     withFlows: true
+      #     provisionSubscribers: true
+      #     withEapol: true
+      #     withDhcp: true
+      #     withIgmp: false
+      #     withProfiling: true
+      #     extraHelmFlags: '--set profiler.enabled=true '
+      #     rwCoreImg: voltha/voltha-rw-core:master-profile
+      #     openoltAdapterImg:  voltha/voltha-openolt-adapter:master-profile
+      #     ofAgentImg: voltha/voltha-ofagent-go:master-profile
+      #
+      # # jobs for DT with 200 ONUs with a single openonu-adapter
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-10-20-dt-subscribers'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 10
+      #     onus: 20
+      #     withFlows: true
+      #     provisionSubscribers: true
+      #     workflow: dt
+      #     withEapol: false
+      #     withDhcp: false
+      #     withIgmp: false
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-activation'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-16-32-activation'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 16
+      #     onus: 32
+      #     withFlows: false
+      #     provisionSubscribers: false
+      #     withEapol: false
+      #     withDhcp: false
+      #     withIgmp: false
+      #     openonuAdapterReplicas: 8
+      #     onosReplicas: 3
+      #     atomixReplicas: 3
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-flows'
           build-node: 'onf-pod1-head-node'
@@ -126,90 +126,90 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set auth=false '
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-att-subscribers'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-
-      # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-dt-subscribers'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          workflow: dt
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-16-32-att-subscribers'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 16
+      #     onus: 32
+      #     withFlows: true
+      #     provisionSubscribers: true
+      #     withEapol: true
+      #     withDhcp: true
+      #     withIgmp: false
+      #     openonuAdapterReplicas: 8
+      #     onosReplicas: 3
+      #     atomixReplicas: 3
+      #
+      # # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
+      # - 'voltha-scale-measurements':
+      #     name: 'voltha-scale-measurements-1-16-32-dt-subscribers'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 1
+      #     pons: 16
+      #     onus: 32
+      #     withFlows: true
+      #     provisionSubscribers: true
+      #     workflow: dt
+      #     withEapol: false
+      #     withDhcp: false
+      #     withIgmp: false
+      #     openonuAdapterReplicas: 8
+      #     onosReplicas: 3
+      #     atomixReplicas: 3
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
-      - 'voltha-scale-measurements':
-          disabled: true
-          name: 'voltha-scale-measurements-2-16-32-activation'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-      - 'voltha-scale-measurements':
-          disabled: true
-          name: 'voltha-scale-measurements-2-16-32-att-flows'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: false
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-          extraHelmFlags: '--set auth=false '
-      - 'voltha-scale-measurements':
-          disabled: true
-          name: 'voltha-scale-measurements-2-16-32-att-subscribers'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
+      # - 'voltha-scale-measurements':
+      #     disabled: true
+      #     name: 'voltha-scale-measurements-2-16-32-activation'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 2
+      #     pons: 16
+      #     onus: 32
+      #     withFlows: false
+      #     provisionSubscribers: false
+      #     withEapol: false
+      #     withDhcp: false
+      #     withIgmp: false
+      #     openonuAdapterReplicas: 8
+      #     onosReplicas: 3
+      #     atomixReplicas: 3
+      # - 'voltha-scale-measurements':
+      #     disabled: true
+      #     name: 'voltha-scale-measurements-2-16-32-att-flows'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 2
+      #     pons: 16
+      #     onus: 32
+      #     withFlows: true
+      #     provisionSubscribers: false
+      #     withEapol: true
+      #     withDhcp: true
+      #     withIgmp: false
+      #     openonuAdapterReplicas: 8
+      #     onosReplicas: 3
+      #     atomixReplicas: 3
+      #     extraHelmFlags: '--set auth=false '
+      # - 'voltha-scale-measurements':
+      #     disabled: true
+      #     name: 'voltha-scale-measurements-2-16-32-att-subscribers'
+      #     build-node: 'onf-pod1-head-node'
+      #     time-trigger: "H H/4 * * *"
+      #     olts: 2
+      #     pons: 16
+      #     onus: 32
+      #     withFlows: true
+      #     provisionSubscribers: true
+      #     withEapol: true
+      #     withDhcp: true
+      #     withIgmp: false
+      #     openonuAdapterReplicas: 8
+      #     onosReplicas: 3
+      #     atomixReplicas: 3
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
@@ -430,10 +430,10 @@
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
-    triggers:
-      - timed: |
-                 TZ=America/Los_Angeles
-                 {time-trigger}
+    # triggers:
+    #   - timed: |
+    #              TZ=America/Los_Angeles
+    #              {time-trigger}
 
 - job-template:
     id: 'voltha-scale-measurements-dev'
