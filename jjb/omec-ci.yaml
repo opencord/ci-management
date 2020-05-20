@@ -21,7 +21,7 @@
           build-node: 'omec-qa'
           c3po-branch-name: 'multiUpfs'
           ngic-branch-name: 'central-cp-multi-upfs'
-          openmme-branch-name: 'paging'
+          openmme-branch-name: 'master'
           pipeline-file: 'omec-postmerge.groovy'
 
 # for ngic-rtc
@@ -115,7 +115,7 @@
           mme-repo: 'openmme'
       - 'omec-install':
           sub-project: '{name}'
-          branch: 'paging'
+          branch: 'master'
           pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
