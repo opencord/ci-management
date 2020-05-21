@@ -962,6 +962,11 @@
           default: '{VolthaEtcdPort}'
           description: 'Localhost port that is forwarded to VOLTHA etcd'
 
+      - bool:
+          name: inBandManagement
+          default: '{in-band-management}'
+          description: 'Indicates whether POD is configured for in band management'
+
     concurrent: true
 
     pipeline-scm:
