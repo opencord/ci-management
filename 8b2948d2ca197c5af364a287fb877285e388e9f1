@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fae1d6b7_1868cefe",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 427,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-05-21T22:20:34Z",
+      "side": 1,
+      "message": "This is the total number of keys in ETCD:\n\ncurl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode \u0027query\u003detcd_debugging_mvcc_keys_total\u0027 | jq \u0027.data.result[0].value[1]\u0027\n\ncan we also get the DB size? \n\ncurl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode \u0027query\u003detcd_mvcc_db_total_size_in_bytes\u0027 | jq \u0027.data.result[0].value[1]\u0027",
+      "range": {
+        "startLine": 427,
+        "startChar": 8,
+        "endLine": 427,
+        "endChar": 82
+      },
+      "revId": "8b2948d2ca197c5af364a287fb877285e388e9f1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
