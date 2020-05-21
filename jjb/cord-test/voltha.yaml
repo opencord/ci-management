@@ -11,6 +11,7 @@
     with-kind: false
     power-switch: False
     work-flow: ''
+    in-band-management: false
     num-of-openonu: '1'
     num-of-onos: '1'
     num-of-atomix: '0'
