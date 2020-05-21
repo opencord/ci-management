@@ -125,7 +125,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set auth=false '
+          extraHelmFlags: '--set auth=false --set memoryLimit=8192Mi'
       # - 'voltha-scale-measurements':
       #     name: 'voltha-scale-measurements-1-16-32-att-subscribers'
       #     build-node: 'onf-pod1-head-node'
