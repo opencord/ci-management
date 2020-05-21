@@ -269,6 +269,11 @@ pipeline {
               olt_sw_present = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --list | grep asfvolt16 | wc -l'"
               return olt_sw_present.toInteger() == 0
             }
+            if ( params.branch == 'voltha-2.3' ) {
+              oltDebVersion = oltDebVersionVoltha23
+            } else {
+              oltDebVersion = oltDebVersionMaster
+            }
             sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --install ${oltDebVersion}'"
             waitUntil {
               olt_sw_present = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --list | grep asfvolt16 | wc -l'"
