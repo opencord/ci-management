@@ -125,7 +125,7 @@ pipeline {
         sh '''
         helm install -n kafka incubator/kafka --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
 
-        helm install --set clusterName=etcd-cluster --set autoCompactionRetention=1 --set clusterSize=3 --set defaults.log_level=WARN --namespace default -n etcd-cluster onf/voltha-etcd-cluster
+        helm install --set clusterName=etcd-cluster --set autoCompactionRetention=1 --set clusterSize=3 --set defaults.log_level=WARN --namespace default -n etcd-cluster onf/voltha-etcd-cluster ${extraHelmFlags}
 
         if [ ${withMonitoring} = true ] ; then
           helm install -n nem-monitoring cord/nem-monitoring \
