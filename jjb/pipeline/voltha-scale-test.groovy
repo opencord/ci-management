@@ -417,6 +417,17 @@ EOF
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt
       '''
+      // get cpu usage by container
+      sh '''
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod_name)' | jq . > $WORKSPACE/cpu-usage.json
+      '''
+      // collect etcd metrics
+      sh '''
+        mkdir $WORKSPACE/etcd-metrics
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_debugging_mvcc_keys_total' | jq . > $WORKSPACE/etcd-metrics/etcd-key-count.json
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=grpc_server_handled_total{grpc_code="OK",grpc_service="etcdserverpb.KV"}' | jq . > $WORKSPACE/etcd-metrics/etcd-rpc-count.json
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_debugging_mvcc_db_total_size_in_bytes' | jq '.data.result[0].value[1]' > $WORKSPACE/etcd-metrics/etcd-db-size.json
+      '''
       // dump all the VOLTHA devices informations
       script {
         try {
