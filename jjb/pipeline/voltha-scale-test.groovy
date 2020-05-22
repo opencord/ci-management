@@ -351,18 +351,24 @@ EOF
         reportFileName: 'RobotLogs/report.html',
         unstableThreshold: 0]);
       // get all the logs from kubernetes PODs
-      sh '''
-        mkdir -p $WORKSPACE/logs
-        kubectl get pods -o wide > $WORKSPACE/logs/pods.txt
-        kubectl logs -l app=adapter-open-olt > $WORKSPACE/logs/open-olt-logs.logs
-        kubectl logs -l app=adapter-open-onu > $WORKSPACE/logs/open-onu-logs.logs
-        kubectl logs -l app=rw-core > $WORKSPACE/logs/voltha-rw-core-logs.logs
-        kubectl logs -l app=ofagent > $WORKSPACE/logs/voltha-ofagent-logs.logs
-        kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
-        kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
-        kubectl logs -l app=onos-onos-classic > $WORKSPACE/logs/onos-onos-classic-logs.logs
-        kubectl logs -l app=etcd > $WORKSPACE/logs/etcd-logs.logs
-        kubectl logs -l app=kafka > $WORKSPACE/logs/kafka-logs.logs
+      sh returnStdout: false, script: '''
+        LOG_FOLDER=$WORKSPACE/logs
+        mkdir -p $LOG_FOLDER
+
+        # store information on the running pods
+        kubectl get pods -o wide > $LOG_FOLDER/pods.txt
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-images.txt
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt
+
+        # log in individual files for all the container that match the selector app=$APP_TO_LOG
+
+        APPS_TO_LOG=(etcd kafka onos onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim)
+        for app in "${APPS_TO_LOG[@]}"
+        do
+          echo "Getting logs for: ${app}"
+          kubectl get pods -l app=${app} -o=jsonpath=\"{.items[*]['metadata.name']}\"
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.logs"
+        done
       '''
       // count how many ONUs have been activated
       sh '''
@@ -396,11 +402,6 @@ EOF
           echo "#-of-dhcp-allocations" > $WORKSPACE/logs/onos-dhcp-count.txt
           echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations | grep DHCPACK | wc -l) >> $WORKSPACE/logs/onos-dhcp-count.txt
         fi
-      '''
-      // check which containers were used in this build
-      sh '''
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
       '''
       // dump all the BBSim(s) ONU informations
       sh '''
