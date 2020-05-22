@@ -351,19 +351,18 @@ EOF
         reportFileName: 'RobotLogs/report.html',
         unstableThreshold: 0]);
       // get all the logs from kubernetes PODs
-      sh '''
+      sh returnStdout: false, script: """
         mkdir -p $WORKSPACE/logs
         kubectl get pods -o wide > $WORKSPACE/logs/pods.txt
-        kubectl logs -l app=adapter-open-olt > $WORKSPACE/logs/open-olt-logs.logs
-        kubectl logs -l app=adapter-open-onu > $WORKSPACE/logs/open-onu-logs.logs
-        kubectl logs -l app=rw-core > $WORKSPACE/logs/voltha-rw-core-logs.logs
-        kubectl logs -l app=ofagent > $WORKSPACE/logs/voltha-ofagent-logs.logs
-        kubectl logs -l app=bbsim > $WORKSPACE/logs/bbsim-logs.logs
-        kubectl logs -l app=onos > $WORKSPACE/logs/onos-logs.logs
-        kubectl logs -l app=onos-onos-classic > $WORKSPACE/logs/onos-onos-classic-logs.logs
-        kubectl logs -l app=etcd > $WORKSPACE/logs/etcd-logs.logs
-        kubectl logs -l app=kafka > $WORKSPACE/logs/kafka-logs.logs
-      '''
+
+        # log in individual files for all the container that match the selector app=$APP_TO_LOG
+        LOG_FOLDER=$WORKSPACE/logs
+        APPS_TO_LOG=(etcd kafka onos onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim)
+        for app in "${APPS_TO_LOG[@]}"
+        do
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['spec.hostname']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.logs"
+        done
+      """
       // count how many ONUs have been activated
       sh '''
         echo "#-of-ONUs" > $WORKSPACE/logs/voltha-devices-count.txt
