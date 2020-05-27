@@ -172,6 +172,9 @@ pipeline {
             ./voltha up
           """
         }
+        // bbsim-sadis server takes a while to cache the subscriber entries
+        // wait for that before starting the tests
+        sleep(120)
       }
     }
     stage('Configuration') {
@@ -265,9 +268,6 @@ EOF
             _TAG=$_TAG bash $WORKSPACE/pprof.sh &
           fi
         '''
-        // bbsim-sadis server takes a while to cache the subscriber entries
-        // wait for that before starting the tests
-        sleep(60)
         timeout(time: 11, unit: 'MINUTES') {
           sh '''
             ROBOT_PARAMS="-v olt:${olts} \
