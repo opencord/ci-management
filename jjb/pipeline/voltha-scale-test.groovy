@@ -367,7 +367,7 @@ EOF
         do
           echo "Getting logs for: ${app}"
           kubectl get pods -l app=${app} -o=jsonpath=\"{.items[*]['metadata.name']}\"
-          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.logs"
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.log"
         done
       '''
       // count how many ONUs have been activated
