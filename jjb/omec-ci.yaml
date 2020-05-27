@@ -224,6 +224,7 @@
           build-timeout: 30
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-2c-4g'
+          extraEnvironmentVars: CPU=haswell
 
 # Combined pipeline
 - job-template:
