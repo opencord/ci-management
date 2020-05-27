@@ -274,6 +274,7 @@ EOF
               -v withEapol:${withEapol} \
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
+              -v withLLDP:${withLLDP} \
               --noncritical non-critical \
               -e teardown "
 
