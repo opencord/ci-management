@@ -458,3 +458,25 @@
           profile: '1T8GEM'
           power-switch: True
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
+      # Berlin pod with olt/onu - manual test job, voltha master build job
+      - 'build_pod_manual':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          release: 'master'
+          branch: 'master'
+          num-of-openonu: '2'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
+          profile: 'Default'
+
+      # Berlin pod1 test job - using voltha branch
+      - 'build_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          profile: 'Default'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+
