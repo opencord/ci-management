@@ -148,7 +148,7 @@ pipeline {
           echo "on master, using default settings for kind-voltha"
         fi
 
-        if ! [[ "${gerritProject}" =~ ^(voltha-system-tests)\$ ]]; then
+        if ! [[ "${gerritProject}" =~ ^(voltha-system-tests|kind-voltha)\$ ]]; then
           make -C $WORKSPACE/voltha/${gerritProject} DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
           docker images | grep citest
           for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}")
