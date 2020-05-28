@@ -125,40 +125,52 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set auth=false --set memoryLimit=8192Mi'
-      # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-16-32-att-subscribers'
-      #     build-node: 'onf-pod1-head-node'
-      #     time-trigger: "H H/4 * * *"
-      #     olts: 1
-      #     pons: 16
-      #     onus: 32
-      #     withFlows: true
-      #     provisionSubscribers: true
-      #     withEapol: true
-      #     withDhcp: true
-      #     withIgmp: false
-      #     openonuAdapterReplicas: 8
-      #     onosReplicas: 3
-      #     atomixReplicas: 3
-      #
-      # # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
-      # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-16-32-dt-subscribers'
-      #     build-node: 'onf-pod1-head-node'
-      #     time-trigger: "H H/4 * * *"
-      #     olts: 1
-      #     pons: 16
-      #     onus: 32
-      #     withFlows: true
-      #     provisionSubscribers: true
-      #     workflow: dt
-      #     withEapol: false
-      #     withDhcp: false
-      #     withIgmp: false
-      #     openonuAdapterReplicas: 8
-      #     onosReplicas: 3
-      #     atomixReplicas: 3
+          extraHelmFlags: '--set auth=false --set memoryLimit=8192Mi --set core_timeout=60s'
+          rwCoreImg: volthacore/voltha-rw-core:khen_od1
+          ofAgentImg: matteoscandolo/voltha-ofagent-go:dev-multipart-all
+          onosImg: andreacampanella/voltha-onos:voltha-multi-part
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-16-32-att-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set memoryLimit=8192Mi --set core_timeout=60s'
+          rwCoreImg: volthacore/voltha-rw-core:khen_od1
+          ofAgentImg: matteoscandolo/voltha-ofagent-go:dev-multipart-all
+          onosImg: andreacampanella/voltha-onos:voltha-multi-part
+
+      # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-16-32-dt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set memoryLimit=8192Mi --set core_timeout=60s'
+          rwCoreImg: volthacore/voltha-rw-core:khen_od1
+          ofAgentImg: matteoscandolo/voltha-ofagent-go:dev-multipart-all
+          onosImg: andreacampanella/voltha-onos:voltha-multi-part
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       # - 'voltha-scale-measurements':
