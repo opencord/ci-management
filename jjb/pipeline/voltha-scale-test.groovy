@@ -370,7 +370,7 @@ EOF
           printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.log"
 
           # Get the logs from the previous POD if any (useful in case of restarts)
-          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs -p @ > $LOG_FOLDER/@-previous.log"
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs -p @ > $LOG_FOLDER/@-previous.log" || true
         done
 
         # copy the ONOS logs directly from the container to avoid the color codes
