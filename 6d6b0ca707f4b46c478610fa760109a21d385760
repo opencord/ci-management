@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7055ef55_dc798850",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 463,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-05-29T07:26:30Z",
+      "side": 1,
+      "message": "Template doesn\u0027t have these attributes.. you will need to add the missing `with-kind` to the template",
+      "range": {
+        "startLine": 463,
+        "startChar": 9,
+        "endLine": 463,
+        "endChar": 25
+      },
+      "revId": "6d6b0ca707f4b46c478610fa760109a21d385760",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "71884613_d5c6adfc",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 481,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-05-29T07:26:30Z",
+      "side": 1,
+      "message": "Template uses a completely different groovy file, that can be modified with multiple ways.",
+      "range": {
+        "startLine": 481,
+        "startChar": 9,
+        "endLine": 481,
+        "endChar": 23
+      },
+      "revId": "6d6b0ca707f4b46c478610fa760109a21d385760",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "8ea62788_0612fd73",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 490,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-05-29T07:26:30Z",
+      "side": 1,
+      "message": "This is not applicable here because of a different template.",
+      "range": {
+        "startLine": 490,
+        "startChar": 28,
+        "endLine": 490,
+        "endChar": 70
+      },
+      "revId": "6d6b0ca707f4b46c478610fa760109a21d385760",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
