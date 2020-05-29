@@ -362,47 +362,19 @@ EOF
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt
 
         # log in individual files for all the container that match the selector app=$APP_TO_LOG
-
-        APPS_TO_LOG=(etcd kafka onos onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim)
+        APPS_TO_LOG=(etcd kafka onos adapter-open-onu adapter-open-olt rw-core ofagent bbsim)
         for app in "${APPS_TO_LOG[@]}"
         do
           echo "Getting logs for: ${app}"
           kubectl get pods -l app=${app} -o=jsonpath=\"{.items[*]['metadata.name']}\"
           printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.log"
+
+          # Get the logs from the previous POD if any (useful in case of restarts)
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs -p @ > $LOG_FOLDER/@-previous.log"
         done
-      '''
-      // count how many ONUs have been activated
-      sh '''
-        echo "#-of-ONUs" > $WORKSPACE/logs/voltha-devices-count.txt
-        echo $(voltctl device list | grep -v OLT | grep ACTIVE | wc -l) >> $WORKSPACE/logs/voltha-devices-count.txt
-      '''
-      // count how many ports have been discovered
-      sh '''
-        echo "#-of-ports" > $WORKSPACE/logs/onos-ports-count.txt
-        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports -e | grep BBSM | wc -l) >> $WORKSPACE/logs/onos-ports-count.txt
-      '''
-      // count how many flows have been provisioned
-      sh '''
-        echo "#-of-flows" > $WORKSPACE/logs/onos-flows-count.txt
-        echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s | grep ADDED | wc -l) >> $WORKSPACE/logs/onos-flows-count.txt
-      '''
-      // dump and count the authenticated users
-      sh '''
-        if [ ${withOnosApps} = true ] && [ ${bbsimAuth} ] ; then
-          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users) >> $WORKSPACE/logs/onos-aaa-users.txt
 
-          echo "#-of-authenticated-users" > $WORKSPACE/logs/onos-aaa-count.txt
-          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users | grep AUTHORIZED_STATE | wc -l) >> $WORKSPACE/logs/onos-aaa-count.txt
-        fi
-      '''
-      // dump and count the dhcp users
-      sh '''
-        if [ ${withOnosApps} = true ] && [ ${bbsimDhcp} ] ; then
-          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations) >> $WORKSPACE/logs/onos-dhcp-allocations.txt
-
-          echo "#-of-dhcp-allocations" > $WORKSPACE/logs/onos-dhcp-count.txt
-          echo $(sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations | grep DHCPACK | wc -l) >> $WORKSPACE/logs/onos-dhcp-count.txt
-        fi
+        # copy the ONOS logs directly from the container to avoid the color codes
+        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl cp @:apache-karaf-4.2.8/data/log/karaf.log $LOG_FOLDER/@.log"
       '''
       // dump all the BBSim(s) ONU informations
       sh '''
@@ -414,10 +386,27 @@ EOF
         kubectl exec -t $bbsim bbsimctl onu list > $WORKSPACE/logs/$bbsim-device-list.txt
       done
       '''
-      // get ports and flows from ONOS
+      // get ONOS debug infos
       sh '''
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt
+
+        if [ ${withFlows} = true ] ; then
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters > $WORKSPACE/logs/onos-meters-list.txt
+        fi
+
+        if [ ${provisionSubscribers} = true ]
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers > $WORKSPACE/logs/onos-programmed-subscribers.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters > $WORKSPACE/logs/onos-programmed-meters.txt
+        fi
+
+        if [ ${withOnosApps} = true ] && [ ${withEapol} ] ; then
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users > $WORKSPACE/logs/onos-aaa-users.txt
+        fi
+
+        if [ ${withOnosApps} = true ] && [ ${withDhcp} ] ; then
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations > $WORKSPACE/logs/onos-dhcp-allocations.txt
+        fi
       '''
       // get cpu usage by container
       sh '''
@@ -430,12 +419,18 @@ EOF
         curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=grpc_server_handled_total{grpc_code="OK",grpc_service="etcdserverpb.KV"}' | jq . > $WORKSPACE/etcd-metrics/etcd-rpc-count.json
         curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_debugging_mvcc_db_total_size_in_bytes' | jq '.data.result[0].value[1]' > $WORKSPACE/etcd-metrics/etcd-db-size.json
       '''
-      // dump all the VOLTHA devices informations
+      // get VOLTHA debug infos
       script {
         try {
           sh '''
           voltctl device list -o json > $WORKSPACE/logs/device-list.json
           python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
+
+          printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt"
+          printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt"
+
+          printf '%s\n' $(voltctl logicaldevice list -q) | xargs -I@ bash -c "voltctl logicaldevice flows @ > $WORKSPACE/logs/voltha-logicaldevice-flows-@.txt"
+          printf '%s\n' $(voltctl logicaldevice list -q) | xargs -I@ bash -c "voltctl logicaldevice port list @ > $WORKSPACE/logs/voltha-logicaldevice-ports-@.txt"
           '''
         } catch(e) {
           sh '''
