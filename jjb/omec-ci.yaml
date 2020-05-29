@@ -19,7 +19,7 @@
       - 'omec-postmerge':
           project: '{name}'
           build-node: 'omec-qa'
-          c3po-branch-name: 'multiUpfs'
+          c3po-branch-name: 'master'
           ngic-branch-name: 'central-cp-multi-upfs'
           openmme-branch-name: 'master'
           pipeline-file: 'omec-postmerge.groovy'
