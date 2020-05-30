@@ -395,7 +395,7 @@ EOF
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters > $WORKSPACE/logs/onos-meters-list.txt
         fi
 
-        if [ ${provisionSubscribers} = true ]
+        if [ ${provisionSubscribers} = true ]; then
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers > $WORKSPACE/logs/onos-programmed-subscribers.txt
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters > $WORKSPACE/logs/onos-programmed-meters.txt
         fi
