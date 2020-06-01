@@ -173,39 +173,39 @@
           onosImg: andreacampanella/voltha-onos:voltha-multi-part
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
-      # - 'voltha-scale-measurements':
-      #     disabled: true
-      #     name: 'voltha-scale-measurements-2-16-32-activation'
-      #     build-node: 'onf-pod1-head-node'
-      #     time-trigger: "H H/4 * * *"
-      #     olts: 2
-      #     pons: 16
-      #     onus: 32
-      #     withFlows: false
-      #     provisionSubscribers: false
-      #     withEapol: false
-      #     withDhcp: false
-      #     withIgmp: false
-      #     openonuAdapterReplicas: 8
-      #     onosReplicas: 3
-      #     atomixReplicas: 3
-      # - 'voltha-scale-measurements':
-      #     disabled: true
-      #     name: 'voltha-scale-measurements-2-16-32-att-flows'
-      #     build-node: 'onf-pod1-head-node'
-      #     time-trigger: "H H/4 * * *"
-      #     olts: 2
-      #     pons: 16
-      #     onus: 32
-      #     withFlows: true
-      #     provisionSubscribers: false
-      #     withEapol: true
-      #     withDhcp: true
-      #     withIgmp: false
-      #     openonuAdapterReplicas: 8
-      #     onosReplicas: 3
-      #     atomixReplicas: 3
-      #     extraHelmFlags: '--set auth=false '
+      - 'voltha-scale-measurements':
+          disabled: true
+          name: 'voltha-scale-measurements-2-16-32-activation'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: false
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+      - 'voltha-scale-measurements':
+          disabled: true
+          name: 'voltha-scale-measurements-2-16-32-att-flows'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: false
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set auth=false '
       # - 'voltha-scale-measurements':
       #     disabled: true
       #     name: 'voltha-scale-measurements-2-16-32-att-subscribers'
