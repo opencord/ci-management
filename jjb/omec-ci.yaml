@@ -157,6 +157,10 @@
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
           build-node: 'omec-qa'
+      - 'docker-publish-github':
+          build-timeout: 60
+          docker-repo: 'omecproject'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-comac-in-a-box':
           build-node: 'comac_in_a_box'
 
