@@ -1,0 +1,17 @@
+---
+# verification jobs for 'device-management-interface' repo
+
+- project:
+    name: device-management-interface
+    project: '{name}'
+
+    jobs:
+      - 'verify-device-management-interface-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-device-management-interface-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test'
