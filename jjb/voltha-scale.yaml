@@ -189,6 +189,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
+          extraHelmFlags: '--set memoryLimit=8192Mi '
       - 'voltha-scale-measurements':
           disabled: true
           name: 'voltha-scale-measurements-2-16-32-att-flows'
@@ -205,7 +206,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set auth=false '
+          extraHelmFlags: '--set memoryLimit=8192Mi --set auth=false '
       # - 'voltha-scale-measurements':
       #     disabled: true
       #     name: 'voltha-scale-measurements-2-16-32-att-subscribers'
