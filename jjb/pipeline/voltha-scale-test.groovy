@@ -68,14 +68,14 @@ pipeline {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
           sh returnStdout: false, script: """
-            test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
-
             for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
             do
                 echo "Purging chart: \${hchart}"
                 helm delete --purge "\${hchart}"
             done
             bash /home/cord/voltha-scale/wait_for_pods.sh
+
+            test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
