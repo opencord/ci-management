@@ -865,6 +865,7 @@
                   Copyright (c) 2018 Open Networking Foundation (ONF)
 
     <<: *test-pipe-job-boiler-plate
+    VolthaEtcdPort: '2379'
 
     parameters:
       - string:
@@ -965,6 +966,11 @@
           name: withKind
           default: '{with-kind}'
           description: "The pods uses kind and a physical fabric thus port forward to the management is needed"
+
+      - string:
+          name: VolthaEtcdPort
+          default: '{VolthaEtcdPort}'
+          description: 'Localhost port that is forwarded to VOLTHA etcd'
 
     concurrent: true
 
