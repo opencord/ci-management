@@ -147,6 +147,7 @@
           configurePod: true
           profile: 'Default'
           time: '1'
+          VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -170,6 +171,7 @@
           configurePod: true
           profile: 'Default'
           time: '3'
+          VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -196,6 +198,7 @@
           configurePod: true
           profile: '1T4GEM'
           time: '4'
+          VolthaEtcdPort: '9999'
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -222,6 +225,7 @@
           configurePod: true
           profile: '1T8GEM'
           time: '6'
+          VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -251,6 +255,7 @@
           configurePod: true
           profile: '1T8GEM'
           time: '7'
+          VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
