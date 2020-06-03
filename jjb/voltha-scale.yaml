@@ -283,6 +283,8 @@
     atomixReplicas: 0
     extraHelmFlags: ''
     onosStatInterval: 5
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
 
     parameters:
       - string:
@@ -437,12 +439,12 @@
 
       - string:
           name: volthaSystemTestsChange
-          default: ''
+          default: '{volthaSystemTestsChange}'
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
       - string:
           name: kindVolthaChange
-          default: ''
+          default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
     project-type: pipeline
