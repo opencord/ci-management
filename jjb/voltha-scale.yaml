@@ -126,9 +126,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set auth=false --set memoryLimit=8192Mi '
-          rwCoreImg: volthacore/voltha-rw-core:khen_od1
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:dev-multipart-all
-          onosImg: andreacampanella/voltha-onos:voltha-multi-part
+          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          kindVolthaChange: refs/changes/32/19132/1
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-subscribers'
@@ -146,9 +145,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
-          rwCoreImg: volthacore/voltha-rw-core:khen_od1
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:dev-multipart-all
-          onosImg: andreacampanella/voltha-onos:voltha-multi-part
+          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          kindVolthaChange: refs/changes/32/19132/1
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -168,9 +166,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
-          rwCoreImg: volthacore/voltha-rw-core:khen_od1
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:dev-multipart-all
-          onosImg: andreacampanella/voltha-onos:voltha-multi-part
+          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          kindVolthaChange: refs/changes/32/19132/1
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -190,6 +187,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
+          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          kindVolthaChange: refs/changes/32/19132/1
       - 'voltha-scale-measurements':
           disabled: true
           name: 'voltha-scale-measurements-2-16-32-att-flows'
@@ -207,6 +206,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi --set auth=false '
+          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          kindVolthaChange: refs/changes/32/19132/1
       # - 'voltha-scale-measurements':
       #     disabled: true
       #     name: 'voltha-scale-measurements-2-16-32-att-subscribers'
@@ -228,6 +229,7 @@
       - 'voltha-scale-measurements-dev':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
+          kindVolthaChange: refs/changes/32/19132/1
 
 - job-template:
     id: 'voltha-scale-measurements'
@@ -438,6 +440,11 @@
           default: ''
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
+      - string:
+          name: kindVolthaChange
+          default: ''
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
     project-type: pipeline
     concurrent: false
 
@@ -638,6 +645,11 @@
           name: volthaSystemTestsChange
           default: ''
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: kindVolthaChange
+          default: ''
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
     project-type: pipeline
     concurrent: false

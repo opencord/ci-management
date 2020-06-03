@@ -112,8 +112,13 @@ pipeline {
         script {
           sh(script:"""
             if [ ${volthaSystemTestsChange} != '' ] ; then
-              cd voltha-system-tests;
+              cd $WORKSPACE/voltha-system-tests;
               git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+            fi
+
+            if [ ${kindVolthaChange} != '' ] ; then
+              cd $WORKSPACE/kind-voltha;
+              git fetch https://gerrit.opencord.org/kind-voltha ${volthaSystemTestsChange} && git checkout FETCH_HEAD
             fi
             """)
         }
