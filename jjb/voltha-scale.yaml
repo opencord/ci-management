@@ -127,7 +127,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set auth=false --set memoryLimit=8192Mi '
           onosImg: andreacampanella/voltha-onos:meter-queue-final-3
-          kindVolthaChange: refs/changes/32/19132/1
+
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-subscribers'
@@ -146,7 +146,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
           onosImg: andreacampanella/voltha-onos:meter-queue-final-3
-          kindVolthaChange: refs/changes/32/19132/1
+
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -167,7 +167,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
           onosImg: andreacampanella/voltha-onos:meter-queue-final-3
-          kindVolthaChange: refs/changes/32/19132/1
+
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -188,7 +188,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
           onosImg: andreacampanella/voltha-onos:meter-queue-final-3
-          kindVolthaChange: refs/changes/32/19132/1
+
       - 'voltha-scale-measurements':
           disabled: true
           name: 'voltha-scale-measurements-2-16-32-att-flows'
@@ -207,7 +207,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi --set auth=false '
           onosImg: andreacampanella/voltha-onos:meter-queue-final-3
-          kindVolthaChange: refs/changes/32/19132/1
+
       # - 'voltha-scale-measurements':
       #     disabled: true
       #     name: 'voltha-scale-measurements-2-16-32-att-subscribers'
@@ -229,7 +229,7 @@
       - 'voltha-scale-measurements-dev':
           name: 'voltha-scale-measurements-dev'
           build-node: 'voltha-scale'
-          kindVolthaChange: refs/changes/32/19132/1
+
 
 - job-template:
     id: 'voltha-scale-measurements'
