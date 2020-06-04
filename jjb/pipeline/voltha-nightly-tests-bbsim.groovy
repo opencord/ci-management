@@ -199,6 +199,7 @@ pipeline {
          ## shut down voltha but leave kind-voltha cluster
          cd $HOME/kind-voltha/
          DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
+         kubectl delete deployment voltctl || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
