@@ -49,6 +49,7 @@ pipeline {
         sh label: 'Cleanup Docker Images', script: '''
           sudo docker rmi -f $(sudo docker images --format '{{.Repository}} {{.ID}}' | grep 'none' | awk '{print $2}') || true
           sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'openmme') || true
+          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'nucleus') || true
           sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'ngic') || true
           sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'c3po') || true
           '''
@@ -71,7 +72,7 @@ pipeline {
             docker_tag = "${params.branch}-${pull_request_num}-${abbreviated_commit_hash}"
           }
         }
-        sh label: 'Clone repo', script: """
+        sh label: 'Clone repo, then make docker-build', script: """
           rm -rf ${params.project}
           if [ "${params.project}" = "c3po" ]
           then
