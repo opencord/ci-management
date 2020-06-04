@@ -148,7 +148,7 @@ pipeline {
           echo "on master, using default settings for kind-voltha"
         fi
 
-        if ! [[ "${gerritProject}" =~ ^(voltha-system-tests|kind-voltha)\$ ]]; then
+        if ! [[ "${gerritProject}" =~ ^(voltha-system-tests|kind-voltha|voltha-helm-charts)\$ ]]; then
           make -C $WORKSPACE/voltha/${gerritProject} DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
           docker images | grep citest
           for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}")
@@ -202,6 +202,16 @@ pipeline {
           do
               EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
           done
+
+          if [ "${gerritProject}" = "voltha-helm-charts" ]; then
+              export CHART_PATH=$WORKSPACE/voltha/voltha-helm-charts
+              export VOLTHA_CHART=\$CHART_PATH/voltha
+              export VOLTHA_ADAPTER_OPEN_OLT_CHART=\$CHART_PATH/voltha-adapter-openolt
+              export VOLTHA_ADAPTER_OPEN_ONU_CHART=\$CHART_PATH/voltha-adapter-openonu
+              helm dep update \$VOLTHA_CHART
+              helm dep update \$VOLTHA_ADAPTER_OPEN_OLT_CHART
+              helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
+          fi
 
           cd $WORKSPACE/voltha/kind-voltha/
           echo \$EXTRA_HELM_FLAGS
