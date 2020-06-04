@@ -208,22 +208,44 @@
           extraHelmFlags: '--set memoryLimit=8192Mi --set auth=false '
           onosImg: andreacampanella/voltha-onos:meter-queue-final-3
 
-      # - 'voltha-scale-measurements':
-      #     disabled: true
-      #     name: 'voltha-scale-measurements-2-16-32-att-subscribers'
-      #     build-node: 'onf-pod1-head-node'
-      #     time-trigger: "H H/4 * * *"
-      #     olts: 2
-      #     pons: 16
-      #     onus: 32
-      #     withFlows: true
-      #     provisionSubscribers: true
-      #     withEapol: true
-      #     withDhcp: true
-      #     withIgmp: false
-      #     openonuAdapterReplicas: 8
-      #     onosReplicas: 3
-      #     atomixReplicas: 3
+      - 'voltha-scale-measurements':
+          disabled: true
+          name: 'voltha-scale-measurements-2-16-32-att-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set memoryLimit=8192Mi '
+          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+
+      # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-2-16-32-dt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set memoryLimit=8192Mi '
+          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
