@@ -24,6 +24,7 @@ pipeline {
       timeout(time: 30, unit: 'MINUTES')
   }
   environment {
+    JENKINS_NODE_COOKIE=dontKillMe // do not kill processes after the build is done
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
     SSHPASS="karaf"
