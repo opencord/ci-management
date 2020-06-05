@@ -68,11 +68,6 @@
           description: 'The config file'
 
       - string:
-          name: oltDebVersion
-          default: '{oltDebVersion}'
-          description: 'OLT Software version to install'
-
-      - string:
           name: branch
           default: '{branch}'
 
@@ -912,11 +907,6 @@
           name: profile
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
-
-      - string:
-          name: oltDebVersion
-          default: '{oltDebVersion}'
-          description: 'OLT Software version to install'
 
       - string:
           name: helmRepoUrl
