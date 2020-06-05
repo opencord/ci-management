@@ -404,9 +404,17 @@ pipeline {
       script {
         deployment_config.olts.each { olt ->
           sh returnStdout: false, script: """
-          sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/openolt.log $WORKSPACE/openolt-${olt.ip}.log || true
+          until sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/openolt.log $WORKSPACE/openolt-${olt.ip}.log
+          do
+              echo "Fetching openolt.log log failed, retrying..."
+              sleep 10
+          done
           sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.ip}.log  # Remove escape sequences
-          sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/dev_mgmt_daemon.log $WORKSPACE/dev_mgmt_daemon-${olt.ip}.log || true
+          until sshpass -p ${olt.pass} scp ${olt.user}@${olt.ip}:/var/log/dev_mgmt_daemon.log $WORKSPACE/dev_mgmt_daemon-${olt.ip}.log
+          do
+              echo "Fetching dev_mgmt_daemon.log failed, retrying..."
+              sleep 10
+          done
           sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/dev_mgmt_daemon-${olt.ip}.log  # Remove escape sequences
           """
         }
