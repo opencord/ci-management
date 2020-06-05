@@ -171,6 +171,13 @@ pipeline {
              IMAGES="ofagent_go "
            elif [ "${gerritProject}" = "voltha-onos" ]; then
              IMAGES="onos "
+             # Working around mismatch of tags between voltha charts and onos-classic ones.
+             export _ONOS_REPO="voltha/voltha-onos"
+             export _ONOS_TAG="citest"
+             export _ONOS_PULL_POLICY="Never"
+             echo export _ONOS_REPO=\\"\$_ONOS_REPO\\" >> minimal-env.sh
+             echo export _ONOS_TAG=\\"\$_ONOS_TAG\\" >> minimal-env.sh
+             echo export _ONOS_PULL_POLICY=\\"\$_ONOS_PULL_POLICY\\" >> minimal-env.sh
            elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
              IMAGES="adapter_open_olt "
            elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
@@ -191,7 +198,9 @@ pipeline {
 
            for I in \$IMAGES
            do
-             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+             if [ "${gerritProject}" != "voltha-onos" ]; then
+               EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+             fi
            done
 
            if [ "${gerritProject}" = "voltha-helm-charts" ]; then
