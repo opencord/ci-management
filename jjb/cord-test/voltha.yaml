@@ -25,7 +25,6 @@
           num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: '1T4GEM'
 
       # flex pod1 test job - using voltha branch
@@ -45,7 +44,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: '1T4GEM'
 
       # onlab pod1 test job - BAL3.1 tests using voltha branch
@@ -68,7 +66,6 @@
           num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '1'
@@ -94,7 +91,6 @@
           num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
           time: '3'
@@ -117,7 +113,6 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
           time: '4'
@@ -143,7 +138,6 @@
           num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '1'
@@ -167,7 +161,6 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '3'
@@ -194,7 +187,6 @@
           num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
           time: '4'
@@ -221,7 +213,6 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T8GEM'
           time: '6'
@@ -251,7 +242,6 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T8GEM'
           time: '7'
@@ -278,7 +268,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: '1T4GEM'
       - 'build_pod_test':
@@ -297,7 +286,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
 
@@ -318,7 +306,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
 
@@ -342,7 +329,6 @@
           num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '10'
@@ -364,7 +350,6 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           time: '12'
@@ -388,7 +373,6 @@
           num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: 'Default'
       # infosys test job - Manual Job
       - 'build_pod_test':
@@ -410,7 +394,6 @@
           num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           with-kind: true
@@ -435,7 +418,6 @@
           branch: 'voltha-2.3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           configurePod: true
           profile: 'Default'
           with-kind: true
@@ -465,7 +447,6 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asgvolt64.deb'
           configurePod: true
           profile: '1T8GEM'
           with-kind: true
@@ -494,7 +475,6 @@
           num-of-openonu: '2'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
-          oltDebVersion: 'openolt_asfvolt16-2.3.0-bc6e0853e0e8bf6bd7e4223d4a7ee0dd35ce634d.deb'
           profile: 'Default'
 
       # Berlin pod1 test job - using voltha branch
