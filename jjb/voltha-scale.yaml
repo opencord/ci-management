@@ -126,7 +126,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set auth=false --set memoryLimit=8192Mi '
-          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
 
 
       - 'voltha-scale-measurements':
@@ -144,8 +143,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi '
-          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          extraHelmFlags: '--set memoryLimit=8192Mi --set defaults.rw_core.timeout=30s'
 
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
@@ -166,7 +164,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
-          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
 
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
@@ -187,7 +184,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi '
-          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -206,7 +202,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set memoryLimit=8192Mi --set auth=false '
-          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -224,8 +219,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi '
-          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          extraHelmFlags: '--set memoryLimit=8192Mi --set defaults.rw_core.timeout=30s'
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -244,8 +238,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi '
-          onosImg: andreacampanella/voltha-onos:meter-queue-final-3
+          extraHelmFlags: '--set memoryLimit=8192Mi --set defaults.rw_core.timeout=30s'
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
