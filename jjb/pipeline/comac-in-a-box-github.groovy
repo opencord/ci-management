@@ -46,13 +46,6 @@ pipeline {
           cd $HOME/automation-tools/comac-in-a-box/
           sudo make reset-test
           """
-        sh label: 'Cleanup Docker Images', script: '''
-          sudo docker rmi -f $(sudo docker images --format '{{.Repository}} {{.ID}}' | grep 'none' | awk '{print $2}') || true
-          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'openmme') || true
-          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'nucleus') || true
-          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'ngic') || true
-          sudo docker rmi -f $(sudo docker images --format '{{.Repository}}:{{.Tag}}' | grep 'c3po') || true
-          '''
         sh label: 'helm-charts Repo Fresh Clone', script: """
           cd $HOME/cord/
           sudo rm -rf helm-charts/
