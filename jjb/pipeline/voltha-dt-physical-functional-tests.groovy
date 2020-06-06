@@ -37,6 +37,7 @@ pipeline {
       steps {
         step([$class: 'WsCleanup'])
         sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/kind-voltha"
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
@@ -60,8 +61,14 @@ pipeline {
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
+        if [ "${params.branch}" != "master" ]; then
+           cd $WORKSPACE/kind-voltha
+           source releases/${params.branch}
+           VC_VERSION=1.0.18
+        else
+           VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
+        fi
 
-        VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
         HOSTOS=\$(uname -s | tr "[:upper:]" "[:lower:"])
         HOSTARCH=\$(uname -m | tr "[:upper:]" "[:lower:"])
         if [ \$HOSTARCH == "x86_64" ]; then
@@ -71,26 +78,29 @@ pipeline {
         chmod 755 $WORKSPACE/bin/voltctl
         voltctl version --clientonly
 
+        
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
-        set +e
+        if [ "${params.branch}" == "master" ]; then
+           set +e
 
-        voltctl log level list
-        if [ \$? -ne 0 ]
-        then
-          export KVSTORE="-e \$(kubectl -n voltha get svc voltha-etcd-cluster-client -o jsonpath='{.spec.clusterIP}:{.spec.ports[0].port}')"
-        else
-          export KVSTORE=""
-        fi
+           voltctl log level list
+           if [ \$? -ne 0 ]
+           then
+             export KVSTORE="-e \$(kubectl -n voltha get svc voltha-etcd-cluster-client -o jsonpath='{.spec.clusterIP}:{.spec.ports[0].port}')"
+           else
+             export KVSTORE=""
+           fi
 
         # Remove noise from voltha-core logs
-        voltctl \$KVSTORE log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
-        voltctl \$KVSTORE log level set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+           voltctl \$KVSTORE log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
+           voltctl \$KVSTORE log level set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         # Remove noise from openolt logs
-        voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
-        voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
-        voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+           voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+           voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+           voltctl \$KVSTORE log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+        fi
         """
       }
     }
