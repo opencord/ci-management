@@ -37,6 +37,7 @@ pipeline {
       steps {
         step([$class: 'WsCleanup'])
         sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/kind-voltha"
         script {
           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
         }
@@ -60,8 +61,14 @@ pipeline {
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
+        if [ "${params.branch}" != "master" ]; then
+           cd $WORKSPACE/kind-voltha
+           source releases/${params.branch}
+           VC_VERSION=1.0.18
+        else
+           VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
+        fi
 
-        VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
         HOSTOS=\$(uname -s | tr "[:upper:]" "[:lower:"])
         HOSTARCH=\$(uname -m | tr "[:upper:]" "[:lower:"])
         if [ \$HOSTARCH == "x86_64" ]; then
@@ -71,18 +78,20 @@ pipeline {
         chmod 755 $WORKSPACE/bin/voltctl
         voltctl version --clientonly
 
+        if [ "${params.branch}" == "master" ]; then
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
-        set +e
+           set +e
 
         # Remove noise from voltha-core logs
-        voltctl log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
-        voltctl log level set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+           voltctl log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
+           voltctl log level set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         # Remove noise from openolt logs
-        voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
-        voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
-        voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+           voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+           voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+           voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+        fi
         """
       }
     }
