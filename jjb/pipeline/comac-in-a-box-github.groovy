@@ -44,11 +44,11 @@ pipeline {
         sh label: 'Run COMAC-in-a-box reset-test', script: """
           echo $HOME
           cd $HOME/automation-tools/comac-in-a-box/
-          sudo make reset-test
+          make reset-test
           """
         sh label: 'helm-charts Repo Fresh Clone', script: """
           cd $HOME/cord/
-          sudo rm -rf helm-charts/
+          rm -rf helm-charts/
           git clone https://gerrit.opencord.org/helm-charts
           """
       }
@@ -129,8 +129,8 @@ pipeline {
           try{
             sh label: 'Run Makefile', script: """
               cd $HOME/automation-tools/comac-in-a-box/
-              sudo make reset-test
-              sudo make test
+              make reset-test
+              make test
               """
           } finally {
             sh label: 'Archive Logs', script: '''
