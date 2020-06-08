@@ -102,7 +102,7 @@ pipeline {
             echo "Changed mme tag: ${docker_tag}"
           elif [ "${params.project}" = "Nucleus" ]
           then
-            sed -i "s;mme: .*;mme: \\"openmme:${docker_tag}\\";" ${omec_cp} # nucleus shares the same docker name as openmme.
+            sed -i "s;mme: .*;mme: \\"nucleus:${docker_tag}\\";" ${omec_cp}
             echo "Changed mme tag: ${docker_tag}"
           elif [ "${params.project}" = "ngic-rtc" ]
           then
