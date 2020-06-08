@@ -241,9 +241,9 @@
           extraHelmFlags: '--set memoryLimit=8192Mi --set defaults.rw_core.timeout=30s'
 
       # development pipeline
-      - 'voltha-scale-measurements-dev':
-          name: 'voltha-scale-measurements-dev'
-          build-node: 'voltha-scale'
+      # - 'voltha-scale-measurements-dev':
+      #     name: 'voltha-scale-measurements-dev'
+      #     build-node: 'voltha-scale'
 
 
 - job-template:
