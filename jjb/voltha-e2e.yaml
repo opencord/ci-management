@@ -437,7 +437,7 @@
 
       - string:
           name: extraRobotArgs
-          default: '-i sanityORDeleteOLT'
+          default: '-i sanityORDeleteOLT -X'
           description: 'Arguments to pass to robot'
 
     project-type: pipeline
@@ -579,7 +579,7 @@
 
       - string:
           name: extraRobotArgs
-          default: '-i sanityORDeleteOLT'
+          default: '-i sanityORDeleteOLT -X'
           description: 'Arguments to pass to robot'
 
     project-type: pipeline
@@ -722,7 +722,7 @@
 
       - string:
           name: extraRobotArgs
-          default: '-e bbsim'
+          default: '-e bbsim -X'
           description: 'Arguments to pass to robot'
 
     project-type: pipeline
