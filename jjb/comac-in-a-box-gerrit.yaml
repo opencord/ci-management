@@ -27,7 +27,7 @@
                 comment-contains-value: '(?i)^.*recheck$'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: 'helm-charts'
+              project-pattern: 'aether-helm-charts'
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{all-branches-regexp}'

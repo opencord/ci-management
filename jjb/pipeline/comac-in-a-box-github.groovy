@@ -30,9 +30,8 @@ pipeline {
   }
 
   environment {
-
-    omec_cp = "$HOME/cord/helm-charts/omec/omec-control-plane/values.yaml"
-    omec_dp = "$HOME/cord/helm-charts/omec/omec-data-plane/values.yaml"
+    omec_cp = "$HOME/cord/aether-helm-charts/omec/omec-control-plane/values.yaml"
+    omec_dp = "$HOME/cord/aether-helm-charts/omec/omec-data-plane/values.yaml"
   }
 
   stages {
@@ -48,8 +47,8 @@ pipeline {
           """
         sh label: 'helm-charts Repo Fresh Clone', script: """
           cd $HOME/cord/
-          rm -rf helm-charts/
-          git clone https://gerrit.opencord.org/helm-charts
+          rm -rf aether-helm-charts/
+          git clone ssh://jeremyr@gerrit.opencord.org:29418/aether-helm-charts
           """
       }
     }
@@ -113,12 +112,6 @@ pipeline {
             echo "The project ${params.project} is not supported. Aborting job."
             exit 1
           fi
-
-          echo "omec_cp:"
-          cat "${omec_cp}"
-
-          echo "omec_dp:"
-          cat "${omec_dp}"
         """
       }
     }
