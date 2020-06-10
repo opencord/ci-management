@@ -462,6 +462,11 @@
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
+      - string:
+          name: kafkaEventTopic
+          default: 'BBSim-OLT-Events'
+          description: 'BBSim Topic for exporting events to KAFKA'
+
     project-type: pipeline
     concurrent: false
 
@@ -667,6 +672,11 @@
           name: kindVolthaChange
           default: ''
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: kafkaEventTopic
+          default: 'BBSim-OLT-Events'
+          description: 'BBSim Topic for exporting events to KAFKA'
 
     project-type: pipeline
     concurrent: false

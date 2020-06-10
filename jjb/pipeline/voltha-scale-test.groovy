@@ -149,7 +149,7 @@ pipeline {
         script {
           // TODO install etcd outside kind-voltha (no need to redeploy the operator everytime)
           sh returnStdout: false, script: """
-            export EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
+            export EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus},enableEvents=true,kafkaAddress=kafka:9092,kafkaEventTopic=${kafkaEventTopic} '
 
             # BBSim custom image handling
             IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
@@ -277,6 +277,7 @@ EOF
             ROBOT_PARAMS="-v olt:${olts} \
               -v pon:${pons} \
               -v onu:${onus} \
+              -v kafkaBBSimTopic:${kafkaEventTopic} \
               -v workflow:${workflow} \
               -v withEapol:${withEapol} \
               -v withDhcp:${withDhcp} \
