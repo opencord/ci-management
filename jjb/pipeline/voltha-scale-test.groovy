@@ -406,11 +406,11 @@ EOF
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters > $WORKSPACE/logs/onos-programmed-meters.txt
         fi
 
-        if [ ${withOnosApps} = true ] && [ ${withEapol} = true ] ; then
+        if [ ${withEapol} = true ] ; then
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users > $WORKSPACE/logs/onos-aaa-users.txt
         fi
 
-        if [ ${withOnosApps} = true ] && [ ${withDhcp} = true ] ; then
+        if [ ${withDhcp} = true ] ; then
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations > $WORKSPACE/logs/onos-dhcp-allocations.txt
         fi
       '''
