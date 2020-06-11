@@ -39,6 +39,7 @@ pipeline {
     CONFIG_SADIS="external"
     WITH_KAFKA="kafka.default.svc.cluster.local"
     WITH_ETCD="etcd-cluster-client.default.svc.cluster.local"
+    VOLTHA_ETCD_PORT=9999
 
     // install everything in the default namespace
     VOLTHA_NS="default"
@@ -223,6 +224,13 @@ pipeline {
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
             cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
+
+          # Set extra openolt-adapter logs
+          _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd-cluster-client 9999:2379&
+          voltctl log level set INFO adapter-open-olt
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         '''
       }
     }
@@ -328,6 +336,12 @@ EOF
               kill -9 $P_ID
             done
           fi
+        fi
+
+        # removing ETCD port forward
+        P_ID="$(ps e -ww -A | grep "_TAG=etcd-port-forward" | grep -v grep | awk '{print $1}')"
+        if [ -n "$P_ID" ]; then
+          kill -9 $P_ID
         fi
       '''
       plot([
