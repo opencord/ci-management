@@ -461,6 +461,8 @@ EOF
           sh '''
           voltctl device list -o json > $WORKSPACE/logs/device-list.json
           python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
+          rm $WORKSPACE/logs/device-list.json
+          voltctl device list > $WORKSPACE/logs/voltha-devices-list.txt
 
           printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt"
           printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt"
