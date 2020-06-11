@@ -95,21 +95,23 @@
       #     withIgmp: false
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS
-      # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-16-32-activation'
-      #     build-node: 'onf-pod1-head-node'
-      #     time-trigger: "H H/4 * * *"
-      #     olts: 1
-      #     pons: 16
-      #     onus: 32
-      #     withFlows: false
-      #     provisionSubscribers: false
-      #     withEapol: false
-      #     withDhcp: false
-      #     withIgmp: false
-      #     openonuAdapterReplicas: 8
-      #     onosReplicas: 3
-      #     atomixReplicas: 3
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-1-16-32-activation'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: false
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set limits.memory=8192Mi '
+
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-flows'
           build-node: 'onf-pod1-head-node'
@@ -125,7 +127,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set auth=false --set memoryLimit=8192Mi '
+          extraHelmFlags: '--set auth=false --set limits.memory=8192Mi '
 
 
       - 'voltha-scale-measurements':
@@ -143,7 +145,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi --set defaults.rw_core.timeout=30s'
+          extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
 
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
@@ -163,7 +165,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi '
+          extraHelmFlags: '--set limits.memory=8192Mi '
 
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
@@ -183,7 +185,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi '
+          extraHelmFlags: '--set limits.memory=8192Mi '
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -201,7 +203,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi --set auth=false '
+          extraHelmFlags: '--set limits.memory=8192Mi --set auth=false '
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -219,7 +221,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi --set defaults.rw_core.timeout=30s'
+          extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -238,7 +240,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set memoryLimit=8192Mi --set defaults.rw_core.timeout=30s'
+          extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
 
       # development pipeline
       - 'voltha-scale-measurements-dev':

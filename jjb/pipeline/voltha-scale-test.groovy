@@ -38,7 +38,7 @@ pipeline {
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
     WITH_KAFKA="kafka.default.svc.cluster.local"
-    WITH_ETCD="etcd-cluster-client.default.svc.cluster.local"
+    WITH_ETCD="etcd.default.svc.cluster.local"
     VOLTHA_ETCD_PORT=9999
 
     // install everything in the default namespace
@@ -85,7 +85,7 @@ pipeline {
               kill -9 \$P_ID
             fi
 
-            for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
+            for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat');
             do
                 echo "Purging chart: \${hchart}"
                 helm delete --purge "\${hchart}"
@@ -150,7 +150,7 @@ pipeline {
         sh '''
         helm install -n kafka incubator/kafka --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
 
-        helm install --set clusterName=etcd-cluster --set autoCompactionRetention=1 --set clusterSize=3 --set defaults.log_level=WARN --namespace default -n etcd-cluster onf/voltha-etcd-cluster ${extraHelmFlags}
+        helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 -n etcd incubator/etcd ${extraHelmFlags}
 
         if [ ${withMonitoring} = true ] ; then
           helm install -n nem-monitoring cord/nem-monitoring \
@@ -243,11 +243,11 @@ pipeline {
           if [ ${withMibTemplate} = true ] ; then
             rm -f BBSM-12345123451234512345-00000000000001-v1.json
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods -l app=etcd | awk 'NR==2{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
           # Set extra openolt-adapter logs
-          _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd-cluster-client 9999:2379&
+          _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd 9999:2379&
           voltctl log level set INFO adapter-open-olt
           voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
           voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
@@ -461,6 +461,8 @@ EOF
           sh '''
           voltctl device list -o json > $WORKSPACE/logs/device-list.json
           python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
+          rm $WORKSPACE/logs/device-list.json
+          voltctl device list > $WORKSPACE/logs/voltha-devices-list.txt
 
           printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt"
           printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt"
