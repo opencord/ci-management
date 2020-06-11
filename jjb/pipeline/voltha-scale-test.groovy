@@ -70,12 +70,14 @@ pipeline {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
           sh returnStdout: false, script: """
-
-            # removing ETCD port forward
-            P_ID="\$(ps e -ww -A | grep "_TAG=etcd-port-forward" | grep -v grep | awk '{print \$1}')"
-            if [ -n "\$P_ID" ]; then
-              kill -9 \$P_ID
-            fi
+            helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+            helm repo add stable https://kubernetes-charts.storage.googleapis.com
+            helm repo add onf https://charts.opencord.org
+            helm repo add cord https://charts.opencord.org
+            helm repo add onos https://charts.onosproject.org
+            helm repo add atomix https://charts.atomix.io
+            helm repo add bbsim-sadis https://ciena.github.io/bbsim-sadis-server/charts
+            helm repo update
 
             for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
             do
@@ -104,6 +106,14 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
+        script {
+          sh(script:"""
+          if [ '${kindVolthaChange}' != '' ] ; then
+          cd $WORKSPACE/kind-voltha;
+          git fetch https://gerrit.opencord.org/kind-voltha ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+          fi
+          """)
+        }
       }
     }
     stage('Clone voltha-system-tests') {
@@ -120,14 +130,9 @@ pipeline {
         ])
         script {
           sh(script:"""
-            if [ ${volthaSystemTestsChange} != '' ] ; then
+            if [ '${volthaSystemTestsChange}' != '' ] ; then
               cd $WORKSPACE/voltha-system-tests;
               git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-            fi
-
-            if [ ${kindVolthaChange} != '' ] ; then
-              cd $WORKSPACE/kind-voltha;
-              git fetch https://gerrit.opencord.org/kind-voltha ${volthaSystemTestsChange} && git checkout FETCH_HEAD
             fi
             """)
         }
@@ -179,6 +184,9 @@ pipeline {
             # ONOS custom image handling
             IFS=: read -r onosRepo onosTag <<< ${onosImg}
             EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
+
+            # No persistent-volume-claims in Atomix
+            EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "
 
 
             cd $WORKSPACE/kind-voltha/
