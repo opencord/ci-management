@@ -39,6 +39,7 @@ pipeline {
     CONFIG_SADIS="external"
     WITH_KAFKA="kafka.default.svc.cluster.local"
     WITH_ETCD="etcd-cluster-client.default.svc.cluster.local"
+    VOLTHA_ETCD_PORT=9999
 
     // install everything in the default namespace
     VOLTHA_NS="default"
@@ -69,6 +70,15 @@ pipeline {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
           sh returnStdout: false, script: """
+            helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
+            helm repo add stable https://kubernetes-charts.storage.googleapis.com
+            helm repo add onf https://charts.opencord.org
+            helm repo add cord https://charts.opencord.org
+            helm repo add onos https://charts.onosproject.org
+            helm repo add atomix https://charts.atomix.io
+            helm repo add bbsim-sadis https://ciena.github.io/bbsim-sadis-server/charts
+            helm repo update
+
             for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat|etcd-operator');
             do
                 echo "Purging chart: \${hchart}"
@@ -96,6 +106,14 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
+        script {
+          sh(script:"""
+          if [ '${kindVolthaChange}' != '' ] ; then
+          cd $WORKSPACE/kind-voltha;
+          git fetch https://gerrit.opencord.org/kind-voltha ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+          fi
+          """)
+        }
       }
     }
     stage('Clone voltha-system-tests') {
@@ -112,14 +130,9 @@ pipeline {
         ])
         script {
           sh(script:"""
-            if [ ${volthaSystemTestsChange} != '' ] ; then
+            if [ '${volthaSystemTestsChange}' != '' ] ; then
               cd $WORKSPACE/voltha-system-tests;
               git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-            fi
-
-            if [ ${kindVolthaChange} != '' ] ; then
-              cd $WORKSPACE/kind-voltha;
-              git fetch https://gerrit.opencord.org/kind-voltha ${volthaSystemTestsChange} && git checkout FETCH_HEAD
             fi
             """)
         }
@@ -172,6 +185,9 @@ pipeline {
             IFS=: read -r onosRepo onosTag <<< ${onosImg}
             EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
 
+            # No persistent-volume-claims in Atomix
+            EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "
+
 
             cd $WORKSPACE/kind-voltha/
 
@@ -223,6 +239,16 @@ pipeline {
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
             cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods | grep etcd-cluster | awk 'NR==1{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
+
+          # Set extra openolt-adapter logs
+          _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd-cluster-client 9999:2379&
+          voltctl log level set INFO adapter-open-olt
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
+          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
+
+          # Set extra logs on olt app in onos
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord.olt
         '''
       }
     }
