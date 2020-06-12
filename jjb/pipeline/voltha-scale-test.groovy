@@ -150,7 +150,9 @@ pipeline {
         sh '''
         helm install -n kafka incubator/kafka --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
 
-        helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 -n etcd incubator/etcd ${extraHelmFlags}
+        # the ETCD chart use "auth" for resons different than BBsim, so strip that away
+        ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
+        helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 -n etcd incubator/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
           helm install -n nem-monitoring cord/nem-monitoring \
@@ -198,6 +200,9 @@ pipeline {
             cd $WORKSPACE/kind-voltha/
 
             ./voltha up
+
+            # Forward the ETCD port onto $VOLTHA_ETCD_PORT
+            _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd $VOLTHA_ETCD_PORT:2379&
           """
         }
         // bbsim-sadis server takes a while to cache the subscriber entries
@@ -247,7 +252,6 @@ pipeline {
           fi
 
           # Set extra openolt-adapter logs
-          _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd 9999:2379&
           voltctl log level set INFO adapter-open-olt
           voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
           voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
