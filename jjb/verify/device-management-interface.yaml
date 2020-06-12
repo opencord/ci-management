@@ -8,11 +8,11 @@
     jobs:
       - 'verify-device-management-interface-jobs':
           branch-regexp: '{all-branches-regexp}'
-          allow-empty-results: true
 
 - job-group:
     name: 'verify-device-management-interface-jobs'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject'
-      - 'make-unit-test'
+      - 'make-unit-test':
+          junit-allow-empty-results: true
