@@ -13,15 +13,8 @@
 // limitations under the License.
 
 // omec-postmerge.groovy
-// Combines docker-publish and deploy-staging pipelines into one job that can be triggered by a GitHub PR merge
+// Combines docker-publish, deploy and test pipelines into one job that can be triggered by a GitHub PR merge
 
-def hssdb_tag = ""
-def hss_tag = ""
-def mme_tag = ""
-def spgwc_tag = ""
-def spgwu_tag = ""
-def abbreviated_commit_hash = ""
-def quietPeriodTime = 0
 
 pipeline {
 
@@ -29,9 +22,12 @@ pipeline {
     label "${params.buildNode}"
   }
 
-  stages {
+  options {
+    timeout(time: 1, unit: 'HOURS')
+  }
 
-    stage('Publish') {
+  stages {
+    stage('Build and Publish') {
       steps {
         script {
           abbreviated_commit_hash = commitHash.substring(0, 7)
@@ -49,43 +45,54 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+    stage('Deploy OMEC') {
       steps {
         script {
           hssdb_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hssdb/tags/' | jq '.results[] | select(.name | contains("${c3poBranchName}")).name' | head -1 | tr -d \\\""""
           hss_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hss/tags/' | jq '.results[] | select(.name | contains("${c3poBranchName}")).name' | head -1 | tr -d \\\""""
-          mme_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/openmme/tags/' | jq '.results[] | select(.name | contains("${openmmeBranchName}")).name' | head -1 | tr -d \\\""""
+          mme_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/nucleus/tags/' | jq '.results[] | select(.name | contains("${nucleusBranchName}")).name' | head -1 | tr -d \\\""""
           spgwc_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/ngic-cp/tags/' | jq '.results[] | select(.name | contains("${ngicBranchName}")).name' | head -1 | tr -d \\\""""
           spgwu_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/ngic-dp/tags/' | jq '.results[] | select(.name | contains("${ngicBranchName}")).name' | head -1 | tr -d \\\""""
+
+          hssdb_image = "omecproject/c3po-hssdb:"+hssdb_tag
+          hss_image = "omecproject/c3po-hss:"+hss_tag
+          mme_image = "omecproject/nucleus:"+mme_tag
+          spgwc_image = "omecproject/ngic-cp:"+spgwc_tag
+          spgwu_image = "omecproject/ngic-dp:"+spgwu_tag
+
           switch("${params.repoName}") {
           case "c3po":
-            hssdb_tag = "${branchName}-${abbreviated_commit_hash}"
-            hss_tag = "${branchName}-${abbreviated_commit_hash}"
+            hssdb_image = "${params.registry}/c3po-hssdb:${docker_tag}"
+            hss_image = "${params.registry}/c3po-hss:${docker_tag}"
             break
           case "ngic-rtc":
-            spgwc_tag = "${branchName}-${abbreviated_commit_hash}"
-            spgwu_tag = "${branchName}-${abbreviated_commit_hash}"
+            spgwc_image = "${params.registry}/ngic-cp:${docker_tag}"
+            spgwu_image = "${params.registry}/ngic-cp:${docker_tag}"
             break
-          case "openmme":
-            mme_tag = "${branchName}-${abbreviated_commit_hash}"
+          case "Nucleus":
+            mme_image = "${params.registry}/nucleus:${docker_tag}"
             break
           }
-          // Add quiet period to downstream job. This is to delay running the
-          // deploy staging job until midnight, so it will not interrupt any
-          // development on the staging cluster during the day.
-          def now = Math.floor((new Date()).getTime() / 1000.0) // Get current time in seconds
-          def PDTOffset = 25200                                 // PDT Offset from UTC in seconds
-          def oneDay = 86400                                    // 24 hours in seconds
-          quietPeriodTime = oneDay - (now - PDTOffset) % oneDay // number of seconds until next midnight
-          println "Quiet Period (seconds until next midnight): " + quietPeriodTime
+          echo "Using hssdb image: ${hssdb_image}"
+          echo "Using hss image: ${hss_image}"
+          echo "Using mme image: ${mme_image}"
+          echo "Using spgwc image: ${spgwc_image}"
+          echo "Using spgwu image: ${spgwu_image}"
         }
-        build job: "omec-deploy-staging", parameters: [
-              string(name: 'hssdb_tag', value: "${hssdb_tag.trim()}"),
-              string(name: 'hss_tag', value: "${hss_tag.trim()}"),
-              string(name: 'mme_tag', value: "${mme_tag.trim()}"),
-              string(name: 'spgwc_tag', value: "${spgwc_tag.trim()}"),
-              string(name: 'spgwu_tag', value: "${spgwu_tag.trim()}"),
-            ], quietPeriod: quietPeriodTime
+
+        build job: "omec-deploy-dev", parameters: [
+              string(name: 'hssdbImage', value: "${hssdb_image.trim()}"),
+              string(name: 'hssImage', value: "${hss_image.trim()}"),
+              string(name: 'mmeImage', value: "${mme_image.trim()}"),
+              string(name: 'spgwcImage', value: "${spgwc_image.trim()}"),
+              string(name: 'spgwuImage', value: "${spgwu_image.trim()}"),
+            ]
+      }
+    }
+
+    stage ("Run NG40 Tests"){
+      steps {
+        build job: "omec-test-dev"
       }
     }
   }
