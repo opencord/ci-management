@@ -16,6 +16,17 @@
       - 'omec-tc1'
       - 'omec-tc2'
       - 'omec-deploy-staging'
+      - 'omec-deploy':
+          pod: 'dev'
+          build-node: 'omec-ci'
+          cp-context: 'dev-central-gcp'
+          dp-context: 'dev-edge-onf-menlo'
+          central-config: 'gcp-dev'
+          edge-config: 'menlo-dev'
+      - 'omec-ng40-test':
+          pod: 'dev'
+          build-node: 'ng40-host-node'
+          ng40-vm: 'ng40@192.168.122.101'
       - 'omec-postmerge':
           project: '{name}'
           build-node: 'omec-ci'
@@ -57,6 +68,7 @@
           build-node: 'ubuntu16.04-basebuild-4c-8g'
       - 'omec-comac-in-a-box':
           build-node: 'comac_in_a_box'
+      - 'omec-container'
 
 # for c3po
 - project:
@@ -95,6 +107,7 @@
           build-node: 'ubuntu16.04-basebuild-8c-15g'
       - 'omec-comac-in-a-box':
           build-node: 'comac_in_a_box'
+      - 'omec-container'
 
 # for openmme
 - project:
@@ -163,6 +176,7 @@
           build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-comac-in-a-box':
           build-node: 'comac_in_a_box'
+      - 'omec-container'
 
 # for freediameter
 - project:
@@ -676,3 +690,218 @@
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/{pipeline-file}
+
+# OMEC CI job which builds docker images, deploys and tests OMEC
+- job-template:
+    id: 'omec-container'
+    name: 'omec_{project}_container'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+      - build-blocker:
+          use-build-blocker: true
+          blocking-jobs:
+            - "omec_.*_container"
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: 'ng40-host-node'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+      - string:
+          name: ghprbTargetBranch
+          default: '$ghprbTargetBranch'
+          description: 'GitHub Pull-Request builder value. Replace default value to test manually.'
+
+      - string:
+          name: ghprbPullId
+          default: '$ghprbPullId'
+          description: 'GitHub Pull-Request builder value. Replace default value to test manually.'
+
+      - string:
+          name: ghprbActualCommit
+          default: '$ghprbActualCommit'
+          description: 'GitHub Pull-Request builder value. Replace default value to test manually.'
+
+      - string:
+          name: registry
+          default: 'registry.central.aetherproject.net'
+          description: 'Docker registry that stores images built for CI testing'
+
+      - string:
+          name: c3poBranch
+          default: 'master'
+          description: 'Branch name of c3po repo which we run tests against'
+
+      - string:
+          name: nucleusBranch
+          default: 'master'
+          description: 'Branch name of Nucleus repo which we run tests against'
+
+      - string:
+          name: ngicBranch
+          default: 'central-cp-multi-upfs'
+          description: 'Branch name of ngic-rtc repo which we run tests against'
+
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - Container Based Verification'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-container.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
+
+# OMEC deployment job
+- job-template:
+    id: 'omec-deploy'
+    name: 'omec_deploy_{pod}'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on.'
+
+      - string:
+          name: cpContext
+          default: '{cp-context}'
+          description: 'K8S context for omec control plane.'
+
+      - string:
+          name: dpContext
+          default: '{dp-context}'
+          description: 'K8S context for omec data plane.'
+
+      - string:
+          name: centralConfig
+          default: '{central-config}'
+          description: 'Directory name for central yaml files under aether-pod-configs.'
+
+      - string:
+          name: edgeConfig
+          default: '{edge-config}'
+          description: 'Directory name for edge yaml files under aether-pod-configs.'
+
+      - string:
+          name: hssdbImage
+          default: 'omecproject/c3po-hssdb:master-latest'
+          description: 'Docker image for hssdb. Leave empty to use default helm-charts value'
+
+      - string:
+          name: hssImage
+          default: 'omecproject/c3po-hss:master-latest'
+          description: 'Docker image for hss. Leave empty to use default helm-charts value'
+
+      - string:
+          name: mmeImage
+          default: 'omecproject/nucleus:master-latest'
+          description: 'Docker image for mme. Leave empty to use default helm-charts value'
+
+      - string:
+          name: spgwcImage
+          default: 'omecproject/ngic-cp:central-cp-multi-upfs-latest'
+          description: 'Docker image for spgwc. Leave empty to use default helm-charts value'
+
+      - string:
+          name: spgwuImage
+          default: 'omecproject/ngic-dp:central-cp-multi-upfs-latest-debug'
+          description: 'Docker image for spgwu. Leave empty to use default helm-charts value'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-deploy.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
+
+# OMEC test job
+- job-template:
+    id: 'omec-ng40-test'
+    name: 'omec_ng40-test_{pod}'
+    project-type: pipeline
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on.'
+
+      - string:
+          name: ng40VM
+          default: '{ng40-vm}'
+          description: 'user@IP for accessing NG40 VM from the build node.'
+
+      - string:
+          name: ntlFile
+          default: 'run.ntl'
+          description: 'NG40 test automation file'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-ng40-test.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
