@@ -18,10 +18,10 @@
       - 'omec-deploy-staging'
       - 'omec-postmerge':
           project: '{name}'
-          build-node: 'omec-qa'
+          build-node: 'omec-ci'
           c3po-branch-name: 'master'
           ngic-branch-name: 'central-cp-multi-upfs'
-          openmme-branch-name: 'master'
+          nucleus-branch-name: 'master'
           pipeline-file: 'omec-postmerge.groovy'
 
 # for ngic-rtc
@@ -628,6 +628,11 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
+          name: registry
+          default: 'omecproject'
+          description: 'Docker registry to push images to'
+
+      - string:
           name: repoName
           default: ''
           description: 'Name of the git repo. Populated by Generic Webhook Trigger'
@@ -658,9 +663,9 @@
           description: 'Branch name of ngic-rtc repo which we run tests against'
 
       - string:
-          name: openmmeBranchName
-          default: '{openmme-branch-name}'
-          description: 'Branch name of openmme repo which we run tests against'
+          name: nucleusBranchName
+          default: '{nucleus-branch-name}'
+          description: 'Branch name of Nucleus repo which we run tests against'
 
       - string:
           name: maintainers
