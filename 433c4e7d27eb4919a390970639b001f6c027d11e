@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "de47e099_caa980cb",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 696,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-06-12T22:41:58Z",
+      "side": 1,
+      "message": "Could we name this \"omec-container-test\"?",
+      "range": {
+        "startLine": 696,
+        "startChar": 9,
+        "endLine": 696,
+        "endChar": 20
+      },
+      "revId": "433c4e7d27eb4919a390970639b001f6c027d11e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6d5115f6_7fd31c04",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 784,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-06-12T22:41:58Z",
+      "side": 1,
+      "message": "Could we name this \"omec-deploy-test\"?",
+      "range": {
+        "startLine": 784,
+        "startChar": 9,
+        "endLine": 784,
+        "endChar": 20
+      },
+      "revId": "433c4e7d27eb4919a390970639b001f6c027d11e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "947c6cf1_22deded7",
+        "filename": "jjb/omec-ci.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 865,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2020-06-12T22:41:58Z",
+      "side": 1,
+      "message": "Could we name this \"omec-ng40-test\"?",
+      "range": {
+        "startLine": 865,
+        "startChar": 9,
+        "endLine": 865,
+        "endChar": 18
+      },
+      "revId": "433c4e7d27eb4919a390970639b001f6c027d11e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    }
+  ]
+}
