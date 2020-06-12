@@ -80,7 +80,7 @@ pipeline {
           echo "Using spgwu image: ${spgwu_image}"
         }
 
-        build job: "omec-deploy-dev", parameters: [
+        build job: "omec_deploy_dev", parameters: [
               string(name: 'hssdbImage', value: "${hssdb_image.trim()}"),
               string(name: 'hssImage', value: "${hss_image.trim()}"),
               string(name: 'mmeImage', value: "${mme_image.trim()}"),
@@ -92,7 +92,7 @@ pipeline {
 
     stage ("Run NG40 Tests"){
       steps {
-        build job: "omec-test-dev"
+        build job: "omec_ng40-test_dev"
       }
     }
   }
