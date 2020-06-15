@@ -51,7 +51,7 @@
     jobs:
       - 'omec-combined':
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
-          mme-repo: 'openmme'
+          mme-repo: 'Nucleus'
       - 'omec-install':
           sub-project: '{name}'
           branch: 'central-cp-multi-upfs'
@@ -84,7 +84,7 @@
     jobs:
       - 'omec-combined':
           pipeline-file: 'Jenkinsfile-omec-combined.groovy'
-          mme-repo: 'openmme'
+          mme-repo: 'Nucleus'
       - 'omec-install':
           sub-project: 'c3po-sgx'
           branch: 'master'
