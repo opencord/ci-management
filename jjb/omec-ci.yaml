@@ -67,8 +67,6 @@
           build-timeout: 30
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-4c-8g'
-      - 'omec-comac-in-a-box':
-          build-node: 'comac_in_a_box'
       - 'omec-container'
 
 # for c3po
@@ -106,8 +104,6 @@
           build-timeout: 30
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-8c-15g'
-      - 'omec-comac-in-a-box':
-          build-node: 'comac_in_a_box'
       - 'omec-container'
 
 # for openmme
@@ -141,8 +137,6 @@
           build-timeout: 30
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-1c-2g'
-      - 'omec-comac-in-a-box':
-          build-node: 'comac_in_a_box'
 
 # for nucleus
 - project:
@@ -175,8 +169,6 @@
           build-timeout: 60
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-1c-2g'
-      - 'omec-comac-in-a-box':
-          build-node: 'comac_in_a_box'
       - 'omec-container'
 
 # for freediameter
