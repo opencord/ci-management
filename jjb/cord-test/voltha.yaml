@@ -127,7 +127,36 @@
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
 
-      # Menlo pod with olt/onu - Default tech profile and timer based job
+      # Flex OCP pod with olt/onu - TT workflow - timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: 'TP'
+          time: '6'
+
+      # flex pod1 test job - test job uses 1TCONT/4GEMs tech profile - using voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: True
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
+
+      #  Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
@@ -166,7 +195,7 @@
           time: '3'
           VolthaEtcdPort: '9999'
 
-      # Menlo pod test job - uses tech profile on voltha branch
+      # Menl pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
@@ -175,6 +204,7 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
           power-switch: True
+
 
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -298,7 +328,7 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
-      # ONF Menlo Soak POD build job - voltha-master branch
+      # ONF Menl Soak POD build job - voltha-master branch
       - 'build_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
@@ -309,7 +339,7 @@
           configurePod: true
           profile: 'Default'
 
-      # ONF Menlo Soak POD test job - voltha-master branch
+      # ONF Menl Soak POD test job - voltha-master branch
       - 'build_pod_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
