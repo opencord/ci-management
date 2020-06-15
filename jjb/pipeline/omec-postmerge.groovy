@@ -22,10 +22,6 @@ pipeline {
     label "${params.buildNode}"
   }
 
-  options {
-    timeout(time: 2, unit: 'HOURS')
-  }
-
   stages {
     stage('Build and Publish') {
       steps {
@@ -45,7 +41,7 @@ pipeline {
       }
     }
 
-    stage('Deploy OMEC') {
+    stage ("Prepare OMEC deployment"){
       steps {
         script {
           hssdb_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hssdb/tags/' | jq '.results[] | select(.name | contains("${c3poBranchName}")).name' | head -1 | tr -d \\\""""
@@ -79,20 +75,32 @@ pipeline {
           echo "Using spgwc image: ${spgwc_image}"
           echo "Using spgwu image: ${spgwu_image}"
         }
-
-        build job: "omec_deploy_dev", parameters: [
-              string(name: 'hssdbImage', value: "${hssdb_image.trim()}"),
-              string(name: 'hssImage', value: "${hss_image.trim()}"),
-              string(name: 'mmeImage', value: "${mme_image.trim()}"),
-              string(name: 'spgwcImage', value: "${spgwc_image.trim()}"),
-              string(name: 'spgwuImage', value: "${spgwu_image.trim()}"),
-            ]
       }
     }
 
-    stage ("Run NG40 Tests"){
-      steps {
-        build job: "omec_ng40-test_dev"
+    stage ("Deploy and Test"){
+      options {
+        lock(resource: 'aether-dev-cluster')
+      }
+
+      stages {
+        stage ("Deploy OMEC"){
+          steps {
+            build job: "omec_deploy_dev", parameters: [
+                  string(name: 'hssdbImage', value: "${hssdb_image.trim()}"),
+                  string(name: 'hssImage', value: "${hss_image.trim()}"),
+                  string(name: 'mmeImage', value: "${mme_image.trim()}"),
+                  string(name: 'spgwcImage', value: "${spgwc_image.trim()}"),
+                  string(name: 'spgwuImage', value: "${spgwu_image.trim()}"),
+            ]
+          }
+        }
+
+        stage ("Run NG40 Tests"){
+          steps {
+            build job: "omec_ng40-test_dev"
+          }
+        }
       }
     }
   }
