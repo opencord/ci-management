@@ -33,6 +33,7 @@
           c3po-branch-name: 'master'
           ngic-branch-name: 'central-cp-multi-upfs'
           nucleus-branch-name: 'master'
+          upf-branch-name: 'master'
           pipeline-file: 'omec-postmerge.groovy'
 
 # for ngic-rtc
@@ -235,6 +236,7 @@
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-2c-4g'
           extraEnvironmentVars: CPU=haswell
+      - 'omec-container'
 
 # Combined pipeline
 - job-template:
@@ -610,6 +612,11 @@
           description: 'Branch name of Nucleus repo which we run tests against'
 
       - string:
+          name: upfBranchName
+          default: '{upf-branch-name}'
+          description: 'Branch name of upf-epc repo which we run tests against'
+
+      - string:
           name: maintainers
           default: 'jeremyr@opennetworking.org, you@opennetworking.org'
           description: "The person that sould be notified if this job fails"
@@ -690,6 +697,11 @@
           name: ngicBranch
           default: 'central-cp-multi-upfs'
           description: 'Branch name of ngic-rtc repo which we run tests against'
+
+      - string:
+          name: upfBranch
+          default: 'master'
+          description: 'Branch name of upf-epc repo which we run tests against'
 
     triggers:
       - cord-infra-github-pr-trigger:
@@ -774,9 +786,14 @@
           description: 'Docker image for spgwc. Leave empty to use default helm-charts value'
 
       - string:
-          name: spgwuImage
-          default: 'omecproject/ngic-dp:central-cp-multi-upfs-latest-debug'
-          description: 'Docker image for spgwu. Leave empty to use default helm-charts value'
+          name: bessImage
+          default: 'omecproject/upf-epc-bess:master-latest'
+          description: 'Docker image for bess. Leave empty to use default helm-charts value'
+
+      - string:
+          name: cpifaceImage
+          default: 'omecproject/upf-epc-cpiface:master-latest'
+          description: 'Docker image for cpiface. Leave empty to use default helm-charts value'
 
     concurrent: false
 

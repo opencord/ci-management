@@ -48,13 +48,15 @@ pipeline {
           hss_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hss/tags/' | jq '.results[] | select(.name | contains("${c3poBranchName}")).name' | head -1 | tr -d \\\""""
           mme_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/nucleus/tags/' | jq '.results[] | select(.name | contains("${nucleusBranchName}")).name' | head -1 | tr -d \\\""""
           spgwc_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/ngic-cp/tags/' | jq '.results[] | select(.name | contains("${ngicBranchName}")).name' | head -1 | tr -d \\\""""
-          spgwu_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/ngic-dp/tags/' | jq '.results[] | select(.name | contains("${ngicBranchName}")).name' | head -1 | tr -d \\\""""
+          bess_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-bess/tags/' | jq '.results[] | select(.name | contains("${upfBranchName}")).name' | head -1 | tr -d \\\""""
+          cpiface_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-cpiface/tags/' | jq '.results[] | select(.name | contains("${upfBranchName}")).name' | head -1 | tr -d \\\""""
 
           hssdb_image = "omecproject/c3po-hssdb:"+hssdb_tag
           hss_image = "omecproject/c3po-hss:"+hss_tag
           mme_image = "omecproject/nucleus:"+mme_tag
           spgwc_image = "omecproject/ngic-cp:"+spgwc_tag
-          spgwu_image = "omecproject/ngic-dp:"+spgwu_tag
+          bess_image = "omecproject/upf-epc-bess:"+bess_tag
+          cpiface_image = "omecproject/upf-epc-cpiface:"+cpiface_tag
 
           switch("${params.repoName}") {
           case "c3po":
@@ -63,17 +65,21 @@ pipeline {
             break
           case "ngic-rtc":
             spgwc_image = "${params.registry}/ngic-cp:${branchName}-${abbreviated_commit_hash}"
-            spgwu_image = "${params.registry}/ngic-dp:${branchName}-${abbreviated_commit_hash}"
             break
           case "Nucleus":
             mme_image = "${params.registry}/nucleus:${branchName}-${abbreviated_commit_hash}"
+            break
+          case "upf-epc":
+            bess_image = "${params.registry}/upf-epc-bess:${docker_tag}"
+            cpiface_image = "${params.registry}/upf-epc-cpiface:${docker_tag}"
             break
           }
           echo "Using hssdb image: ${hssdb_image}"
           echo "Using hss image: ${hss_image}"
           echo "Using mme image: ${mme_image}"
           echo "Using spgwc image: ${spgwc_image}"
-          echo "Using spgwu image: ${spgwu_image}"
+          echo "Using bess image: ${bess_image}"
+          echo "Using cpiface image: ${cpiface_image}"
         }
       }
     }
@@ -91,7 +97,8 @@ pipeline {
                   string(name: 'hssImage', value: "${hss_image.trim()}"),
                   string(name: 'mmeImage', value: "${mme_image.trim()}"),
                   string(name: 'spgwcImage', value: "${spgwc_image.trim()}"),
-                  string(name: 'spgwuImage', value: "${spgwu_image.trim()}"),
+                  string(name: 'bessImage', value: "${bess_image.trim()}"),
+                  string(name: 'cpifaceImage', value: "${cpiface_image.trim()}"),
             ]
           }
         }
