@@ -111,6 +111,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-flows'
@@ -128,7 +130,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set auth=false --set limits.memory=8192Mi '
-
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-subscribers'
@@ -146,7 +149,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
-
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -166,7 +170,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
-
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -186,6 +191,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -204,6 +211,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set auth=false '
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -222,6 +231,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -241,6 +252,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
+          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
@@ -469,10 +482,10 @@
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
-    # triggers:
-    #   - timed: |
-    #              TZ=America/Los_Angeles
-    #              {time-trigger}
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
 
 - job-template:
     id: 'voltha-scale-measurements-dev'
