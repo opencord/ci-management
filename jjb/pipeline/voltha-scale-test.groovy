@@ -179,7 +179,7 @@ pipeline {
             # VOLTHA and ofAgent custom image handling
             IFS=: read -r rwCoreRepo rwCoreTag <<< ${rwCoreImg}
             IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent_go.repository=\$ofAgentRepo,images.ofagent_go.tag=\$ofAgentTag "
+            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
 
             # OpenOLT custom image handling
             IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
