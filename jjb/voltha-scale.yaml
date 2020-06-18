@@ -114,6 +114,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-flows'
@@ -134,6 +135,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-subscribers'
@@ -154,6 +156,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -176,6 +179,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -198,6 +202,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -219,6 +224,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -240,6 +246,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -262,6 +269,7 @@
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
+          onosImg: andreacampanella/onos:olt-pipeliner-batch
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
@@ -490,10 +498,10 @@
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
-    triggers:
-      - timed: |
-                 TZ=America/Los_Angeles
-                 {time-trigger}
+    # triggers:
+    #   - timed: |
+    #              TZ=America/Los_Angeles
+    #              {time-trigger}
 
 - job-template:
     id: 'voltha-scale-measurements-dev'
