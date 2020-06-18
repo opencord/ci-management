@@ -22,6 +22,30 @@
       "revId": "2666549af50daa33261f06959691fe9f4d2de45d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0de72789_b6a6169b",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-06-18T16:12:56Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6ab3aab5_91f19045",
+      "range": {
+        "startLine": 117,
+        "startChar": 19,
+        "endLine": 117,
+        "endChar": 60
+      },
+      "revId": "2666549af50daa33261f06959691fe9f4d2de45d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
