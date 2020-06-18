@@ -168,9 +168,11 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         script {
-          // TODO install etcd outside kind-voltha (no need to redeploy the operator everytime)
           sh returnStdout: false, script: """
             export EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
+
+            # disable the securityContext, this is a development cluster
+            EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
 
             # BBSim custom image handling
             IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
@@ -259,6 +261,15 @@ pipeline {
 
           # Set extra logs on olt app in onos
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord.olt
+
+          # Start the tcp-dump in ofagent
+          if [ ${withPcap} = true ] ; then
+            export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}')
+            kubectl exec $OF_AGENT -- apk update
+            kubectl exec $OF_AGENT -- apk add tcpdump
+            kubectl exec $OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
+            _TAG=ofagent-tcpdump kubectl exec $OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
+          fi
         '''
       }
     }
@@ -349,6 +360,19 @@ EOF
       // collect result, done in the "post" step so it's executed even in the
       // event of a timeout in the tests
       sh '''
+
+        if [ ${withPcap} = true ] ; then
+          # stop ofAgent tcpdump
+          P_ID="\$(ps e -ww -A | grep "_TAG=ofagent-tcpdump" | grep -v grep | awk '{print \$1}')"
+          if [ -n "\$P_ID" ]; then
+            kill -9 \$P_ID
+          fi
+
+          # copy the file
+          export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}')
+          kubectl cp $OF_AGENT:out.pcap $WORKSPACE/logs/ofagent.pcap
+        fi
+
         cd voltha-system-tests
         source ./vst_venv/bin/activate
         python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt

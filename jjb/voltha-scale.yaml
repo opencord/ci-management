@@ -111,10 +111,9 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
+          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
+          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-flows'
@@ -132,10 +131,9 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set auth=false --set limits.memory=8192Mi '
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
+          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
+          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-subscribers'
@@ -153,7 +151,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
+          withPcap: true
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
           onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
@@ -176,10 +174,9 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
+          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
+          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -199,10 +196,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -221,10 +214,9 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set auth=false '
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
+          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
+          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -266,10 +258,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
@@ -324,6 +312,7 @@
     withMibTemplate: true
     withMonitoring: true
     withProfiling: false
+    withPcap: false
     openonuAdapterReplicas: 1
     onosReplicas: 1
     atomixReplicas: 0
@@ -407,6 +396,11 @@
           name: withProfiling
           default: '{withProfiling}'
           description: 'Option to collect profiling informations from rw-core and openolt (note that the appropriate -profile images needs to be used)'
+
+      - bool:
+          name: withPcap
+          default: '{withPcap}'
+          description: 'Capture a .pcap on the OpenFlow connection from the ofAgent side'
 
       - string:
           name: extraHelmFlags
