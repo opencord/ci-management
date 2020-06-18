@@ -111,7 +111,11 @@ pipeline {
         ./log-combine.sh > /dev/null &
 
         mkdir -p $ROBOT_LOGS_DIR
-        export ROBOT_MISC_ARGS="--removekeywords wuks -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        if ( ${powerSwitch} ); then
+             export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        else
+             export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+        fi
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         """
       }
