@@ -272,8 +272,6 @@ pipeline {
       steps {
         script {
           deployment_config.olts.each { olt ->
-            sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true"
-            sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true"
             sh returnStdout: false, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --remove asfvolt16 && dpkg --purge asfvolt16'"
             waitUntil {
               olt_sw_present = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'dpkg --list | grep asfvolt16 | wc -l'"
@@ -304,13 +302,8 @@ pipeline {
           deployment_config.olts.each { olt ->
             sh returnStdout: false, script: """
             ssh-keyscan -H ${olt.ip} >> ~/.ssh/known_hosts
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt stop' || true
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'killall dev_mgmt_daemon' || true
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'rm -f /var/log/openolt.log'
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'rm -f /var/log/dev_mgmt_daemon.log'
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service dev_mgmt_daemon start &'
-            sleep 5
-            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'service openolt start &'
+            sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'rm -f /var/log/openolt.log; rm -f /var/log/dev_mgmt_daemon.log; reboot'
+            sleep 120
             """
             waitUntil {
               onu_discovered = sh returnStdout: true, script: "sshpass -p ${olt.pass} ssh -l ${olt.user} ${olt.ip} 'grep \"onu discover indication\" /var/log/openolt.log | wc -l'"
