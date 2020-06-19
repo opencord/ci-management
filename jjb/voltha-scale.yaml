@@ -492,10 +492,10 @@
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
-    # triggers:
-    #   - timed: |
-    #              TZ=America/Los_Angeles
-    #              {time-trigger}
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
 
 - job-template:
     id: 'voltha-scale-measurements-dev'
