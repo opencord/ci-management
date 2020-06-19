@@ -153,8 +153,8 @@
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
           withPcap: true
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
+          ofAgentImg: matteoscandolo/voltha-ofagent-go:vol-3242
+          # onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -237,8 +237,8 @@
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
           openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
           rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-remove-log
-          onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
+          ofAgentImg: matteoscandolo/voltha-ofagent-go:vol-3242
+          # onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
