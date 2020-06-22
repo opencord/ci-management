@@ -152,6 +152,7 @@ pipeline {
 
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
+        ETCD_FLAGS+=" --set memoryMode=true "
         helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 -n etcd incubator/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
