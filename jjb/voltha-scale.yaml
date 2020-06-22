@@ -320,6 +320,7 @@
     onosStatInterval: 5
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
+    inMemoryEtcdStorage: true
 
     parameters:
       - string:
@@ -486,6 +487,11 @@
           name: kindVolthaChange
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - bool:
+          name: inMemoryEtcdStorage
+          default: '{inMemoryEtcdStorage}'
+          description: 'Wether to write ETCD keys on disk or keep them in memory (true=inMemory)'
 
     project-type: pipeline
     concurrent: false
