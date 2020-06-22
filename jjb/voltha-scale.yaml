@@ -491,7 +491,7 @@
       - bool:
           name: inMemoryEtcdStorage
           default: '{inMemoryEtcdStorage}'
-          description: 'Wether to write ETCD keys on disk or keep them in memory (true=inMemory)'
+          description: 'Whether to write ETCD keys on disk or keep them in memory (true=inMemory)'
 
     project-type: pipeline
     concurrent: false
