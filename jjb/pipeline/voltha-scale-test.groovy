@@ -152,6 +152,7 @@ pipeline {
 
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
+        ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
         helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 -n etcd incubator/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
@@ -253,14 +254,8 @@ pipeline {
             cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods -l app=etcd | awk 'NR==2{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
-          # Set extra openolt-adapter logs
-          voltctl log level set INFO adapter-open-olt
-          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
-          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
-          voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
-
-          # Set extra logs on olt app in onos
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord.olt
+          # Set extra logs on the dhcpl2relay app in onos
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord.dhcpl2relay
 
           # Start the tcp-dump in ofagent
           if [ ${withPcap} = true ] ; then

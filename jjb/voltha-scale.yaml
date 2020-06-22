@@ -152,9 +152,9 @@
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
           withPcap: true
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
+          rwCoreImg: matteoscandolo/voltha-rw-core:dhcp-logs
+          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:dhcp-logs
           ofAgentImg: matteoscandolo/voltha-ofagent-go:vol-3242
-          # onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -320,6 +320,7 @@
     onosStatInterval: 5
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
+    inMemoryEtcdStorage: true
 
     parameters:
       - string:
@@ -487,15 +488,20 @@
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
+      - bool:
+          name: inMemoryEtcdStorage
+          default: '{inMemoryEtcdStorage}'
+          description: 'Wether to write ETCD keys on disk or keep them in memory (true=inMemory)'
+
     project-type: pipeline
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
-    triggers:
-      - timed: |
-                 TZ=America/Los_Angeles
-                 {time-trigger}
+    # triggers:
+    #   - timed: |
+    #              TZ=America/Los_Angeles
+    #              {time-trigger}
 
 - job-template:
     id: 'voltha-scale-measurements-dev'
