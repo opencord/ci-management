@@ -111,9 +111,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
-          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
-          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-flows'
@@ -131,9 +128,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set auth=false --set limits.memory=8192Mi '
-          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
-          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-att-subscribers'
@@ -152,8 +146,6 @@
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
           withPcap: true
-          rwCoreImg: matteoscandolo/voltha-rw-core:dhcp-logs
-          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:dhcp-logs
           ofAgentImg: matteoscandolo/voltha-ofagent-go:vol-3242
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
@@ -174,9 +166,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
-          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
-          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -214,9 +203,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set auth=false '
-          openonuAdapterImg: gcgirish/voltha-openonu-adapter:VOL3202
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:VOL3202
-          rwCoreImg: volthacore/voltha-rw-core:khen_pcap
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -235,10 +221,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
-          openonuAdapterImg: matteoscandolo/voltha-openonu-adapter:adopt-retry
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-remove-log
           ofAgentImg: matteoscandolo/voltha-ofagent-go:vol-3242
-          # onosImg: andreacampanella/voltha-onos:onos-extended-timeouts
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -498,10 +481,10 @@
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
-    # triggers:
-    #   - timed: |
-    #              TZ=America/Los_Angeles
-    #              {time-trigger}
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
 
 - job-template:
     id: 'voltha-scale-measurements-dev'
