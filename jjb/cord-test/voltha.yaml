@@ -447,7 +447,7 @@
           configurePod: true
           profile: '1T8GEM'
           with-kind: true
-          time: '11'
+          time: '12'
 
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
