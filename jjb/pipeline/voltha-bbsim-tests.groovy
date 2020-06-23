@@ -221,7 +221,7 @@ pipeline {
            echo export EXTRA_HELM_FLAGS=\\"\$EXTRA_HELM_FLAGS\\" >> minimal-env.sh
 
            mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
            # By default, all tests tagged 'sanity' are run.  This covers basic functionality
            # like running through the ATT workflow for a single subscriber.
@@ -260,7 +260,7 @@ pipeline {
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
            # By default, all tests tagged 'sanityDt' are run.  This covers basic functionality
            # like running through the DT workflow for a single subscriber.
