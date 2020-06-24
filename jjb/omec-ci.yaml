@@ -27,6 +27,8 @@
           pod: 'dev'
           build-node: 'ng40-host-node'
           ng40-vm: 'ng40@192.168.122.101'
+          cp-context: 'dev-central-gcp'
+          dp-context: 'dev-edge-onf-menlo'
       - 'omec-archive-artifacts':
           pod: 'dev'
           build-node: 'omec-ci'
@@ -845,6 +847,16 @@
           name: ntlFile
           default: 'run.ntl'
           description: 'NG40 test automation file'
+
+      - string:
+          name: cpContext
+          default: '{cp-context}'
+          description: 'K8S context for omec control plane.'
+
+      - string:
+          name: dpContext
+          default: '{dp-context}'
+          description: 'K8S context for omec data plane.'
 
     concurrent: false
 
