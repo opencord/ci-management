@@ -148,25 +148,6 @@
           withPcap: true
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:vol-3269
 
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-att-subscribers-retry'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-          extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s --set authRetry=true,dhcpRetry=true'
-          withPcap: true
-          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:vol-3269
-
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-1-16-32-dt-subscribers'
@@ -322,7 +303,7 @@
     onosStatInterval: 5
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
-    inMemoryEtcdStorage: true
+    inMemoryEtcdStorage: false
 
     parameters:
       - string:
