@@ -303,7 +303,7 @@
     onosStatInterval: 5
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
-    inMemoryEtcdStorage: false
+    inMemoryEtcdStorage: true
 
     parameters:
       - string:
