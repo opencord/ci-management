@@ -199,7 +199,6 @@ pipeline {
             # No persistent-volume-claims in Atomix
             EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "
 
-
             cd $WORKSPACE/kind-voltha/
 
             ./voltha up
@@ -253,9 +252,6 @@ pipeline {
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
             cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods -l app=etcd | awk 'NR==2{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
-
-          # Set extra logs on the dhcpl2relay app in onos
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord.dhcpl2relay
 
           # Start the tcp-dump in ofagent
           if [ ${withPcap} = true ] ; then
