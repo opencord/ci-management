@@ -9,44 +9,27 @@
 
     jobs:
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-sanity-test'
-          build-node: 'qct-pod4-node2'
-          code-branch: 'master'
-          make-target: sanity-multi-kind
-          onus: 2
-          pons: 2
-          time-trigger: "H H/6 * * *"
-
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-sanity-test-2.3'
-          build-node: 'qct-pod4-node2'
-          code-branch: 'voltha-2.3'
-          make-target: sanity-multi-kind
-          onus: 2
-          pons: 2
-          time-trigger: "H H/6 * * *"
-
-      - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
           code-branch: 'master'
-          onus: 1
-          pons: 1
+          onus: 2
+          pons: 2
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-functional-test-2.3'
+          name: 'periodic-voltha-test-bbsim-2.3'
+          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
-          code-branch: 'voltha-2.3'
           make-target: functional-single-kind
-          onus: 1
-          pons: 1
+          code-branch: 'voltha-2.3'
+          onus: 2
+          pons: 2
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-system-test'
+          name: 'periodic-voltha-etcd-test'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-4c-8g'
           code-branch: 'master'
@@ -56,7 +39,7 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-system-test-2.3'
+          name: 'periodic-voltha-etcd-test-2.3'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-4c-8g'
           code-branch: 'voltha-2.3'
@@ -75,7 +58,7 @@
           onus: 1
           pons: 1
           test-runs: 5
-          time-trigger: "H H/6 * * *"
+          time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs-2.3'
@@ -86,25 +69,7 @@
           onus: 1
           pons: 1
           test-runs: 5
-          time-trigger: "H H/6 * * *"
-
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-alarm-test'
-          build-node: 'qct-pod4-node2'
-          code-branch: 'master'
-          make-target: bbsim-alarms-kind
-          onus: 1
-          pons: 1
-          time-trigger: "H H/3 * * *"
-
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-alarm-test-2.3'
-          build-node: 'qct-pod4-node2'
-          code-branch: 'voltha-2.3'
-          make-target: bbsim-alarms-kind
-          onus: 1
-          pons: 1
-          time-trigger: "H H/3 * * *"
+          time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
           name: 'nightly-voltha-DTflow-sanity-test'

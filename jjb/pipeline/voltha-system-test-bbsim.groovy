@@ -93,7 +93,7 @@ pipeline {
       }
     }
 
-    stage('Kubernetes Functional Tests') {
+    stage('Kubernetes ETCD Scale Test') {
       steps {
         sh '''
            make ROBOT_DEBUG_LOG_OPT="-l functional_log.html -r functional_report.html -o functional_output.xml" -C $WORKSPACE/voltha-system-tests system-scale-test
@@ -101,7 +101,7 @@ pipeline {
       }
     }
 
-    stage('Kubernetes Failure Scenario Tests') {
+    stage('Kubernetes ETCD Failure Test') {
       steps {
         sh '''
            make ROBOT_DEBUG_LOG_OPT="-l failure_log.html -r failure_report.html -o failure_output.xml"  -C $WORKSPACE/voltha-system-tests failure-test
