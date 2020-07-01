@@ -37,7 +37,7 @@ pipeline {
     DEPLOY_K8S="yes"
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="no"
-    ROBOT_MISC_ARGS="${params.extraRobotArgs}"
+    ROBOT_MISC_ARGS="-e PowerSwitch ${params.extraRobotArgs}"
   }
   stages {
 
