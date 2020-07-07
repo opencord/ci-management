@@ -64,7 +64,7 @@ pipeline {
         if [ "${params.branch}" != "master" ]; then
            cd $WORKSPACE/kind-voltha
            source releases/${params.branch}
-           VC_VERSION=1.0.18
+           VC_VERSION=1.1.8
         else
            VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
         fi
