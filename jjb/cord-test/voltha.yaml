@@ -68,7 +68,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          time: '1'
+          time: '3'
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -79,31 +79,6 @@
           power-switch: True
           test-repo: 'voltha-system-tests'
           profile: 'Default'
-
-      # flex OCP pod with olt/onu - uses 1TCONT/4GEMs tech profile on voltha - timer based job
-      - 'build_voltha_pod_release':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: 'master'
-          branch: 'master'
-          num-of-openonu: '2'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          configurePod: true
-          profile: '1T4GEM'
-          time: '3'
-
-      # flex pod1 test job - test job uses 1TCONT/4GEMs tech profile - using voltha branch
-      - 'build_voltha_pod_test':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: 'master'
-          branch: 'master'
-          power-switch: True
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM'
 
       # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release':
@@ -118,7 +93,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T4GEM'
-          time: '4'
+          time: '1'
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -134,32 +109,6 @@
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          release: 'master'
-          branch: 'master'
-          num-of-openonu: '2'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          configurePod: true
-          profile: 'Default'
-          time: '1'
-          VolthaEtcdPort: '9999'
-
-      # Menlo pod test job - uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          release: 'master'
-          branch: 'master'
-          test-repo: 'voltha-system-tests'
-          profile: 'Default'
-          power-switch: True
-
-      # Menlo pod with olt/onu - Default tech profile and timer based job
-      - 'build_voltha_pod_release':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
           release: '2.4'
           branch: 'voltha-2.4'
           num-of-openonu: '2'
@@ -169,7 +118,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          time: '3'
+          time: '1'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -195,7 +144,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T4GEM'
-          time: '4'
+          time: '3'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
@@ -221,7 +170,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '6'
+          time: '7'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -253,7 +202,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '8'
+          time: '5'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
