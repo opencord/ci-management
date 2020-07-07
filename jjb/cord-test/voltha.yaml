@@ -109,8 +109,11 @@
       - 'build_voltha_pod_release':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
@@ -121,8 +124,8 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
           power-switch: True
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
@@ -157,8 +160,11 @@
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
@@ -170,8 +176,8 @@
       - 'build_voltha_pod_test':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
           power-switch: True
@@ -236,10 +242,13 @@
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
           name-extension: '_DT'
           work-flow: 'DT'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
@@ -251,8 +260,8 @@
       - 'build_voltha_pod_test':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
