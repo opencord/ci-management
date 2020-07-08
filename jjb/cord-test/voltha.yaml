@@ -187,7 +187,7 @@
           power-switch: True
 
 
-      # Menlo pod with olt/onu - voltha-2.3  branch,  Default tech profile and timer based job
+      # Menlo pod with olt/onu - voltha-2.4  branch,  Default tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
@@ -297,24 +297,27 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
-     # Infosys pod with olt/onu - voltha-2.3 Default tech profile and timer based job
+     # Infosys pod with olt/onu - voltha-2.4 Default tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'infosys-test-pod'
           config-pod: 'infosys-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
           time: '12'
 
-      # infosys test job - voltha-2.3 release job, uses Default tech profile on voltha branch
+      # infosys test job - voltha-2.4 release job, uses Default tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'infosys-test-pod'
           config-pod: 'infosys-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
@@ -365,12 +368,15 @@
           profile: 'Default'
           power-switch: True
 
-     # Berlin pod with olt/onu - voltha-2.3 Default tech profile and timer based job
+     # Berlin pod with olt/onu - voltha-2.4 Default tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
@@ -383,8 +389,8 @@
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
-          release: '2.3'
-          branch: 'voltha-2.3'
+          release: '2.4'
+          branch: 'voltha-2.4'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
           power-switch: True
