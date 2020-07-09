@@ -19,11 +19,11 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-test-bbsim-2.3'
+          name: 'periodic-voltha-test-bbsim-2.4'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
-          code-branch: 'voltha-2.3'
+          code-branch: 'voltha-2.4'
           onus: 2
           pons: 2
           time-trigger: "H H/12 * * *"
@@ -39,10 +39,10 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-etcd-test-2.3'
+          name: 'periodic-voltha-etcd-test-2.4'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-4c-8g'
-          code-branch: 'voltha-2.3'
+          code-branch: 'voltha-2.4'
           make-target: sanity-multi-kind
           onus: 2
           pons: 2
@@ -61,10 +61,10 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-sanity-test-multi-runs-2.3'
+          name: 'periodic-voltha-sanity-test-multi-runs-2.4'
           pipeline-script: 'voltha-go-multi-tests.groovy'
           build-node: 'qct-pod4-node2'
-          code-branch: 'voltha-2.3'
+          code-branch: 'voltha-2.4'
           make-target: sanity-kind
           onus: 1
           pons: 1
