@@ -97,7 +97,7 @@ pipeline {
                         fossa analyze --no-ansi --verbose
 
                         echo "Get FOSSA test results with 'fossa test'"
-                        fossa test --no-ansi --verbose
+                        fossa test --no-ansi --verbose --timeout 1200
 
                         echo "Display list of licenses detected by FOSSA using 'fossa report licenses'"
                         fossa report licenses
