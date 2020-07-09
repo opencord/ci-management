@@ -128,7 +128,6 @@ pipeline {
         """
       }
     }
-  }
   post {
     always {
       sh returnStdout: false, script: '''
