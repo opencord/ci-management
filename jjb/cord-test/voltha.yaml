@@ -118,7 +118,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          time: '1'
+          time: '22'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -144,7 +144,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T4GEM'
-          time: '3'
+          time: '1'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
@@ -170,7 +170,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '7'
+          time: '4'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -202,7 +202,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '5'
+          time: '7'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -422,6 +422,38 @@
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
+     # Berlin pod with gpon olt/onu - voltha-2.4 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          release: '2.4'
+          branch: 'voltha-2.4'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T8GEM'
+          with-kind: true
+          time: '1'
+
+
+      # Berlin POD test job - voltha-2.4 versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          release: '2.4'
+          branch: 'voltha-2.4'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
