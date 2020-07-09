@@ -78,6 +78,7 @@ pipeline {
         chmod 755 $WORKSPACE/bin/voltctl
         voltctl version --clientonly
 
+        
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
@@ -111,23 +112,15 @@ pipeline {
 
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
-             export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityTT -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+             export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityTT -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         else
-             export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityTT -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+             export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityTT -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         fi
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-tt-test || true
         """
       }
     }
-
-      steps {
-        sh """
-        mkdir -p $ROBOT_LOGS_DIR
-        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
-        """
-      }
-    }
+  }
   post {
     always {
       sh returnStdout: false, script: '''
