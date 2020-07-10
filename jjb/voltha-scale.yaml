@@ -185,6 +185,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi '
+          volthaSystemTestsChange: 'refs/changes/63/19663/1'
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -203,6 +204,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set auth=false '
+          volthaSystemTestsChange: 'refs/changes/63/19663/1'
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -222,6 +224,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:vol-3269
+          volthaSystemTestsChange: 'refs/changes/63/19663/1'
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -241,6 +244,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
+          volthaSystemTestsChange: 'refs/changes/63/19663/1'
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
