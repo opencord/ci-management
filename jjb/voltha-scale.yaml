@@ -10,7 +10,7 @@
       # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
       # needed for comparison with the openonu-go adapter
       # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-2-32-activation-no-mib'
+      #     name: 'voltha-scale-measurements-master-1-2-32-activation-no-mib'
       #     build-node: 'onf-pod1-head-node'
       #     time-trigger: "H H/4 * * *"
       #     olts: 1
@@ -25,7 +25,7 @@
 
       # jobs for 200 ONUs with a single openonu-adapter
       # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-10-20-activation'
+      #     name: 'voltha-scale-measurements-master-1-10-20-activation'
       #     build-node: 'onf-pod1-head-node'
       #     time-trigger: "H H/4 * * *"
       #     olts: 1
@@ -37,7 +37,7 @@
       #     withDhcp: false
       #     withIgmp: false
       # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-10-20-att-flows'
+      #     name: 'voltha-scale-measurements-master-1-10-20-att-flows'
       #     build-node: 'onf-pod1-head-node'
       #     time-trigger: "H H/4 * * *"
       #     olts: 1
@@ -50,7 +50,7 @@
       #     withIgmp: false
       #     extraHelmFlags: '--set auth=false '
       # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-10-20-att-subscribers'
+      #     name: 'voltha-scale-measurements-master-1-10-20-att-subscribers'
       #     build-node: 'onf-pod1-head-node'
       #     time-trigger: "H H/4 * * *"
       #     olts: 1
@@ -62,7 +62,7 @@
       #     withDhcp: true
       #     withIgmp: false
       # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-10-20-att-subscribers-profiled'
+      #     name: 'voltha-scale-measurements-master-1-10-20-att-subscribers-profiled'
       #     build-node: 'onf-pod1-head-node'
       #     time-trigger: "H H/4 * * *"
       #     olts: 1
@@ -81,7 +81,7 @@
       #
       # # jobs for DT with 200 ONUs with a single openonu-adapter
       # - 'voltha-scale-measurements':
-      #     name: 'voltha-scale-measurements-1-10-20-dt-subscribers'
+      #     name: 'voltha-scale-measurements-master-1-10-20-dt-subscribers'
       #     build-node: 'onf-pod1-head-node'
       #     time-trigger: "H H/4 * * *"
       #     olts: 1
@@ -96,7 +96,7 @@
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-activation'
+          name: 'voltha-scale-measurements-master-1-16-32-activation'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -113,7 +113,7 @@
           extraHelmFlags: '--set limits.memory=8192Mi '
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-att-flows'
+          name: 'voltha-scale-measurements-master-1-16-32-att-flows'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -130,7 +130,7 @@
           extraHelmFlags: '--set auth=false --set limits.memory=8192Mi '
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-att-subscribers'
+          name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -150,7 +150,7 @@
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-1-16-32-dt-subscribers'
+          name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -170,7 +170,7 @@
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           disabled: true
-          name: 'voltha-scale-measurements-2-16-32-activation'
+          name: 'voltha-scale-measurements-master-2-16-32-activation'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -189,7 +189,7 @@
 
       - 'voltha-scale-measurements':
           disabled: true
-          name: 'voltha-scale-measurements-2-16-32-att-flows'
+          name: 'voltha-scale-measurements-master-2-16-32-att-flows'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -208,7 +208,7 @@
 
       - 'voltha-scale-measurements':
           disabled: true
-          name: 'voltha-scale-measurements-2-16-32-att-subscribers'
+          name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -228,7 +228,7 @@
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-2-16-32-dt-subscribers'
+          name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -244,11 +244,47 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set limits.memory=8192Mi --set defaults.rw_core.timeout=30s'
-          volthaSystemTestsChange: 'refs/changes/63/19663/1'
 
+      # voltha-2.4 Jobs
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-voltha-2.4-16-32-att-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s'
+          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:vol-3269
+          release: voltha-2.4
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          release: voltha-2.4
       # development pipeline
       - 'voltha-scale-measurements-dev':
-          name: 'voltha-scale-measurements-dev'
+          name: 'voltha-scale-measurements-master-dev'
           build-node: 'voltha-scale'
 
 
@@ -274,6 +310,8 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
+    release: master
+
     bbsimImg: voltha/bbsim:master
     rwCoreImg: voltha/voltha-rw-core:master
     ofAgentImg: voltha/voltha-ofagent-go:master
@@ -310,6 +348,11 @@
     inMemoryEtcdStorage: true
 
     parameters:
+      - string:
+          name: release
+          default: '{release}'
+          description: 'Version of the code to test (matches a branch in kind-voltha and voltha-system-tests repos)'
+
       - string:
           name: buildNode
           default: '{build-node}'

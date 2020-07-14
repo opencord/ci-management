@@ -127,7 +127,7 @@ pipeline {
         checkout([
           $class: 'GitSCM',
           userRemoteConfigs: [[ url: "https://gerrit.opencord.org/voltha-system-tests", ]],
-          branches: [[ name: "master", ]],
+          branches: [[ name: "${release}", ]],
           extensions: [
             [$class: 'WipeWorkspace'],
             [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
@@ -170,36 +170,41 @@ pipeline {
       steps {
         script {
           sh returnStdout: false, script: """
+
+            cd $WORKSPACE/kind-voltha/
+
             export EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
 
             # disable the securityContext, this is a development cluster
             EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
 
-            # BBSim custom image handling
-            IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-            EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
+            if [ '${release}' == 'master' ]; then
+              # BBSim custom image handling
+              IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
+              EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
 
-            # VOLTHA and ofAgent custom image handling
-            IFS=: read -r rwCoreRepo rwCoreTag <<< ${rwCoreImg}
-            IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
+              # VOLTHA and ofAgent custom image handling
+              IFS=: read -r rwCoreRepo rwCoreTag <<< ${rwCoreImg}
+              IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
+              EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
 
-            # OpenOLT custom image handling
-            IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
+              # OpenOLT custom image handling
+              IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
+              EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
 
-            # OpenONU custom image handling
-            IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
+              # OpenONU custom image handling
+              IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
+              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
 
-            # ONOS custom image handling
-            IFS=: read -r onosRepo onosTag <<< ${onosImg}
-            EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
+              # ONOS custom image handling
+              IFS=: read -r onosRepo onosTag <<< ${onosImg}
+              EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
+            else
+              source $WORKSPACE/kind-voltha/releases/${release}
+            fi
 
             # No persistent-volume-claims in Atomix
             EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "
-
-            cd $WORKSPACE/kind-voltha/
 
             ./voltha up
 
