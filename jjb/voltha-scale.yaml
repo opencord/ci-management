@@ -247,7 +247,7 @@
 
       # voltha-2.4 Jobs
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.4-16-32-att-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.4-1-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
