@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c67d64c5_a0000128",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 155,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-07-15T17:32:06Z",
+      "side": 1,
+      "message": "in-band support is currently only for onf-demo pod, please remove it for other pods",
+      "revId": "29b947cf39492993ae1bb290cc3efca1731169ce",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
