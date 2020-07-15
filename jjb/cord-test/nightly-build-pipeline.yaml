@@ -126,6 +126,11 @@
           default: '{num-of-onos}'
           description: 'Installs the specified Number of ONOS instances'
 
+      - bool:
+          name: inBandManagement
+          default: '{in-band-management}'
+          description: 'Indicates whether POD is configured for in band management'
+
       - string:
           name: NumOfAtomix
           default: '{num-of-atomix}'
