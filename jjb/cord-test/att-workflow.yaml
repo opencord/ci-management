@@ -12,6 +12,8 @@
     num-of-openonu: '1'
     num-of-onos: '1'
     num-of-atomix: '0'
+    in-band-management: false
+    reinstall-olt: true
 
     jobs:
       # onlab pod1 build
