@@ -16,6 +16,24 @@
       "revId": "a83bdab9976b92989e9963df772a6c92c11a4713",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62d72e0a_89fa9bb5",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-07-15T19:29:17Z",
+      "side": 1,
+      "message": "It\u0027s already present in the template and defaults, so not needed.",
+      "parentUuid": "80d44ebc_0ae96ce7",
+      "revId": "a83bdab9976b92989e9963df772a6c92c11a4713",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
