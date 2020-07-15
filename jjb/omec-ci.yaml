@@ -839,6 +839,11 @@
           description: 'Name of the Jenkins executor node to run the job on.'
 
       - string:
+          name: timeout
+          default: '30'
+          description: 'Timeout period for this pipeline in minutes.'
+
+      - string:
           name: ng40VM
           default: '{ng40-vm}'
           description: 'user@IP for accessing NG40 VM from the build node.'
