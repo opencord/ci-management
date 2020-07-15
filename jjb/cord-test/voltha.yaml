@@ -150,7 +150,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'TP'
-          time: '8'
+          time: '9'
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
