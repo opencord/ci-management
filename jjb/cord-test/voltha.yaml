@@ -182,6 +182,7 @@
           time: '22'
           VolthaEtcdPort: '9999'
           inBandManagement: true
+          reinstallOlt: false
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -209,6 +210,7 @@
           time: '1'
           VolthaEtcdPort: '9999'
           inBandManagement: true
+          reinstallOlt: false
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -236,6 +238,7 @@
           time: '4'
           VolthaEtcdPort: '9999'
           inBandManagement: true
+          reinstallOlt: false
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -269,6 +272,7 @@
           time: '7'
           VolthaEtcdPort: '9999'
           inBandManagement: true
+          reinstallOlt: false
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -294,6 +298,7 @@
           configurePod: true
           profile: '1T4GEM'
           inBandManagement: true
+          reinstallOlt: false
       - 'build_pod_test':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
@@ -313,6 +318,7 @@
           configurePod: true
           profile: 'Default'
           inBandManagement: true
+          reinstallOlt: false
 
       # ONF DEMO OCP test job - voltha-master branch
       - 'build_pod_test':
