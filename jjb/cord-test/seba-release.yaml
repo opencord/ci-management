@@ -8,6 +8,8 @@
 
     build-timeout: '300'
 
+    reinstall-olt: true
+
     jobs:
       # onlab pod1 build 1.0
       - 'build_pod_manual_release':
