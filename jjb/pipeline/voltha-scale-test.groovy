@@ -157,6 +157,7 @@ pipeline {
 
         if [ ${withMonitoring} = true ] ; then
           helm install -n nem-monitoring cord/nem-monitoring \
+          -f $HOME/voltha-scale/grafana.yaml \
           --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
           --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
         fi
