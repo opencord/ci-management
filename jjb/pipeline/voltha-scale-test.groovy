@@ -434,7 +434,7 @@ EOF
         done
 
         # copy the ONOS logs directly from the container to avoid the color codes
-        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl cp @:apache-karaf-4.2.8/data/log/karaf.log $LOG_FOLDER/@.log"
+        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl cp @:apache-karaf-4.2.9/data/log/karaf.log $LOG_FOLDER/@.log"
       '''
       // dump all the BBSim(s) ONU informations
       sh '''
