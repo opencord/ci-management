@@ -373,6 +373,8 @@ EOF
         source ./vst_venv/bin/activate
         python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt
         cat $WORKSPACE/execution-time.txt
+
+        python tests/scale/sizing.py -o $WORKSPACE/plots
       '''
       sh '''
         if [ ${withProfiling} = true ] ; then
@@ -501,7 +503,7 @@ EOF
           '''
         }
       }
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt,plots/*.pdf,etcd-metrics/*'
     }
   }
 }
