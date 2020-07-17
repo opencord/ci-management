@@ -199,3 +199,7 @@
     # maintainers
     # Used to notify users in supported tests
     maintainers: 'zdw@opennetworking.org'
+
+    # karaf-home
+    # Use to grab the logs or onos-diagnostics
+    karaf-home: 'apache-karaf-4.2.9'
