@@ -254,6 +254,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s'
           release: voltha-2.4
+          karafHome: apache-karaf-4.2.8
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
@@ -273,6 +274,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s'
           release: voltha-2.4
+          karafHome: apache-karaf-4.2.8
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
@@ -515,6 +517,11 @@
           default: '{inMemoryEtcdStorage}'
           description: 'Whether to write ETCD keys on disk or keep them in memory (true=inMemory)'
 
+      - string:
+          name: karafHome
+          default: '{karaf-home}'
+          description: 'Karaf home'
+
     project-type: pipeline
     concurrent: false
 
@@ -720,6 +727,11 @@
           name: kindVolthaChange
           default: ''
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: karafHome
+          default: '{karaf-home}'
+          description: 'Karaf home'
 
     project-type: pipeline
     concurrent: false
