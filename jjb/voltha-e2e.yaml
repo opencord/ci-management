@@ -27,6 +27,7 @@
           onus: 2
           pons: 2
           time-trigger: "H H/12 * * *"
+          karaf-home: 'apache-karaf-4.2.8'
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test'
@@ -190,6 +191,11 @@
           name: workFlow
           default: '{work-flow}'
           description: 'Workflow for testcase'
+
+      - string:
+          name: karafHome
+          default: '{karaf-home}'
+          description: 'Karaf home'
 
     project-type: pipeline
     concurrent: true
