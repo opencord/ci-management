@@ -419,6 +419,9 @@ EOF
         LOG_FOLDER=$WORKSPACE/logs
         mkdir -p $LOG_FOLDER
 
+        # store information on running charts
+        helm ls > $LOG_FOLDER/helm-list.txt
+
         # store information on the running pods
         kubectl get pods -o wide > $LOG_FOLDER/pods.txt
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-images.txt
@@ -452,6 +455,7 @@ EOF
       // get ONOS debug infos
       sh '''
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-olts > $WORKSPACE/logs/onos-olt-list.txt
 
         if [ ${withFlows} = true ] ; then
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt
