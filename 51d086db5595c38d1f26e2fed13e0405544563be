@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "a6f76702_211c77bd",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000042
+      },
+      "writtenOn": "2020-07-17T15:34:28Z",
+      "side": 1,
+      "message": "karaf-home",
+      "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f1876db3_c87c817c",
         "filename": "jjb/voltha-scale.yaml",
         "patchSetId": 1
