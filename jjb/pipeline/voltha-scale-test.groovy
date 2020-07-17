@@ -374,8 +374,6 @@ EOF
         source ./vst_venv/bin/activate
         python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt
         cat $WORKSPACE/execution-time.txt
-
-        python tests/scale/sizing.py -o $WORKSPACE/plots
       '''
       sh '''
         if [ ${withProfiling} = true ] ; then
@@ -439,7 +437,7 @@ EOF
         # copy the ONOS logs directly from the container to avoid the color codes
         printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl cp @:apache-karaf-4.2.9/data/log/karaf.log $LOG_FOLDER/@.log"
       '''
-      // dump all the BBSim(s) ONU informations
+      // dump all the BBSim(s) ONU information
       sh '''
       BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
       IDS=($BBSIM_IDS)
@@ -471,10 +469,6 @@ EOF
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations > $WORKSPACE/logs/onos-dhcp-allocations.txt
         fi
       '''
-      // get cpu usage by container
-      sh '''
-        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=avg(rate(container_cpu_usage_seconds_total[10m])*100) by (pod_name)' | jq . > $WORKSPACE/cpu-usage.json
-      '''
       // collect etcd metrics
       sh '''
         mkdir $WORKSPACE/etcd-metrics
@@ -492,11 +486,11 @@ EOF
           rm $WORKSPACE/logs/device-list.json
           voltctl device list > $WORKSPACE/logs/voltha-devices-list.txt
 
-          printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt"
-          printf '%s\n' $(voltctl device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt"
+          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt"
+          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt"
 
-          printf '%s\n' $(voltctl logicaldevice list -q) | xargs -I@ bash -c "voltctl logicaldevice flows @ > $WORKSPACE/logs/voltha-logicaldevice-flows-@.txt"
-          printf '%s\n' $(voltctl logicaldevice list -q) | xargs -I@ bash -c "voltctl logicaldevice port list @ > $WORKSPACE/logs/voltha-logicaldevice-ports-@.txt"
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice flows @ > $WORKSPACE/logs/voltha-logicaldevice-flows-@.txt"
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice port list @ > $WORKSPACE/logs/voltha-logicaldevice-ports-@.txt"
           '''
         } catch(e) {
           sh '''
@@ -504,6 +498,13 @@ EOF
           '''
         }
       }
+      // get cpu usage by container
+      sh '''
+      cd $WORKSPACE/voltha-system-tests
+      source ./vst_venv/bin/activate
+      sleep 30 # we have to wait for prometheus to collect all the information
+      python tests/scale/sizing.py -o $WORKSPACE/plots
+      '''
       archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt,plots/*.pdf,etcd-metrics/*'
     }
   }
