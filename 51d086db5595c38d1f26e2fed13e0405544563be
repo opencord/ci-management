@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "330b54f7_cb9ae6ae",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1000042
+      },
+      "writtenOn": "2020-07-17T15:29:24Z",
+      "side": 1,
+      "message": "this expansion is not valid",
+      "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f1876db3_c87c817c",
         "filename": "jjb/voltha-scale.yaml",
         "patchSetId": 1
