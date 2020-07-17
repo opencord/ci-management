@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "458f9571_8d811633",
+        "filename": "jjb/pipeline/voltha-go-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-07-17T14:13:05Z",
+      "side": 1,
+      "message": "I think you are missing a $ here should be ${params.karafHome}",
+      "revId": "8c4781f8dd94518034a1408107f3a4c999ee3391",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
