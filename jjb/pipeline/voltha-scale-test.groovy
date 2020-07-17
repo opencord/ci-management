@@ -58,7 +58,6 @@ pipeline {
     NUM_OF_ATOMIX="${atomixReplicas}"
     WITH_PPROF="${withProfiling}"
     EXTRA_HELM_FLAGS="${extraHelmFlags} " // note that the trailing space is required to separate the parameters from appends done later
-
     VOLTHA_CHART="${volthaChart}"
     VOLTHA_BBSIM_CHART="${bbsimChart}"
     VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
@@ -174,10 +173,7 @@ pipeline {
 
             cd $WORKSPACE/kind-voltha/
 
-            export EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
-
-            # disable the securityContext, this is a development cluster
-            EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
+            export EXTRA_HELM_FLAGS+=' '
 
             if [ '${release}' == 'master' ]; then
               # BBSim custom image handling
@@ -203,6 +199,12 @@ pipeline {
             else
               source $WORKSPACE/kind-voltha/releases/${release}
             fi
+
+            # set BBSim parameters
+            EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
+
+            # disable the securityContext, this is a development cluster
+            EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
 
             # No persistent-volume-claims in Atomix
             EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "

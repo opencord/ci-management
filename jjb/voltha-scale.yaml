@@ -428,7 +428,7 @@
       - string:
           name: extraHelmFlags
           default: '{extraHelmFlags}'
-          description: 'Any extra helm parameters you want (passed to every helm install command)'
+          description: 'Any extra helm parameters you want (passed to every helm install command, not available if release != master)'
 
       - string:
           name: openonuAdapterReplicas
