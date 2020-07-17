@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "3083f373_4a8589d2",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 441,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-17T15:37:35Z",
+      "side": 1,
+      "message": "you should use \"${karafHome}\"",
+      "parentUuid": "330b54f7_cb9ae6ae",
+      "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a6f76702_211c77bd",
         "filename": "jjb/voltha-scale.yaml",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2020-07-17T15:34:28Z",
       "side": 1,
       "message": "karaf-home",
+      "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6b8d816d_29dc9ca2",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-17T15:37:35Z",
+      "side": 1,
+      "message": "karafHome is valid as defined at line 520",
+      "parentUuid": "a6f76702_211c77bd",
       "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
@@ -80,6 +116,29 @@
       "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c0b5b800_a585900e",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 521,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-17T15:37:35Z",
+      "side": 1,
+      "message": "needs to be added in the \"voltha-scale-measurements-dev\" template too",
+      "range": {
+        "startLine": 521,
+        "startChar": 16,
+        "endLine": 521,
+        "endChar": 25
+      },
+      "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
