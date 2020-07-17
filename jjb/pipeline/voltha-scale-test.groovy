@@ -483,10 +483,10 @@ EOF
       script {
         try {
           sh '''
-          voltctl device list -o json > $WORKSPACE/logs/device-list.json
+          voltctl -m 8MB device list -o json > $WORKSPACE/logs/device-list.json
           python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
           rm $WORKSPACE/logs/device-list.json
-          voltctl device list > $WORKSPACE/logs/voltha-devices-list.txt
+          voltctl -m 8MB device list > $WORKSPACE/logs/voltha-devices-list.txt
 
           printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt"
           printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt"
