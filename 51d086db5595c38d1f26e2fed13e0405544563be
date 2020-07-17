@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1876db3_c87c817c",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 342,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-17T15:14:58Z",
+      "side": 1,
+      "message": "we need to add a default value for \"karaf-home\"",
+      "range": {
+        "startLine": 342,
+        "startChar": 4,
+        "endLine": 342,
+        "endChar": 23
+      },
+      "revId": "51d086db5595c38d1f26e2fed13e0405544563be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
