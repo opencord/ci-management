@@ -87,7 +87,7 @@ pipeline {
             for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat');
             do
                 echo "Purging chart: \${hchart}"
-                helm delete --purge "\${hchart}"
+                helm delete "\${hchart}"
             done
             bash /home/cord/voltha-scale/wait_for_pods.sh
 
@@ -147,15 +147,15 @@ pipeline {
       // includes monitoring, kafka, etcd
       steps {
         sh '''
-        helm install -n kafka incubator/kafka --version 0.13.3 --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false --version=0.15.3
+        helm install kafka incubator/kafka --set replicas=3 --set persistence.enabled=false --set zookeeper.replicaCount=3 --set zookeeper.persistence.enabled=false
 
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
         ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 -n etcd incubator/etcd $ETCD_FLAGS
+        helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 etcd etcd/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
-          helm install -n nem-monitoring cord/nem-monitoring \
+          helm install nem-monitoring cord/nem-monitoring \
           -f $HOME/voltha-scale/grafana.yaml \
           --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
           --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
