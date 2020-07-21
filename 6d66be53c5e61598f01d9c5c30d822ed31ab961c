@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "44772d99_d39f22fc",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2020-07-21T18:44:41Z",
+      "side": 1,
+      "message": "This log is not present on OLTs which do not have in-band enabled. Does this fail for such OLTs?",
+      "revId": "6d66be53c5e61598f01d9c5c30d822ed31ab961c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
