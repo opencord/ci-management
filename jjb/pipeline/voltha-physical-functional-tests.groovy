@@ -113,7 +113,7 @@ pipeline {
              export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanity -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanity -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-        fi 
+        fi
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
@@ -208,14 +208,22 @@ pipeline {
 
       cd $WORKSPACE
       gzip *-combined.log || true
+
+      # collect ETCD cluster logs
+      mkdir -p $WORKSPACE/etcd
+      printf '%s\n' $(kubectl get pods -l app=etcd -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $WORKSPACE/etcd/@.log"
       '''
       script {
         deployment_config.olts.each { olt ->
           sh returnStdout: false, script: """
-          sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/openolt.log $WORKSPACE/openolt-${olt.sship}.log || true
+          sshpass -p ${olt.pass} scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${olt.user}@${olt.sship}:/var/log/openolt.log $WORKSPACE/openolt-${olt.sship}.log || true
           sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.sship}.log  # Remove escape sequences
-          sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/dev_mgmt_daemon.log $WORKSPACE/dev_mgmt_daemon-${olt.sship}.log || true
+          sshpass -p ${olt.pass} scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${olt.user}@${olt.sship}:/var/log/dev_mgmt_daemon.log $WORKSPACE/dev_mgmt_daemon-${olt.sship}.log || true
           sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/dev_mgmt_daemon-${olt.sship}.log  # Remove escape sequences
+          sshpass -p ${olt.pass} scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${olt.user}@${olt.sship}:/var/log/startup.log $WORKSPACE/startup-${olt.sship}.log || true
+          sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/startup-${olt.sship}.log  # Remove escape sequences
+          sshpass -p ${olt.pass} scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ${olt.user}@${olt.sship}:/var/log/syslog $WORKSPACE/syslog-${olt.sship}.log || true
+          sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/syslog-${olt.sship}.log  # Remove escape sequences
           """
         }
       }
@@ -229,7 +237,7 @@ pipeline {
         reportFileName: '**/report*.html',
         unstableThreshold: 0
         ]);
-      archiveArtifacts artifacts: '*.log,*.gz,*.tgz'
+      archiveArtifacts artifacts: '*.log,*.gz,*.tgz,etcd/*.log'
     }
     unstable {
       step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
