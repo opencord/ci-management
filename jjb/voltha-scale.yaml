@@ -554,6 +554,8 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
+    release: master
+
     bbsimImg: voltha/bbsim:master
     rwCoreImg: voltha/voltha-rw-core:master
     ofAgentImg: voltha/voltha-ofagent-go:master
@@ -566,7 +568,35 @@
     openoltAdapterChart: onf/voltha-adapter-openolt
     openonuAdapterChart: onf/voltha-adapter-openonu
 
+    olts: 2
+    pons: 2
+    onus: 2
+    workflow: att
+    withFlows: false
+    provisionSubscribers: false
+    withEapol: true
+    withDhcp: true
+    withIgmp: false
+    withLLDP: false
+    withMibTemplate: true
+    withMonitoring: true
+    withProfiling: false
+    withPcap: false
+    openonuAdapterReplicas: 1
+    onosReplicas: 1
+    atomixReplicas: 0
+    extraHelmFlags: ''
+    onosStatInterval: 5
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
+    inMemoryEtcdStorage: true
+
     parameters:
+      - string:
+          name: release
+          default: '{release}'
+          description: 'Version of the code to test (matches a branch in kind-voltha and voltha-system-tests repos)'
+
       - string:
           name: buildNode
           default: '{build-node}'
@@ -579,93 +609,97 @@
 
       - string:
           name: onus
-          default: 2
+          default: '{onus}'
           description: 'Number of ONUs to provision'
 
       - string:
           name: pons
-          default: 2
+          default: '{pons}'
           description: 'Number of PONs to provision'
 
       - string:
           name: olts
-          default: 2
+          default: '{olts}'
           description: 'How many BBSim instances to run'
 
       - string:
           name: workflow
-          default: att
+          default: '{workflow}'
           description: 'Which workflow are we testing (att, dt, tt)'
 
       - bool:
           name: withFlows
-          default: false
+          default: '{withFlows}'
           description: 'Wheter to push flows from ONOS'
 
       - bool:
           name: provisionSubscribers
-          default: false
+          default: '{provisionSubscribers}'
           description: 'Wheter to provision subscribers durint the tests'
 
       - bool:
           name: withEapol
-          default: true
+          default: '{withEapol}'
           description: 'Wheter EAPOL is enabled for the test'
 
       - bool:
           name: withDhcp
-          default: true
+          default: '{withDhcp}'
           description: 'Wheter DHCP is enabled for the test'
 
       - bool:
           name: withIgmp
-          default: false
+          default: '{withIgmp}'
           description: 'Wheter IGMP is enabled for the test'
 
       - bool:
           name: withLLDP
-          default: false
+          default: '{withLLDP}'
           description: 'Wheter Link Discovery is enabled for the test'
 
       - bool:
           name: withMibTemplate
-          default: true
+          default: '{withMibTemplate}'
           description: 'Option to trigger MIB template command'
 
       - bool:
           name: withMonitoring
-          default: true
+          default: '{withMonitoring}'
           description: 'Option to install Prometheus'
 
       - bool:
           name: withProfiling
-          default: false
+          default: '{withProfiling}'
           description: 'Option to collect profiling informations from rw-core and openolt (note that the appropriate -profile images needs to be used)'
+
+      - bool:
+          name: withPcap
+          default: '{withPcap}'
+          description: 'Capture a .pcap on the OpenFlow connection from the ofAgent side'
 
       - string:
           name: extraHelmFlags
-          default: ' '
-          description: 'Any extra helm parameters you want (passed to every helm install command)'
+          default: '{extraHelmFlags}'
+          description: 'Any extra helm parameters you want (passed to every helm install command, not available if release != master)'
 
       - string:
           name: openonuAdapterReplicas
-          default: 1
+          default: '{openonuAdapterReplicas}'
           description: 'How many OpenONU adapter instances to run'
 
-      # the dev node is single node cluster, we can't install a clustered ONOS because of the contraints
       - string:
           name: onosReplicas
-          default: 1
+          default: '{onosReplicas}'
           description: 'How many ONOSes instances to run'
 
       - string:
           name: atomixReplicas
-          default: 0
+          default: '{atomixReplicas}'
           description: 'How many Atomix instances to run'
 
       - string:
           name: onosStatInterval
-          default: 5
+          default: '{onosStatInterval}'
           description: 'How often ONOS should poll for ports, flows and meters'
 
       - string:
@@ -720,13 +754,18 @@
 
       - string:
           name: volthaSystemTestsChange
-          default: ''
+          default: '{volthaSystemTestsChange}'
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
       - string:
           name: kindVolthaChange
-          default: ''
+          default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - bool:
+          name: inMemoryEtcdStorage
+          default: '{inMemoryEtcdStorage}'
+          description: 'Whether to write ETCD keys on disk or keep them in memory (true=inMemory)'
 
       - string:
           name: karafHome
