@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "155c9173_a4a91739",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-21T16:20:45Z",
+      "side": 1,
+      "message": "changing the image is not enough, we also need to set this parameter https://github.com/opencord/kind-voltha/blob/59f987a4b5f1dff32e27378ac3dc939e28d87983/minimal-values.yaml#L40\n\nwe can do that in \"extraHelmFlags\"",
+      "range": {
+        "startLine": 110,
+        "startChar": 29,
+        "endLine": 110,
+        "endChar": 68
+      },
+      "revId": "698e4dfc5bbf4dcc507cf095113149e9157d6ddc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
