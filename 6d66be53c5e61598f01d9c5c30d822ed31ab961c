@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "141de8ab_438644ec",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-21T18:52:32Z",
+      "side": 1,
+      "message": "moved to https://gerrit.opencord.org/c/voltha-system-tests/+/19837\n\nwhy do we have pipelines in two different repos?",
+      "parentUuid": "6be6d4cc_63742644",
+      "range": {
+        "startLine": 44,
+        "startChar": 8,
+        "endLine": 44,
+        "endChar": 47
+      },
+      "revId": "6d66be53c5e61598f01d9c5c30d822ed31ab961c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "44772d99_d39f22fc",
         "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
         "patchSetId": 2
@@ -39,6 +63,24 @@
       "revId": "6d66be53c5e61598f01d9c5c30d822ed31ab961c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "df94a84a_431ab82c",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-21T18:52:32Z",
+      "side": 1,
+      "message": "the \"|| true\" should prevent that to fail",
+      "parentUuid": "44772d99_d39f22fc",
+      "revId": "6d66be53c5e61598f01d9c5c30d822ed31ab961c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
