@@ -1,0 +1,8 @@
+Code-Review+1: Girish Gowdra <girish@opennetworking.org>
+Code-Review+2: Andrea Campanella <andrea@opennetworking.org>
+Verified+1: Jenkins Jenkins <do-not-reply@opencord.org>
+Submitted-by: Andrea Campanella <andrea@opennetworking.org>
+Submitted-at: Wed, 22 Jul 2020 15:57:19 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/19846
+Project: ci-management
+Branch: refs/heads/master
