@@ -57,7 +57,7 @@ pipeline {
     NUM_OF_ONOS="${onosReplicas}"
     NUM_OF_ATOMIX="${atomixReplicas}"
     WITH_PPROF="${withProfiling}"
-    EXTRA_HELM_FLAGS="${extraHelmFlags} " // note that the trailing space is required to separate the parameters from appends done later
+    EXTRA_HELM_INSTALL_ARGS="${extraHelmFlags} " // note that the trailing space is required to separate the parameters from appends done later
     VOLTHA_CHART="${volthaChart}"
     VOLTHA_BBSIM_CHART="${bbsimChart}"
     VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
@@ -173,41 +173,41 @@ pipeline {
 
             cd $WORKSPACE/kind-voltha/
 
-            export EXTRA_HELM_FLAGS+=' '
+            export EXTRA_HELM_INSTALL_ARGS+=' '
 
             if [ '${release}' == 'master' ]; then
               # BBSim custom image handling
               IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-              EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
+              EXTRA_HELM_INSTALL_ARGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
 
               # VOLTHA and ofAgent custom image handling
               IFS=: read -r rwCoreRepo rwCoreTag <<< ${rwCoreImg}
               IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-              EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
+              EXTRA_HELM_INSTALL_ARGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
 
               # OpenOLT custom image handling
               IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
+              EXTRA_HELM_INSTALL_ARGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
 
               # OpenONU custom image handling
               IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
+              EXTRA_HELM_INSTALL_ARGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
 
               # ONOS custom image handling
               IFS=: read -r onosRepo onosTag <<< ${onosImg}
-              EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
+              EXTRA_HELM_INSTALL_ARGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
             else
               source $WORKSPACE/kind-voltha/releases/${release}
             fi
 
             # set BBSim parameters
-            EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
+            EXTRA_HELM_INSTALL_ARGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
 
             # disable the securityContext, this is a development cluster
-            EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
+            EXTRA_HELM_INSTALL_ARGS+='--set securityContext.enabled=false '
 
             # No persistent-volume-claims in Atomix
-            EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "
+            EXTRA_HELM_INSTALL_ARGS+="--set atomix.persistence.enabled=false "
 
             ./voltha up
 
