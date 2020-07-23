@@ -238,7 +238,11 @@ pipeline {
           sh returnStdout: false, script: """
               helm repo add cord https://charts.opencord.org
               helm repo update
-              helm install -n voltha-kafka-dump cord/voltha-kafka-dump
+              if helm version -c --short|grep v2 -q; then
+                helm install -n voltha-kafka-dump cord/voltha-kafka-dump
+              else
+                helm install voltha-kafka-dump cord/voltha-kafka-dump
+              fi
           """
         }
       }
