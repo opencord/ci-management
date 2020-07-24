@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cc776235_1228147f",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-07-24T20:21:53Z",
+      "side": 1,
+      "message": "this can be removed too (Atomix is the data store of ONOS)",
+      "range": {
+        "startLine": 112,
+        "startChar": 10,
+        "endLine": 112,
+        "endChar": 27
+      },
+      "revId": "9771fda6ed7e51df5fcd9346e69e3db1e09dc563",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
