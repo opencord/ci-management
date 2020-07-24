@@ -126,7 +126,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set auth=false --set images.bbsim_sadis_server.repository=matteoscandolo/bbsim-sadis-server --set images.bbsim_sadis_server.tag=k8-host '
+          extraHelmFlags: '--set auth=false '
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
@@ -143,7 +143,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set images.bbsim_sadis_server.repository=matteoscandolo/bbsim-sadis-server --set images.bbsim_sadis_server.tag=k8-host '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -197,7 +197,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set auth=false --set images.bbsim_sadis_server.repository=matteoscandolo/bbsim-sadis-server --set images.bbsim_sadis_server.tag=k8-host '
+          extraHelmFlags: '--set auth=false '
 
       - 'voltha-scale-measurements':
           disabled: true
@@ -215,7 +215,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set images.bbsim_sadis_server.repository=matteoscandolo/bbsim-sadis-server --set images.bbsim_sadis_server.tag=k8-host '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -234,7 +234,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set images.bbsim_sadis_server.repository=matteoscandolo/bbsim-sadis-server --set images.bbsim_sadis_server.tag=k8-host '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
       # voltha-2.4 Jobs
       - 'voltha-scale-measurements':
@@ -252,7 +252,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set images.bbsim_sadis_server.repository=matteoscandolo/bbsim-sadis-server --set images.bbsim_sadis_server.tag=k8-host '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
 
@@ -272,7 +272,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set images.bbsim_sadis_server.repository=matteoscandolo/bbsim-sadis-server --set images.bbsim_sadis_server.tag=k8-host '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
 
@@ -280,6 +280,7 @@
       - 'voltha-scale-measurements-dev':
           name: 'voltha-scale-measurements-master-dev'
           build-node: 'voltha-scale'
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
 
 - job-template:
@@ -572,8 +573,8 @@
     pons: 2
     onus: 2
     workflow: att
-    withFlows: false
-    provisionSubscribers: false
+    withFlows: true
+    provisionSubscribers: true
     withEapol: true
     withDhcp: true
     withIgmp: false
