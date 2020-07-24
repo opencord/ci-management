@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9c31d857_15cf82f2",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-07-24T07:44:13Z",
+      "side": 1,
+      "message": "please move this to 1, multiple golang opening adapters have not been tested.",
+      "revId": "c941db0ef818a1db7108b3c0db23dedbcbfac716",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e26433a_4e32bf8c",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 111,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-07-24T07:44:13Z",
+      "side": 1,
+      "message": "same",
+      "revId": "c941db0ef818a1db7108b3c0db23dedbcbfac716",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6bd046bc_835caf77",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-07-24T07:44:13Z",
+      "side": 1,
+      "message": "same, to have a fair comparison please set this to 1",
+      "revId": "c941db0ef818a1db7108b3c0db23dedbcbfac716",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
