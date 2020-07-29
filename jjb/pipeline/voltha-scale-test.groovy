@@ -512,7 +512,7 @@ EOF
       sleep 60 # we have to wait for prometheus to collect all the information
       python tests/scale/sizing.py -o $WORKSPACE/plots
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt,plots/*.pdf,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*,etcd-metrics/*'
     }
   }
 }
