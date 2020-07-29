@@ -26,13 +26,13 @@ pipeline {
     timeout(time: 90, unit: 'MINUTES')
   }
   environment {
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
-    VOLTCONFIG="$HOME/.volt/config-minimal"
     PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    TYPE="minimal"
     VOLTHA_LOG_LEVEL="DEBUG"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
+    NAME="test"
+    VOLTCONFIG="$HOME/.volt/config-$NAME"
+    KUBECONFIG="$HOME/.kube/kind-config-voltha-$NAME"
   }
 
   stages {
@@ -216,9 +216,9 @@ pipeline {
            cd $WORKSPACE/voltha/kind-voltha/
            ./voltha up
 
-           # minimal-env.sh contains the environment we used
+           # $NAME-env.sh contains the environment we used
            # Save value of EXTRA_HELM_FLAGS there to use in subsequent stages
-           echo export EXTRA_HELM_FLAGS=\\"\$EXTRA_HELM_FLAGS\\" >> minimal-env.sh
+           echo export EXTRA_HELM_FLAGS=\\"\$EXTRA_HELM_FLAGS\\" >> $NAME-env.sh
 
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
@@ -247,7 +247,7 @@ pipeline {
       steps {
         sh '''
            cd $WORKSPACE/voltha/kind-voltha/
-           source minimal-env.sh
+           source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
            # Workflow-specific flags
@@ -284,7 +284,7 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/voltha/kind-voltha/install-minimal.log $WORKSPACE/
+         cp $WORKSPACE/voltha/kind-voltha/install-$NAME.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
          kubectl get nodes -o wide
