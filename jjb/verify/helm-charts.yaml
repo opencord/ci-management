@@ -8,14 +8,6 @@
     jobs:
       - 'verify-helm-charts-jobs':
           branch-regexp: '{modern-branches-regexp}'
-      - 'post-merge-helm-charts-jobs':
-          branch: 'master'
-          name-extension: '-master'
-          timed-trigger: '{twice-a-day}'
-      - 'post-merge-helm-charts-jobs':
-          branch: 'cord-6.0'
-          name-extension: '-cord6.0'
-          timed-trigger: '{once-a-day}'
 
 - job-group:
     name: 'verify-helm-charts-jobs'
@@ -28,8 +20,3 @@
       - 'verify-sonarqube':
           dependency-jobs: 'verify_helm-charts_helm-lint'
 
-- job-group:
-    name: 'post-merge-helm-charts-jobs'
-    jobs:
-      - 'triggered-api-test':
-          pipeline-script: 'chart-api-test-helm.groovy'
