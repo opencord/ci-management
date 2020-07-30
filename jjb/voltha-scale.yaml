@@ -12,6 +12,7 @@
       # jobs for 64 ONUs with a 1 openonu-adapter
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-2-32-activation'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -28,6 +29,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-scale-measurements-master-1-2-32-activation'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -44,6 +46,7 @@
       # jobs for 256 ONUs with a 1 openonu-adapter
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-8-32-activation'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -60,6 +63,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-scale-measurements-master-1-8-32-activation'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -75,6 +79,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-activation'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -91,6 +96,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-flows'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -108,6 +114,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -126,6 +133,7 @@
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -143,7 +151,7 @@
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
-          disabled: true
+          'disable-job': true
           name: 'voltha-scale-measurements-master-2-16-32-activation'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -160,7 +168,7 @@
           atomixReplicas: 3
 
       - 'voltha-scale-measurements':
-          disabled: true
+          'disable-job': true
           name: 'voltha-scale-measurements-master-2-16-32-att-flows'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -178,7 +186,7 @@
           extraHelmFlags: '--set auth=false '
 
       - 'voltha-scale-measurements':
-          disabled: true
+          'disable-job': true
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -198,6 +206,7 @@
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -265,6 +274,7 @@
     id: 'voltha-scale-measurements'
     name: '{name}'
     pipeline-script: 'voltha-scale-test.groovy'
+    disabled: '{disable-job}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
