@@ -4,6 +4,10 @@
 - defaults:
     name: global
 
+    # used to enable disable jobs if the job template contains
+    # disabled: '{disabled}'
+    disabled: false
+
     # lftools
     lftools-version: '~=0.26.2'
 
