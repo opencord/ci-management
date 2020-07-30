@@ -652,7 +652,7 @@
       - build-blocker:
           use-build-blocker: true
           blocking-jobs:
-            - "omec_.*_container"
+            - ".*_container"
 
     wrappers:
       - lf-infra-wrappers:
@@ -701,9 +701,9 @@
           description: 'Branch name of Nucleus repo which we run tests against'
 
       - string:
-          name: ngicBranch
-          default: 'central-cp-multi-upfs'
-          description: 'Branch name of ngic-rtc repo which we run tests against'
+          name: spgwBranch
+          default: 'master'
+          description: 'Branch name of spgw repo which we run tests against'
 
       - string:
           name: upfBranch
@@ -798,9 +798,14 @@
           description: 'Docker image for bess. Leave empty to use default helm-charts value'
 
       - string:
-          name: cpifaceImage
+          name: zmqifaceImage
           default: 'omecproject/upf-epc-cpiface:master-latest'
-          description: 'Docker image for cpiface. Leave empty to use default helm-charts value'
+          description: 'Docker image for zmqiface. Leave empty to use default helm-charts value'
+
+      - string:
+          name: pfcpifaceImage
+          default: 'omecproject/upf-epc-pfcpiface:master-latest'
+          description: 'Docker image for pfcpiface. Leave empty to use default helm-charts value'
 
     concurrent: false
 
