@@ -319,6 +319,7 @@
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
+    karafHome: 'apache-karaf-4.2.9'
 
     parameters:
       - string:
@@ -498,7 +499,7 @@
 
       - string:
           name: karafHome
-          default: '{karaf-home}'
+          default: '{karafHome}'
           description: 'Karaf home'
 
     project-type: pipeline
@@ -569,6 +570,7 @@
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
+    karafHome: 'apache-karaf-4.2.9'
 
     parameters:
       - string:
@@ -748,7 +750,7 @@
 
       - string:
           name: karafHome
-          default: '{karaf-home}'
+          default: '{karafHome}'
           description: 'Karaf home'
 
     project-type: pipeline
