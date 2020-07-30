@@ -152,7 +152,7 @@ pipeline {
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
         ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install -f $WORKSPACE/kind-voltha/minimal-values.yaml --set etcd.replicas=3 etcd etcd/etcd $ETCD_FLAGS
+        helm install -f $WORKSPACE/kind-voltha/values.yaml --set etcd.replicas=3 etcd etcd/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
           helm install nem-monitoring cord/nem-monitoring \
