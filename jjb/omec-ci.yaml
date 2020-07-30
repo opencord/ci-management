@@ -38,7 +38,7 @@
           project: '{name}'
           build-node: 'omec-ci'
           c3po-branch-name: 'master'
-          ngic-branch-name: 'central-cp-multi-upfs'
+          spgw-branch-name: 'master'
           nucleus-branch-name: 'master'
           upf-branch-name: 'master'
           pipeline-file: 'omec-postmerge.groovy'
@@ -609,9 +609,9 @@
           description: 'Branch name of c3po repo which we run tests against'
 
       - string:
-          name: ngicBranchName
-          default: '{ngic-branch-name}'
-          description: 'Branch name of ngic-rtc repo which we run tests against'
+          name: spgwBranchName
+          default: '{spgw-branch-name}'
+          description: 'Branch name of spgw repo which we run tests against'
 
       - string:
           name: nucleusBranchName
