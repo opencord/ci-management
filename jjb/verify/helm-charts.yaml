@@ -28,8 +28,3 @@
       - 'verify-sonarqube':
           dependency-jobs: 'verify_helm-charts_helm-lint'
 
-- job-group:
-    name: 'post-merge-helm-charts-jobs'
-    jobs:
-      - 'triggered-api-test':
-          pipeline-script: 'chart-api-test-helm.groovy'
