@@ -29,7 +29,7 @@ pipeline {
     VOLTCONFIG="$HOME/.volt/config"
     SSHPASS="karaf"
     PATH="$PATH:$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    TYPE="minimal"
+    SCHEDULE_ON_CONTROL_NODES="yes"
     FANCY=0
     WITH_SIM_ADAPTERS="no"
     WITH_RADIUS="yes"
