@@ -377,9 +377,6 @@
           config-pod: 'infosys-pod'
           release: '2.4'
           branch: 'voltha-2.4'
-          num-of-openonu: '2'
-          num-of-onos: '3'
-          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
