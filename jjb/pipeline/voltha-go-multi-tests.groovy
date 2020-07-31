@@ -157,14 +157,14 @@ pipeline {
          cd $HOME/kind-voltha/
          DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
          '''
-         step([$class: 'RobotPublisher',
+        step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
-            logFileName: 'RobotLogs/log*.html',
+            logFileName: '**/log*.html',
             otherFiles: '',
-            outputFileName: 'RobotLogs/output*.xml',
-            outputPath: '.',
+            outputFileName: '**/output*.xml',
+            outputPath: 'RobotLogs',
             passThreshold: 100,
-            reportFileName: 'RobotLogs/report*.html',
+            reportFileName: '**/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log,*.gz,*.tgz'
 
