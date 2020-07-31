@@ -420,12 +420,12 @@ EOF
         mkdir -p $LOG_FOLDER
 
         # store information on running charts
-        helm ls > $LOG_FOLDER/helm-list.txt
+        helm ls > $LOG_FOLDER/helm-list.txt || true
 
         # store information on the running pods
-        kubectl get pods -o wide > $LOG_FOLDER/pods.txt
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-images.txt
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt
+        kubectl get pods -o wide > $LOG_FOLDER/pods.txt || true
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-images.txt || true
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
 
         # log in individual files for all the container that match the selector app=$APP_TO_LOG
         APPS_TO_LOG=(etcd kafka onos adapter-open-onu adapter-open-olt rw-core ofagent bbsim)
@@ -433,15 +433,14 @@ EOF
         do
           echo "Getting logs for: ${app}"
           kubectl get pods -l app=${app} -o=jsonpath=\"{.items[*]['metadata.name']}\"
-          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.log"
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.log" || true
 
           # Get the logs from the previous POD if any (useful in case of restarts)
           printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs -p @ > $LOG_FOLDER/@-previous.log" || true
         done
 
         # copy the ONOS logs directly from the container to avoid the color codes
-        # TODO remove hardcoded karaf version
-        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl cp @:${karafHome}/data/log/karaf.log $LOG_FOLDER/@.log"
+        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl cp @:${karafHome}/data/log/karaf.log $LOG_FOLDER/@.log" || true
       '''
       // dump all the BBSim(s) ONU information
       sh '''
@@ -450,54 +449,54 @@ EOF
 
       for bbsim in "${IDS[@]}"
       do
-        kubectl exec -t $bbsim bbsimctl onu list > $WORKSPACE/logs/$bbsim-device-list.txt
+        kubectl exec -t $bbsim bbsimctl onu list > $WORKSPACE/logs/$bbsim-device-list.txt || true
       done
       '''
       // get ONOS debug infos
       sh '''
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt || true
 
         if [ ${withFlows} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-olts > $WORKSPACE/logs/onos-olt-list.txt
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters > $WORKSPACE/logs/onos-meters-list.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-olts > $WORKSPACE/logs/onos-olt-list.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters > $WORKSPACE/logs/onos-meters-list.txt || true
         fi
 
         if [ ${provisionSubscribers} = true ]; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers > $WORKSPACE/logs/onos-programmed-subscribers.txt
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters > $WORKSPACE/logs/onos-programmed-meters.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers > $WORKSPACE/logs/onos-programmed-subscribers.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters > $WORKSPACE/logs/onos-programmed-meters.txt || true
         fi
 
         if [ ${withEapol} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users > $WORKSPACE/logs/onos-aaa-users.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users > $WORKSPACE/logs/onos-aaa-users.txt || true
         fi
 
         if [ ${withDhcp} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations > $WORKSPACE/logs/onos-dhcp-allocations.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations > $WORKSPACE/logs/onos-dhcp-allocations.txt || true
         fi
       '''
       // collect etcd metrics
       sh '''
         mkdir $WORKSPACE/etcd-metrics
-        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_debugging_mvcc_keys_total' | jq '.data' > $WORKSPACE/etcd-metrics/etcd-key-count.json
-        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=grpc_server_handled_total{grpc_service="etcdserverpb.KV"}' | jq '.data' > $WORKSPACE/etcd-metrics/etcd-rpc-count.json
-        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_debugging_mvcc_db_total_size_in_bytes' | jq '.data' > $WORKSPACE/etcd-metrics/etcd-db-size.json
-        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_disk_backend_commit_duration_seconds_sum' | jq '.data'  > $WORKSPACE/etcd-metrics/etcd-backend-write-time.json
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_debugging_mvcc_keys_total' | jq '.data' > $WORKSPACE/etcd-metrics/etcd-key-count.json || true
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=grpc_server_handled_total{grpc_service="etcdserverpb.KV"}' | jq '.data' > $WORKSPACE/etcd-metrics/etcd-rpc-count.json || true
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_debugging_mvcc_db_total_size_in_bytes' | jq '.data' > $WORKSPACE/etcd-metrics/etcd-db-size.json || true
+        curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_disk_backend_commit_duration_seconds_sum' | jq '.data'  > $WORKSPACE/etcd-metrics/etcd-backend-write-time.json || true
       '''
       // get VOLTHA debug infos
       script {
         try {
           sh '''
-          voltctl -m 8MB device list -o json > $WORKSPACE/logs/device-list.json
-          python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json
-          rm $WORKSPACE/logs/device-list.json
-          voltctl -m 8MB device list > $WORKSPACE/logs/voltha-devices-list.txt
+          voltctl -m 8MB device list -o json > $WORKSPACE/logs/device-list.json || true
+          python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json || true
+          rm $WORKSPACE/logs/device-list.json || true
+          voltctl -m 8MB device list > $WORKSPACE/logs/voltha-devices-list.txt || true
 
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt"
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt"
+          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt" || true
+          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt" || true
 
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice flows @ > $WORKSPACE/logs/voltha-logicaldevice-flows-@.txt"
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice port list @ > $WORKSPACE/logs/voltha-logicaldevice-ports-@.txt"
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice flows @ > $WORKSPACE/logs/voltha-logicaldevice-flows-@.txt" || true
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice port list @ > $WORKSPACE/logs/voltha-logicaldevice-ports-@.txt" || true
           '''
         } catch(e) {
           sh '''
@@ -510,7 +509,7 @@ EOF
       cd $WORKSPACE/voltha-system-tests
       source ./vst_venv/bin/activate
       sleep 60 # we have to wait for prometheus to collect all the information
-      python tests/scale/sizing.py -o $WORKSPACE/plots
+      python tests/scale/sizing.py -o $WORKSPACE/plots || true
       '''
       archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt,plots/*.pdf,etcd-metrics/*'
     }
