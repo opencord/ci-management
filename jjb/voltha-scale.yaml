@@ -242,6 +242,7 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
+          logLevel: INFO
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
@@ -262,6 +263,7 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
+          logLevel: INFO
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
@@ -330,6 +332,7 @@
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
     karafHome: 'apache-karaf-4.2.9'
+    logLevel: 'WARN'
 
     parameters:
       - string:
@@ -344,7 +347,7 @@
 
       - string:
           name: logLevel
-          default: 'WARN'
+          default: '{logLevel}'
           description: 'Log level for all the components'
 
       - string:
