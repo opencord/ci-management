@@ -71,6 +71,7 @@
           pons: 1
           test-runs: 5
           time-trigger: "H H/12 * * *"
+          karaf-home: 'apache-karaf-4.2.8'
 
       - 'voltha-periodic-test':
           name: 'nightly-voltha-DTflow-sanity-test'
