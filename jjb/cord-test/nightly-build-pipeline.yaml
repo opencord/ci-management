@@ -10,16 +10,15 @@
 
     properties:
       - cord-infra-properties:
-          build-days-to-keep: '{build-days-to-keep}'
-          artifact-num-to-keep: '{artifact-num-to-keep}'
+          build-days-to-keep: 30
+          artifact-num-to-keep: 15
 
 
 - job-template:
     name: 'build_{profile}_{config-pod}_{branch}_manual'
     id: build_pod_manual
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Manual Build on POD {config-pod} using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
@@ -149,9 +148,8 @@
     name: 'build_{profile}_{config-pod}_{branch}'
     id: build_pod_timer
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Nightly Kubernetes tests on {config-pod} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
+                  Nightly Kubernetes tests on {config-pod} using {Jenkinsfile}<br /><br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml<br />
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
     disabled: false
@@ -262,8 +260,7 @@
     name: 'build_{profile}_{config-pod}_{branch}_test'
     id: build_pod_test
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch} <br /><br />
+                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
@@ -339,8 +336,8 @@
     name: 'build_{profile}_{config-pod}_{branch}_post_actions'
     id: post_build_actions
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Post Actions on {config-pod} triggered by build_{config-pod}_{branch}. Service ofagent restart required <br /><br />
+                  Post Actions on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile} <br />
+                  Service ofagent restart required <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
@@ -411,8 +408,7 @@
     name: 'build_{config-pod}_seba_release_{release}'
     id: build_pod_manual_release
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Manual Build on POD {config-pod}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
@@ -508,8 +504,7 @@
     name: 'build_{config-pod}_seba_release_{release}'
     id: build_pod_release
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Manual Build on POD {config-pod}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
@@ -615,8 +610,7 @@
     name: 'build_{config-pod}_seba_release_{release}_test'
     id: build_pod_release_test
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch} <br /><br />
+                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
@@ -693,8 +687,7 @@
     name: 'build_{config-pod}_seba_release_{release}_microcharts_test'
     id: build_pod_release_test_microcharts
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch} <br /><br />
+                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
@@ -771,8 +764,7 @@
     name: 'build_{config-pod}'
     id: build_mcord_pod_manual
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Manual Build on POD {config-pod}, using {Jenkinsfile} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Kailash Khalasi - kailash@opennetworking.org ) <br />
                   Copyright (c) 2019 Open Networking Foundation (ONF)
@@ -858,8 +850,7 @@
     name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}'
     id: build_voltha_pod_release
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Manual Build on POD {config-pod} using {Jenkinsfile} <br /><br />
+                  Manual Build on POD {config-pod}, using {Jenkinsfile} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
@@ -991,8 +982,7 @@
     name: 'build_{config-pod}_{profile}_voltha{name-extension}_{release}_test'
     id: build_voltha_pod_test
     description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch} <br /><br />
+                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {pipeline-script}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
