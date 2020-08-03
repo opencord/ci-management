@@ -433,14 +433,14 @@ EOF
         do
           echo "Getting logs for: ${app}"
           kubectl get pods -l app=${app} -o=jsonpath=\"{.items[*]['metadata.name']}\"
-          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $LOG_FOLDER/@.log" || true
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl logs # > $LOG_FOLDER/#.log" || true
 
           # Get the logs from the previous POD if any (useful in case of restarts)
-          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs -p @ > $LOG_FOLDER/@-previous.log" || true
+          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl logs -p # > $LOG_FOLDER/#-previous.log" || true
         done
 
         # copy the ONOS logs directly from the container to avoid the color codes
-        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl cp @:${karafHome}/data/log/karaf.log $LOG_FOLDER/@.log" || true
+        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
       '''
       // dump all the BBSim(s) ONU information
       sh '''
@@ -492,11 +492,11 @@ EOF
           rm $WORKSPACE/logs/device-list.json || true
           voltctl -m 8MB device list > $WORKSPACE/logs/voltha-devices-list.txt || true
 
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device flows @ > $WORKSPACE/logs/voltha-device-flows-@.txt" || true
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I@ bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' @ > $WORKSPACE/logs/voltha-device-ports-@.txt" || true
+          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device flows # > $WORKSPACE/logs/voltha-device-flows-#.txt" || true
+              printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $WORKSPACE/logs/voltha-device-ports-#.txt" || true
 
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice flows @ > $WORKSPACE/logs/voltha-logicaldevice-flows-@.txt" || true
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I@ bash -c "voltctl -m 8MB logicaldevice port list @ > $WORKSPACE/logs/voltha-logicaldevice-ports-@.txt" || true
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice flows # > $WORKSPACE/logs/voltha-logicaldevice-flows-#.txt" || true
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice port list # > $WORKSPACE/logs/voltha-logicaldevice-ports-#.txt" || true
           '''
         } catch(e) {
           sh '''
