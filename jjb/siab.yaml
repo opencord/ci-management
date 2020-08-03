@@ -23,8 +23,8 @@
 
     properties:
       - cord-infra-properties:
-          build-days-to-keep: '{build-days-to-keep}'
-          artifact-num-to-keep: '{artifact-num-to-keep}'
+          build-days-to-keep: 30
+          artifact-num-to-keep: 15
 
     wrappers:
       - lf-infra-wrappers:
@@ -68,13 +68,13 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipleine: siab.groovy <br /><br />
+      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipeline: siab.groovy <br /><br />
       E2E Validation for Seba-in-a-Box
 
     properties:
       - cord-infra-properties:
-          build-days-to-keep: '{build-days-to-keep}'
-          artifact-num-to-keep: '{artifact-num-to-keep}'
+          build-days-to-keep: 30
+          artifact-num-to-keep: 15
 
     wrappers:
       - lf-infra-wrappers:
@@ -118,13 +118,13 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipleine: siab.groovy <br /><br />
+      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipeline: siab.groovy <br /><br />
       E2E Validation for Seba-in-a-Box
 
     properties:
       - cord-infra-properties:
-          build-days-to-keep: '{build-days-to-keep}'
-          artifact-num-to-keep: '{artifact-num-to-keep}'
+          build-days-to-keep: 30
+          artifact-num-to-keep: 15
 
     wrappers:
       - lf-infra-wrappers:
@@ -169,13 +169,13 @@
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipleine: siab-test.groovy <br /><br />
+      Created by {id} job-template from ci-management/jjb/siab.yaml, with pipeline: siab-test.groovy <br /><br />
       E2E Validation for Seba-in-a-Box
 
     properties:
       - cord-infra-properties:
-          build-days-to-keep: '{build-days-to-keep}'
-          artifact-num-to-keep: '{artifact-num-to-keep}'
+          build-days-to-keep: 30
+          artifact-num-to-keep: 15
 
     wrappers:
       - lf-infra-wrappers:
