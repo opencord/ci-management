@@ -264,6 +264,7 @@
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
           logLevel: INFO
+          openoltAdapterImg: matteoscandolo/voltha-rw-core:per-gem-lock
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
