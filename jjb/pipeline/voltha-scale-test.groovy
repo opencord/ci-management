@@ -175,31 +175,41 @@ pipeline {
 
             export EXTRA_HELM_FLAGS+=' '
 
-            if [ '${release}' -ne 'master' ]; then
-              source $WORKSPACE/kind-voltha/releases/${release}
+            # BBSim custom image handling
+            if [ '${bbsimImg.trim()}' != '' ]; then
+              IFS=: read -r bbsimRepo bbsimTag <<< '${bbsimImg}'
+              EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
             fi
 
-            # BBSim custom image handling
-            IFS=: read -r bbsimRepo bbsimTag <<< ${bbsimImg}
-            EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
-
             # VOLTHA and ofAgent custom image handling
-            IFS=: read -r rwCoreRepo rwCoreTag <<< ${rwCoreImg}
-            IFS=: read -r ofAgentRepo ofAgentTag <<< ${ofAgentImg}
-            EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
+            # NOTE to override the rw-core image in a released version you must set the ofAgent image too
+            if [ '${rwCoreImg.trim()}' != '' ] && [ '${ofAgentImg.trim()}' != '' ]; then
+              IFS=: read -r rwCoreRepo rwCoreTag <<< '${rwCoreImg}'
+              IFS=: read -r ofAgentRepo ofAgentTag <<< '${ofAgentImg}'
+              EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
+            fi
 
             # OpenOLT custom image handling
-            IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< ${openoltAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
+            if [ '${openoltAdapterImg.trim()}' != '' ]; then
+              IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< '${openoltAdapterImg}'
+              EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
+            fi
 
             # OpenONU custom image handling
-            IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< ${openonuAdapterImg}
-            EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
+            if [ '${openonuAdapterImg.trim()}' != '' ]; then
+              IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< '${openonuAdapterImg}'
+              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
+            fi
 
             # ONOS custom image handling
-            IFS=: read -r onosRepo onosTag <<< ${onosImg}
-            EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
+            if [ '${onosImg.trim()}' != '' ]; then
+              IFS=: read -r onosRepo onosTag <<< '${onosImg}'
+              EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
+            fi
 
+            if [ '${release.trim()}' != 'master' ]; then
+              source $WORKSPACE/kind-voltha/releases/${release}
+            fi
 
             # set BBSim parameters
             EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '

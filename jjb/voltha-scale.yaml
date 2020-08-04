@@ -243,7 +243,12 @@
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
           logLevel: INFO
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
+          openonuAdapterImg: ''
+          onosImg: ''
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
@@ -265,7 +270,12 @@
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
           logLevel: INFO
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
+          openonuAdapterImg: ''
+          onosImg: ''
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
