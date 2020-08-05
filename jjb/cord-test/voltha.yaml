@@ -25,6 +25,8 @@
           release: 'master'
           branch: 'master'
           num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           profile: '1T4GEM'
@@ -298,6 +300,9 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T4GEM'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           reinstall-olt: false
           in-band-management: true
       - 'build_pod_test':
@@ -314,6 +319,9 @@
           config-pod: 'onf-demo-pod'
           release: 'master'
           branch: 'master'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
