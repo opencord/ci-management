@@ -11,17 +11,6 @@
       - 'publish-pyvoltha-jobs':
           branch-regexp: '{all-branches-regexp}'
           pypi-index: 'pypi'
-      - 'voltha-periodic-test':
-          name: 'nightly-pyvoltha-compatibility-test'
-          pipeline-script: 'voltha-bbsim-tests.groovy'
-          build-node: 'ubuntu16.04-basebuild-4c-8g'
-          default-image-tag: 'master'
-          code-branch: 'master'
-          make-target: sanity-single-kind
-          gerrit-project: pyvoltha
-          onus: 1
-          pons: 1
-          time-trigger: "@daily"
 
 - job-group:
     name: 'verify-pyvoltha-jobs'
