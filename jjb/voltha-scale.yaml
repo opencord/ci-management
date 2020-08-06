@@ -244,7 +244,7 @@
           karafHome: apache-karaf-4.2.8
           logLevel: INFO
           bbsimImg: ''
-          rwCoreImg: ''
+          rwCoreImg: 'matteoscandolo/voltha-rw-core:voltha-2.4-dev'
           ofAgentImg: ''
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
           openonuAdapterImg: ''
@@ -271,7 +271,7 @@
           karafHome: apache-karaf-4.2.8
           logLevel: INFO
           bbsimImg: ''
-          rwCoreImg: ''
+          rwCoreImg: 'matteoscandolo/voltha-rw-core:voltha-2.4-dev'
           ofAgentImg: ''
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
           openonuAdapterImg: ''
