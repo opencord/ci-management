@@ -789,7 +789,7 @@
 
       - string:
           name: spgwcImage
-          default: 'omecproject/ngic-cp:central-cp-multi-upfs-latest'
+          default: 'omecproject/spgw:master-latest'
           description: 'Docker image for spgwc. Leave empty to use default helm-charts value'
 
       - string:
