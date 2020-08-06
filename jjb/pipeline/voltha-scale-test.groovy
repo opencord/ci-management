@@ -178,6 +178,7 @@ pipeline {
             # Load the release defaults
             if [ '${release.trim()}' != 'master' ]; then
               source $WORKSPACE/kind-voltha/releases/${release}
+              EXTRA_HELM_FLAGS+=" ${extraHelmFlags} "
             fi
 
             # BBSim custom image handling
@@ -220,6 +221,9 @@ pipeline {
 
             # No persistent-volume-claims in Atomix
             EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "
+
+            echo "Installing with the following extra arguments:"
+            echo $EXTRA_HELM_FLAGS
 
             ./voltha up
 
