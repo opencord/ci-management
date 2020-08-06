@@ -440,7 +440,7 @@ EOF
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
 
         # log in individual files for all the container that match the selector app=$APP_TO_LOG
-        APPS_TO_LOG=(etcd kafka onos adapter-open-onu adapter-open-olt rw-core ofagent bbsim)
+        APPS_TO_LOG=(etcd kafka onos adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius)
         for app in "${APPS_TO_LOG[@]}"
         do
           echo "Getting logs for: ${app}"
@@ -481,6 +481,7 @@ EOF
 
         if [ ${withEapol} = true ] ; then
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users > $WORKSPACE/logs/onos-aaa-users.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-statistics > $WORKSPACE/logs/onos-aaa-statistics.txt || true
         fi
 
         if [ ${withDhcp} = true ] ; then
