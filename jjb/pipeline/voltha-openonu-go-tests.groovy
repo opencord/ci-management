@@ -133,9 +133,13 @@ pipeline {
         sh '''
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           export TARGET=openonu-go-adapter-test
+           export TARGET_DEFAULT=openonu-go-adapter-test
 
-           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET_DEFAULT || true
+
+           export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
+
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET_1T8GEM || true
         '''
       }
     }
