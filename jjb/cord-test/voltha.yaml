@@ -60,7 +60,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # flex OCP pod with olt/onu - Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -85,7 +85,7 @@
           profile: 'Default'
 
       # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.4'
@@ -110,7 +110,7 @@
           profile: '1T4GEM'
 
      # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.4'
@@ -140,7 +140,7 @@
           profile: 'TP'
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -170,7 +170,7 @@
           profile: 'TP'
 
       # Menlo pod with olt/onu - Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: '2.4'
@@ -198,7 +198,7 @@
           power-switch: True
 
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_dependent':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -210,10 +210,10 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T4GEM'
-          time: '1'
           in-band-management: true
           VolthaEtcdPort: '9999'
           reinstall-olt: false
+          trigger-after: build_onf-demo-pod_Default_voltha_2.4
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -226,7 +226,7 @@
           power-switch: True
 
       # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_dependent':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -238,10 +238,10 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '4'
           VolthaEtcdPort: '9999'
           in-band-management: true
           reinstall-olt: false
+          trigger-after: build_onf-demo-pod_1T4GEM_voltha_master
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -258,7 +258,7 @@
 
 
       # Menlo pod with olt/onu - voltha-2.4  branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_dependent':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: '2.4'
@@ -272,10 +272,10 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '7'
           VolthaEtcdPort: '9999'
           reinstall-olt: false
           in-band-management: true
+          trigger-after: build_onf-demo-pod_1T8GEM_DT_voltha_master
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -339,6 +339,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # ONF Menlo Soak POD build job - voltha-master branch
+      # FIXME once the soak-pod is back use 'build_voltha_pod_release_timer'
       - 'build_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
@@ -350,6 +351,7 @@
           profile: 'Default'
 
       # ONF Menlo Soak POD test job - voltha-master branch
+      # FIXME once the soak-pod is back use 'build_voltha_pod_test'
       - 'build_pod_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
@@ -359,7 +361,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Infosys pod with olt/onu - Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'infosys-test-pod'
           config-pod: 'infosys-pod'
           release: 'master'
@@ -380,7 +382,7 @@
           profile: 'Default'
 
      # Infosys pod with olt/onu - voltha-2.4 Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'infosys-test-pod'
           config-pod: 'infosys-pod'
           release: '2.4'
@@ -421,7 +423,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Berlin pod with olt/onu - master versions Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
           release: 'master'
@@ -448,7 +450,7 @@
           power-switch: True
 
      # Berlin pod with olt/onu - voltha-2.4 Default tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
           release: '2.4'
@@ -475,7 +477,7 @@
           power-switch: True
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
           release: 'master'
@@ -507,7 +509,7 @@
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with gpon olt/onu - voltha-2.4 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
           release: '2.4'
