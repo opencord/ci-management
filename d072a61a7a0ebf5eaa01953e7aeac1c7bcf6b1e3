@@ -22,6 +22,30 @@
       "revId": "d072a61a7a0ebf5eaa01953e7aeac1c7bcf6b1e3",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56484a3c_dbd2c258",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-08-10T17:31:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b65047f_f65399fa",
+      "range": {
+        "startLine": 265,
+        "startChar": 49,
+        "endLine": 265,
+        "endChar": 69
+      },
+      "revId": "d072a61a7a0ebf5eaa01953e7aeac1c7bcf6b1e3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
