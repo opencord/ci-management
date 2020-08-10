@@ -169,34 +169,6 @@
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
-      # Menlo pod with olt/onu - Default tech profile and timer based job
-      - 'build_voltha_pod_release':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          release: '2.4'
-          branch: 'voltha-2.4'
-          num-of-openonu: '2'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          configurePod: true
-          profile: 'Default'
-          time: '22'
-          VolthaEtcdPort: '9999'
-          in-band-management: true
-          reinstall-olt: false
-
-      # Menlo pod test job - uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          release: '2.4'
-          branch: 'voltha-2.4'
-          test-repo: 'voltha-system-tests'
-          profile: 'Default'
-          power-switch: True
-
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release':
           build-node: 'menlo-demo-pod'
@@ -289,6 +261,35 @@
           profile: '1T8GEM'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
           power-switch: True
+
+      # Menlo pod with olt/onu - master branch, 1T8GEM tech profile and timer based job
+      -   'build_voltha_pod_release':
+              build-node: 'menlo-demo-pod'
+              config-pod: 'onf-demo-pod'
+              release: 'master'
+              branch: 'master'
+              num-of-openonu: '2'
+              name-extension: '_DT_GPON'
+              work-flow: 'DT'
+              test-repo: 'voltha-system-tests'
+              Jenkinsfile: 'Jenkinsfile-voltha-build'
+              configurePod: true
+              profile: '1T8GEM'
+              time: '22'
+              VolthaEtcdPort: '9999'
+
+      # Menlo pod test job - uses 1T8GEM tech profile on master voltha branch
+      -   'build_voltha_pod_test':
+              build-node: 'menlo-demo-pod'
+              config-pod: 'onf-demo-pod'
+              release: 'master'
+              branch: 'master'
+              name-extension: '_DT_GPON'
+              work-flow: 'DT'
+              test-repo: 'voltha-system-tests'
+              profile: '1T8GEM'
+              pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
 
       # Menlo DEMO-POD - 1 1TCONT 4 4GEMs TechProfile - Manual build and test job
       - 'build_pod_manual':
