@@ -264,6 +264,12 @@ pipeline {
     stage('Push Sadis-config') {
       steps {
         sh returnStdout: false, script: """
+        ssh-keygen -R [${deployment_config.nodes[0].ip}]:30115
+        ssh-keyscan -p 30115 -H ${deployment_config.nodes[0].ip} >> ~/.ssh/known_hosts
+        sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.opencord.dhcpl2relay"
+        sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.opencord.aaa"
+        sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.opencord.olt"
+        sshpass -p karaf ssh -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.onosproject.net.flowobjective.impl.FlowObjectiveManager"
         curl -sSL --user karaf:karaf -X POST -H Content-Type:application/json http://${deployment_config.nodes[0].ip}:$ONOS_API_PORT/onos/v1/network/configuration --data @${localSadisConfigFile}
         """
       }
