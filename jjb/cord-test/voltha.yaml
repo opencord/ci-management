@@ -281,7 +281,7 @@
       # Menlo pod test job - uses 1T8GEM tech profile on master voltha branch
       -   'build_voltha_pod_test':
               build-node: 'menlo-demo-pod'
-              config-pod: 'onf-demo-pod'
+              config-pod: 'onf-demo-pod-gpon'
               release: 'master'
               branch: 'master'
               name-extension: '_DT_GPON'
