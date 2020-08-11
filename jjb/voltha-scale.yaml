@@ -9,40 +9,6 @@
     jobs:
       # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
 
-      # jobs for 64 ONUs with a 1 openonu-adapter
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-go-scale-measurements-master-1-2-32-activation'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 2
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 1
-          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
-          extraHelmFlags: '--set use_openonu_adapter_go=true'
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-scale-measurements-master-1-2-32-activation'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 2
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 1
-          openonuAdapterImg: voltha/voltha-openonu-adapter:master
-
       # jobs for 256 ONUs with a 1 openonu-adapter
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-8-32-activation'
@@ -76,6 +42,22 @@
           withIgmp: false
           openonuAdapterReplicas: 1
           openonuAdapterImg: voltha/voltha-openonu-adapter:master
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-go-scale-measurements-master-1-16-64-activation'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 64
+          withFlows: false
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 1
+          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
+          extraHelmFlags: '--set use_openonu_adapter_go=true'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-activation'
