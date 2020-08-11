@@ -265,7 +265,7 @@
       # Menlo pod with olt/onu - master branch, 1T8GEM tech profile and timer based job
       -   'build_voltha_pod_release':
               build-node: 'menlo-demo-pod'
-              config-pod: 'onf-demo-pod'
+              config-pod: 'onf-demo-pod-gpon'
               release: 'master'
               branch: 'master'
               num-of-openonu: '2'
