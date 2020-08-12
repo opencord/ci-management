@@ -128,7 +128,7 @@
     id: build_voltha_pod_release_timer
     description: |
                   Manual Build on POD {config-pod}, using {Jenkinsfile} in {gerrit-server-url}/voltha-system-tests' <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
+                  Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
 
@@ -157,7 +157,7 @@
     id: build_voltha_pod_release_dependent
     description: |
                   Automatic Build on POD {config-pod}, using {Jenkinsfile} in {gerrit-server-url}/voltha-system-tests' <br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
+                  Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   This job is triggered upon completion of a dependent _test job <br />
                   Copyright (c) 2020 Open Networking Foundation (ONF)
@@ -188,7 +188,7 @@
     id: build_voltha_pod_test
     description: |
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {pipeline-script}<br /><br />
-                  Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
+                  Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
 

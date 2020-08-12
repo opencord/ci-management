@@ -213,7 +213,7 @@
           in-band-management: true
           VolthaEtcdPort: '9999'
           reinstall-olt: false
-          trigger-after: build_onf-demo-pod_Default_voltha_2.4
+          trigger-after: build_onf-demo-pod_Default_voltha_2.4_test
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -241,7 +241,7 @@
           VolthaEtcdPort: '9999'
           in-band-management: true
           reinstall-olt: false
-          trigger-after: build_onf-demo-pod_1T4GEM_voltha_master
+          trigger-after: build_onf-demo-pod_1T4GEM_voltha_master_test
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -275,7 +275,7 @@
           VolthaEtcdPort: '9999'
           reinstall-olt: false
           in-band-management: true
-          trigger-after: build_onf-demo-pod_1T8GEM_DT_voltha_master
+          trigger-after: build_onf-demo-pod_1T8GEM_DT_voltha_master_test
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
