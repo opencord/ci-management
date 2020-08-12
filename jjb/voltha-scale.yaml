@@ -230,7 +230,7 @@
           ofAgentImg: ''
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
           openonuAdapterImg: ''
-          onosImg: andreacampanella/voltha-onos:eapol-retry
+          onosImg: ''
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
@@ -257,7 +257,7 @@
           ofAgentImg: ''
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
           openonuAdapterImg: ''
-          onosImg: andreacampanella/voltha-onos:eapol-retry
+          onosImg: ''
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
