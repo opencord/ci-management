@@ -100,6 +100,23 @@
           oltDebVersionMaster: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
           profile: 'Default'
+          trigger-string: 'hardware test'
+          default-test-args: '-i sanityORDeleteOLT -X'
+
+
+      # Per-patchset Pod builds on Tucson pod
+      - 'verify_physical_voltha_patchset_manual':
+          name: 'verify_physical_voltha_patchset_manual_DT'
+          build-node: 'tucson-pod'
+          config-pod: 'tucson-pod-DT'
+          oltDebVersionMaster: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
+          oltDebVersionVoltha23: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
+          profile: 'Default'
+          pipeline-script: 'voltha-dt-physical-build-and-tests.groovy'
+          trigger-string: 'DT hardware test'
+          default-test-args: '-i sanityDt -X'
+
+
 
       # Manual build job for Tucson pod
       # Allow local testing without disrupting above job
@@ -306,6 +323,7 @@
                   Copyright (c) 2019 Open Networking Foundation (ONF)
     sandbox: true
     pipeline-script: 'voltha-physical-build-and-tests.groovy'
+    default-test-args: '-i sanityORDeleteOLT -X'
 
     properties:
       - cord-infra-properties:
@@ -409,7 +427,7 @@
 
       - string:
           name: extraRobotArgs
-          default: '-i sanityORDeleteOLT -X'
+          default: '{default-test-args}'
           description: 'Arguments to pass to robot'
 
     project-type: pipeline
@@ -448,6 +466,8 @@
                   Copyright (c) 2019 Open Networking Foundation (ONF)
     sandbox: true
     pipeline-script: 'voltha-physical-build-and-tests.groovy'
+    trigger-string: 'hardware test'
+    default-test-args: '-i sanityORDeleteOLT -X'
 
     properties:
       - cord-infra-properties:
@@ -551,7 +571,7 @@
 
       - string:
           name: extraRobotArgs
-          default: '-i sanityORDeleteOLT -X'
+          default: '{default-test-args}'
           description: 'Arguments to pass to robot'
 
     project-type: pipeline
@@ -564,14 +584,14 @@
           server-name: '{gerrit-server-name}'
           dependency-jobs: '{dependency-jobs}'
           silent-start: false
-          successful-message: "PASSED hardware test"
-          failure-message: "FAILED hardware test"
-          unstable-message: "UNSTABLE hardware test"
+          successful-message: "PASSED {trigger-string}"
+          failure-message: "FAILED {trigger-string}"
+          unstable-message: "UNSTABLE {trigger-string}"
           trigger-on:
             - comment-added-contains-event:
-                comment-contains-value: '^hardware test$'
+                comment-contains-value: '^{trigger-string}$'
             - comment-added-contains-event:
-                comment-contains-value: '^hardware test with delay$'
+                comment-contains-value: '^{trigger-string} with delay$'
           projects:
             - project-compare-type: REG_EXP
               project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos|kind-voltha|voltha-helm-charts)$'
