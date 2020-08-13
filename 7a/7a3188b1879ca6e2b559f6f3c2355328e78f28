@@ -1,0 +1,7 @@
+Code-Review+2: Matteo Scandolo <teo@opennetworking.org>
+Verified+1: Zack Williams <zdw@opennetworking.org>
+Submitted-by: Zack Williams <zdw@opennetworking.org>
+Submitted-at: Thu, 13 Aug 2020 21:39:04 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/20113
+Project: ci-management
+Branch: refs/heads/master
