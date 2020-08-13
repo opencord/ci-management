@@ -154,7 +154,7 @@ function create_git_tag {
   echo "Creating git tag: $TAG_VERSION"
   git checkout "$GERRIT_PATCHSET_REVISION"
 
-  git config --global user.email "do-not-reply@opencord.org"
+  git config --global user.email "do-not-reply@opennetworking.org"
   git config --global user.name "Jenkins"
 
   git tag -a "$TAG_VERSION" -m "Tagged by CORD Jenkins version-tag job: $BUILD_NUMBER, for Gerrit patchset: $GERRIT_CHANGE_NUMBER"

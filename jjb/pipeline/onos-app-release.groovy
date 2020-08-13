@@ -56,7 +56,7 @@ node ('ubuntu16.04-basebuild-1c-2g') {
     sh 'ssh-keyscan -H -t rsa -p 29418 gerrit.opencord.org >> ~/.ssh/known_hosts'
 
     sh 'git config --global user.name "Jenkins"'
-    sh 'git config --global user.email "do-not-reply@opencord.org"'
+    sh 'git config --global user.email "do-not-reply@opennetworking.org"'
 
     // GPG key used to sign maven artifacts
     withCredentials([file(credentialsId: 'gpg-creds-maven', variable: 'GPUPG')]) {

@@ -57,7 +57,7 @@
           echo "git version: $(git --version)"
 
           # Configure git
-          git config --global user.email "do-not-reply@opencord.org"
+          git config --global user.email "do-not-reply@opennetworking.org"
           git config --global user.name "Jenkins"
 
           # Checkout 'cord-charts-repo' repo that contains updated charts
