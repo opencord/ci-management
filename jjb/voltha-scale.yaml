@@ -9,40 +9,7 @@
     jobs:
       # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
 
-      # jobs for 256 ONUs with a 1 openonu-adapter
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-go-scale-measurements-master-1-8-32-activation'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 8
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 1
-          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
-          extraHelmFlags: '--set use_openonu_adapter_go=true'
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-scale-measurements-master-1-8-32-activation'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 8
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 1
-          openonuAdapterImg: voltha/voltha-openonu-adapter:master
-
+      # OpenONU GO Scale
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-16-64-activation'
           build-node: 'onf-pod1-head-node'
@@ -96,7 +63,6 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
-          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -188,7 +154,6 @@
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -224,11 +189,10 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
-          logLevel: INFO
           bbsimImg: ''
-          rwCoreImg: 'matteoscandolo/voltha-rw-core:voltha-2.4-dev'
+          rwCoreImg: ''
           ofAgentImg: ''
-          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
+          openoltAdapterImg: ''
           openonuAdapterImg: ''
           onosImg: ''
 
@@ -251,11 +215,10 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.4
           karafHome: apache-karaf-4.2.8
-          logLevel: INFO
           bbsimImg: ''
-          rwCoreImg: 'matteoscandolo/voltha-rw-core:voltha-2.4-dev'
+          rwCoreImg: ''
           ofAgentImg: ''
-          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:per-gem-lock
+          openoltAdapterImg: ''
           openonuAdapterImg: ''
           onosImg: ''
 
