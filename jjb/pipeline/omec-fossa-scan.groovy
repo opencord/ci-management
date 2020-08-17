@@ -19,7 +19,7 @@ pipeline {
 
     agent {
         docker {
-            image "fossa-verify:latest"
+            image "omecproject/fossa-verify:latest"
             label "${params.buildNode}"
         }
     }

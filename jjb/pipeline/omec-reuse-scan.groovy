@@ -19,7 +19,7 @@ pipeline {
 
     agent {
         docker {
-            image "reuse-verify:latest"
+            image "omecproject/reuse-verify:latest"
             label "${params.buildNode}"
         }
     }

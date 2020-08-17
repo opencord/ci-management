@@ -66,10 +66,10 @@
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -103,10 +103,10 @@
           pipeline-file: 'Jenkinsfile-omec-install-c3po-hss-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -136,10 +136,10 @@
           pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
@@ -168,10 +168,10 @@
           pipeline-file: 'Jenkinsfile-omec-install-Nucleus-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 60
           docker-repo: 'omecproject'
@@ -194,10 +194,10 @@
     jobs:
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
 
 # for ignite
 - project:
@@ -215,10 +215,10 @@
     jobs:
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
 
 # for upf-epc
 - project:
@@ -234,10 +234,10 @@
     jobs:
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'omec-qa'
+          build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
