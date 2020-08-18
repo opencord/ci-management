@@ -340,6 +340,11 @@ pipeline {
         if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
           ROBOT_MISC_ARGS+="-i functionalDt"
         fi
+        # Likewise for dataplane tests
+        REGEX="dataplane tests"
+        if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+          ROBOT_MISC_ARGS+="-i dataplaneDt"
+        fi
 
         make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         """
