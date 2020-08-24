@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "32d749b3_0f80bc7e",
+        "filename": "jjb/maven.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000461
+      },
+      "writtenOn": "2020-08-24T16:53:24Z",
+      "side": 1,
+      "message": "Should spotbugs:check be called after install goal?",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 63
+      },
+      "revId": "a2fdc544170a0b1efbfb8abc9d38067a1bbf609d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fb4f917_20afbb1c",
+        "filename": "jjb/maven.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000461
+      },
+      "writtenOn": "2020-08-24T16:53:24Z",
+      "side": 1,
+      "message": "spotbugs:check will block the build if a bug is found. Maybe is better to use spotbugs:spotbugs goal and have the spotbugs report available in Jenkins, or, alternatively, to use the option \u003cfailOnError\u003eFalse\u003c/failOnError\u003e on the pom file (in this case the errors are available in the Jenkins log).",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "a2fdc544170a0b1efbfb8abc9d38067a1bbf609d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
