@@ -45,6 +45,30 @@
       "revId": "a2fdc544170a0b1efbfb8abc9d38067a1bbf609d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58b27710_e05ab095",
+        "filename": "jjb/maven.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000569
+      },
+      "writtenOn": "2020-08-24T17:15:00Z",
+      "side": 1,
+      "message": "mvn spotbugs:spotbugs doens\u0027t show any errors and there is no way to install plugin since we do it not with gui\n \u003cfailOnError\u003eFalse\u003c/failOnError\u003e needs to be changed in all repos can we spare it?",
+      "parentUuid": "5fb4f917_20afbb1c",
+      "range": {
+        "startLine": 59,
+        "startChar": 41,
+        "endLine": 59,
+        "endChar": 55
+      },
+      "revId": "a2fdc544170a0b1efbfb8abc9d38067a1bbf609d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
