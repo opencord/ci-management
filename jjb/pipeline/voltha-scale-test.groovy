@@ -62,6 +62,8 @@ pipeline {
     VOLTHA_BBSIM_CHART="${bbsimChart}"
     VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
     VOLTHA_ADAPTER_OPEN_ONU_CHART="${openonuAdapterChart}"
+
+    APPS_TO_LOG="etcd kafka onos adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius"
   }
 
   stages {
@@ -231,6 +233,19 @@ pipeline {
             _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd $VOLTHA_ETCD_PORT:2379&
           """
         }
+        sh returnStdout: false, script: '''
+        # start logging with kail
+
+        LOG_FOLDER=$WORKSPACE/logs
+        mkdir -p $LOG_FOLDER
+
+        list=($APPS_TO_LOG)
+        for app in "${list[@]}"
+        do
+          echo "Starting logs for: ${app}"
+          _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
+        done
+        '''
         // bbsim-sadis server takes a while to cache the subscriber entries
         // wait for that before starting the tests
         sleep(120)
@@ -376,6 +391,21 @@ EOF
       // event of a timeout in the tests
       sh '''
 
+        # stop the kail processes
+        list=($APPS_TO_LOG)
+        for app in "${list[@]}"
+        do
+          echo "Stopping logs for: ${app}"
+          _TAG="kail-$app"
+          P_IDS="$(ps e -ww -A | grep "_TAG=$_TAG" | grep -v grep | awk '{print $1}')"
+          if [ -n "$P_IDS" ]; then
+            echo $P_IDS
+            for P_ID in $P_IDS; do
+              kill -9 $P_ID
+            done
+          fi
+        done
+
         if [ ${withPcap} = true ] ; then
           # stop ofAgent tcpdump
           P_ID="\$(ps e -ww -A | grep "_TAG=ofagent-tcpdump" | grep -v grep | awk '{print \$1}')"
@@ -390,7 +420,7 @@ EOF
 
         cd voltha-system-tests
         source ./vst_venv/bin/activate
-        python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt
+        python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
         cat $WORKSPACE/execution-time.txt
       '''
       sh '''
@@ -432,8 +462,6 @@ EOF
         unstableThreshold: 0]);
       // get all the logs from kubernetes PODs
       sh returnStdout: false, script: '''
-        LOG_FOLDER=$WORKSPACE/logs
-        mkdir -p $LOG_FOLDER
 
         # store information on running charts
         helm ls > $LOG_FOLDER/helm-list.txt || true
@@ -442,18 +470,6 @@ EOF
         kubectl get pods -o wide > $LOG_FOLDER/pods.txt || true
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-images.txt || true
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
-
-        # log in individual files for all the container that match the selector app=$APP_TO_LOG
-        APPS_TO_LOG=(etcd kafka onos adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius)
-        for app in "${APPS_TO_LOG[@]}"
-        do
-          echo "Getting logs for: ${app}"
-          kubectl get pods -l app=${app} -o=jsonpath=\"{.items[*]['metadata.name']}\"
-          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl logs # > $LOG_FOLDER/#.log" || true
-
-          # Get the logs from the previous POD if any (useful in case of restarts)
-          printf '%s\n' $(kubectl get pods -l app=$app -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl logs -p # > $LOG_FOLDER/#-previous.log" || true
-        done
 
         # copy the ONOS logs directly from the container to avoid the color codes
         printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
