@@ -195,6 +195,7 @@
           openoltAdapterImg: ''
           openonuAdapterImg: ''
           onosImg: ''
+          withPcap: true
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
