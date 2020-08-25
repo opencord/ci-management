@@ -342,6 +342,16 @@
           description: 'How many Atomix instances to run'
 
       - string:
+          name: kafkaReplicas
+          default: '{kafkaReplicas}'
+          description: 'How many Kafka instances to run'
+
+      - string:
+          name: etcdReplicas
+          default: '{etcdReplicas}'
+          description: 'How many ETCD instances to run'
+
+      - string:
           name: onosStatInterval
           default: '{onosStatInterval}'
           description: 'How often ONOS should poll for ports, flows and meters'
@@ -470,6 +480,8 @@
     openonuAdapterReplicas: 1
     onosReplicas: 1
     atomixReplicas: 0
+    kafkaReplicas: 3
+    etcdReplicas: 3
     extraHelmFlags: ''
     onosStatInterval: 5
     volthaSystemTestsChange: ''
@@ -543,6 +555,8 @@
     openonuAdapterReplicas: 1
     onosReplicas: 1
     atomixReplicas: 0
+    kafkaReplicas: 1
+    etcdReplicas: 1
     extraHelmFlags: ''
     onosStatInterval: 5
     volthaSystemTestsChange: ''
