@@ -22,6 +22,11 @@
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
           build-timeout: 15
+      - 'make-sca':
+          unit-test-targets: 'sca'
+          unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
+          build-timeout: 15
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
 
