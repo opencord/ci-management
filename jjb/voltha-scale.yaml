@@ -230,6 +230,10 @@
           build-node: 'voltha-scale'
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
+      # development matrix
+      - 'voltha-scale-matrix-dev':
+          name: 'voltha-scale-matrix-voltha-2.4-dev'
+          build-node: 'voltha-scale'
 
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
@@ -602,7 +606,7 @@
     concurrent: false
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
-    
+
     parameters:
       - string:
           name: release
