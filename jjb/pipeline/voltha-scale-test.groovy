@@ -64,6 +64,7 @@ pipeline {
     VOLTHA_ADAPTER_OPEN_ONU_CHART="${openonuAdapterChart}"
 
     APPS_TO_LOG="etcd kafka onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius"
+    LOG_FOLDER="$WORKSPACE/logs"
   }
 
   stages {
@@ -236,7 +237,6 @@ pipeline {
         sh returnStdout: false, script: '''
         # start logging with kail
 
-        LOG_FOLDER=$WORKSPACE/logs
         mkdir -p $LOG_FOLDER
 
         list=($APPS_TO_LOG)
@@ -295,7 +295,7 @@ pipeline {
         '''
         sh '''
           if [ ${withProfiling} = true ] ; then
-            mkdir -p $WORKSPACE/logs/pprof
+            mkdir -p $LOG_FOLDER/pprof
             echo $PATH
             #Creating Python script for ONU Detection
             cat << EOF > $WORKSPACE/pprof.sh
@@ -307,20 +307,20 @@ i=0
 while [[ true ]]; do
   ((i++))
   ts=$(timestamp)
-  go tool pprof -png http://127.0.0.1:6060/debug/pprof/heap > $WORKSPACE/logs/pprof/rw-core-heap-\\$i-\\$ts.png
-  go tool pprof -png http://127.0.0.1:6060/debug/pprof/goroutine > $WORKSPACE/logs/pprof/rw-core-goroutine-\\$i-\\$ts.png
-  curl -o $WORKSPACE/logs/pprof/rw-core-profile-\\$i-\\$ts.pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=10
-  go tool pprof -png $WORKSPACE/logs/pprof/rw-core-profile-\\$i-\\$ts.pprof > $WORKSPACE/logs/pprof/rw-core-profile-\\$i-\\$ts.png
+  go tool pprof -png http://127.0.0.1:6060/debug/pprof/heap > $LOG_FOLDER/pprof/rw-core-heap-\\$i-\\$ts.png
+  go tool pprof -png http://127.0.0.1:6060/debug/pprof/goroutine > $LOG_FOLDER/pprof/rw-core-goroutine-\\$i-\\$ts.png
+  curl -o $LOG_FOLDER/pprof/rw-core-profile-\\$i-\\$ts.pprof http://127.0.0.1:6060/debug/pprof/profile?seconds=10
+  go tool pprof -png $LOG_FOLDER/pprof/rw-core-profile-\\$i-\\$ts.pprof > $LOG_FOLDER/pprof/rw-core-profile-\\$i-\\$ts.png
 
-  go tool pprof -png http://127.0.0.1:6061/debug/pprof/heap > $WORKSPACE/logs/pprof/openolt-heap-\\$i-\\$ts.png
-  go tool pprof -png http://127.0.0.1:6061/debug/pprof/goroutine > $WORKSPACE/logs/pprof/openolt-goroutine-\\$i-\\$ts.png
-  curl -o $WORKSPACE/logs/pprof/openolt-profile-\\$i-\\$ts.pprof http://127.0.0.1:6061/debug/pprof/profile?seconds=10
-  go tool pprof -png $WORKSPACE/logs/pprof/openolt-profile-\\$i-\\$ts.pprof > $WORKSPACE/logs/pprof/openolt-profile-\\$i-\\$ts.png
+  go tool pprof -png http://127.0.0.1:6061/debug/pprof/heap > $LOG_FOLDER/pprof/openolt-heap-\\$i-\\$ts.png
+  go tool pprof -png http://127.0.0.1:6061/debug/pprof/goroutine > $LOG_FOLDER/pprof/openolt-goroutine-\\$i-\\$ts.png
+  curl -o $LOG_FOLDER/pprof/openolt-profile-\\$i-\\$ts.pprof http://127.0.0.1:6061/debug/pprof/profile?seconds=10
+  go tool pprof -png $LOG_FOLDER/pprof/openolt-profile-\\$i-\\$ts.pprof > $LOG_FOLDER/pprof/openolt-profile-\\$i-\\$ts.png
 
-  go tool pprof -png http://127.0.0.1:6062/debug/pprof/heap > $WORKSPACE/logs/pprof/ofagent-heap-\\$i-\\$ts.png
-  go tool pprof -png http://127.0.0.1:6062/debug/pprof/goroutine > $WORKSPACE/logs/pprof/ofagent-goroutine-\\$i-\\$ts.png
-  curl -o $WORKSPACE/logs/pprof/ofagent-profile-\\$i-\\$ts.pprof http://127.0.0.1:6062/debug/pprof/profile?seconds=10
-  go tool pprof -png $WORKSPACE/logs/pprof/ofagent-profile-\\$i-\\$ts.pprof > $WORKSPACE/logs/pprof/ofagent-profile-\\$i-\\$ts.png
+  go tool pprof -png http://127.0.0.1:6062/debug/pprof/heap > $LOG_FOLDER/pprof/ofagent-heap-\\$i-\\$ts.png
+  go tool pprof -png http://127.0.0.1:6062/debug/pprof/goroutine > $LOG_FOLDER/pprof/ofagent-goroutine-\\$i-\\$ts.png
+  curl -o $LOG_FOLDER/pprof/ofagent-profile-\\$i-\\$ts.pprof http://127.0.0.1:6062/debug/pprof/profile?seconds=10
+  go tool pprof -png $LOG_FOLDER/pprof/ofagent-profile-\\$i-\\$ts.pprof > $LOG_FOLDER/pprof/ofagent-profile-\\$i-\\$ts.png
 
   sleep 10
 done
@@ -398,7 +398,7 @@ EOF
 
           # copy the file
           export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}')
-          kubectl cp $OF_AGENT:out.pcap $WORKSPACE/logs/ofagent.pcap
+          kubectl cp $OF_AGENT:out.pcap $LOG_FOLDER/ofagent.pcap
         fi
 
         cd voltha-system-tests
@@ -464,31 +464,31 @@ EOF
 
       for bbsim in "${IDS[@]}"
       do
-        kubectl exec -t $bbsim bbsimctl onu list > $WORKSPACE/logs/$bbsim-device-list.txt || true
+        kubectl exec -t $bbsim bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
       done
       '''
       // get ONOS debug infos
       sh '''
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $WORKSPACE/logs/onos-ports-list.txt || true
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $LOG_FOLDER/onos-ports-list.txt || true
 
         if [ ${withFlows} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-olts > $WORKSPACE/logs/onos-olt-list.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $WORKSPACE/logs/onos-flows-list.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters > $WORKSPACE/logs/onos-meters-list.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-olts > $LOG_FOLDER/onos-olt-list.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s > $LOG_FOLDER/onos-flows-list.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters > $LOG_FOLDER/onos-meters-list.txt || true
         fi
 
         if [ ${provisionSubscribers} = true ]; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers > $WORKSPACE/logs/onos-programmed-subscribers.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters > $WORKSPACE/logs/onos-programmed-meters.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers > $LOG_FOLDER/onos-programmed-subscribers.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters > $LOG_FOLDER/onos-programmed-meters.txt || true
         fi
 
         if [ ${withEapol} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users > $WORKSPACE/logs/onos-aaa-users.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-statistics > $WORKSPACE/logs/onos-aaa-statistics.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users > $LOG_FOLDER/onos-aaa-users.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-statistics > $LOG_FOLDER/onos-aaa-statistics.txt || true
         fi
 
         if [ ${withDhcp} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations > $WORKSPACE/logs/onos-dhcp-allocations.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations > $LOG_FOLDER/onos-dhcp-allocations.txt || true
         fi
       '''
       // collect etcd metrics
@@ -503,16 +503,16 @@ EOF
       script {
         try {
           sh '''
-          voltctl -m 8MB device list -o json > $WORKSPACE/logs/device-list.json || true
-          python -m json.tool $WORKSPACE/logs/device-list.json > $WORKSPACE/logs/voltha-devices-list.json || true
-          rm $WORKSPACE/logs/device-list.json || true
-          voltctl -m 8MB device list > $WORKSPACE/logs/voltha-devices-list.txt || true
+          voltctl -m 8MB device list -o json > $LOG_FOLDER/device-list.json || true
+          python -m json.tool $LOG_FOLDER/device-list.json > $LOG_FOLDER/voltha-devices-list.json || true
+          rm $LOG_FOLDER/device-list.json || true
+          voltctl -m 8MB device list > $LOG_FOLDER/voltha-devices-list.txt || true
 
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device flows # > $WORKSPACE/logs/voltha-device-flows-#.txt" || true
-              printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $WORKSPACE/logs/voltha-device-ports-#.txt" || true
+          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
+              printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
 
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice flows # > $WORKSPACE/logs/voltha-logicaldevice-flows-#.txt" || true
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice port list # > $WORKSPACE/logs/voltha-logicaldevice-ports-#.txt" || true
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
           '''
         } catch(e) {
           sh '''
