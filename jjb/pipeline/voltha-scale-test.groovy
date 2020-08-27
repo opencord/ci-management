@@ -529,7 +529,7 @@ EOF
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt,plots/*.pdf,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*,etcd-metrics/*'
     }
   }
 }
