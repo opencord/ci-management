@@ -601,6 +601,8 @@
     # default values
     release: master
     build-node: 'voltha-scale'
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
 
     project-type: pipeline
     concurrent: false
@@ -617,3 +619,13 @@
           name: buildNode
           default: '{build-node}'
           description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: '{volthaSystemTestsChange}'
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: kindVolthaChange
+          default: '{kindVolthaChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'

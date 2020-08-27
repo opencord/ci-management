@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+topologies = [
+  ['onu': 1, 'pon': 1],
+  ['onu': 2, 'pon': 1],
+  ['onu': 2, 'pon': 2],
+]
+
 pipeline {
 
   agent {
@@ -21,7 +27,17 @@ pipeline {
       timeout(time: 30, unit: 'MINUTES')
   }
   environment {
+    JENKINS_NODE_COOKIE="dontKillMe" // do not kill processes after the build is done
+    KUBECONFIG="$HOME/.kube/config"
+    VOLTCONFIG="$HOME/.volt/config"
+    SCHEDULE_ON_CONTROL_NODES="yes"
 
+    WITH_SIM_ADAPTERS="no"
+    WITH_RADIUS="yes"
+    WITH_BBSIM="yes"
+    LEGACY_BBSIM_INDEX="no"
+    DEPLOY_K8S="no"
+    CONFIG_SADIS="external"
   }
 
   stages {
@@ -104,16 +120,12 @@ pipeline {
       }
     }
     stage('Deploy and test') {
-      repeat_deploy_and_test(topologies)
+      steps {
+          repeat_deploy_and_test(topologies)
+      }
     }
   }
 }
-
-topologies = [
-  {'onu': 1, 'pon': 1},
-  {'onu': 2, 'pon': 1},
-  {'onu': 2, 'pon': 2},
-]
 
 def repeat_deploy_and_test(list) {
     for (int i = 0; i < list.size(); i++) {
