@@ -24,26 +24,46 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 30, unit: 'MINUTES')
+      timeout(time: 120, unit: 'MINUTES')
   }
   environment {
     JENKINS_NODE_COOKIE="dontKillMe" // do not kill processes after the build is done
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
     SCHEDULE_ON_CONTROL_NODES="yes"
+    FANCY=0
+    NAME="minimal"
 
     WITH_SIM_ADAPTERS="no"
-    WITH_RADIUS="yes"
+    WITH_RADIUS="no"
     WITH_BBSIM="yes"
     LEGACY_BBSIM_INDEX="no"
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
+
+    // install everything in the default namespace
+    VOLTHA_NS="default"
+    ADAPTER_NS="default"
+    INFRA_NS="default"
+    BBSIM_NS="default"
+
+    // workflow
+    WITH_EAPOL="no"
+    WITH_DHCP="no"
+    WITH_IGMP="no"
+
+    // infrastructure size
+    NUM_OF_OPENONU=1
+    NUM_OF_ONOS="1"
+    NUM_OF_ATOMIX="1"
+    NUM_OF_KAFKA="1"
+    NUM_OF_ETCD="1"
   }
 
   stages {
     stage ('Cleanup') {
       steps {
-        timeout(time: 11, unit: 'MINUTES') {
+        timeout(time: 10, unit: 'MINUTES') {
           sh returnStdout: false, script: """
             helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
             helm repo add stable https://kubernetes-charts.storage.googleapis.com
@@ -54,20 +74,12 @@ pipeline {
             helm repo add bbsim-sadis https://ciena.github.io/bbsim-sadis-server/charts
             helm repo update
 
-            # removing ETCD port forward
-            P_ID="\$(ps e -ww -A | grep "_TAG=etcd-port-forward" | grep -v grep | awk '{print \$1}')"
-            if [ -n "\$P_ID" ]; then
-              kill -9 \$P_ID
-            fi
-
             for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat');
             do
                 echo "Purging chart: \${hchart}"
                 helm delete "\${hchart}"
             done
             bash /home/cord/voltha-scale/wait_for_pods.sh
-
-            test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
@@ -125,10 +137,65 @@ pipeline {
       }
     }
   }
+  post {
+    always {
+      archiveArtifacts artifacts: '*-install-minimal.log,*-minimal-env.sh,RobotLogs/**/*'
+    }
+  }
 }
 
 def repeat_deploy_and_test(list) {
-    for (int i = 0; i < list.size(); i++) {
-        sh "echo Setting up with ${list[i]['pon']}x${list[i]['onu']}"
+  for (int i = 0; i < list.size(); i++) {
+    stage('Deploy topology: ' + list[i]['pon'] + "-" + list[i]['onu']) {
+      timeout(time: 10, unit: 'MINUTES') {
+        sh returnStdout: false, script: """
+
+
+        for hchart in \$(helm list -q | grep -E -v 'bbsim-sadis-server|kafka|onos|radius');
+        do
+            echo "Purging chart: \${hchart}"
+            helm delete "\${hchart}"
+        done
+        bash /home/cord/voltha-scale/wait_for_pods.sh
+        """
+        sh returnStdout: false, script: """
+        cd $WORKSPACE/kind-voltha/
+        source $WORKSPACE/kind-voltha/releases/${release}
+
+        EXTRA_HELM_FLAGS+="--set enablePerf=true,pon=${list[i]['pon']},onu=${list[i]['onu']} "
+        ./voltha up
+
+        cp minimal-env.sh ../${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
+        cp install-minimal.log ../${list[i]['pon']}-${list[i]['onu']}-install-minimal.log
+        """
+        //sleep(120) // TODO can we improve and check once the bbsim-sadis-server is actually done loading subscribers??
+      }
     }
+    stage('Test topology: ' + list[i]['pon'] + "-" + list[i]['onu']) {
+      timeout(time: 10, unit: 'MINUTES') {
+        sh returnStdout: false, script: """
+        mkdir -p $WORKSPACE/RobotLogs/${list[i]['pon']}-${list[i]['onu']}
+        cd $WORKSPACE/voltha-system-tests
+        make vst_venv
+
+        export ROBOT_PARAMS="-v olt:1 \
+          -v pon:${list[i]['pon']} \
+          -v onu:${list[i]['onu']} \
+          -v workflow:dt \
+          -v withEapol:false \
+          -v withDhcp:false \
+          -v withIgmp:false \
+          --noncritical non-critical \
+          -e teardown \
+          -e authentication \
+          -e dhcp"
+
+        cd $WORKSPACE/voltha-system-tests
+        source ./vst_venv/bin/activate
+        robot -d $WORKSPACE/RobotLogs/${list[i]['pon']}-${list[i]['onu']} \
+        \$ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+        """
+      }
+    }
+  }
 }

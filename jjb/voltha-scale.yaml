@@ -599,7 +599,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
-    release: master
+    release: voltha-2.4
     build-node: 'voltha-scale'
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
