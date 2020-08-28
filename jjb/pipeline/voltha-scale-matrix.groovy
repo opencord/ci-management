@@ -13,9 +13,9 @@
 // limitations under the License.
 
 topologies = [
-  ['onu': 1, 'pon': 1],
-  ['onu': 2, 'pon': 1],
-  ['onu': 2, 'pon': 2],
+  ['olt': 1, 'onu': 1, 'pon': 1],
+  ['olt': 1, 'onu': 2, 'pon': 1],
+  ['olt': 1, 'onu': 2, 'pon': 2],
 ]
 
 pipeline {
@@ -24,26 +24,47 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 30, unit: 'MINUTES')
+      timeout(time: 120, unit: 'MINUTES')
   }
   environment {
     JENKINS_NODE_COOKIE="dontKillMe" // do not kill processes after the build is done
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
     SCHEDULE_ON_CONTROL_NODES="yes"
+    FANCY=0
+    NAME="minimal"
 
     WITH_SIM_ADAPTERS="no"
-    WITH_RADIUS="yes"
+    WITH_RADIUS="no"
     WITH_BBSIM="yes"
     LEGACY_BBSIM_INDEX="no"
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
+    VOLTHA_LOG_LEVEL="WARN"
+
+    // install everything in the default namespace
+    VOLTHA_NS="default"
+    ADAPTER_NS="default"
+    INFRA_NS="default"
+    BBSIM_NS="default"
+
+    // workflow
+    WITH_EAPOL="no"
+    WITH_DHCP="no"
+    WITH_IGMP="no"
+
+    // infrastructure size
+    NUM_OF_OPENONU=1
+    NUM_OF_ONOS="1"
+    NUM_OF_ATOMIX="0"
+    NUM_OF_KAFKA="1"
+    NUM_OF_ETCD="1"
   }
 
   stages {
     stage ('Cleanup') {
       steps {
-        timeout(time: 11, unit: 'MINUTES') {
+        timeout(time: 10, unit: 'MINUTES') {
           sh returnStdout: false, script: """
             helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
             helm repo add stable https://kubernetes-charts.storage.googleapis.com
@@ -54,20 +75,12 @@ pipeline {
             helm repo add bbsim-sadis https://ciena.github.io/bbsim-sadis-server/charts
             helm repo update
 
-            # removing ETCD port forward
-            P_ID="\$(ps e -ww -A | grep "_TAG=etcd-port-forward" | grep -v grep | awk '{print \$1}')"
-            if [ -n "\$P_ID" ]; then
-              kill -9 \$P_ID
-            fi
-
             for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat');
             do
                 echo "Purging chart: \${hchart}"
                 helm delete "\${hchart}"
             done
             bash /home/cord/voltha-scale/wait_for_pods.sh
-
-            test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
@@ -119,16 +132,117 @@ pipeline {
         }
       }
     }
+    stage('Deploy monitoring infrastructure') {
+      steps {
+        sh '''
+        helm install nem-monitoring cord/nem-monitoring \
+        -f $HOME/voltha-scale/grafana.yaml \
+        --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
+        --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+
+        # TODO download this file from https://github.com/opencord/helm-charts/blob/master/scripts/wait_for_pods.sh
+        bash /home/cord/voltha-scale/wait_for_pods.sh
+        '''
+      }
+    }
     stage('Deploy and test') {
       steps {
           repeat_deploy_and_test(topologies)
       }
     }
   }
+  post {
+    always {
+      archiveArtifacts artifacts: '*-install-minimal.log,*-minimal-env.sh,RobotLogs/**/*,stats/**/*'
+    }
+  }
 }
 
 def repeat_deploy_and_test(list) {
-    for (int i = 0; i < list.size(); i++) {
-        sh "echo Setting up with ${list[i]['pon']}x${list[i]['onu']}"
+  for (int i = 0; i < list.size(); i++) {
+    stage('Deploy topology: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
+      timeout(time: 10, unit: 'MINUTES') {
+        script {
+          now = new Date();
+          currentRunStart = now.getTime() / 1000;
+          println("Start: " + currentRunStart)
+        }
+        sh returnStdout: false, script: """
+        for hchart in \$(helm list -q | grep -E -v 'bbsim-sadis-server|kafka|onos|radius|monitoring');
+        do
+            echo "Purging chart: \${hchart}"
+            helm delete "\${hchart}"
+        done
+        bash /home/cord/voltha-scale/wait_for_pods.sh
+        """
+        sh returnStdout: false, script: """
+        cd $WORKSPACE/kind-voltha/
+
+        if [ '${release.trim()}' != 'master' ]; then
+          source $WORKSPACE/kind-voltha/releases/${release}
+        fi
+
+        # if it's newer than voltha-2.4 set the correct BBSIM_CFG
+        if [ '${release.trim()}' != 'voltha-2.4' ]; then
+          export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-dt.yaml"
+        fi
+
+        export NUM_OF_BBSIM=${list[i]['olt']}
+        export EXTRA_HELM_FLAGS+="--set enablePerf=true,pon=${list[i]['pon']},onu=${list[i]['onu']} "
+        ./voltha up
+
+        cp minimal-env.sh ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
+        cp install-minimal.log ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-install-minimal.log
+        """
+        //sleep(120) // TODO can we improve and check once the bbsim-sadis-server is actually done loading subscribers??
+      }
     }
+    stage('Test topology: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
+      timeout(time: 10, unit: 'MINUTES') {
+        sh returnStdout: false, script: """
+        mkdir -p $WORKSPACE/RobotLogs/${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}
+        cd $WORKSPACE/voltha-system-tests
+        make vst_venv
+
+        export ROBOT_PARAMS=" \
+          -v olt:${list[i]['olt']} \
+          -v pon:${list[i]['pon']} \
+          -v onu:${list[i]['onu']} \
+          -v workflow:dt \
+          -v withEapol:false \
+          -v withDhcp:false \
+          -v withIgmp:false \
+          --noncritical non-critical \
+          -e teardown \
+          -e authentication \
+          -e dhcp"
+
+        cd $WORKSPACE/voltha-system-tests
+        source ./vst_venv/bin/activate
+        robot -d $WORKSPACE/RobotLogs/${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']} \
+        \$ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+        """
+      }
+    }
+    stage('Collect metrics: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
+      script {
+        now = new Date();
+        currentRunEnd = now.getTime() / 1000;
+        println("End: " + currentRunEnd)
+        delta = currentRunEnd - currentRunStart
+        println("Delta: " + delta)
+        minutesDelta = Math.ceil(delta / 60).toInteger()
+        println("Delta in minutes: " + minutesDelta)
+      }
+      sh returnStdout: false, script: """
+      export LOG_FOLDER=$WORKSPACE/stats/${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}
+      mkdir -p \$LOG_FOLDER
+      cd $WORKSPACE/voltha-system-tests
+      make vst_venv
+      source ./vst_venv/bin/activate
+
+      python tests/scale/sizing.py -o \$LOG_FOLDER -s ${minutesDelta}|| true
+      """
+    }
+  }
 }

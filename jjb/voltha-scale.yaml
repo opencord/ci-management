@@ -286,9 +286,18 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
       # development matrix
-      - 'voltha-scale-matrix-dev':
-          name: 'voltha-scale-matrix-voltha-2.4-dev'
+      - 'voltha-scale-matrix':
+          name: 'voltha-scale-matrix-voltha-master-dev'
           build-node: 'voltha-scale'
+
+      # development matrix
+      - 'voltha-scale-matrix':
+          name: 'voltha-scale-matrix-voltha-master'
+          build-node: 'onf-pod1-head-node'
+          onosReplicas: 3
+          atomixReplicas: 3
+          kafkaReplicas: 3
+          etcdReplicas: 3
 
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
@@ -698,7 +707,7 @@
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{all-branches-regexp}'
 - job-template:
-    id: 'voltha-scale-matrix-dev'
+    id: 'voltha-scale-matrix'
     name: '{name}'
     pipeline-script: 'voltha-scale-matrix.groovy'
 
@@ -723,6 +732,10 @@
     build-node: 'voltha-scale'
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
+    onosReplicas: 1
+    atomixReplicas: 0
+    kafkaReplicas: 1
+    etcdReplicas: 1
 
     project-type: pipeline
     concurrent: false
@@ -749,3 +762,23 @@
           name: kindVolthaChange
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: onosReplicas
+          default: '{onosReplicas}'
+          description: 'How many ONOSes instances to run'
+
+      - string:
+          name: atomixReplicas
+          default: '{atomixReplicas}'
+          description: 'How many Atomix instances to run'
+
+      - string:
+          name: kafkaReplicas
+          default: '{kafkaReplicas}'
+          description: 'How many Kafka instances to run'
+
+      - string:
+          name: etcdReplicas
+          default: '{etcdReplicas}'
+          description: 'How many ETCD instances to run'
