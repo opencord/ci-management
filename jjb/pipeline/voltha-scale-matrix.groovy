@@ -31,6 +31,8 @@ pipeline {
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
     SCHEDULE_ON_CONTROL_NODES="yes"
+    FANCY=0
+    NAME="minimal"
 
     WITH_SIM_ADAPTERS="no"
     WITH_RADIUS="yes"
@@ -38,6 +40,24 @@ pipeline {
     LEGACY_BBSIM_INDEX="no"
     DEPLOY_K8S="no"
     CONFIG_SADIS="external"
+
+    // install everything in the default namespace
+    VOLTHA_NS="default"
+    ADAPTER_NS="default"
+    INFRA_NS="default"
+    BBSIM_NS="default"
+
+    // workflow
+    WITH_EAPOL="no"
+    WITH_DHCP="no"
+    WITH_IGMP="no"
+
+    // infrastructure size
+    NUM_OF_OPENONU=1
+    NUM_OF_ONOS="1"
+    NUM_OF_ATOMIX="1"
+    NUM_OF_KAFKA="1"
+    NUM_OF_ETCD="1"
   }
 
   stages {
@@ -66,8 +86,6 @@ pipeline {
                 helm delete "\${hchart}"
             done
             bash /home/cord/voltha-scale/wait_for_pods.sh
-
-            test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
@@ -125,10 +143,34 @@ pipeline {
       }
     }
   }
+  post {
+    always {
+      archiveArtifacts artifacts: '*-install-minimal.log,*-minimal-env.sh'
+    }
+  }
 }
 
 def repeat_deploy_and_test(list) {
     for (int i = 0; i < list.size(); i++) {
-        sh "echo Setting up with ${list[i]['pon']}x${list[i]['onu']}"
+        sh """
+        cd $WORKSPACE/kind-voltha/
+        source $NAME-env.sh || true
+        ./voltha down
+
+        # TODO instead of tearing down everything just remove
+        # voltha, etcd, adapters, bbsim
+        """
+        sh """
+        cd $WORKSPACE/kind-voltha/
+        source $WORKSPACE/kind-voltha/releases/${release}
+
+        EXTRA_HELM_FLAGS+="--set enablePerf=true,pon=${list[i]['pon']},onu=${list[i]['onu']} "
+        ./voltha up
+
+        # TODO run the robot tests
+
+        cp minimal-env.sh ../${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
+        cp install-minimal.log ../${list[i]['pon']}-${list[i]['onu']}-install-minimal.log
+        """
     }
 }
