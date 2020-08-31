@@ -8,6 +8,10 @@
     jobs:
       - 'verify-device-management-interface-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'post-merge-voltha-protos-jobs':
+          branch-regexp: '{all-branches-regexp}'
+          pypi-index: 'pypi'
+          pypi-prep-commands: 'make python-protos'
 
 - job-group:
     name: 'verify-device-management-interface-jobs'
@@ -16,3 +20,10 @@
       - 'tag-collision-reject'
       - 'make-unit-test':
           junit-allow-empty-results: true
+
+- job-group:
+      name: 'post-merge-device-management-interface-jobs'
+      jobs:
+          - 'pypi-publish':
+                project-regexp: '^{name}$'
+                dependency-jobs: 'version-tag'
