@@ -169,8 +169,36 @@
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
-      # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
+      # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod-gpon'
+          release: 'master'
+          branch: 'master'
+          num-of-openonu: '2'
+          name-extension: '_DT_GPON'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T8GEM'
+          time: '22'
+          VolthaEtcdPort: '9999'
+
+      # Menlo pod test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod-gpon'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_DT_GPON'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
+      # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
+      - 'build_voltha_pod_release_dependent':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -185,7 +213,7 @@
           in-band-management: true
           VolthaEtcdPort: '9999'
           reinstall-olt: false
-          time: '22'
+          trigger-after: build_onf-demo-pod_1T8GEM_voltha_DT_GPON_master_test
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
