@@ -360,6 +360,19 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
+      # ONF Menlo Soak POD test job - voltha-master branch
+      # Run tests every two days
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          profile: 'Default'
+          branch: 'master'
+          release: 'master'
+          name-extension: 'soak'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-test'
+          time-trigger: "H H */3 * *"
+
       # Infosys pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'infosys-test-pod'
