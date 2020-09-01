@@ -118,7 +118,7 @@ pipeline {
           sh(script:"""
           if [ '${kindVolthaChange}' != '' ] ; then
           cd $WORKSPACE/kind-voltha;
-          git fetch https://gerrit.opencord.org/kind-voltha ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+          git fetch https://gerrit.opencord.org/kind-voltha ${kindVolthaChange} && git checkout FETCH_HEAD
           fi
           """)
         }
@@ -227,6 +227,11 @@ pipeline {
 
             echo "Installing with the following extra arguments:"
             echo $EXTRA_HELM_FLAGS
+
+            # if it's master set the correct BBSIM_CFG
+            if [ '${release.trim()}' == 'master' ]; then
+              export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-${workflow}.yaml"
+            fi
 
             ./voltha up
 
