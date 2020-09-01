@@ -79,6 +79,27 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
 
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: tt
+          withEapol: false
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          kindVolthaChange: refs/changes/09/20209/6
+          bbsimImg: matteoscandolo/bbsim:tt-stable
+          bbsimChart: /home/cord/helm-charts/bbsim
+
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'

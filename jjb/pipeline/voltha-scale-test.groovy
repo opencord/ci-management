@@ -228,6 +228,11 @@ pipeline {
             echo "Installing with the following extra arguments:"
             echo $EXTRA_HELM_FLAGS
 
+            # if it's master set the correct BBSIM_CFG
+            if [ '${release.trim()}' == 'master' ]; then
+              export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-${workflow}.yaml"
+            fi
+
             ./voltha up
 
             # Forward the ETCD port onto $VOLTHA_ETCD_PORT
