@@ -368,7 +368,7 @@
           profile: 'Default'
           branch: 'master'
           release: 'master'
-          name-extension: 'soak'
+          name-extension: '_soak'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
           time-trigger: "H H */3 * *"
