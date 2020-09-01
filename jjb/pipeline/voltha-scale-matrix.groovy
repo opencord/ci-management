@@ -13,9 +13,12 @@
 // limitations under the License.
 
 topologies = [
-  ['onu': 1, 'pon': 1],
-  ['onu': 2, 'pon': 1],
-  ['onu': 2, 'pon': 2],
+  ['onu': 2, 'pon': 1, 'olt': 1],
+  ['onu': 2, 'pon': 2, 'olt': 1],
+  ['onu': 2, 'pon': 4, 'olt': 1],
+  ['onu': 2, 'pon': 1, 'olt': 2],
+  ['onu': 2, 'pon': 2, 'olt': 2],
+  ['onu': 2, 'pon': 4, 'olt': 2],
 ]
 
 pipeline {
@@ -131,6 +134,16 @@ pipeline {
         }
       }
     }
+    stage('Deploy monitoring') {
+      steps {
+        sh '''
+        helm install nem-monitoring cord/nem-monitoring \
+          -f $HOME/voltha-scale/grafana.yaml \
+          --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
+          --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+        '''
+      }
+    }
     stage('Deploy and test') {
       steps {
           repeat_deploy_and_test(topologies)
@@ -139,19 +152,19 @@ pipeline {
   }
   post {
     always {
-      archiveArtifacts artifacts: '*-install-minimal.log,*-minimal-env.sh,RobotLogs/**/*'
+      archiveArtifacts artifacts: '*-install-minimal.log,*-minimal-env.sh,logs/**/*,plots/*'
     }
   }
 }
 
 def repeat_deploy_and_test(list) {
   for (int i = 0; i < list.size(); i++) {
-    stage('Deploy topology: ' + list[i]['pon'] + "-" + list[i]['onu']) {
+    stage('Deploy topology: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
       timeout(time: 10, unit: 'MINUTES') {
         sh returnStdout: false, script: """
 
 
-        for hchart in \$(helm list -q | grep -E -v 'bbsim-sadis-server|kafka|onos|radius');
+        for hchart in \$(helm list -q | grep -E -v 'bbsim-sadis-server|kafka|onos|radius|nem-monitoring');
         do
             echo "Purging chart: \${hchart}"
             helm delete "\${hchart}"
@@ -162,21 +175,34 @@ def repeat_deploy_and_test(list) {
         cd $WORKSPACE/kind-voltha/
         source $WORKSPACE/kind-voltha/releases/${release}
 
+        NUM_OF_BBSIM=${list[i]['olt']}
         EXTRA_HELM_FLAGS+="--set enablePerf=true,pon=${list[i]['pon']},onu=${list[i]['onu']} "
         ./voltha up
 
-        cp minimal-env.sh ../${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
-        cp install-minimal.log ../${list[i]['pon']}-${list[i]['onu']}-install-minimal.log
+        cp minimal-env.sh ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
+        cp install-minimal.log ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-install-minimal.log
+
+        # load MIB Template
+        rm -f BBSM-12345123451234512345-00000000000001-v1.json
+        wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
+        cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods -l app=etcd | awk 'NR==2{print \$1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
         """
         //sleep(120) // TODO can we improve and check once the bbsim-sadis-server is actually done loading subscribers??
+        // TODO do we need to remove the device from ONOS?
       }
     }
-    stage('Test topology: ' + list[i]['pon'] + "-" + list[i]['onu']) {
+    stage('Test topology: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
       timeout(time: 10, unit: 'MINUTES') {
         sh returnStdout: false, script: """
-        mkdir -p $WORKSPACE/RobotLogs/${list[i]['pon']}-${list[i]['onu']}
+
+        LOG_FOLDER=$WORKSPACE/logs/${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}
+
+        mkdir -p \$LOG_FOLDER/RobotLogs/
         cd $WORKSPACE/voltha-system-tests
         make vst_venv
+
+        # track the start date of the test
+        start=\$(date +%s)
 
         export ROBOT_PARAMS="-v olt:1 \
           -v pon:${list[i]['pon']} \
@@ -192,8 +218,20 @@ def repeat_deploy_and_test(list) {
 
         cd $WORKSPACE/voltha-system-tests
         source ./vst_venv/bin/activate
-        robot -d $WORKSPACE/RobotLogs/${list[i]['pon']}-${list[i]['onu']} \
-        \$ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+        robot -d \$LOG_FOLDER/RobotLogs/ \
+          \$ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+
+        # track the end date of the test
+        end=\$(date +%s)
+
+        # calculate the test execution time (in minutes)
+        execution_time=\$(( (end - start) / 60))
+        if [[ \$execution_time -eq 0 ]]; then
+          execution_time=1
+        fi
+
+        mkdir -p \$LOG_FOLDER/plots
+        python tests/scale/sizing.py -o \$LOG_FOLDER/plots -s \$execution_time
         """
       }
     }

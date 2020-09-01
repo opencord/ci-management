@@ -526,10 +526,10 @@ EOF
         cd $WORKSPACE/voltha-system-tests
         source ./vst_venv/bin/activate
         sleep 60 # we have to wait for prometheus to collect all the information
-        python tests/scale/sizing.py -o $WORKSPACE/plots || true
+        python tests/scale/sizing.py -o $WORKSPACE/plots -s 20 || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*.txt,plots/*.pdf,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*,etcd-metrics/*'
     }
   }
 }
