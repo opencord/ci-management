@@ -16,6 +16,7 @@
     num-of-onos: '1'
     num-of-atomix: '0'
     reinstall-olt: true
+    test-type: ''
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
@@ -345,7 +346,10 @@
           config-pod: 'onf-soak-pod'
           release: 'master'
           branch: 'master'
+          profile: '1T8GEM'
           test-repo: 'voltha-system-tests'
+          name-extension: '_DT'
+          work-flow: 'DT'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
@@ -361,16 +365,33 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # ONF Menlo Soak POD test job - voltha-master branch
-      # Run tests every two days
+      # Run tests every three days
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          profile: '1T8GEM'
+          branch: 'master'
+          release: 'master'
+          work-flow: 'DT'
+          name-extension: '_soak'
+          test-type: 'Functional'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha-physical-soak-tests.groovy'
+          time-trigger: "H H */3 * *"
+
+      # ONF Menlo Soak POD test job - voltha-master branch
+      # Run tests every three days
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
           profile: 'Default'
           branch: 'master'
           release: 'master'
+          work-flow: 'DT'
           name-extension: '_soak'
+          test-type: 'Functional'
           test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
+          pipeline-script: 'voltha-physical-soak-tests.groovy'
           time-trigger: "H H */3 * *"
 
       # Infosys pod with olt/onu - Default tech profile and timer based job
