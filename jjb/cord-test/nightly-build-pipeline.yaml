@@ -15,7 +15,7 @@
 
 
 - job-template:
-    name: 'build_{profile}_{config-pod}_{branch}_manual'
+    name: 'build_{profile}{name-extension}_{config-pod}_{branch}_manual'
     id: build_pod_manual
     description: |
                   Manual Build on POD {config-pod} using {Jenkinsfile}<br /><br />
