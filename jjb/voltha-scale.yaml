@@ -97,7 +97,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           kindVolthaChange: refs/changes/09/20209/7
-          volthaSystemTestsChange: c
+          volthaSystemTestsChange: refs/changes/11/20311/3
           bbsimImg: matteoscandolo/bbsim:tt-stable
           bbsimChart: /home/cord/helm-charts/bbsim
 
