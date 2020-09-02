@@ -352,7 +352,6 @@
           work-flow: 'DT'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
-          profile: 'Default'
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # FIXME once the soak-pod is back use 'build_voltha_pod_test'
@@ -384,7 +383,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          profile: 'Default'
+          profile: '1T8GEM'
           branch: 'master'
           release: 'master'
           work-flow: 'DT'
