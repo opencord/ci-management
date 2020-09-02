@@ -117,7 +117,6 @@ pipeline {
             fi
             make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         fi
-        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
     }
@@ -137,8 +136,8 @@ pipeline {
            else
               export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            fi
+           make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         fi
-        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
         """
       }
     }
