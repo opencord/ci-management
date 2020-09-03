@@ -99,6 +99,7 @@
           kindVolthaChange: refs/changes/09/20209/7
           volthaSystemTestsChange: refs/changes/11/20311/3
           bbsimImg: matteoscandolo/bbsim:tt-stable
+          ofAgentImg: andreacampanella/voltha-ofagent-go:lower-number-flows
           bbsimChart: /home/cord/helm-charts/bbsim
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
