@@ -1,0 +1,294 @@
+---
+# TOST deployment tasks
+
+- project:
+      name: deploy-menlo-tost-dev
+      rancher_context: "c-lggdr"
+      rancher_project: "p-2nd5q"
+      k8s_config: "tost-dev-k8s"
+      config_env: "menlo-tost-dev"
+      jobs:
+          - "deploy"
+          - "deploy-onos"
+          - "deploy-stratum"
+          - "deploy-telegraf"
+          - "deploy-fluentbit":
+                rancher_project: "p -npzjd"
+
+- project:
+      name: deploy-menlo-tost-prod2
+      rancher_context: "c-5cfd8"
+      rancher_project: "p-54glz"
+      k8s_config: "tost-prod-k8s"
+      config_env: "menlo-prd"
+      rancher_server: "https://aether.onlab.us/"
+      rancher_api: "rancher_prod_token"
+      jobs:
+          - "deploy-onos"
+          - "deploy-stratum"
+          - "deploy-telegraf"
+          - "deploy-fluentbit":
+                rancher_project: "p-7kx2z"
+
+- job-template:
+      name: "{name}-onos"
+      id: "deploy-onos"
+
+      rancher_server: "https://testing.aether.onlab.us/"
+      rancher_api: "rancher_dev_token"
+      git_server: "gerrit.opencord.org"
+      git_user: "aether_jenkins"
+      git_repo: "aether-pod-configs"
+      registry_server: "registry.aetherproject.org"
+      registry_user: "admin"
+
+      disabled: true
+      pipeline-script: "tost-deploy-onos.groovy"
+      project-type: pipeline
+      dsl: !include-raw-escape: pipeline/{pipeline-script}
+      parameters:
+          - string:
+                name: rancher_server
+                default: "{rancher_server}"
+          - string:
+                name: rancher_context
+                default: "{rancher_context}"
+          - string:
+                name: rancher_project
+                default: "{rancher_project}"
+          - string:
+                name: rancher_api_env
+                default: "{rancher_api}"
+          - string:
+                name: git_repo
+                default: "{git_repo}"
+          - string:
+                name: git_server
+                default: "{git_server}"
+          - string:
+                name: git_user
+                default: "{git_user}"
+          - string:
+                name: git_password_env
+                default: "gerrit_password"
+          - string:
+                name: onos_catalog_name
+                default: "onos"
+          - string:
+                name: onos_ns
+                default: "onos-tost"
+          - string:
+                name: onos_user
+                default: "onos"
+          - string:
+                name: onos_password
+                default: "onos_password"
+          - string:
+                name: registry_server
+                default: "{registry_server}"
+          - string:
+                name: registry_user
+                default: "{registry_user}"
+          - string:
+                name: registry_password_env
+                default: "aether_registry_password"
+          - string:
+                name: config_review
+          - string:
+                name: config_patchset
+          - string:
+                name: config_env
+                default: "{config_env}"
+          - string:
+                name: k8s_config
+                default: "{k8s_config}"
+
+- job-template:
+      name: "{name}-stratum"
+      id: "deploy-stratum"
+
+      rancher_server: "https://testing.aether.onlab.us/"
+      rancher_api: "rancher_dev_token"
+      git_server: "gerrit.opencord.org"
+      git_user: "aether_jenkins"
+      git_repo: "aether-pod-configs"
+      registry_server: "registry.aetherproject.org"
+      registry_user: "admin"
+
+      disabled: true
+      pipeline-script: "tost-deploy-stratum.groovy"
+      project-type: pipeline
+      dsl: !include-raw-escape: pipeline/{pipeline-script}
+      parameters:
+          - string:
+                name: rancher_server
+                default: "{rancher_server}"
+          - string:
+                name: rancher_context
+                default: "{rancher_context}"
+          - string:
+                name: rancher_project
+                default: "{rancher_project}"
+          - string:
+                name: rancher_api_env
+                default: "{rancher_api}"
+          - string:
+                name: git_repo
+                default: "{git_repo}"
+          - string:
+                name: git_server
+                default: "{git_server}"
+          - string:
+                name: git_user
+                default: "{git_user}"
+          - string:
+                name: git_password_env
+                default: "gerrit_password"
+          - string:
+                name: stratum_ns
+                default: "stratum"
+          - string:
+                name: stratum_catalog_name
+                default: "stratum"
+          - string:
+                name: registry_server
+                default: "{registry_server}"
+          - string:
+                name: registry_user
+                default: "{registry_user}"
+          - string:
+                name: registry_password_env
+                default: "aether_registry_password"
+          - string:
+                name: config_review
+          - string:
+                name: config_patchset
+          - string:
+                name: config_env
+                default: "{config_env}"
+          - string:
+                name: k8s_config
+                default: "{k8s_config}"
+
+- job-template:
+      name: "{name}-telegraf"
+      id: "deploy-telegraf"
+
+      rancher_server: "https://testing.aether.onlab.us/"
+      rancher_api: "rancher_dev_token"
+      git_server: "gerrit.opencord.org"
+      git_user: "aether_jenkins"
+      git_repo: "aether-pod-configs"
+
+      disabled: true
+      pipeline-script: "tost-deploy-telegraf.groovy"
+      project-type: pipeline
+      dsl: !include-raw-escape: pipeline/{pipeline-script}
+      parameters:
+          - string:
+                name: rancher_server
+                default: "{rancher_server}"
+          - string:
+                name: rancher_context
+                default: "{rancher_context}"
+          - string:
+                name: rancher_project
+                default: "{rancher_project}"
+          - string:
+                name: rancher_api_env
+                default: "{rancher_api}"
+          - string:
+                name: git_repo
+                default: "{git_repo}"
+          - string:
+                name: git_server
+                default: "{git_server}"
+          - string:
+                name: git_user
+                default: "{git_user}"
+          - string:
+                name: git_password_env
+                default: "gerrit_password"
+          - string:
+                name: telegraf_ns
+                default: "telegraf"
+          - string:
+                name: config_review
+          - string:
+                name: config_patchset
+          - string:
+                name: config_env
+                default: "{config_env}"
+          - string:
+                name: k8s_config
+                default: "{k8s_config}"
+
+- job-template:
+      name: "{name}-fluentbit"
+      id: "deploy-fluentbit"
+
+      rancher_server: "https://testing.aether.onlab.us/"
+      rancher_api: "rancher_dev_token"
+      git_server: "gerrit.opencord.org"
+      git_user: "aether_jenkins"
+      git_repo: "aether-pod-configs"
+
+      disabled: true
+      pipeline-script: "tost-deploy-fluentbit.groovy"
+      project-type: pipeline
+      dsl: !include-raw-escape: pipeline/{pipeline-script}
+      parameters:
+          - string:
+                name: rancher_server
+                default: "{rancher_server}"
+          - string:
+                name: rancher_context
+                default: "{rancher_context}"
+          - string:
+                name: rancher_project
+                default: "{rancher_project}"
+          - string:
+                name: rancher_api_env
+                default: "{rancher_api}"
+          - string:
+                name: git_repo
+                default: "{git_repo}"
+          - string:
+                name: git_server
+                default: "{git_server}"
+          - string:
+                name: git_user
+                default: "{git_user}"
+          - string:
+                name: git_password_env
+                default: "gerrit_password"
+          - string:
+                name: fluentbit_ns
+                default: "logging"
+          - string:
+                name: config_review
+          - string:
+                name: config_patchset
+          - string:
+                name: config_env
+                default: "{config_env}"
+          - string:
+                name: k8s_config
+                default: "{k8s_config}"
+
+- job-template:
+      name: "{name}"
+      id: "deploy"
+      disabled: true
+      pipeline-script: "tost-deploy.groovy"
+      project-type: pipeline
+      dsl: !include-raw-escape: pipeline/{pipeline-script}
+      parameters:
+          - string:
+                name: job_name
+                default: "{name}"
+          - string:
+                name: target_server
+          - string:
+                name: k8s_config
+                default: "{k8s_config}"
