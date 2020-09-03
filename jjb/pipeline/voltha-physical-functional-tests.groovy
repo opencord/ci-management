@@ -203,6 +203,8 @@ pipeline {
       extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
       extract_errors_python onos >> $WORKSPACE/error-report.log
 
+      gzip error-report.log || true
+
       cd $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
 
