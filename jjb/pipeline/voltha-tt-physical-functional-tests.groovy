@@ -78,7 +78,7 @@ pipeline {
         chmod 755 $WORKSPACE/bin/voltctl
         voltctl version --clientonly
 
-        
+
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
@@ -155,6 +155,8 @@ pipeline {
       extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
       extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
       extract_errors_python onos >> $WORKSPACE/error-report.log
+
+      gzip error-report.log || true
 
       cd $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
