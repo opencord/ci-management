@@ -157,7 +157,8 @@ pipeline {
            export WITH_RADIUS=yes
            export WITH_BBSIM=yes
            export DEPLOY_K8S=yes
-           export CONFIG_SADIS=no
+           export CONFIG_SADIS="external"
+           export BBSIM_CFG="configs/bbsim-sadis-att.yaml"
 
            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
@@ -255,7 +256,8 @@ pipeline {
            export WITH_EAPOL=no
            export WITH_DHCP=no
            export WITH_IGMP=no
-           export CONFIG_SADIS=no
+           export CONFIG_SADIS="external"
+           export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
 
            DEPLOY_K8S=n ./voltha up
 
