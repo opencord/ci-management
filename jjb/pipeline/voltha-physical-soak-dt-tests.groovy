@@ -99,7 +99,7 @@ pipeline {
     stage('Functional Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
-        ROBOT_FILE="Voltha_PODTests.robot"
+        ROBOT_FILE="Voltha_DT_PODTests.robot"
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FunctionalTests"
       }
       steps {
@@ -124,7 +124,7 @@ pipeline {
     stage('Failure/Recovery Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
-        ROBOT_FILE="Voltha_FailureScenarios.robot"
+        ROBOT_FILE="Voltha_DT_FailureScenarios.robot"
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureScenarios"
       }
       steps {
@@ -145,7 +145,7 @@ pipeline {
     stage('Dataplane Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
-        ROBOT_FILE="Voltha_PODTests.robot"
+        ROBOT_FILE="Voltha_DT_PODTests.robot"
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DataplaneTests"
       }
       steps {
