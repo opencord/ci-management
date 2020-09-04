@@ -280,6 +280,46 @@ pipeline {
            '''
       }
     }
+
+    stage('TT workflow') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/TTWorkflow"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/voltha/kind-voltha/
+           source $NAME-env.sh
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+           # Workflow-specific flags
+           export WITH_RADIUS=no
+           export WITH_EAPOL=no
+           export WITH_DHCP=no
+           export WITH_IGMP=no
+           export CONFIG_SADIS="external"
+           export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+
+           # By default, all tests tagged 'sanityTt' are run.  This covers basic functionality
+           # like running through the TT workflow for a single subscriber.
+           export TARGET=sanity-kind-tt
+
+           # If the Gerrit comment contains a line with "functional tests" then run the full
+           # functional test suite.  This covers tests tagged either 'sanityTt' or 'functionalTt'.
+           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+           REGEX="functional tests"
+           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+             TARGET=functional-single-kind-tt
+           fi
+
+           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
+           '''
+      }
+    }
   }
 
   post {
