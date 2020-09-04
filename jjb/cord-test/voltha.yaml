@@ -375,7 +375,7 @@
           name-extension: '_soak_func'
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-tests.groovy'
+          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H */3 * *"
 
       # ONF Menlo Soak POD test job - voltha-master branch
@@ -390,7 +390,7 @@
           name-extension: '_soak_fail'
           test-type: 'Failure'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-tests.groovy'
+          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H */3 * *"
 
       # Infosys pod with olt/onu - Default tech profile and timer based job
