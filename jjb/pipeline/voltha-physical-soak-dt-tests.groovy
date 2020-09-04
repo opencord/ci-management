@@ -100,7 +100,7 @@ pipeline {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         ROBOT_FILE="Voltha_DT_PODTests.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FunctionalTests"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FunctionalTests"
       }
       steps {
         sh """
@@ -115,7 +115,7 @@ pipeline {
             else
                  export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             fi
-            make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+            make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -125,7 +125,7 @@ pipeline {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         ROBOT_FILE="Voltha_DT_FailureScenarios.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureScenarios"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FailureScenarios"
       }
       steps {
         sh """
@@ -136,7 +136,7 @@ pipeline {
            else
               export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            fi
-           make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+           make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -146,14 +146,14 @@ pipeline {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         ROBOT_FILE="Voltha_DT_PODTests.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DataplaneTests"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/DataplaneTests"
       }
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Failure" ]; then
            export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+           make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
