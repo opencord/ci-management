@@ -169,6 +169,21 @@ pipeline {
         """
       }
     }
+
+    stage('ONOS HA Tests') {
+       environment {
+       ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+       ROBOT_FILE="Voltha_ONOSHATests.robot"
+       ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ONOSHAScenarios"
+      }
+      steps {
+       sh """
+       mkdir -p $ROBOT_LOGS_DIR
+       export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+       make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+       """
+      }
+    }
   }
   post {
     always {
