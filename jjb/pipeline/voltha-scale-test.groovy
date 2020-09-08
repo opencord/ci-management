@@ -469,7 +469,8 @@ EOF
 
       for bbsim in "${IDS[@]}"
       do
-        kubectl exec -t $bbsim bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
+        kubectl exec -t $bbsim -- bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
+        kubectl exec -t $bbsim -- bbsimctl service list > $LOG_FOLDER/$bbsim-service-list.txt || true
       done
       '''
       // get ONOS debug infos
