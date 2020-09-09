@@ -376,7 +376,7 @@
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H */3 * *"
+          time-trigger: "H H 20 * *"
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # Run tests every three days
