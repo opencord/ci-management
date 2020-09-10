@@ -12,6 +12,7 @@
       # OpenONU GO Scale
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-16-64-activation'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -63,6 +64,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -81,6 +83,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-8-32-tt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -99,6 +102,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -114,6 +118,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          withTracing: true
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -191,6 +196,7 @@
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -210,6 +216,7 @@
       # voltha-2.4 Jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.4-1-16-32-att-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -236,6 +243,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -351,6 +359,11 @@
           name: withMonitoring
           default: '{withMonitoring}'
           description: 'Option to install Prometheus'
+
+      - bool:
+          name: withTracing
+          default: '{withTracing}'
+          description: 'Option to install Jaeger'
 
       - bool:
           name: withProfiling
@@ -516,6 +529,7 @@
     withLLDP: false
     withMibTemplate: true
     withMonitoring: true
+    withTracing: false
     withProfiling: false
     withPcap: false
     openonuAdapterReplicas: 1
