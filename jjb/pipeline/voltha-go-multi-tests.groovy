@@ -23,7 +23,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 40, unit: 'MINUTES')
+      timeout(time: 60, unit: 'MINUTES')
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
@@ -36,7 +36,8 @@ pipeline {
     WITH_BBSIM="y"
     DEPLOY_K8S="y"
     VOLTHA_LOG_LEVEL="DEBUG"
-    CONFIG_SADIS="n"
+    CONFIG_SADIS="external"
+    BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs -e PowerSwitch"
   }
   stages {
