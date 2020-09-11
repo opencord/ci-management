@@ -36,7 +36,8 @@ pipeline {
     WITH_BBSIM="yes"
     DEPLOY_K8S="yes"
     VOLTHA_LOG_LEVEL="DEBUG"
-    CONFIG_SADIS="no"
+    CONFIG_SADIS="external"
+    BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs -e PowerSwitch"
     KARAF_HOME="${params.karafHome}"
     DIAGS_PROFILE="VOLTHA_PROFILE"
@@ -90,6 +91,7 @@ pipeline {
              export WITH_IGMP=no
              export WITH_EAPOL=no
              export WITH_RADIUS=no
+             export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
            fi
 
            EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
