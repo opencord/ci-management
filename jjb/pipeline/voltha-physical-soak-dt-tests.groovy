@@ -151,7 +151,7 @@ pipeline {
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
-        if [ "${params.testType}" == "Failure" ]; then
+        if [ "${params.testType}" == "Dataplane" ]; then
            export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         fi
