@@ -372,7 +372,7 @@
           branch: 'master'
           release: 'master'
           work-flow: 'DT'
-          name-extension: '_soak_func'
+          name-extension: '_DT_soak_Func'
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
@@ -387,8 +387,23 @@
           branch: 'master'
           release: 'master'
           work-flow: 'DT'
-          name-extension: '_soak_fail'
+          name-extension: '_DT_soak_Fail'
           test-type: 'Failure'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H */3 * *"
+
+      # ONF Menlo Soak POD test job - voltha-master branch
+      # Run dataplane tests every three days
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          profile: '1T8GEM'
+          branch: 'master'
+          release: 'master'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_DP'
+          test-type: 'Dataplane'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H */3 * *"
