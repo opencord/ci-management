@@ -183,7 +183,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '18'
+          time: '22'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -199,7 +199,7 @@
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -214,7 +214,7 @@
           in-band-management: true
           VolthaEtcdPort: '9999'
           reinstall-olt: false
-          trigger-after: build_onf-demo-pod_1T8GEM_voltha_DT_GPON_master_test
+          time: '1'
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -227,7 +227,7 @@
           power-switch: True
 
       # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -242,7 +242,7 @@
           VolthaEtcdPort: '9999'
           in-band-management: true
           reinstall-olt: false
-          trigger-after: build_onf-demo-pod_1T4GEM_voltha_master_test
+          time: '4'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -259,7 +259,7 @@
 
 
       # Menlo pod with olt/onu - voltha-2.4  branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: '2.4'
@@ -276,7 +276,7 @@
           VolthaEtcdPort: '9999'
           reinstall-olt: false
           in-band-management: true
-          trigger-after: build_onf-demo-pod_1T8GEM_DT_voltha_master_test
+          time: '7'
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -376,7 +376,7 @@
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H 20 * *"
+          time-trigger: "H H 2 * *"
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # Run tests every three days
@@ -391,7 +391,7 @@
           test-type: 'Failure'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H */3 * *"
+          time-trigger: "H H */2 * *"
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # Run dataplane tests every three days
