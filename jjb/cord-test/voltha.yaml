@@ -183,7 +183,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '22'
+          time: '18'
           VolthaEtcdPort: '9999'
 
       # Menlo pod test job - uses tech profile on voltha branch
