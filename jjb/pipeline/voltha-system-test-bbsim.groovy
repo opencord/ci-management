@@ -37,7 +37,8 @@ pipeline {
     WITH_BBSIM="y"
     DEPLOY_K8S="y"
     VOLTHA_LOG_LEVEL="DEBUG"
-    CONFIG_SADIS="y"
+    CONFIG_SADIS="external"
+    BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
   }
 
