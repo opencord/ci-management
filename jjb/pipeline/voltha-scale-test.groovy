@@ -106,7 +106,10 @@ pipeline {
       steps {
         checkout([
           $class: 'GitSCM',
-          userRemoteConfigs: [[ url: "https://gerrit.opencord.org/kind-voltha", ]],
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
+          ]],
           branches: [[ name: "master", ]],
           extensions: [
             [$class: 'WipeWorkspace'],
@@ -114,21 +117,16 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        script {
-          sh(script:"""
-          if [ '${kindVolthaChange}' != '' ] ; then
-          cd $WORKSPACE/kind-voltha;
-          git fetch https://gerrit.opencord.org/kind-voltha ${kindVolthaChange} && git checkout FETCH_HEAD
-          fi
-          """)
-        }
       }
     }
     stage('Clone voltha-system-tests') {
       steps {
         checkout([
           $class: 'GitSCM',
-          userRemoteConfigs: [[ url: "https://gerrit.opencord.org/voltha-system-tests", ]],
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
+          ]],
           branches: [[ name: "${release}", ]],
           extensions: [
             [$class: 'WipeWorkspace'],
@@ -136,14 +134,6 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        script {
-          sh(script:"""
-            if [ '${volthaSystemTestsChange}' != '' ] ; then
-              cd $WORKSPACE/voltha-system-tests;
-              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-            fi
-            """)
-        }
       }
     }
     stage('Deploy common infrastructure') {

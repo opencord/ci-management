@@ -26,7 +26,7 @@ pipeline {
     timeout(time: 90, unit: 'MINUTES')
   }
   environment {
-    PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     VOLTHA_LOG_LEVEL="DEBUG"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
@@ -36,37 +36,61 @@ pipeline {
   }
 
   stages {
-
-    stage('Repo') {
+    stage('Clone kind-voltha') {
       steps {
-        step([$class: 'WsCleanup'])
-        checkout(changelog: false, \
-          poll: false,
-          scm: [$class: 'RepoScm', \
-            manifestRepositoryUrl: "${params.manifestUrl}", \
-            manifestBranch: "${params.branch}", \
-            currentBranch: true, \
-            destinationDir: 'voltha', \
-            forceSync: true,
-            resetFirst: true, \
-            quiet: true, \
-            jobs: 4, \
-            showAllChanges: true] \
-          )
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
       }
     }
-    stage('Patch') {
+    stage('Clone voltha-system-tests') {
       steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+      }
+    }
+    stage('Download Patch') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/${gerritProject}",
+            refspec: "${gerritRefspec}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gerritProject}"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
         sh """
-           pushd voltha
-           if [ "${gerritProject}" != "" -a "${gerritChangeNumber}" != "" -a "${gerritPatchsetNumber}" != "" ]
-           then
-             repo download "${gerritProject}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-           else
-             echo "No patchset to download!"
-           fi
-           popd
-           """
+          pushd $WORKSPACE/${gerritProject}
+          echo "Currently on commit: \n"
+          git log -1 --oneline
+          popd
+          """
       }
     }
     stage('Create K8s Cluster') {
@@ -74,14 +98,14 @@ pipeline {
         sh """
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
 
-           cd $WORKSPACE/voltha/kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            JUST_K8S=y ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/voltha/kind-voltha/bin"
+           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
            """
       }
     }
@@ -90,20 +114,20 @@ pipeline {
       steps {
         sh """
            make-local () {
-             make -C $WORKSPACE/voltha/\$1 DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+             make -C $WORKSPACE/\$1 DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
            }
            if [ "${gerritProject}" = "pyvoltha" ]; then
-             make -C $WORKSPACE/voltha/pyvoltha/ dist
-             export LOCAL_PYVOLTHA=$WORKSPACE/voltha/pyvoltha/
+             make -C $WORKSPACE/pyvoltha/ dist
+             export LOCAL_PYVOLTHA=$WORKSPACE/pyvoltha/
              make-local voltha-openonu-adapter
            elif [ "${gerritProject}" = "voltha-lib-go" ]; then
-             make -C $WORKSPACE/voltha/voltha-lib-go/ build
-             export LOCAL_LIB_GO=$WORKSPACE/voltha/voltha-lib-go/
+             make -C $WORKSPACE/voltha-lib-go/ build
+             export LOCAL_LIB_GO=$WORKSPACE/voltha-lib-go/
              make-local voltha-go
              make-local voltha-openolt-adapter
            elif [ "${gerritProject}" = "voltha-protos" ]; then
-             make -C $WORKSPACE/voltha/voltha-protos/ build
-             export LOCAL_PROTOS=$WORKSPACE/voltha/voltha-protos/
+             make -C $WORKSPACE/voltha-protos/ build
+             export LOCAL_PROTOS=$WORKSPACE/voltha-protos/
              make-local voltha-go
              make-local voltha-openolt-adapter
              make-local voltha-openonu-adapter
@@ -112,7 +136,7 @@ pipeline {
              # Set and handle GOPATH and PATH
              export GOPATH=\${GOPATH:-$WORKSPACE/go}
              export PATH=\$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:\$GOPATH/bin
-             make -C $WORKSPACE/voltha/voltctl/ build
+             make -C $WORKSPACE/voltctl/ build
            elif ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests|kind-voltha)\$ ]]; then
              make-local ${gerritProject}
            fi
@@ -125,7 +149,7 @@ pipeline {
         sh '''
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
@@ -148,7 +172,7 @@ pipeline {
         sh '''
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
@@ -196,7 +220,7 @@ pipeline {
            done
 
            if [ "${gerritProject}" = "voltha-helm-charts" ]; then
-             export CHART_PATH=$WORKSPACE/voltha/voltha-helm-charts
+             export CHART_PATH=$WORKSPACE/voltha-helm-charts
              export VOLTHA_CHART=\$CHART_PATH/voltha
              export VOLTHA_ADAPTER_OPEN_OLT_CHART=\$CHART_PATH/voltha-adapter-openolt
              export VOLTHA_ADAPTER_OPEN_ONU_CHART=\$CHART_PATH/voltha-adapter-openonu
@@ -206,15 +230,15 @@ pipeline {
            fi
 
            if [ "${gerritProject}" = "voltctl" ]; then
-             export VOLTCTL_VERSION=$(cat $WORKSPACE/voltha/voltctl/VERSION)
-             cp $WORKSPACE/voltha/voltctl/voltctl $WORKSPACE/voltha/kind-voltha/bin/voltctl
-             md5sum $WORKSPACE/voltha/kind-voltha/bin/voltctl
+             export VOLTCTL_VERSION=$(cat $WORKSPACE/voltctl/VERSION)
+             cp $WORKSPACE/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
+             md5sum $WORKSPACE/kind-voltha/bin/voltctl
            fi
 
            printenv
            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
 
-           cd $WORKSPACE/voltha/kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            ./voltha up
 
            # $NAME-env.sh contains the environment we used
@@ -236,7 +260,7 @@ pipeline {
              TARGET=functional-single-kind
            fi
 
-           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
+           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
            '''
       }
     }
@@ -247,7 +271,7 @@ pipeline {
       }
       steps {
         sh '''
-           cd $WORKSPACE/voltha/kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
@@ -276,7 +300,7 @@ pipeline {
              TARGET=functional-single-kind-dt
            fi
 
-           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
+           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
            '''
       }
     }
@@ -287,7 +311,7 @@ pipeline {
       }
       steps {
         sh '''
-           cd $WORKSPACE/voltha/kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
@@ -316,7 +340,7 @@ pipeline {
              TARGET=functional-single-kind-tt
            fi
 
-           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET || true
+           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
            '''
       }
     }
@@ -326,7 +350,7 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/voltha/kind-voltha/install-$NAME.log $WORKSPACE/
+         cp $WORKSPACE/kind-voltha/install-$NAME.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
          kubectl get nodes -o wide
@@ -335,7 +359,7 @@ pipeline {
 
          sync
          pkill kail || true
-         md5sum $WORKSPACE/voltha/kind-voltha/bin/voltctl
+         md5sum $WORKSPACE/kind-voltha/bin/voltctl
 
          ## Pull out errors from log files
          extract_errors_go() {
