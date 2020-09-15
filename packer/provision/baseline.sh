@@ -357,7 +357,7 @@ EOF
 
     SHELLCHECK_VERSION="v0.6.0"
     SHELLCHECK_SHA256SUM="95c7d6e8320d285a9f026b5241f48f1c02d225a1b08908660e8b84e58e9c7dce"
-    curl -L -o /tmp/shellcheck.tar.xz https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz
+    curl -L -o /tmp/shellcheck.tar.xz https://github.com/koalaman/shellcheck/releases/download/${SHELLCHECK_VERSION}/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz
     echo "$SHELLCHECK_SHA256SUM  /tmp/shellcheck.tar.xz" | sha256sum -c -
     pushd /tmp
     tar -xJvf shellcheck.tar.xz
