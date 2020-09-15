@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "740511bb_6c54a73a",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-09-15T16:13:56Z",
+      "side": 1,
+      "message": "this needs to be added in the Job Template: \"disabled: \u0027{disable-job}\u0027\"\nsee https://github.com/opencord/ci-management/blob/4c0c361020382a11dbf807a98ba5f893dc1e0c3e/jjb/voltha-scale.yaml#L474",
+      "range": {
+        "startLine": 92,
+        "startChar": 10,
+        "endLine": 92,
+        "endChar": 29
+      },
+      "revId": "e702f90f7d7b4b5d57b2e27120d4b12b0f0407e6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
