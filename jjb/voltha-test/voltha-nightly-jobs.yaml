@@ -109,6 +109,21 @@
           default: '{in-band-management}'
           description: 'Indicates whether POD is configured for in band management'
 
+      - string:
+          name: volthaSystemTestsChange
+          default: '{volthaSystemTestsChange}'
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: kindVolthaChange
+          default: '{kindVolthaChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: cordTesterChange
+          default: '{cordTesterChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
 # defualt properties for the VOLTHA scale jobs
 - voltha-pipe-job-boiler-plate: &voltha-pipe-job-boiler-plate
     name: voltha-pipe-job-boiler-plate

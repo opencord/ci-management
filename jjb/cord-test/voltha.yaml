@@ -17,6 +17,9 @@
     num-of-atomix: '0'
     reinstall-olt: true
     test-type: ''
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
+    cordTesterChange: ''
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
