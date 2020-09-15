@@ -70,7 +70,14 @@ pipeline {
         ])
       }
     }
+    // If the repo under test is not kind-voltha
+    // then download it and checkout the patch
     stage('Download Patch') {
+      when {
+        expression {
+          return "${gerritProject}" != 'kind-voltha';
+        }
+      }
       steps {
         checkout([
           $class: 'GitSCM',
@@ -91,6 +98,21 @@ pipeline {
           git log -1 --oneline
           popd
           """
+      }
+    }
+    // If the repo under test is kind-voltha we don't need to download it again,
+    // as we already have it, simply checkout the patch
+    stage('Checkout kind-voltha patch') {
+      when {
+        expression {
+          return "${gerritProject}" == 'kind-voltha';
+        }
+      }
+      steps {
+        sh """
+        cd $WORKSPACE/kind-voltha
+        git fetch https://gerrit.opencord.org/kind-voltha ${gerritRefspec} && git checkout FETCH_HEAD
+        """
       }
     }
     stage('Create K8s Cluster') {
