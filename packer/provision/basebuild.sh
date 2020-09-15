@@ -91,6 +91,8 @@ EOF
         enchant \
         ethtool \
         git \
+        git-crypt \
+        gnupg \
         golang-1.12-go \
         graphviz \
         jq \
