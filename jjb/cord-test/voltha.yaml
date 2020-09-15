@@ -89,6 +89,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
+          'disable-job': true
           release: '2.4'
           branch: 'voltha-2.4'
           num-of-openonu: '2'
@@ -104,8 +105,35 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
+          'disable-job': true
           release: '2.4'
           branch: 'voltha-2.4'
+          power-switch: True
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM'
+
+      # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.5'
+          branch: 'voltha-2.5'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T4GEM'
+          time: '1'
+
+      # flex pod1 test job - released versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          'disable-job': true
+          release: '2.5'
+          branch: 'voltha-2.5'
           power-switch: True
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
@@ -114,6 +142,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
+          'disable-job': true
           release: '2.4'
           branch: 'voltha-2.4'
           num-of-openonu: '2'
@@ -131,8 +160,39 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
+          'disable-job': true
           release: '2.4'
           branch: 'voltha-2.4'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: True
+          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
+
+     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.5'
+          branch: 'voltha-2.5'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: 'TP'
+          time: '22'
+
+      # flex pod1 test job - released versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.5'
+          branch: 'voltha-2.5'
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
@@ -262,6 +322,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           release: '2.4'
           branch: 'voltha-2.4'
           name-extension: '_DT'
@@ -282,8 +343,42 @@
       - 'build_voltha_pod_test':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           release: '2.4'
           branch: 'voltha-2.4'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          power-switch: True
+
+      # Menlo pod with olt/onu - voltha-2.5  branch,  Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: '2.5'
+          branch: 'voltha-2.5'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T8GEM'
+          VolthaEtcdPort: '9999'
+          reinstall-olt: false
+          in-band-management: true
+          time: '7'
+
+      # Menlo pod test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: '2.5'
+          branch: 'voltha-2.5'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -497,10 +592,38 @@
           profile: 'Default'
           power-switch: True
 
+     # Berlin pod with olt/onu - voltha-2.5 Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod'
+          release: '2.5'
+          branch: 'voltha-2.5'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: 'Default'
+          with-kind: true
+          time: '11'
+
+
+      # Berlin POD test job - master versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod'
+          release: '2.5'
+          branch: 'voltha-2.5'
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+          power-switch: True
+
      # Berlin pod with olt/onu - voltha-2.4 Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
+          'disable-pod': true
           release: '2.4'
           branch: 'voltha-2.4'
           num-of-openonu: '2'
@@ -518,6 +641,7 @@
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
+          'disable-pod': true
           release: '2.4'
           branch: 'voltha-2.4'
           test-repo: 'voltha-system-tests'
@@ -556,10 +680,43 @@
           power-switch: True
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
+     # Berlin pod with gpon olt/onu - voltha-2.5 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          release: '2.5'
+          branch: 'voltha-2.5'
+          num-of-openonu: '2'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T8GEM'
+          with-kind: true
+          time: '1'
+
+
+      # Berlin POD test job - voltha-2.4 versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          release: '2.5'
+          branch: 'voltha-2.5'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
      # Berlin pod with gpon olt/onu - voltha-2.4 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
+          'disable-pod': true
           release: '2.4'
           branch: 'voltha-2.4'
           num-of-openonu: '2'
@@ -579,6 +736,7 @@
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
+          'disable-pod': true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.4'

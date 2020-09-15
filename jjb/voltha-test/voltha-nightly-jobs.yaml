@@ -126,6 +126,7 @@
 - job-template:
     name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}'
     id: build_voltha_pod_release_timer
+    disabled: '{disable-job}'
     description: |
                   Manual Build on POD {config-pod}, using {Jenkinsfile} in {gerrit-server-url}/voltha-system-tests' <br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
