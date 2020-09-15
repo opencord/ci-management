@@ -85,6 +85,31 @@ pipeline {
         ])
       }
     }
+    // This checkout allows us to show changes in Jenkins
+    // we only do this on master as we don't branch all the repos for all the releases
+    // (we should compute the difference by tracking the container version, not the code)
+    stage('Download All the VOLTHA repos') {
+      when {
+        expression {
+          return "${branch}" == 'master';
+        }
+      }
+      steps {
+       checkout(changelog: true,
+         poll: false,
+         scm: [$class: 'RepoScm',
+           manifestRepositoryUrl: "${params.manifestUrl}",
+           manifestBranch: "${params.branch}",
+           currentBranch: true,
+           destinationDir: 'voltha',
+           forceSync: true,
+           resetFirst: true,
+           quiet: true,
+           jobs: 4,
+           showAllChanges: true]
+         )
+      }
+    }
     stage ('Initialize') {
       steps {
         sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
