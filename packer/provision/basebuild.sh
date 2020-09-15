@@ -91,6 +91,8 @@ EOF
         enchant \
         ethtool \
         git \
+        git-crypt \
+        gnupg \
         golang-1.12-go \
         graphviz \
         jq \
@@ -189,7 +191,7 @@ EOF
     mkdir -p $GOPATH
     export PATH=$PATH:/usr/lib/go-1.12/bin:$GOPATH/bin
 
-    # converters for unit/coverage test
+    # converters for unit/coverage tests
     go get -v github.com/t-yuki/gocover-cobertura
     go get -v github.com/jstemmer/go-junit-report
 
