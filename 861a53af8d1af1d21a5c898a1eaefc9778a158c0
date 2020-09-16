@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d520fae6_91a7f009",
+        "filename": "jjb/pipeline/voltha-nightly-tests-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2020-09-16T23:17:21Z",
+      "side": 1,
+      "message": "It seems we used king-voltha directory before we clone it?",
+      "revId": "861a53af8d1af1d21a5c898a1eaefc9778a158c0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
