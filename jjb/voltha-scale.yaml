@@ -80,24 +80,6 @@
           withPcap: true
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-2-8-32-tt-subscribers'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 4
-          onus: 8
-          withFlows: true
-          provisionSubscribers: true
-          workflow: tt
-          withEapol: false
-          withDhcp: true
-          withIgmp: true
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-
-      - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -207,9 +189,9 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
-      # voltha-2.4 Jobs
+      # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.4-1-16-32-att-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.5-1-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -224,8 +206,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          release: voltha-2.4
-          karafHome: apache-karaf-4.2.8
+          release: voltha-2.5
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -235,7 +216,7 @@
           withPcap: true
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.4-2-16-32-dt-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.5-2-16-32-dt-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -251,14 +232,39 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          release: voltha-2.4
-          karafHome: apache-karaf-4.2.8
+          release: voltha-2.5
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
           openoltAdapterImg: ''
           openonuAdapterImg: ''
           onosImg: ''
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-voltha-2.5-1-16-32-tt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: tt
+          withEapol: false
+          withDhcp: true
+          withIgmp: true
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          release: voltha-2.5
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
+          openoltAdapterImg: ''
+          openonuAdapterImg: ''
+          onosImg: ''
+          withPcap: true
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
