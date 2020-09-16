@@ -16,6 +16,24 @@
       "revId": "861a53af8d1af1d21a5c898a1eaefc9778a158c0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "81f9192c_d6dc8454",
+        "filename": "jjb/pipeline/voltha-nightly-tests-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-09-16T23:26:40Z",
+      "side": 1,
+      "message": "That is correct, this job is scheduled to run on QCT node (it was already like that) so \"kind-voltha\" will already be present in the $WORKSPACE, I can add a check to make sure it\u0027s actually there if needed",
+      "parentUuid": "d520fae6_91a7f009",
+      "revId": "861a53af8d1af1d21a5c898a1eaefc9778a158c0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
