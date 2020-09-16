@@ -100,6 +100,7 @@ EOF
         "kubeadm=1.12.7-*" \
         "kubelet=1.12.7-*" \
         "kubectl=1.12.7-*" \
+        "kubernetes-cni=0.7.5-*" \
         less \
         libmysqlclient-dev \
         libpcap-dev \
