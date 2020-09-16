@@ -33,40 +33,99 @@ pipeline {
   }
 
   stages {
+    stage('Clone kind-voltha') {
+      steps {
+        step([$class: 'WsCleanup'])
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+      }
+    }
+    stage('Clone voltha-system-tests') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+      }
+    }
+   stage('Clone cord-tester') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/cord-tester",
+            refspec: "${cordTesterChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "cord-tester"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+      }
+    }
+    // This checkout allows us to show changes in Jenkins
+    // we only do this on master as we don't branch all the repos for all the releases
+    // (we should compute the difference by tracking the container version, not the code)
+    stage('Download All the VOLTHA repos') {
+      when {
+        expression {
+          return "${branch}" == 'master';
+        }
+      }
+      steps {
+       checkout(changelog: true,
+         poll: false,
+         scm: [$class: 'RepoScm',
+           manifestRepositoryUrl: "${params.manifestUrl}",
+           manifestBranch: "${params.branch}",
+           currentBranch: true,
+           destinationDir: 'voltha',
+           forceSync: true,
+           resetFirst: true,
+           quiet: true,
+           jobs: 4,
+           showAllChanges: true]
+         )
+      }
+    }
     stage ('Initialize') {
       steps {
         step([$class: 'WsCleanup'])
         sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
-        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/kind-voltha"
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
         }
-        // This checkout allows us to show changes in Jenkins
-        checkout(changelog: true,
-          poll: false,
-          scm: [$class: 'RepoScm',
-            manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.branch}",
-            currentBranch: true,
-            destinationDir: 'voltha',
-            forceSync: true,
-            resetFirst: true,
-            quiet: true,
-            jobs: 4,
-            showAllChanges: true]
-          )
         sh returnStdout: false, script: """
-        cd voltha
-        git clone -b master ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
         if [ "${params.branch}" != "master" ]; then
            cd $WORKSPACE/kind-voltha
            source releases/${params.branch}
-           VC_VERSION=1.1.8
         else
-           VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
+           VOLTCTL_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
         fi
 
         HOSTOS=\$(uname -s | tr "[:upper:]" "[:lower:"])
@@ -74,7 +133,7 @@ pipeline {
         if [ \$HOSTARCH == "x86_64" ]; then
             HOSTARCH="amd64"
         fi
-        curl -o $WORKSPACE/bin/voltctl -sSL https://github.com/opencord/voltctl/releases/download/v\${VC_VERSION}/voltctl-\${VC_VERSION}-\${HOSTOS}-\${HOSTARCH}
+        curl -o $WORKSPACE/bin/voltctl -sSL https://github.com/opencord/voltctl/releases/download/v\${VOLTCTL_VERSION}/voltctl-\${VOLTCTL_VERSION}-\${HOSTOS}-\${HOSTARCH}
         chmod 755 $WORKSPACE/bin/voltctl
         voltctl version --clientonly
 
@@ -106,7 +165,7 @@ pipeline {
       }
       steps {
         sh """
-        cd $WORKSPACE/voltha/kind-voltha/scripts
+        cd $WORKSPACE/kind-voltha/scripts
         ./log-collector.sh > /dev/null &
         ./log-combine.sh > /dev/null &
 
@@ -116,7 +175,7 @@ pipeline {
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityTT -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
         fi
-        make -C $WORKSPACE/voltha/voltha-system-tests voltha-tt-test || true
+        make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         """
       }
     }
@@ -139,14 +198,14 @@ pipeline {
       extract_errors_go() {
         echo
         echo "Error summary for $1:"
-        grep '"level":"error"' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
+        grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
         echo
       }
 
       extract_errors_python() {
         echo
         echo "Error summary for $1:"
-        grep 'ERROR' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
+        grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
         echo
       }
 
@@ -158,7 +217,7 @@ pipeline {
 
       gzip error-report.log || true
 
-      cd $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/
+      cd $WORKSPACE/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
 
       cd $WORKSPACE
