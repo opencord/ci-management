@@ -272,11 +272,14 @@ pipeline {
 
           # Start the tcp-dump in ofagent
           if [ ${withPcap} = true ] ; then
-            export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}')
+            export OF_AGENT=$(kubectl get pods -l app=ofagent -o name)
             kubectl exec $OF_AGENT -- apk update
             kubectl exec $OF_AGENT -- apk add tcpdump
             kubectl exec $OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
             _TAG=ofagent-tcpdump kubectl exec $OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
+
+            export BBSIM=$(kubectl get pods -l app=bbsim -o name)
+            _TAG=bbsim-tcpdump kubectl exec $BBSIM -- tcpdump -nei nni -w out.pcap&
           fi
         '''
       }
@@ -391,9 +394,18 @@ EOF
             kill -9 \$P_ID
           fi
 
+          # stop bbsim tcpdump
+          P_ID="\$(ps e -ww -A | grep "_TAG=bbsim-tcpdump" | grep -v grep | awk '{print \$1}')"
+          if [ -n "\$P_ID" ]; then
+            kill -9 \$P_ID
+          fi
+
           # copy the file
           export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}')
           kubectl cp $OF_AGENT:out.pcap $LOG_FOLDER/ofagent.pcap
+
+          export BBSIM=$(kubectl get pods -l app=bbsim | awk 'NR==2{print $1}')
+          kubectl cp $BBSIM:out.pcap $LOG_FOLDER/bbsim.pcap
         fi
 
         cd voltha-system-tests
