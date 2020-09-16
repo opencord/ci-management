@@ -147,19 +147,19 @@ EOF
         git-review \
         graphviz \
         grpcio-tools \
-        httpie==1.0.3 \
+        httpie==0.9.* \
         isort \
         git+https://github.com/linkchecker/linkchecker.git@v9.4.0 \
         more-itertools==5.0.0 \
-        mock \
+        mock==2.0.* \
         netaddr \
         ndg-httpsclient \
-        nose2 \
+        nose2==0.9.* \
         pyopenssl \
         pexpect \
         pylint==1.* \
-        pyyaml \
-        requests \
+        pyyaml==3.10.* \
+        requests==2.14.* \
         robotframework \
         robotframework-httplibrary \
         robotframework-kafkalibrary \
