@@ -7,6 +7,8 @@ pipeline {
     }
     environment {
         KUBECONFIG = credentials("${params.k8s_config}")
+        gcp = credentials("${params.gcp_credential}")
+        rancher_dev = credentials("${params.rancher_api_env}")
     }
     stages {
         stage('Install tools') {
@@ -14,7 +16,7 @@ pipeline {
                 sh '''
                 set -x
                 apt-get update -y
-                apt-get install -y curl wget jq git
+                apt-get install -y curl wget jq git unzip
 
                 # Install kubectl
                 curl -LO "https://storage.googleapis.com/kubernetes-release/release/v1.18.0/bin/linux/amd64/kubectl"
@@ -23,8 +25,49 @@ pipeline {
 
                 # Test Kubectl & Rancher
                 kubectl get nodes
+
+                # Install
+                wget https://releases.hashicorp.com/terraform/0.13.2/terraform_0.13.2_linux_amd64.zip
+                unzip terraform_0.13.2_linux_amd64.zip
+                mv terraform /usr/local/bin
+                terraform version
                 '''
             }
+        }
+
+        stage('Init Terraform') {
+            steps {
+                withCredentials([sshUserPrivateKey(credentialsId: "aether_jenkins", keyFileVariable: 'keyfile')]) {
+
+                sh """#!/bin/bash
+                set -x
+                mkdir -p ~/.ssh
+                ssh-keyscan -t rsa -p 29418 ${git_server} >> ~/.ssh/known_hosts
+cat <<EOF > ~/.ssh/config
+Host ${git_server}
+  User ${git_user}
+  Hostname ${git_server}
+  Port 29418
+  IdentityFile ${keyfile}
+EOF
+
+                git clone "ssh://${git_server}:29418/${git_repo}"
+                cd ${git_repo}/${terraform_dir}/tost
+                GOOGLE_BACKEND_CREDENTIALS=${gcp} terraform init
+                ls
+                """
+                }
+            }
+        }
+        stage('Perform Terraform') {
+             steps {
+                sh """
+                cd ${git_repo}/${terraform_dir}/tost
+                GOOGLE_BACKEND_CREDENTIALS=${gcp} terraform destroy -var-file=${rancher_dev} -var 'cluster_name=${rancher_cluster}' -var-file=app_map.tfvars -auto-approve
+                GOOGLE_BACKEND_CREDENTIALS=${gcp} terraform apply -var-file=${rancher_dev} -var 'cluster_name=${rancher_cluster}' -var-file=app_map.tfvars -auto-approve
+
+                """
+             }
         }
         stage('Parallel Stage') {
             parallel {
@@ -48,7 +91,7 @@ pipeline {
                 }
             }
         }
-        stage('E2E Testing') {
+    stage('E2E Testing') {
             options {
                 timeout(time: 120, unit: "SECONDS")
             }
