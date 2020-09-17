@@ -218,8 +218,8 @@ pipeline {
             echo "Installing with the following extra arguments:"
             echo $EXTRA_HELM_FLAGS
 
-            # if it's master set the correct BBSIM_CFG
-            if [ '${release.trim()}' == 'master' ]; then
+            # if it's newer than voltha-2.4 set the correct BBSIM_CFG
+            if [ '${release.trim()}' != 'voltha-2.4' ]; then
               export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-${workflow}.yaml"
             fi
 
