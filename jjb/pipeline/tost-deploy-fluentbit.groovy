@@ -7,8 +7,7 @@ pipeline {
     }
     environment {
         KUBECONFIG = credentials("${params.k8s_config}")
-        git_password = credentials("${params.git_password_env}")
-        rancher_token = credentials("${params.rancher_api_env}")
+        rancher_token = credentials("${params.rancher_cli_env}")
     }
     stages {
         stage('Install tools') {
@@ -36,23 +35,33 @@ pipeline {
                 '''
             }
         }
-        stage('Clone Config Repo') {
-            options {
-                timeout(time: 10, unit: "SECONDS")
-            }
-            steps {
-                sh '''
-                git clone https://${git_user}:${git_password}@${git_server}/${git_repo}
+    stage('Init git') {
+        steps {
+                withCredentials([sshUserPrivateKey(credentialsId: "aether_jenkins", keyFileVariable: 'keyfile')]) {
+
+                sh """#!/bin/bash
+                set -x
+                mkdir -p ~/.ssh
+                ssh-keyscan -t rsa -p 29418 ${git_server} >> ~/.ssh/known_hosts
+cat <<EOF > ~/.ssh/config
+Host ${git_server}
+  User ${git_user}
+  Hostname ${git_server}
+  Port 29418
+  IdentityFile ${keyfile}
+EOF
+
+                git clone "ssh://${git_server}:29418/${git_repo}"
                 if [ ! -z ${config_review} ] && [ ! -z ${config_patchset} ]; then
-                    cd ${git_repo}
-                    CFG_LAST2=$(echo ${config_review} | tail -c 3)
-                    git fetch "https://${git_user}:${git_password}@${git_server}/a/${git_repo}" refs/changes/${CFG_LAST2}/${config_review}/${config_patchset} && git checkout FETCH_HEAD
-                    git checkout FETCH_HEAD
-                    cd ..
+                    CFG_LAST2=\$(echo ${config_review} | tail -c 3)
+                    git fetch "ssh://@${git_server}:29418/${git_repo}" refs/changes/\${CFG_LAST2}/${config_review}/${config_patchset} && git checkout FETCH_HEAD
                 fi
-                '''
-             }
+
+                """
+                }
+            }
         }
+
         stage('Login Rancher') {
             steps {
                 sh '''
@@ -78,7 +87,7 @@ pipeline {
             }
             steps {
                 sh '''
-                cd ${git_repo}/deployment-configs/aether/apps/${config_env}/
+                cd ${workspace}/${git_repo}/deployment-configs/aether/apps/${config_env}/
                 until rancher apps install --answers fluentbit-ans.yml --namespace ${fluentbit_ns} cattle-global-data:fluent-fluent-bit fluentbit; do :; done
                 apps=$(rancher apps -q | grep fluentbit)
                 for app in $apps; do until rancher wait $app --timeout 20; do :; done; rancher apps ls; done
@@ -89,6 +98,9 @@ pipeline {
     }
     post {
         always {
+            sh """
+            rm -rf ${workspace}/${git_repo}
+            """
             cleanWs()
       }
     }
