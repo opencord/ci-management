@@ -96,6 +96,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          withPcap: true
+          logLevel: INFO
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
