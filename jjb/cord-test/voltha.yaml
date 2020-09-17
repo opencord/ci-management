@@ -134,7 +134,7 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          'disable-job': true
+          'disable-job': false
           release: '2.5'
           branch: 'voltha-2.5'
           power-switch: True
