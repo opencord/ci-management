@@ -239,7 +239,7 @@
           config-pod: 'onf-demo-pod-gpon'
           release: 'master'
           branch: 'master'
-          num-of-openonu: '2'
+          num-of-openonu: '1'
           name-extension: '_DT_GPON'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
