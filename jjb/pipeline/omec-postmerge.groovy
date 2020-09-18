@@ -32,15 +32,28 @@ pipeline {
           }
           abbreviated_commit_hash = commitHash.substring(0, 7)
           tags_to_build = [ "${branchName}-latest",
-                            "${branchName}-${abbreviated_commit_hash}"]
-          tags_to_build.each { tag ->
-            build job: "${build_job_name}", parameters: [
-                  string(name: 'gitUrl', value: "${repoUrl}"),
-                  string(name: 'gitRef', value: "${branchName}"),
-                  string(name: 'branchName', value: "${tag}"),
-                  string(name: 'projectName', value: "${repoName}"),
-                ]
+                            "${branchName}-${abbreviated_commit_hash}" ]
+          env_vars = [ "", "" ]
+          if ("${repoName}" == "upf-epc"){
+            tags_to_build += [ "${branchName}-latest-ivybridge",
+                               "${branchName}-${abbreviated_commit_hash}-ivybridge" ]
+            env_vars = [ "CPU=haswell", "CPU=haswell", "CPU=ivybridge", "CPU=ivybridge" ]
           }
+          def builds = [:]
+          for(i = 0; i < tags_to_build.size(); i += 1) {
+            def tag_to_build = tags_to_build[i]
+            def env_var = env_vars[i]
+            builds["${build_job_name}${i}"] = {
+              build job: "${build_job_name}", parameters: [
+                    string(name: 'gitUrl', value: "${repoUrl}"),
+                    string(name: 'gitRef', value: "${branchName}"),
+                    string(name: 'branchName', value: tag_to_build),
+                    string(name: 'projectName', value: "${repoName}"),
+                    string(name: 'extraEnvironmentVars', value: env_var),
+              ]
+            }
+          }
+          parallel builds
         }
       }
     }
@@ -48,13 +61,13 @@ pipeline {
     stage ("Prepare OMEC deployment"){
       steps {
         script {
-          hssdb_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hssdb/tags/' | jq '.results[] | select(.name | contains("${c3poBranchName}")).name' | head -1 | tr -d \\\""""
-          hss_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hss/tags/' | jq '.results[] | select(.name | contains("${c3poBranchName}")).name' | head -1 | tr -d \\\""""
-          mme_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/nucleus/tags/' | jq '.results[] | select(.name | contains("${nucleusBranchName}")).name' | head -1 | tr -d \\\""""
-          spgwc_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/spgw/tags/' | jq '.results[] | select(.name | contains("${spgwBranchName}")).name' | head -1 | tr -d \\\""""
-          bess_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-bess/tags/' | jq '.results[] | select(.name | contains("${upfBranchName}")).name' | head -1 | tr -d \\\""""
-          zmqiface_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-cpiface/tags/' | jq '.results[] | select(.name | contains("${upfBranchName}")).name' | head -1 | tr -d \\\""""
-          pfcpiface_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-pfcpiface/tags/' | jq '.results[] | select(.name | contains("${upfBranchName}")).name' | head -1 | tr -d \\\""""
+          hssdb_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hssdb/tags/' | jq '.results[] | select(.name | test("${c3poBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
+          hss_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hss/tags/' | jq '.results[] | select(.name | test("${c3poBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
+          mme_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/nucleus/tags/' | jq '.results[] | select(.name | test("${nucleusBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
+          spgwc_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/spgw/tags/' | jq '.results[] | select(.name | test("${spgwBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
+          bess_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-bess/tags/' | jq '.results[] | select(.name | test("${upfBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
+          zmqiface_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-cpiface/tags/' | jq '.results[] | select(.name | test("${upfBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
+          pfcpiface_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-pfcpiface/tags/' | jq '.results[] | select(.name | test("${upfBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
 
           hssdb_image = "omecproject/c3po-hssdb:"+hssdb_tag
           hss_image = "omecproject/c3po-hss:"+hss_tag
