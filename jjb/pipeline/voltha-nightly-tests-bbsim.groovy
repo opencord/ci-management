@@ -43,14 +43,6 @@ pipeline {
     DIAGS_PROFILE="VOLTHA_PROFILE"
   }
   stages {
-    stage('Cleanup') {
-      steps {
-        sh """
-        cd $WORKSPACE/kind-voltha/
-        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
-        """
-      }
-    }
     stage('Clone kind-voltha') {
       steps {
         checkout([
@@ -66,6 +58,14 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
+      }
+    }
+    stage('Cleanup') {
+      steps {
+        sh """
+        cd $WORKSPACE/kind-voltha/
+        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
+        """
       }
     }
     stage('Clone voltha-system-tests') {
