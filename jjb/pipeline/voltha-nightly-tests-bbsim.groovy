@@ -49,7 +49,6 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/kind-voltha",
-            // refspec: "${kindVolthaChange}"
           ]],
           branches: [[ name: "master", ]],
           extensions: [
@@ -74,7 +73,6 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/voltha-system-tests",
-            // refspec: "${volthaSystemTestsChange}"
           ]],
           branches: [[ name: "${branch}", ]],
           extensions: [
