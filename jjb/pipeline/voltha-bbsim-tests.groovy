@@ -42,6 +42,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
           ]],
           branches: [[ name: "master", ]],
           extensions: [
@@ -50,10 +51,6 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        sh """
-        cd $WORKSPACE/kind-voltha
-        git fetch https://gerrit.opencord.org/kind-voltha ${gerritRefspec} && git checkout FETCH_HEAD
-        """
       }
     }
     stage('Clone voltha-system-tests') {
@@ -62,6 +59,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
           ]],
           branches: [[ name: "${branch}", ]],
           extensions: [
@@ -70,10 +68,6 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        sh """
-        cd $WORKSPACE/voltha-system-tests
-        git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-        """
       }
     }
     // If the repo under test is not kind-voltha
@@ -89,6 +83,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/${gerritProject}",
+            refspec: "${gerritRefspec}"
           ]],
           branches: [[ name: "${branch}", ]],
           extensions: [
@@ -99,8 +94,6 @@ pipeline {
         ])
         sh """
           pushd $WORKSPACE/${gerritProject}
-          git fetch https://gerrit.opencord.org/${gerritProject} ${gerritRefspec} && git checkout FETCH_HEAD
-
           echo "Currently on commit: \n"
           git log -1 --oneline
           popd

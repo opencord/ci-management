@@ -39,6 +39,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
           ]],
           branches: [[ name: "master", ]],
           extensions: [
@@ -47,10 +48,6 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        sh """
-        cd $WORKSPACE/kind-voltha
-        git fetch https://gerrit.opencord.org/kind-voltha ${gerritRefspec} && git checkout FETCH_HEAD
-        """
       }
     }
     stage('Clone voltha-system-tests') {
@@ -59,6 +56,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
           ]],
           branches: [[ name: "${branch}", ]],
           extensions: [
@@ -67,10 +65,6 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        sh """
-        cd $WORKSPACE/voltha-system-tests
-        git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-        """
       }
     }
     stage('Clone cord-tester') {
@@ -79,6 +73,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/cord-tester",
+            refspec: "${cordTesterChange}"
           ]],
           branches: [[ name: "master", ]],
           extensions: [
@@ -87,10 +82,6 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        sh """
-        cd $WORKSPACE/cord-tester
-        git fetch https://gerrit.opencord.org/voltha-system-tests ${cordTesterChange} && git checkout FETCH_HEAD
-        """
       }
     }
     stage('Download All the VOLTHA repos') {
