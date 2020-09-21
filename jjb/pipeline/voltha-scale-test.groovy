@@ -401,11 +401,11 @@ EOF
           fi
 
           # copy the file
-          export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}')
-          kubectl cp $OF_AGENT:out.pcap $LOG_FOLDER/ofagent.pcap
+          export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}') || true
+          kubectl cp $OF_AGENT:out.pcap $LOG_FOLDER/ofagent.pcap || true
 
-          export BBSIM=$(kubectl get pods -l app=bbsim | awk 'NR==2{print $1}')
-          kubectl cp $BBSIM:out.pcap $LOG_FOLDER/bbsim.pcap
+          export BBSIM=$(kubectl get pods -l app=bbsim | awk 'NR==2{print $1}') || true
+          kubectl cp $BBSIM:out.pcap $LOG_FOLDER/bbsim.pcap || true
         fi
 
         cd voltha-system-tests
