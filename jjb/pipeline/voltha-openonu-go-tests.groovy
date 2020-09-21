@@ -28,7 +28,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
@@ -40,52 +40,105 @@ pipeline {
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
   }
-
   stages {
-
-    stage('Repo') {
+    stage('Clone kind-voltha') {
       steps {
-        step([$class: 'WsCleanup'])
-        checkout(changelog: false, \
-          poll: false,
-          scm: [$class: 'RepoScm', \
-            manifestRepositoryUrl: "${params.manifestUrl}", \
-            manifestBranch: "${params.branch}", \
-            currentBranch: true, \
-            destinationDir: 'voltha', \
-            forceSync: true,
-            resetFirst: true, \
-            quiet: true, \
-            jobs: 4, \
-            showAllChanges: true] \
-          )
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+        sh """
+        if [ '${kindVolthaChange}' != '' ] ; then
+          cd $WORKSPACE/kind-voltha
+          git fetch https://gerrit.opencord.org/kind-voltha ${kindVolthaChange} && git checkout FETCH_HEAD
+        fi
+        """
       }
     }
-    stage('Patch') {
+    stage('Clone voltha-system-tests') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+        sh """
+        if [ '${volthaSystemTestsChange}' != '' ] ; then
+          cd $WORKSPACE/voltha-system-tests
+          git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+        fi
+        """
+      }
+    }
+    // If the repo under test is not kind-voltha
+    // then download it and checkout the patch
+    stage('Download Patch') {
+      when {
+        expression {
+          return "${gerritProject}" != 'kind-voltha';
+        }
+      }
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/${gerritProject}",
+            refspec: "${gerritRefspec}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gerritProject}"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+        sh """
+          pushd $WORKSPACE/${gerritProject}
+          git fetch https://gerrit.opencord.org/${gerritProject} ${gerritRefspec} && git checkout FETCH_HEAD
+          echo "Currently on commit: \n"
+          git log -1 --oneline
+          popd
+          """
+      }
+    }
+    // If the repo under test is kind-voltha we don't need to download it again,
+    // as we already have it, simply checkout the patch
+    stage('Checkout kind-voltha patch') {
+      when {
+        expression {
+          return "${gerritProject}" == 'kind-voltha';
+        }
+      }
       steps {
         sh """
-          if [ "${gerritProject}" != "voltha-openonu-adapter-go"]
-          then
-            echo "This pipeline is reserved for 'voltha-openonu-adapter-go' you are probably looking for 'voltha-bbsim-test.groovy'"
-            exit 1
-          fi
-           pushd voltha
-           if [ "${gerritProject}" != "" -a "${gerritChangeNumber}" != "" -a "${gerritPatchsetNumber}" != "" ]
-           then
-             repo download "${gerritProject}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-           else
-             echo "No patchset to download!"
-           fi
-           popd
-           """
+        cd $WORKSPACE/kind-voltha
+        git fetch https://gerrit.opencord.org/kind-voltha ${gerritRefspec} && git checkout FETCH_HEAD
+        """
       }
     }
     stage('Create K8s Cluster') {
       steps {
         sh """
-           cd $WORKSPACE/voltha/kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            JUST_K8S=y ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/voltha/kind-voltha/bin"
+           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
            """
       }
     }
@@ -93,7 +146,7 @@ pipeline {
     stage('Build Images') {
       steps {
         sh """
-          make -C $WORKSPACE/voltha/voltha-openonu-adapter-go DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+          make -C $WORKSPACE/voltha-openonu-adapter-go DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
           """
       }
     }
@@ -118,7 +171,7 @@ pipeline {
              EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
            done
 
-           cd $WORKSPACE/voltha/kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            echo \$EXTRA_HELM_FLAGS
            kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
            ./voltha up
@@ -136,11 +189,11 @@ pipeline {
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
            export TARGET_DEFAULT=openonu-go-adapter-test
 
-           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET_DEFAULT || true
+           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
 
            export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
 
-           make -C $WORKSPACE/voltha/voltha-system-tests \$TARGET_1T8GEM || true
+           make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
         '''
       }
     }
@@ -151,7 +204,7 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/voltha/kind-voltha/install-minimal.log $WORKSPACE/
+         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
          kubectl get nodes -o wide
@@ -160,7 +213,7 @@ pipeline {
 
          sync
          pkill kail || true
-         md5sum $WORKSPACE/voltha/kind-voltha/bin/voltctl
+         md5sum $WORKSPACE/kind-voltha/bin/voltctl
 
          ## Pull out errors from log files
          extract_errors_go() {
@@ -188,12 +241,12 @@ pipeline {
          ## shut down kind-voltha
          if [ "${branch}" != "master" ]; then
            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-           source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
+           source "$WORKSPACE/kind-voltha/releases/${branch}"
          else
            echo "on master, using default settings for kind-voltha"
          fi
 
-         cd $WORKSPACE/voltha/kind-voltha
+         cd $WORKSPACE/kind-voltha
 	       WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
