@@ -58,7 +58,7 @@ pipeline {
       }
     }
 
-    stage ("Prepare OMEC deployment"){
+    stage ("Get Image Tags"){
       steps {
         script {
           hssdb_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/c3po-hssdb/tags/' | jq '.results[] | select(.name | test("${c3poBranchName}-[0-9a-z]{7}\$")).name' | head -1 | tr -d \\\""""
@@ -77,31 +77,44 @@ pipeline {
           zmqiface_image = "omecproject/upf-epc-cpiface:"+zmqiface_tag
           pfcpiface_image = "omecproject/upf-epc-pfcpiface:"+pfcpiface_tag
 
+          updatedImages = ""
           switch("${params.repoName}") {
           case "c3po":
             hssdb_image = "${params.registry}/c3po-hssdb:${branchName}-${abbreviated_commit_hash}"
             hss_image = "${params.registry}/c3po-hss:${branchName}-${abbreviated_commit_hash}"
+            updatedImages += hssdb_image + ","
+            updatedImages += hss_image
             break
           case "spgw":
             spgwc_image = "${params.registry}/spgw:${branchName}-${abbreviated_commit_hash}"
+            updatedImages += spgwc_image
             break
           case "Nucleus":
             mme_image = "${params.registry}/nucleus:${branchName}-${abbreviated_commit_hash}"
+            updatedImages += mme_image
             break
           case "upf-epc":
             bess_image = "${params.registry}/upf-epc-bess:${branchName}-${abbreviated_commit_hash}"
             zmqiface_image = "${params.registry}/upf-epc-cpiface:${branchName}-${abbreviated_commit_hash}"
             pfcpiface_image = "${params.registry}/upf-epc-pfcpiface:${branchName}-${abbreviated_commit_hash}"
+            updatedImages += bess_image + ","
+            updatedImages += zmqiface_image + ","
+            updatedImages += pfcpiface_image + ","
+            updatedImages += bess_image + "-ivybridge,"
+            updatedImages += zmqiface_image + "-ivybridge,"
+            updatedImages += pfcpiface_image + "-ivybridge"
             break
           }
-          echo "Using hssdb image: ${hssdb_image}"
-          echo "Using hss image: ${hss_image}"
-          echo "Using mme image: ${mme_image}"
-          echo "Using spgwc image: ${spgwc_image}"
-          echo "Using bess image: ${bess_image}"
-          echo "Using zmqiface image: ${zmqiface_image}"
-          echo "Using pfcpiface image: ${pfcpiface_image}"
         }
+      }
+    }
+
+    stage ("Update aether-pod-configs"){
+      steps {
+        build job: "aether-member-only-jobs/aether-postmerge", parameters: [
+              string(name: 'repoName', value: "${repoName}"),
+              string(name: 'images', value: "${updatedImages}"),
+            ]
       }
     }
 
@@ -113,6 +126,13 @@ pipeline {
       stages {
         stage ("Deploy OMEC"){
           steps {
+            echo "Using hssdb image: ${hssdb_image}"
+            echo "Using hss image: ${hss_image}"
+            echo "Using mme image: ${mme_image}"
+            echo "Using spgwc image: ${spgwc_image}"
+            echo "Using bess image: ${bess_image}"
+            echo "Using zmqiface image: ${zmqiface_image}"
+            echo "Using pfcpiface image: ${pfcpiface_image}"
             build job: "omec_deploy_dev", parameters: [
                   string(name: 'hssdbImage', value: "${hssdb_image.trim()}"),
                   string(name: 'hssImage', value: "${hss_image.trim()}"),
