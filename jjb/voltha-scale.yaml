@@ -458,6 +458,11 @@
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
       - string:
+          name: onosChart
+          default: '{onosChart}'
+          description: 'ONOS chart name (or location on file system)'
+
+      - string:
           name: volthaSystemTestsChange
           default: '{volthaSystemTestsChange}'
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
@@ -513,6 +518,7 @@
     volthaChart: onf/voltha
     openoltAdapterChart: onf/voltha-adapter-openolt
     openonuAdapterChart: onf/voltha-adapter-openonu
+    onosChart: onos/onos-classic
 
     olts: 2
     pons: 2
@@ -588,6 +594,7 @@
     volthaChart: onf/voltha
     openoltAdapterChart: onf/voltha-adapter-openolt
     openonuAdapterChart: onf/voltha-adapter-openonu
+    onosChart: onos/onos-classic
 
     olts: 2
     pons: 2

@@ -62,6 +62,7 @@ pipeline {
     VOLTHA_BBSIM_CHART="${bbsimChart}"
     VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
     VOLTHA_ADAPTER_OPEN_ONU_CHART="${openonuAdapterChart}"
+    ONOS_CLASSIC_CHART="${onosChart}"
 
     APPS_TO_LOG="etcd kafka onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius"
     LOG_FOLDER="$WORKSPACE/logs"
