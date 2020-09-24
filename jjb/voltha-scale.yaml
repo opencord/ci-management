@@ -78,6 +78,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -97,8 +99,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
-          onosImg: 'matteoscandolo/voltha-onos:dhcp'
           logLevel: INFO
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
@@ -119,6 +121,8 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -157,7 +161,6 @@
           extraHelmFlags: '--set auth=false '
 
       - 'voltha-scale-measurements':
-          'disable-job': true
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -173,6 +176,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
@@ -192,6 +197,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
