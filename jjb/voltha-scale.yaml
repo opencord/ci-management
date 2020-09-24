@@ -176,6 +176,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          withPcap: true
+          logLevel: INFO
           onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
