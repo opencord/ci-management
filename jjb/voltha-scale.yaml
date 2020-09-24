@@ -97,7 +97,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
-          onosImg: 'matteoscandolo/voltha-onos:dhcp'
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
           logLevel: INFO
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
