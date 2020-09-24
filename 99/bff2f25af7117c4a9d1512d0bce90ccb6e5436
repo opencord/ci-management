@@ -1,0 +1,8 @@
+Code-Review+1: Charles Chan <charles@opennetworking.org>
+Code-Review+2: Hung-Wei Chiu <hungwei@opennetworking.org>
+Verified+1: Jenkins Technical User <do-not-reply@opennetworking.org>
+Submitted-by: Hung-Wei Chiu <hungwei@opennetworking.org>
+Submitted-at: Thu, 24 Sep 2020 03:48:39 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/20592
+Project: ci-management
+Branch: refs/heads/master
