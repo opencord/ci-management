@@ -21,7 +21,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 30, unit: 'MINUTES')
+      timeout(time: 60, unit: 'MINUTES')
   }
   environment {
     JENKINS_NODE_COOKIE="dontKillMe" // do not kill processes after the build is done
