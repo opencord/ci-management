@@ -102,6 +102,7 @@
           logLevel: INFO
           onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
+          kindVolthaChange: refs/changes/80/20880/1
 
       # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
