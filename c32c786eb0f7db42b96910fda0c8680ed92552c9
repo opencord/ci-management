@@ -16,6 +16,24 @@
       "revId": "c32c786eb0f7db42b96910fda0c8680ed92552c9",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5aa08b09_afeea577",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2020-09-28T12:24:58Z",
+      "side": 1,
+      "message": "You\u0027re right. Patchset 2 uploaded.",
+      "parentUuid": "b0aa1921_cdb40004",
+      "revId": "c32c786eb0f7db42b96910fda0c8680ed92552c9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
