@@ -26,41 +26,7 @@
           openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           extraHelmFlags: '--set use_openonu_adapter_go=true'
 
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-1-16-32-activation'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-1-16-32-att-flows'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: false
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-          extraHelmFlags: '--set auth=false '
-
+      # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
@@ -78,7 +44,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       - 'voltha-scale-measurements':
@@ -100,11 +66,9 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
           logLevel: INFO
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
-          kindVolthaChange: refs/changes/80/20880/1
 
-      # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
           'disable-job': true
@@ -122,45 +86,10 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
-      - 'voltha-scale-measurements':
-          'disable-job': true
-          name: 'voltha-scale-measurements-master-2-16-32-activation'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: false
-          provisionSubscribers: false
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-
-      - 'voltha-scale-measurements':
-          'disable-job': true
-          name: 'voltha-scale-measurements-master-2-16-32-att-flows'
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: false
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          onosReplicas: 3
-          atomixReplicas: 3
-          extraHelmFlags: '--set auth=false '
-
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
           build-node: 'onf-pod1-head-node'
@@ -179,10 +108,9 @@
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
           logLevel: INFO
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
-      # jobs for DT with 512 ONUs with a 8 openonu-adapters and clustered ONOS.
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
           build-node: 'onf-pod1-head-node'
@@ -200,7 +128,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final'
+          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
           onosChart: /home/cord/onos-classic-charts/onos-helm-charts/onos-classic
 
       # voltha-2.5 Jobs
