@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b0aa1921_cdb40004",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 250,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-09-28T12:20:00Z",
+      "side": 1,
+      "message": "this parentheses needs to be moved after line 304",
+      "revId": "c32c786eb0f7db42b96910fda0c8680ed92552c9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
