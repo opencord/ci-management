@@ -247,8 +247,61 @@ pipeline {
       }
     }
 
-  }
+    stage('ATT workflow') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ATTWorkflow"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/kind-voltha/
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
+           export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
+
+           IMAGES="adapter_open_onu_go"
+
+           for I in \$IMAGES
+           do
+             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+           done
+
+           # Workflow-specific flags
+           export WITH_RADIUS=yes
+           export WITH_EAPOL=yes
+           export WITH_BBSIM=yes
+           export DEPLOY_K8S=yes
+           export CONFIG_SADIS="external"
+           export BBSIM_CFG="configs/bbsim-sadis-att.yaml"
+
+           if [ "${gerritProject}" = "voltctl" ]; then
+             export VOLTCTL_VERSION=$(cat $WORKSPACE/voltctl/VERSION)
+             cp $WORKSPACE/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
+             md5sum $WORKSPACE/kind-voltha/bin/voltctl
+           fi
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+
+           # By default, all tests tagged 'sanity' are run.  This covers basic functionality
+           # like running through the ATT workflow for a single subscriber.
+           export TARGET=sanity-single-kind
+
+           # If the Gerrit comment contains a line with "functional tests" then run the full
+           # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
+           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+           REGEX="functional tests"
+           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+             TARGET=functional-single-kind
+           fi
+
+           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+           '''
+      }
+    }
+
+  }
   post {
     always {
       sh '''
