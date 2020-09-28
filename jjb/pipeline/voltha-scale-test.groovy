@@ -492,6 +492,18 @@ EOF
         kubectl exec -t $bbsim -- bbsimctl service list > $LOG_FOLDER/$bbsim-service-list.txt || true
       done
       '''
+      // get DHCP server stats
+      sh '''
+      BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
+      IDS=($BBSIM_IDS)
+
+      for bbsim in "${IDS[@]}"
+      do
+        kubectl exec -t $bbsim -- dhcpd -lf /var/lib/dhcp/dhcpd.leases -play /tmp/dhcplog 2>&1 | tee $LOG_FOLDER/$bbsim-dhcp-replay.txt || true
+        kubectl cp $bbsim:/tmp/dhcplog $LOG_FOLDER/$bbsim-dhcp-logs || true
+        kubectl cp $bbsim:/var/lib/dhcp/dhcpd.leases $LOG_FOLDER/$bbsim-dhcp-leases || true
+      done
+      '''
       // get ONOS debug infos
       sh '''
 
