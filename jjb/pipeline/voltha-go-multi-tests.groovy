@@ -26,9 +26,9 @@ pipeline {
       timeout(time: 60, unit: 'MINUTES')
   }
   environment {
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
-    VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$HOME/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    KUBECONFIG="$WORKSPACE/.kube/kind-config-voltha-minimal"
+    VOLTCONFIG="$WORKSPACE/.volt/config-minimal"
+    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     TYPE="minimal"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
@@ -41,35 +41,39 @@ pipeline {
     ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs -e PowerSwitch"
   }
   stages {
-
-    stage('Repo') {
+    stage('Clone kind-voltha') {
       steps {
         step([$class: 'WsCleanup'])
-        checkout(changelog: true,
-          poll: false,
-          scm: [$class: 'RepoScm',
-            manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.branch}",
-            currentBranch: true,
-            destinationDir: 'voltha',
-            forceSync: true,
-            resetFirst: true,
-            quiet: true,
-            jobs: 4,
-            showAllChanges: true]
-          )
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
       }
     }
-
-    stage('Download kind-voltha') {
+    stage('Clone voltha-system-tests') {
       steps {
-        sh """
-           cd $HOME
-           [ -d kind-voltha ] || git clone https://gerrit.opencord.org/kind-voltha
-           rm -rf $HOME/kind-voltha/scripts/logger
-           cd $HOME/kind-voltha
-           git pull
-           """
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
       }
     }
 
@@ -79,14 +83,14 @@ pipeline {
            export EXTRA_HELM_FLAGS=""
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$HOME/kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
            else
              echo "on master, using default settings for kind-voltha"
            fi
 
            EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
 
-           cd $HOME/kind-voltha/
+           cd $WORKSPACE/kind-voltha/
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
            ./voltha up
            """
@@ -99,7 +103,7 @@ pipeline {
            set +e
            mkdir -p $WORKSPACE/RobotLogs
 
-           cd $HOME/kind-voltha/scripts
+           cd $WORKSPACE/kind-voltha/scripts
            ./log-collector.sh > /dev/null &
            ./log-combine.sh > /dev/null &
 
@@ -118,7 +122,7 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $HOME/kind-voltha/install-minimal.log $WORKSPACE/
+         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
          kubectl get nodes -o wide
@@ -131,14 +135,14 @@ pipeline {
          extract_errors_go() {
            echo
            echo "Error summary for $1:"
-           grep '"level":"error"' $HOME/kind-voltha/scripts/logger/combined/$1*
+           grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
            echo
          }
 
          extract_errors_python() {
            echo
            echo "Error summary for $1:"
-           grep 'ERROR' $HOME/kind-voltha/scripts/logger/combined/$1*
+           grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
            echo
          }
 
@@ -150,14 +154,14 @@ pipeline {
 
          gzip error-report.log || true
 
-         cd $HOME/kind-voltha/scripts/logger/combined/
+         cd $WORKSPACE/kind-voltha/scripts/logger/combined/
          tar czf $WORKSPACE/container-logs.tgz *
 
          cd $WORKSPACE
          gzip *-combined.log || true
 
          ## shut down voltha but leave kind-voltha cluster
-         cd $HOME/kind-voltha/
+         cd $WORKSPACE/kind-voltha/
          DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
          '''
         step([$class: 'RobotPublisher',
