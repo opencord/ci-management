@@ -279,11 +279,17 @@ pipeline {
 
       gzip error-report.log || true
 
+      rm error-report.log
+
       cd $WORKSPACE/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
 
+      rm *
+
       cd $WORKSPACE
       gzip *-combined.log || true
+
+      rm *-combined.log
 
       # collect ETCD cluster logs
       mkdir -p $WORKSPACE/etcd
