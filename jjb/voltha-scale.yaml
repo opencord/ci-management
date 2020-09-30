@@ -25,6 +25,24 @@
           openonuAdapterReplicas: 1
           openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           extraHelmFlags: '--set use_openonu_adapter_go=true'
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-go-scale-measurements-master-2-16-32-dt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          onosReplicas: 3
+          atomixReplicas: 3
+          openonuAdapterReplicas: 1
+          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
+          extraHelmFlags: '--set use_openonu_adapter_go=true'
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
