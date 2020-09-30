@@ -531,24 +531,24 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
-     # Infosys pod with olt/onu - voltha-2.4 Default tech profile and timer based job
+     # Infosys pod with olt/onu - voltha-2.5 Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'infosys-test-pod'
           config-pod: 'infosys-pod'
-          release: '2.4'
-          branch: 'voltha-2.4'
+          release: '2.5'
+          branch: 'voltha-2.5'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
           time: '12'
 
-      # infosys test job - voltha-2.4 release job, uses Default tech profile on voltha branch
+      # infosys test job - voltha-2.5 release job, uses Default tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'infosys-test-pod'
           config-pod: 'infosys-pod'
-          release: '2.4'
-          branch: 'voltha-2.4'
+          release: '2.5'
+          branch: 'voltha-2.5'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
