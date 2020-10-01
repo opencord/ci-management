@@ -367,7 +367,7 @@ EOF
     # install minikube
     MINIKUBE_VERSION="1.13.1"
     MINIKUBE_SHA256SUM="ac6cd65568f1fdab13207aaed3903037b07bd660a7d0eb4331a2a4198890de39"
-    curl -L -o /tmp/minikube.deb "https://github.com/kubernetes/minikube/releases/download/v${MINIKUBE_VERSION}/minikube_${MINIKUBE_VERSION}-0.deb"
+    curl -L -o /tmp/minikube.deb "https://github.com/kubernetes/minikube/releases/download/v${MINIKUBE_VERSION}/minikube_${MINIKUBE_VERSION}-0_amd64.deb"
     echo "$MINIKUBE_SHA256SUM  /tmp/minikube.deb" | sha256sum -c -
     pushd /tmp
     dpkg -i minikube.deb
