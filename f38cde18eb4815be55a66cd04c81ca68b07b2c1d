@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "85975a8e_2b7e6a8f",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 734,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-10-01T17:12:30Z",
+      "side": 1,
+      "message": "As discussed, please remove this parameter and create the required configuration files",
+      "revId": "f38cde18eb4815be55a66cd04c81ca68b07b2c1d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
