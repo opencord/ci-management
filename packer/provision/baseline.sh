@@ -272,64 +272,48 @@ EOF
     echo "---> Configuring Corretto JDK Distribution"
     # instructions: https://docs.aws.amazon.com/corretto/latest/corretto-8-ug/generic-linux-install.html
     # install prereqs
-    apt-get install java-common
 
-    # install Java8
-    CORRETTO_JAVA8_VERSION="8.222.10-1"
-    CORRETTO_JAVA8_SHA256SUM="e5fd6c6f2d1a1fc5e6926f7a543e67ad0f0e0389ddc5d2deb5890bdeb21ea445"
-    curl -L -o /tmp/corretto_java8.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA8_VERSION | tr - .)/java-1.8.0-amazon-corretto-jdk_${CORRETTO_JAVA8_VERSION}_amd64.deb"
-    echo "$CORRETTO_JAVA8_SHA256SUM  /tmp/corretto_java8.deb" | sha256sum -c -
-    dpkg -i /tmp/corretto_java8.deb
-
-    # install Java11
-    CORRETTO_JAVA11_VERSION="11.0.4.11-1"
-    CORRETTO_JAVA11_SHA256SUM="f47c77f8f9ee5a80804765236c11dc749d351d3b8f57186c6e6b58a6c4019d3e"
-    curl -L -o /tmp/corretto_java11.deb "https://d3pxv6yz143wms.cloudfront.net/$(echo $CORRETTO_JAVA11_VERSION | tr - .)/java-11-amazon-corretto-jdk_${CORRETTO_JAVA11_VERSION}_amd64.deb"
-    echo "$CORRETTO_JAVA11_SHA256SUM  /tmp/corretto_java11.deb" | sha256sum -c -
-    dpkg -i /tmp/corretto_java11.deb
-
-    # Fix corretto 11 lack of jinfo that prevents update-java-alternatives from working
-    # Upstream fix not integrated yet: https://github.com/corretto/corretto-11/pull/27
-    cat <<EOF >/usr/lib/jvm/.java-11-amazon-corretto.jinfo
-name=java-11-amazon-corretto
-alias=java-11-amazon-corretto
-priority=11100002
-section=main
-
-jdk java /usr/lib/jvm/java-11-amazon-corretto/bin/java
-jdk keytool /usr/lib/jvm/java-11-amazon-corretto/bin/keytool
-jdk rmid /usr/lib/jvm/java-11-amazon-corretto/bin/rmid
-jdk rmiregistry /usr/lib/jvm/java-11-amazon-corretto/bin/rmiregistry
-jdk jjs /usr/lib/jvm/java-11-amazon-corretto/bin/jjs
-jdk pack200 /usr/lib/jvm/java-11-amazon-corretto/bin/pack200
-jdk unpack200 /usr/lib/jvm/java-11-amazon-corretto/bin/unpack200
-jdk javac /usr/lib/jvm/java-11-amazon-corretto/bin/javac
-jdk jaotc /usr/lib/jvm/java-11-amazon-corretto/bin/jaotc
-jdk jlink /usr/lib/jvm/java-11-amazon-corretto/bin/jlink
-jdk jmod /usr/lib/jvm/java-11-amazon-corretto/bin/jmod
-jdk jhsdb /usr/lib/jvm/java-11-amazon-corretto/bin/jhsdb
-jdk jar /usr/lib/jvm/java-11-amazon-corretto/bin/jar
-jdk jarsigner /usr/lib/jvm/java-11-amazon-corretto/bin/jarsigner
-jdk javadoc /usr/lib/jvm/java-11-amazon-corretto/bin/javadoc
-jdk javap /usr/lib/jvm/java-11-amazon-corretto/bin/javap
-jdk jcmd /usr/lib/jvm/java-11-amazon-corretto/bin/jcmd
-jdk jconsole /usr/lib/jvm/java-11-amazon-corretto/bin/jconsole
-jdk jdb /usr/lib/jvm/java-11-amazon-corretto/bin/jdb
-jdk jdeps /usr/lib/jvm/java-11-amazon-corretto/bin/jdeps
-jdk jdeprscan /usr/lib/jvm/java-11-amazon-corretto/bin/jdeprscan
-jdk jimage /usr/lib/jvm/java-11-amazon-corretto/bin/jimage
-jdk jinfo /usr/lib/jvm/java-11-amazon-corretto/bin/jinfo
-jdk jmap /usr/lib/jvm/java-11-amazon-corretto/bin/jmap
-jdk jps /usr/lib/jvm/java-11-amazon-corretto/bin/jps
-jdk jrunscript /usr/lib/jvm/java-11-amazon-corretto/bin/jrunscript
-jdk jshell /usr/lib/jvm/java-11-amazon-corretto/bin/jshell
-jdk jstack /usr/lib/jvm/java-11-amazon-corretto/bin/jstack
-jdk jstat /usr/lib/jvm/java-11-amazon-corretto/bin/jstat
-jdk jstatd /usr/lib/jvm/java-11-amazon-corretto/bin/jstatd
-jdk rmic /usr/lib/jvm/java-11-amazon-corretto/bin/rmic
-jdk serialver /usr/lib/jvm/java-11-amazon-corretto/bin/serialver
-
+    cat << EOF | base64 -d > /tmp/corretto-apt-key.gpg
+LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tClZlcnNpb246IEdudVBHIH
+YyLjAuMjIgKEdOVS9MaW51eCkKCm1RSU5CRjNwU2hrQkVBREp6Z2xlaFFERmxjMSs5VkZ1
+YlZQenBxOFpZdHptSmtOamYwOXNjT1V6YUtaT20zQXIKbVBoOVJ1Zms0bUI3dDFMUDRKZU
+hBS0FTMTdnZ0NIR1Z4UkdYQUFROUxhZjhpYlg0U2lGTzNFaHl5bDNzbXVGZgpaaGV4Qm52
+Yzd2UmM0RVVsS3FhckNRUlVsYXJhRE9ybXE3V2JoWGR2Q2djNHUydUJMd1VqQWQzUEhRVU
+J5QVp3CmxzRVF6cFFuZWhOb21qckUwcE82bXM5QWhtcGJYbGYveXIxNEVYdmxvNGxUZDhR
+VWR2UytBT0NZZnJIYjlXR08KSUVzeXlEdXp1ZjJnclYvUUZwb2kwVkJoVEN5aU5ZWGxhMk
+FmQ3JlTUdsT0NZc2p3MW5VOTNPeUFxRjNTYVRPQwpvNTJ5cnpjYjJOcGJCRHdSWE9ITndl
+MW1kK0RiUndFZmthV3I1STkxRnFScGdFZWF3cXl4WTFtaUpSSGR1aHN6CldUZ1RNQkYvRV
+FmbVRzcEQyWUJYL0JqTkpUcmREWFl2QUNYOHNsVlYvdkJucGkrZEVwVkVLM2hoMjFpajk5
+MVMKbHY4WW9Gbm9DN1hQNDRDN1dOcFZRcEdXOVpXcG5qTEN2bTNETUtXMHIzVmZiM1hEWW
+huSEkxUTE0UHhuMGN3Zgp4MUwyUkE0ZG95V2QxVFJaQkZCZTJmMHZTa1pUMFlGYWliS2FL
+aTZBa0RJTVUvK3UrL2Uzd1diWVhxenNTSVRqCmZmTWtwTU1OU3d4Ym04SnFuc3VkanV6ZE
+VzWUFpQlVjRk13V3lzUURjeXU2M3VuMk9tTEtMZkt4eTE5dkNwUzEKOG1rTnk5NUp1TzRq
+WnR1K0lpaW52U1NqbGJKbXNsdTN1SzMvY1RSc1dhQjdCUnRIZXdFN1N1Z01Pd0FSQVFBQg
+p0RWhCYldGNmIyNGdVMlZ5ZG1salpYTWdURXhESUNoQmJXRjZiMjRnUTI5eWNtVjBkRzhn
+Y21Wc1pXRnpaU2tnClBHTnZjbkpsZEhSdkxYUmxZVzFBWVcxaGVtOXVMbU52YlQ2SkFqRU
+VFd0VDQUJzRkFsM3BTaGtDR3k4RkNRbG0KQVlBRkZRZ0tDUXNDSGdFQ0Y0QUFDZ2tRb1NK
+VUtyQlBKT09KRGcvNkFxbW50YXhEV1g2cWZSKyswcXd0RDlMcAp2Z09ORnZBKzlBWVFlR3
+Q3T1g3OU8vU1NQeTk3S3ZuNkRZUkJkZWxTaFRBSDYwRGJYQ1VzNDJzSVJGcVJqbUhZCkhm
+SWdPa1VKaldvSno5b1FuWSttekFLYk9vaENyUitZSXZ5Q2VnRmIwZGJvRGFxU1E0dzY4K2
+QxaXM3TDg0cHoKWkIyajBuclFEYkZpaFBtUitlcGZIa0xVR0d5d3VaSENkRUZmRDhuWE1P
+SmVWYmdTemY3VmhsOFpyeWRJa1pUSQo3YUFTRzVNa0RPL0d1VnBFR1FZQW5IOWgvanpKbG
+ZVS25kc3dDNlVGY001T2wwN3BEUGRIVkJBaTlxMVN5eERlCnVTUzFOZ0RXN09XN3pncEIr
+NC9QclpLS2lFUC9mQkFXYTluRlNMd1RhTWRzb2FBdVFBbW1nYnFZZnkzWFhLSzcKSUJhS1
+NuSnBRRHZOYjB2bVhKRVkzcVgyQmZoMHAxS0NlYVFoWXdJSmk4clBRV0MyNGZpTFk5YmRD
+SWxrYmJQUQpDU05PRXE5blVXUmc5S2JVR21kL1BXU2tUNkpoZXlxM0JaQkYxWVBZRXQ4by
+9sNDM3SEhkMDhsUkVxSDBzYW5hCkhiNzJHWlRpMlJVck5CQnA1QzFlOE1xbGxYRTZSS21y
+aTJtMFRTQkhSNUM0WkxJSTlkdXlBODM5ZFlJQTRLR1UKbm1ldFpja3VSdXdIRm1kMy9ZV3
+RNRWZuNDdVZWR6aFZUMTZ6M092QmlwSFUxQkt6TEdjdlVGWHJVS3ZwSlFsaApkTlBVUWgr
+d2I5MUV6SXRqa0o5Nm0rTis4MWlRZE4zeWQ4Y0UzOE5UQThiK1FjN3RtVFl4d05aeGN2MT
+ZGeExBCnkyVmhLYzA5QThSd1NJNjl2RHM9Cj1aTlJICi0tLS0tRU5EIFBHUCBQVUJMSUMg
+S0VZIEJMT0NLLS0tLS0K
 EOF
+
+    apt-key add /tmp/corretto-apt-key.gpg
+    add-apt-repository -y 'deb https://apt.corretto.aws stable main'
+    apt-get update
+
+    apt-get install -y java-1.8.0-amazon-corretto-jdk java-11-amazon-corretto-jdk
 
     # Set default version to be Java8
     update-java-alternatives --set java-1.8.0-amazon-corretto
