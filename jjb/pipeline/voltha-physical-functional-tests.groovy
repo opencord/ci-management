@@ -272,12 +272,15 @@ pipeline {
       extract_errors_python onos >> $WORKSPACE/error-report.log
 
       gzip error-report.log || true
+      rm error-report.log || true
 
       cd $WORKSPACE/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
+      rm * || true
 
       cd $WORKSPACE
       gzip *-combined.log || true
+      rm *-combined.log || true
 
       # collect ETCD cluster logs
       mkdir -p $WORKSPACE/etcd
