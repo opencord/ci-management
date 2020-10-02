@@ -740,7 +740,7 @@
       # Berlin POD test job - master versions, uses 1T8GEM tech profile and openonu go on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod-gpon'
+          config-pod: 'dt-berlin-pod-openonugo'
           name-extension: '_DT_openonugo'
           work-flow: 'DT'
           release: 'master'
