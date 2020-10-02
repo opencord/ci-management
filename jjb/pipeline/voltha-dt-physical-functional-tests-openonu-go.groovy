@@ -163,19 +163,21 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FunctionalTests"
       }
       steps {
-        sh """
-        cd $WORKSPACE/kind-voltha/scripts
-        ./log-collector.sh > /dev/null &
-        ./log-combine.sh > /dev/null &
+        timeout(time: 30, unit: 'MINUTES') {
+          sh """
+          cd $WORKSPACE/kind-voltha/scripts
+          ./log-collector.sh > /dev/null &
+          ./log-combine.sh > /dev/null &
 
-        mkdir -p $ROBOT_LOGS_DIR
-        if ( ${powerSwitch} ); then
-             export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-        else
-             export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-        fi
-        make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
-        """
+          mkdir -p $ROBOT_LOGS_DIR
+          if ( ${powerSwitch} ); then
+               export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+          else
+               export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+          fi
+          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          """
+        }
       }
     }
   }
