@@ -204,6 +204,7 @@ EOF
         apt-transport-https \
         build-essential \
         bzip2 \
+        cloud-init \
         curl \
         ebtables \
         enchant \
@@ -245,11 +246,7 @@ EOF
       python-ndg-httpsclient \
       python-requests \
       python-six \
-      python-urllib3 \
-      python3-chardet \
-      python3-requests \
-      python3-six \
-      python3-urllib3
+      python-urllib3
 
     # install python3 modules
     # upgrade pip or other installations may fail in unusual ways
