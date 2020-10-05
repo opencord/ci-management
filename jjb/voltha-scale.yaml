@@ -63,7 +63,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
+          bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -83,7 +84,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
+          bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
@@ -102,7 +104,8 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
+          bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -122,7 +125,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           withPcap: true
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
+          bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -141,7 +145,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          onosImg: 'andreacampanella/voltha-onos:dhcp-executor-host-logging-final-aaa-meter'
+          bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
