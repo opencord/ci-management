@@ -21,8 +21,8 @@
           build-node: 'omec-ci'
           cp-context: 'dev-central-gcp'
           dp-context: 'dev-edge-onf-menlo'
-          central-config: 'gcp-dev'
-          edge-config: 'menlo-dev'
+          central-config: 'acc-gcp/app_values'
+          edge-config: 'ace-menlo/app_values'
       - 'omec-ng40-test':
           pod: 'dev'
           build-node: 'ng40-host-node'
