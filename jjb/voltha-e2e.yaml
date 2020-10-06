@@ -24,7 +24,8 @@
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
           code-branch: 'master'
-          extraHelmFlags: '--set use_openonu_adapter_go=true,images.adapter_open_onu.repository=voltha/voltha-openonu-adapter-go,images.adapter_open_onu.tag=master'
+          workflow: 'DT'
+          extra-helm-flags: 'use_openonu_adapter_go=true,images.adapter_open_onu.repository=voltha/voltha-openonu-adapter-go,images.adapter_open_onu.tag=master'
           onus: 2
           pons: 2
           time-trigger: "H H/12 * * *"
@@ -148,6 +149,7 @@
     work-flow: ''
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
+    extraHelmFlags: ''
     sandbox: true
 
     description: |
@@ -173,7 +175,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set onu={onus},pon={pons}'
+          default: '--set onu={onus},pon={pons},{extraHelmFlags}'
           description: 'Helm flags to pass to ./voltha up'
 
       - string:
