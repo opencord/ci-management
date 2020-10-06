@@ -24,7 +24,7 @@
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
           code-branch: 'master'
-          workflow: 'DT'
+          work-flow: 'DT'
           extraHelmFlags: 'use_openonu_adapter_go=true,images.adapter_open_onu.repository=voltha/voltha-openonu-adapter-go,images.adapter_open_onu.tag=master'
           onus: 2
           pons: 2
