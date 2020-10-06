@@ -45,6 +45,28 @@
           openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           extraHelmFlags: '--set use_openonu_adapter_go=true'
 
+      # this job will be used to test custom images without disrupting tests on master
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-experimental'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: ' '
+          withPcap: true
+          bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-logs
+
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
@@ -61,10 +83,8 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set authRetry:true,dhcpRetry=true '
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:flow-decomposition
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -82,10 +102,8 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set dhcpRetry=true '
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:flow-decomposition
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
@@ -104,8 +122,6 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          bbsimImg: matteoscandolo/bbsim:flow-decomposition
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -123,10 +139,8 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set authRetry=true,dhcpRetry=true '
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:flow-decomposition
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -145,8 +159,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          bbsimImg: matteoscandolo/bbsim:flow-decomposition
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
