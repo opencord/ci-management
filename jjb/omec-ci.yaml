@@ -34,6 +34,7 @@
           build-node: 'omec-ci'
           cp-context: 'dev-central-gcp'
           dp-context: 'dev-edge-onf-menlo'
+          log-since: '1h'
       - 'omec-postmerge':
           project: '{name}'
           build-node: 'omec-ci'
@@ -913,6 +914,11 @@
           name: dpContext
           default: '{dp-context}'
           description: 'K8S context for omec data plane.'
+
+      - string:
+          name: logSince
+          default: '{log-since}'
+          description: 'Only upload logs newer than a relative duration e.g. 1h'
 
     concurrent: false
 
