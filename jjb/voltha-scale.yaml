@@ -65,7 +65,7 @@
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:flow-decomposition
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-logs
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-wait
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
