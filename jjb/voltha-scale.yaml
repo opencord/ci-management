@@ -12,6 +12,7 @@
       # OpenONU GO Scale
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-16-64-activation'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -28,6 +29,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-2-16-32-dt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -63,13 +65,14 @@
           atomixReplicas: 3
           extraHelmFlags: ' '
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          bbsimImg: matteoscandolo/bbsim:experiment
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          rwCoreImg: matteoscandolo/voltha-rw-core:flow-logs
+          rwCoreImg: matteoscandolo/voltha-rw-core:flow-wait
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -88,6 +91,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -126,6 +130,7 @@
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -144,6 +149,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -163,6 +169,7 @@
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.5-1-16-32-att-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -188,6 +195,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.5-2-16-32-dt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -213,6 +221,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.5-1-16-32-tt-subscribers'
+          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
