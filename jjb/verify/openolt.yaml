@@ -21,13 +21,6 @@
           junit-allow-empty-results: true
           xunit-skip-if-no-test-files: false
 
-# This and the job-template below were written in October 2018
-#
-# Unknown if it is still relevant - the executor in Jenkins does not exist.
-#
-#      - 'openolt-tests':
-#          dependency-jobs: 'verify_openolt_sonarqube'
-
 - job-template:
     id: 'openolt-tests'
     name: 'verify_{project}_tests'

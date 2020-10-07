@@ -15,7 +15,3 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_ves-agent_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_ves-agent_tag-collision'
-          sonar-prep-commands: './build.sh'
-          sonar-java-binaries: 'target'

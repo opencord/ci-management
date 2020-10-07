@@ -16,10 +16,8 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_olt-service_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_olt-service_tag-collision'
       - 'xos-unit-test':
-          dependency-jobs: 'verify_olt-service_sonarqube'
+          dependency-jobs: 'verify_olt-service_tag-collision'
       - 'xos-service-upgrade':
           dependency-jobs: 'verify_olt-service-unit-test'
 - job-group:

@@ -15,7 +15,5 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_addressmanager_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_addressmanager_tag-collision'
       - 'xos-unit-test':
-          dependency-jobs: 'verify_addressmanager_sonarqube'
+          dependency-jobs: 'verify_addressmanager_tag-collision'

@@ -16,10 +16,8 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_fabric-crossconnect_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_fabric-crossconnect_tag-collision'
       - 'xos-unit-test':
-          dependency-jobs: 'verify_fabric-crossconnect_sonarqube'
+          dependency-jobs: 'verify_fabric-crossconnect_tag-collision'
       - 'xos-service-upgrade':
           dependency-jobs: 'verify_fabric-crossconnect-unit-test'
 - job-group:

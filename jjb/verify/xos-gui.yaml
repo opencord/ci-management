@@ -16,10 +16,8 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_xos-gui_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_xos-gui_tag-collision'
       - 'gui-unit-test':
-          dependency-jobs: 'verify_xos-gui_sonarqube'
+          dependency-jobs: 'verify_xos-gui_tag-collision'
 
 - job-group:
     name: 'publish-xos-gui-jobs'

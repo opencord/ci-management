@@ -17,6 +17,4 @@
           dependency-jobs: 'verify_helm-charts_licensed'
       - 'verify-helm-lint':
           dependency-jobs: 'verify_helm-charts_tag-collision'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_helm-charts_helm-lint'
 

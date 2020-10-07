@@ -19,7 +19,6 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_plyxproto_licensed'
       - 'python-unit-test':
-          dependency-jobs: 'verify_plyxproto_sonarqube'
 
 - job-group:
     name: 'post-merge-plyxproto-jobs'

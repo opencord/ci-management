@@ -15,5 +15,3 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_internetemulator_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_internetemulator_tag-collision'

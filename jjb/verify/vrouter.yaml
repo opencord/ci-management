@@ -16,10 +16,8 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_vrouter_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_vrouter_tag-collision'
       - 'xos-unit-test':
-          dependency-jobs: 'verify_vrouter_sonarqube'
+          dependency-jobs: 'verify_vrouter_tag-collision'
 
 - job-group:
     name: 'publish-vrouter-jobs'

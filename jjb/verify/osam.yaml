@@ -13,16 +13,8 @@
     name: 'verify-osam-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
-          build-timeout: 40
-          dependency-jobs: 'verify_osam_licensed'
-          sonar-prep-commands: 'mvn compile'
-          sonar-java-binaries: 'osam-core'
       - 'osam-test':
-          dependency-jobs: 'verify_osam_sonarqube'
-
-#     - 'tag-collision-reject':
-#         dependency-jobs: 'verify_osam_licensed'
+          dependency-jobs: 'verify_osam_licensed'
 
 - job-template:
     id: 'osam-test'

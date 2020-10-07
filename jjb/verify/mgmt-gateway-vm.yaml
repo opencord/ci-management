@@ -13,5 +13,3 @@
     name: 'verify-mgmt-gateway-vm-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_mgmt-gateway-vm_licensed'

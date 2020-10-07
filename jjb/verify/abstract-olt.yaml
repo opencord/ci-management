@@ -13,10 +13,8 @@
     name: 'verify-abstract-olt-jobs'
     jobs:
       - 'verify-licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_abstract-olt_licensed'
       - 'abstract-olt-tests':
-          dependency-jobs: 'verify_abstract-olt_sonarqube'
+          dependency-jobs: 'verify_abstract-olt_licensed'
 
 - job-template:
     id: 'abstract-olt-tests'

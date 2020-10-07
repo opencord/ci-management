@@ -15,8 +15,6 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_vsg-hw_licensed'
-      - 'verify-sonarqube':
-          dependency-jobs: 'verify_vsg-hw_tag-collision'
       - 'xos-unit-test':
-          dependency-jobs: 'verify_vsg-hw_sonarqube'
+          dependency-jobs: 'verify_vsg-hw_tag-collision'
 
