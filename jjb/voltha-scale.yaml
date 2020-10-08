@@ -63,7 +63,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: ' '
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true '
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:experiment
           # bbsimImg: matteoscandolo/bbsim:experiment

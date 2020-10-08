@@ -162,7 +162,7 @@ pipeline {
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
         ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install -f $WORKSPACE/kind-voltha/values.yaml --set replicas=${etcdReplicas} etcd etcd/etcd $ETCD_FLAGS
+        helm install -f $WORKSPACE/kind-voltha/values.yaml --set replicas=${etcdReplicas} etcd incubator/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
           helm install nem-monitoring cord/nem-monitoring \
@@ -271,6 +271,11 @@ pipeline {
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
+
+          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
+          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
+          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
+
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.onosproject.net.flow.impl.FlowRuleManager
 
           #Setting LOG level to ${logLevel}
@@ -288,7 +293,7 @@ pipeline {
           if [ ${withMibTemplate} = true ] ; then
             rm -f BBSM-12345123451234512345-00000000000001-v1.json
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods -l app=etcd | awk 'NR==2{print $1}') etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods -l app=etcd | awk 'NR==2{print $1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
           # Start the tcp-dump in ofagent
