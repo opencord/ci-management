@@ -66,9 +66,9 @@
           extraHelmFlags: ' '
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:flow-decomposition
+          # bbsimImg: matteoscandolo/bbsim:experiment
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          # rwCoreImg: matteoscandolo/voltha-rw-core:flow-wait
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-stats
+          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
