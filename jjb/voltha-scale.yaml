@@ -51,6 +51,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
           build-node: 'onf-pod1-head-node'
+          'disable-job': false
           time-trigger: "H H/4 * * *"
           olts: 1
           pons: 16
@@ -66,7 +67,6 @@
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true '
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:experiment
-          # bbsimImg: matteoscandolo/bbsim:experiment
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
           onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
 
@@ -74,7 +74,7 @@
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -88,12 +88,14 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set authRetry:true,dhcpRetry=true '
           withPcap: true
+          bbsimImg: matteoscandolo/bbsim:experiment
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
+          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -108,12 +110,14 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s --set dhcpRetry=true '
           withPcap: true
+          bbsimImg: matteoscandolo/bbsim:experiment
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
+          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -128,6 +132,9 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
+          bbsimImg: matteoscandolo/bbsim:experiment
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
+          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
