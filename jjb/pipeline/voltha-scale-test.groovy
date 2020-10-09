@@ -489,6 +489,9 @@ EOF
 
         # copy the ONOS logs directly from the container to avoid the color codes
         printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
+
+        # get radius logs out of the container
+        kubectl cp $(kubectl get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log ~/radius.logs
       '''
       // dump all the BBSim(s) ONU information
       sh '''
