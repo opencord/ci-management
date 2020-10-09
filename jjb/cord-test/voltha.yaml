@@ -603,6 +603,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
+          'disable-job': true
           release: '2.5'
           branch: 'voltha-2.5'
           num-of-openonu: '2'
@@ -620,6 +621,7 @@
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
+          'disable-job': true
           release: '2.5'
           branch: 'voltha-2.5'
           test-repo: 'voltha-system-tests'
@@ -691,6 +693,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
+          'disable-job': true
           release: '2.5'
           branch: 'voltha-2.5'
           num-of-openonu: '2'
@@ -710,6 +713,7 @@
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
+          'disable-job': true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.5'
