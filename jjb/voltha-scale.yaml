@@ -68,7 +68,7 @@
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:experiment
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
+          onosImg:  andreacampanella/voltha-onos:aaa-single-radius-master-dhcp-option82
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
@@ -91,7 +91,7 @@
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:experiment
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
+          onosImg:  andreacampanella/voltha-onos:aaa-single-radius-master-dhcp-option82
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -113,7 +113,7 @@
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:experiment
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
+          onosImg:  andreacampanella/voltha-onos:aaa-single-radius-master-dhcp-option82
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
@@ -134,7 +134,7 @@
           atomixReplicas: 3
           bbsimImg: matteoscandolo/bbsim:experiment
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
+          onosImg:  andreacampanella/voltha-onos:aaa-single-radius-master-dhcp-option82
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
