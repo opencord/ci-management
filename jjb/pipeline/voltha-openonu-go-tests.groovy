@@ -210,7 +210,7 @@ pipeline {
 
            export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
 
-           export EXTRA_HELM_FLAGS+="--set bbsim.pon=2,bbsim.onu=2,bbsim.controlledActivation=only-onu "
+           export EXTRA_HELM_FLAGS+="--set pon=2,onu=2,controlledActivation=only-onu "
 
            IMAGES="adapter_open_onu_go"
 
