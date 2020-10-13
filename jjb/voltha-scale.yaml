@@ -66,9 +66,10 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true '
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:experiment
+          bbsimImg: matteoscandolo/bbsim:eapol-512
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
           onosImg:  andreacampanella/voltha-onos:aaa-single-radius-master-dhcp-option82
+          radiusChart: /home/cord/helm-charts/freeradius
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
