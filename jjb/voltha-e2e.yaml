@@ -25,7 +25,7 @@
           make-target: functional-single-kind
           code-branch: 'master'
           work-flow: 'DT'
-          extraHelmFlags: 'use_openonu_adapter_go=true,images.adapter_open_onu.repository=voltha/voltha-openonu-adapter-go,images.adapter_open_onu.tag=master'
+          extraHelmFlags: 'use_openonu_adapter_go=true,images.adapter_open_onu_go.repository=voltha/voltha-openonu-adapter-go,images.adapter_open_onu_go.tag=master'
           onus: 2
           pons: 2
           time-trigger: "H H/12 * * *"
