@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d458a724_bd961f42",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-10-13T19:27:26Z",
+      "side": 1,
+      "message": "radiusChart",
+      "revId": "159c5d96dc897857b6a147f6d19a583db8dbb3ac",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
