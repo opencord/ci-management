@@ -198,6 +198,38 @@ pipeline {
       }
     }
 
+    stage('Run MIB Upload Tests') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go-MIB"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/kind-voltha/
+           #source $NAME-env.sh
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+           export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
+
+           export EXTRA_HELM_FLAGS+="--set bbsim.pon=2,bbsim.onu=2,bbsim.controlledActivation=only-onu "
+
+           IMAGES="adapter_open_onu_go"
+
+           for I in \$IMAGES
+           do
+             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+           done
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           export TARGET_DEFAULT=mib-upload-templating-openonu-go-adapter-test
+
+           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+        '''
+      }
+    }
+
     stage('DT workflow') {
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DTWorkflow"
@@ -300,7 +332,6 @@ pipeline {
            '''
       }
     }
-
   }
   post {
     always {
