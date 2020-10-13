@@ -448,6 +448,11 @@
           description: 'ONOS chart name (or location on file system)'
 
       - string:
+          name: radiusChart
+          default: '{radiusChart}'
+          description: 'freeradius chart name (or location on file system)'
+
+      - string:
           name: volthaSystemTestsChange
           default: '{volthaSystemTestsChange}'
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
@@ -504,6 +509,7 @@
     openoltAdapterChart: onf/voltha-adapter-openolt
     openonuAdapterChart: onf/voltha-adapter-openonu
     onosChart: onos/onos-classic
+    radiusChart: onf/freeradius
 
     olts: 2
     pons: 2
@@ -580,6 +586,7 @@
     openoltAdapterChart: onf/voltha-adapter-openolt
     openonuAdapterChart: onf/voltha-adapter-openonu
     onosChart: onos/onos-classic
+    radiusChart: onf/freeradius
 
     olts: 2
     pons: 2
