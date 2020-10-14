@@ -53,6 +53,7 @@
           build-node: 'onf-pod1-head-node'
           'disable-job': false
           time-trigger: "H H/4 * * *"
+          withMonitoring: false
           olts: 1
           pons: 16
           onus: 32
@@ -68,8 +69,9 @@
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:eapol-512
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
-          onosImg:  andreacampanella/voltha-onos:aaa-single-radius-master-dhcp-option82
+          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
           radiusChart: /home/cord/helm-charts/freeradius
+          withRadius: 10.90.0.69:1812
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
@@ -359,6 +361,11 @@
           description: 'Capture a .pcap on the OpenFlow connection from the ofAgent side'
 
       - string:
+          name: withRadius
+          default: '{withRadius}'
+          description: 'Value to pass to kind-voltha WITH_RADIUS'
+
+      - string:
           name: extraHelmFlags
           default: '{extraHelmFlags}'
           description: 'Any extra helm parameters you want (passed to every helm install command, not available if release != master)'
@@ -526,6 +533,7 @@
     withMonitoring: true
     withProfiling: false
     withPcap: false
+    withRadius: yes
     openonuAdapterReplicas: 1
     onosReplicas: 1
     atomixReplicas: 0
@@ -603,6 +611,7 @@
     withMonitoring: true
     withProfiling: false
     withPcap: false
+    withRadius: yes
     openonuAdapterReplicas: 1
     onosReplicas: 1
     atomixReplicas: 0

@@ -32,7 +32,7 @@ pipeline {
     SCHEDULE_ON_CONTROL_NODES="yes"
     FANCY=0
     WITH_SIM_ADAPTERS="no"
-    WITH_RADIUS="yes"
+    WITH_RADIUS="${withRadius}"
     WITH_BBSIM="yes"
     LEGACY_BBSIM_INDEX="no"
     DEPLOY_K8S="no"
@@ -272,6 +272,10 @@ pipeline {
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
+
+          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
+          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
+          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
 
           kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
           kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
