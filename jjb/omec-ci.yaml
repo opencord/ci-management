@@ -25,7 +25,7 @@
           edge-config: 'ace-menlo/app_values'
       - 'omec-ng40-test':
           pod: 'dev'
-          build-node: 'ng40-host-node'
+          build-node: 'omec-ci'
           ng40-vm: 'ng40@192.168.122.101'
           cp-context: 'dev-central-gcp'
           dp-context: 'dev-edge-onf-menlo'
@@ -663,7 +663,7 @@
     parameters:
       - string:
           name: buildNode
-          default: 'ng40-host-node'
+          default: 'omec-ci'
           description: 'Name of the Jenkins executor node to run the job on'
 
       - string:
