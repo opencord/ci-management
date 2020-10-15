@@ -290,7 +290,7 @@ pipeline {
 
       # collect ETCD cluster logs
       mkdir -p $WORKSPACE/etcd
-      printf '%s\n' $(kubectl get pods -l app=etcd -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I@ bash -c "kubectl logs @ > $WORKSPACE/etcd/@.log"
+      printf '%s\n' $(kubectl get pods -l app=etcd -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I% bash -c "kubectl logs % > $WORKSPACE/etcd/%.log"
       '''
       script {
         deployment_config.olts.each { olt ->
