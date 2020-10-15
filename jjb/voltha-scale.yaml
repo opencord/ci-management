@@ -65,11 +65,10 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set debug=true'
+          extraHelmFlags: '--set debug=true,authRetry=true'
           withPcap: true
           onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
           radiusChart: /home/cord/helm-charts/freeradius
-          withRadius: 10.90.0.69:1812
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
