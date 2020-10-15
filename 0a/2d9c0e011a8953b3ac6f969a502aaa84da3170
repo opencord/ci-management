@@ -1,0 +1,8 @@
+Code-Review+1: Jeremy Ronquillo <jeremyr@opennetworking.org>
+Code-Review+2: You Wang <you@opennetworking.org>
+Verified+1: Jenkins Technical User <do-not-reply@opennetworking.org>
+Submitted-by: You Wang <you@opennetworking.org>
+Submitted-at: Thu, 15 Oct 2020 23:58:53 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/21224
+Project: ci-management
+Branch: refs/heads/master
