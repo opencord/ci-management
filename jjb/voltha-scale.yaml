@@ -67,8 +67,6 @@
           atomixReplicas: 3
           extraHelmFlags: '--set debug=true'
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:eapol-512
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:flowReplica
           onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
           radiusChart: /home/cord/helm-charts/freeradius
           withRadius: 10.90.0.69:1812
