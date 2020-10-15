@@ -688,7 +688,7 @@
 
       - string:
           name: registry
-          default: 'registry.central.aetherproject.net'
+          default: 'registry.aetherproject.org/omecproject'
           description: 'Docker registry that stores images built for CI testing'
 
       - string:
