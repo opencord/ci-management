@@ -65,9 +65,9 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set debug=true,authRetry=true'
+          extraHelmFlags: '--set debug=true'
           withPcap: true
-          onosImg:  matteoscandolo/voltha-onos:dhcp-aaa
+          onosImg:  matteoscandolo/voltha-onos:no-radius-packet-in-logs
           radiusChart: /home/cord/helm-charts/freeradius
 
 
