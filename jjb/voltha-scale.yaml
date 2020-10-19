@@ -67,7 +67,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set debug=true'
           withPcap: true
-          onosImg:  matteoscandolo/voltha-onos:no-radius-packet-in-logs
+          onosImg:  matteoscandolo/voltha-onos:timeout-release-identifier-single
           radiusChart: /home/cord/helm-charts/freeradius
 
 

@@ -272,7 +272,7 @@ pipeline {
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.opencord.aaa.impl.AaaManager forgeEapolPackets true
+          # sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.opencord.aaa.impl.AaaManager forgeEapolPackets true
 
           kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
           kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
