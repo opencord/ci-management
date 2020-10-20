@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1271e692_62fe481f",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000042
+      },
+      "writtenOn": "2020-10-20T12:38:46Z",
+      "side": 1,
+      "message": "You are not providing the interface - it should be fine as long as the container has only one interface.",
+      "revId": "190854aeb9a9bb8f97b2882039d46ae4acf76d3a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
