@@ -272,7 +272,6 @@ pipeline {
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
-          # sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.opencord.aaa.impl.AaaManager forgeEapolPackets true
 
           kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
           kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
@@ -302,21 +301,33 @@ pipeline {
             cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods -l app=etcd | awk 'NR==2{print $1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
-          # Start the tcp-dump in ofagent
           if [ ${withPcap} = true ] ; then
+            # Start the tcp-dump in ofagent
             export OF_AGENT=$(kubectl get pods -l app=ofagent -o name)
             kubectl exec $OF_AGENT -- apk update
             kubectl exec $OF_AGENT -- apk add tcpdump
             kubectl exec $OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
             _TAG=ofagent-tcpdump kubectl exec $OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
 
+            # Start the tcp-dump in bbsim
             export BBSIM=$(kubectl get pods -l app=bbsim -o name)
             _TAG=bbsim-tcpdump kubectl exec $BBSIM -- tcpdump -nei nni -w out.pcap&
 
+            # Start the tcp-dump in radius
             export RADIUS=$(kubectl get pods -l app=radius -o name)
             kubectl exec $RADIUS -- apt-get update
             kubectl exec $RADIUS -- apt-get install -y tcpdump
             _TAG=radius-tcpdump kubectl exec $RADIUS -- tcpdump -w out.pcap&
+
+            # Start the tcp-dump in ONOS
+            LIMIT=$(($NUM_OF_ONOS - 1))
+            for i in $(seq 0 $LIMIT); do
+              INSTANCE="onos-onos-classic-$i"
+              kubectl exec $INSTANCE -- apt-get update
+              kubectl exec $INSTANCE -- apt-get install -y tcpdump
+              kubectl exec $INSTANCE -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
+              _TAG=$INSTANCE kubectl exec $INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap
+            done
           fi
         '''
       }
@@ -437,6 +448,22 @@ EOF
             kill -9 \$P_ID
           fi
 
+          # stop radius tcpdump
+          P_ID="\$(ps e -ww -A | grep "_TAG=radius-tcpdump" | grep -v grep | awk '{print \$1}')"
+          if [ -n "\$P_ID" ]; then
+            kill -9 \$P_ID
+          fi
+
+          # stop onos tcpdump
+          LIMIT=$(($NUM_OF_ONOS - 1))
+          for i in $(seq 0 $LIMIT); do
+            INSTANCE="onos-onos-classic-$i"
+            P_ID="\$(ps e -ww -A | grep "_TAG=$INSTANCE" | grep -v grep | awk '{print \$1}')"
+            if [ -n "\$P_ID" ]; then
+              kill -9 \$P_ID
+            fi
+          done
+
           # copy the file
           export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}') || true
           kubectl cp $OF_AGENT:out.pcap $LOG_FOLDER/ofagent.pcap || true
@@ -446,6 +473,12 @@ EOF
 
           export RADIUS=$(kubectl get pods -l app=radius | awk 'NR==2{print $1}') || true
           kubectl cp $RADIUS:out.pcap $LOG_FOLDER/radius.pcap || true
+
+          LIMIT=$(($NUM_OF_ONOS - 1))
+          for i in $(seq 0 $LIMIT); do
+            INSTANCE="onos-onos-classic-$i"
+            kubectl cp $INSTANCE:out.pcap $LOG_FOLDER/$INSTANCE.pcap || true
+          done
         fi
 
         cd voltha-system-tests
