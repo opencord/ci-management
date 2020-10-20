@@ -693,7 +693,6 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
-          'disable-job': true
           release: '2.5'
           branch: 'voltha-2.5'
           num-of-openonu: '2'
@@ -709,11 +708,10 @@
           time: '8'
 
 
-      # Berlin POD test job - voltha-2.4 versions: uses 1T8GEM tech profile on voltha branch
+      # Berlin POD test job - voltha-2.5 versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
-          'disable-job': true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.5'
