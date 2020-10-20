@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "454118d2_7d0bff1e",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-10-20T16:32:02Z",
+      "side": 1,
+      "message": "I\u0027d make a few runs without the auth-retry and see if we can identify problems easier with an exact expected packet count.",
+      "revId": "fa21918be442acb51a53332b68499a471db98a28",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
