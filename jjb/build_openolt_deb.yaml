@@ -12,6 +12,7 @@
 - job-template:
     id: build_openolt_deb
     name: 'build_openolt_deb'
+    disabled: true
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/{name}
