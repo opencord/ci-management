@@ -67,7 +67,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set debug=true'
           withPcap: true
-          onosImg:  matteoscandolo/voltha-onos:timeout-release-identifier-single
+          onosImg:  andreacampanella/voltha-onos:aaa-identifier-cleanup
+          openoltAdapterImg:  andreacampanella/voltha-openolt-adapter:meter-fix
           radiusChart: /home/cord/helm-charts/freeradius
 
 

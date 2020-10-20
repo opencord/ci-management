@@ -312,6 +312,11 @@ pipeline {
 
             export BBSIM=$(kubectl get pods -l app=bbsim -o name)
             _TAG=bbsim-tcpdump kubectl exec $BBSIM -- tcpdump -nei nni -w out.pcap&
+
+            export RADIUS=$(kubectl get pods -l app=radius -o name)
+            kubectl exec $RADIUS -- apt-get update
+            kubectl exec $RADIUS -- apt-get install -y tcpdump
+            _TAG=radius-tcpdump kubectl exec $RADIUS -- tcpdump -w out.pcap&
           fi
         '''
       }
@@ -438,6 +443,9 @@ EOF
 
           export BBSIM=$(kubectl get pods -l app=bbsim | awk 'NR==2{print $1}') || true
           kubectl cp $BBSIM:out.pcap $LOG_FOLDER/bbsim.pcap || true
+
+          export RADIUS=$(kubectl get pods -l app=radius | awk 'NR==2{print $1}') || true
+          kubectl cp $RADIUS:out.pcap $LOG_FOLDER/radius.pcap || true
         fi
 
         cd voltha-system-tests
