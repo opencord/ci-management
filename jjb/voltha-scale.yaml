@@ -65,7 +65,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set debug=true'
+          extraHelmFlags: '--set debug=true,authRetry=true'
           withPcap: true
           onosImg:  andreacampanella/voltha-onos:aaa-identifier-cleanup
           openoltAdapterImg:  gcgirish/voltha-openolt-adapter:flowChanPerSub
