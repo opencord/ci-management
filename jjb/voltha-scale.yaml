@@ -630,6 +630,22 @@
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
 
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          silent-start: false
+          successful-message: "PASSED {trigger-string}"
+          failure-message: "FAILED {trigger-string}"
+          unstable-message: "UNSTABLE {trigger-string}"
+          trigger-on:
+            - comment-added-contains-event:
+                comment-contains-value: '.*scale test.*'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|ofagent-go|voltha-onos)$'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{all-branches-regexp}'
 - job-template:
     id: 'voltha-scale-matrix-dev'
     name: '{name}'
