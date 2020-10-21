@@ -65,9 +65,9 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set debug=true,authRetry=true'
+          extraHelmFlags: '--set debug=true'
           withPcap: true
-          onosImg:  matteoscandolo/voltha-onos:timeout-release-identifier-single
+          onosImg:  andreacampanella/voltha-onos:aaa-identifier-cleanup-pier-socket
           openoltAdapterImg:  gcgirish/voltha-openolt-adapter:flowChanPerSub
           radiusChart: /home/cord/helm-charts/freeradius
 
