@@ -154,6 +154,23 @@ pipeline {
         }
       }
     }
+    stage('Build patch') {
+      when {
+        expression {
+          return env.hasProperty("GERRIT_PROJECT")
+        }
+      }
+      steps {
+        sh """
+        git clone https://$GERRIT_HOST/$GERRIT_PROJECT
+        cd $GERRIT_PROJECT
+        git fetch https://$GERRIT_HOST/$GERRIT_PROJECT $GERRIT_REFSPEC && git checkout FETCH_HEAD
+
+        DOCKER_REGISTRY=${dockerRegistry}/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=voltha-scale make docker-build
+        DOCKER_REGISTRY=${dockerRegistry}/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=voltha-scale make docker-push
+        """
+      }
+    }
     stage('Deploy common infrastructure') {
       // includes monitoring, kafka, etcd
       steps {
@@ -193,33 +210,34 @@ pipeline {
             fi
 
             # BBSim custom image handling
-            if [ '${bbsimImg.trim()}' != '' ]; then
+            if [ '${bbsimImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'bbsim' ]; then
               IFS=: read -r bbsimRepo bbsimTag <<< '${bbsimImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
             fi
 
             # VOLTHA and ofAgent custom image handling
             # NOTE to override the rw-core image in a released version you must set the ofAgent image too
-            if [ '${rwCoreImg.trim()}' != '' ] && [ '${ofAgentImg.trim()}' != '' ]; then
+            # TODO split ofAgent and voltha-go
+            if [ '${rwCoreImg.trim()}' != '' ] && [ '${ofAgentImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-go' ]; then
               IFS=: read -r rwCoreRepo rwCoreTag <<< '${rwCoreImg.trim()}'
               IFS=: read -r ofAgentRepo ofAgentTag <<< '${ofAgentImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
             fi
 
             # OpenOLT custom image handling
-            if [ '${openoltAdapterImg.trim()}' != '' ]; then
+            if [ '${openoltAdapterImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-openolt-adapter' ]; then
               IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< '${openoltAdapterImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
             fi
 
             # OpenONU custom image handling
-            if [ '${openonuAdapterImg.trim()}' != '' ]; then
+            if [ '${openonuAdapterImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-openonu-adapter' ]; then
               IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< '${openonuAdapterImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
             fi
 
             # ONOS custom image handling
-            if [ '${onosImg.trim()}' != '' ]; then
+            if [ '${onosImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-onos' ]; then
               IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
             fi
@@ -239,6 +257,32 @@ pipeline {
             # if it's newer than voltha-2.4 set the correct BBSIM_CFG
             if [ '${release.trim()}' != 'voltha-2.4' ]; then
               export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-${workflow}.yaml"
+            fi
+
+            # Use custom built images
+
+            if [ '$GERRIT_PROJECT' == 'voltha-go' ]; then
+              EXTRA_HELM_FLAGS+="--set images.rw_core.repository=${dockerRegistry}/voltha/voltha-rw-core,images.rw_core.tag=voltha-scale "
+            fi
+
+            if [ '$GERRIT_PROJECT' == 'voltha-openolt-adapter' ]; then
+              EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=${dockerRegistry}/voltha/voltha-openolt-adapter,images.adapter_open_olt.tag=voltha-scale "
+            fi
+
+            if [ '$GERRIT_PROJECT' == 'voltha-openonu-adapter' ]; then
+              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${dockerRegistry}/voltha/voltha-openonu-adapter,images.adapter_open_onu.tag=voltha-scale "
+            fi
+
+            if [ '$GERRIT_PROJECT' == 'ofagent-go' ]; then
+              EXTRA_HELM_FLAGS+="--set images.ofagent.repository=${dockerRegistry}/voltha/voltha-ofagent-go,images.ofagent.tag=voltha-scale "
+            fi
+
+            if [ '$GERRIT_PROJECT' == 'voltha-onos' ]; then
+              EXTRA_HELM_FLAGS+="--set images.onos.repository=${dockerRegistry}/voltha/voltha-onos,images.onos.tag=voltha-scale "
+            fi
+
+            if [ '$GERRIT_PROJECT' == 'bbsim' ]; then
+              EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
             fi
 
             ./voltha up
@@ -273,13 +317,12 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
 
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
-
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
+          LIMIT=$(($NUM_OF_ONOS - 1))
+          for i in $(seq 0 $LIMIT); do
+            INSTANCE="onos-onos-classic-$i"
+            kubectl exec $INSTANCE -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
+            kubectl exec $INSTANCE -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
+          done
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.onosproject.net.flow.impl.FlowRuleManager
 
