@@ -278,7 +278,6 @@
           profile: '1T4GEM'
           in-band-management: true
           VolthaEtcdPort: '9999'
-          reinstall-olt: false
           time: '1'
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
@@ -308,7 +307,6 @@
           profile: '1T8GEM'
           VolthaEtcdPort: '9999'
           in-band-management: true
-          reinstall-olt: false
           time: '4'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -342,7 +340,6 @@
           configurePod: true
           profile: '1T8GEM'
           VolthaEtcdPort: '9999'
-          reinstall-olt: false
           in-band-management: true
           time: '7'
 
@@ -376,7 +373,6 @@
           configurePod: true
           profile: '1T8GEM'
           VolthaEtcdPort: '9999'
-          reinstall-olt: false
           in-band-management: true
           time: '7'
 
@@ -406,7 +402,6 @@
           num-of-openonu: '2'
           num-of-onos: '3'
           num-of-atomix: '3'
-          reinstall-olt: false
           in-band-management: true
       - 'build_pod_test':
           build-node: 'menlo-demo-pod'
@@ -429,7 +424,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          reinstall-olt: false
           in-band-management: true
 
       # ONF DEMO OCP test job - voltha-master branch
