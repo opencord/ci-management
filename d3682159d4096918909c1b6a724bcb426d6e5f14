@@ -22,6 +22,30 @@
       "revId": "d3682159d4096918909c1b6a724bcb426d6e5f14",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1336d4e3_4ae34131",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 562,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-10-22T16:45:18Z",
+      "side": 1,
+      "message": "I didn\u0027t find a way to completely remove a trigger and I didn\u0027t want to duplicate the job template just for that (I\u0027m using the same template/pipeline for periodic jobs and patchsets verification). That is used as a \"triggering\" comment for the periodic job, hoping that no-one will ever comment on a patch with that string. (comment on that at line #578)",
+      "parentUuid": "bc783522_9b064617",
+      "range": {
+        "startLine": 562,
+        "startChar": 21,
+        "endLine": 562,
+        "endChar": 41
+      },
+      "revId": "d3682159d4096918909c1b6a724bcb426d6e5f14",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
