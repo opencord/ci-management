@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f77e5a49_0e8e5d14",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-10-22T18:42:57Z",
+      "side": 1,
+      "message": "please add DEBUG for org.opencord.olt",
+      "revId": "c315f295ca1ccd28d4ad83769f793e94ceb6f6cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
