@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "914968a3_843bf633",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2020-10-23T05:27:12Z",
+      "side": 1,
+      "message": "Is this supposed to be secret?",
+      "range": {
+        "startLine": 563,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 41
+      },
+      "revId": "d7c19e07c68e6115bdcf33636727192a27ab0057",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
