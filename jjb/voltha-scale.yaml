@@ -71,7 +71,6 @@
           openoltAdapterImg:  gcgirish/voltha-openolt-adapter:flowChanPerSub
           rwCoreImg: matteoscandolo/voltha-rw-core:sync-delete
           radiusChart: /home/cord/helm-charts/freeradius
-          bbsimImg: matteoscandolo/bbsim:nni-packet-logs
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)

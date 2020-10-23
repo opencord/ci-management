@@ -277,13 +277,13 @@ pipeline {
           kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
           kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
 
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.aaa
-
           kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set DEBUG org.opencord.olt
           kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set DEBUG org.opencord.olt
           kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set DEBUG org.opencord.olt
+
+          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.dhcpl2relay
+          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.dhcpl2relay
+          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.dhcpl2relay
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.onosproject.net.flow.impl.FlowRuleManager
 
