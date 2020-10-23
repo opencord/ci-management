@@ -333,8 +333,6 @@ pipeline {
               _TAG=$INSTANCE kubectl exec $INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap&
             done
           fi
-          # set adapter log level to debug
-          voltctl log level set debug adapter-open-olt
         '''
       }
     }
