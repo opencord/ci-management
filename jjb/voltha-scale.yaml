@@ -67,7 +67,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set debug=true,authRetry=true'
           withPcap: true
-          onosImg:  andreacampanella/voltha-onos:aaa-identifier-cleanup-pier-socket
+          onosImg:  matteoscandolo/voltha-onos:eapol-delay
+          bbsimImg: matteoscandolo/bbsim:nni-packet-logs
           openoltAdapterImg:  gcgirish/voltha-openolt-adapter:flowChanPerSub
           rwCoreImg: matteoscandolo/voltha-rw-core:sync-delete
           radiusChart: /home/cord/helm-charts/freeradius
