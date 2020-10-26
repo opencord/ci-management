@@ -236,6 +236,7 @@
       # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
+          'disable-job': true
           config-pod: 'onf-demo-pod-gpon'
           release: 'master'
           branch: 'master'
