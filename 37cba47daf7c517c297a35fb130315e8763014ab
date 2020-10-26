@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b55be497_e478a75f",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2020-10-26T22:58:00Z",
+      "side": 1,
+      "message": "dhcpRetry is not set to true here unlike other cases. Was that intentional?",
+      "revId": "37cba47daf7c517c297a35fb130315e8763014ab",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
