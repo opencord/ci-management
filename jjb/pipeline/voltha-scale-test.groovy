@@ -266,37 +266,28 @@ pipeline {
     }
     stage('Configuration') {
       steps {
-        sh '''
+        script {
+          sh returnStdout: false, script: """
           #Setting link discovery
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${withLLDP}
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
 
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set WARN org.opencord.sadis
+          ONOSES=\$((\$NUM_OF_ONOS - 1))
+          for i in \$(seq 0 \$ONOSES); do
+            INSTANCE="onos-onos-classic-\$i"
 
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set DEBUG org.opencord.olt
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set DEBUG org.opencord.olt
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set DEBUG org.opencord.olt
+            #Setting LOG level to ${logLevel}
+            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.onosproject
+            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.opencord
 
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.dhcpl2relay
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.dhcpl2relay
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set TRACE org.opencord.dhcpl2relay
+            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set TRACE org.opencord.dhcpl2relay
+            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.olt
+          done
 
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.onosproject.net.flow.impl.FlowRuleManager
 
-          #Setting LOG level to ${logLevel}
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set ${logLevel} org.onosproject
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set ${logLevel} org.onosproject
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set ${logLevel} org.onosproject
-
-          kubectl exec onos-onos-classic-0 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set ${logLevel} org.opencord
-          kubectl exec onos-onos-classic-1 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set ${logLevel} org.opencord
-          kubectl exec onos-onos-classic-2 -- bash /root/onos/apache-karaf-4.2.9/bin/client log:set ${logLevel} org.opencord
-
-          kubectl exec $(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print $1}') -- bbsimctl log ${logLevel} false
+          kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log ${logLevel.toLowerCase()} false
 
           # Set Flows/Ports/Meters poll frequency
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${onosStatInterval}
@@ -309,38 +300,39 @@ pipeline {
           if [ ${withMibTemplate} = true ] ; then
             rm -f BBSM-12345123451234512345-00000000000001-v1.json
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it $(kubectl get pods -l app=etcd | awk 'NR==2{print $1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods -l app=etcd | awk 'NR==2{print \$1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
           if [ ${withPcap} = true ] ; then
             # Start the tcp-dump in ofagent
-            export OF_AGENT=$(kubectl get pods -l app=ofagent -o name)
-            kubectl exec $OF_AGENT -- apk update
-            kubectl exec $OF_AGENT -- apk add tcpdump
-            kubectl exec $OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
-            _TAG=ofagent-tcpdump kubectl exec $OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
+            export OF_AGENT=\$(kubectl get pods -l app=ofagent -o name)
+            kubectl exec \$OF_AGENT -- apk update
+            kubectl exec \$OF_AGENT -- apk add tcpdump
+            kubectl exec \$OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
+            _TAG=ofagent-tcpdump kubectl exec \$OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
 
             # Start the tcp-dump in bbsim
-            export BBSIM=$(kubectl get pods -l app=bbsim -o name)
-            _TAG=bbsim-tcpdump kubectl exec $BBSIM -- tcpdump -nei nni -w out.pcap&
+            export BBSIM=\$(kubectl get pods -l app=bbsim -o name)
+            _TAG=bbsim-nni kubectl exec \$BBSIM -- tcpdump -nei nni -w nni.pcap&
+            _TAG=bbsim-upstream kubectl exec \$BBSIM -- tcpdump -nei upstream -w upstream.pcap&
 
             # Start the tcp-dump in radius
-            export RADIUS=$(kubectl get pods -l app=radius -o name)
-            kubectl exec $RADIUS -- apt-get update
-            kubectl exec $RADIUS -- apt-get install -y tcpdump
-            _TAG=radius-tcpdump kubectl exec $RADIUS -- tcpdump -w out.pcap&
+            export RADIUS=\$(kubectl get pods -l app=radius -o name)
+            kubectl exec \$RADIUS -- apt-get update
+            kubectl exec \$RADIUS -- apt-get install -y tcpdump
+            _TAG=radius-tcpdump kubectl exec \$RADIUS -- tcpdump -w out.pcap&
 
             # Start the tcp-dump in ONOS
-            LIMIT=$(($NUM_OF_ONOS - 1))
-            for i in $(seq 0 $LIMIT); do
-              INSTANCE="onos-onos-classic-$i"
-              kubectl exec $INSTANCE -- apt-get update
-              kubectl exec $INSTANCE -- apt-get install -y tcpdump
-              kubectl exec $INSTANCE -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
-              _TAG=$INSTANCE kubectl exec $INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap&
+            for i in \$(seq 0 \$ONOSES); do
+              INSTANCE="onos-onos-classic-\$i"
+              kubectl exec \$INSTANCE -- apt-get update
+              kubectl exec \$INSTANCE -- apt-get install -y tcpdump
+              kubectl exec \$INSTANCE -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
+              _TAG=\$INSTANCE kubectl exec \$INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap&
             done
           fi
-        '''
+          """
+        }
       }
     }
     stage('Run Test') {
@@ -454,7 +446,11 @@ EOF
           fi
 
           # stop bbsim tcpdump
-          P_ID="\$(ps e -ww -A | grep "_TAG=bbsim-tcpdump" | grep -v grep | awk '{print \$1}')"
+          P_ID="\$(ps e -ww -A | grep "_TAG=bbsim-nni" | grep -v grep | awk '{print \$1}')"
+          if [ -n "\$P_ID" ]; then
+            kill -9 \$P_ID
+          fi
+          P_ID="\$(ps e -ww -A | grep "_TAG=bbsim-upstream" | grep -v grep | awk '{print \$1}')"
           if [ -n "\$P_ID" ]; then
             kill -9 \$P_ID
           fi
@@ -480,7 +476,8 @@ EOF
           kubectl cp $OF_AGENT:out.pcap $LOG_FOLDER/ofagent.pcap || true
 
           export BBSIM=$(kubectl get pods -l app=bbsim | awk 'NR==2{print $1}') || true
-          kubectl cp $BBSIM:out.pcap $LOG_FOLDER/bbsim.pcap || true
+          kubectl cp $BBSIM:nni.pcap $LOG_FOLDER/bbsim-nni.pcap || true
+          kubectl cp $BBSIM:upstream.pcap $LOG_FOLDER/bbsim-upstream.pcap || true
 
           export RADIUS=$(kubectl get pods -l app=radius | awk 'NR==2{print $1}') || true
           kubectl cp $RADIUS:out.pcap $LOG_FOLDER/radius.pcap || true
