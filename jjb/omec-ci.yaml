@@ -21,8 +21,8 @@
           build-node: 'omec-ci'
           cp-context: 'dev-central-gcp'
           dp-context: 'dev-edge-onf-menlo'
-          central-config: 'acc-gcp/app_values'
-          edge-config: 'ace-menlo/app_values'
+          central-config: 'acc-gcp/app_values/omec-cp.yaml'
+          edge-config: 'ace-menlo/app_values/omec-upf.yaml'
       - 'omec-ng40-test':
           pod: 'dev'
           build-node: 'omec-ci'
