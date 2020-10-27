@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d4427993_1f265c60",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1000666
+      },
+      "writtenOn": "2020-10-27T11:18:39Z",
+      "side": 1,
+      "message": "You can give the TT scenario a try. But I don\u0027t know how far this depends on the MC setup, which is not yet done. We might have to be tolerant with errors here ...",
+      "revId": "5f7681849153343738bc31d68bbf20e8eddd7ed4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
