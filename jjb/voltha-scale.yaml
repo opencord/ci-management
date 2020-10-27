@@ -54,7 +54,7 @@
           name: 'voltha-scale-measurements-master-experimental'
           build-node: 'onf-pod1-head-node'
           'disable-job': false
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H/1 * * *"
           withMonitoring: false
           olts: 1
           pons: 16
@@ -70,6 +70,8 @@
           extraHelmFlags: '--set authRetry=true'
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:nni-packet-logs
+          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-delete-serial
+          #onosImg: andreacampanella/voltha-onos:olt-batch
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
