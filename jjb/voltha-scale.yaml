@@ -45,6 +45,43 @@
           openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           extraHelmFlags: '--set use_openonu_adapter_go=true'
 
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-go-scale-measurements-master-1-16-32-att-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          onosReplicas: 3
+          atomixReplicas: 3
+          openonuAdapterReplicas: 1
+          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
+          extraHelmFlags: '--set use_openonu_adapter_go=true'
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-go-scale-measurements-master-1-16-32-tt-subscribers'
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: tt
+          withEapol: false
+          withDhcp: true
+          withIgmp: true
+          onosReplicas: 3
+          atomixReplicas: 3
+          openonuAdapterReplicas: 1
+          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
+          extraHelmFlags: '--set use_openonu_adapter_go=true'
+
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
