@@ -12,7 +12,6 @@
       # OpenONU GO Scale
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-16-64-activation'
-          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -29,7 +28,6 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': true
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
