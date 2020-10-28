@@ -54,7 +54,7 @@
           name: 'voltha-scale-measurements-master-experimental'
           build-node: 'onf-pod1-head-node'
           'disable-job': false
-          time-trigger: "H/30 * * * *"
+          time-trigger: "H H/4 * * *"
           withMonitoring: false
           olts: 1
           pons: 16
@@ -69,15 +69,13 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:nni-packet-logs
-          ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-delete-serial
           onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -93,10 +91,11 @@
           atomixReplicas: 3
           withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -113,10 +112,11 @@
           atomixReplicas: 3
           withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -132,11 +132,12 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -151,11 +152,12 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
           withPcap: true
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -171,6 +173,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
