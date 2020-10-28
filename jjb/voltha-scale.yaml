@@ -67,7 +67,7 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set authRetry=true'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:nni-packet-logs
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-delete-serial
