@@ -71,7 +71,7 @@
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:nni-packet-logs
           ofAgentImg: matteoscandolo/voltha-ofagent-go:flow-delete-serial
-          #onosImg: andreacampanella/voltha-onos:olt-batch
+          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)

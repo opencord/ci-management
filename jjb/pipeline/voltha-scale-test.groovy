@@ -274,6 +274,10 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
 
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.FlowObjectiveManager accumulatorMaxBatchMillis 1000
+
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.FlowObjectiveManager accumulatorMaxIdleMillis 500
+
           ONOSES=\$((\$NUM_OF_ONOS - 1))
           for i in \$(seq 0 \$ONOSES); do
             INSTANCE="onos-onos-classic-\$i"
@@ -284,6 +288,7 @@ pipeline {
 
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set TRACE org.opencord.dhcpl2relay
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.olt
+            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.onosproject.driver.pipeline.OltPipeline
           done
 
 
