@@ -288,7 +288,6 @@ pipeline {
 
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set TRACE org.opencord.dhcpl2relay
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.olt
-            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.onosproject.driver.pipeline.OltPipeline
           done
 
 

@@ -69,7 +69,6 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
-          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
@@ -91,7 +90,6 @@
           atomixReplicas: 3
           withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -112,7 +110,6 @@
           atomixReplicas: 3
           withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
@@ -132,7 +129,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -152,7 +148,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
           withPcap: true
 
       - 'voltha-scale-measurements':
@@ -173,7 +168,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: andreacampanella/voltha-onos:olt-batch-fobj-fix
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
