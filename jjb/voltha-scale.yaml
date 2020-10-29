@@ -69,6 +69,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
+          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
+          onosImg: matteoscandolo/voltha-onos:olt-logs
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
@@ -90,6 +92,8 @@
           atomixReplicas: 3
           withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
+          onosImg: matteoscandolo/voltha-onos:olt-logs
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -109,6 +113,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           withPcap: true
+          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
+          onosImg: matteoscandolo/voltha-onos:olt-logs
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
 
       - 'voltha-scale-measurements':
@@ -129,6 +135,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
+          onosImg: matteoscandolo/voltha-onos:olt-logs
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -149,6 +157,8 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
+          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
+          onosImg: matteoscandolo/voltha-onos:olt-logs
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -168,6 +178,8 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
+          onosImg: matteoscandolo/voltha-onos:olt-logs
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
