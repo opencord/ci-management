@@ -286,7 +286,6 @@ pipeline {
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.onosproject
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.opencord
 
-            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set TRACE org.opencord.dhcpl2relay
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.olt
           done
 
