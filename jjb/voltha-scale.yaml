@@ -156,10 +156,9 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: andreacampanella/voltha-onos:olt-log
           withPcap: true
           bbsimImg: matteoscandolo/bbsim:dummy-dhcp
-          onosImg: matteoscandolo/voltha-onos:olt-logs
+          onosImg: andreacampanella/voltha-onos:olt-log
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
