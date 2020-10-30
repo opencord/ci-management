@@ -314,11 +314,6 @@ pipeline {
             kubectl exec \$OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
             _TAG=ofagent-tcpdump kubectl exec \$OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
 
-            # Start the tcp-dump in bbsim
-            export BBSIM=\$(kubectl get pods -l app=bbsim -o name)
-            _TAG=bbsim-nni kubectl exec \$BBSIM -- tcpdump -nei nni -w nni.pcap&
-            _TAG=bbsim-upstream kubectl exec \$BBSIM -- tcpdump -nei upstream -w upstream.pcap&
-
             # Start the tcp-dump in radius
             export RADIUS=\$(kubectl get pods -l app=radius -o name)
             kubectl exec \$RADIUS -- apt-get update
@@ -448,16 +443,6 @@ EOF
             kill -9 \$P_ID
           fi
 
-          # stop bbsim tcpdump
-          P_ID="\$(ps e -ww -A | grep "_TAG=bbsim-nni" | grep -v grep | awk '{print \$1}')"
-          if [ -n "\$P_ID" ]; then
-            kill -9 \$P_ID
-          fi
-          P_ID="\$(ps e -ww -A | grep "_TAG=bbsim-upstream" | grep -v grep | awk '{print \$1}')"
-          if [ -n "\$P_ID" ]; then
-            kill -9 \$P_ID
-          fi
-
           # stop radius tcpdump
           P_ID="\$(ps e -ww -A | grep "_TAG=radius-tcpdump" | grep -v grep | awk '{print \$1}')"
           if [ -n "\$P_ID" ]; then
@@ -477,10 +462,6 @@ EOF
           # copy the file
           export OF_AGENT=$(kubectl get pods -l app=ofagent | awk 'NR==2{print $1}') || true
           kubectl cp $OF_AGENT:out.pcap $LOG_FOLDER/ofagent.pcap || true
-
-          export BBSIM=$(kubectl get pods -l app=bbsim | awk 'NR==2{print $1}') || true
-          kubectl cp $BBSIM:nni.pcap $LOG_FOLDER/bbsim-nni.pcap || true
-          kubectl cp $BBSIM:upstream.pcap $LOG_FOLDER/bbsim-upstream.pcap || true
 
           export RADIUS=$(kubectl get pods -l app=radius | awk 'NR==2{print $1}') || true
           kubectl cp $RADIUS:out.pcap $LOG_FOLDER/radius.pcap || true

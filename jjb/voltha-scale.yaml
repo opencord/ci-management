@@ -69,8 +69,6 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
-          onosImg: matteoscandolo/voltha-onos:olt-logs
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
@@ -92,8 +90,6 @@
           atomixReplicas: 3
           withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
-          onosImg: matteoscandolo/voltha-onos:olt-logs
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -113,8 +109,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
-          onosImg: matteoscandolo/voltha-onos:olt-logs
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
 
       - 'voltha-scale-measurements':
@@ -135,8 +129,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
-          onosImg: matteoscandolo/voltha-onos:olt-logs
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -157,7 +149,6 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
-          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
           onosImg: matteoscandolo/voltha-onos:olt-log
 
       - 'voltha-scale-measurements':
@@ -178,13 +169,31 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          bbsimImg: matteoscandolo/bbsim:dummy-dhcp
-          onosImg: matteoscandolo/voltha-onos:olt-logs
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
+          'disable-job': false
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: tt
+          withEapol: false
+          withDhcp: true
+          withIgmp: true
+          openonuAdapterReplicas: 8
+          onosReplicas: 3
+          atomixReplicas: 3
+          withPcap: true
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.5-1-16-32-att-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -210,7 +219,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.5-2-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -236,7 +245,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.5-1-16-32-tt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 1
