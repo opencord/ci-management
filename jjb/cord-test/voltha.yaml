@@ -580,7 +580,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          with-kind: true
           time: '9'
 
 
@@ -608,7 +607,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          with-kind: true
           time: '11'
 
 
@@ -637,7 +635,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          with-kind: true
           time: '11'
 
 
@@ -667,7 +664,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          with-kind: true
           time: '12'
 
 
@@ -699,7 +695,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          with-kind: true
           time: '8'
 
 
@@ -730,7 +725,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          with-kind: true
           time: '1'
 
 
@@ -763,7 +757,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          with-kind: true
           time: '1'
 
 
