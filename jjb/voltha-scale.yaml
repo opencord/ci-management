@@ -148,6 +148,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-log
           withPcap: true
 
       - 'voltha-scale-measurements':
