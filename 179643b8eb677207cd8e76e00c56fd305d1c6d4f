@@ -16,6 +16,24 @@
       "revId": "179643b8eb677207cd8e76e00c56fd305d1c6d4f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cfbd4b82_e3b95b4e",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2020-11-02T18:46:06Z",
+      "side": 1,
+      "message": "kubectl get pods -n default -\u003e doesn\u0027t give any voltha containers\nkubectl get pods -n voltha -\u003e gives only voltha\nkubectl get pods -\u003e gives kafka, etcd and onos",
+      "parentUuid": "26d12ad8_85ee677c",
+      "revId": "179643b8eb677207cd8e76e00c56fd305d1c6d4f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
