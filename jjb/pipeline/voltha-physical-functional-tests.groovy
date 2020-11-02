@@ -244,6 +244,7 @@ pipeline {
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
       kubectl get nodes -o wide
       kubectl get pods -n voltha -o wide
+      kubectl get pods -o wide
 
       sleep 60 # Wait for log-collector and log-combine to complete
 
