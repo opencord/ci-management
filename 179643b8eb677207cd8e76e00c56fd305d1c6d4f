@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "26d12ad8_85ee677c",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 253,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-11-02T18:42:56Z",
+      "side": 1,
+      "message": "I think you are getting duplicates this way, might aswell remove `kubectl get pods -n voltha -o wide` or do \n```\nkubectl get pods -n voltha -o wide \nkubectl get pods -n default -o wide\n```",
+      "revId": "179643b8eb677207cd8e76e00c56fd305d1c6d4f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
