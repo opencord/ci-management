@@ -54,9 +54,10 @@
           name: 'voltha-scale-measurements-master-experimental'
           build-node: 'onf-pod1-head-node'
           'disable-job': false
-          time-trigger: "H H/4 * * *"
+          # trigger on Feb 29th (a.k.a only trigger it manually)
+          time-trigger: "H 0 29 2 *"
           withMonitoring: false
-          olts: 1
+          olts: 2
           pons: 16
           onus: 32
           withFlows: true
@@ -88,7 +89,6 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
 
       - 'voltha-scale-measurements':
@@ -108,7 +108,6 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
 
       - 'voltha-scale-measurements':
@@ -148,7 +147,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          withPcap: true
           onosImg: matteoscandolo/voltha-onos:olt-log
 
       - 'voltha-scale-measurements':
@@ -187,7 +185,6 @@
           openonuAdapterReplicas: 8
           onosReplicas: 3
           atomixReplicas: 3
-          withPcap: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
 
       # voltha-2.5 Jobs
@@ -215,7 +212,6 @@
           openoltAdapterImg: ''
           openonuAdapterImg: ''
           onosImg: ''
-          withPcap: true
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.5-2-16-32-dt-subscribers'
@@ -268,7 +264,6 @@
           openoltAdapterImg: ''
           openonuAdapterImg: ''
           onosImg: ''
-          withPcap: true
 
       # development pipeline
       - 'voltha-scale-measurements-dev':
