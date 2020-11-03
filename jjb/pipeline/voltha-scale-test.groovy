@@ -159,7 +159,7 @@ pipeline {
     stage('Build patch') {
       when {
         expression {
-          return env.hasProperty("GERRIT_PROJECT") && env.GERRIT_PROJECT != ""
+          return params.GERRIT_PROJECT
         }
       }
       steps {
