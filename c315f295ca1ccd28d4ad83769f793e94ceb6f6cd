@@ -16,6 +16,24 @@
       "revId": "c315f295ca1ccd28d4ad83769f793e94ceb6f6cd",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3972ae3a_2cda6e64",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 325,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-11-03T00:01:24Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f77e5a49_0e8e5d14",
+      "revId": "c315f295ca1ccd28d4ad83769f793e94ceb6f6cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }

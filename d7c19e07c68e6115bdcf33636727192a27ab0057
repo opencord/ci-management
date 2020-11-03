@@ -22,6 +22,30 @@
       "revId": "d7c19e07c68e6115bdcf33636727192a27ab0057",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18bb40eb_42f4282a",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 563,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-11-03T00:01:24Z",
+      "side": 1,
+      "message": "no, it\u0027s just a random string that hopefully no one will comment with (and if they do it\u0027s no big deal).",
+      "parentUuid": "914968a3_843bf633",
+      "range": {
+        "startLine": 563,
+        "startChar": 0,
+        "endLine": 563,
+        "endChar": 41
+      },
+      "revId": "d7c19e07c68e6115bdcf33636727192a27ab0057",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
