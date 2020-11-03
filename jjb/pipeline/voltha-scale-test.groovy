@@ -177,7 +177,9 @@ pipeline {
       // includes monitoring, kafka, etcd
       steps {
         sh '''
-        helm install kafka incubator/kafka --set replicas=${kafkaReplicas} --set persistence.enabled=false --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false
+        helm install kafka incubator/kafka --set replicas=${kafkaReplicas} --set persistence.enabled=false \
+          --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
+          --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
 
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
