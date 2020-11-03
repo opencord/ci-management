@@ -67,6 +67,8 @@ pipeline {
 
     APPS_TO_LOG="etcd kafka onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius"
     LOG_FOLDER="$WORKSPACE/logs"
+
+    GERRIT_PROJECT="${GERRIT_PROJECT}"
   }
 
   stages {
@@ -157,14 +159,14 @@ pipeline {
     stage('Build patch') {
       when {
         expression {
-          return env.hasProperty("GERRIT_PROJECT")
+          return env.hasProperty("GERRIT_PROJECT") && env.GERRIT_PROJECT != ""
         }
       }
       steps {
         sh """
-        git clone https://$GERRIT_HOST/$GERRIT_PROJECT
-        cd $GERRIT_PROJECT
-        git fetch https://$GERRIT_HOST/$GERRIT_PROJECT $GERRIT_REFSPEC && git checkout FETCH_HEAD
+        git clone https://\$GERRIT_HOST/\$GERRIT_PROJECT
+        cd \$GERRIT_PROJECT
+        git fetch https://\$GERRIT_HOST/\$GERRIT_PROJECT \$GERRIT_REFSPEC && git checkout FETCH_HEAD
 
         DOCKER_REGISTRY=${dockerRegistry}/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=voltha-scale make docker-build
         DOCKER_REGISTRY=${dockerRegistry}/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=voltha-scale make docker-push
@@ -210,7 +212,7 @@ pipeline {
             fi
 
             # BBSim custom image handling
-            if [ '${bbsimImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'bbsim' ]; then
+            if [ '${bbsimImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'bbsim' ]; then
               IFS=: read -r bbsimRepo bbsimTag <<< '${bbsimImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
             fi
@@ -218,26 +220,26 @@ pipeline {
             # VOLTHA and ofAgent custom image handling
             # NOTE to override the rw-core image in a released version you must set the ofAgent image too
             # TODO split ofAgent and voltha-go
-            if [ '${rwCoreImg.trim()}' != '' ] && [ '${ofAgentImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-go' ]; then
+            if [ '${rwCoreImg.trim()}' != '' ] && [ '${ofAgentImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-go' ]; then
               IFS=: read -r rwCoreRepo rwCoreTag <<< '${rwCoreImg.trim()}'
               IFS=: read -r ofAgentRepo ofAgentTag <<< '${ofAgentImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
             fi
 
             # OpenOLT custom image handling
-            if [ '${openoltAdapterImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-openolt-adapter' ]; then
+            if [ '${openoltAdapterImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openolt-adapter' ]; then
               IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< '${openoltAdapterImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
             fi
 
             # OpenONU custom image handling
-            if [ '${openonuAdapterImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-openonu-adapter' ]; then
+            if [ '${openonuAdapterImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openonu-adapter' ]; then
               IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< '${openonuAdapterImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
             fi
 
             # ONOS custom image handling
-            if [ '${onosImg.trim()}' != '' ] && [ '$GERRIT_PROJECT' != 'voltha-onos' ]; then
+            if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
               IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
             fi
@@ -261,27 +263,27 @@ pipeline {
 
             # Use custom built images
 
-            if [ '$GERRIT_PROJECT' == 'voltha-go' ]; then
+            if [ '\$GERRIT_PROJECT' == 'voltha-go' ]; then
               EXTRA_HELM_FLAGS+="--set images.rw_core.repository=${dockerRegistry}/voltha/voltha-rw-core,images.rw_core.tag=voltha-scale "
             fi
 
-            if [ '$GERRIT_PROJECT' == 'voltha-openolt-adapter' ]; then
+            if [ '\$GERRIT_PROJECT' == 'voltha-openolt-adapter' ]; then
               EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=${dockerRegistry}/voltha/voltha-openolt-adapter,images.adapter_open_olt.tag=voltha-scale "
             fi
 
-            if [ '$GERRIT_PROJECT' == 'voltha-openonu-adapter' ]; then
+            if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter' ]; then
               EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${dockerRegistry}/voltha/voltha-openonu-adapter,images.adapter_open_onu.tag=voltha-scale "
             fi
 
-            if [ '$GERRIT_PROJECT' == 'ofagent-go' ]; then
+            if [ '\$GERRIT_PROJECT' == 'ofagent-go' ]; then
               EXTRA_HELM_FLAGS+="--set images.ofagent.repository=${dockerRegistry}/voltha/voltha-ofagent-go,images.ofagent.tag=voltha-scale "
             fi
 
-            if [ '$GERRIT_PROJECT' == 'voltha-onos' ]; then
+            if [ '\$GERRIT_PROJECT' == 'voltha-onos' ]; then
               EXTRA_HELM_FLAGS+="--set images.onos.repository=${dockerRegistry}/voltha/voltha-onos,images.onos.tag=voltha-scale "
             fi
 
-            if [ '$GERRIT_PROJECT' == 'bbsim' ]; then
+            if [ '\$GERRIT_PROJECT' == 'bbsim' ]; then
               EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
             fi
 
