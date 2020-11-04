@@ -289,6 +289,7 @@
       - 'voltha-scale-matrix':
           name: 'voltha-scale-matrix-voltha-master-dev'
           build-node: 'voltha-scale'
+          time-trigger: H 0 * * * #
 
       # development matrix
       - 'voltha-scale-matrix':
@@ -298,6 +299,7 @@
           atomixReplicas: 3
           kafkaReplicas: 3
           etcdReplicas: 3
+          topologies: 1-16-16, 1-16-32, 2-16-32
 
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
@@ -728,6 +730,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
+    time-trigger: 0 0 29 2 *
     release: master
     build-node: 'voltha-scale'
     volthaSystemTestsChange: ''
@@ -736,6 +739,7 @@
     atomixReplicas: 0
     kafkaReplicas: 1
     etcdReplicas: 1
+    topologies: 1-1-1, 1-2-2, 2-2-2
 
     project-type: pipeline
     concurrent: false
@@ -782,3 +786,13 @@
           name: etcdReplicas
           default: '{etcdReplicas}'
           description: 'How many ETCD instances to run'
+
+      - string:
+          name: topologies
+          default: '{topologies}'
+          description: 'Topologies configuration, comma separate list of "olt-pon-onu" eg: "1-16-16, 1-16-32"'
+
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
