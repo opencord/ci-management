@@ -12,12 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-topologies = [
-  ['olt': 1, 'onu': 1, 'pon': 1],
-  ['olt': 1, 'onu': 2, 'pon': 1],
-  ['olt': 1, 'onu': 2, 'pon': 2],
-]
-
 pipeline {
 
   agent {
@@ -62,6 +56,31 @@ pipeline {
   }
 
   stages {
+    stage ('Parse parameters') {
+      steps {
+        script {
+          format = "format is 'olt-pon-onu' separated bya comma, eg: '1-16-16, 1-16-32, 2-16-32'"
+          source = params.topologies
+
+          if (source == null || source == "") {
+            throw new Exception("You need to specify some deployment topologies, " + format)
+          }
+
+          topologies = []
+
+          for(topo in source.split(",")) {
+            t = topo.split("-")
+            topologies.add(['olt': t[0].trim(), 'pon': t[1].trim(), 'onu': t[2].trim()])
+          }
+
+          if (topologies.size() == 0) {
+            throw new Exception("Not enough topologies defined, " + format)
+          }
+          println "Deploying topologies:"
+          println topologies
+        }
+      }
+    }
     stage ('Cleanup') {
       steps {
         timeout(time: 10, unit: 'MINUTES') {
