@@ -156,6 +156,22 @@ pipeline {
           repeat_deploy_and_test(topologies)
       }
     }
+    stage('Aggregate stats') {
+      steps {
+        sh returnStdout: false, script: """
+        export IN_FOLDER=$WORKSPACE/stats/
+        export OUT_FOLDER=$WORKSPACE/plots/
+        mkdir -p \$OUT_FOLDER
+        cd $WORKSPACE/voltha-system-tests
+        make vst_venv
+        source ./vst_venv/bin/activate
+
+        sleep 60 # we have to wait for prometheus to collect all the information
+
+        python tests/scale/stats-aggregation.py -i \$IN_FOLDER -o \$OUT_FOLDER || true
+        """
+      }
+    }
   }
   post {
     always {
