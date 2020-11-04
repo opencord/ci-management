@@ -580,7 +580,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          time: '9'
+          time: '13'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
@@ -607,7 +607,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          time: '11'
+          time: '17'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
@@ -635,7 +635,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: 'Default'
-          time: '11'
+          time: '21'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
@@ -664,7 +664,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '12'
+          time: '1'
 
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -695,7 +695,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '8'
+          time: '5'
 
 
       # Berlin POD test job - voltha-2.5 versions: uses 1T8GEM tech profile on voltha branch
@@ -725,7 +725,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '1'
+          time: '9'
 
 
       # Berlin POD test job - master versions, uses 1T8GEM tech profile and openonu go on voltha branch
