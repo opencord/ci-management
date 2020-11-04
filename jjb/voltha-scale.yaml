@@ -299,6 +299,7 @@
           atomixReplicas: 3
           kafkaReplicas: 3
           etcdReplicas: 3
+          openonuAdapterReplicas: 8
           topologies: 1-16-16, 1-16-32, 2-16-32
 
 # list of parameters for the VOLTHA Jobs,
@@ -739,6 +740,7 @@
     atomixReplicas: 0
     kafkaReplicas: 1
     etcdReplicas: 1
+    openonuAdapterReplicas: 1
     topologies: 1-1-1, 1-2-2, 2-2-2
 
     project-type: pipeline
@@ -786,6 +788,11 @@
           name: etcdReplicas
           default: '{etcdReplicas}'
           description: 'How many ETCD instances to run'
+
+      - string:
+          name: openonuAdapterReplicas
+          default: '{openonuAdapterReplicas}'
+          description: 'How many OpenONU adapter instances to run'
 
       - string:
           name: topologies
