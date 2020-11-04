@@ -55,10 +55,10 @@ pipeline {
 
     // infrastructure size
     NUM_OF_OPENONU=1
-    NUM_OF_ONOS="1"
-    NUM_OF_ATOMIX="0"
-    NUM_OF_KAFKA="1"
-    NUM_OF_ETCD="1"
+    NUM_OF_ONOS="${onosReplicas}"
+    NUM_OF_ATOMIX="${atomixReplicas}"
+    NUM_OF_KAFKA="${kafkaReplicas}"
+    NUM_OF_ETCD="${etcdReplicas}"
   }
 
   stages {
@@ -132,19 +132,6 @@ pipeline {
         }
       }
     }
-    stage('Deploy monitoring infrastructure') {
-      steps {
-        sh '''
-        helm install nem-monitoring cord/nem-monitoring \
-        -f $HOME/voltha-scale/grafana.yaml \
-        --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
-        --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
-
-        # TODO download this file from https://github.com/opencord/helm-charts/blob/master/scripts/wait_for_pods.sh
-        bash /home/cord/voltha-scale/wait_for_pods.sh
-        '''
-      }
-    }
     stage('Deploy and test') {
       steps {
           repeat_deploy_and_test(topologies)
@@ -160,6 +147,27 @@ pipeline {
 
 def repeat_deploy_and_test(list) {
   for (int i = 0; i < list.size(); i++) {
+    stage('Cleanup') {
+      sh returnStdout: false, script: """
+      for hchart in \$(helm list -q | grep -E -v 'bbsim-sadis-server|onos|radius');
+      do
+          echo "Purging chart: \${hchart}"
+          helm delete "\${hchart}"
+      done
+      bash /home/cord/voltha-scale/wait_for_pods.sh
+      """
+    }
+    stage('Deploy monitoring infrastructure') {
+      sh returnStdout: false, script: '''
+      helm install nem-monitoring cord/nem-monitoring \
+      -f $HOME/voltha-scale/grafana.yaml \
+      --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
+      --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+
+      # TODO download this file from https://github.com/opencord/helm-charts/blob/master/scripts/wait_for_pods.sh
+      bash /home/cord/voltha-scale/wait_for_pods.sh
+      '''
+    }
     stage('Deploy topology: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
       timeout(time: 10, unit: 'MINUTES') {
         script {
@@ -167,14 +175,6 @@ def repeat_deploy_and_test(list) {
           currentRunStart = now.getTime() / 1000;
           println("Start: " + currentRunStart)
         }
-        sh returnStdout: false, script: """
-        for hchart in \$(helm list -q | grep -E -v 'bbsim-sadis-server|kafka|onos|radius|monitoring');
-        do
-            echo "Purging chart: \${hchart}"
-            helm delete "\${hchart}"
-        done
-        bash /home/cord/voltha-scale/wait_for_pods.sh
-        """
         sh returnStdout: false, script: """
         cd $WORKSPACE/kind-voltha/
 
@@ -189,6 +189,7 @@ def repeat_deploy_and_test(list) {
 
         export NUM_OF_BBSIM=${list[i]['olt']}
         export EXTRA_HELM_FLAGS+="--set enablePerf=true,pon=${list[i]['pon']},onu=${list[i]['onu']} "
+        export EXTRA_HELM_FLAGS+="--set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default"
         ./voltha up
 
         cp minimal-env.sh ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
@@ -240,6 +241,8 @@ def repeat_deploy_and_test(list) {
       cd $WORKSPACE/voltha-system-tests
       make vst_venv
       source ./vst_venv/bin/activate
+
+      sleep 60 # we have to wait for prometheus to collect all the information
 
       python tests/scale/sizing.py -o \$LOG_FOLDER -s ${minutesDelta}|| true
       """
