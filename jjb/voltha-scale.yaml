@@ -116,7 +116,7 @@
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -128,7 +128,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: matteoscandolo/voltha-onos:olt-log
+          onosImg: andreacampanella/voltha-onos:olt-queue
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
