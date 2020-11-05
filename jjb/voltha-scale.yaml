@@ -289,7 +289,6 @@
       - 'voltha-scale-matrix':
           name: 'voltha-scale-matrix-voltha-master-dev'
           build-node: 'voltha-scale'
-          time-trigger: H 0 * * * #
 
       # development matrix
       - 'voltha-scale-matrix':
@@ -301,6 +300,7 @@
           etcdReplicas: 3
           openonuAdapterReplicas: 8
           topologies: 1-16-16, 1-16-32, 2-16-32
+          time-trigger: H 0 * * *
 
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
