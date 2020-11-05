@@ -336,6 +336,8 @@ pipeline {
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.opencord
 
             kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.olt
+
+            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set TRACE org.onosproject.net.meter.impl
           done
 
 
