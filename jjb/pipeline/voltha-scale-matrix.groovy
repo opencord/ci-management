@@ -168,14 +168,14 @@ pipeline {
 
         sleep 60 # we have to wait for prometheus to collect all the information
 
-        python tests/scale/stats-aggregation.py -i \$IN_FOLDER -o \$OUT_FOLDER || true
+        python tests/scale/stats-aggregation.py -s \$IN_FOLDER -o \$OUT_FOLDER
         """
       }
     }
   }
   post {
     always {
-      archiveArtifacts artifacts: '*-install-minimal.log,*-minimal-env.sh,RobotLogs/**/*,stats/**/*'
+      archiveArtifacts artifacts: '*-install-minimal.log,*-minimal-env.sh,RobotLogs/**/*,stats/**/*,logs/**/*'
     }
   }
 }
@@ -230,11 +230,11 @@ def repeat_deploy_and_test(list) {
         cp minimal-env.sh ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
         cp install-minimal.log ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-install-minimal.log
         """
-        //sleep(120) // TODO can we improve and check once the bbsim-sadis-server is actually done loading subscribers??
+        sleep(120) // TODO can we improve and check once the bbsim-sadis-server is actually done loading subscribers??
       }
     }
     stage('Test topology: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
-      timeout(time: 10, unit: 'MINUTES') {
+      timeout(time: 15, unit: 'MINUTES') {
         sh returnStdout: false, script: """
         mkdir -p $WORKSPACE/RobotLogs/${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}
         cd $WORKSPACE/voltha-system-tests
@@ -248,8 +248,6 @@ def repeat_deploy_and_test(list) {
           -v withEapol:false \
           -v withDhcp:false \
           -v withIgmp:false \
-          --noncritical non-critical \
-          -e teardown \
           -e authentication \
           -e dhcp"
 
@@ -279,7 +277,7 @@ def repeat_deploy_and_test(list) {
 
       sleep 60 # we have to wait for prometheus to collect all the information
 
-      python tests/scale/sizing.py -o \$LOG_FOLDER -s ${minutesDelta}|| true
+      python tests/scale/sizing.py -o \$LOG_FOLDER -s ${minutesDelta}
       """
     }
   }
