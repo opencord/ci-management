@@ -132,7 +132,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          onosImg: andreacampanella/voltha-onos:olt-queue
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
