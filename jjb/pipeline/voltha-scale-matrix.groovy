@@ -227,10 +227,13 @@ def repeat_deploy_and_test(list) {
         export EXTRA_HELM_FLAGS+="--set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default"
         ./voltha up
 
+        # disable LLDP
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled false
+
         cp minimal-env.sh ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-minimal-env.sh
         cp install-minimal.log ../${list[i]['olt']}-${list[i]['pon']}-${list[i]['onu']}-install-minimal.log
         """
-        //sleep(120) // TODO can we improve and check once the bbsim-sadis-server is actually done loading subscribers??
+        sleep(120) // TODO can we improve and check once the bbsim-sadis-server is actually done loading subscribers??
       }
     }
     stage('Test topology: ' + list[i]['olt'] + "-" + list[i]['pon'] + "-" + list[i]['onu']) {
