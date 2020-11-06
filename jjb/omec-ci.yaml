@@ -856,7 +856,7 @@
 
       - string:
           name: ntlFile
-          default: 'run.ntl'
+          default: 'ci.ntl'
           description: 'NG40 test automation file'
 
       - string:
