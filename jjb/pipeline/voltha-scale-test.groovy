@@ -426,7 +426,7 @@ EOF
             _TAG=$_TAG bash $WORKSPACE/pprof.sh &
           fi
         '''
-        timeout(time: 11, unit: 'MINUTES') {
+        timeout(time: 15, unit: 'MINUTES') {
           sh '''
             ROBOT_PARAMS="-v olt:${olts} \
               -v pon:${pons} \

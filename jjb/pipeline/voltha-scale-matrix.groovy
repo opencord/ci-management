@@ -168,7 +168,7 @@ pipeline {
 
         sleep 60 # we have to wait for prometheus to collect all the information
 
-        python tests/scale/stats-aggregation.py -i \$IN_FOLDER -o \$OUT_FOLDER || true
+        python tests/scale/stats-aggregation.py -s \$IN_FOLDER -o \$OUT_FOLDER
         """
       }
     }
@@ -248,8 +248,6 @@ def repeat_deploy_and_test(list) {
           -v withEapol:false \
           -v withDhcp:false \
           -v withIgmp:false \
-          --noncritical non-critical \
-          -e teardown \
           -e authentication \
           -e dhcp"
 
@@ -279,7 +277,7 @@ def repeat_deploy_and_test(list) {
 
       sleep 60 # we have to wait for prometheus to collect all the information
 
-      python tests/scale/sizing.py -o \$LOG_FOLDER -s ${minutesDelta}|| true
+      python tests/scale/sizing.py -o \$LOG_FOLDER -s ${minutesDelta}
       """
     }
   }
