@@ -47,7 +47,7 @@
           ofAgentImg: andreacampanella/voltha-ofagent-go:meter-log
           rwCoreImg: andreacampanella/voltha-rw-core:meter-log
           withPcap: true
-          extraHelmFlags: '--set use_openonu_adapter_go=true'
+          extraHelmFlags: '--set use_openonu_adapter_go=true,authRetry=true,dhcpRetry=true'
 
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
