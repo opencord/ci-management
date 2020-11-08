@@ -24,6 +24,7 @@ pipeline {
     JENKINS_NODE_COOKIE="dontKillMe" // do not kill processes after the build is done
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
+    SSHPASS="karaf"
     SCHEDULE_ON_CONTROL_NODES="yes"
     FANCY=0
     NAME="minimal"
