@@ -597,30 +597,34 @@
           profile: 'Default'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
-      # Berlin pod with olt/onu - master versions Default tech profile and timer based job
+      # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod'
+          config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
           branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
           num-of-openonu: '2'
           num-of-onos: '3'
           num-of-atomix: '3'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
-          profile: 'Default'
+          profile: '1T8GEM'
           time: '13'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod'
+          config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
           branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
           test-repo: 'voltha-system-tests'
-          profile: 'Default'
+          profile: '1T8GEM'
           power-switch: True
 
      # Berlin pod with olt/onu - voltha-2.5 Default tech profile and timer based job
