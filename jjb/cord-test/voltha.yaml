@@ -412,6 +412,36 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
           profile: '1T4GEM'
 
+     # Demo pod with xgs-pon olt/onu - master 1T8GEM tech profile and openonu go and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod-openonugo'
+          release: 'master'
+          branch: 'master'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_DT_openonugo'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T8GEM'
+          time: '10'
+
+
+      # Demo POD test job - master versions, uses 1T8GEM tech profile and openonu go on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod-openonugo'
+          name-extension: '_DT_openonugo'
+          work-flow: 'DT'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha-dt-physical-functional-tests-openonu-go.groovy'
+
       # Menlo DEMO-POD - Default TechProfile - manual build job
       - 'build_pod_manual':
           build-node: 'menlo-demo-pod'
