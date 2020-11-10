@@ -27,6 +27,7 @@
           openonuAdapterReplicas: 1
           openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           extraHelmFlags: '--set use_openonu_adapter_go=true'
+          onosImg: andreacampanella/voltha-onos:olt-meter-removal-master
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-go-scale-measurements-master-1-16-32-att-subscribers'
@@ -44,9 +45,6 @@
           openonuAdapterReplicas: 1
           openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           onosImg: andreacampanella/voltha-onos:olt-meter-removal-master
-          ofAgentImg: andreacampanella/voltha-ofagent-go:meter-log
-          rwCoreImg: andreacampanella/voltha-rw-core:meter-log
-          withPcap: true
           extraHelmFlags: '--set use_openonu_adapter_go=true,authRetry=true,dhcpRetry=true'
 
       # this job will be used to test custom images without disrupting tests on master
@@ -84,6 +82,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-meter-removal-master
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -100,6 +99,7 @@
           withDhcp: true
           withIgmp: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-meter-removal-master
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
@@ -132,6 +132,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-meter-removal-master
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -148,6 +149,7 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-meter-removal-master
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -167,6 +169,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          onosImg: andreacampanella/voltha-onos:olt-meter-removal-master
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
