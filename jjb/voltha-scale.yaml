@@ -332,6 +332,11 @@
           description: 'Log level for all the components'
 
       - string:
+          name: volthaStacks
+          default: '{volthaStacks}'
+          description: 'Number of VOLTHA Stacks to deploy'
+
+      - string:
           name: onus
           default: '{onus}'
           description: 'Number of ONUs to provision'
@@ -560,6 +565,7 @@
     onosChart: onos/onos-classic
     radiusChart: onf/freeradius
 
+    volthaStacks: 2
     olts: 2
     pons: 2
     onus: 2
@@ -625,7 +631,7 @@
 - job-template:
     id: 'voltha-scale-measurements-dev'
     name: '{name}'
-    pipeline-script: 'voltha-scale-test.groovy'
+    pipeline-script: 'voltha-scale-multi-stack.groovy'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -660,6 +666,7 @@
     onosChart: onos/onos-classic
     radiusChart: onf/freeradius
 
+    volthaStacks: 1
     olts: 2
     pons: 2
     onus: 2
@@ -683,7 +690,7 @@
     extraHelmFlags: ''
     onosStatInterval: 5
     volthaSystemTestsChange: ''
-    kindVolthaChange: ''
+    kindVolthaChange: 'refs/changes/85/21485/6'
     inMemoryEtcdStorage: true
     karafHome: 'apache-karaf-4.2.9'
     logLevel: 'INFO'
