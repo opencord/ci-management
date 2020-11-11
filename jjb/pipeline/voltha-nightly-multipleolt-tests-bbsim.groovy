@@ -37,11 +37,11 @@ pipeline {
     DEPLOY_K8S="yes"
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="external"
+    NUM_OF_BBSIM="${olts}"
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-e PowerSwitch ${params.extraRobotArgs}"
     KARAF_HOME="${params.karafHome}"
     DIAGS_PROFILE="VOLTHA_PROFILE"
-    NUM_OF_BBSIM="${olts}"
   }
   stages {
     stage('Clone kind-voltha') {
@@ -119,27 +119,7 @@ pipeline {
            ./log-combine.sh > /dev/null &
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
-           '''
-      }
-    }
-
-    stage('Alarm Tests') {
-      environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/AlarmTests"
-      }
-      when {
-        expression {
-          return params.withAlarms
-        }
-      }
-      steps {
-        sh '''
-           set +e
-           mkdir -p $WORKSPACE/RobotLogs
-
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeAlarmtestTarget} || true
+           make -C $WORKSPACE/voltha-system-tests functional-multi-olt || true
            '''
       }
     }
@@ -154,7 +134,7 @@ pipeline {
            mkdir -p $WORKSPACE/RobotLogs
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeFailtestTarget} || true
+           make -C $WORKSPACE/voltha-system-tests bbsim-multi-olt-failurescenarios || true
            '''
       }
     }
@@ -169,7 +149,7 @@ pipeline {
            mkdir -p $WORKSPACE/RobotLogs
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-test ${makeErrortestTarget} || true
+           make -C $WORKSPACE/voltha-system-tests bbsim-multi-olt-errorscenarios || true
            '''
       }
     }
