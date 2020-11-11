@@ -6,6 +6,7 @@
 
     project-name: '{name}'
     manualBranch: ''
+    olts: 1
 
     jobs:
       - 'voltha-periodic-test':
@@ -13,7 +14,27 @@
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
+          make-target-failtest: bbsim-failurescenarios
+          make-target-errortest: bbsim-errorscenarios
+          make-target-alarmtest: bbsim-alarms-kind
+          withAlarms: true
           code-branch: 'master'
+          olts: 1
+          onus: 2
+          pons: 2
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-test-bbsim'
+          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
+          build-node: 'qct-pod4-node2'
+          make-target: functional-multi-olt
+          make-target-failtest: bbsim-multi-olt-failurescenarios
+          make-target-errortest: bbsim-multi-olt-errorscenarios
+          make-target-alarmtest: bbsim-alarms-kind
+          withAlarms: false
+          code-branch: 'master'
+          olts: 2
           onus: 2
           pons: 2
           time-trigger: "H H/12 * * *"
@@ -22,6 +43,10 @@
           name: 'periodic-voltha-test-bbsim-openonugo'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
+          make-target-failtest: bbsim-failurescenarios
+          make-target-errortest: bbsim-errorscenarios
+          make-target-alarmtest: bbsim-alarms-kind
+          withAlarms: true
           make-target: functional-single-kind
           code-branch: 'master'
           work-flow: 'DT'
@@ -35,6 +60,10 @@
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
+          make-target-failtest: bbsim-failurescenarios
+          make-target-errortest: bbsim-errorscenarios
+          make-target-alarmtest: bbsim-alarms-kind
+          withAlarms: true
           code-branch: 'voltha-2.5'
           onus: 2
           pons: 2
@@ -151,6 +180,7 @@
     kindVolthaChange: ''
     extraHelmFlags: ''
     sandbox: true
+    olts: 1
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -178,10 +208,30 @@
           default: '--set onu={onus},pon={pons},{extraHelmFlags}'
           description: 'Helm flags to pass to ./voltha up'
 
+       - bool:
+          name: withAlarms
+          default: false
+          description: "Run alarm based tests when true"
+
       - string:
           name: makeTarget
           default: '{make-target}'
           description: 'Makefile target to invoke during test'
+
+      - string:
+          name: makeFailtestTarget
+          default: '{make-target-failtest}'
+          description: 'Makefile target to invoke during failure/based test'
+
+      - string:
+          name: makeErrortestTarget
+          default: '{make-target-errortest}'
+          description: 'Makefile target to invoke during error test'
+
+      - string:
+          name: makeAlarmtestTarget
+          default: '{make-target-alarmtest}'
+          description: 'Makefile target to invoke during alarm test'
 
       - string:
           name: manifestUrl
@@ -237,6 +287,11 @@
           name: kindVolthaChange
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: olts
+          default: '{olts}'
+          description: 'How many BBSim instances to run'
 
     project-type: pipeline
     concurrent: true
