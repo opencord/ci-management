@@ -41,6 +41,7 @@ pipeline {
     ROBOT_MISC_ARGS="-e PowerSwitch ${params.extraRobotArgs}"
     KARAF_HOME="${params.karafHome}"
     DIAGS_PROFILE="VOLTHA_PROFILE"
+    NUM_OF_BBSIM="${olts}"
   }
   stages {
     stage('Clone kind-voltha') {
@@ -118,7 +119,7 @@ pipeline {
            ./log-combine.sh > /dev/null &
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests functional-single-kind || true
+           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
            '''
       }
     }
@@ -127,13 +128,18 @@ pipeline {
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/AlarmTests"
       }
+      when {
+        expression {
+          return params.withAlarms
+        }
+      }
       steps {
         sh '''
            set +e
            mkdir -p $WORKSPACE/RobotLogs
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests bbsim-alarms-kind || true
+           make -C $WORKSPACE/voltha-system-tests ${makeAlarmtestTarget} || true
            '''
       }
     }
@@ -148,7 +154,7 @@ pipeline {
            mkdir -p $WORKSPACE/RobotLogs
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests bbsim-failurescenarios || true
+           make -C $WORKSPACE/voltha-system-tests ${makeFailtestTarget} || true
            '''
       }
     }
@@ -163,7 +169,7 @@ pipeline {
            mkdir -p $WORKSPACE/RobotLogs
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests bbsim-errorscenarios || true
+           make -C $WORKSPACE/voltha-system-tests ${makeErrortestTarget} || true
            '''
       }
     }
