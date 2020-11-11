@@ -626,6 +626,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with olt/onu - voltha-2.5 Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
