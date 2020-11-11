@@ -6,6 +6,7 @@
 
     project-name: '{name}'
     manualBranch: ''
+    olts: 1
 
     jobs:
       - 'voltha-periodic-test':
@@ -14,6 +15,17 @@
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
           code-branch: 'master'
+          onus: 2
+          pons: 2
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-test-bbsim'
+          pipeline-script: 'voltha-nightly-multipleolt-tests-bbsim.groovy'
+          build-node: 'qct-pod4-node2'
+          make-target: functional-multi-olt
+          code-branch: 'master'
+          olts: 2
           onus: 2
           pons: 2
           time-trigger: "H H/12 * * *"
@@ -151,6 +163,7 @@
     kindVolthaChange: ''
     extraHelmFlags: ''
     sandbox: true
+    olts: 1
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -237,6 +250,11 @@
           name: kindVolthaChange
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: olts
+          default: '{olts}'
+          description: 'How many BBSim instances to run'
 
     project-type: pipeline
     concurrent: true
