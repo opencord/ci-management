@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4da94e10_a21edbfe",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-11-12T14:56:21Z",
+      "side": 0,
+      "message": "shouldn\u0027t this `voltha-.*-adapter.*`  match that adapter already ?",
+      "revId": "32a8cccfceb647f8a1365ca35ebcc461bbb7969f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
