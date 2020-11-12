@@ -1,0 +1,32 @@
+---
+# verification jobs for 'voltha-eponolt-adapter' repo
+
+- project:
+    name: voltha-eponolt-adapter
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-eponolt-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-voltha-eponolt-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-eponolt-adapter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-eponolt-adapter_licensed'
+      - 'make-unit-test':
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint sca test'
+          unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-voltha-eponolt-adapter-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
+          extraEnvironmentVars: BUILD_PROFILED=true
