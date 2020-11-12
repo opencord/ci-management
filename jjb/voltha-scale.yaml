@@ -64,6 +64,28 @@
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
 
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-experimental-multi-stack'
+          build-node: 'onf-pod1-head-node'
+          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          'disable-job': false
+          # trigger on Feb 29th (a.k.a only trigger it manually)
+          time-trigger: "H 0 29 2 *"
+          withMonitoring: false
+          volthaStacks: 2
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          withPcap: true
+          volthaSystemTestsChange: refs/changes/27/21627/2
+          kindVolthaChange: refs/changes/85/21485/8
+
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
@@ -308,6 +330,11 @@
     name: voltha-scale-job-parameters
     parameters:
       - string:
+          name: pipeline-script
+          default: '{pipeline-script}'
+          description: 'The pipeline script to use'
+
+      - string:
           name: release
           default: '{release}'
           description: 'Version of the code to test (matches a branch in kind-voltha and voltha-system-tests repos)'
@@ -326,6 +353,11 @@
           name: logLevel
           default: '{logLevel}'
           description: 'Log level for all the components'
+
+      - string:
+          name: volthaStacks
+          default: '{volthaStacks}'
+          description: 'Number of VOLTHA Stacks to deploy'
 
       - string:
           name: onus
@@ -520,7 +552,6 @@
 - job-template:
     id: 'voltha-scale-measurements'
     name: '{name}'
-    pipeline-script: 'voltha-scale-test.groovy'
     disabled: '{disable-job}'
 
     description: |
@@ -540,6 +571,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
+    pipeline-script: 'voltha-scale-test.groovy'
     release: master
 
     bbsimImg: voltha/bbsim:master
@@ -556,6 +588,7 @@
     onosChart: onos/onos-classic
     radiusChart: onf/freeradius
 
+    volthaStacks: 1
     olts: 2
     pons: 2
     onus: 2
@@ -621,7 +654,6 @@
 - job-template:
     id: 'voltha-scale-measurements-dev'
     name: '{name}'
-    pipeline-script: 'voltha-scale-test.groovy'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -640,6 +672,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
+    pipeline-script: 'voltha-scale-test.groovy'
     release: master
 
     bbsimImg: voltha/bbsim:master
@@ -656,6 +689,7 @@
     onosChart: onos/onos-classic
     radiusChart: onf/freeradius
 
+    volthaStacks: 1
     olts: 2
     pons: 2
     onus: 2
