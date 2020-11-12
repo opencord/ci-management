@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "eaa4b688_c2968b82",
+        "filename": "jjb/pipeline/voltha-nightly-multipleolt-tests-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-11-12T23:47:25Z",
+      "side": 1,
+      "message": "do we need to duplicate \"voltha-nightly-tests-bbsim.groovy\"? can\u0027t we parametrize it?",
+      "revId": "230a5143467d4ffc3e35ba2dbaf4b1476c45b91d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
