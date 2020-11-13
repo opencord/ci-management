@@ -198,6 +198,9 @@ pipeline {
         sh returnStdout: false, script: '''
           cd $WORKSPACE/kind-voltha/
 
+          ETCD_CHART=$HOME/teone/helm-charts/etcd
+          KAFKA_CHART=$HOME/teone/helm-charts/kafka
+
           # KAFKA config
           NUM_OF_KAFKA=${kafkaReplicas}
           EXTRA_HELM_FLAGS+=' --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default '

@@ -180,8 +180,7 @@ pipeline {
       // includes monitoring, kafka, etcd
       steps {
         sh '''
-        helm repo add bitnami https://charts.bitnami.com/bitnami
-        helm install kafka bitnami/kafka --set replicaCount=${kafkaReplicas} --set persistence.enabled=false \
+        helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas} --set persistence.enabled=false \
           --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
           --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
 
@@ -189,7 +188,7 @@ pipeline {
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
         ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
         ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install -f $WORKSPACE/kind-voltha/values.yaml --set replicas=${etcdReplicas} etcd bitnami/etcd $ETCD_FLAGS
+        helm install -f $WORKSPACE/kind-voltha/values.yaml --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
           helm install nem-monitoring cord/nem-monitoring \
