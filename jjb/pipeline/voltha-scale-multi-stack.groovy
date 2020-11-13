@@ -102,6 +102,8 @@ pipeline {
 
             test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
+            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs kill -9
+
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
           """
@@ -206,7 +208,7 @@ pipeline {
           NAME=infra JUST_INFRA=y ./voltha up
 
           # Forward the ETCD port onto $VOLTHA_ETCD_PORT
-          _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd $VOLTHA_ETCD_PORT:2379&
+          _TAG=etcd-port-forward kubectl -n \$INFRA_NS port-forward --address 0.0.0.0 -n default service/etcd $VOLTHA_ETCD_PORT:2379&
         '''
       }
     }
@@ -229,9 +231,6 @@ pipeline {
           _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
         done
         '''
-        // bbsim-sadis server takes a while to cache the subscriber entries
-        // wait for that before starting the tests
-        sleep(120)
       }
     }
     stage('Configuration') {
@@ -273,22 +272,23 @@ pipeline {
           if [ ${withMibTemplate} = true ] ; then
             rm -f BBSM-12345123451234512345-00000000000001-v1.json
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods -l app=etcd | awk 'NR==2{print \$1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl -n \$INFRA_NS exec -it \$(kubectl -n \$INFRA_NS get pods -l app=etcd | awk 'NR==2{print \$1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
-          if [ ${withPcap} = true ] ; then
+          if [ ${withPcap} = true ] && [ ${volthaStacks} -eq 1 ] ; then
+            # FIXME ofagent pcap has to be replicated per stack
             # Start the tcp-dump in ofagent
-            export OF_AGENT=\$(kubectl get pods -l app=ofagent -o name)
+            export OF_AGENT=\$(kubectl -n \$INFRA_NS get pods -l app=ofagent -o name)
             kubectl exec \$OF_AGENT -- apk update
             kubectl exec \$OF_AGENT -- apk add tcpdump
             kubectl exec \$OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
-            _TAG=ofagent-tcpdump kubectl exec \$OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
+            _TAG=ofagent-tcpdump kubectl -n \$INFRA_NS exec \$OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
 
             # Start the tcp-dump in radius
-            export RADIUS=\$(kubectl get pods -l app=radius -o name)
+            export RADIUS=\$(kubectl -n \$INFRA_NS get pods -l app=radius -o name)
             kubectl exec \$RADIUS -- apt-get update
             kubectl exec \$RADIUS -- apt-get install -y tcpdump
-            _TAG=radius-tcpdump kubectl exec \$RADIUS -- tcpdump -w out.pcap&
+            _TAG=radius-tcpdump kubectl -n \$INFRA_NS exec \$RADIUS -- tcpdump -w out.pcap&
 
             # Start the tcp-dump in ONOS
             for i in \$(seq 0 \$ONOSES); do
@@ -296,14 +296,16 @@ pipeline {
               kubectl exec \$INSTANCE -- apt-get update
               kubectl exec \$INSTANCE -- apt-get install -y tcpdump
               kubectl exec \$INSTANCE -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
-              _TAG=\$INSTANCE kubectl exec \$INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap&
+              _TAG=\$INSTANCE kubectl -n \$INFRA_NS exec \$INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap&
             done
+          else
+            echo "PCAP not supported for multiple VOLTHA stacks"
           fi
           """
         }
       }
     }
-    stage('Run Test') {
+    stage('Setup Test') {
       steps {
         sh '''
           mkdir -p $WORKSPACE/RobotLogs
@@ -313,8 +315,6 @@ pipeline {
         sh '''
           if [ ${withProfiling} = true ] ; then
             mkdir -p $LOG_FOLDER/pprof
-            echo $PATH
-            #Creating Python script for ONU Detection
             cat << EOF > $WORKSPACE/pprof.sh
 timestamp() {
   date +"%T"
@@ -347,7 +347,15 @@ EOF
             _TAG=$_TAG bash $WORKSPACE/pprof.sh &
           fi
         '''
+        // bbsim-sadis server takes a while to cache the subscriber entries
+        // wait for that before starting the tests
+        sleep(60)
+      }
+    }
+    stage('Run Test') {
+      steps {
         test_voltha_stacks(params.volthaStacks)
+      }
     }
   }
   post {
@@ -469,6 +477,7 @@ EOF
       '''
       // dump all the BBSim(s) ONU information
       sh '''
+      # TODO parametrize for stacks
       BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
       IDS=($BBSIM_IDS)
 
@@ -476,18 +485,6 @@ EOF
       do
         kubectl exec -t $bbsim -- bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
         kubectl exec -t $bbsim -- bbsimctl service list > $LOG_FOLDER/$bbsim-service-list.txt || true
-      done
-      '''
-      // get DHCP server stats
-      sh '''
-      BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
-      IDS=($BBSIM_IDS)
-
-      for bbsim in "${IDS[@]}"
-      do
-        kubectl exec -t $bbsim -- dhcpd -lf /var/lib/dhcp/dhcpd.leases -play /tmp/dhcplog 2>&1 | tee $LOG_FOLDER/$bbsim-dhcp-replay.txt || true
-        kubectl cp $bbsim:/tmp/dhcplog $LOG_FOLDER/$bbsim-dhcp-logs || true
-        kubectl cp $bbsim:/var/lib/dhcp/dhcpd.leases $LOG_FOLDER/$bbsim-dhcp-leases || true
       done
       '''
       // get ONOS debug infos
@@ -535,6 +532,7 @@ EOF
       script {
         try {
           sh '''
+          # TODO parametrize for multiple stacks
           voltctl -m 8MB device list -o json > $LOG_FOLDER/device-list.json || true
           python -m json.tool $LOG_FOLDER/device-list.json > $LOG_FOLDER/voltha-devices-list.json || true
           rm $LOG_FOLDER/device-list.json || true
@@ -675,9 +673,9 @@ def test_voltha_stacks(numberOfStacks) {
   for (int i = 1; i <= numberOfStacks.toInteger(); i++) {
     stage("Test VOLTHA stack " + i) {
       timeout(time: 15, unit: 'MINUTES') {
-        sh '''
+        sh """
           export VOLTCONFIG="$HOME/.volt/config-voltha${i}"
-          ROBOT_PARAMS="-v stackId:%{i} \
+          ROBOT_PARAMS="-v stackId:${i} \
             -v olt:${olts} \
             -v pon:${pons} \
             -v onu:${onus} \
@@ -708,10 +706,9 @@ def test_voltha_stacks(numberOfStacks) {
           cd $WORKSPACE/voltha-system-tests
           source ./vst_venv/bin/activate
           robot -d $WORKSPACE/RobotLogs \
-          $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
-        '''
+          \$ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+        """
       }
-    }
     }
   }
 }
