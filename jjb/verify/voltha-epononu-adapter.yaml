@@ -1,0 +1,30 @@
+---
+# verification jobs for 'voltha-epononu-adapter' repo
+
+- project:
+    name: voltha-epononu-adapter
+    project: '{name}'
+
+    jobs:
+      - 'verify-voltha-epononu-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-voltha-epononu-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-voltha-epononu-adapter-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-epononu-adapter_licensed'
+      - 'make-unit-test':
+          unit-test-targets: 'test'
+          unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'publish-voltha-epononu-adapter-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
