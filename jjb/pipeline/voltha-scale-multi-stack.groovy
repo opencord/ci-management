@@ -559,7 +559,7 @@ EOF
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
     }
   }
 }
@@ -705,7 +705,7 @@ def test_voltha_stacks(numberOfStacks) {
 
           cd $WORKSPACE/voltha-system-tests
           source ./vst_venv/bin/activate
-          robot -d $WORKSPACE/RobotLogs \
+          robot -d $WORKSPACE/RobotLogs/voltha${i} \
           \$ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
         """
       }
