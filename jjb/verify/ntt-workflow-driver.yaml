@@ -1,0 +1,29 @@
+---
+# verification jobs for 'ntt-workflow-driver' repo
+
+- project:
+    name: ntt-workflow-driver
+    project: '{name}'
+
+    jobs:
+      - 'verify-ntt-workflow-driver-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-ntt-workflow-driver-jobs'
+
+- job-group:
+    name: 'verify-ntt-workflow-driver-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_ntt-workflow-driver_licensed'
+      - 'xos-unit-test':
+          dependency-jobs: 'verify_ntt-workflow-driver_tag-collision'
+      - 'xos-service-upgrade':
+          dependency-jobs: 'verify_ntt-workflow-driver-unit-test'
+
+- job-group:
+    name: 'publish-ntt-workflow-driver-jobs'
+    jobs:
+      - 'docker-publish':
+          docker-repo: 'xosproject'
+          dependency-jobs: 'version-tag'
