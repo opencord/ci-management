@@ -91,11 +91,16 @@ pipeline {
               kill -9 \$P_ID
             fi
 
-            for hchart in \$(helm list -q | grep -E -v 'docker-registry|kafkacat');
+            NAMESPACES="voltha1 voltha2 infra default"
+            for NS in \$NAMESPACES
             do
-                echo "Purging chart: \${hchart}"
-                helm delete "\${hchart}"
+                for hchart in \$(helm list -n \$NS -q | grep -E -v 'docker-registry|kafkacat');
+                do
+                    echo "Purging chart: \${hchart}"
+                    helm delete -n \$NS "\${hchart}"
+                done
             done
+
             bash /home/cord/voltha-scale/wait_for_pods.sh
 
             test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
