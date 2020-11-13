@@ -34,6 +34,10 @@
     build-days-to-keep: 60
     artifact-num-to-keep: 30
 
+    # How long to keep builds and artifacts for jobs that generate a lot of artifacts
+    big-build-days-to-keep: 5
+    big-artifact-num-to-keep: 5
+
     # list of artifacts to archive
     archive-artifacts: ''
 
