@@ -134,8 +134,8 @@
 
     properties:
       - cord-infra-properties:
-          build-days-to-keep: 30
-          artifact-num-to-keep: 15
+          build-days-to-keep: '{big-build-days-to-keep}'
+          artifact-num-to-keep: '{big-artifact-num-to-keep}'
 
 # VOLTHA Build Jobs
 - job-template:
