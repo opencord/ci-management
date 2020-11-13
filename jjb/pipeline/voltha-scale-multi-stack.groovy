@@ -256,9 +256,7 @@ pipeline {
             kubectl -n \$INFRA_NS exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.onosproject
             kubectl -n \$INFRA_NS exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.opencord
 
-            kubectl -n \$INFRA_NS exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.olt
-
-            kubectl -n \$INFRA_NS exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set TRACE org.onosproject.net.meter.impl
+            kubectl -n \$INFRA_NS exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.dhcpl2relay
           done
 
           # Set Flows/Ports/Meters poll frequency
@@ -451,18 +449,18 @@ EOF
       ])
       step([$class: 'RobotPublisher',
         disableArchiveOutput: false,
-        logFileName: 'RobotLogs/log.html',
+        logFileName: 'RobotLogs/**/log.html',
         otherFiles: '',
-        outputFileName: 'RobotLogs/output.xml',
+        outputFileName: 'RobotLogs/**/output.xml',
         outputPath: '.',
         passThreshold: 100,
-        reportFileName: 'RobotLogs/report.html',
+        reportFileName: 'RobotLogs/**/report.html',
         unstableThreshold: 0]);
       // get all the logs from kubernetes PODs
       sh returnStdout: false, script: '''
 
         # store information on running charts
-        helm ls > $LOG_FOLDER/helm-list.txt || true
+        helm ls --all-namespaces > $LOG_FOLDER/helm-list.txt || true
 
         # store information on the running pods
         kubectl get pods -o wide > $LOG_FOLDER/pods.txt || true
@@ -470,23 +468,27 @@ EOF
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
 
         # copy the ONOS logs directly from the container to avoid the color codes
-        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
+        printf '%s\n' $(kubectl -n \$INFRA_NS get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl -n \$INFRA_NS cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
 
         # get radius logs out of the container
-        kubectl cp $(kubectl get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER//radius.log || true
+        kubectl -n \$INFRA_NS  cp $(kubectl -n \$INFRA_NS get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER//radius.log || true
       '''
       // dump all the BBSim(s) ONU information
-      sh '''
-      # TODO parametrize for stacks
-      BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
-      IDS=($BBSIM_IDS)
+      script {
+        for (int i = 1; i <= params.volthaStacks.toInteger(); i++) {
+          stack_ns="voltha"+i
+          sh """
+          BBSIM_IDS=\$(kubectl -n ${stack_ns} get pods | grep bbsim | grep -v server | awk '{print \$1}')
+          IDS=(\$BBSIM_IDS)
 
-      for bbsim in "${IDS[@]}"
-      do
-        kubectl exec -t $bbsim -- bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
-        kubectl exec -t $bbsim -- bbsimctl service list > $LOG_FOLDER/$bbsim-service-list.txt || true
-      done
-      '''
+          for bbsim in "\${IDS[@]}"
+          do
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl service list > $LOG_FOLDER/$bbsim-service-list.txt || true
+          done
+          """
+        }
+      }
       // get ONOS debug infos
       sh '''
 
@@ -530,24 +532,29 @@ EOF
       '''
       // get VOLTHA debug infos
       script {
-        try {
-          sh '''
-          # TODO parametrize for multiple stacks
-          voltctl -m 8MB device list -o json > $LOG_FOLDER/device-list.json || true
-          python -m json.tool $LOG_FOLDER/device-list.json > $LOG_FOLDER/voltha-devices-list.json || true
-          rm $LOG_FOLDER/device-list.json || true
-          voltctl -m 8MB device list > $LOG_FOLDER/voltha-devices-list.txt || true
+        for (int i = 1; i <= params.volthaStacks.toInteger(); i++) {
+          stack_ns="voltha"+i
+          voltcfg="~/.volt/config-voltha"+i
+          println stack_ns
+          try {
+            sh """
+            voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list -o json > $LOG_FOLDER/device-list.json || true
+            python -m json.tool $LOG_FOLDER/device-list.json > $LOG_FOLDER/voltha-devices-list.json || true
+            rm $LOG_FOLDER/device-list.json || true
+            voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list > $LOG_FOLDER/voltha-devices-list.txt || true
 
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
-              printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
+            DEVICE_LIST=
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list | grep olt | awk '{print \$1}') | xargs -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns}-m 8MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list | grep olt | awk '{print \$1}') | xargs -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
 
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
-          '''
-        } catch(e) {
-          sh '''
-          echo "Can't get device list from voltclt"
-          '''
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
+            """
+          } catch(e) {
+            sh '''
+            echo "Can't get device list from voltclt"
+            '''
+          }
         }
       }
       // get cpu usage by container

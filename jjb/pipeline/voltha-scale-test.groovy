@@ -100,6 +100,9 @@ pipeline {
 
             test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
+            # remove orphaned port-forward from different namespaces
+            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs kill -9
+
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
           """
