@@ -202,15 +202,15 @@ pipeline {
         sh returnStdout: false, script: '''
           cd $WORKSPACE/kind-voltha/
 
-          ETCD_CHART=$HOME/teone/helm-charts/etcd
-          KAFKA_CHART=$HOME/teone/helm-charts/kafka
+          export ETCD_CHART=$HOME/teone/helm-charts/etcd
+          export KAFKA_CHART=$HOME/teone/helm-charts/kafka
 
           # KAFKA config
-          NUM_OF_KAFKA=${kafkaReplicas}
-          EXTRA_HELM_FLAGS+=' --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default '
+          export NUM_OF_KAFKA=${kafkaReplicas}
+          export EXTRA_HELM_FLAGS+=' --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default '
 
           # ETCD config
-          EXTRA_HELM_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
+          export EXTRA_HELM_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
 
           NAME=infra JUST_INFRA=y ./voltha up
 
