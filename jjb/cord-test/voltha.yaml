@@ -439,7 +439,7 @@
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          profile: '1T8GEM'
+          profile: '1T4GEM'
           in-band-management: true
           power-switch: True
           pipeline-script: 'voltha-physical-functional-tests-openonu-go.groovy'
