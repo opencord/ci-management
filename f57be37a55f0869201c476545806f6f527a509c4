@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "73c4b71f_e56f5840",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-11-16T22:49:38Z",
+      "side": 1,
+      "message": "need to add a default for make-target-failtest. make-target-errortest, make-target-alarmtest and withAlarms",
+      "range": {
+        "startLine": 183,
+        "startChar": 4,
+        "endLine": 183,
+        "endChar": 11
+      },
+      "revId": "f57be37a55f0869201c476545806f6f527a509c4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
