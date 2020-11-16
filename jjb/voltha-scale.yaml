@@ -75,8 +75,8 @@
           withMonitoring: false
           volthaStacks: 2
           olts: 2
-          pons: 8
-          onus: 16
+          pons: 16
+          onus: 32
           withFlows: true
           provisionSubscribers: true
           withEapol: true
@@ -86,6 +86,7 @@
           withPcap: true
           volthaSystemTestsChange: refs/changes/27/21627/2
           kindVolthaChange: refs/changes/85/21485/8
+          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:topic
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
