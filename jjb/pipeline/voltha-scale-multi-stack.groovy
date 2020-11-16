@@ -21,7 +21,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 60, unit: 'MINUTES')
+      timeout(time: 120, unit: 'MINUTES')
   }
   environment {
     JENKINS_NODE_COOKIE="dontKillMe" // do not kill processes after the build is done
@@ -420,11 +420,6 @@ EOF
             kubectl cp $INSTANCE:out.pcap $LOG_FOLDER/$INSTANCE.pcap || true
           done
         fi
-
-        cd voltha-system-tests
-        source ./vst_venv/bin/activate
-        python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
-        cat $WORKSPACE/execution-time.txt
       '''
       sh '''
         if [ ${withProfiling} = true ] ; then
@@ -721,6 +716,10 @@ def test_voltha_stacks(numberOfStacks) {
           source ./vst_venv/bin/activate
           robot -d $WORKSPACE/RobotLogs/voltha${i} \
           \$ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+
+          # collect results
+          python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/voltha${i}/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time-voltha${i}.txt || true
+          cat $WORKSPACE/execution-time-voltha${i}.txt
         """
       }
     }
