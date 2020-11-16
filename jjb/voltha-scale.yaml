@@ -73,6 +73,7 @@
           # time-trigger: "H 0 29 2 *"
           time-trigger: "H H/4 * * *"
           withMonitoring: false
+          logLevel: WARN
           volthaStacks: 2
           olts: 2
           pons: 16
