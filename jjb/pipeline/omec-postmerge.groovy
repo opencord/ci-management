@@ -69,34 +69,34 @@ pipeline {
           zmqiface_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-cpiface/tags/' | jq '.results[] | select(.name | test("${upfBranchName}-[0-9a-z]{7}\$")) | select(.last_updater_username=="zdwonf") |.name' | head -1 | tr -d \\\""""
           pfcpiface_tag = sh returnStdout: true, script: """curl -s 'https://registry.hub.docker.com/v2/repositories/omecproject/upf-epc-pfcpiface/tags/' | jq '.results[] | select(.name | test("${upfBranchName}-[0-9a-z]{7}\$")) | select(.last_updater_username=="zdwonf") |.name' | head -1 | tr -d \\\""""
 
-          hssdb_image = "omecproject/c3po-hssdb:"+hssdb_tag
-          hss_image = "omecproject/c3po-hss:"+hss_tag
-          mme_image = "omecproject/nucleus:"+mme_tag
-          spgwc_image = "omecproject/spgw:"+spgwc_tag
-          bess_image = "omecproject/upf-epc-bess:"+bess_tag
-          zmqiface_image = "omecproject/upf-epc-cpiface:"+zmqiface_tag
-          pfcpiface_image = "omecproject/upf-epc-pfcpiface:"+pfcpiface_tag
+          hssdb_image = "${params.registryProxy}/c3po-hssdb:"+hssdb_tag
+          hss_image = "${params.registryProxy}/c3po-hss:"+hss_tag
+          mme_image = "${params.registryProxy}/nucleus:"+mme_tag
+          spgwc_image = "${params.registryProxy}/spgw:"+spgwc_tag
+          bess_image = "${params.registryProxy}/upf-epc-bess:"+bess_tag
+          zmqiface_image = "${params.registryProxy}/upf-epc-cpiface:"+zmqiface_tag
+          pfcpiface_image = "${params.registryProxy}/upf-epc-pfcpiface:"+pfcpiface_tag
 
           updatedImages = ""
           switch("${params.repoName}") {
           case "c3po":
-            hssdb_image = "${params.registry}/c3po-hssdb:${branchName}-${abbreviated_commit_hash}"
-            hss_image = "${params.registry}/c3po-hss:${branchName}-${abbreviated_commit_hash}"
+            hssdb_image = "${params.registryProxy}/c3po-hssdb:${branchName}-${abbreviated_commit_hash}"
+            hss_image = "${params.registryProxy}/c3po-hss:${branchName}-${abbreviated_commit_hash}"
             updatedImages += hssdb_image + ","
             updatedImages += hss_image
             break
           case "spgw":
-            spgwc_image = "${params.registry}/spgw:${branchName}-${abbreviated_commit_hash}"
+            spgwc_image = "${params.registryProxy}/spgw:${branchName}-${abbreviated_commit_hash}"
             updatedImages += spgwc_image
             break
           case "Nucleus":
-            mme_image = "${params.registry}/nucleus:${branchName}-${abbreviated_commit_hash}"
+            mme_image = "${params.registryProxy}/nucleus:${branchName}-${abbreviated_commit_hash}"
             updatedImages += mme_image
             break
           case "upf-epc":
-            bess_image = "${params.registry}/upf-epc-bess:${branchName}-${abbreviated_commit_hash}"
-            zmqiface_image = "${params.registry}/upf-epc-cpiface:${branchName}-${abbreviated_commit_hash}"
-            pfcpiface_image = "${params.registry}/upf-epc-pfcpiface:${branchName}-${abbreviated_commit_hash}"
+            bess_image = "${params.registryProxy}/upf-epc-bess:${branchName}-${abbreviated_commit_hash}"
+            zmqiface_image = "${params.registryProxy}/upf-epc-cpiface:${branchName}-${abbreviated_commit_hash}"
+            pfcpiface_image = "${params.registryProxy}/upf-epc-pfcpiface:${branchName}-${abbreviated_commit_hash}"
             updatedImages += bess_image + ","
             updatedImages += zmqiface_image + ","
             updatedImages += pfcpiface_image + ","
