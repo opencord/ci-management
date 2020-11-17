@@ -19,8 +19,10 @@ pipeline {
 
     agent {
         docker {
-            image "omecproject/fossa-verify:latest"
+            image "registry.aetherproject.org/ci/fossa-verify:latest"
             label "${params.buildNode}"
+            registryUrl "https://registry.aetherproject.org/"
+            registryCredentialsId "registry.aetherproject.org"
         }
     }
 

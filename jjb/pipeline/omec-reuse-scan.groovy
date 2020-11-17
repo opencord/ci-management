@@ -19,8 +19,10 @@ pipeline {
 
     agent {
         docker {
-            image "omecproject/reuse-verify:latest"
+            image "registry.aetherproject.org/ci/reuse-verify:latest"
             label "${params.buildNode}"
+            registryUrl "https://registry.aetherproject.org/"
+            registryCredentialsId "registry.aetherproject.org"
         }
     }
 
