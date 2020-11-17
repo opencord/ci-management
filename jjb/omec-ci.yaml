@@ -8,6 +8,8 @@
     name: omec
     build-node: 'intel-102'
     github-organization: 'omec-project'
+    registry: 'registry.aetherproject.org'
+    registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
@@ -50,12 +52,11 @@
     project: '{name}'
 
     build-node: 'intel-102'
-
     github-organization: 'omec-project'
-
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
+    registry: 'registry.aetherproject.org'
 
     jobs:
       - 'omec-combined':
@@ -83,12 +84,11 @@
     project: '{name}'
 
     build-node: 'intel-102'
-
     github-organization: 'omec-project'
-
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
+    registry: 'registry.aetherproject.org'
 
     jobs:
       - 'omec-combined':
@@ -120,12 +120,11 @@
     project: '{name}'
 
     build-node: 'intel-102'
-
     github-organization: 'omec-project'
-
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
+    registry: 'registry.aetherproject.org'
 
     jobs:
       - 'omec-combined':
@@ -152,12 +151,11 @@
     project: '{name}'
 
     build-node: 'intel-102'
-
     github-organization: 'omec-project'
-
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
+    registry: 'registry.aetherproject.org'
 
     jobs:
       - 'omec-combined':
@@ -185,12 +183,11 @@
     project: '{name}'
 
     build-node: 'intel-102'
-
     github-organization: 'omec-project'
-
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
+    registry: 'registry.aetherproject.org'
 
     jobs:
       - 'omec-fossa':
@@ -206,12 +203,11 @@
     project: '{name}'
 
     build-node: 'intel-102'
-
     github-organization: 'omec-project'
-
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
+    registry: 'registry.aetherproject.org'
 
     jobs:
       - 'omec-fossa':
@@ -227,10 +223,10 @@
     project: '{name}'
 
     github-organization: 'omec-project'
-
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
+    registry: 'registry.aetherproject.org'
 
     jobs:
       - 'omec-fossa':
@@ -580,9 +576,9 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
-          name: registry
-          default: 'omecproject'
-          description: 'Docker registry to push images to'
+          name: registryProxy
+          default: '{registry-proxy}'
+          description: 'Harbor proxy which caches dockerhub images'
 
       - string:
           name: repoName
@@ -688,8 +684,13 @@
 
       - string:
           name: registry
-          default: 'registry.aetherproject.org/omecproject'
+          default: '{registry}'
           description: 'Docker registry that stores images built for CI testing'
+
+      - string:
+          name: registryProxy
+          default: '{registry-proxy}'
+          description: 'Harbor proxy which caches dockerhub images'
 
       - string:
           name: c3poBranch
@@ -775,37 +776,37 @@
 
       - string:
           name: hssdbImage
-          default: 'omecproject/c3po-hssdb:master-latest'
+          default: '{registry-proxy}/c3po-hssdb:master-latest'
           description: 'Docker image for hssdb. Leave empty to use default helm-charts value'
 
       - string:
           name: hssImage
-          default: 'omecproject/c3po-hss:master-latest'
+          default: '{registry-proxy}/c3po-hss:master-latest'
           description: 'Docker image for hss. Leave empty to use default helm-charts value'
 
       - string:
           name: mmeImage
-          default: 'omecproject/nucleus:master-latest'
+          default: '{registry-proxy}/nucleus:master-latest'
           description: 'Docker image for mme. Leave empty to use default helm-charts value'
 
       - string:
           name: spgwcImage
-          default: 'omecproject/spgw:master-latest'
+          default: '{registry-proxy}/spgw:master-latest'
           description: 'Docker image for spgwc. Leave empty to use default helm-charts value'
 
       - string:
           name: bessImage
-          default: 'omecproject/upf-epc-bess:master-latest'
+          default: '{registry-proxy}/upf-epc-bess:master-latest'
           description: 'Docker image for bess. Leave empty to use default helm-charts value'
 
       - string:
           name: zmqifaceImage
-          default: 'omecproject/upf-epc-cpiface:master-latest'
+          default: '{registry-proxy}/upf-epc-cpiface:master-latest'
           description: 'Docker image for zmqiface. Leave empty to use default helm-charts value'
 
       - string:
           name: pfcpifaceImage
-          default: 'omecproject/upf-epc-pfcpiface:master-latest'
+          default: '{registry-proxy}/upf-epc-pfcpiface:master-latest'
           description: 'Docker image for pfcpiface. Leave empty to use default helm-charts value'
 
     concurrent: false
