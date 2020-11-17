@@ -442,7 +442,6 @@
           profile: '1T4GEM'
           in-band-management: true
           power-switch: True
-          pipeline-script: 'voltha-physical-functional-tests-openonu-go.groovy'
 
       # Menlo DEMO-POD - Default TechProfile - manual build job
       - 'build_pod_manual':
