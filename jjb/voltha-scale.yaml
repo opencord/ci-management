@@ -73,17 +73,18 @@
           # time-trigger: "H 0 29 2 *"
           time-trigger: "H H/4 * * *"
           withMonitoring: false
+          logLevel: WARN
           volthaStacks: 2
           olts: 2
           pons: 16
           onus: 32
           withFlows: true
           provisionSubscribers: true
-          withEapol: true
-          withDhcp: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          withPcap: true
           volthaSystemTestsChange: refs/changes/27/21627/2
           kindVolthaChange: refs/changes/85/21485/8
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:topic
