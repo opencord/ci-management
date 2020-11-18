@@ -8,7 +8,7 @@
     name: omec
     build-node: 'intel-102'
     github-organization: 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
