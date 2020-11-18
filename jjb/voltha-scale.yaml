@@ -25,7 +25,6 @@
           withDhcp: false
           withIgmp: false
           openonuAdapterReplicas: 1
-          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           extraHelmFlags: '--set use_openonu_adapter_go=true'
 
       - 'voltha-scale-measurements':
@@ -42,7 +41,6 @@
           withDhcp: true
           withIgmp: false
           openonuAdapterReplicas: 1
-          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
           extraHelmFlags: '--set use_openonu_adapter_go=true,authRetry=true,dhcpRetry=true'
 
       # this job will be used to test custom images without disrupting tests on master
@@ -520,6 +518,11 @@
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
 
       - string:
+          name: openonuAdapterGoImg
+          default: '{openonuAdapterGoImg}'
+          description: 'Custom image selection for Openonu Go Adapter (repo:tag)'
+
+      - string:
           name: openonuAdapterChart
           default: '{openonuAdapterChart}'
           description: 'OpenONU chart name (or location on file system)'
@@ -589,6 +592,7 @@
     ofAgentImg: voltha/voltha-ofagent-go:master
     openoltAdapterImg:  voltha/voltha-openolt-adapter:master
     openonuAdapterImg: voltha/voltha-openonu-adapter:master
+    openonuAdapterGoImg: voltha/voltha-openonu-adapter-go:master
     onosImg: voltha/voltha-onos:master
 
     bbsimChart: onf/bbsim
@@ -690,6 +694,7 @@
     ofAgentImg: voltha/voltha-ofagent-go:master
     openoltAdapterImg:  voltha/voltha-openolt-adapter:master
     openonuAdapterImg: voltha/voltha-openonu-adapter:master
+    openonuAdapterGoImg: voltha/voltha-openonu-adapter-go:master
     onosImg: voltha/voltha-onos:master
 
     bbsimChart: onf/bbsim

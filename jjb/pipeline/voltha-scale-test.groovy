@@ -249,6 +249,12 @@ pipeline {
               EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
             fi
 
+            # OpenONU GO custom image handling
+            if [ '${openonuAdapterGoImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openonu-adapter-go' ]; then
+              IFS=: read -r openonuAdapterGoRepo openonuAdapterGoTag <<< '${openonuAdapterGoImg.trim()}'
+              EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,images.adapter_open_onu_go.repository=\$openonuAdapterGoRepo,images.adapter_open_onu.tag=\$openonuAdapterGoTag "
+            fi
+
             # ONOS custom image handling
             if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
               IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
