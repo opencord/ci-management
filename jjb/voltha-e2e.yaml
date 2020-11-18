@@ -32,7 +32,7 @@
           name: 'periodic-voltha-multiple-olts-test-bbsim'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
-          make-target: functional-multi-olt
+          make-target: functional-single-kind
           make-target-failtest: bbsim-multi-olt-failurescenarios
           make-target-errortest: bbsim-multi-olt-errorscenarios
           make-target-alarmtest: bbsim-alarms-kind
