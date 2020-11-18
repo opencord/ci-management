@@ -56,7 +56,7 @@
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     jobs:
@@ -89,7 +89,7 @@
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     jobs:
@@ -126,7 +126,7 @@
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     jobs:
@@ -158,7 +158,7 @@
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     jobs:
@@ -191,7 +191,7 @@
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     jobs:
@@ -212,7 +212,7 @@
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     jobs:
@@ -232,7 +232,7 @@
     github_pr_auth_id: '64fe2b1a-b33a-4f13-8442-ad8360434003'
     github_pr_org_list:
       - 'omec-project'
-    registry: 'registry.aetherproject.org'
+    registry: 'registry.aetherproject.org/omecproject'
     registry-proxy: 'registry.aetherproject.org/proxy/omecproject'
 
     jobs:
