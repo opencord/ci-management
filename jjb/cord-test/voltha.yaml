@@ -233,10 +233,39 @@
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
+
+     # Flex pod with xgs-pon olt/onu - master 1T4GEM tech profile and openonu go and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord-openonugo'
+          release: 'master'
+          branch: 'master'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_openonugo'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T4GEM'
+          in-band-management: true
+          time: '18'
+
+
+      # Flex POD test job - master versions, uses 1T4GEM tech profile and openonu go on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord-openonugo'
+          name-extension: '_openonugo'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM'
+          in-band-management: true
+          power-switch: True
+
       # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
-          'disable-job': true
           config-pod: 'onf-demo-pod-gpon'
           release: 'master'
           branch: 'master'
@@ -411,37 +440,6 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
           profile: '1T4GEM'
-
-     # Demo pod with xgs-pon olt/onu - master 1T4GEM tech profile and openonu go and timer based job
-     # Name extension says DT but is actually an ATT test, dont' want to change all the file names
-      - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod-openonugo'
-          release: 'master'
-          branch: 'master'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          name-extension: '_DT_openonugo'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          configurePod: true
-          profile: '1T4GEM'
-          in-band-management: true
-          time: '10'
-
-
-      # Demo POD test job - master versions, uses 1T4GEM tech profile and openonu go on voltha branch
-      # Name extension says DT but is actually an ATT test, dont' want to change all the file names
-      - 'build_voltha_pod_test':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod-openonugo'
-          name-extension: '_DT_openonugo'
-          release: 'master'
-          branch: 'master'
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM'
-          in-band-management: true
-          power-switch: True
 
       # Menlo DEMO-POD - Default TechProfile - manual build job
       - 'build_pod_manual':
