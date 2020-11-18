@@ -28,11 +28,11 @@
           extraHelmFlags: '--set use_openonu_adapter_go=true'
 
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-go-scale-measurements-master-1-16-32-att-subscribers'
+          name: 'voltha-openonu-go-scale-measurements-master-2-16-32-att-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          olts: 1
+          olts: 2
           pons: 16
           onus: 32
           withFlows: true
@@ -60,7 +60,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          openonuAdapterImg: amghosh/voltha-openonu-py-adapter:onftest
           withPcap: true
 
       - 'voltha-scale-measurements':
@@ -104,7 +103,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          openonuAdapterImg: amghosh/voltha-openonu-py-adapter:onftest
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
@@ -121,7 +119,6 @@
           withDhcp: true
           withIgmp: true
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          openonuAdapterImg: amghosh/voltha-openonu-py-adapter:onftest
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
@@ -138,7 +135,6 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          openonuAdapterImg: amghosh/voltha-openonu-py-adapter:onftest
 
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -155,7 +151,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          openonuAdapterImg: amghosh/voltha-openonu-py-adapter:onftest
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -172,7 +167,6 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          openonuAdapterImg: amghosh/voltha-openonu-py-adapter:onftest
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -192,7 +186,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          openonuAdapterImg: amghosh/voltha-openonu-py-adapter:onftest
 
       # voltha-2.5 Jobs
       - 'voltha-scale-measurements':
