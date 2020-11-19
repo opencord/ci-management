@@ -223,7 +223,7 @@ pipeline {
             fi
 
             # BBSim custom image handling
-            if [ "${bbsimImg.trim()}" != '' ] && [ "${bbsimImg.trim()}" != 'voltha/bbsim:master' ] && [ "$GERRIT_PROJECT" != 'bbsim' ]; then
+            if [ '${bbsimImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'bbsim' ]; then
               IFS=: read -r bbsimRepo bbsimTag <<< '${bbsimImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
             fi
@@ -231,32 +231,32 @@ pipeline {
             # VOLTHA and ofAgent custom image handling
             # NOTE to override the rw-core image in a released version you must set the ofAgent image too
             # TODO split ofAgent and voltha-go
-            if [ "${rwCoreImg.trim()}" != '' ] && [ "${ofAgentImg.trim()}" != '' ] && [ "$GERRIT_PROJECT" != 'voltha-go' ]; then
+            if [ '${rwCoreImg.trim()}' != '' ] && [ '${ofAgentImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-go' ]; then
               IFS=: read -r rwCoreRepo rwCoreTag <<< '${rwCoreImg.trim()}'
               IFS=: read -r ofAgentRepo ofAgentTag <<< '${ofAgentImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
             fi
 
             # OpenOLT custom image handling
-            if [ "${openoltAdapterImg.trim()}" != '' ] && [ "${openoltAdapterImg.trim()}" != 'voltha/voltha-openolt-adapter:master' ] && [ "$GERRIT_PROJECT" != 'voltha-openolt-adapter' ]; then
+            if [ '${openoltAdapterImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openolt-adapter' ]; then
               IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< '${openoltAdapterImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
             fi
 
             # OpenONU custom image handling
-            if [ "${openonuAdapterImg.trim()}" != '' ] && [ "${openonuAdapterImg.trim()}" != 'voltha/voltha-openonu-adapter:master' ] && [ "$GERRIT_PROJECT" != 'voltha-openonu-adapter' ]; then
+            if [ '${openonuAdapterImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openonu-adapter' ]; then
               IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< '${openonuAdapterImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
             fi
 
             # OpenONU GO custom image handling
-            if [ "${openonuAdapterGoImg.trim()}" != '' ] && [ "${openonuAdapterGoImg.trim()}" != 'voltha/voltha-openonu-adapter-go:master' ] && [ "$GERRIT_PROJECT" != 'voltha-openonu-adapter-go' ]; then
+            if [ '${openonuAdapterGoImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openonu-adapter-go' ]; then
               IFS=: read -r openonuAdapterGoRepo openonuAdapterGoTag <<< '${openonuAdapterGoImg.trim()}'
               EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,images.adapter_open_onu_go.repository=\$openonuAdapterGoRepo,images.adapter_open_onu.tag=\$openonuAdapterGoTag "
             fi
 
             # ONOS custom image handling
-            if [ "${onosImg.trim()}" != '' ] && [ "${onosImg.trim()}" != 'voltha/voltha-onos:master' ] && [ "$GERRIT_PROJECT" != 'voltha-onos' ]; then
+            if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
               IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
               EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
             fi
@@ -290,10 +290,6 @@ pipeline {
 
             if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter' ]; then
               EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${dockerRegistry}/voltha/voltha-openonu-adapter,images.adapter_open_onu.tag=voltha-scale "
-            fi
-
-            if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter-go' ]; then
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu_go.repository=${dockerRegistry}/voltha/voltha-openonu-adapter-go,images.adapter_open_onu_go.tag=voltha-scale "
             fi
 
             if [ '\$GERRIT_PROJECT' == 'ofagent-go' ]; then
