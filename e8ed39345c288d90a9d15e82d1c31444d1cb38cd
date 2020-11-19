@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b1a8fb7_8571757f",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2020-11-19T20:00:09Z",
+      "side": 1,
+      "message": "I think we can turn off IGMP, not supported for now",
+      "revId": "e8ed39345c288d90a9d15e82d1c31444d1cb38cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
