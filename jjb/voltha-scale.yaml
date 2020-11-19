@@ -47,10 +47,11 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
           build-node: 'onf-pod1-head-node'
+          pipeline-script: 'voltha-scale-test-etcd-kafka-bitnami.groovy'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          withMonitoring: false
+          withMonitoring: true
           olts: 2
           pons: 16
           onus: 32
