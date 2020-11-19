@@ -43,6 +43,24 @@
           openonuAdapterReplicas: 1
           extraHelmFlags: '--set use_openonu_adapter_go=true,authRetry=true,dhcpRetry=true'
 
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-go-scale-measurements-master-1-16-32-tt-subscribers'
+          'disable-job': false
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          workflow: tt
+          provisionSubscribers: true
+          withEapol: false
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 1
+          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
+          extraHelmFlags: '--set use_openonu_adapter_go=true,dhcpRetry=true,defaults.incremental_evto_update=true'
+
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
