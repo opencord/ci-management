@@ -101,7 +101,6 @@ pipeline {
                     helm delete -n \$NS "\${hchart}"
                 done
             done
-            bash /home/cord/voltha-scale/wait_for_pods.sh
 
             test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
@@ -190,9 +189,6 @@ pipeline {
           --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
           --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
         fi
-
-        # TODO download this file from https://github.com/opencord/helm-charts/blob/master/scripts/wait_for_pods.sh
-        bash /home/cord/voltha-scale/wait_for_pods.sh
         '''
       }
     }
