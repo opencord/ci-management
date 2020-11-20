@@ -76,8 +76,7 @@ pipeline {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
           sh returnStdout: false, script: """
-            helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com
-            helm repo add stable https://kubernetes-charts.storage.googleapis.com
+            helm repo add stable https://charts.helm.sh/stable
             helm repo add onf https://charts.opencord.org
             helm repo add cord https://charts.opencord.org
             helm repo add onos https://charts.onosproject.org
@@ -106,7 +105,7 @@ pipeline {
             test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
             # remove orphaned port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs kill -9
+            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
 
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
@@ -602,7 +601,7 @@ EOF
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
 
         # copy the ONOS logs directly from the container to avoid the color codes
-        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
+        printf '%s\n' $(kubectl get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
 
         # get radius logs out of the container
         kubectl cp $(kubectl get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER//radius.log || true
@@ -682,11 +681,11 @@ EOF
           rm $LOG_FOLDER/device-list.json || true
           voltctl -m 8MB device list > $LOG_FOLDER/voltha-devices-list.txt || true
 
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
-              printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
+          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
+              printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
 
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs -I# bash -c "voltctl -m 8MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
+          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
           '''
         } catch(e) {
           sh '''

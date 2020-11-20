@@ -64,7 +64,7 @@
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-test-etcd-kafka-bitnami.groovy'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
@@ -80,10 +80,11 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: true
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:writeThroughCache
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental-multi-stack'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-multi-stack.groovy'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
