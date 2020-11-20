@@ -294,6 +294,10 @@ pipeline {
               EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${dockerRegistry}/voltha/voltha-openonu-adapter,images.adapter_open_onu.tag=voltha-scale "
             fi
 
+            if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter-go' ]; then
+              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu_go.repository=${dockerRegistry}/voltha/voltha-openonu-adapter-go,images.adapter_open_onu_go.tag=voltha-scale "
+            fi
+
             if [ '\$GERRIT_PROJECT' == 'ofagent-go' ]; then
               EXTRA_HELM_FLAGS+="--set images.ofagent.repository=${dockerRegistry}/voltha/voltha-ofagent-go,images.ofagent.tag=voltha-scale "
             fi

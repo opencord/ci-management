@@ -626,7 +626,7 @@ def deploy_voltha_stacks(numberOfStacks) {
       # OpenONU Go custom image handling
       if [ '${openonuAdapterGoImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openonu-adapter-go' ]; then
         IFS=: read -r openonuAdapterGoRepo openonuAdapterGoTag <<< '${openonuAdapterGoImg.trim()}'
-        EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,images.adapter_open_onu_go.repository=\$openonuAdapterGoRepo,images.adapter_open_onu.tag=\$openonuAdapterGoTag "
+        EXTRA_HELM_FLAGS+="--set images.adapter_open_onu_go.repository=\$openonuAdapterGoRepo,images.adapter_open_onu_go.tag=\$openonuAdapterGoTag "
       fi
 
       # ONOS custom image handling
@@ -664,6 +664,10 @@ def deploy_voltha_stacks(numberOfStacks) {
 
       if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter' ]; then
         EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${dockerRegistry}/voltha/voltha-openonu-adapter,images.adapter_open_onu.tag=voltha-scale "
+      fi
+
+      if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter-go' ]; then
+        EXTRA_HELM_FLAGS+="--set images.adapter_open_onu_go.repository=${dockerRegistry}/voltha/voltha-openonu-adapter-go,images.adapter_open_onu_go.tag=voltha-scale "
       fi
 
       if [ '\$GERRIT_PROJECT' == 'ofagent-go' ]; then
