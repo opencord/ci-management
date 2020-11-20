@@ -101,7 +101,7 @@ pipeline {
                     helm delete -n \$NS "\${hchart}"
                 done
             done
-            bash /home/cord/voltha-scale/wait_for_pods.sh
+            bash $HOME/voltha-scale/wait_for_pods.sh
 
             test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
@@ -192,7 +192,7 @@ pipeline {
         fi
 
         # TODO download this file from https://github.com/opencord/helm-charts/blob/master/scripts/wait_for_pods.sh
-        bash /home/cord/voltha-scale/wait_for_pods.sh
+        bash $HOME/voltha-scale/wait_for_pods.sh
         '''
       }
     }
