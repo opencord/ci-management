@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ed13974d_85111d95",
+        "filename": "jjb/pipeline/voltha-scale-multi-stack.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 629,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2020-11-20T17:49:14Z",
+      "side": 1,
+      "message": "we should remove this",
+      "range": {
+        "startLine": 629,
+        "startChar": 28,
+        "endLine": 629,
+        "endChar": 60
+      },
+      "revId": "022f0a5073e473910d3a02f597fccf894f6152a1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
