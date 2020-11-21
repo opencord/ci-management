@@ -79,7 +79,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          withPcap: true
+          withPcap: false
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:writeThroughCache
 
       - 'voltha-scale-measurements':
