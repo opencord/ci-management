@@ -185,6 +185,7 @@
     extraHelmFlags: ''
     sandbox: true
     olts: 1
+    withAlarms: false
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -214,7 +215,7 @@
 
       - bool:
           name: withAlarms
-          default: false
+          default: '{withAlarms}'
           description: "Run alarm based tests when true"
 
       - string:
