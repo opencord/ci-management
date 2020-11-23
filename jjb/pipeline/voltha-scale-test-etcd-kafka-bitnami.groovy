@@ -344,20 +344,8 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager accumulatorMaxBatchMillis 1000
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager accumulatorMaxIdleMillis 500
-
-          ONOSES=\$((\$NUM_OF_ONOS - 1))
-          for i in \$(seq 0 \$ONOSES); do
-            INSTANCE="onos-onos-classic-\$i"
-
-            #Setting LOG level to ${logLevel}
-            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.onosproject
-            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set ${logLevel} org.opencord
-
-            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set DEBUG org.opencord.olt
-
-            kubectl exec \$INSTANCE -- bash /root/onos/${karafHome}/bin/client log:set TRACE org.onosproject.net.meter.impl
-          done
-
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg log:set ${logLevel} org.onosproject
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg log:set ${logLevel} org.opencord
 
           kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log ${logLevel.toLowerCase()} false
 
@@ -372,7 +360,7 @@ pipeline {
           if [ ${withMibTemplate} = true ] ; then
             rm -f BBSM-12345123451234512345-00000000000001-v1.json
             wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
+            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -i \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
           if [ ${withPcap} = true ] ; then
