@@ -88,11 +88,10 @@
           pipeline-script: 'voltha-scale-multi-stack.groovy'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
-          # time-trigger: "H 0 29 2 *"
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H 0 29 2 *"
           withMonitoring: false
           logLevel: WARN
-          volthaStacks: 2
+          volthaStacks: 5
           olts: 2
           pons: 16
           onus: 32
@@ -103,9 +102,8 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          volthaSystemTestsChange: refs/changes/27/21627/2
-          kindVolthaChange: refs/changes/85/21485/8
-          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:topic
+          volthaSystemTestsChange: refs/changes/27/21627/3
+          kindVolthaChange: refs/changes/85/21485/11
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
