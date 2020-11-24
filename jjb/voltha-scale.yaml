@@ -44,11 +44,11 @@
           extraHelmFlags: '--set use_openonu_adapter_go=true,authRetry=true,dhcpRetry=true'
 
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-go-scale-measurements-master-1-16-32-tt-subscribers'
+          name: 'voltha-openonu-go-scale-measurements-master-2-16-32-tt-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
-          olts: 1
+          olts: 2
           pons: 16
           onus: 32
           withFlows: true
