@@ -247,7 +247,6 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T4GEM'
-          in-band-management: true
           time: '18'
 
 
@@ -260,7 +259,6 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
-          in-band-management: true
           power-switch: True
 
       # Menlo pod with olt/onu - Default tech profile and timer based job
@@ -465,6 +463,34 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
+
+     # Soak pod with xgs-pon olt/onu - master 1T4GEM tech profile and openonu go and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod-openonugo'
+          release: 'master'
+          branch: 'master'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_openonugo'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T4GEM'
+          time: '1'
+
+
+      # Soak POD test job - master versions, uses 1T4GEM tech profile and openonu go on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod-openonugo'
+          name-extension: '_openonugo'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM'
+
+      # Menlo pod with olt/onu - Default tech profile and timer based job
       # ONF Menlo Soak POD build job - voltha-master branch
       # FIXME once the soak-pod is back use 'build_voltha_pod_release_timer'
       - 'build_pod_manual':
