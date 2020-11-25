@@ -184,7 +184,7 @@ pipeline {
       steps {
         sh '''
         if [ ${withMonitoring} = true ] ; then
-          helm install nem-monitoring cord/nem-monitoring \
+          helm install -n $INFRA_NS nem-monitoring cord/nem-monitoring \
           -f $HOME/voltha-scale/grafana.yaml \
           --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
           --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
@@ -451,7 +451,7 @@ EOF
         helm ls --all-namespaces > $LOG_FOLDER/helm-list.txt || true
 
         # store information on the running pods
-        kubectl get pods -o wide > $LOG_FOLDER/pods.txt || true
+        kubectl get pods --all-namespaces -o wide > $LOG_FOLDER/pods.txt || true
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-images.txt || true
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
 
