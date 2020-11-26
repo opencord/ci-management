@@ -101,7 +101,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set defaults.image_pullPolicy=IfNotPresent'
           volthaSystemTestsChange: refs/changes/27/21627/4
           kindVolthaChange: refs/changes/85/21485/13
 
