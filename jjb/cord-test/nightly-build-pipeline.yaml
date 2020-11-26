@@ -152,7 +152,7 @@
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml<br />
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
-    disabled: false
+    disabled: '{disable-job}'
 
     <<: *test-pipe-job-boiler-plate
 
@@ -259,6 +259,8 @@
 - job-template:
     name: 'build_{profile}_{config-pod}_{branch}_test'
     id: build_pod_test
+
+    disabled: '{disable-job}'
     description: |
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
