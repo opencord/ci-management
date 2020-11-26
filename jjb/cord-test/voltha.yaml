@@ -470,8 +470,6 @@
           config-pod: 'onf-soak-pod-openonugo'
           release: 'master'
           branch: 'master'
-          num-of-onos: '3'
-          num-of-atomix: '3'
           name-extension: '_openonugo'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
