@@ -86,6 +86,9 @@ pipeline {
             helm repo add bbsim-sadis https://ciena.github.io/bbsim-sadis-server/charts
             helm repo update
 
+            # NOTE this is temporary, for now the bbsim-sadis-server service will be overridden and ONOS will use the new server
+            kubectl delete -n infra -f $HOME/bbsim-sadis-server/deployments/bbsim-sadis-server.yaml
+
             # removing ETCD port forward
             P_ID="\$(ps e -ww -A | grep "_TAG=etcd-port-forward" | grep -v grep | awk '{print \$1}')"
             if [ -n "\$P_ID" ]; then
