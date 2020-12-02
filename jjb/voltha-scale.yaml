@@ -101,9 +101,10 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set defaults.image_pullPolicy=IfNotPresent'
+          extraHelmFlags: '--set use_openonu_adapter_go=true'
           volthaSystemTestsChange: refs/changes/27/21627/4
           kindVolthaChange: refs/changes/85/21485/13
+          openonuAdapterReplicas: 1
 
 
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
