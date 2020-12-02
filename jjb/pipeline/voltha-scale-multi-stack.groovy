@@ -211,6 +211,9 @@ pipeline {
 
           # Forward the ETCD port onto $VOLTHA_ETCD_PORT
           _TAG=etcd-port-forward kubectl -n \$INFRA_NS port-forward --address 0.0.0.0 -n default service/etcd $VOLTHA_ETCD_PORT:2379&
+
+          # NOTE this is temporary, for now the bbsim-sadis-server service will be overridden and ONOS will use the new server
+          kubectl apply -n infra -f $HOME/bbsim-sadis-server/deployments/bbsim-sadis-server.yaml
         '''
       }
     }
