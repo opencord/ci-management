@@ -344,7 +344,7 @@
       # per patchset job
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-patchset-1-16-32-att-subscribers'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-2'
           olts: 1
           pons: 16
           onus: 32
@@ -358,7 +358,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-patchset-1-16-32-tt-subscribers'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-2'
           olts: 1
           pons: 16
           onus: 32
@@ -373,7 +373,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-patchset-1-16-32-dt-subscribers'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-2'
           olts: 1
           pons: 16
           onus: 32
