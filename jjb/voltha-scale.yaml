@@ -91,7 +91,7 @@
           time-trigger: "H 0 29 2 *"
           withMonitoring: true
           logLevel: WARN
-          volthaStacks: 5
+          volthaStacks: 10
           olts: 2
           pons: 16
           onus: 32
