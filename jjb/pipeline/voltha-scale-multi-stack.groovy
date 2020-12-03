@@ -198,6 +198,7 @@ pipeline {
     stage('Deploy VOLTHA infrastructure') {
       steps {
         sh returnStdout: false, script: '''
+
           cd $WORKSPACE/kind-voltha/
 
           export ETCD_CHART=$HOME/teone/helm-charts/etcd
