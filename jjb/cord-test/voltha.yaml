@@ -261,6 +261,36 @@
           profile: '1T4GEM'
           power-switch: True
 
+     # Flex pod with xgs-pon olt/onu - master TT workflow openonu go and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_TT_openonugo'
+          work-flow: 'TT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: 'TP'
+          time: '14'
+
+
+      # Flex POD test job - master versions, TT workflow and openonu go on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          name-extension: '_TT_openonugo'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          work-flow: 'TT'
+          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
+          profile: 'TP'
+          power-switch: True
+
       # Menlo pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
