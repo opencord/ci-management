@@ -102,8 +102,7 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set use_openonu_adapter_go=true'
-          volthaSystemTestsChange: refs/changes/27/21627/4
-          kindVolthaChange: refs/changes/85/21485/13
+          volthaSystemTestsChange: refs/changes/27/21627/5
           openonuAdapterReplicas: 1
 
 
