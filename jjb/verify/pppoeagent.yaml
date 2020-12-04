@@ -1,0 +1,18 @@
+---
+# jobs for 'pppoeagent' repo
+
+- project:
+    name: pppoeagent
+    project: '{name}'
+
+    jobs:
+      - 'pppoeagent-jobs':
+          branch-regexp: '^(.*)$'
+
+- job-group:
+    name: 'pppoeagent-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'maven-test'
+      - 'maven-publish'
