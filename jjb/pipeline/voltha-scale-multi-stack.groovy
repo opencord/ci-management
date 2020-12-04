@@ -40,11 +40,6 @@ pipeline {
     WITH_KAFKA="yes"
     WITH_ETCD="yes"
     VOLTHA_ETCD_PORT=9999
-
-    // VOLTHA namespaces are defined at runtime depending on the stack we're installing
-    // VOLTHA_NS="default"
-    // ADAPTER_NS="default"
-    // BBSIM_NS="default"
     INFRA_NS="infra"
 
     // configurable options
@@ -85,9 +80,6 @@ pipeline {
             helm repo add atomix https://charts.atomix.io
             helm repo add bbsim-sadis https://ciena.github.io/bbsim-sadis-server/charts
             helm repo update
-
-            # NOTE this is temporary, for now the bbsim-sadis-server service will be overridden and ONOS will use the new server
-            kubectl delete -n infra -f $HOME/bbsim-sadis-server/deployments/bbsim-sadis-server.yaml
 
             # removing ETCD port forward
             P_ID="\$(ps e -ww -A | grep "_TAG=etcd-port-forward" | grep -v grep | awk '{print \$1}')"
@@ -244,10 +236,6 @@ pipeline {
         script {
           sh returnStdout: false, script: """
 
-          # NOTE this is temporary, for now the bbsim-sadis-server service will be overridden and ONOS will use the new server
-          helm del -n infra bbsim-sadis-server
-          kubectl apply -n infra -f $HOME/bbsim-sadis-server/deployments/bbsim-sadis-server.yaml
-
           # TODO this needs to be repeated per stack
           # kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log ${logLevel.toLowerCase()} false
 
@@ -276,7 +264,6 @@ pipeline {
           fi
 
           if [ ${withPcap} = true ] && [ ${volthaStacks} -eq 1 ] ; then
-            # FIXME ofagent pcap has to be replicated per stack
             # Start the tcp-dump in ofagent
             export OF_AGENT=\$(kubectl -n \$INFRA_NS get pods -l app=ofagent -o name)
             kubectl exec \$OF_AGENT -- apk update
@@ -313,7 +300,7 @@ pipeline {
           make vst_venv
         '''
         sh '''
-          if [ ${withProfiling} = true ] ; then
+          if [ ${withProfiling} = true ] && [ ${volthaStacks} -eq 1 ]; then
             mkdir -p $LOG_FOLDER/pprof
             cat << EOF > $WORKSPACE/pprof.sh
 timestamp() {
@@ -345,11 +332,10 @@ EOF
 
             _TAG="pprof"
             _TAG=$_TAG bash $WORKSPACE/pprof.sh &
+          else
+            echo "Profiling not supported for multiple VOLTHA stacks"
           fi
         '''
-        // bbsim-sadis server takes a while to cache the subscriber entries
-        // wait for that before starting the tests
-        sleep(60)
       }
     }
     stage('Run Test') {
@@ -379,7 +365,7 @@ EOF
           fi
         done
 
-        if [ ${withPcap} = true ] ; then
+        if [ ${withPcap} = true ] && [ ${volthaStacks} -eq 1 ]; then
           # stop ofAgent tcpdump
           P_ID="\$(ps e -ww -A | grep "_TAG=ofagent-tcpdump" | grep -v grep | awk '{print \$1}')"
           if [ -n "\$P_ID" ]; then
@@ -417,7 +403,7 @@ EOF
         fi
       '''
       sh '''
-        if [ ${withProfiling} = true ] ; then
+        if [ ${withProfiling} = true ] && [ ${volthaStacks} -eq 1 ]; then
           _TAG="pprof"
           P_IDS="$(ps e -ww -A | grep "_TAG=$_TAG" | grep -v grep | awk '{print $1}')"
           if [ -n "$P_IDS" ]; then
@@ -442,7 +428,7 @@ EOF
           [file: 'plots/plot-onos-flows-after.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
           [file: 'plots/plot-onos-dhcp.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
         ],
-        group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Scale Test (OLTs: ${olts}, PONs: ${pons}, ONUs: ${onus})", yaxis: 'Time (s)', useDescr: true
+        group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Scale Test (Stacks: ${params.volthaStacks}, OLTs: ${olts}, PONs: ${pons}, ONUs: ${onus})", yaxis: 'Time (s)', useDescr: true
       ])
       step([$class: 'RobotPublisher',
         disableArchiveOutput: false,
@@ -480,8 +466,8 @@ EOF
 
           for bbsim in "\${IDS[@]}"
           do
-            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl onu list > $LOG_FOLDER/\$bbsim-device-list.txt || true
-            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl service list > $LOG_FOLDER/\$bbsim-service-list.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl onu list > $LOG_FOLDER/${stack_ns}/\$bbsim-device-list.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl service list > $LOG_FOLDER/${stack_ns}/\$bbsim-service-list.txt || true
           done
           """
         }
@@ -532,20 +518,19 @@ EOF
         for (int i = 1; i <= params.volthaStacks.toInteger(); i++) {
           stack_ns="voltha"+i
           voltcfg="~/.volt/config-voltha"+i
-          println stack_ns
           try {
             sh """
-            voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list -o json > $LOG_FOLDER/device-list.json || true
-            python -m json.tool $LOG_FOLDER/device-list.json > $LOG_FOLDER/voltha-devices-list.json || true
-            rm $LOG_FOLDER/device-list.json || true
-            voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list > $LOG_FOLDER/voltha-devices-list.txt || true
+            voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list -o json > $LOG_FOLDER/${stack_ns}/device-list.json || true
+            python -m json.tool $LOG_FOLDER/${stack_ns}/device-list.json > $LOG_FOLDER/${stack_ns}/voltha-devices-list.json || true
+            rm $LOG_FOLDER/${stack_ns}/device-list.json || true
+            voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list > $LOG_FOLDER/${stack_ns}/voltha-devices-list.txt || true
 
             DEVICE_LIST=
-            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns}-m 8MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
-            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns}-m 8MB device flows # > $LOG_FOLDER/${stack_ns}/voltha-device-flows-#.txt" || true
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/${stack_ns}/voltha-device-ports-#.txt" || true
 
-            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
-            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice flows # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-flows-#.txt" || true
+            printf '%s\n' \$(voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -c $HOME/.volt/config-${stack_ns} -m 8MB logicaldevice port list # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-ports-#.txt" || true
             """
           } catch(e) {
             sh '''
@@ -563,7 +548,7 @@ EOF
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time-*.txt,logs/*,logs/pprof/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
     }
   }
 }

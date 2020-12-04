@@ -320,9 +320,6 @@ pipeline {
           _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
         done
         '''
-        // bbsim-sadis server takes a while to cache the subscriber entries
-        // wait for that before starting the tests
-        sleep(120)
       }
     }
     stage('Configuration') {
