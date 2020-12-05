@@ -99,8 +99,6 @@ pipeline {
 
             test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
 
-            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
-
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
           """
@@ -548,7 +546,7 @@ EOF
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time-*.txt,logs/*,logs/pprof/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time-*.txt,logs/**/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
     }
   }
 }
