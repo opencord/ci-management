@@ -22,9 +22,8 @@
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
-      # NOTE enable once kind-voltha uses it
-      # - 'voltha-patch-test':
-      #     pipeline-script: 'voltha-bbsim-tests.groovy'
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-bbsim-sadis-server-jobs'
