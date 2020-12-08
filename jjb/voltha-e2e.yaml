@@ -11,6 +11,7 @@
     make-target-failtest: bbsim-failurescenarios
     make-target-errortest: bbsim-errorscenarios
     make-target-alarmtest: bbsim-alarms-kind
+    make-target-multipleolt: bbsim-multiolt-kind
 
     jobs:
       - 'voltha-periodic-test':
@@ -21,6 +22,7 @@
           make-target-failtest: bbsim-failurescenarios
           make-target-errortest: bbsim-errorscenarios
           make-target-alarmtest: bbsim-alarms-kind
+          make-target-multipleolt: bbsim-multiolt-kind
           withAlarms: true
           code-branch: 'master'
           olts: 1
@@ -36,6 +38,7 @@
           make-target-failtest: bbsim-multiolt-failurescenarios
           make-target-errortest: bbsim-multiolt-errorscenarios
           make-target-alarmtest: bbsim-alarms-kind
+          make-target-multipleolt: bbsim-multiolt-kind
           withAlarms: false
           code-branch: 'master'
           olts: 2
@@ -50,6 +53,7 @@
           make-target-failtest: bbsim-failurescenarios
           make-target-errortest: bbsim-errorscenarios
           make-target-alarmtest: bbsim-alarms-kind
+          make-target-multipleolt: bbsim-multiolt-kind
           withAlarms: true
           make-target: functional-single-kind
           code-branch: 'master'
@@ -227,6 +231,11 @@
           name: makeFailtestTarget
           default: '{make-target-failtest}'
           description: 'Makefile target to invoke during failure/based test'
+
+      - string:
+          name: makeMultiOltTarget
+          default: '{make-target-multipleolt}'
+          description: 'Makefile target to invoke during multiple olt test'
 
       - string:
           name: makeErrortestTarget
