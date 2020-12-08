@@ -35,7 +35,7 @@ pipeline {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
     PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    TYPE="minimal"
+    NAME="minimal"
     FANCY=0
     //VOL-2194 ONOS SSH and REST ports hardcoded to 30115/30120 in tests
     ONOS_SSH_PORT=30115
@@ -166,7 +166,7 @@ pipeline {
       steps {
         sh '''
              docker images | grep citest
-             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$TYPE --nodes voltha-\$TYPE-worker,voltha-\$TYPE-worker2; done
+             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
            '''
       }
     }

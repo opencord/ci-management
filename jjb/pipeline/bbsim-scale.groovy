@@ -13,7 +13,7 @@ pipeline {
 
   environment {
       VOLTHA_LOG_LEVEL="DEBUG"
-      TYPE="minimal"
+      NAME="minimal"
       WITH_RADIUS="y"
       WITH_BBSIM="y"
       INSTALL_ONOS_APPS="y"
