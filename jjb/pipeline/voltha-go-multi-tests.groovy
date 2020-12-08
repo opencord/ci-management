@@ -29,7 +29,7 @@ pipeline {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
     PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    TYPE="minimal"
+    NAME="minimal"
     FANCY=0
     WITH_SIM_ADAPTERS="n"
     WITH_RADIUS="y"

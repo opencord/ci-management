@@ -35,7 +35,7 @@ pipeline {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
     PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    TYPE="minimal"
+    NAME="minimal"
     FANCY=0
     //VOL-2194 ONOS SSH and REST ports hardcoded to 30115/30120 in tests
     ONOS_SSH_PORT=30115
