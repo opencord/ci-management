@@ -988,7 +988,12 @@
       - string:
           name: logSince
           default: '{log-since}'
-          description: 'Only upload logs newer than a relative duration e.g. 1h'
+          description: 'Only upload logs newer than a relative duration e.g. 1h. Leave empty if logSinceTime is specified'
+
+      - string:
+          name: logSinceTime
+          default: ''
+          description: 'Only upload logs newer than a date (RFC3339). Leave empty if logSince is specified'
 
     concurrent: false
 
