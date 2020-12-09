@@ -16,6 +16,24 @@
       "revId": "cd41f1d969f8301a8d1738d4dbfbe88271468254",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dca74918_744548cb",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2020-12-09T20:51:47Z",
+      "side": 1,
+      "message": "Yeah, that is correct. There is a new feature to bake in the NNI port speed into the debian package. But debian package name does not change based on NNI port speed. So, just to differentiate the debian package for 40G NNI and 100G NNI, the end suffix (40G-NNI or 100G-NNI) is added manually. Not the best way to do this, but ok for now.",
+      "parentUuid": "2fbde600_6e7ed86a",
+      "revId": "cd41f1d969f8301a8d1738d4dbfbe88271468254",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
