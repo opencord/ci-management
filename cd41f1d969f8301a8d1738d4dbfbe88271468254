@@ -52,6 +52,24 @@
       "revId": "cd41f1d969f8301a8d1738d4dbfbe88271468254",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4c540325_fdd9749f",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2020-12-09T22:28:43Z",
+      "side": 1,
+      "message": "Done in next patch.",
+      "parentUuid": "294529df_ebf4abaa",
+      "revId": "cd41f1d969f8301a8d1738d4dbfbe88271468254",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
