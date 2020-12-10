@@ -64,6 +64,13 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-test-DMI'
+          pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
+          build-node: 'qct-pod4-node2'
+          code-branch: 'master'
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-2.5'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
