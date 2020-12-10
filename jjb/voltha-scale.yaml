@@ -9,9 +9,9 @@
     jobs:
       # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
 
-      # OpenONU GO Scale
+      # OpenONU PY Scale
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-go-scale-measurements-master-2-16-32-dt-subscribers'
+          name: 'voltha-openonu-py-scale-measurements-master-2-16-32-dt-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -24,11 +24,11 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          openonuAdapterReplicas: 1
-          extraHelmFlags: '--set use_openonu_adapter_go=true'
+          openonuAdapterReplicas: 8
+          extraHelmFlags: '--set use_openonu_adapter_go=false'
 
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-go-scale-measurements-master-2-16-32-att-subscribers'
+          name: 'voltha-openonu-py-scale-measurements-master-2-16-32-att-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -40,11 +40,11 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          openonuAdapterReplicas: 1
-          extraHelmFlags: '--set use_openonu_adapter_go=true,authRetry=true,dhcpRetry=true'
+          openonuAdapterReplicas: 8
+          extraHelmFlags: '--set use_openonu_adapter_go=false,authRetry=true,dhcpRetry=true'
 
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-go-scale-measurements-master-2-16-32-tt-subscribers'
+          name: 'voltha-openonu-py-scale-measurements-master-2-16-32-tt-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -57,9 +57,8 @@
           withEapol: false
           withDhcp: true
           withIgmp: false
-          openonuAdapterReplicas: 1
-          openonuAdapterImg: voltha/voltha-openonu-adapter-go:master
-          extraHelmFlags: '--set use_openonu_adapter_go=true,dhcpRetry=true,defaults.incremental_evto_update=true'
+          openonuAdapterReplicas: 8
+          extraHelmFlags: '--set use_openonu_adapter_go=false,dhcpRetry=true,defaults.incremental_evto_update=true'
 
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
@@ -283,6 +282,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          openonuAdapterReplicas: 8
           release: voltha-2.5
           bbsimImg: ''
           rwCoreImg: ''
@@ -306,6 +306,7 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          openonuAdapterReplicas: 8
           release: voltha-2.5
           bbsimImg: ''
           rwCoreImg: ''
@@ -329,6 +330,7 @@
           withDhcp: true
           withIgmp: true
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
+          openonuAdapterReplicas: 8
           release: voltha-2.5
           bbsimImg: ''
           rwCoreImg: ''
