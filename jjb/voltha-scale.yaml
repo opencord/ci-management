@@ -199,7 +199,7 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
-          openonuAdapterReplicas: 8
+          openonuAdapterReplicas: 1
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
@@ -401,7 +401,7 @@
           atomixReplicas: 3
           kafkaReplicas: 3
           etcdReplicas: 3
-          openonuAdapterReplicas: 8
+          openonuAdapterReplicas: 1
           topologies: 1-16-16, 1-16-32, 2-16-32
           time-trigger: H 0 * * *
 
@@ -692,7 +692,7 @@
     withProfiling: false
     withPcap: false
     withRadius: yes
-    openonuAdapterReplicas: 8
+    openonuAdapterReplicas: 1
     onosReplicas: 3
     atomixReplicas: 3
     kafkaReplicas: 3
