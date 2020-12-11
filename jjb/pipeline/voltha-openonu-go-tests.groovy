@@ -209,7 +209,7 @@ pipeline {
           fi
 
           # get pods information
-          kubectl get pods -o wide > $WORKSPACE/e2e/pods.txt || true
+          kubectl get pods -o wide --all-namespaces > $WORKSPACE/e2e/pods.txt || true
         '''
       }
     }
@@ -257,7 +257,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/mib/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/mib/pods.txt || true
         '''
       }
     }
@@ -322,7 +322,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/dt/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/dt/pods.txt || true
            '''
       }
     }
@@ -392,7 +392,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/att/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/att/pods.txt || true
            '''
       }
     }
@@ -456,7 +456,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/tt/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/tt/pods.txt || true
            '''
       }
     }
