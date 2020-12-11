@@ -173,7 +173,7 @@ pipeline {
 
            cd $WORKSPACE/kind-voltha/
            echo \$EXTRA_HELM_FLAGS
-           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
+
            ./voltha up
            '''
       }
@@ -185,15 +185,31 @@ pipeline {
       }
       steps {
         sh '''
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           export TARGET_DEFAULT=openonu-go-adapter-test
+          # start logging
+          mkdir -p $WORKSPACE/e2e
+          _TAG=kail-e2e kail -n voltha -n default > $WORKSPACE/e2e/onos-voltha-combined.log &
 
-           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+          mkdir -p $ROBOT_LOGS_DIR
+          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+          export TARGET_DEFAULT=openonu-go-adapter-test
 
-           export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
+          make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
 
-           make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
+          export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
+
+          make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
+
+          # stop logging
+          P_IDS="$(ps e -ww -A | grep "_TAG=kail-e2e" | grep -v grep | awk '{print $1}')"
+          if [ -n "$P_IDS" ]; then
+            echo $P_IDS
+            for P_ID in $P_IDS; do
+              kill -9 $P_ID
+            done
+          fi
+
+          # get pods information
+          kubectl get pods -o wide > $WORKSPACE/e2e/pods.txt || true
         '''
       }
     }
@@ -219,6 +235,10 @@ pipeline {
              EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
            done
 
+           # start logging
+           mkdir -p $WORKSPACE/mib
+           _TAG=kail-mib kail -n voltha -n default > $WORKSPACE/mib/onos-voltha-combined.log &
+
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
@@ -226,6 +246,18 @@ pipeline {
            export TARGET_DEFAULT=mib-upload-templating-openonu-go-adapter-test
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-mib" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide > $WORKSPACE/mib/pods.txt || true
         '''
       }
     }
@@ -257,6 +289,10 @@ pipeline {
            export CONFIG_SADIS="external"
            export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
 
+           # start logging
+           mkdir -p $WORKSPACE/dt
+           _TAG=kail-dt kail -n voltha -n default > $WORKSPACE/dt/onos-voltha-combined.log &
+
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
@@ -275,6 +311,18 @@ pipeline {
            fi
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-dt" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide > $WORKSPACE/dt/pods.txt || true
            '''
       }
     }
@@ -311,6 +359,10 @@ pipeline {
              md5sum $WORKSPACE/kind-voltha/bin/voltctl
            fi
 
+           # start logging
+           mkdir -p $WORKSPACE/att
+           _TAG=kail-att kail -n voltha -n default > $WORKSPACE/att/onos-voltha-combined.log &
+
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
@@ -329,6 +381,18 @@ pipeline {
            fi
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide > $WORKSPACE/att/pods.txt || true
            '''
       }
     }
@@ -359,6 +423,10 @@ pipeline {
            export CONFIG_SADIS="external"
            export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
 
+           # start logging
+           mkdir -p $WORKSPACE/tt
+           _TAG=kail-tt kail -n voltha -n default > $WORKSPACE/tt/onos-voltha-combined.log &
+
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
@@ -377,6 +445,18 @@ pipeline {
            fi
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-tt" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide > $WORKSPACE/tt/pods.txt || true
            '''
       }
     }
@@ -385,12 +465,8 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
-         kubectl get nodes -o wide
-         kubectl get pods -o wide
-         kubectl get pods -n voltha -o wide
 
          sync
          pkill kail || true
@@ -439,7 +515,7 @@ pipeline {
             passThreshold: 100,
             reportFileName: 'RobotLogs/*/report*.html',
             unstableThreshold: 0]);
-         archiveArtifacts artifacts: '*.log,*.gz'
+         archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt'
     }
   }
 }
