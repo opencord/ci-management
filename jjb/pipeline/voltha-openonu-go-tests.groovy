@@ -187,13 +187,24 @@ pipeline {
         sh '''
           # start logging
           mkdir -p $WORKSPACE/e2e
-          _TAG=kail-e2e kail -n voltha -n default > $WORKSPACE/e2e/onos-voltha-combined.log &
+          _TAG=kail-e2e kail -n voltha -n default > $WORKSPACE/e2e/onos-voltha-combined-1t1gem.log &
 
           mkdir -p $ROBOT_LOGS_DIR
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
           export TARGET_DEFAULT=openonu-go-adapter-test
 
           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+
+          # stop logging
+          P_IDS="$(ps e -ww -A | grep "_TAG=kail-e2e" | grep -v grep | awk '{print $1}')"
+          if [ -n "$P_IDS" ]; then
+            echo $P_IDS
+            for P_ID in $P_IDS; do
+              kill -9 $P_ID
+            done
+          fi
+
+          _TAG=kail-e2e kail -n voltha -n default > $WORKSPACE/e2e/onos-voltha-combined-1t8gem.log &
 
           export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
 
@@ -209,7 +220,7 @@ pipeline {
           fi
 
           # get pods information
-          kubectl get pods -o wide > $WORKSPACE/e2e/pods.txt || true
+          kubectl get pods -o wide --all-namespaces > $WORKSPACE/e2e/pods.txt || true
         '''
       }
     }
@@ -257,7 +268,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/mib/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/mib/pods.txt || true
         '''
       }
     }
@@ -322,7 +333,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/dt/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/dt/pods.txt || true
            '''
       }
     }
@@ -392,7 +403,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/att/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/att/pods.txt || true
            '''
       }
     }
@@ -456,7 +467,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide > $WORKSPACE/tt/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/tt/pods.txt || true
            '''
       }
     }
