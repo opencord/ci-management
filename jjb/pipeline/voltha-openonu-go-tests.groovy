@@ -179,15 +179,15 @@ pipeline {
       }
     }
 
-    stage('Run E2E Tests') {
+    stage('Run E2E Tests - 1T1GEM') {
       environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go-1t1gem"
       }
       steps {
         sh '''
           # start logging
-          mkdir -p $WORKSPACE/e2e
-          _TAG=kail-e2e kail -n voltha -n default > $WORKSPACE/e2e/onos-voltha-combined.log &
+          mkdir -p $WORKSPACE/e2e-1t1gem
+          _TAG=kail-e2e kail -n voltha -n default > $WORKSPACE/e2e-1t1gem/onos-voltha-combined.log &
 
           mkdir -p $ROBOT_LOGS_DIR
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
@@ -195,12 +195,8 @@ pipeline {
 
           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
 
-          export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
-
-          make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
-
           # stop logging
-          P_IDS="$(ps e -ww -A | grep "_TAG=kail-e2e" | grep -v grep | awk '{print $1}')"
+          P_IDS="$(ps e -ww -A | grep "_TAG=kail-e2e-1t1gem" | grep -v grep | awk '{print $1}')"
           if [ -n "$P_IDS" ]; then
             echo $P_IDS
             for P_ID in $P_IDS; do
@@ -209,10 +205,41 @@ pipeline {
           fi
 
           # get pods information
-          kubectl get pods -o wide > $WORKSPACE/e2e/pods.txt || true
+          kubectl get pods -o wide > $WORKSPACE/e2e-1t1gem/pods.txt || true
         '''
       }
     }
+
+        stage('Run E2E Tests - 1T8GEM') {
+          environment {
+            ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go-1t8gem"
+          }
+          steps {
+            sh '''
+              # start logging
+              mkdir -p $WORKSPACE/e2e-1t8gem
+              _TAG=kail-e2e kail -n voltha -n default > $WORKSPACE/e2e-1t8gem/onos-voltha-combined.log &
+
+              mkdir -p $ROBOT_LOGS_DIR
+              export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+              export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
+
+              make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
+
+              # stop logging
+              P_IDS="$(ps e -ww -A | grep "_TAG=kail-e2e-1t8gem" | grep -v grep | awk '{print $1}')"
+              if [ -n "$P_IDS" ]; then
+                echo $P_IDS
+                for P_ID in $P_IDS; do
+                  kill -9 $P_ID
+                done
+              fi
+
+              # get pods information
+              kubectl get pods -o wide > $WORKSPACE/e2e-1t8gem/pods.txt || true
+            '''
+          }
+        }
 
     stage('Run MIB Upload Tests') {
       environment {
