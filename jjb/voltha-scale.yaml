@@ -267,9 +267,9 @@
           extraHelmFlags: '--set use_openonu_adapter_go=true'
           openonuAdapterReplicas: 1
 
-      # voltha-2.5 Jobs
+      # voltha-2.6 Jobs
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.5-1-16-32-att-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.6-1-16-32-att-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -283,7 +283,7 @@
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           openonuAdapterReplicas: 8
-          release: voltha-2.5
+          release: voltha-2.6
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -292,7 +292,7 @@
           onosImg: ''
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.5-2-16-32-dt-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.6-2-16-32-dt-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -307,7 +307,7 @@
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           openonuAdapterReplicas: 8
-          release: voltha-2.5
+          release: voltha-2.6
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -316,7 +316,7 @@
           onosImg: ''
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.5-1-16-32-tt-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.6-1-16-32-tt-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -331,7 +331,7 @@
           withIgmp: true
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           openonuAdapterReplicas: 8
-          release: voltha-2.5
+          release: voltha-2.6
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
