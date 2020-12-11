@@ -555,6 +555,10 @@ def deploy_voltha_stacks(numberOfStacks) {
   for (int i = 1; i <= numberOfStacks.toInteger(); i++) {
     stage("Deploy VOLTHA stack " + i) {
       sh returnStdout: false, script: """
+
+      # unset voltha-api port so that the port is forwarded on a new one
+      unset VOLTHA_API_PORT
+
       cd $WORKSPACE/kind-voltha/
 
       export NAME=voltha${i}
