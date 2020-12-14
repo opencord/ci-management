@@ -136,7 +136,7 @@
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
           oltDebVersionMaster: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
+          oltDebVersionVoltha23: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
           profile: 'Default'
 
       # Per-patchset Pod builds on Tucson pod
@@ -145,7 +145,7 @@
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod'
           oltDebVersionMaster: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
+          oltDebVersionVoltha23: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
           profile: 'Default'
           trigger-string: 'hardware test'
           default-test-args: '-i sanityORDeleteOLT -X'
@@ -157,7 +157,7 @@
           build-node: 'tucson-pod'
           config-pod: 'tucson-pod-DT'
           oltDebVersionMaster: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
+          oltDebVersionVoltha23: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
           profile: 'Default'
           pipeline-script: 'voltha-dt-physical-build-and-tests.groovy'
           trigger-string: 'DT hardware test'
@@ -173,7 +173,7 @@
           config-pod: 'tucson-pod'
           manualBranch: 'master'
           oltDebVersionMaster: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-2.4.9-dev-d4aeca5a2094f7dc7c519913ab1558348c546dab.deb'
+          oltDebVersionVoltha23: 'openolt_asfvolt16-3.2.0-fc10f0d035181d3125ffc6e7a60bf5328fcf5bfa-40G-NNI.deb'
           profile: 'Default'
 
 - job-template:
