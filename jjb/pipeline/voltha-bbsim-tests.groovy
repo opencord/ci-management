@@ -213,6 +213,10 @@ pipeline {
              echo "on master, using default settings for kind-voltha"
            fi
 
+           if [[ "${gerritProject}" == voltha-helm-charts ]]; then
+             export EXTRA_HELM_FLAGS+="--set defaults.image_tag=null "
+           fi
+
            # Workflow-specific flags
            export WITH_RADIUS=yes
            export WITH_BBSIM=yes
@@ -336,6 +340,10 @@ pipeline {
            export CONFIG_SADIS="external"
            export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
 
+           if [[ "${gerritProject}" == voltha-helm-charts ]]; then
+             export EXTRA_HELM_FLAGS+="--set defaults.image_tag=null "
+           fi
+
            # start logging
            mkdir -p $WORKSPACE/dt
            _TAG=kail-dt kail -n voltha -n default > $WORKSPACE/dt/onos-voltha-combined.log &
@@ -393,6 +401,10 @@ pipeline {
            export WITH_IGMP=yes
            export CONFIG_SADIS="external"
            export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
+
+           if [[ "${gerritProject}" == voltha-helm-charts ]]; then
+             export EXTRA_HELM_FLAGS+="--set defaults.image_tag=null "
+           fi
 
            # start logging
            mkdir -p $WORKSPACE/tt
