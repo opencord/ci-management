@@ -159,21 +159,6 @@ pipeline {
       }
     }
 
-    stage('Multiple OLT Tests') {
-      environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/MultipleOLTTests"
-      }
-      steps {
-        sh '''
-           set +e
-           mkdir -p $WORKSPACE/RobotLogs
-
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeMultiOltTarget} || true
-           '''
-      }
-    }
-
     stage('Error Tests') {
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ErrorTests"
