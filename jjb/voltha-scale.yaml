@@ -282,7 +282,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          openonuAdapterReplicas: 8
           release: voltha-2.6
           bbsimImg: ''
           rwCoreImg: ''
@@ -306,7 +305,6 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          openonuAdapterReplicas: 8
           release: voltha-2.6
           bbsimImg: ''
           rwCoreImg: ''
@@ -330,7 +328,6 @@
           withDhcp: true
           withIgmp: true
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          openonuAdapterReplicas: 8
           release: voltha-2.6
           bbsimImg: ''
           rwCoreImg: ''
