@@ -33,7 +33,7 @@ pipeline {
     NAME="test"
     VOLTCONFIG="$HOME/.volt/config-$NAME"
     KUBECONFIG="$HOME/.kube/kind-config-voltha-$NAME"
-    EXTRA_HELM_FLAGS=" --set defaults.image_registry=mirror.registry.opennetworking.org "
+    EXTRA_HELM_FLAGS=" --set defaults.image_registry=mirror.registry.opennetworking.org/ "
   }
 
   stages {
@@ -451,6 +451,12 @@ pipeline {
   post {
     always {
       sh '''
+
+        # get pods information
+        kubectl get pods -o wide
+        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}"
+        helm ls
+
          set +e
          cp $WORKSPACE/kind-voltha/install-$NAME.log $WORKSPACE/
 
@@ -472,14 +478,15 @@ pipeline {
            echo
          }
 
-         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
-         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
-         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log || true
+         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log || true
+         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log || true
+         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log || true
 
-         gzip $WORKSPACE/att/onos-voltha-combined.log
-         gzip $WORKSPACE/dt/onos-voltha-combined.log
-         gzip $WORKSPACE/tt/onos-voltha-combined.log
+         gzip $WORKSPACE/att/onos-voltha-combined.log || true
+         gzip $WORKSPACE/dt/onos-voltha-combined.log || true
+         gzip $WORKSPACE/tt/onos-voltha-combined.log || true
+
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,

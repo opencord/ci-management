@@ -39,7 +39,7 @@ pipeline {
     CONFIG_SADIS="external"
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
-    EXTRA_HELM_FLAGS=" --set defaults.image_registry=mirror.registry.opennetworking.org "
+    EXTRA_HELM_FLAGS=" --set defaults.image_registry=mirror.registry.opennetworking.org/ "
   }
   stages {
     stage('Clone kind-voltha') {
@@ -482,8 +482,10 @@ pipeline {
     always {
       sh '''
          set +e
-         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
-         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
+         # get pods information
+         kubectl get pods -o wide
+         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}"
+         helm ls
 
          sync
          pkill kail || true
@@ -504,24 +506,12 @@ pipeline {
            echo
          }
 
-         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
-         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
-         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
+         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log || true
+         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log || true
+         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log || true
+         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log || true
 
-         gzip $WORKSPACE/onos-voltha-combined.log
-
-
-         ## shut down kind-voltha
-         if [ "${branch}" != "master" ]; then
-           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-           source "$WORKSPACE/kind-voltha/releases/${branch}"
-         else
-           echo "on master, using default settings for kind-voltha"
-         fi
-
-         cd $WORKSPACE/kind-voltha
-	       WAIT_ON_DOWN=y ./voltha down
+         gzip $WORKSPACE/onos-voltha-combined.log || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
