@@ -62,7 +62,7 @@ pipeline {
     ONOS_CLASSIC_CHART="${onosChart}"
     RADIUS_CHART="${radiusChart}"
 
-    APPS_TO_LOG="etcd kafka onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius"
+    APPS_TO_LOG="etcd kafka onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server"
     LOG_FOLDER="$WORKSPACE/logs"
 
     GERRIT_PROJECT="${GERRIT_PROJECT}"
