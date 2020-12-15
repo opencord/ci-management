@@ -414,6 +414,14 @@ EOF
     mv /tmp/yq /usr/local/bin/yq
     chmod -R a+rx /usr/local/bin/yq
 
+    # add docker cache
+    cat << EOF > /etc/docker/daemon.json
+{
+    "registry-mirrors":["https://mirror.registry.opennetworking.org"]
+}
+EOF
+    service docker restart
+
     # remove apparmor
     service apparmor stop
     update-rc.d -f apparmor remove
