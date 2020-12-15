@@ -147,7 +147,7 @@ pipeline {
     stage('Build Images') {
       steps {
         sh """
-          make -C $WORKSPACE/voltha-openonu-adapter-go DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+          make -C $WORKSPACE/voltha-openonu-adapter-go DOCKER_REGISTRY=mirror.registry.opennetworking.org/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
           """
       }
     }
@@ -156,7 +156,7 @@ pipeline {
       steps {
         sh '''
            docker images | grep citest
-           for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
+           for image in \$(docker images -f "reference=*/*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
            '''
       }
     }

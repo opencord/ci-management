@@ -151,7 +151,7 @@ pipeline {
       steps {
         sh """
            make-local () {
-             make -C $WORKSPACE/\$1 DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
+             make -C $WORKSPACE/\$1 DOCKER_REGISTRY=mirror.registry.opennetworking.org/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
            }
            if [ "${gerritProject}" = "pyvoltha" ]; then
              make -C $WORKSPACE/pyvoltha/ dist
@@ -195,7 +195,7 @@ pipeline {
              export GOROOT=/usr/local/go
              export GOPATH=\$(pwd)
              docker images | grep citest
-             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
+             for image in \$(docker images -f "reference=*/*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
            fi
            '''
       }
