@@ -49,6 +49,22 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-2.6-multiple-olts-test-bbsim'
+          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
+          build-node: 'qct-pod4-node2'
+          make-target: functional-multi-olt
+          make-target-failtest: bbsim-multiolt-failurescenarios
+          make-target-errortest: bbsim-multiolt-errorscenarios
+          make-target-alarmtest: bbsim-alarms-kind
+          make-target-multipleolt: bbsim-multiolt-kind
+          withAlarms: false
+          code-branch: 'voltha-2.6'
+          olts: 2
+          onus: 2
+          pons: 2
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-openonugo'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'

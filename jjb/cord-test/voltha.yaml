@@ -580,7 +580,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '13'
+          time: '21'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
