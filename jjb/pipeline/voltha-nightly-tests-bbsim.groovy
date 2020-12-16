@@ -98,7 +98,7 @@ pipeline {
              echo "on master, using default settings for kind-voltha"
            fi
 
-           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} defaults.image_registry=mirror.registry.opennetworking.org/ "
+           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} --set defaults.image_registry=mirror.registry.opennetworking.org/ "
 
            cd $WORKSPACE/kind-voltha/
            ./voltha up
