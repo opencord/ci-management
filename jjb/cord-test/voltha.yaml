@@ -611,7 +611,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '13'
+          time: '15'
 
 
       # Berlin POD test job -  voltha-2.6 versions: two OLTs
