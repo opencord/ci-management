@@ -134,6 +134,12 @@
           name: NumOfAtomix
           default: '{num-of-atomix}'
           description: 'Installs the specified Number of Atomix Instances'
+
+      - string:
+          name: openoltAdapterChart
+          default: '{openoltAdapterChart}'
+          description: 'OpenOLT chart name (or location on file system)'
+
     concurrent: true
 
     pipeline-scm:
