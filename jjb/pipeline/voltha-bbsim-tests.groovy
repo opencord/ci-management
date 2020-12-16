@@ -237,6 +237,7 @@ pipeline {
              IMAGES="ofagent_go "
            elif [ "${gerritProject}" = "voltha-onos" ]; then
              IMAGES="onos "
+             EXTRA_HELM_FLAGS+="--set images.onos.repository=mirror.registry.opennetworking.org/voltha/voltha-onos "
            elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
              IMAGES="adapter_open_olt "
            elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
