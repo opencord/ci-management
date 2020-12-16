@@ -98,7 +98,7 @@ pipeline {
              echo "on master, using default settings for kind-voltha"
            fi
 
-           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags}"
+           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} defaults.image_registry=mirror.registry.opennetworking.org/ "
 
            cd $WORKSPACE/kind-voltha/
            ./voltha up
@@ -155,6 +155,21 @@ pipeline {
 
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
            make -C $WORKSPACE/voltha-system-tests ${makeFailtestTarget} || true
+           '''
+      }
+    }
+    stage('Multiple OLT Tests') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/MultipleOLTTests"
+      }
+      steps {
+        sh '''
+           if [ "${olts}" -gt 1 ]; then
+              set +e
+              mkdir -p $WORKSPACE/RobotLogs
+              export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+              make -C $WORKSPACE/voltha-system-tests ${makeMultiOltTarget} || true
+           fi
            '''
       }
     }
