@@ -21,6 +21,7 @@
     kindVolthaChange: ''
     cordTesterChange: ''
 
+
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
       - 'build_pod_manual':
@@ -620,6 +621,39 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
+      # Berlin pod with adtran gpon olt/onu - master 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon-adtran'
+          release: 'master'
+          branch: 'master'
+          num-of-openonu: '1'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          profile: '1T8GEM'
+          reinstall-olt: false
+          openoltAdapterChart: '/home/community/adtran-2021-01-08/voltha-helm-chart-adapter-adtran-olt_v1.2.1/voltha-adapter-adtran-olt'
+          time: '9'
+
+
+      # Berlin POD adtran test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon-adtran'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          release: 'master'
+          branch: 'master'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: False
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with gpon olt/onu - voltha-2.5 1T8GEM tech profile and timer based job

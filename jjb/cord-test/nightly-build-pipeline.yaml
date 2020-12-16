@@ -23,6 +23,8 @@
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
 
+    openoltAdapterChart: onf/voltha-adapter-openolt
+
     <<: *test-pipe-job-boiler-plate
 
     parameters:
@@ -134,6 +136,12 @@
           name: NumOfAtomix
           default: '{num-of-atomix}'
           description: 'Installs the specified Number of Atomix Instances'
+
+      - string:
+          name: openoltAdapterChart
+          default: '{openoltAdapterChart}'
+          description: 'OpenOLT chart name (or location on file system)'
+
     concurrent: true
 
     pipeline-scm:
