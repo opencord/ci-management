@@ -118,7 +118,7 @@ pipeline {
            ./log-collector.sh > /dev/null &
            ./log-combine.sh > /dev/null &
 
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e GetConfigurableComponentInventoryInfoDMI -e GetLoggableEntitiesDMI -e SetGetLoggingEndpointDMI"
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e SetGetLogLevelDMI -e GetLoggableEntitiesDMI -e SetGetLoggingEndpointDMI"
            make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
            '''
       }
