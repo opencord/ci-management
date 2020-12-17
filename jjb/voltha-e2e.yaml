@@ -65,29 +65,21 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-test-bbsim-openonugo'
-          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
-          build-node: 'qct-pod4-node2'
-          make-target-failtest: bbsim-failurescenarios
-          make-target-errortest: bbsim-errorscenarios
-          make-target-alarmtest: bbsim-alarms-kind
-          make-target-multipleolt: bbsim-multiolt-kind
-          withAlarms: true
-          make-target: functional-single-kind
-          code-branch: 'master'
-          work-flow: 'DT'
-          extraHelmFlags: 'use_openonu_adapter_go=true,images.adapter_open_onu_go.repository=voltha/voltha-openonu-adapter-go,images.adapter_open_onu_go.tag=master'
-          onus: 2
-          pons: 2
-          time-trigger: "H H/12 * * *"
-
-      - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI'
           pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
           build-node: 'qct-pod4-node2'
-          make-target: voltha-dmi-hw-management-test
+          make-target: bbsim-dmi-hw-management-test
           withAlarms: false
           code-branch: 'master'
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-test-DMI-2.6'
+          pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
+          build-node: 'qct-pod4-node2'
+          make-target: bbsim-dmi-hw-management-test
+          withAlarms: false
+          code-branch: 'voltha-2.6'
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
