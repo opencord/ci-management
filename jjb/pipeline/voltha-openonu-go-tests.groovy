@@ -180,9 +180,9 @@ pipeline {
       }
     }
 
-    stage('Run E2E Tests') {
+    stage('Run E2E Tests 1t1gem') {
       environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t1gem"
       }
       steps {
         sh '''
@@ -191,7 +191,7 @@ pipeline {
           _TAG=kail-1t1gem kail -n voltha -n default > $WORKSPACE/1t1gem/onos-voltha-combined.log &
 
           mkdir -p $ROBOT_LOGS_DIR/1t1gem
-          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR/1t1gem"
+          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
           export TARGET_DEFAULT=openonu-go-adapter-test
 
           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
@@ -207,11 +207,36 @@ pipeline {
 
           # get pods information
           kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t1gem/pods.txt || true
+        '''
+       }
+     }
 
+    stage('Run E2E Tests 1t8gem') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t8gem"
+      }
+      steps {
+        sh '''
+          cd $WORKSPACE/kind-voltha/
+          #source $NAME-env.sh
+          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+          export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
+
+          IMAGES="adapter_open_onu_go"
+
+          for I in \$IMAGES
+          do
+            EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+          done
+          #1t8gem
+          mkdir -p $WORKSPACE/1t8gem
           _TAG=kail-1t8gem kail -n voltha -n default > $WORKSPACE/1t8gem/onos-voltha-combined.log &
 
+          DEPLOY_K8S=n ./voltha up
+
           mkdir -p $ROBOT_LOGS_DIR/1t8gem
-          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR/1t8gem"
+          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
           export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
 
           make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
