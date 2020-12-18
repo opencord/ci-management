@@ -11,7 +11,7 @@
 
       # OpenONU PY Scale
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-master-2-16-32-dt-subscribers'
+          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-dt-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -21,6 +21,7 @@
           withFlows: true
           provisionSubscribers: true
           workflow: dt
+          release: voltha-2.6
           withEapol: false
           withDhcp: false
           withIgmp: false
@@ -28,7 +29,7 @@
           extraHelmFlags: '--set use_openonu_adapter_go=false'
 
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-master-2-16-32-att-subscribers'
+          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -37,6 +38,7 @@
           onus: 32
           withFlows: true
           provisionSubscribers: true
+          release: voltha-2.6
           withEapol: true
           withDhcp: true
           withIgmp: false
@@ -44,7 +46,7 @@
           extraHelmFlags: '--set use_openonu_adapter_go=false,authRetry=true,dhcpRetry=true'
 
       - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-master-2-16-32-tt-subscribers'
+          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -54,6 +56,7 @@
           withFlows: true
           workflow: tt
           provisionSubscribers: true
+          release: voltha-2.6
           withEapol: false
           withDhcp: true
           withIgmp: false
@@ -326,6 +329,67 @@
           openoltAdapterImg: ''
           openonuAdapterImg: ''
           onosImg: ''
+
+      # 2.6 multi-stack jobs
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-att-subscribers'
+          build-node: 'voltha-scale-2'
+          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          'disable-job': false
+          time-trigger: "H H/4 * * *"
+          withMonitoring: false
+          logLevel: WARN
+          volthaStacks: 10
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          release: voltha-2.6
+          workflow: att
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-dt-subscribers'
+          build-node: 'voltha-scale-2'
+          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          'disable-job': false
+          time-trigger: "H H/4 * * *"
+          withMonitoring: false
+          logLevel: WARN
+          volthaStacks: 10
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          release: voltha-2.6
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-tt-subscribers'
+          build-node: 'voltha-scale-2'
+          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          'disable-job': false
+          time-trigger: "H H/4 * * *"
+          withMonitoring: false
+          logLevel: WARN
+          volthaStacks: 10
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          release: voltha-2.6
+          workflow: tt
+          withEapol: false
+          withDhcp: true
+          withIgmp: true
 
       # per patchset job
       - 'voltha-scale-measurements':
