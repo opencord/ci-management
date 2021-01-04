@@ -44,34 +44,46 @@ pipeline {
   }
   stages {
 
-    stage('Repo') {
+    stage('Clone kind-voltha') {
       steps {
-        step([$class: 'WsCleanup'])
-        checkout(changelog: true,
-          poll: false,
-          scm: [$class: 'RepoScm',
-            manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.branch}",
-            currentBranch: true,
-            destinationDir: 'voltha',
-            forceSync: true,
-            resetFirst: true,
-            quiet: true,
-            jobs: 4,
-            showAllChanges: true]
-          )
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+            // refspec: "${kindVolthaChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
       }
     }
-
-    stage('Download kind-voltha') {
+    stage('Cleanup') {
       steps {
         sh """
-           cd $HOME
-           [ -d kind-voltha ] || git clone https://gerrit.opencord.org/kind-voltha
-           rm -rf $HOME/kind-voltha/scripts/logger
-           cd $HOME/kind-voltha
-           git pull
-           """
+        cd $WORKSPACE/kind-voltha/
+        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
+        """
+      }
+    }
+    stage('Clone voltha-system-tests') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            // refspec: "${volthaSystemTestsChange}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
       }
     }
 
