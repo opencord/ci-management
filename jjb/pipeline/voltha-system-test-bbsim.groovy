@@ -40,6 +40,7 @@ pipeline {
     CONFIG_SADIS="external"
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
+    NUM_OF_ETCD=3
   }
 
   stages {
