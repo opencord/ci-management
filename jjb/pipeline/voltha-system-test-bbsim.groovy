@@ -40,6 +40,8 @@ pipeline {
     CONFIG_SADIS="external"
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
+    NUM_OF_ETCD=3
+    SCHEDULE_ON_CONTROL_NODES="y"
   }
 
   stages {
@@ -74,7 +76,7 @@ pipeline {
              echo "on master, using default settings for kind-voltha"
            fi
 
-           EXTRA_HELM_FLAGS+="${params.extraHelmFlags} --set voltha-etcd-cluster.clusterSize=3 "
+           EXTRA_HELM_FLAGS+="${params.extraHelmFlags} "
            echo \$EXTRA_HELM_FLAGS
 
            pushd kind-voltha/
