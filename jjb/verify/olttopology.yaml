@@ -1,0 +1,22 @@
+---
+# jobs for 'olttopology' repo
+
+- project:
+    name: olttopology
+    project: '{name}'
+
+    jobs:
+      - 'olttopology-jobs':
+          branch-regexp: '^(.*)$'
+
+- job-group:
+    name: 'olttopology-jobs-common'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+
+- job-group:
+    name: 'olttopology-jobs'
+    jobs:
+      - 'maven-test'
+      - 'maven-publish'
