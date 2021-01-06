@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "90de1adf_7190a8d3",
+        "filename": "Makefile",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000315
+      },
+      "writtenOn": "2021-01-06T20:45:48Z",
+      "side": 1,
+      "message": "there should be \"hello\" not \"hi\"",
+      "revId": "0ea9d4e57339203d20954a65c6d0bff176525bae",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
