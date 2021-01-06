@@ -1,7 +1,7 @@
 ---
 # omec-ci jobs
 # Uses github pull request builder to trigger and Jenkinsfiles from this repo
-#  https://github.com/omec-project/omec-project-ci
+# https://github.com/omec-project/omec-project-ci
 
 # generic OMEC test-case jobs, shared by other projects and triggered within pipelines
 - project:

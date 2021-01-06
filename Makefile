@@ -1,4 +1,5 @@
 # Makefile for testing JJB jobs in a virtualenv
+# hello there
 
 .PHONY: test clean
 
