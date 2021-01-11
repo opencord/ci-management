@@ -1,0 +1,9 @@
+Verified+1: Jenkins Technical User <do-not-reply@opennetworking.org>
+Code-Review+1: Zack Williams <zdw@opennetworking.org>
+Code-Review+1: Jeremy Ronquillo <jeremyr@opennetworking.org>
+Code-Review+2: Carmelo Cascone <carmelo@opennetworking.org>
+Submitted-by: Carmelo Cascone <carmelo@opennetworking.org>
+Submitted-at: Mon, 11 Jan 2021 21:45:26 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/22346
+Project: ci-management
+Branch: refs/heads/master
