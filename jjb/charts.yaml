@@ -67,7 +67,6 @@
           git clone ssh://jenkins@gerrit.opencord.org:29418/helm-repo-tools.git
 
           # Setup helm and external repos
-          helm init --client-only
           helm repo add stable https://charts.helm.sh/stable
           helm repo add rook-release https://charts.rook.io/release
           helm repo add cord https://charts.opencord.org
@@ -164,7 +163,6 @@
           set -eu -o pipefail
 
           # Setup helm and external repos
-          helm init --client-only
           helm repo add stable https://charts.helm.sh/stable
           helm repo add rook-release https://charts.rook.io/release
           helm repo add cord https://charts.opencord.org

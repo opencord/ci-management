@@ -349,10 +349,10 @@ EOF
     chmod a+x /usr/local/bin/repo
 
     # install helm
-    HELM_VERSION="2.16.10"
-    HELM_SHA256SUM="65a4857611a4e65b255ec192cbdb34d47212f041260f81a1039c05a8bb9ea041"
+    HELM_VERSION="3.4.2"
+    HELM_SHA256SUM="cacde7768420dd41111a4630e047c231afa01f67e49cc0c6429563e024da4b98"
     HELM_PLATFORM="linux-amd64"
-    curl -L -o /tmp/helm.tgz "https://storage.googleapis.com/kubernetes-helm/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz"
+    curl -L -o /tmp/helm.tgz "https://get.helm.sh/helm-v${HELM_VERSION}-${HELM_PLATFORM}.tar.gz"
     echo "$HELM_SHA256SUM  /tmp/helm.tgz" | sha256sum -c -
     pushd /tmp
     tar -xzvf helm.tgz
