@@ -1,4 +1,4 @@
-/* seba-in-a-box build+test */
+/* bbsim-scale test */
 
 pipeline {
 
