@@ -192,3 +192,35 @@
           files:
             - file-id: known_hosts
               target: '$HOME/.ssh/known_hosts'
+
+# Sets permissions for job to be visible to AetherAccess only
+# (for Aether member-only repos).
+- property:
+    name: cord-infra-aether-private
+    properties:
+      - raw:
+          xml: |
+              <hudson.security.AuthorizationMatrixProperty>
+                <inheritanceStrategy class="org.jenkinsci.plugins.matrixauth.inheritance.NonInheritingStrategy"/>
+                <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Create:JenkinsPowerusers</permission>
+                <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Delete:JenkinsPowerusers</permission>
+                <permission>com.cloudbees.plugins.credentials.CredentialsProvider.ManageDomains:JenkinsPowerusers</permission>
+                <permission>com.cloudbees.plugins.credentials.CredentialsProvider.Update:JenkinsPowerusers</permission>
+                <permission>com.cloudbees.plugins.credentials.CredentialsProvider.View:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Build:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Cancel:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Configure:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Delete:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Discover:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.ExtendedRead:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Move:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Read:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Workspace:JenkinsPowerusers</permission>
+                <permission>hudson.model.Run.Delete:JenkinsPowerusers</permission>
+                <permission>hudson.model.Run.Replay:JenkinsPowerusers</permission>
+                <permission>hudson.model.Run.Update:JenkinsPowerusers</permission>
+                <permission>hudson.model.Item.Discover:AetherAccess</permission>
+                <permission>hudson.model.Item.Discover:anonymous</permission>
+                <permission>hudson.model.Item.Read:AetherAccess</permission>
+                <permission>hudson.model.Item.ViewStatus:anonymous</permission>
+              </hudson.security.AuthorizationMatrixProperty>
