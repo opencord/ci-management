@@ -4,6 +4,9 @@
 # to use in a job: `parameters: *voltha-build-job-parameters`
 - voltha-build-job-parameters: &voltha-build-job-parameters
     name: voltha-build-job-parameters
+
+    openoltAdapterChart: onf/voltha-adapter-openolt
+
     parameters:
       - string:
           name: buildNode
@@ -123,6 +126,11 @@
           name: cordTesterChange
           default: '{cordTesterChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: openoltAdapterChart
+          default: '{openoltAdapterChart}'
+          description: 'OpenOLT chart name (or location on file system)'
 
 # defualt properties for the VOLTHA scale jobs
 - voltha-pipe-job-boiler-plate: &voltha-pipe-job-boiler-plate
