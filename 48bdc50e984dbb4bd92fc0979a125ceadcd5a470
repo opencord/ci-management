@@ -22,6 +22,30 @@
       "revId": "48bdc50e984dbb4bd92fc0979a125ceadcd5a470",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c77889c4_749300e4",
+        "filename": "jjb/verify/up4.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2021-01-12T22:09:42Z",
+      "side": 1,
+      "message": "I believe so. Default value in the UI is blank, while it\u0027s -1 for JJB. I removed it.",
+      "parentUuid": "65057374_23edef73",
+      "range": {
+        "startLine": 37,
+        "startChar": 7,
+        "endLine": 37,
+        "endChar": 36
+      },
+      "revId": "48bdc50e984dbb4bd92fc0979a125ceadcd5a470",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
