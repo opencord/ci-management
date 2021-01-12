@@ -627,8 +627,8 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon-adtran'
-          release: 'master'
-          branch: 'master'
+          release: '2.6'
+          branch: 'voltha-2.6'
           num-of-openonu: '1'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -649,8 +649,8 @@
           config-pod: 'dt-berlin-pod-gpon-adtran'
           name-extension: '_DT'
           work-flow: 'DT'
-          release: 'master'
-          branch: 'master'
+          release: '2.6'
+          branch: 'voltha-2.6'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: False
