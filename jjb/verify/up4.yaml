@@ -1,74 +1,126 @@
 ---
 # jobs for https://github.com/omec-project/up4
 
--  project:
-      name: up4
-      project: "{name}"
-      github-organization: "omec-project"
-      github_pr_auth_id: "64fe2b1a-b33a-4f13-8442-ad8360434003"
-      github_pr_org_list:
-         - "omec-project"
-      jobs:
-         -  "up4-jobs":
-               stream: "master"
-               # As we run integration tests with 3 ONOS instances,
-               # we need a beefy node.
-               build-node: "ubuntu16.04-basebuild-8c-15g"
+- project:
+    name: up4
+    project: "{name}"
+    github-organization: "omec-project"
+    github_pr_auth_id: "64fe2b1a-b33a-4f13-8442-ad8360434003"
+    github_pr_org_list:
+      - "omec-project"
+    jobs:
+      - "up4-jobs":
+          stream: "master"
+          # As we run integration tests with 3 ONOS instances,
+          # we need a beefy node.
+          build-node: "ubuntu16.04-basebuild-8c-15g"
 
--  job-group:
-      name: "up4-jobs"
-      jobs:
-         - "up4-pr-verify"
+- job-group:
+    name: "up4-jobs"
+    jobs:
+      - "up4-pr-verify"
 
--  job-template:
-      id: "up4-pr-verify"
-      name: "up4-pr-verify"
-      description: |
-         Created by {id} job-template from ci-management/up4.yaml<br/>
+- job-template:
+    id: "up4-pr-verify"
+    name: "up4-pr-verify"
+    description: |
+      Created by {id} job-template from ci-management/up4.yaml<br/>
 
-      project-type: pipeline
-      concurrent: true
+    project-type: pipeline
+    concurrent: true
 
-      properties:
-         # Visibility restricted to Aether members only.
-         -  cord-infra-aether-private:
-         -  cord-infra-properties:
-               build-days-to-keep: "15"
-               artifact-num-to-keep: "-1"
-         -  github:
-               url: "https://github.com/{github-organization}/{project}"
+    properties:
+      # Visibility restricted to Aether members only.
+      - cord-infra-aether-private:
+      - cord-infra-properties:
+          build-days-to-keep: "15"
+          artifact-num-to-keep: "-1"
+      - github:
+          url: "https://github.com/{github-organization}/{project}"
 
-      parameters:
-         -  string:
-               name: buildNode
-               default: "{build-node}"
-               description: "Name of the Jenkins executor node to run the job on."
-         -  string:
-               name: sha1
-               default: "origin/{stream}"
-               description: "The actual commit or branch to build."
+    parameters:
+      - string:
+          name: buildNode
+          default: "{build-node}"
+          description: "Name of the Jenkins executor node to run the job on."
+      - string:
+          name: sha1
+          default: "origin/{stream}"
+          description: "The actual commit or branch to build."
 
-      # Run pipeline that is checked-in in the same PR we want to verify.
-      pipeline-scm:
-         script-path: ".jenkins/Jenkinsfile"
-         scm:
-            -  git:
-                  url: "git@github.com:{github-organization}/{project}.git"
-                  credentials-id: "github-onf-bot-ssh-key"
-                  refspec: "+refs/pull/*:refs/remotes/origin/pr/*"
-                  branches:
-                     - "$sha1"
-                  submodule:
-                     disable: true
-                  shallow-clone: true
+    # Run pipeline that is checked-in in the same PR we want to verify.
+    pipeline-scm:
+      script-path: ".jenkins/Jenkinsfile"
+      scm:
+        - git:
+            url: "git@github.com:{github-organization}/{project}.git"
+            credentials-id: "github-onf-bot-ssh-key"
+            refspec: "+refs/pull/*:refs/remotes/origin/pr/*"
+            branches:
+              - "$sha1"
+            submodule:
+              disable: true
+            shallow-clone: true
 
-      triggers:
-         -  cord-infra-github-pr-trigger:
-               github_pr_org_list: "{obj:github_pr_org_list}"
-               github_pr_auth_id: "{github_pr_auth_id}"
-               status_context: "up4-pr-verify"
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: "{obj:github_pr_org_list}"
+          github_pr_auth_id: "{github_pr_auth_id}"
+          status_context: "up4-pr-verify"
 
-      wrappers:
-         -  lf-infra-wrappers:
-               build-timeout: "{build-timeout}"
-               jenkins-ssh-credential: "{jenkins-ssh-credential}"
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: "{build-timeout}"
+          jenkins-ssh-credential: "{jenkins-ssh-credential}"
+
+- job-template:
+    id: "up4-postmerge"
+    name: "up4-postmerge"
+    description: |
+      Created by {id} job-template from ci-management/up4.yaml<br/>
+
+    project-type: pipeline
+    concurrent: true
+
+    properties:
+      # Visibility restricted to Aether members only.
+      - cord-infra-aether-private:
+      - cord-infra-properties:
+          build-days-to-keep: "15"
+          artifact-num-to-keep: "-1"
+      - github:
+          url: "https://github.com/{github-organization}/{project}"
+
+    parameters:
+      - string:
+          name: buildNode
+          default: "{build-node}"
+          description: "Name of the Jenkins executor node to run the job on."
+      - string:
+          name: sha1
+          default: "origin/{stream}"
+          description: "The actual commit or branch to build."
+
+    # Run pipeline that is checked-in in the same PR we want to verify.
+    pipeline-scm:
+      script-path: ".jenkins/Jenkinsfile"
+      scm:
+        - git:
+            url: "git@github.com:{github-organization}/{project}.git"
+            credentials-id: "github-onf-bot-ssh-key"
+            refspec: "+refs/heads/*:refs/remotes/origin/*"
+            branches:
+              - "$sha1"
+            submodule:
+              disable: true
+            shallow-clone: true
+
+    triggers:
+      - cord-infra-github-pr-trigger-merge:
+          project: '{project}'
+      - timed: "@midnight"
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: "{build-timeout}"
+          jenkins-ssh-credential: "{jenkins-ssh-credential}"
