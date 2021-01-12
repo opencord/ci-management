@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "65057374_23edef73",
+        "filename": "jjb/verify/up4.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-01-12T18:36:34Z",
+      "side": 1,
+      "message": "Is this the same as leaving the field blank in the UI?",
+      "range": {
+        "startLine": 37,
+        "startChar": 7,
+        "endLine": 37,
+        "endChar": 36
+      },
+      "revId": "48bdc50e984dbb4bd92fc0979a125ceadcd5a470",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
