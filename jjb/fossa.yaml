@@ -22,35 +22,6 @@
                   Created by {id} job-template from ci-management/jjb/fossa.yaml<br/>
                   Copyright (c) 2018-present Open Networking Foundation (ONF)
 
-#   # replace with cord-infra-gerrit-trigger-patchset when skip-vote is removed
-#   triggers:
-#     - gerrit:
-#         server-name: '{gerrit-server-name}'
-#         dependency-jobs: '{dependency-jobs}'
-#         silent-start: true
-#         trigger-on:
-#           - patchset-created-event:
-#               exclude-drafts: true
-#               exclude-trivial-rebase: false
-#               exclude-no-code-change: true
-#           - draft-published-event
-#           - comment-added-contains-event:
-#               comment-contains-value: '(?i)^.*recheck$'
-#         projects:
-#           - project-compare-type: REG_EXP
-#             project-pattern: '{project-regexp}'
-#             branches:
-#               - branch-compare-type: REG_EXP
-#                 branch-pattern: '{branch-regexp}'
-#             file-paths:
-#               - compare-type: REG_EXP
-#                 pattern: '{file-include-regexp}'
-#         skip-vote:
-#           success: true
-#           failed: true
-#           unstable: true
-#           notbuilt: true
-
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
