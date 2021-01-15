@@ -221,6 +221,8 @@
                 <permission>hudson.model.Run.Update:JenkinsPowerusers</permission>
                 <permission>hudson.model.Item.Discover:AetherAccess</permission>
                 <permission>hudson.model.Item.Discover:anonymous</permission>
+                <permission>hudson.model.Item.Discover:ONFStaff</permission>
                 <permission>hudson.model.Item.Read:AetherAccess</permission>
+                <permission>hudson.model.Item.Read:ONFStaff</permission>
                 <permission>hudson.model.Item.ViewStatus:anonymous</permission>
               </hudson.security.AuthorizationMatrixProperty>
