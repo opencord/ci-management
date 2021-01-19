@@ -37,6 +37,9 @@
           cp-context: 'acc-dev-gcp'
           dp-context: 'ace-dev-menlo'
           log-since: '1h'
+      - 'omec-post-results':
+          pod: 'dev'
+          build-node: 'omec-ci'
       - 'omec-postmerge':
           project: '{name}'
           build-node: 'omec-ci'
@@ -1087,6 +1090,56 @@
 
     pipeline-scm:
       script-path: 'Jenkinsfile-omec-nightly.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
+
+# OMEC post results job
+- job-template:
+    id: 'omec-post-results'
+    name: 'omec_post-results_{pod}'
+    project-type: pipeline
+
+    description: |
+      Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: 2
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: pod
+          default: '{pod}'
+          description: 'Name of OMEC pod'
+
+      - string:
+          name: testType
+          default: 'scale'
+          description: 'Type of test e.g. scale, func, etc.'
+
+      - string:
+          name: buildNumber
+          default: '0'
+          description: 'Build number of upstream job'
+
+    concurrent: false
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-post-results.groovy'
       scm:
         - git:
             url: 'https://github.com/{github-organization}/omec-project-ci'
