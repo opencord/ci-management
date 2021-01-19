@@ -639,7 +639,7 @@
           configurePod: true
           profile: '1T8GEM'
           reinstall-olt: false
-          openoltAdapterChart: '/home/community/adtran-2021-01-08/voltha-helm-chart-adapter-adtran-olt_v1.2.1/voltha-adapter-adtran-olt'
+          openoltAdapterChart: '/home/community/adtran-2021-01-19/voltha-adapter-adtran-olt'
           time: '9'
 
 
