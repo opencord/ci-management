@@ -28,18 +28,20 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$PATH:$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     NAME="minimal"
     FANCY=0
-    WITH_SIM_ADAPTERS="n"
-    WITH_RADIUS="y"
-    WITH_BBSIM="y"
-    DEPLOY_K8S="y"
+    WITH_SIM_ADAPTERS="no"
+    WITH_RADIUS="yes"
+    WITH_BBSIM="yes"
+    DEPLOY_K8S="yes"
     VOLTHA_LOG_LEVEL="DEBUG"
     CONFIG_SADIS="external"
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
-    ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
-    EXTRA_HELM_FLAGS=" --set defaults.image_registry=mirror.registry.opennetworking.org/ "
+    ROBOT_MISC_ARGS="-e PowerSwitch ${params.extraRobotArgs}"
+    KARAF_HOME="${params.karafHome}"
+    DIAGS_PROFILE="VOLTHA_PROFILE"
+    NUM_OF_BBSIM="${olts}"
   }
   stages {
     stage('Clone kind-voltha') {
@@ -48,7 +50,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/kind-voltha",
-            refspec: "${kindVolthaChange}"
+            // refspec: "${kindVolthaChange}"
           ]],
           branches: [[ name: "master", ]],
           extensions: [
@@ -57,11 +59,13 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
+      }
+    }
+    stage('Cleanup') {
+      steps {
         sh """
-        if [ '${kindVolthaChange}' != '' ] ; then
-          cd $WORKSPACE/kind-voltha
-          git fetch https://gerrit.opencord.org/kind-voltha ${kindVolthaChange} && git checkout FETCH_HEAD
-        fi
+        cd $WORKSPACE/kind-voltha/
+        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
         """
       }
     }
@@ -71,7 +75,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/voltha-system-tests",
-            refspec: "${volthaSystemTestsChange}"
+            // refspec: "${volthaSystemTestsChange}"
           ]],
           branches: [[ name: "${branch}", ]],
           extensions: [
@@ -80,134 +84,46 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
-        sh """
-        if [ '${volthaSystemTestsChange}' != '' ] ; then
-          cd $WORKSPACE/voltha-system-tests
-          git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-        fi
-        """
       }
     }
-    // If the repo under test is not kind-voltha
-    // then download it and checkout the patch
-    stage('Download Patch') {
-      when {
-        expression {
-          return "${gerritProject}" != 'kind-voltha';
-        }
-      }
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/${gerritProject}",
-            refspec: "${gerritRefspec}"
-          ]],
-          branches: [[ name: "${branch}", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "${gerritProject}"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
-        sh """
-          pushd $WORKSPACE/${gerritProject}
-          git fetch https://gerrit.opencord.org/${gerritProject} ${gerritRefspec} && git checkout FETCH_HEAD
-          echo "Currently on commit: \n"
-          git log -1 --oneline
-          popd
-          """
-      }
-    }
-    // If the repo under test is kind-voltha we don't need to download it again,
-    // as we already have it, simply checkout the patch
-    stage('Checkout kind-voltha patch') {
-      when {
-        expression {
-          return "${gerritProject}" == 'kind-voltha';
-        }
-      }
+
+    stage('Deploy Voltha') {
       steps {
         sh """
-        cd $WORKSPACE/kind-voltha
-        git fetch https://gerrit.opencord.org/kind-voltha ${gerritRefspec} && git checkout FETCH_HEAD
-        """
-      }
-    }
-    stage('Create K8s Cluster') {
-      steps {
-        sh """
+           export EXTRA_HELM_FLAGS=""
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
+           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} --set defaults.image_registry=mirror.registry.opennetworking.org/ "
+
            cd $WORKSPACE/kind-voltha/
-           JUST_K8S=y ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
+           ./voltha up
            """
       }
     }
 
-    stage('Build Images') {
-      steps {
-        sh """
-          make -C $WORKSPACE/voltha-openonu-adapter-go DOCKER_REGISTRY=mirror.registry.opennetworking.org/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
-          """
-      }
-    }
-
-    stage('Push Images') {
-      steps {
-        sh '''
-           docker images | grep citest
-           for image in \$(docker images -f "reference=*/*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
-           '''
-      }
-    }
-    stage('Deploy Voltha') {
-      steps {
-        sh '''
-           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
-
-           for I in \$IMAGES
-           do
-             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
-           done
-
-           cd $WORKSPACE/kind-voltha/
-           echo \$EXTRA_HELM_FLAGS
-
-           ./voltha up
-           '''
-      }
-    }
-
-    stage('Run E2E Tests 1t8gem') {
+    stage('Run E2E Tests 1t1gem') {
       environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t8gem"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t1gem"
       }
       steps {
         sh '''
-          cd $WORKSPACE/kind-voltha/
-          #source $NAME-env.sh
-          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+          # start logging
+          mkdir -p $WORKSPACE/1t1gem
+          _TAG=kail-1t1gem kail -n voltha -n default > $WORKSPACE/1t1gem/onos-voltha-combined.log &
 
-          export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
-
-          for I in \$IMAGES
-          do
-            EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
-          done
-          #1t8gem
-          mkdir -p $WORKSPACE/1t8gem
-          _TAG=kail-1t8gem kail -n voltha -n default > $WORKSPACE/1t8gem/onos-voltha-combined.log &
-
-          DEPLOY_K8S=n ./voltha up
-
-          mkdir -p $ROBOT_LOGS_DIR/1t8gem
+          mkdir -p $ROBOT_LOGS_DIR/1t1gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
+          export TARGET_DEFAULT=openonu-go-adapter-test
 
-          make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
+          make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
 
           # stop logging
-          P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t8gem" | grep -v grep | awk '{print $1}')"
+          P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t1gem" | grep -v grep | awk '{print $1}')"
           if [ -n "$P_IDS" ]; then
             echo $P_IDS
             for P_ID in $P_IDS; do
@@ -216,14 +132,91 @@ pipeline {
           fi
 
           # get pods information
-          kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t8gem/pods.txt || true
+          kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t1gem/pods.txt || true
+        '''
+       }
+     }
+
+    stage('Run E2E Tests 1t4gem') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t4gem"
+      }
+      steps {
+        sh '''
+          # start logging
+          mkdir -p $WORKSPACE/1t4gem
+          _TAG=kail-1t4gem kail -n voltha -n default > $WORKSPACE/1t4gem/onos-voltha-combined.log &
+
+          mkdir -p $ROBOT_LOGS_DIR/1t4gem
+          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+          export TARGET_DEFAULT=1t4gem-openonu-go-adapter-test
+
+          make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+
+          # stop logging
+          P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t4gem" | grep -v grep | awk '{print $1}')"
+          if [ -n "$P_IDS" ]; then
+            echo $P_IDS
+            for P_ID in $P_IDS; do
+              kill -9 $P_ID
+            done
+          fi
+
+          # get pods information
+          kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t4gem/pods.txt || true
+        '''
+       }
+     }
+
+    stage('Run MIB Upload Tests') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go-MIB"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/kind-voltha/
+           #source $NAME-env.sh
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+
+           export EXTRA_HELM_FLAGS+="--set pon=2,onu=2,controlledActivation=only-onu "
+
+           for I in \$IMAGES
+           do
+             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+           done
+
+           # start logging
+           mkdir -p $WORKSPACE/mib
+           _TAG=kail-mib kail -n voltha -n default > $WORKSPACE/mib/onos-voltha-combined.log &
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+           export TARGET_DEFAULT=mib-upload-templating-openonu-go-adapter-test
+
+           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-mib" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/mib/pods.txt || true
         '''
       }
     }
 
-    stage('DT workflow') {
+    stage('Reconcile DT workflow') {
       environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DTWorkflow"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileDT"
       }
       steps {
         sh '''
@@ -248,29 +241,20 @@ pipeline {
 
            # start logging
            mkdir -p $WORKSPACE/dt
-           _TAG=kail-dt kail -n voltha -n default > $WORKSPACE/dt/onos-voltha-combined.log &
+           _TAG=kail-reconcile-dt kail -n voltha -n default > $WORKSPACE/reconciledt/onos-voltha-combined.log &
 
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           # By default, all tests tagged 'sanityDt' are run.  This covers basic functionality
-           # like running through the DT workflow for a single subscriber.
-           export TARGET=sanity-kind-dt
+           export TARGET=reconcile-openonu-go-adapter-test-dt
 
-           # If the Gerrit comment contains a line with "functional tests" then run the full
-           # functional test suite.  This covers tests tagged either 'sanityDt' or 'functionalDt'.
-           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-           REGEX="functional tests"
-           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TARGET=functional-single-kind-dt
-           fi
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
 
            # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-dt" | grep -v grep | awk '{print $1}')"
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-dt" | grep -v grep | awk '{print $1}')"
            if [ -n "$P_IDS" ]; then
              echo $P_IDS
              for P_ID in $P_IDS; do
@@ -279,14 +263,14 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide --all-namespaces > $WORKSPACE/dt/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconciledt/pods.txt || true
            '''
       }
     }
 
-    stage('ATT workflow') {
+    stage('Reconcile ATT workflow') {
       environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ATTWorkflow"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileATT"
       }
       steps {
         sh '''
@@ -316,29 +300,20 @@ pipeline {
 
            # start logging
            mkdir -p $WORKSPACE/att
-           _TAG=kail-att kail -n voltha -n default > $WORKSPACE/att/onos-voltha-combined.log &
+           _TAG=kail-reconcile-att kail -n voltha -n default > $WORKSPACE/reconcileatt/onos-voltha-combined.log &
 
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           # By default, all tests tagged 'sanity' are run.  This covers basic functionality
-           # like running through the ATT workflow for a single subscriber.
-           export TARGET=sanity-single-kind
+           export TARGET=reconcile-openonu-go-adapter-test
 
-           # If the Gerrit comment contains a line with "functional tests" then run the full
-           # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
-           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-           REGEX="functional tests"
-           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TARGET=functional-single-kind
-           fi
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
 
            # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-att" | grep -v grep | awk '{print $1}')"
            if [ -n "$P_IDS" ]; then
              echo $P_IDS
              for P_ID in $P_IDS; do
@@ -347,14 +322,14 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide --all-namespaces > $WORKSPACE/att/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcileatt/pods.txt || true
            '''
       }
     }
 
-    stage('TT workflow') {
+    stage('Reconcile TT workflow') {
       environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/TTWorkflow"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileTT"
       }
       steps {
         sh '''
@@ -378,29 +353,19 @@ pipeline {
 
            # start logging
            mkdir -p $WORKSPACE/tt
-           _TAG=kail-tt kail -n voltha -n default > $WORKSPACE/tt/onos-voltha-combined.log &
+           _TAG=kail-reconcile-tt kail -n voltha -n default > $WORKSPACE/reconcilett/onos-voltha-combined.log &
 
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           # By default, all tests tagged 'sanityTt' are run.  This covers basic functionality
-           # like running through the TT workflow for a single subscriber.
-           export TARGET=sanity-kind-tt
-
-           # If the Gerrit comment contains a line with "functional tests" then run the full
-           # functional test suite.  This covers tests tagged either 'sanityTt' or 'functionalTt'.
-           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-           REGEX="functional tests"
-           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TARGET=functional-single-kind-tt
-           fi
+           export TARGET=reconcile-openonu-go-adapter-test-tt
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
 
            # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-tt" | grep -v grep | awk '{print $1}')"
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-tt" | grep -v grep | awk '{print $1}')"
            if [ -n "$P_IDS" ]; then
              echo $P_IDS
              for P_ID in $P_IDS; do
@@ -409,7 +374,7 @@ pipeline {
            fi
 
            # get pods information
-           kubectl get pods -o wide --all-namespaces > $WORKSPACE/tt/pods.txt || true
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcilett/pods.txt || true
            '''
       }
     }
