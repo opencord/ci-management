@@ -369,6 +369,62 @@ pipeline {
       }
     }
 
+    stage('Reconcile DT workflow') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileDT"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/kind-voltha/
+           #source $NAME-env.sh
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+           export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
+
+           IMAGES="adapter_open_onu_go"
+
+           for I in \$IMAGES
+           do
+             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+           done
+
+           # Workflow-specific flags
+           export WITH_RADIUS=no
+           export WITH_EAPOL=no
+           export WITH_DHCP=no
+           export WITH_IGMP=no
+           export CONFIG_SADIS="external"
+           export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
+
+           # start logging
+           mkdir -p $WORKSPACE/dt
+           _TAG=kail-reconcile-dt kail -n voltha -n default > $WORKSPACE/reconciledt/onos-voltha-combined.log &
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+
+           export TARGET=reconcile-openonu-go-adapter-test-dt
+
+
+           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-dt" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconciledt/pods.txt || true
+           '''
+      }
+    }
+
     stage('ATT workflow') {
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ATTWorkflow"
@@ -439,6 +495,67 @@ pipeline {
       }
     }
 
+    stage('Reconcile ATT workflow') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileATT"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/kind-voltha/
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+           export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
+
+           IMAGES="adapter_open_onu_go"
+
+           for I in \$IMAGES
+           do
+             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+           done
+
+           # Workflow-specific flags
+           export WITH_RADIUS=yes
+           export WITH_EAPOL=yes
+           export WITH_BBSIM=yes
+           export DEPLOY_K8S=yes
+           export CONFIG_SADIS="external"
+           export BBSIM_CFG="configs/bbsim-sadis-att.yaml"
+
+           if [ "${gerritProject}" = "voltctl" ]; then
+             export VOLTCTL_VERSION=$(cat $WORKSPACE/voltctl/VERSION)
+             cp $WORKSPACE/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
+             md5sum $WORKSPACE/kind-voltha/bin/voltctl
+           fi
+
+           # start logging
+           mkdir -p $WORKSPACE/att
+           _TAG=kail-reconcile-att kail -n voltha -n default > $WORKSPACE/reconcileatt/onos-voltha-combined.log &
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+
+           export TARGET=reconcile-openonu-go-adapter-test
+
+
+           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-att" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcileatt/pods.txt || true
+           '''
+      }
+    }
+
     stage('TT workflow') {
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/TTWorkflow"
@@ -499,6 +616,60 @@ pipeline {
 
            # get pods information
            kubectl get pods -o wide --all-namespaces > $WORKSPACE/tt/pods.txt || true
+           '''
+      }
+    }
+
+    stage('Reconcile TT workflow') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileTT"
+      }
+      steps {
+        sh '''
+           cd $WORKSPACE/kind-voltha/
+           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+
+           export EXTRA_HELM_FLAGS+="--set use_openonu_adapter_go=true,log_agent.enabled=False ${extraHelmFlags} "
+
+           IMAGES="adapter_open_onu_go"
+
+           for I in \$IMAGES
+           do
+             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
+           done
+
+           # Workflow-specific flags
+           export WITH_RADIUS=no
+           export WITH_EAPOL=no
+           export WITH_DHCP=yes
+           export WITH_IGMP=yes
+           export CONFIG_SADIS="external"
+           export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
+
+           # start logging
+           mkdir -p $WORKSPACE/tt
+           _TAG=kail-reconcile-tt kail -n voltha -n default > $WORKSPACE/reconcilett/onos-voltha-combined.log &
+
+           DEPLOY_K8S=n ./voltha up
+
+           mkdir -p $ROBOT_LOGS_DIR
+           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+
+           export TARGET=reconcile-openonu-go-adapter-test-tt
+
+           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+
+           # stop logging
+           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-tt" | grep -v grep | awk '{print $1}')"
+           if [ -n "$P_IDS" ]; then
+             echo $P_IDS
+             for P_ID in $P_IDS; do
+               kill -9 $P_ID
+             done
+           fi
+
+           # get pods information
+           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcilett/pods.txt || true
            '''
       }
     }
