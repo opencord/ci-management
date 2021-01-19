@@ -45,6 +45,28 @@
           nucleus-branch-name: 'master'
           upf-branch-name: 'master'
           pipeline-file: 'omec-postmerge.groovy'
+      - 'omec-nightly':
+          pod: 'dev'
+          build-node: 'omec-ci'
+          type: 'func'
+          build-timeout: 30
+          ntl-file: 'func.ntl'
+          time: '1'
+          desc: |
+            <img src="https://jenkins.opencord.org/job/omec_func_dev/lastCompletedBuild/artifact/plots/plot.png", alt="Failed to load plot. Either a build is currently running, or the plot was not generated from the last build." width="840", height="360"/>
+      - 'omec-nightly':
+          pod: 'dev'
+          build-node: 'omec-ci'
+          type: 'scale'
+          build-timeout: 180
+          ntl-file: 'scale-16k-rate10.ntl'
+          time: '2'
+          desc: |
+            <img src="https://jenkins.opencord.org/job/omec_scale_dev/lastCompletedBuild/artifact/plots/attach.png", alt="Failed to load plot. Either a build is currently running, or the plot was not generated from the last build." width="840", height="360"/><br />
+            ----------<br />
+            <img src="https://jenkins.opencord.org/job/omec_scale_dev/lastCompletedBuild/artifact/plots/detach.png", alt="Failed to load plot. Either a build is currently running, or the plot was not generated from the last build." width="840", height="360"/><br />
+            ----------<br />
+            <img src="https://jenkins.opencord.org/job/omec_scale_dev/lastCompletedBuild/artifact/plots/ping.png", alt="Failed to load plot. Either a build is currently running, or the plot was not generated from the last build." width="840", height="360"/><br />
 
 # for ngic-rtc
 - project:
@@ -999,6 +1021,72 @@
 
     pipeline-scm:
       script-path: 'Jenkinsfile-omec-archive-artifacts.groovy'
+      scm:
+        - git:
+            url: 'https://github.com/{github-organization}/omec-project-ci'
+            branches:
+              - 'master'
+
+# OMEC nightly job
+- job-template:
+    id: 'omec-nightly'
+    name: 'omec_{type}_{pod}'
+    project-type: pipeline
+
+    description: |
+      Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
+      {desc}
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: testType
+          default: '{type}'
+          description: 'Type of test'
+
+      - string:
+          name: pod
+          default: '{pod}'
+          description: 'Name of OMEC POD'
+
+      - string:
+          name: timeout
+          default: '{build-timeout}'
+          description: 'Timeout period for this pipeline in minutes'
+
+      - string:
+          name: ntlFile
+          default: '{ntl-file}'
+          description: 'NG40 test automation file'
+
+      - bool:
+          name: redeploy
+          default: true
+          description: 'Redeploy OMEC before running tests if set to true'
+
+    concurrent: false
+
+    triggers:
+      - timed: |
+          TZ=America/Los_Angeles
+          H {time} * * *
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile-omec-nightly.groovy'
       scm:
         - git:
             url: 'https://github.com/{github-organization}/omec-project-ci'
