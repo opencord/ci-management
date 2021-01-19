@@ -1081,6 +1081,41 @@
           default: true
           description: 'Redeploy OMEC before running tests if set to true'
 
+      - string:
+          name: hssdbImage
+          default: '{registry-proxy}/c3po-hssdb:master-latest'
+          description: 'Docker image for hssdb. Leave empty to use default helm-charts value'
+
+      - string:
+          name: hssImage
+          default: '{registry-proxy}/c3po-hss:master-latest'
+          description: 'Docker image for hss. Leave empty to use default helm-charts value'
+
+      - string:
+          name: mmeImage
+          default: '{registry-proxy}/nucleus:master-latest'
+          description: 'Docker image for mme. Leave empty to use default helm-charts value'
+
+      - string:
+          name: spgwcImage
+          default: '{registry-proxy}/spgw:master-latest'
+          description: 'Docker image for spgwc. Leave empty to use default helm-charts value'
+
+      - string:
+          name: bessImage
+          default: '{registry-proxy}/upf-epc-bess:master-latest'
+          description: 'Docker image for bess. Leave empty to use default helm-charts value'
+
+      - string:
+          name: zmqifaceImage
+          default: '{registry-proxy}/upf-epc-cpiface:master-latest'
+          description: 'Docker image for zmqiface. Leave empty to use default helm-charts value'
+
+      - string:
+          name: pfcpifaceImage
+          default: '{registry-proxy}/upf-epc-pfcpiface:master-latest'
+          description: 'Docker image for pfcpiface. Leave empty to use default helm-charts value'
+
     concurrent: false
 
     triggers:
