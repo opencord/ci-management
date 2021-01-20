@@ -223,6 +223,8 @@
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
+    oltAdapterAppLabel: 'adapter-open-olt'
+
     parameters:
       - string:
           name: buildNode
@@ -293,6 +295,11 @@
           name: powerSwitch
           default: '{power-switch}'
           description: "Indicate whether POD has power switch to reboot ONUs/OLT remotely"
+
+      - string:
+          name: oltAdapterAppLabel
+          default: '{oltAdapterAppLabel}'
+          description: 'OLT adapter pod name'
 
       - string:
           name: volthaSystemTestsChange
@@ -337,6 +344,8 @@
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
+    oltAdapterAppLabel: 'adapter-open-olt'
+
     parameters:
       - string:
           name: buildNode
@@ -407,6 +416,11 @@
           name: powerSwitch
           default: '{power-switch}'
           description: "Indicate whether POD has power switch to reboot ONUs/OLT remotely"
+
+      - string:
+          name: oltAdapterAppLabel
+          default: '{oltAdapterAppLabel}'
+          description: 'OLT adapter pod name'
 
       - string:
           name: testType

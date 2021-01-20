@@ -170,9 +170,9 @@ pipeline {
 
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
-             export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+             export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         else
-             export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityTT -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+             export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityTT -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         fi
         make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         """
@@ -228,10 +228,12 @@ pipeline {
       '''
       script {
         deployment_config.olts.each { olt ->
-          sh returnStdout: false, script: """
-          sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/openolt.log $WORKSPACE/openolt-${olt.sship}.log || true
-          sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.sship}.log  # Remove escape sequences
-          """
+          if (olt.type == null || olt.type == "" || olt.type == "openolt") {
+             sh returnStdout: false, script: """
+             sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/openolt.log $WORKSPACE/openolt-${olt.sship}.log || true
+             sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.sship}.log  # Remove escape sequences
+             """
+          }
         }
       }
       step([$class: 'RobotPublisher',

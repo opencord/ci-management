@@ -20,6 +20,7 @@
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
     cordTesterChange: ''
+    oltAdapterAppLabel: 'adapter-open-olt'
 
 
     jobs:
@@ -654,6 +655,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: False
+          oltAdapterAppLabel: 'adapter-open-olt'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with gpon olt/onu - voltha-2.5 1T8GEM tech profile and timer based job
