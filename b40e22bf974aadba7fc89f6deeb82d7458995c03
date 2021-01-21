@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ff3a5443_864a0913",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-21T14:05:20Z",
+      "side": 1,
+      "message": "if we plan to run this on a nightly job this is useless. we are not going to download a patch.",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "527855c5_25a6d035",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-21T14:05:20Z",
+      "side": 1,
+      "message": "same",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5fd0a859_622a2337",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-21T14:05:20Z",
+      "side": 1,
+      "message": "if we plan to run this on a nightly job this is useless. we are not going to build patches.",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "466187ce_a0f84448",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-21T14:05:20Z",
+      "side": 1,
+      "message": "the adapter_go flag is useless, it\u0027s now default",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c3894185_745118e9",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-21T14:05:20Z",
+      "side": 1,
+      "message": "same",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9adc88f8_7feb7a9d",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-21T14:05:20Z",
+      "side": 1,
+      "message": "I woudl still run the 1t4gem and the 1t8gem tests",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
