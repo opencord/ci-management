@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "99a5f147_6db68acb",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-01-21T21:54:52Z",
+      "side": 1,
+      "message": "I noticed that `default-test-args` is the variable to be used as per the template definition so we may need to append `-e PowerSwitch` to it",
+      "revId": "ebb7ef129b0b86381a4759907a1e380dbd4b7084",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
