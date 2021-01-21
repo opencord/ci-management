@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "253fd9fc_fd0bc3d4",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-01-21T14:08:59Z",
+      "side": 1,
+      "message": "Hi Torsten, Please refer: https://github.com/opencord/ci-management/blob/master/jjb/pipeline/voltha-nightly-tests-bbsim.groovy or https://github.com/opencord/ci-management/blob/master/jjb/pipeline/voltha-DMI-bbsim-tests.groovy",
+      "parentUuid": "ff3a5443_864a0913",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "527855c5_25a6d035",
         "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
         "patchSetId": 2
