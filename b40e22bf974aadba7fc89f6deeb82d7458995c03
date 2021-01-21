@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "8f3e6bbb_5390126e",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-21T14:49:30Z",
+      "side": 1,
+      "message": "took over this part from https://github.com/opencord/ci-management/blob/master/jjb/pipeline/voltha-nightly-tests-bbsim.groovy",
+      "parentUuid": "253fd9fc_fd0bc3d4",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "527855c5_25a6d035",
         "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
         "patchSetId": 2
@@ -48,6 +66,24 @@
       "writtenOn": "2021-01-21T14:05:20Z",
       "side": 1,
       "message": "same",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2143dc70_e222dc8b",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 124,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-21T14:49:30Z",
+      "side": 1,
+      "message": "took over this part from https://github.com/opencord/ci-management/blob/master/jjb/pipeline/voltha-nightly-tests-bbsim.groovy",
+      "parentUuid": "527855c5_25a6d035",
       "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
@@ -71,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "ecb06677_63ac319c",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 162,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-21T14:49:30Z",
+      "side": 1,
+      "message": "see above",
+      "parentUuid": "5fd0a859_622a2337",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "466187ce_a0f84448",
         "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
         "patchSetId": 2
@@ -82,6 +136,24 @@
       "writtenOn": "2021-01-21T14:05:20Z",
       "side": 1,
       "message": "the adapter_go flag is useless, it\u0027s now default",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9a5795f8_ae2be4ff",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-21T14:49:30Z",
+      "side": 1,
+      "message": "use_openonu_adapter_go\u003dtrue, is removed at all occurences also in voltha-openonu-go-tests.groovy",
+      "parentUuid": "466187ce_a0f84448",
       "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
@@ -105,6 +177,24 @@
     },
     {
       "key": {
+        "uuid": "3755e98e_9c838179",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-21T14:49:30Z",
+      "side": 1,
+      "message": "IMAGES\u003d\"adapter_open_onu_go\" is removed at all occurences also in voltha-openonu-go-tests.groovy",
+      "parentUuid": "c3894185_745118e9",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9adc88f8_7feb7a9d",
         "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
         "patchSetId": 2
@@ -116,6 +206,24 @@
       "writtenOn": "2021-01-21T14:05:20Z",
       "side": 1,
       "message": "I woudl still run the 1t4gem and the 1t8gem tests",
+      "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ef54ee22_bf9f76c9",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 213,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-21T14:49:30Z",
+      "side": 1,
+      "message": "1t4gem added, but it should discussed to insert further tests/targets like multiple onu tests.\nThere are also available:\nmulti-openonu-go-adapter-test (1t1gem)\nmulti-1t4gem-openonu-go-adapter-test\nmulti-1t8gem-openonu-go-adapter-test",
+      "parentUuid": "9adc88f8_7feb7a9d",
       "revId": "b40e22bf974aadba7fc89f6deeb82d7458995c03",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
