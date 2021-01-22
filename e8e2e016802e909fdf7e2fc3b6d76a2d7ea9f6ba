@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4148b5e5_04ec9eda",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-22T14:18:09Z",
+      "side": 0,
+      "message": "this needs to be left here, otherwise it will never use the custom image built for this verification",
+      "revId": "e8e2e016802e909fdf7e2fc3b6d76a2d7ea9f6ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58de6583_66d2613d",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-22T14:18:09Z",
+      "side": 0,
+      "message": "same",
+      "revId": "e8e2e016802e909fdf7e2fc3b6d76a2d7ea9f6ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c340678a_06e7d036",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-22T14:18:09Z",
+      "side": 0,
+      "message": "same",
+      "revId": "e8e2e016802e909fdf7e2fc3b6d76a2d7ea9f6ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e1a894b2_9a9ed01a",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 383,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-22T14:18:09Z",
+      "side": 0,
+      "message": "same",
+      "revId": "e8e2e016802e909fdf7e2fc3b6d76a2d7ea9f6ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ae2cb016_91a460c0",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 7
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-22T14:18:09Z",
+      "side": 0,
+      "message": "same",
+      "revId": "e8e2e016802e909fdf7e2fc3b6d76a2d7ea9f6ba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
