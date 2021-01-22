@@ -33,7 +33,7 @@ pipeline {
     NAME="test"
     VOLTCONFIG="$HOME/.volt/config-$NAME"
     KUBECONFIG="$HOME/.kube/kind-config-voltha-$NAME"
-    EXTRA_HELM_FLAGS=" --set defaults.image_registry=mirror.registry.opennetworking.org/ "
+    EXTRA_HELM_FLAGS=" --set global.image_registry=mirror.registry.opennetworking.org/ "
   }
 
   stages {
@@ -215,7 +215,7 @@ pipeline {
            fi
 
            if [[ "${gerritProject}" == voltha-helm-charts ]]; then
-             export EXTRA_HELM_FLAGS+="--set defaults.image_tag=null "
+             export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
            fi
 
            # Workflow-specific flags
@@ -343,7 +343,7 @@ pipeline {
            export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
 
            if [[ "${gerritProject}" == voltha-helm-charts ]]; then
-             export EXTRA_HELM_FLAGS+="--set defaults.image_tag=null "
+             export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
            fi
 
            # start logging
@@ -405,7 +405,7 @@ pipeline {
            export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
 
            if [[ "${gerritProject}" == voltha-helm-charts ]]; then
-             export EXTRA_HELM_FLAGS+="--set defaults.image_tag=null "
+             export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
            fi
 
            # start logging

@@ -39,7 +39,7 @@ pipeline {
     CONFIG_SADIS="external"
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
-    EXTRA_HELM_FLAGS=" --set defaults.image_registry=mirror.registry.opennetworking.org/ "
+    EXTRA_HELM_FLAGS=" --set global.image_registry=mirror.registry.opennetworking.org/ "
   }
   stages {
     stage('Clone kind-voltha') {
