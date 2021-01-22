@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ae9a7845_fc9b2f08",
+        "filename": "jjb/pipeline/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 6
+      },
+      "lineNbr": 140,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-01-22T10:23:02Z",
+      "side": 1,
+      "message": "I suggest to add 1t8gem also for nightly run.",
+      "range": {
+        "startLine": 140,
+        "startChar": 25,
+        "endLine": 140,
+        "endChar": 31
+      },
+      "revId": "17e12636a2a166ef467034e9f5dc4971c578e8e9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
