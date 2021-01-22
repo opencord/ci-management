@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6abf70f6_ce1dd5e0",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 8
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-22T15:25:05Z",
+      "side": 1,
+      "message": "wrong double tab",
+      "revId": "06442fed98e08295003fad8601a6ca7916654174",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
