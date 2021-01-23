@@ -193,6 +193,7 @@ pipeline {
           mkdir -p $ROBOT_LOGS_DIR/1t1gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
           export TARGET_DEFAULT=openonu-go-adapter-test
+          export NAME=voltha_voltha
 
           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
 
@@ -238,6 +239,7 @@ pipeline {
           mkdir -p $ROBOT_LOGS_DIR/1t8gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
           export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
+          export NAME=voltha_voltha
 
           make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
 
@@ -286,6 +288,7 @@ pipeline {
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
            export TARGET_DEFAULT=mib-upload-templating-openonu-go-adapter-test
+           export NAME=voltha_voltha
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
 
