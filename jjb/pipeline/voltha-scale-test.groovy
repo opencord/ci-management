@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// deploy VOLTHA using kind-voltha and performs a scale test
+// deploy VOLTHA and performs a scale test
 
 pipeline {
 
@@ -28,42 +28,36 @@ pipeline {
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
     SSHPASS="karaf"
-    PATH="$PATH:$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    SCHEDULE_ON_CONTROL_NODES="yes"
-    FANCY=0
-    WITH_SIM_ADAPTERS="no"
-    WITH_RADIUS="${withRadius}"
-    WITH_BBSIM="yes"
-    LEGACY_BBSIM_INDEX="no"
-    DEPLOY_K8S="no"
-    CONFIG_SADIS="external"
-    WITH_KAFKA="kafka.default.svc.cluster.local"
-    WITH_ETCD="etcd.default.svc.cluster.local"
-    VOLTHA_ETCD_PORT=9999
-
-    // install everything in the default namespace
-    VOLTHA_NS="default"
-    ADAPTER_NS="default"
-    INFRA_NS="default"
-    BBSIM_NS="default"
+    // PATH="$PATH:$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    // SCHEDULE_ON_CONTROL_NODES="yes"
+    // FANCY=0
+    // WITH_SIM_ADAPTERS="no"
+    // WITH_RADIUS="${withRadius}"
+    // WITH_BBSIM="yes"
+    // LEGACY_BBSIM_INDEX="no"
+    // DEPLOY_K8S="no"
+    // CONFIG_SADIS="external"
+    // WITH_KAFKA="kafka.default.svc.cluster.local"
+    // WITH_ETCD="etcd.default.svc.cluster.local"
+    // VOLTHA_ETCD_PORT=9999
 
     // configurable options
-    WITH_EAPOL="${withEapol}"
-    WITH_DHCP="${withDhcp}"
-    WITH_IGMP="${withIgmp}"
+    // WITH_EAPOL="${withEapol}"
+    // WITH_DHCP="${withDhcp}"
+    // WITH_IGMP="${withIgmp}"
     VOLTHA_LOG_LEVEL="${logLevel}"
     NUM_OF_BBSIM="${olts}"
     NUM_OF_OPENONU="${openonuAdapterReplicas}"
     NUM_OF_ONOS="${onosReplicas}"
     NUM_OF_ATOMIX="${atomixReplicas}"
-    WITH_PPROF="${withProfiling}"
+    // WITH_PPROF="${withProfiling}"
     EXTRA_HELM_FLAGS="${extraHelmFlags} " // note that the trailing space is required to separate the parameters from appends done later
-    VOLTHA_CHART="${volthaChart}"
-    VOLTHA_BBSIM_CHART="${bbsimChart}"
-    VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
-    VOLTHA_ADAPTER_OPEN_ONU_CHART="${openonuAdapterChart}"
-    ONOS_CLASSIC_CHART="${onosChart}"
-    RADIUS_CHART="${radiusChart}"
+    // VOLTHA_CHART="${volthaChart}"
+    // VOLTHA_BBSIM_CHART="${bbsimChart}"
+    // VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
+    // VOLTHA_ADAPTER_OPEN_ONU_CHART="${openonuAdapterChart}"
+    // ONOS_CLASSIC_CHART="${onosChart}"
+    // RADIUS_CHART="${radiusChart}"
 
     APPS_TO_LOG="etcd kafka onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server"
     LOG_FOLDER="$WORKSPACE/logs"
@@ -75,64 +69,35 @@ pipeline {
     stage ('Cleanup') {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
-          sh returnStdout: false, script: """
-            helm repo add stable https://charts.helm.sh/stable
+          sh returnStdout: false, script: '''
             helm repo add onf https://charts.opencord.org
-            helm repo add cord https://charts.opencord.org
-            helm repo add onos https://charts.onosproject.org
-            helm repo add atomix https://charts.atomix.io
-            helm repo add bbsim-sadis https://ciena.github.io/bbsim-sadis-server/charts
             helm repo update
 
-            # removing ETCD port forward
-            P_ID="\$(ps e -ww -A | grep "_TAG=etcd-port-forward" | grep -v grep | awk '{print \$1}')"
-            if [ -n "\$P_ID" ]; then
-              kill -9 \$P_ID
-            fi
-
             NAMESPACES="voltha1 voltha2 infra default"
-            for NS in \$NAMESPACES
+            for NS in $NAMESPACES
             do
-                for hchart in \$(helm list -n \$NS -q | grep -E -v 'docker-registry|kafkacat');
+                for hchart in $(helm list -n $NS -q | grep -E -v 'docker-registry|kafkacat');
                 do
-                    echo "Purging chart: \${hchart}"
-                    helm delete -n \$NS "\${hchart}"
+                    echo "Purging chart: ${hchart}"
+                    helm delete -n $NS "${hchart}"
                 done
             done
 
-            test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
+            # wait for pods to be removed
+            echo -ne "\nWaiting for PODs to be removed..."
+            PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry" | wc -l)
+            while [[ $PODS != 0 ]]; do
+              sleep 5
+              echo -ne "."
+              PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry" | wc -l)
+            done
 
             # remove orphaned port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+            ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
 
             cd $WORKSPACE
             rm -rf $WORKSPACE/*
-          """
-        }
-      }
-    }
-    stage('Clone kind-voltha') {
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/kind-voltha",
-            refspec: "${kindVolthaChange}"
-          ]],
-          branches: [[ name: "master", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
-        script {
-          sh(script:"""
-          if [ '${kindVolthaChange}' != '' ] ; then
-            cd $WORKSPACE/kind-voltha;
-            git fetch https://gerrit.opencord.org/kind-voltha ${kindVolthaChange} && git checkout FETCH_HEAD
-          fi
-          """)
+          '''
         }
       }
     }
@@ -182,7 +147,7 @@ pipeline {
       // includes monitoring, kafka, etcd
       steps {
         sh '''
-        helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas} --set persistence.enabled=false \
+        helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas},replicas=${kafkaReplicas} --set persistence.enabled=false \
           --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
           --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
 
@@ -190,10 +155,10 @@ pipeline {
         ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
         ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
         ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install -f $WORKSPACE/kind-voltha/values.yaml --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
+        helm install --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
-          helm install nem-monitoring cord/nem-monitoring \
+          helm install nem-monitoring onf/nem-monitoring \
           -f $HOME/voltha-scale/grafana.yaml \
           --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
           --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
@@ -206,15 +171,14 @@ pipeline {
         script {
           sh returnStdout: false, script: """
 
-            cd $WORKSPACE/kind-voltha/
-
             export EXTRA_HELM_FLAGS+=' '
 
+            # TODO add support for older releases, how do we do that?
             # Load the release defaults
-            if [ '${release.trim()}' != 'master' ]; then
-              source $WORKSPACE/kind-voltha/releases/${release}
-              EXTRA_HELM_FLAGS+=" ${extraHelmFlags} "
-            fi
+            # if [ '${release.trim()}' != 'master' ]; then
+            #  source $WORKSPACE/kind-voltha/releases/${release}
+            #  EXTRA_HELM_FLAGS+=" ${extraHelmFlags} "
+            # fi
 
             # BBSim custom image handling
             if [ '${bbsimImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'bbsim' ]; then
@@ -222,37 +186,40 @@ pipeline {
               EXTRA_HELM_FLAGS+="--set images.bbsim.repository=\$bbsimRepo,images.bbsim.tag=\$bbsimTag "
             fi
 
-            # VOLTHA and ofAgent custom image handling
-            # NOTE to override the rw-core image in a released version you must set the ofAgent image too
-            # TODO split ofAgent and voltha-go
-            if [ '${rwCoreImg.trim()}' != '' ] && [ '${ofAgentImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-go' ]; then
+            # VOLTHA custom image handling
+            if [ '${rwCoreImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-go' ]; then
               IFS=: read -r rwCoreRepo rwCoreTag <<< '${rwCoreImg.trim()}'
+              EXTRA_HELM_FLAGS+="--set voltha.images.rw_core.repository=\$rwCoreRepo,voltha.images.rw_core.tag=\$rwCoreTag "
+            fi
+
+            # ofAgent custom image handling
+            if [ '${ofAgentImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'of-agent' ]; then
               IFS=: read -r ofAgentRepo ofAgentTag <<< '${ofAgentImg.trim()}'
-              EXTRA_HELM_FLAGS+="--set images.rw_core.repository=\$rwCoreRepo,images.rw_core.tag=\$rwCoreTag,images.ofagent.repository=\$ofAgentRepo,images.ofagent.tag=\$ofAgentTag "
+              EXTRA_HELM_FLAGS+="--set voltha.images.ofagent.repository=\$ofAgentRepo,voltha.images.ofagent.tag=\$ofAgentTag "
             fi
 
             # OpenOLT custom image handling
             if [ '${openoltAdapterImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openolt-adapter' ]; then
               IFS=: read -r openoltAdapterRepo openoltAdapterTag <<< '${openoltAdapterImg.trim()}'
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=\$openoltAdapterRepo,images.adapter_open_olt.tag=\$openoltAdapterTag "
+              EXTRA_HELM_FLAGS+="--set voltha-adapter-openolt.images.adapter_open_olt.repository=\$openoltAdapterRepo,voltha-adapter-openolt.images.adapter_open_olt.tag=\$openoltAdapterTag "
             fi
 
             # OpenONU custom image handling
             if [ '${openonuAdapterImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openonu-adapter' ]; then
               IFS=: read -r openonuAdapterRepo openonuAdapterTag <<< '${openonuAdapterImg.trim()}'
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=\$openonuAdapterRepo,images.adapter_open_onu.tag=\$openonuAdapterTag "
+              EXTRA_HELM_FLAGS+="--set voltha-adapter-openonu.images.adapter_open_onu.repository=\$openonuAdapterRepo,voltha-adapter-openonu.images.adapter_open_onu.tag=\$openonuAdapterTag "
             fi
 
             # OpenONU GO custom image handling
             if [ '${openonuAdapterGoImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-openonu-adapter-go' ]; then
               IFS=: read -r openonuAdapterGoRepo openonuAdapterGoTag <<< '${openonuAdapterGoImg.trim()}'
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu_go.repository=\$openonuAdapterGoRepo,images.adapter_open_onu_go.tag=\$openonuAdapterGoTag "
+              EXTRA_HELM_FLAGS+="--set voltha-adapter-openonu.images.adapter_open_onu_go.repository=\$openonuAdapterGoRepo,voltha-adapter-openonu.images.adapter_open_onu_go.tag=\$openonuAdapterGoTag "
             fi
 
             # ONOS custom image handling
             if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
               IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
-              EXTRA_HELM_FLAGS+="--set images.onos.repository=\$onosRepo,images.onos.tag=\$onosTag "
+              EXTRA_HELM_FLAGS+="--set onos-classic.images.onos.repository=\$onosRepo,onos-classic.images.onos.tag=\$onosTag "
             fi
 
             # set BBSim parameters
@@ -262,50 +229,88 @@ pipeline {
             EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
 
             # No persistent-volume-claims in Atomix
-            EXTRA_HELM_FLAGS+="--set atomix.persistence.enabled=false "
+            EXTRA_HELM_FLAGS+="--set onos-classic.atomix.persistence.enabled=false "
 
             echo "Installing with the following extra arguments:"
             echo $EXTRA_HELM_FLAGS
 
             # if it's newer than voltha-2.4 set the correct BBSIM_CFG
-            if [ '${release.trim()}' != 'voltha-2.4' ]; then
-              export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-${workflow}.yaml"
-            fi
+            # TODO customize the workflow
+            #if [ '${release.trim()}' != 'voltha-2.4' ]; then
+            #  export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-${workflow}.yaml"
+            #fi
 
             # Use custom built images
 
             if [ '\$GERRIT_PROJECT' == 'voltha-go' ]; then
-              EXTRA_HELM_FLAGS+="--set images.rw_core.repository=${dockerRegistry}/voltha/voltha-rw-core,images.rw_core.tag=voltha-scale "
+              EXTRA_HELM_FLAGS+="--set voltha.images.rw_core.repository=${dockerRegistry}/voltha/voltha-rw-core,voltha.images.rw_core.tag=voltha-scale "
             fi
 
             if [ '\$GERRIT_PROJECT' == 'voltha-openolt-adapter' ]; then
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_olt.repository=${dockerRegistry}/voltha/voltha-openolt-adapter,images.adapter_open_olt.tag=voltha-scale "
+              EXTRA_HELM_FLAGS+="--set voltha-openolt-adapter.images.adapter_open_olt.repository=${dockerRegistry}/voltha/voltha-openolt-adapter,voltha-openolt-adapter.images.adapter_open_olt.tag=voltha-scale "
             fi
 
             if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter' ]; then
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu.repository=${dockerRegistry}/voltha/voltha-openonu-adapter,images.adapter_open_onu.tag=voltha-scale "
+              EXTRA_HELM_FLAGS+="--set voltha-openonu-adapter.images.adapter_open_onu.repository=${dockerRegistry}/voltha/voltha-openonu-adapter,voltha-openonu-adapter.images.adapter_open_onu.tag=voltha-scale "
             fi
 
             if [ '\$GERRIT_PROJECT' == 'voltha-openonu-adapter-go' ]; then
-              EXTRA_HELM_FLAGS+="--set images.adapter_open_onu_go.repository=${dockerRegistry}/voltha/voltha-openonu-adapter-go,images.adapter_open_onu_go.tag=voltha-scale "
+              EXTRA_HELM_FLAGS+="--set voltha-openonu-adapter-go.images.adapter_open_onu_go.repository=${dockerRegistry}/voltha/voltha-openonu-adapter-go,voltha-openonu-adapter-go.images.adapter_open_onu_go.tag=voltha-scale "
             fi
 
             if [ '\$GERRIT_PROJECT' == 'ofagent-go' ]; then
-              EXTRA_HELM_FLAGS+="--set images.ofagent.repository=${dockerRegistry}/voltha/voltha-ofagent-go,images.ofagent.tag=voltha-scale "
+              EXTRA_HELM_FLAGS+="--set voltha.images.ofagent.repository=${dockerRegistry}/voltha/voltha-ofagent-go,ofagent-go.images.ofagent.tag=voltha-scale "
             fi
 
             if [ '\$GERRIT_PROJECT' == 'voltha-onos' ]; then
-              EXTRA_HELM_FLAGS+="--set images.onos.repository=${dockerRegistry}/voltha/voltha-onos,images.onos.tag=voltha-scale "
+              EXTRA_HELM_FLAGS+="--set onos-classic.images.onos.repository=${dockerRegistry}/voltha/voltha-onos,onos-classic.images.onos.tag=voltha-scale "
             fi
 
             if [ '\$GERRIT_PROJECT' == 'bbsim' ]; then
               EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
             fi
 
-            ./voltha up
+            helm upgrade --install voltha-infra onf/voltha-infra \
+              --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
+              --set etcd.enabled=false,kafka.enabled=false \
+              --set global.log_level=${logLevel}
 
-            # Forward the ETCD port onto $VOLTHA_ETCD_PORT
-            _TAG=etcd-port-forward kubectl port-forward --address 0.0.0.0 -n default service/etcd $VOLTHA_ETCD_PORT:2379&
+            helm upgrade --install voltha1 onf/voltha-stack \
+              --set global.stack_name=voltha1 \
+              --set global.voltha_infra_name=voltha-infra \
+              --set global.voltha_infra_namespace=default \
+              --set global.log_level=${logLevel} \
+              --set voltha.services.kafka.adapter.address=kafka.default.svc:9092 \
+              --set voltha.services.kafka.cluster.address=kafka.default.svc:9092 \
+              --set voltha.services.etcd.address=etcd.default.svc:2379 \
+              --set voltha-adapter-openolt.services.kafka.adapter.address=kafka.default.svc:9092 \
+              --set voltha-adapter-openolt.services.kafka.cluster.address=kafka.default.svc:9092 \
+              --set voltha-adapter-openolt.services.etcd.address=etcd.default.svc:2379 \
+              --set voltha-adapter-openonu.services.kafka.adapter.service=kafka.default.svc \
+              --set voltha-adapter-openonu.services.kafka.cluster.service=kafka.default.svc \
+              --set voltha-adapter-openonu.services.etcd.service=etcd.default.svc
+              # TODO having to set all of these values is annoying, is there a better solution?
+
+
+            for i in {0..${olts.toInteger() - 1}}; do
+              stackId=1
+              helm upgrade --install bbsim\$i onf/bbsim --set olt_id="\${stackId}\${i}" \
+                --set onu=${onus},pon=${pons} \
+                --set defaults.log_level=${logLevel.toLowerCase()}
+            done
+
+            echo -ne "\nWaiting for VOLTHA to start..."
+            voltha=\$(kubectl get pods --all-namespaces -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
+            while [[ \$voltha != 0 ]]; do
+              sleep 5
+              echo -ne "."
+              voltha=\$(kubectl get pods --all-namespaces -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
+            done
+
+            # forward ONOS and VOLTHA ports
+            _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8101:8101&
+            _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8181:8181&
+            _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha1-voltha-api 55555:55555&
           """
         }
         sh returnStdout: false, script: '''
@@ -349,12 +354,6 @@ pipeline {
 
           if [ ${withFlows} = false ]; then
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.olt
-          fi
-
-          if [ ${withMibTemplate} = true ] ; then
-            rm -f BBSM-12345123451234512345-00000000000001-v1.json
-            wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
           fi
 
           if [ ${withPcap} = true ] ; then
@@ -682,7 +681,7 @@ EOF
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-minimal.log,execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*,etcd-metrics/*'
+      archiveArtifacts artifacts: 'execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*,etcd-metrics/*'
     }
   }
 }
