@@ -545,11 +545,6 @@
           description: 'Wheter Link Discovery is enabled for the test'
 
       - bool:
-          name: withMibTemplate
-          default: '{withMibTemplate}'
-          description: 'Option to trigger MIB template command'
-
-      - bool:
           name: withMonitoring
           default: '{withMonitoring}'
           description: 'Option to install Prometheus'
@@ -740,7 +735,6 @@
     withDhcp: true
     withIgmp: false
     withLLDP: false
-    withMibTemplate: true
     withMonitoring: true
     withProfiling: false
     withPcap: false
@@ -842,7 +836,6 @@
     withDhcp: true
     withIgmp: false
     withLLDP: false
-    withMibTemplate: true
     withMonitoring: false
     withProfiling: false
     withPcap: false
