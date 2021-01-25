@@ -8,6 +8,12 @@
     jobs:
       - 'verify-bbsim-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'verify-bbsim-jobs-voltha-2.6':
+          name-extension: '-voltha-2.6'
+          override-branch: 'voltha-2.6'
+          branch-regexp: '{kind-voltha-regexp}'
+      - 'verify-bbsim-jobs-master':
+          branch-regexp: '^master$'
       - 'publish-bbsim-jobs':
           branch-regexp: '{all-branches-regexp}'
 
@@ -22,8 +28,18 @@
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'verify-bbsim-jobs-voltha-2.6'
+    jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
+
+- job-group:
+    name: 'verify-bbsim-jobs-master'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/master/voltha-bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-bbsim-jobs'

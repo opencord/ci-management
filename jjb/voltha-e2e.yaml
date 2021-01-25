@@ -351,8 +351,10 @@
     name: 'verify_{project}_sanity-test{name-extension}'
     override-branch: '$GERRIT_BRANCH'
     sandbox: true
+    build-timeout: 20
     volthaSystemTestsChange: ''
     kindVolthaChange: ''
+    branch-regexp: '{all-branches-regexp}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -428,7 +430,7 @@
               project-pattern: '^{project}$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{all-branches-regexp}'
+                  branch-pattern: '{branch-regexp}'
               file-paths:
                 - compare-type: REG_EXP
                   pattern: '{all-files-regexp}'

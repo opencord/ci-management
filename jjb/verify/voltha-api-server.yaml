@@ -1,6 +1,8 @@
 ---
 # verification jobs for 'voltha-api-server' repo
 
+# NOTE voltha-api-server is unmaintained, should we keep running tests?
+
 - project:
     name: voltha-api-server
     project: '{name}'
