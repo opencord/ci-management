@@ -13,8 +13,104 @@
 // limitations under the License.
 
 // voltha-2.x e2e tests
-// uses kind-voltha to deploy voltha-2.X
 // uses bbsim to simulate OLT/ONUs
+
+def clusterName = "voltha-test"
+def extraHelmFlags = " --set global.image_registry=mirror.registry.opennetworking.org/ "
+def logLevel = "DEBUG"
+
+def customImageFlags(image) {
+  return "--set images.${image}.tag=citest,images.${image}.pullPolicy=Never "
+}
+
+def test_workflow(name) {
+  stage("${name.toUpperCase()} workflow") {
+    timeout(time: 15, unit: 'MINUTES') {
+      sh """
+      # Install VOLTHA
+
+        helm upgrade --install voltha-infra onf/voltha-infra ${extraHelmFlags} \
+          --set global.log_level="DEBUG" \
+          -f $WORKSPACE/voltha-helm-charts/examples/${name}-values.yaml
+
+        helm upgrade --install voltha1 onf/voltha-stack ${extraHelmFlags} \
+          --set global.stack_name=voltha1 \
+          --set global.voltha_infra_name=voltha-infra \
+          --set global.voltha_infra_namespace=default \
+          --set global.log_level=DEBUG
+
+        helm upgrade --install bbsim0 onf/bbsim ${extraHelmFlags} \
+          --set olt_id="10" \
+          --set onu=1,pon=1 \
+          --set global.log_level=debug \
+          -f $WORKSPACE/voltha-helm-charts/examples/${name}-values.yaml
+
+        # start logging
+        mkdir -p $WORKSPACE/att
+        _TAG=kail-${name} kail -n default > $WORKSPACE/${name}/onos-voltha-combined.log &
+
+        # TODO wait for VOLTHA to start
+
+        # forward ports
+        # forward ONOS and VOLTHA ports
+        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8101:8101&
+        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8181:8181&
+        _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha1-voltha-api 55555:55555&
+      """
+      sh """
+      ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name.toUpperCase()}Workflow"
+      mkdir -p \$ROBOT_LOGS_DIR
+      export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -e PowerSwitch"
+
+      # By default, all tests tagged 'sanity' are run.  This covers basic functionality
+      # like running through the ATT workflow for a single subscriber.
+      if [[ "${name}" == "att" ]]; then
+        # FIXME resolve this special case voltha-syste-test/Makefile
+        export TARGET=sanity-kind
+      else
+        export TARGET=sanity-kind-${name}
+      fi
+
+      # If the Gerrit comment contains a line with "functional tests" then run the full
+      # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
+      # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+      REGEX="functional tests"
+      if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+        if [[ "${name}" == "att" ]]; then
+          # FIXME resolve this special case voltha-syste-test/Makefile
+          export TARGET=functional-single-kind
+        else
+          export TARGET=functional-single-kind-${name}
+        fi
+      fi
+
+      export VOLTCONFIG=$HOME/.volt/config
+      export KUBECONFIG=$HOME/.kube/config
+
+      # Run the specified tests
+      make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+      """
+      sh """
+      # stop logging
+      P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
+      if [ -n "\$P_IDS" ]; then
+        echo \$P_IDS
+        for P_ID in \$P_IDS; do
+          kill -9 \$P_ID
+        done
+      fi
+
+      # remove orphaned port-forward from different namespaces
+      ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+
+      # get pods information
+      kubectl get pods --all-namespaces -o wide > \$WORKSPACE/${name}/pods.txt || true
+      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee \$WORKSPACE/att/pod-images.txt || true
+      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee \$WORKSPACE/att/pod-imagesId.txt || true
+      """
+    }
+  }
+}
 
 pipeline {
 
@@ -26,40 +122,11 @@ pipeline {
     timeout(time: 90, unit: 'MINUTES')
   }
   environment {
-    PATH="$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    VOLTHA_LOG_LEVEL="DEBUG"
-    FANCY=0
-    WITH_SIM_ADAPTERS="n"
-    NAME="test"
-    VOLTCONFIG="$HOME/.volt/config-$NAME"
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-$NAME"
-    EXTRA_HELM_FLAGS=" --set global.image_registry=mirror.registry.opennetworking.org/ "
+    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    KUBECONFIG="$HOME/.kube/kind-config-${clusterName}"
   }
 
   stages {
-    stage('Clone kind-voltha') {
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/kind-voltha",
-            refspec: "${kindVolthaChange}"
-          ]],
-          branches: [[ name: "master", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
-        sh """
-        if [ '${kindVolthaChange}' != '' ] ; then
-          cd $WORKSPACE/kind-voltha
-          git fetch https://gerrit.opencord.org/kind-voltha ${kindVolthaChange} && git checkout FETCH_HEAD
-        fi
-        """
-      }
-    }
     stage('Clone voltha-system-tests') {
       steps {
         checkout([
@@ -83,11 +150,37 @@ pipeline {
         """
       }
     }
+    stage('Clone voltha-helm-charts') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-helm-charts",
+            // refspec: "${volthaHelmChartsChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-helm-charts"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+        // script {
+        //   sh(script:"""
+        //     if [ '${volthaHelmChartsChange}' != '' ] ; then
+        //       cd $WORKSPACE/voltha-helm-charts;
+        //       git fetch https://gerrit.opencord.org/voltha-helm-charts ${volthaHelmChartsChange} && git checkout FETCH_HEAD
+        //     fi
+        //     """)
+        // }
+      }
+    }
     // If the repo under test is not kind-voltha
     // then download it and checkout the patch
     stage('Download Patch') {
       when {
         expression {
+          // TODO remove once we stop testing kind-voltha
           return "${gerritProject}" != 'kind-voltha';
         }
       }
@@ -120,6 +213,7 @@ pipeline {
     stage('Checkout kind-voltha patch') {
       when {
         expression {
+          // TODO remove once we stop testing kind-voltha
           return "${gerritProject}" == 'kind-voltha';
         }
       }
@@ -132,18 +226,57 @@ pipeline {
     }
     stage('Create K8s Cluster') {
       steps {
-        sh """
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-
-           cd $WORKSPACE/kind-voltha/
-           JUST_K8S=y ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
+        script {
+           def data = """
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+nodes:
+- role: control-plane
+- role: worker
+- role: worker
            """
+           writeFile(file: 'kind.cfg', text: data)
+       }
+        sh """
+
+          mkdir $WORKSPACE/bin
+
+          # download kind (should we add it to the base image?)
+          curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
+          chmod +x ./kind
+          mv ./kind $WORKSPACE/bin/kind
+
+          # install voltctl
+          HOSTOS="\$(uname -s | tr "[:upper:]" "[:lower:"])"
+          HOSTARCH="\$(uname -m | tr "[:upper:]" "[:lower:"])"
+          if [ "\$HOSTARCH" == "x86_64" ]; then
+              HOSTARCH="amd64"
+          fi
+          curl -Lo ./voltctl https://github.com/opencord/voltctl/releases/download/v1.3.1/voltctl-1.3.1-\$HOSTOS-\$HOSTARCH
+          chmod +x ./voltctl
+          mv ./voltctl $WORKSPACE/bin/
+
+          # start the kind cluster
+          kind create cluster --name ${clusterName} --config kind.cfg
+
+          mkdir -p $HOME/.volt
+          voltctl -s localhost:55555 config > $HOME/.volt/config
+
+          mkdir -p $HOME/.kube
+          kind get kubeconfig --name ${clusterName} > $HOME/.kube/config
+
+          # remove NoSchedule taint from nodes
+          for MNODE in \$(kubectl get node --selector='node-role.kubernetes.io/master' -o json | jq -r '.items[].metadata.name'); do
+              kubectl taint node "\$MNODE" node-role.kubernetes.io/master:NoSchedule-
+          done
+
+          # add helm repositories
+          helm repo add onf https://charts.opencord.org
+          helm repo update
+
+          # download kail
+          bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+        """
       }
     }
 
@@ -183,268 +316,73 @@ pipeline {
 
     stage('Push Images') {
       steps {
-        sh '''
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-
+        sh """
            if ! [[ "${gerritProject}" =~ ^(voltha-helm-charts|voltha-system-tests|voltctl|kind-voltha)\$ ]]; then
-             export GOROOT=/usr/local/go
-             export GOPATH=\$(pwd)
              docker images | grep citest
-             for image in \$(docker images -f "reference=*/*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
+             for image in \$(docker images -f "reference=*/*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name ${clusterName} --nodes ${clusterName}-worker,${clusterName}-worker2; done
            fi
-           '''
+           """
       }
     }
-
-    stage('ATT workflow') {
-      environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ATTWorkflow"
-      }
+    stage('Configuration') {
       steps {
-        sh '''
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
+        script {
 
-           if [[ "${gerritProject}" == voltha-helm-charts ]]; then
-             export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
-           fi
+          if ("${gerritProject}" in ["ofagent-py", "pyvoltha", "voltha-openonu-adapter"])
 
-           # Workflow-specific flags
-           export WITH_RADIUS=yes
-           export WITH_BBSIM=yes
-           export DEPLOY_K8S=yes
-           export CONFIG_SADIS="external"
-           export BBSIM_CFG="configs/bbsim-sadis-att.yaml"
+          if ("${gerritProject}" == "voltha-helm-charts") {
+            // TODO support voltha-helm-charts testing
+            error("Not supported yet with the new charts")
+          }
 
-           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+          def image = ""
 
-           IMAGES=""
-           if [ "${gerritProject}" = "voltha-go" ]; then
-             IMAGES="rw_core ro_core "
-           elif [ "${gerritProject}" = "ofagent-py" ]; then
-             IMAGES="ofagent_py "
-             EXTRA_HELM_FLAGS+="--set use_ofagent_go=false "
-           elif [ "${gerritProject}" = "ofagent-go" ]; then
-             IMAGES="ofagent_go "
-           elif [ "${gerritProject}" = "voltha-onos" ]; then
-             IMAGES="onos "
-             EXTRA_HELM_FLAGS+="--set images.onos.repository=mirror.registry.opennetworking.org/voltha/voltha-onos "
-           elif [ "${gerritProject}" = "voltha-openolt-adapter" ]; then
-             IMAGES="adapter_open_olt "
-           elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
-             IMAGES="adapter_open_onu "
-           elif [ "${gerritProject}" = "voltha-api-server" ]; then
-             IMAGES="afrouter afrouterd "
-           elif [ "${gerritProject}" = "bbsim" ]; then
-             IMAGES="bbsim "
-           elif [ "${gerritProject}" = "pyvoltha" ]; then
-             IMAGES="adapter_open_onu "
-           elif [ "${gerritProject}" = "voltha-lib-go" ]; then
-             IMAGES="rw_core ro_core adapter_open_olt "
-           elif [ "${gerritProject}" = "voltha-protos" ]; then
-             IMAGES="rw_core ro_core adapter_open_olt adapter_open_onu ofagent "
-           else
-             echo "No images to push"
-           fi
+          if ("${gerritProject}" == "voltha-go") {
+            image = "rw_core"
+          } else if ("${gerritProject}" == "ofagent-go") {
+            image = "ofagent_go"
+          } else if ("${gerritProject}" == "voltha-onos") {
+            image = "onos"
+          } else if ("${gerritProject}" == "voltha-onos") {
+            image = "onos"
+          } else if ("${gerritProject}" == "voltha-openolt-adapter") {
+            image = "adapter_open_olt"
+          } else if ("${gerritProject}" == "voltha-openonu-adapter") {
+            image = "adapter_open_onu"
+          } else if ("${gerritProject}" == "bbsim") {
+            image = "bbsim"
+          }
 
-           for I in \$IMAGES
-           do
-             EXTRA_HELM_FLAGS+="--set images.\$I.tag=citest,images.\$I.pullPolicy=Never "
-           done
+          extraHelmFlags = customImageFlags(image) + " ${extraHelmFlags}"
 
-           if [ "${gerritProject}" = "voltha-helm-charts" ]; then
-             export CHART_PATH=$WORKSPACE/voltha-helm-charts
-             export VOLTHA_CHART=\$CHART_PATH/voltha
-             export VOLTHA_ADAPTER_OPEN_OLT_CHART=\$CHART_PATH/voltha-adapter-openolt
-             export VOLTHA_ADAPTER_OPEN_ONU_CHART=\$CHART_PATH/voltha-adapter-openonu
-             helm dep update \$VOLTHA_CHART
-             helm dep update \$VOLTHA_ADAPTER_OPEN_OLT_CHART
-             helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
-           fi
-
-           if [ "${gerritProject}" = "voltctl" ]; then
-             export VOLTCTL_VERSION=$(cat $WORKSPACE/voltctl/VERSION)
-             cp $WORKSPACE/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
-             md5sum $WORKSPACE/kind-voltha/bin/voltctl
-           fi
-
-           printenv
-
-           # start logging
-           mkdir -p $WORKSPACE/att
-           _TAG=kail-att kail -n voltha -n default > $WORKSPACE/att/onos-voltha-combined.log &
-
-           cd $WORKSPACE/kind-voltha/
-           ./voltha up
-
-           # $NAME-env.sh contains the environment we used
-           # Save value of EXTRA_HELM_FLAGS there to use in subsequent stages
-           echo export EXTRA_HELM_FLAGS=\\"\$EXTRA_HELM_FLAGS\\" >> $NAME-env.sh
-
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
-
-           # By default, all tests tagged 'sanity' are run.  This covers basic functionality
-           # like running through the ATT workflow for a single subscriber.
-           export TARGET=sanity-single-kind
-
-           # If the Gerrit comment contains a line with "functional tests" then run the full
-           # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
-           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-           REGEX="functional tests"
-           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TARGET=functional-single-kind
-           fi
-
-           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
-
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
-
-           # get pods information
-           kubectl get pods -o wide > $WORKSPACE/att/pods.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/att/pod-images.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/att/pod-imagesId.txt || true
-           '''
+          println "${extraHelmFlags}"
+        }
+        // sh '''
+        //    // TODO add support for custom helm-charts
+        //    if [ "${gerritProject}" = "voltha-helm-charts" ]; then
+        //      export CHART_PATH=$WORKSPACE/voltha-helm-charts
+        //      export VOLTHA_CHART=\$CHART_PATH/voltha
+        //      export VOLTHA_ADAPTER_OPEN_OLT_CHART=\$CHART_PATH/voltha-adapter-openolt
+        //      export VOLTHA_ADAPTER_OPEN_ONU_CHART=\$CHART_PATH/voltha-adapter-openonu
+        //      helm dep update \$VOLTHA_CHART
+        //      helm dep update \$VOLTHA_ADAPTER_OPEN_OLT_CHART
+        //      helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
+        //    fi
+        //
+        //    // TODO add support for voltctl testing
+        //    if [ "${gerritProject}" = "voltctl" ]; then
+        //      export VOLTCTL_VERSION=$(cat $WORKSPACE/voltctl/VERSION)
+        //      cp $WORKSPACE/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
+        //      md5sum $WORKSPACE/kind-voltha/bin/voltctl
+        //    fi
+        //    '''
       }
     }
-
-    stage('DT workflow') {
-      environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DTWorkflow"
-      }
+    stage('Run Test') {
       steps {
-        sh '''
-           cd $WORKSPACE/kind-voltha/
-           source $NAME-env.sh
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
-
-           # Workflow-specific flags
-           export WITH_RADIUS=no
-           export WITH_EAPOL=no
-           export WITH_DHCP=no
-           export WITH_IGMP=no
-           export CONFIG_SADIS="external"
-           export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
-
-           if [[ "${gerritProject}" == voltha-helm-charts ]]; then
-             export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
-           fi
-
-           # start logging
-           mkdir -p $WORKSPACE/dt
-           _TAG=kail-dt kail -n voltha -n default > $WORKSPACE/dt/onos-voltha-combined.log &
-
-           DEPLOY_K8S=n ./voltha up
-
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
-
-           # By default, all tests tagged 'sanityDt' are run.  This covers basic functionality
-           # like running through the DT workflow for a single subscriber.
-           export TARGET=sanity-kind-dt
-
-           # If the Gerrit comment contains a line with "functional tests" then run the full
-           # functional test suite.  This covers tests tagged either 'sanityDt' or 'functionalDt'.
-           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-           REGEX="functional tests"
-           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TARGET=functional-single-kind-dt
-           fi
-
-           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
-
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-dt" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
-
-           # get pods information
-           kubectl get pods -o wide > $WORKSPACE/dt/pods.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/dt/pod-images.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/dt/pod-imagesId.txt || true
-           '''
-      }
-    }
-
-    stage('TT workflow') {
-      environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/TTWorkflow"
-      }
-      steps {
-        sh '''
-           cd $WORKSPACE/kind-voltha/
-           source $NAME-env.sh
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
-
-           # Workflow-specific flags
-           export WITH_RADIUS=no
-           export WITH_EAPOL=no
-           export WITH_DHCP=yes
-           export WITH_IGMP=yes
-           export CONFIG_SADIS="external"
-           export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
-
-           if [[ "${gerritProject}" == voltha-helm-charts ]]; then
-             export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
-           fi
-
-           # start logging
-           mkdir -p $WORKSPACE/tt
-           _TAG=kail-tt kail -n voltha -n default > $WORKSPACE/tt/onos-voltha-combined.log &
-
-           DEPLOY_K8S=n ./voltha up
-
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
-
-           # By default, all tests tagged 'sanityTt' are run.  This covers basic functionality
-           # like running through the TT workflow for a single subscriber.
-           export TARGET=sanity-kind-tt
-
-           # If the Gerrit comment contains a line with "functional tests" then run the full
-           # functional test suite.  This covers tests tagged either 'sanityTt' or 'functionalTt'.
-           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-           REGEX="functional tests"
-           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TARGET=functional-single-kind-tt
-           fi
-
-           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
-
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
-
-           # get pods information
-           kubectl get pods -o wide > $WORKSPACE/tt/pods.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/tt/pod-images.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/tt/pod-imagesId.txt || true
-           '''
+        test_workflow("att")
+        test_workflow("dt")
+        test_workflow("tt")
       }
     }
   }
