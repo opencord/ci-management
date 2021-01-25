@@ -1,6 +1,8 @@
 ---
 # verification jobs for 'ofagent-py' repo
 
+# NOTE ofagent-py is unmaintained, should we keep running tests?
+
 - project:
     name: ofagent-py
     project: '{name}'

@@ -351,8 +351,11 @@
     name: 'verify_{project}_sanity-test{name-extension}'
     override-branch: '$GERRIT_BRANCH'
     sandbox: true
+    build-timeout: 20
     volthaSystemTestsChange: ''
+    volthaHelmChartsChange: ''
     kindVolthaChange: ''
+    branch-regexp: '{all-branches-regexp}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -376,11 +379,6 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
-          name: branch
-          default: '{override-branch}'
-          description: 'Name of the branch to use'
-
-      - string:
           name: gerritProject
           default: '$GERRIT_PROJECT'
           description: 'Name of the Gerrit project'
@@ -400,6 +398,22 @@
           default: '{volthaSystemTestsChange}'
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
+      - string:
+          name: volthaSystemTestsChange
+          default: '{volthaSystemTestsChange}'
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: branch
+          default: '{override-branch}'
+          description: 'Name of the branch to use'
+
+      # deprecated params (not used in master, remove after 2.6 support is dropped)
       - string:
           name: kindVolthaChange
           default: '{kindVolthaChange}'
@@ -428,7 +442,7 @@
               project-pattern: '^{project}$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{all-branches-regexp}'
+                  branch-pattern: '{branch-regexp}'
               file-paths:
                 - compare-type: REG_EXP
                   pattern: '{all-files-regexp}'
