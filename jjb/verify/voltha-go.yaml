@@ -8,6 +8,12 @@
     jobs:
       - 'verify-voltha-go-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'verify-voltha-go-jobs-voltha-2.6':
+          name-extension: '-voltha-2.6'
+          override-branch: 'voltha-2.6'
+          branch-regexp: '{kind-voltha-regexp}'
+      - 'verify-voltha-go-jobs-master':
+          branch-regexp: '^master$'
       - 'publish-voltha-go-jobs':
           branch-regexp: '{all-branches-regexp}'
 
@@ -31,8 +37,18 @@
           name-extension: "-tests"
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
+
+- job-group:
+    name: 'verify-voltha-go-jobs-voltha-2.6'
+    jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
+
+- job-group:
+    name: 'verify-voltha-go-jobs-master'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/master/bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-go-jobs'

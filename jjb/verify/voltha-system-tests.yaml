@@ -8,6 +8,12 @@
     jobs:
       - 'verify-voltha-system-tests-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'verify-voltha-system-tests-jobs-voltha-2.6':
+          name-extension: '-voltha-2.6'
+          override-branch: 'voltha-2.6'
+          branch-regexp: '{kind-voltha-regexp}'
+      - 'verify-voltha-system-tests-jobs-master':
+          branch-regexp: '^master$'
 
 - job-group:
     name: 'verify-voltha-system-tests-jobs'
@@ -19,7 +25,15 @@
           dependency-jobs: 'verify_voltha-system-tests_tag-collision'
           unit-test-targets: 'lint'
           junit-allow-empty-results: true
+
+- job-group:
+    name: 'verify-voltha-system-tests-jobs-voltha-2.6'
+    jobs:
       - 'voltha-patch-test':
-          build-timeout: 20
           pipeline-script: 'voltha-bbsim-tests.groovy'
-          dependency-jobs: 'verify_voltha-system-tests_unit-test'
+
+- job-group:
+    name: 'verify-voltha-system-tests-jobs-master'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/master/bbsim-tests.groovy'
