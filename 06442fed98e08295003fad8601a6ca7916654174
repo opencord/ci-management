@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "75f0c097_503baae7",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 8
+      },
+      "lineNbr": 170,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-25T09:10:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "6abf70f6_ce1dd5e0",
+      "revId": "06442fed98e08295003fad8601a6ca7916654174",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "52236d0e_cf709879",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 8
@@ -39,6 +57,30 @@
       "revId": "06442fed98e08295003fad8601a6ca7916654174",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "11a23f2f_45c82d14",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-01-25T09:10:58Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "52236d0e_cf709879",
+      "range": {
+        "startLine": 70,
+        "startChar": 23,
+        "endLine": 70,
+        "endChar": 37
+      },
+      "revId": "06442fed98e08295003fad8601a6ca7916654174",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
