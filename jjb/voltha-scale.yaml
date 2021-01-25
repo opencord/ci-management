@@ -264,6 +264,7 @@
       # voltha-2.6 Jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-1-16-32-att-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -286,6 +287,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-2-16-32-dt-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -309,6 +311,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-1-16-32-tt-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
           'disable-job': false
           build-node: 'onf-pod1-head-node'
           time-trigger: "H H/4 * * *"
@@ -670,8 +673,8 @@
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
       - string:
-          name: kindVolthaChange
-          default: '{kindVolthaChange}'
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
       - bool:
@@ -747,7 +750,7 @@
     extraHelmFlags: ''
     onosStatInterval: 5
     volthaSystemTestsChange: ''
-    kindVolthaChange: ''
+    volthaHelmChartsChange: ''
     inMemoryEtcdStorage: true
     karafHome: 'apache-karaf-4.2.9'
     logLevel: 'INFO'
@@ -848,7 +851,7 @@
     extraHelmFlags: ''
     onosStatInterval: 5
     volthaSystemTestsChange: ''
-    kindVolthaChange: ''
+    volthaHelmChartsChange: ''
     inMemoryEtcdStorage: true
     karafHome: 'apache-karaf-4.2.9'
     logLevel: 'INFO'
@@ -903,7 +906,7 @@
     release: master
     build-node: 'voltha-scale'
     volthaSystemTestsChange: ''
-    kindVolthaChange: ''
+    volthaHelmChartsChange: ''
     onosReplicas: 1
     atomixReplicas: 0
     kafkaReplicas: 1
@@ -933,9 +936,9 @@
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
       - string:
-          name: kindVolthaChange
-          default: '{kindVolthaChange}'
-          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/32/19132/1"'
 
       - string:
           name: onosReplicas
