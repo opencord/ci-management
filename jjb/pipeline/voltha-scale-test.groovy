@@ -284,13 +284,13 @@ pipeline {
               EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
             fi
 
-            helm upgrade --install voltha-infra onf/voltha-infra \
+            helm upgrade --install voltha-infra onf/voltha-infra \$EXTRA_HELM_FLAGS \
               --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
               --set etcd.enabled=false,kafka.enabled=false \
               --set global.log_level=${logLevel} \
               -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml
 
-            helm upgrade --install voltha1 onf/voltha-stack \
+            helm upgrade --install voltha1 onf/voltha-stack \$EXTRA_HELM_FLAGS \
               --set global.stack_name=voltha1 \
               --set global.voltha_infra_name=voltha-infra \
               --set global.voltha_infra_namespace=default \
@@ -309,7 +309,8 @@ pipeline {
 
             for i in {0..${olts.toInteger() - 1}}; do
               stackId=1
-              helm upgrade --install bbsim\$i onf/bbsim --set olt_id="\${stackId}\${i}" \
+              helm upgrade --install bbsim\$i onf/bbsim \$EXTRA_HELM_FLAGS \
+                --set olt_id="\${stackId}\${i}" \
                 --set onu=${onus},pon=${pons} \
                 --set global.log_level=${logLevel.toLowerCase()} \
                 -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml
