@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ef7c41ae_646b512b",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 658,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-01-25T08:23:52Z",
+      "side": 1,
+      "message": "adapter-adtran-olt",
+      "revId": "fd2e270db8b8a84155e4f7dfc66303bf588a2adb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
