@@ -454,9 +454,9 @@ pipeline {
       sh '''
 
         # get pods information
-        kubectl get pods -o wide
+        kubectl get pods -o wide --all-namespaces
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}"
-        helm ls
+        helm ls --all-namespaces
 
          set +e
          cp $WORKSPACE/kind-voltha/install-$NAME.log $WORKSPACE/
