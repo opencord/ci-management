@@ -25,7 +25,7 @@
           unit-test-keep-going: 'true'
           dependency-jobs: 'verify_voltctl_tag-collision'
       - 'voltha-patch-test':
-          pipeline-script: 'voltha-bbsim-tests.groovy'
+          pipeline-script: 'voltha/master/bbsim-tests.groovy'
 
 - job-group:
     name: 'post-submit-voltctl-jobs'

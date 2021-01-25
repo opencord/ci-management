@@ -351,8 +351,11 @@
     name: 'verify_{project}_sanity-test{name-extension}'
     override-branch: '$GERRIT_BRANCH'
     sandbox: true
+    build-timeout: 20
     volthaSystemTestsChange: ''
+    volthaHelmChartsChange: ''
     kindVolthaChange: ''
+    branch-regexp: '{all-branches-regexp}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -369,41 +372,53 @@
           build-timeout: '{build-timeout}'
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
+    # TODO make sure we have all the params needed in the pipeline!!
     parameters:
       - string:
           name: buildNode
           default: 'ubuntu16.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
-      - string:
+        - string:
+            name: gerritProject
+            default: '$GERRIT_PROJECT'
+            description: 'Name of the Gerrit project'
+
+        - string:
+            name: gerritRefspec
+            default: '$GERRIT_REFSPEC'
+            description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
+
+        - string:
+            name: extraHelmFlags
+            default: ''
+            description: 'Helm flags to pass to ./voltha up'
+
+        - string:
+            name: volthaSystemTestsChange
+            default: '{volthaSystemTestsChange}'
+            description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+        - string:
+            name: volthaSystemTestsChange
+            default: '{volthaSystemTestsChange}'
+            description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+        - string:
+            name: volthaHelmChartsChange
+            default: '{volthaHelmChartsChange}'
+            description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/79/18779/13"'
+
+        - string:
           name: branch
           default: '{override-branch}'
           description: 'Name of the branch to use'
 
-      - string:
-          name: gerritProject
-          default: '$GERRIT_PROJECT'
-          description: 'Name of the Gerrit project'
-
-      - string:
-          name: gerritRefspec
-          default: '$GERRIT_REFSPEC'
-          description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
-
-      - string:
-          name: extraHelmFlags
-          default: ''
-          description: 'Helm flags to pass to ./voltha up'
-
-      - string:
-          name: volthaSystemTestsChange
-          default: '{volthaSystemTestsChange}'
-          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
-
-      - string:
-          name: kindVolthaChange
-          default: '{kindVolthaChange}'
-          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+        # deprecated params (not used in master, remove after 2.6 support is dropped)
+        - string:
+            name: kindVolthaChange
+            default: '{kindVolthaChange}'
+            description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
     project-type: pipeline
     concurrent: true
@@ -428,7 +443,7 @@
               project-pattern: '^{project}$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{all-branches-regexp}'
+                  branch-pattern: '{branch-regexp}'
               file-paths:
                 - compare-type: REG_EXP
                   pattern: '{all-files-regexp}'

@@ -17,6 +17,7 @@
       - 'make-unit-test':
           unit-test-targets: 'test'
           junit-allow-empty-results: true
+      # Remove kind-voltha test on master once we are not depending on it anymore
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
       - 'voltha-patch-test':
