@@ -126,6 +126,31 @@ pipeline {
         }
       }
     }
+    stage('Clone voltha-helm-charts') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-helm-charts",
+            refspec: "${volthaHelmChartsChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-helm-charts"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+        script {
+          sh(script:"""
+            if [ '${volthaHelmChartsChange}' != '' ] ; then
+              cd $WORKSPACE/voltha-helm-charts;
+              git fetch https://gerrit.opencord.org/voltha-helm-charts ${volthaHelmChartsChange} && git checkout FETCH_HEAD
+            fi
+            """)
+        }
+      }
+    }
     stage('Build patch') {
       when {
         expression {
@@ -174,6 +199,7 @@ pipeline {
             export EXTRA_HELM_FLAGS+=' '
 
             # TODO add support for older releases, how do we do that?
+            # we'll probably need a different pipeline that keeps using kind-voltha
             # Load the release defaults
             # if [ '${release.trim()}' != 'master' ]; then
             #  source $WORKSPACE/kind-voltha/releases/${release}
@@ -234,11 +260,7 @@ pipeline {
             echo "Installing with the following extra arguments:"
             echo $EXTRA_HELM_FLAGS
 
-            # if it's newer than voltha-2.4 set the correct BBSIM_CFG
-            # TODO customize the workflow
-            #if [ '${release.trim()}' != 'voltha-2.4' ]; then
-            #  export BBSIM_CFG="$WORKSPACE/kind-voltha/configs/bbsim-sadis-${workflow}.yaml"
-            #fi
+
 
             # Use custom built images
 
@@ -273,7 +295,8 @@ pipeline {
             helm upgrade --install voltha-infra onf/voltha-infra \
               --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
               --set etcd.enabled=false,kafka.enabled=false \
-              --set global.log_level=${logLevel}
+              --set global.log_level=${logLevel} \
+              -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml
 
             helm upgrade --install voltha1 onf/voltha-stack \
               --set global.stack_name=voltha1 \
@@ -296,7 +319,8 @@ pipeline {
               stackId=1
               helm upgrade --install bbsim\$i onf/bbsim --set olt_id="\${stackId}\${i}" \
                 --set onu=${onus},pon=${pons} \
-                --set defaults.log_level=${logLevel.toLowerCase()}
+                --set global.log_level=${logLevel.toLowerCase()} \
+                -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml
             done
 
             echo -ne "\nWaiting for VOLTHA to start..."
