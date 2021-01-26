@@ -19,6 +19,7 @@
     name: "up4-jobs"
     jobs:
       - "up4-pr-verify"
+      - "up4-postmerge"
 
 - job-template:
     id: "up4-pr-verify"
