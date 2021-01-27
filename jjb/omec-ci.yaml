@@ -1116,6 +1116,11 @@
           default: '{registry-proxy}/upf-epc-pfcpiface:master-latest'
           description: 'Docker image for pfcpiface. Leave empty to use default helm-charts value'
 
+      - string:
+          name: maintainers
+          default: 'you@opennetworking.org'
+          description: "The person that sould be notified if this job fails"
+
     concurrent: false
 
     triggers:
