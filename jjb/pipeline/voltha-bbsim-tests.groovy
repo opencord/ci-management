@@ -33,7 +33,7 @@ pipeline {
     NAME="test"
     VOLTCONFIG="$HOME/.volt/config-$NAME"
     KUBECONFIG="$HOME/.kube/kind-config-voltha-$NAME"
-    EXTRA_HELM_FLAGS=" --set global.image_registry=mirror.registry.opennetworking.org/ "
+    EXTRA_HELM_FLAGS=" --set global.image_registry=mirror.registry.opennetworking.org/ --set defaults.image_registry=mirror.registry.opennetworking.org/ "
   }
 
   stages {
