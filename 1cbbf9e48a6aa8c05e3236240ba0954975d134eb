@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4e39147b_752ed3c6",
+        "filename": "jjb/pipeline/voltha-openonu-go-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 233,
+      "author": {
+        "id": 1000671
+      },
+      "writtenOn": "2021-01-28T10:39:54Z",
+      "side": 1,
+      "message": "This has to be changed again for voltha-2.7. Could it query for equal or less then voltha-2.6?",
+      "range": {
+        "startLine": 233,
+        "startChar": 10,
+        "endLine": 233,
+        "endChar": 13
+      },
+      "revId": "1cbbf9e48a6aa8c05e3236240ba0954975d134eb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
