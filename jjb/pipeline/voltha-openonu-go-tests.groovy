@@ -39,7 +39,7 @@ pipeline {
     CONFIG_SADIS="external"
     BBSIM_CFG="configs/bbsim-sadis-att.yaml"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
-    EXTRA_HELM_FLAGS=" --set global.image_registry=mirror.registry.opennetworking.org/ "
+    EXTRA_HELM_FLAGS=" --set global.image_registry=mirror.registry.opennetworking.org/ --set defaults.image_registry=mirror.registry.opennetworking.org/ "
   }
   stages {
     stage('Clone kind-voltha') {
@@ -138,6 +138,14 @@ pipeline {
       steps {
         sh """
            cd $WORKSPACE/kind-voltha/
+
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
            JUST_K8S=y ./voltha up
            bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
            """
@@ -156,13 +164,13 @@ pipeline {
       steps {
         sh '''
            docker images | grep citest
-           for image in \$(docker images -f "reference=*/*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
+           for image in \$(docker images -f "reference=*/*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-control-plane,voltha-\$NAME-worker,voltha-\$NAME-worker2; done
            '''
       }
     }
     stage('Deploy Voltha') {
       steps {
-        sh '''
+        sh """
            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
            IMAGES="adapter_open_onu_go"
@@ -175,8 +183,15 @@ pipeline {
            cd $WORKSPACE/kind-voltha/
            echo \$EXTRA_HELM_FLAGS
 
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
            ./voltha up
-           '''
+           """
       }
     }
 
@@ -201,6 +216,13 @@ pipeline {
           #1t8gem
           mkdir -p $WORKSPACE/1t8gem
           _TAG=kail-1t8gem kail -n voltha -n default > $WORKSPACE/1t8gem/onos-voltha-combined.log &
+
+          if [ "${branch}" != "master" ]; then
+            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+            source "$WORKSPACE/kind-voltha/releases/${branch}"
+          else
+            echo "on master, using default settings for kind-voltha"
+          fi
 
           DEPLOY_K8S=n ./voltha up
 
@@ -256,6 +278,13 @@ pipeline {
            # start logging
            mkdir -p $WORKSPACE/dt
            _TAG=kail-dt kail -n voltha -n default > $WORKSPACE/dt/onos-voltha-combined.log &
+
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
 
            DEPLOY_K8S=n ./voltha up
 
@@ -327,6 +356,13 @@ pipeline {
            mkdir -p $WORKSPACE/att
            _TAG=kail-att kail -n voltha -n default > $WORKSPACE/att/onos-voltha-combined.log &
 
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
@@ -391,6 +427,13 @@ pipeline {
            mkdir -p $WORKSPACE/tt
            _TAG=kail-tt kail -n voltha -n default > $WORKSPACE/tt/onos-voltha-combined.log &
 
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
+
            DEPLOY_K8S=n ./voltha up
 
            mkdir -p $ROBOT_LOGS_DIR
@@ -430,7 +473,7 @@ pipeline {
       sh '''
          set +e
          # get pods information
-         kubectl get pods -o wide
+         kubectl get pods -o wide --all-namespaces
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}"
          helm ls
 
