@@ -23,7 +23,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 115, unit: 'MINUTES')
+    timeout(time: 130, unit: 'MINUTES')
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
