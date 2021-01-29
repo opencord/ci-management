@@ -14,6 +14,8 @@
     make-target-errortest: bbsim-errorscenarios
     make-target-alarmtest: bbsim-alarms-kind
     make-target-multipleolt: bbsim-multiolt-kind
+    make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
+    make-target-1t8gemtest: 1t8gem-openonu-go-adapter-test
 
     jobs:
       - 'voltha-periodic-test':
@@ -69,8 +71,24 @@
           pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-4c-8g'
           make-target: openonu-go-adapter-test
+          make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
+          make-target-1t8gemtest: 1t8gem-openonu-go-adapter-test
           withAlarms: false
           code-branch: 'master'
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
+          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          make-target: openonu-go-adapter-multi-olt-test
+          make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test
+          make-target-1t8gemtest: 1t8gem-openonu-go-adapter-multi-olt-test
+          withAlarms: false
+          code-branch: 'master'
+          olts: 2
+          onus: 2
+          pons: 2
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
@@ -275,6 +293,16 @@
           name: makeAlarmtestTarget
           default: '{make-target-alarmtest}'
           description: 'Makefile target to invoke during alarm test'
+
+      - string:
+          name: make1t4gemTestTarget
+          default: '{make-target-1t4gemtest}'
+          description: 'Makefile target to invoke during 1t4gem test'
+
+      - string:
+          name: make1t8gemTestTarget
+          default: '{make-target-1t8gemtest}'
+          description: 'Makefile target to invoke during 1t8gem test'
 
       - string:
           name: manifestUrl
