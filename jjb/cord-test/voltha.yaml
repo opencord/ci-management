@@ -610,7 +610,7 @@
           configurePod: true
           profile: '1T8GEM'
           reinstall-olt: false
-          openoltAdapterChart: '/home/community/adtran-2021-01-19/voltha-adapter-adtran-olt'
+          openoltAdapterChart: '/home/community/adtran-2021-01-29/voltha-adapter-adtran-olt'
           time: '9'
 
 
