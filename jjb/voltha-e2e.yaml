@@ -74,6 +74,18 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
+          pipeline-script: 'voltha-multiple-olts-openonu-go-test-bbsim.groovy'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          make-target: openonu-go-adapter-multi-olt-test
+          withAlarms: false
+          code-branch: 'master'
+          olts: 2
+          onus: 2
+          pons: 2
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI'
           pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
           build-node: 'qct-pod4-node2'
