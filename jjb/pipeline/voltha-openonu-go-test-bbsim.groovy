@@ -102,6 +102,7 @@ pipeline {
 
            cd $WORKSPACE/kind-voltha/
            ./voltha up
+           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
            """
       }
     }
@@ -112,16 +113,16 @@ pipeline {
       }
       steps {
         sh '''
+          set +e
           # start logging
           mkdir -p $WORKSPACE/1t1gem
           _TAG=kail-1t1gem kail -n voltha -n default > $WORKSPACE/1t1gem/onos-voltha-combined.log &
 
           mkdir -p $ROBOT_LOGS_DIR/1t1gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export TARGET_DEFAULT=openonu-go-adapter-test
           export NAME=voltha_voltha
 
-          make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+          make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
 
           # stop logging
           P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t1gem" | grep -v grep | awk '{print $1}')"
@@ -144,6 +145,7 @@ pipeline {
       }
       steps {
         sh '''
+          set +e
           cd $WORKSPACE/kind-voltha/
           #source $NAME-env.sh
           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
@@ -158,10 +160,9 @@ pipeline {
 
           mkdir -p $ROBOT_LOGS_DIR/1t4gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export TARGET_DEFAULT=1t4gem-openonu-go-adapter-test
           export NAME=voltha_voltha
 
-          make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+          make -C $WORKSPACE/voltha-system-tests ${make1t4gemTestTarget} || true
 
           # stop logging
           P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t4gem" | grep -v grep | awk '{print $1}')"
@@ -184,6 +185,7 @@ pipeline {
       }
       steps {
         sh '''
+          set +e
           cd $WORKSPACE/kind-voltha/
           #source $NAME-env.sh
           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
@@ -198,10 +200,9 @@ pipeline {
 
           mkdir -p $ROBOT_LOGS_DIR/1t8gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
           export NAME=voltha_voltha
 
-          make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
+          make -C $WORKSPACE/voltha-system-tests ${make1t8gemTestTarget} || true
 
           # stop logging
           P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t8gem" | grep -v grep | awk '{print $1}')"
@@ -219,11 +220,13 @@ pipeline {
     }
 
     stage('Run MIB Upload Tests') {
+      when { beforeAgent true; expression { return "${olts}" == "1" } }
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go-MIB"
       }
       steps {
         sh '''
+           set +e
            cd $WORKSPACE/kind-voltha/
            #source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
@@ -260,11 +263,13 @@ pipeline {
     }
 
     stage('Reconcile DT workflow') {
+      when { beforeAgent true; expression { return "${olts}" == "1" } }
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileDT"
       }
       steps {
         sh '''
+           set +e
            cd $WORKSPACE/kind-voltha/
            #source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
@@ -309,11 +314,13 @@ pipeline {
     }
 
     stage('Reconcile ATT workflow') {
+      when { beforeAgent true; expression { return "${olts}" == "1" } }
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileATT"
       }
       steps {
         sh '''
+           set +e
            cd $WORKSPACE/kind-voltha/
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
@@ -363,11 +370,13 @@ pipeline {
     }
 
     stage('Reconcile TT workflow') {
+      when { beforeAgent true; expression { return "${olts}" == "1" } }
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileTT"
       }
       steps {
         sh '''
+           set +e
            cd $WORKSPACE/kind-voltha/
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
