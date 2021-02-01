@@ -563,7 +563,7 @@
                 approval-value: '+2'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-go)$'
+              project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-openonu-adapter-go|voltha-go)$'
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{all-branches-regexp}'
@@ -708,7 +708,7 @@
                 comment-contains-value: '^{trigger-string} with delay$'
           projects:
             - project-compare-type: REG_EXP
-              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos|kind-voltha|voltha-helm-charts)$'
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-openonu-adapter-go|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos|kind-voltha|voltha-helm-charts)$'
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{all-branches-regexp}'

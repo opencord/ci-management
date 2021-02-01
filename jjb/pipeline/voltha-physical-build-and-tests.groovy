@@ -192,6 +192,8 @@ pipeline {
               IMAGES="adapter_open_olt "
           elif [ "${gerritProject}" = "voltha-openonu-adapter" ]; then
               IMAGES="adapter_open_onu "
+          elif [ "${gerritProject}" = "voltha-openonu-adapter-go" ]; then
+              IMAGES="adapter_open_onu_go "
           elif [ "${gerritProject}" = "voltha-api-server" ]; then
               IMAGES="afrouter afrouterd "
           else
