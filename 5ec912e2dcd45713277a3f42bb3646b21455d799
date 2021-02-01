@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7b76e2e3_f46fa78c",
+        "filename": "jjb/pipeline/voltha-multiple-olts-openonu-go-test-bbsim.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-02-01T08:53:45Z",
+      "side": 1,
+      "message": "looking at this file it seems that is very similar to the one without multiple outs, can we have only one parametrised so it can run both tests ?",
+      "revId": "5ec912e2dcd45713277a3f42bb3646b21455d799",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
