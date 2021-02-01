@@ -280,7 +280,7 @@ pipeline {
            export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
 
            # start logging
-           mkdir -p $WORKSPACE/dt
+           mkdir -p $WORKSPACE/reconciledt
            _TAG=kail-reconcile-dt kail -n voltha -n default > $WORKSPACE/reconciledt/onos-voltha-combined.log &
 
            DEPLOY_K8S=n ./voltha up
@@ -334,7 +334,7 @@ pipeline {
            fi
 
            # start logging
-           mkdir -p $WORKSPACE/att
+           mkdir -p $WORKSPACE/reconcileatt
            _TAG=kail-reconcile-att kail -n voltha -n default > $WORKSPACE/reconcileatt/onos-voltha-combined.log &
 
            DEPLOY_K8S=n ./voltha up
@@ -382,7 +382,7 @@ pipeline {
            export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
 
            # start logging
-           mkdir -p $WORKSPACE/tt
+           mkdir -p $WORKSPACE/reconcilett
            _TAG=kail-reconcile-tt kail -n voltha -n default > $WORKSPACE/reconcilett/onos-voltha-combined.log &
 
            DEPLOY_K8S=n ./voltha up
