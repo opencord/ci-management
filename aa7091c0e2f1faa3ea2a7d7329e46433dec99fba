@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2961f342_fb6140d2",
+        "filename": "jjb/verify/ofagent-py.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-02-02T18:57:21Z",
+      "side": 1,
+      "message": "As long as they\u0027re not periodic and wasting resources, seems OK to leave them but have a deprecated notice.",
+      "range": {
+        "startLine": 3,
+        "startChar": 0,
+        "endLine": 5,
+        "endChar": 0
+      },
+      "revId": "aa7091c0e2f1faa3ea2a7d7329e46433dec99fba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4e6fcf9a_46c8729f",
+        "filename": "jjb/verify/voltha-helm-charts.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-02-02T18:57:21Z",
+      "side": 1,
+      "message": "Are the \u0027voltha-bbsim-tests.groovy\u0027 supposed to be same file, or are they different?\n\nIf the 2.6 one is being left around for legacy reasons, the new one should have a different name?",
+      "range": {
+        "startLine": 30,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 68
+      },
+      "revId": "aa7091c0e2f1faa3ea2a7d7329e46433dec99fba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
