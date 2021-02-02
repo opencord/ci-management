@@ -307,6 +307,15 @@ pipeline {
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
 
+           if [[ "${gerritProject}" == "bbsim" ]]; then
+             echo "Running BBSim specific Tests"
+             ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/BBSimATT"
+             mkdir -p $ROBOT_LOGS_DIR
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+             TARGET=sanity-bbsim-att
+             make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+           fi
+
            # stop logging
            P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
            if [ -n "$P_IDS" ]; then
@@ -430,6 +439,15 @@ pipeline {
            fi
 
            make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+
+           if [[ "${gerritProject}" == "bbsim" ]]; then
+             echo "Running BBSim specific Tests"
+             ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/BBSimTT"
+             mkdir -p $ROBOT_LOGS_DIR
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+             TARGET=sanity-bbsim-tt
+             make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+           fi
 
            # stop logging
            P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
