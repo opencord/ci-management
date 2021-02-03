@@ -328,6 +328,12 @@ pipeline {
             _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8101:8101&
             _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8181:8181&
             _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha1-voltha-api 55555:55555&
+
+            bbsimRestPortFwd=50071
+            for i in {0..${olts.toInteger() - 1}}; do
+              _TAG=bbsim-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/bbsim\${i} \${bbsimRestPortFwd}:50071&
+              ((bbsimRestPortFwd++))
+            done
           """
         }
         sh returnStdout: false, script: '''
@@ -462,6 +468,10 @@ EOF
 
             if [ ${withDhcp} = false ] ; then
               ROBOT_PARAMS+="-e dhcp "
+            fi
+
+            if [ ${withIgmp} = false ] ; then
+              ROBOT_PARAMS+="-e igmp "
             fi
 
             if [ ${provisionSubscribers} = false ] ; then
