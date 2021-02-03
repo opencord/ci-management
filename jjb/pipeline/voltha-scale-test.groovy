@@ -464,6 +464,10 @@ EOF
               ROBOT_PARAMS+="-e dhcp "
             fi
 
+            if [ ${withIgmp} = false ] ; then
+              ROBOT_PARAMS+="-e igmp "
+            fi
+
             if [ ${provisionSubscribers} = false ] ; then
               # if we're not considering subscribers then we don't care about authentication and dhcp
               ROBOT_PARAMS+="-e authentication -e provision -e flow-after -e dhcp "
