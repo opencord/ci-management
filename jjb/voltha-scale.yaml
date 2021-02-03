@@ -7,67 +7,11 @@
     project-name: '{name}'
 
     jobs:
-      # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
-
-      # OpenONU PY Scale
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-dt-subscribers'
-          'disable-job': false
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          workflow: dt
-          release: voltha-2.6
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          extraHelmFlags: '--set use_openonu_adapter_go=false'
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
-          'disable-job': false
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          release: voltha-2.6
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          extraHelmFlags: '--set use_openonu_adapter_go=false,authRetry=true,dhcpRetry=true'
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
-          'disable-job': false
-          build-node: 'onf-pod1-head-node'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          workflow: tt
-          provisionSubscribers: true
-          release: voltha-2.6
-          withEapol: false
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          extraHelmFlags: '--set use_openonu_adapter_go=false,dhcpRetry=true,defaults.incremental_evto_update=true'
 
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha-scale-test-etcd-kafka-bitnami.groovy'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
@@ -83,6 +27,8 @@
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: false
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:writeThroughCache
+
+      # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental-multi-stack'
@@ -333,6 +279,63 @@
           openonuAdapterImg: ''
           onosImg: ''
 
+      # OpenONU PY Scale (voltha 2.6 based)
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-dt-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
+          'disable-job': false
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          release: voltha-2.6
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          extraHelmFlags: '--set use_openonu_adapter_go=false'
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
+          'disable-job': false
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          release: voltha-2.6
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          extraHelmFlags: '--set use_openonu_adapter_go=false,authRetry=true,dhcpRetry=true'
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
+          'disable-job': false
+          build-node: 'onf-pod1-head-node'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          workflow: tt
+          provisionSubscribers: true
+          release: voltha-2.6
+          withEapol: false
+          withDhcp: true
+          withIgmp: false
+          openonuAdapterReplicas: 8
+          extraHelmFlags: '--set use_openonu_adapter_go=false,dhcpRetry=true,defaults.incremental_evto_update=true'
+
       # 2.6 multi-stack jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-att-subscribers'
@@ -481,6 +484,16 @@
           name: buildNode
           default: '{build-node}'
           description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: gerritProject
+          default: '$GERRIT_PROJECT'
+          description: 'Name of the Gerrit project to build'
+
+      - string:
+          name: gerritRefspec
+          default: '$GERRIT_REFSPEC'
+          description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
 
       - string:
           name: dockerRegistry
@@ -810,7 +823,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
-    pipeline-script: 'voltha-scale-test.groovy'
+    pipeline-script: 'voltha/master/voltha-scale-test.groovy'
     release: master
 
     bbsimImg: voltha/bbsim:master
