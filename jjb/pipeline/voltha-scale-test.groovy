@@ -328,6 +328,12 @@ pipeline {
             _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8101:8101&
             _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha-infra-onos-classic-hs 8181:8181&
             _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/voltha1-voltha-api 55555:55555&
+
+            bbsimRestPortFwd=50071
+            for i in {0..${olts.toInteger() - 1}}; do
+              _TAG=bbsim-port-forward kubectl port-forward --address 0.0.0.0 -n default svc/bbsim\${i} \${bbsimRestPortFwd}:50071&
+              ((bbsimRestPortFwd++))
+            done
           """
         }
         sh returnStdout: false, script: '''
@@ -454,7 +460,7 @@ EOF
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
               --noncritical non-critical \
-              -e teardown "
+              -e igmp -e teardown "
 
             if [ ${withEapol} = false ] ; then
               ROBOT_PARAMS+="-e authentication "
@@ -476,6 +482,44 @@ EOF
             cd $WORKSPACE/voltha-system-tests
             source ./vst_venv/bin/activate
             robot -d $WORKSPACE/RobotLogs \
+            $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+          '''
+        }
+      }
+    }
+    stage('Run Igmp Tests') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/IgmpTests"
+      }
+      when {
+        expression {
+          return params.withIgmp
+        }
+      }
+      steps {
+        sh '''
+          set +e
+          mkdir -p $WORKSPACE/RobotLogs
+          cd $WORKSPACE/voltha-system-tests
+          make vst_venv
+        '''
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+            ROBOT_PARAMS="-v olt:${olts} \
+              -v pon:${pons} \
+              -v onu:${onus} \
+              -v workflow:${workflow} \
+              -v withEapol:${withEapol} \
+              -v withDhcp:${withDhcp} \
+              -v withIgmp:${withIgmp} \
+              --noncritical non-critical \
+              -i igmp \
+              -e setup -e activation -e flow-before \
+              -e authentication -e provision -e flow-after \
+              -e dhcp -e teardown "
+            cd $WORKSPACE/voltha-system-tests
+            source ./vst_venv/bin/activate
+            robot -d $ROBOT_LOGS_DIR \
             $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
           '''
         }
@@ -575,12 +619,12 @@ EOF
       ])
       step([$class: 'RobotPublisher',
         disableArchiveOutput: false,
-        logFileName: 'RobotLogs/log.html',
+        logFileName: '**/log*.html',
         otherFiles: '',
-        outputFileName: 'RobotLogs/output.xml',
-        outputPath: '.',
+        outputFileName: '**/output*.xml',
+        outputPath: 'RobotLogs',
         passThreshold: 100,
-        reportFileName: 'RobotLogs/report.html',
+        reportFileName: '**/report*.html',
         unstableThreshold: 0]);
       // get all the logs from kubernetes PODs
       sh returnStdout: false, script: '''
