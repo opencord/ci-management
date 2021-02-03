@@ -15,15 +15,6 @@
 // voltha-2.x e2e tests
 // uses bbsim to simulate OLT/ONUs
 
-// TODO remove this and load the keywords as global
-library identifier: 'cord-jenkins-libraries@master',
-    //'master' refers to a valid git-ref
-    //'mylibraryname' can be any name you like
-    retriever: modernSCM([
-      $class: 'GitSCMSource',
-      remote: 'https://gerrit.opencord.org/ci-management.git'
-])
-
 def customImageFlags(image) {
   return "--set images.${image}.tag=citest,images.${image}.pullPolicy=Never "
 }
@@ -105,7 +96,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 90, unit: 'MINUTES')
+    timeout(time: 30, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"

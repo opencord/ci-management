@@ -19,7 +19,12 @@ def call(Map config) {
   def list = images.split("\n")
 
   for(int i = 0;i<list.size();i++) {
-    def image = list[i]
+    def image = list[i].trim()
+
+    if (!image) {
+      return
+    }
+
     println "Loading image ${image} on Kind cluster ${cfg.name}"
 
     sh """
