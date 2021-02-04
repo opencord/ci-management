@@ -1,0 +1,9 @@
+Verified+1: Jenkins Technical User <do-not-reply@opennetworking.org>
+Code-Review+1: Zack Williams <zdw@opennetworking.org>
+Code-Review+1: Suchitra Vemuri <suchitra@opennetworking.org>
+Code-Review+2: Matteo Scandolo <teo@opennetworking.org>
+Submitted-by: Matteo Scandolo <teo@opennetworking.org>
+Submitted-at: Thu, 04 Feb 2021 21:17:41 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/22713
+Project: ci-management
+Branch: refs/heads/master
