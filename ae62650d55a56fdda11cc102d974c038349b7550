@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cbf86dbe_16d4ff3b",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-02-04T08:27:50Z",
+      "side": 1,
+      "message": "worth creating a keyword for the infra deployment ?",
+      "revId": "ae62650d55a56fdda11cc102d974c038349b7550",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
