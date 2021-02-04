@@ -27,6 +27,13 @@
           withIgmp: false
           openonuAdapterReplicas: 8
           extraHelmFlags: '--set use_openonu_adapter_go=false'
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
+          openoltAdapterImg: ''
+          openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
+          onosImg: ''
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
@@ -44,6 +51,13 @@
           withIgmp: false
           openonuAdapterReplicas: 8
           extraHelmFlags: '--set use_openonu_adapter_go=false,authRetry=true,dhcpRetry=true'
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
+          openoltAdapterImg: ''
+          openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
+          onosImg: ''
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
@@ -62,6 +76,13 @@
           withIgmp: false
           openonuAdapterReplicas: 8
           extraHelmFlags: '--set use_openonu_adapter_go=false,dhcpRetry=true,defaults.incremental_evto_update=true'
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
+          openoltAdapterImg: ''
+          openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
+          onosImg: ''
 
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
@@ -283,6 +304,7 @@
           ofAgentImg: ''
           openoltAdapterImg: ''
           openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
           onosImg: ''
 
       - 'voltha-scale-measurements':
@@ -307,6 +329,7 @@
           ofAgentImg: ''
           openoltAdapterImg: ''
           openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
           onosImg: ''
 
       - 'voltha-scale-measurements':
@@ -331,6 +354,7 @@
           ofAgentImg: ''
           openoltAdapterImg: ''
           openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
           onosImg: ''
 
       # 2.6 multi-stack jobs
