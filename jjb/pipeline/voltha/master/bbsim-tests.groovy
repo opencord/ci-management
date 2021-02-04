@@ -15,6 +15,14 @@
 // voltha-2.x e2e tests
 // uses bbsim to simulate OLT/ONUs
 
+// NOTE we are importing the library even if it's global so that it's
+// easier to change the keywords during a replay
+library identifier: 'cord-jenkins-libraries@master',
+    retriever: modernSCM([
+      $class: 'GitSCMSource',
+      remote: 'https://gerrit.opencord.org/ci-management.git'
+])
+
 def customImageFlags(image) {
   return "--set images.${image}.tag=citest,images.${image}.pullPolicy=Never "
 }
