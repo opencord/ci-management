@@ -301,9 +301,9 @@ pipeline {
               --set voltha-adapter-openolt.services.kafka.adapter.address=kafka.default.svc:9092 \
               --set voltha-adapter-openolt.services.kafka.cluster.address=kafka.default.svc:9092 \
               --set voltha-adapter-openolt.services.etcd.address=etcd.default.svc:2379 \
-              --set voltha-adapter-openonu.services.kafka.adapter.service=kafka.default.svc \
-              --set voltha-adapter-openonu.services.kafka.cluster.service=kafka.default.svc \
-              --set voltha-adapter-openonu.services.etcd.service=etcd.default.svc
+              --set voltha-adapter-openonu.services.kafka.adapter.address=kafka.default.svc:9092 \
+              --set voltha-adapter-openonu.services.kafka.cluster.address=kafka.default.svc:9092 \
+              --set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379
               # TODO having to set all of these values is annoying, is there a better solution?
 
 
