@@ -58,6 +58,11 @@ def test_workflow(name) {
         export TARGET=functional-single-kind-${name}
       fi
 
+      if [[ "${gerritProject}" == "bbsim" ]]; then
+        echo "Running BBSim specific Tests"
+        export TARGET=sanity-bbsim-${name}
+      fi
+
       export VOLTCONFIG=$HOME/.volt/config
       export KUBECONFIG=$HOME/.kube/config
 
