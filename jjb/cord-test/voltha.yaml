@@ -413,6 +413,7 @@
           test-repo: 'voltha-system-tests'
           name-extension: '_DT'
           work-flow: 'DT'
+          reinstall-olt: false
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
 
@@ -549,6 +550,7 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
+          disable-job: true
           profile: 'Default'
           time: '17'
 
