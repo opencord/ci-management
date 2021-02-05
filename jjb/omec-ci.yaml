@@ -140,6 +140,10 @@
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-8c-15g'
       - 'omec-container'
+      - 'omec-container-remote':
+          pod: 'dev'
+          remote-jenkins-name: 'Aether Jenkins'
+          pipeline-file: 'omec-container-remote.groovy'
 
 # for openmme
 - project:
@@ -208,6 +212,10 @@
           docker-repo: 'omecproject'
           build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-container'
+      - 'omec-container-remote':
+          pod: 'dev'
+          remote-jenkins-name: 'Aether Jenkins'
+          pipeline-file: 'omec-container-remote.groovy'
 
 # for freediameter
 - project:
@@ -276,6 +284,10 @@
           build-node: 'ubuntu16.04-basebuild-2c-4g'
           extraEnvironmentVars: CPU=haswell
       - 'omec-container'
+      - 'omec-container-remote':
+          pod: 'dev'
+          remote-jenkins-name: 'Aether Jenkins'
+          pipeline-file: 'omec-container-remote.groovy'
 
 # Combined pipeline
 - job-template:
@@ -286,6 +298,8 @@
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    disabled: true
 
     properties:
       - cord-infra-properties:
@@ -733,6 +747,8 @@
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    disabled: true
 
     properties:
       - cord-infra-properties:
@@ -1185,3 +1201,70 @@
             url: 'https://github.com/{github-organization}/omec-project-ci'
             branches:
               - 'master'
+
+# OMEC CI job which replaces the original container job
+- job-template:
+    id: 'omec-container-remote'
+    name: 'omec_{project}_container-remote'
+
+    description: |
+      Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: 'omec-ci'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: project
+          default: '{project}'
+          description: 'Name of the project'
+
+      - string:
+          name: pod
+          default: '{pod}'
+          description: 'Name of OMEC pod'
+
+      - string:
+          name: remoteJenkinsName
+          default: '{remote-jenkins-name}'
+          description: 'Name of the remote Jenkins instance that runs the job'
+
+      - string:
+          name: ghprbTargetBranch
+          default: '$ghprbTargetBranch'
+          description: 'GitHub Pull-Request builder value. Replace default value to test manually.'
+
+      - string:
+          name: ghprbPullId
+          default: '$ghprbPullId'
+          description: 'GitHub Pull-Request builder value. Replace default value to test manually.'
+
+      - string:
+          name: ghprbActualCommit
+          default: '$ghprbActualCommit'
+          description: 'GitHub Pull-Request builder value. Replace default value to test manually.'
+
+    triggers:
+      - cord-infra-github-pr-trigger:
+          github_pr_org_list: '{obj:github_pr_org_list}'
+          github_pr_auth_id: '{github_pr_auth_id}'
+          status_context: 'CORD Jenkins - Container Based Verification'
+
+    concurrent: false
+
+    project-type: pipeline
+    dsl: !include-raw-escape: pipeline/{pipeline-file}
