@@ -1205,7 +1205,7 @@
 # OMEC CI job which replaces the original container job
 - job-template:
     id: 'omec-container-remote'
-    name: 'omec_{project}_container-remote'
+    name: 'omec_{project}_container_remote'
 
     description: |
       Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
