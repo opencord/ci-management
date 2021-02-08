@@ -40,10 +40,9 @@ pipeline {
     always {
       // Copy artifacts from the remote job dir (make sure both jobs run on the same node)
       sh """
-      cp -r ../${params.project}_premerge_${params.pod}/* ./
+      cp -r ../${params.project}_premerge_${params.pod}/artifacts/* ./
       """
-      archiveArtifacts artifacts: "omec/*/*", allowEmptyArchive: true
-      archiveArtifacts artifacts: "ng40/*/*", allowEmptyArchive: true
+      archiveArtifacts artifacts: "**/*.*", allowEmptyArchive: true
     }
   }
 }
