@@ -223,6 +223,17 @@
           profile: 'Default'
           default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
 
+      # DMI test for ADTRAN Device-Manager in Berlin.
+      # Allow local testing without disrupting above job
+      - 'DMI_HW_job':
+          name: 'berlin-DM-adtran'
+          build-node: 'dt-berlin-community-pod'
+          branch: 'master'
+          deviceManagerChart: '/home/community/adtran-2020-11-30/SDX_Device_Manager_20.3/helm/adtran-olt-device-manager'
+          extraHelmFlags: '-f /home/community/adtran-2020-11-30/SDX_Device_Manager_20.3/helm/values-onf.yaml'
+          makeTarget: voltha-dmi-hw-management-test
+          extraRobotArgs: ''
+
 - job-template:
     id: 'voltha-periodic-test'
     name: '{name}'
@@ -886,3 +897,70 @@
     concurrent: true
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+- job-template:
+      name: '{name}'
+      id: DMI_HW_job
+      description: |
+          <!-- Managed by Jenkins Job Builder -->
+          Automated build on POD {config-pod} using {pipeline-script} <br /><br />
+          Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
+          Created by Andy Bavier, andy@opennetworking.org <br />
+          Copyright (c) 2019 Open Networking Foundation (ONF)
+      sandbox: true
+      pipeline-script: 'voltha-DMI-physical-tests.groovy'
+
+      properties:
+          - cord-infra-properties:
+                build-days-to-keep: '{build-days-to-keep}'
+                artifact-num-to-keep: '{artifact-num-to-keep}'
+
+      parameters:
+          - string:
+                name: buildNode
+                default: '{build-node}'
+                description: 'Pod management node'
+
+          - string:
+                name: manifestUrl
+                default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
+                description: 'URL to the repo manifest'
+
+          - string:
+                name: branch
+                default: "$GERRIT_BRANCH"
+                description: 'Name of the repo manifest branch to use'
+
+          - string:
+                name: podName
+                default: '{config-pod}'
+
+          - string:
+                name: deploymentConfigFile
+                default: 'pod-configs/deployment-configs/{config-pod}.yaml'
+                description: 'Path of deployment config file'
+
+          - string:
+                name: notificationEmail
+                default: 'andrea@opennetworking.org'
+                description: ''
+
+          - string:
+                name: deviceManagerChart
+                default: ''
+                description: 'Location of the Device Manager Chart'
+
+          - string:
+                name: extraHelmFlags
+                default: ''
+                description: 'Helm flags to pass to Device Manager helm chart'
+
+          - string:
+                name: extraRobotArgs
+                default: ''
+                description: 'Arguments to pass to robot'
+
+      project-type: pipeline
+      concurrent: true
+
+      dsl: !include-raw-escape: pipeline/{pipeline-script}
