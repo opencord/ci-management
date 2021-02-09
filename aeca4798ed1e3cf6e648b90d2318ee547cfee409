@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "aa11aac8_0d71bb14",
+        "filename": "jjb/pipeline/voltha-scale-test.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 453,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-02-09T13:34:22Z",
+      "side": 1,
+      "message": "This timeout value needs to be updated based on the number of ONUs under test as actual group join and leave takes considerable time. Check https://jenkins.opencord.org/view/voltha-scale-measurements/job/voltha-scale-measurements-master-dev/159/ (2x4x8) vs https://jenkins.opencord.org/view/voltha-scale-measurements/job/voltha-scale-measurements-master-dev/161/ (2x4x16)",
+      "range": {
+        "startLine": 453,
+        "startChar": 22,
+        "endLine": 453,
+        "endChar": 24
+      },
+      "revId": "aeca4798ed1e3cf6e648b90d2318ee547cfee409",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
