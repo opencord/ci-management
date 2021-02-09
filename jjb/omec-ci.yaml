@@ -359,6 +359,8 @@
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
 
+    disabled: true
+
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
@@ -584,6 +586,8 @@
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
 
+    disabled: true
+
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
@@ -623,6 +627,8 @@
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/omec-ci.yaml<br />
+
+    disabled: true
 
     properties:
       - cord-infra-properties:
@@ -848,6 +854,8 @@
       <!-- Managed by Jenkins Job Builder -->
       Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
 
+    disabled: true
+
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
@@ -939,6 +947,8 @@
       <!-- Managed by Jenkins Job Builder -->
       Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
 
+    disabled: true
+
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
@@ -1000,6 +1010,8 @@
       <!-- Managed by Jenkins Job Builder -->
       Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
 
+    disabled: true
+
     properties:
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
@@ -1055,6 +1067,8 @@
     description: |
       Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
       {desc}
+
+    disabled: true
 
     properties:
       - cord-infra-properties:
@@ -1160,6 +1174,8 @@
 
     description: |
       Created from job-template {id} from ci-management/jjb/omec-ci.yaml <br />
+
+    disabled: true
 
     properties:
       - cord-infra-properties:
