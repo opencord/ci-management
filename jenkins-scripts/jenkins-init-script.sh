@@ -13,10 +13,15 @@
 
 cd /ci-management/jenkins-scripts
 chmod +x ./*.sh
-./system_type.sh
 
+# create system type script and source it
+./system_type.sh
 source /tmp/system_type.sh
+
+# run basic settings
 ./basic_settings.sh
+
+# run per system-type script, if it exists
 if [ -f "${SYSTEM_TYPE}.sh" ]
 then
     ./"${SYSTEM_TYPE}.sh"
