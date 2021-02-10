@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d94c56c4_28ce166d",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-02-10T07:17:27Z",
+      "side": 1,
+      "message": "Not sure what is the right way to write this.",
+      "range": {
+        "startLine": 207,
+        "startChar": 28,
+        "endLine": 207,
+        "endChar": 54
+      },
+      "revId": "a1f3bbb3f54b8d984661842f7642897254ca5ea1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
