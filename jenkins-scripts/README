@@ -1,8 +1,23 @@
-The scripts in this directory are used by the Jenkins spin-up component
-for dynamic minions.
+These scripts are run at boot time of a VM to configure it as a Jenkins minion.
 
-The spinup script will be as follows (${system_type} will be replaced
-with the appropriate system_type script)
+See the upstream LF project for where they originated:
 
-git clone https://github.com/edgexfoundry/ci-management.git /ci-management
-/ci-management/jenkins-scripts/jenkins-init-script.sh
+  https://gerrit.linuxfoundation.org/infra/gitweb?p=releng/global-jjb.git;a=tree;f=jenkins-init-scripts;hb=HEAD
+
+Our versions differ from LF's in a number of ways:
+
+- More secure SSH defaults
+- Omit unneeded portions of the scripts
+
+On bootstrap a script is provided as EC2 User Data that will pull down this
+repo and run the init script. It should look like:
+
+  #!/bin/bash
+
+  # Clone the management repo
+  git clone https://gerrit.opencord.org/ci-management.git /ci-management
+  /ci-management/jenkins-scripts/jenkins-init-script.sh
+
+  # clean-up from the init run
+  rm -rf /ci-management
+
