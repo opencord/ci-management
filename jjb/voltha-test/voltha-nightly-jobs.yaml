@@ -204,7 +204,7 @@
     triggers:
       - reverse:
           jobs: '{trigger-after}'
-          result: 'success'
+          result: 'success' || 'failure' || 'unstable'
 
 # VOLTHA Test Job
 # This job is automatically triggered after a build job has successfully completed
