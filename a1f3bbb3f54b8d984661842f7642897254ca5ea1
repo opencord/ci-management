@@ -22,6 +22,30 @@
       "revId": "a1f3bbb3f54b8d984661842f7642897254ca5ea1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a767266_07a4d7da",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-02-10T22:41:22Z",
+      "side": 1,
+      "message": "I am afraid that the only way to do that is:\ntriggers:\n      - reverse:\n          jobs: \u0027{trigger-after}\u0027\n          result: \u0027success\u0027\n      - reverse:\n          jobs: \u0027{trigger-after}\u0027\n          result: \u0027failure\u0027\n      - reverse:\n          jobs: \u0027{trigger-after}\u0027\n          result: \u0027unstable\u0027\n\nbut I haven\u0027t tested that",
+      "parentUuid": "d94c56c4_28ce166d",
+      "range": {
+        "startLine": 207,
+        "startChar": 28,
+        "endLine": 207,
+        "endChar": 54
+      },
+      "revId": "a1f3bbb3f54b8d984661842f7642897254ca5ea1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
