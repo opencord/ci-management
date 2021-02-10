@@ -38,4 +38,4 @@ cp -r /home/${OS}/.ssh/authorized_keys /home/jenkins/.ssh/authorized_keys
 
 # Generate ssh key for use by Robot jobs
 echo -e 'y\n' | ssh-keygen -N "" -f /home/jenkins/.ssh/id_rsa -t rsa
-chown -R jenkins:jenkins /home/jenkins/.ssh /w
+chown -R jenkins:jenkins /home/jenkins/.ssh
