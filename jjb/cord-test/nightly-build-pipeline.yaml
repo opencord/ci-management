@@ -109,7 +109,12 @@
 
       - string:
           name: onuNumber
-          default: '16'
+          default: '{num-of-onus}'
+          description: "Onus per PonPort"
+
+      - string:
+          name: ponNumber
+          default: '{num-of-ponports}'
           description: "Onus per PonPort"
 
       - string:

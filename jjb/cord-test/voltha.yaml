@@ -21,6 +21,8 @@
     kindVolthaChange: ''
     cordTesterChange: ''
     oltAdapterAppLabel: 'adapter-open-olt'
+    num-of-onus: ''
+    num-of-ponports: ''
 
 
     jobs:
@@ -406,7 +408,6 @@
       - 'build_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
           release: 'master'
           branch: 'master'
           profile: '1T8GEM'
@@ -416,6 +417,8 @@
           reinstall-olt: false
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
+          num-of-onus: 16
+          num-of-ponports: 8
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # FIXME once the soak-pod is back use 'build_voltha_pod_test'
