@@ -255,12 +255,6 @@ pipeline {
             sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.olt
           fi
 
-          if [ ${withMibTemplate} = true ] ; then
-            rm -f BBSM-12345123451234512345-00000000000001-v1.json
-            wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-            cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl -n \$INFRA_NS exec -it \$(kubectl -n \$INFRA_NS get pods -l app=etcd | awk 'NR==2{print \$1}') -- etcdctl put service/voltha/omci_mibs/templates/BBSM/12345123451234512345/00000000000001
-          fi
-
           if [ ${withPcap} = true ] && [ ${volthaStacks} -eq 1 ] ; then
             # Start the tcp-dump in ofagent
             export OF_AGENT=\$(kubectl -n \$INFRA_NS get pods -l app=ofagent -o name)
