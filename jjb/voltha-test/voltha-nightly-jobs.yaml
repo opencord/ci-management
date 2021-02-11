@@ -82,6 +82,21 @@
           default: '{num-of-onos}'
           description: 'Installs the specified Number of ONOS instances'
 
+      - bool:
+          name: installBBSim
+          default: false
+          description: "Install the BBSim container"
+
+      - string:
+          name: onuNumber
+          default: '{num-of-onus}'
+          description: "Onus per PonPort"
+
+      - string:
+          name: ponNumber
+          default: '{num-of-ponports}'
+          description: "Number of PON Ports"
+
       - string:
           name: NumOfAtomix
           default: '{num-of-atomix}'
