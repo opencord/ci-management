@@ -119,7 +119,7 @@ pipeline {
 
           mkdir -p $ROBOT_LOGS_DIR/1t1gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export NAME=voltha_voltha
+          export KVSTOREPREFIX=voltha_voltha
 
           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
 
@@ -145,7 +145,6 @@ pipeline {
       steps {
         sh '''
           cd $WORKSPACE/kind-voltha/
-          #source $NAME-env.sh
           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
@@ -158,7 +157,7 @@ pipeline {
 
           mkdir -p $ROBOT_LOGS_DIR/1t4gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export NAME=voltha_voltha
+          export KVSTOREPREFIX=voltha_voltha
 
           make -C $WORKSPACE/voltha-system-tests ${make1t4gemTestTarget} || true
 
@@ -184,7 +183,6 @@ pipeline {
       steps {
         sh '''
           cd $WORKSPACE/kind-voltha/
-          #source $NAME-env.sh
           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
@@ -197,7 +195,7 @@ pipeline {
 
           mkdir -p $ROBOT_LOGS_DIR/1t8gem
           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export NAME=voltha_voltha
+          export KVSTOREPREFIX=voltha_voltha
 
           make -C $WORKSPACE/voltha-system-tests ${make1t8gemTestTarget} || true
 
@@ -224,7 +222,6 @@ pipeline {
       steps {
         sh '''
            cd $WORKSPACE/kind-voltha/
-           #source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
@@ -266,7 +263,6 @@ pipeline {
       steps {
         sh '''
            cd $WORKSPACE/kind-voltha/
-           #source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "

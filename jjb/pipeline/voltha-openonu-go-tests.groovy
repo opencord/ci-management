@@ -202,7 +202,6 @@ pipeline {
       steps {
         sh '''
           cd $WORKSPACE/kind-voltha/
-          #source $NAME-env.sh
           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
@@ -231,7 +230,7 @@ pipeline {
           export TARGET_1T8GEM=1t8gem-openonu-go-adapter-test
 
           if [ "${branch}" != "voltha-2.6" ]; then
-            export NAME=voltha_voltha
+            export KVSTOREPREFIX=voltha_voltha
           fi
 
           make -C $WORKSPACE/voltha-system-tests \$TARGET_1T8GEM || true
@@ -258,7 +257,6 @@ pipeline {
       steps {
         sh '''
            cd $WORKSPACE/kind-voltha/
-           #source $NAME-env.sh
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
