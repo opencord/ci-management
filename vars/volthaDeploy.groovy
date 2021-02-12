@@ -11,6 +11,8 @@ def call(Map config) {
       bbsimReplica: 1,
       infraNamespace: "infra",
       volthaNamespace: "voltha",
+      stackName: "voltha",
+      stackId: 1,
       workflow: "att",
       extraHelmFlags: "",
     ]
