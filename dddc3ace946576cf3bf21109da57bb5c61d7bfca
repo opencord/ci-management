@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "6fe51efb_ec95fe3d",
+        "filename": "jjb/cord-test/att-workflow.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-02-12T23:18:24Z",
+      "side": 1,
+      "message": "should we set 1 and 1?\nan empty string won\u0027t be a valid value in BBSim",
+      "range": {
+        "startLine": 17,
+        "startChar": 17,
+        "endLine": 17,
+        "endChar": 19
+      },
+      "revId": "dddc3ace946576cf3bf21109da57bb5c61d7bfca",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
