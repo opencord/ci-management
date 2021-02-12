@@ -108,16 +108,16 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental-multi-stack'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
           withMonitoring: true
           logLevel: WARN
-          volthaStacks: 10
+          volthaStacks: 2
           olts: 2
-          pons: 16
-          onus: 32
+          pons: 2
+          onus: 2
           withFlows: true
           provisionSubscribers: true
           workflow: dt
@@ -228,7 +228,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-att-subscribers'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
@@ -247,7 +247,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
@@ -266,7 +266,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false

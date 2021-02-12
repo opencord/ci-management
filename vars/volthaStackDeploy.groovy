@@ -2,14 +2,11 @@
 def call(Map config) {
     // note that I can't define this outside the function as there's no global scope in Groovy
     def defaultConfig = [
-      onosReplica: 1,
-      atomixReplica: 1,
-      kafkaReplica: 1,
-      etcdReplica: 1,
       bbsimReplica: 1,
       infraNamespace: "infra",
       volthaNamespace: "voltha",
       stackName: "voltha",
+      stackId: 1, // NOTE this is used to differentiate between BBSims across multiple stacks
       workflow: "att",
       extraHelmFlags: "",
     ]
@@ -33,7 +30,7 @@ def call(Map config) {
       // TODO differentiate olt_id between different stacks
        sh """
          helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} onf/bbsim ${cfg.extraHelmFlags} \
-         --set olt_id="1${i}" \
+         --set olt_id="${cfg.stackId}${i}" \
          -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml
        """
     }
