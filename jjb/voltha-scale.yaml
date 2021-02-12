@@ -229,7 +229,7 @@
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-att-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-multi-stack.groovy'
-          'disable-job': false
+          'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -248,7 +248,7 @@
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-multi-stack.groovy'
-          'disable-job': false
+          'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -267,7 +267,7 @@
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-multi-stack.groovy'
-          'disable-job': false
+          'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -362,7 +362,7 @@
           name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-att-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-multi-stack.groovy'
-          'disable-job': false
+          'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -382,7 +382,7 @@
           name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-multi-stack.groovy'
-          'disable-job': false
+          'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -402,7 +402,7 @@
           name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha-scale-multi-stack.groovy'
-          'disable-job': false
+          'disable-job': true
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
