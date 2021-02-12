@@ -114,10 +114,10 @@
           time-trigger: "H 0 29 2 *"
           withMonitoring: true
           logLevel: WARN
-          volthaStacks: 10
+          volthaStacks: 2
           olts: 2
-          pons: 16
-          onus: 32
+          pons: 2
+          onus: 2
           withFlows: true
           provisionSubscribers: true
           workflow: dt
