@@ -41,9 +41,8 @@ nodes:
       if [ "\$HOSTARCH" == "x86_64" ]; then
           HOSTARCH="amd64"
       fi
-      curl -Lo ./voltctl https://github.com/opencord/voltctl/releases/download/v1.3.1/voltctl-1.3.1-\$HOSTOS-\$HOSTARCH
-      chmod +x ./voltctl
-      mv ./voltctl $WORKSPACE/bin/
+      curl -Lo $WORKSPACE/bin/voltctl https://github.com/opencord/voltctl/releases/download/v1.3.1/voltctl-1.3.1-\$HOSTOS-\$HOSTARCH
+      chmod +x $WORKSPACE/bin/voltctl
 
       # start the kind cluster
       kind create cluster --name ${cfg.name} --config kind.cfg

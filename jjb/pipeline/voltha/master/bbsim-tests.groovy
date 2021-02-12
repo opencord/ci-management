@@ -145,6 +145,20 @@ pipeline {
         loadToKind()
       }
     }
+    stage('Replace voltctl') {
+      // if the project is voltctl override the downloaded one with the built one
+      when {
+        expression {
+          return gerritProject == "voltctl"
+        }
+      }
+      steps{
+        sh """
+        mv `ls $WORKSPACE/voltctl/release/voltctl-*-linux-amd*` $WORKSPACE/bin/voltctl
+        chmod +x $WORKSPACE/bin/voltctl
+        """
+      }
+    }
     stage('Run Test') {
       steps {
         test_workflow("att")
