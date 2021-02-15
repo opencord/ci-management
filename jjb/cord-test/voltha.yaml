@@ -480,7 +480,7 @@
           time-trigger: "H H */3 * *"
 
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
@@ -494,7 +494,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          trigger-after: build_dt-berlin-pod-gpon_1T8GEM_voltha_DT_2.6_test
+          time: '1'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
