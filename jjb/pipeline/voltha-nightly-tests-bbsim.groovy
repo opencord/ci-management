@@ -23,7 +23,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 240, unit: 'MINUTES')
+      timeout(time: 300, unit: 'MINUTES')
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
@@ -75,7 +75,7 @@ pipeline {
           $class: 'GitSCM',
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/voltha-system-tests",
-            // refspec: "${volthaSystemTestsChange}"
+            refspec: "${volthaSystemTestsChange}"
           ]],
           branches: [[ name: "${branch}", ]],
           extensions: [
