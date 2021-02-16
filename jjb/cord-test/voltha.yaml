@@ -71,6 +71,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
+          'disable-job': true
           release: 'master'
           branch: 'master'
           num-of-openonu: '1'
@@ -86,6 +87,7 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
+          'disable-job': true
           release: 'master'
           branch: 'master'
           power-switch: True
@@ -98,6 +100,7 @@
           config-pod: 'flex-ocp-cord'
           release: '2.6'
           branch: 'voltha-2.6'
+          'disable-job': true
           num-of-openonu: '1'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -111,7 +114,7 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          'disable-job': false
+          'disable-job': true
           release: '2.6'
           branch: 'voltha-2.6'
           power-switch: True
@@ -124,6 +127,7 @@
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.6'
+          'disable-job': true
           branch: 'voltha-2.6'
           num-of-openonu: '1'
           num-of-onos: '3'
@@ -142,6 +146,7 @@
           config-pod: 'flex-ocp-cord'
           release: '2.6'
           branch: 'voltha-2.6'
+          'disable-job': true
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
@@ -156,6 +161,7 @@
           release: 'master'
           branch: 'master'
           num-of-openonu: '1'
+          'disable-job': true
           num-of-onos: '3'
           num-of-atomix: '3'
           name-extension: '_TT'
@@ -171,6 +177,7 @@
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
+          'disable-job': true
           branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
@@ -186,6 +193,7 @@
           config-pod: 'flex-ocp-cord-openonupy'
           release: '2.6'
           branch: 'voltha-2.6'
+          'disable-job': true
           num-of-onos: '3'
           num-of-atomix: '3'
           name-extension: '_openonupy'
@@ -201,6 +209,7 @@
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-openonupy'
           name-extension: '_openonupy'
+          'disable-job': true
           release: '2.6'
           branch: 'voltha-2.6'
           test-repo: 'voltha-system-tests'
@@ -211,6 +220,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-openonupy'
+          'disable-job': true
           release: '2.6'
           branch: 'voltha-2.6'
           num-of-onos: '3'
@@ -229,6 +239,7 @@
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-openonupy'
           name-extension: '_TT_openonupy'
+          'disable-job': true
           release: '2.6'
           branch: 'voltha-2.6'
           test-repo: 'voltha-system-tests'
