@@ -392,6 +392,7 @@
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod-openonugo'
           'disable-job': true
+          installBBSim: true
           release: 'master'
           branch: 'master'
           name-extension: '_openonugo'
