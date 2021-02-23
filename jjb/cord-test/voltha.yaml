@@ -463,7 +463,7 @@
           time-trigger: "H H */3 * *"
 
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
@@ -477,7 +477,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          trigger-after: build_dt-berlin-pod-gpon_1T8GEM_voltha_DT_2.6_test
+          time: '20'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
@@ -525,7 +525,7 @@
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with olt/onu - voltha-2.6 Default tech profile and timer based job
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
           release: '2.6'
@@ -538,7 +538,8 @@
           configurePod: true
           disable-job: true
           profile: 'Default'
-          trigger-after: build_dt-berlin-pod-multi-olt_1T8GEM_voltha_DT_2.6_test
+          # Update this value accordingly once the job is enabled
+          time: ''
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
@@ -552,7 +553,7 @@
           power-switch: True
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
           release: 'master'
@@ -566,8 +567,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          #update this to use 'build_dt-berlin-pod_Default_voltha_2.6_test' once above job enables
-          trigger-after: build_dt-berlin-pod-multi-olt_1T8GEM_voltha_DT_2.6_test
+          time: '6'
 
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -584,7 +584,7 @@
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with adtran gpon olt/onu - master 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon-adtran'
           release: '2.6'
@@ -600,7 +600,7 @@
           profile: '1T8GEM'
           reinstall-olt: false
           openoltAdapterChart: '/home/community/adtran-2021-01-29/voltha-adapter-adtran-olt'
-          trigger-after: build_dt-berlin-pod-gpon_1T8GEM_voltha_DT_master_test
+          time: '11'
 
 
       # Berlin POD adtran test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -618,7 +618,7 @@
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with gpon olt/onu - voltha-2.5 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release_dependent':
+      - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
           release: '2.6'
@@ -632,7 +632,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          trigger-after: build_dt-berlin-pod-gpon-adtran_1T8GEM_voltha_DT_2.6_test
+          time: '16'
 
 
       # Berlin POD test job - voltha-2.5 versions: uses 1T8GEM tech profile on voltha branch

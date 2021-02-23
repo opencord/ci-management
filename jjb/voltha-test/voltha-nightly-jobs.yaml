@@ -220,12 +220,6 @@
       - reverse:
           jobs: '{trigger-after}'
           result: 'success'
-      - reverse:
-          jobs: '{trigger-after}'
-          result: 'failure'
-      - reverse:
-          jobs: '{trigger-after}'
-          result: 'unstable'
 
 # VOLTHA Test Job
 # This job is automatically triggered after a build job has successfully completed
