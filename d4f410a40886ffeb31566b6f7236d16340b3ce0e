@@ -16,6 +16,24 @@
       "revId": "d4f410a40886ffeb31566b6f7236d16340b3ce0e",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d4517c3f_916699b0",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-02-23T09:46:36Z",
+      "side": 1,
+      "message": "Currently, this job is disabled. If required I can remove this value and put a comment like above \"Update this value accordingly once the job is enabled\".",
+      "parentUuid": "ec96a3c2_b67a9317",
+      "revId": "d4f410a40886ffeb31566b6f7236d16340b3ce0e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
