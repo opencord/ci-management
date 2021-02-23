@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ec96a3c2_b67a9317",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 666,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-02-23T09:44:33Z",
+      "side": 1,
+      "message": "would this cause mess with the 6 and 11 job ?",
+      "revId": "d4f410a40886ffeb31566b6f7236d16340b3ce0e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
