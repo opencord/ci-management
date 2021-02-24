@@ -23,7 +23,7 @@
     oltAdapterAppLabel: 'adapter-open-olt'
     num-of-onus: ''
     num-of-ponports: ''
-
+    soak-test: False
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
@@ -428,6 +428,7 @@
           work-flow: 'DT'
           name-extension: '_DT_soak_Func'
           test-type: 'Functional'
+          soak-test: True
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H 2 * *"
@@ -443,6 +444,7 @@
           work-flow: 'DT'
           name-extension: '_DT_soak_Fail'
           test-type: 'Failure'
+          soak-test: True
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H */2 * *"
@@ -458,6 +460,7 @@
           work-flow: 'DT'
           name-extension: '_DT_soak_DP'
           test-type: 'Dataplane'
+          soak-test: True
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H */3 * *"
