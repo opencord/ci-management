@@ -22,6 +22,30 @@
       "revId": "537a7cfa8b6f6a4a1861a19fe0e5e8655fc659b0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62443596_2a7584d4",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-02-24T22:02:27Z",
+      "side": 1,
+      "message": "Having `PowerSwitch` option here is fine, because in functional suite we are rebooting the ONUs the first time.  May be we can try passing `teardown_device`",
+      "parentUuid": "f30b8871_9c3e1982",
+      "range": {
+        "startLine": 183,
+        "startChar": 59,
+        "endLine": 183,
+        "endChar": 73
+      },
+      "revId": "537a7cfa8b6f6a4a1861a19fe0e5e8655fc659b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
