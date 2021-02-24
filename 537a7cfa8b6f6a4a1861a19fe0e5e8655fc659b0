@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f30b8871_9c3e1982",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-02-24T13:43:00Z",
+      "side": 1,
+      "message": "This will always execute `PowerSwitch`. Is that fine?\nAlso, reference to comment on https://gerrit.opencord.org/c/voltha-system-tests/+/23016 for `teardown_device` variable, we can try pass it here.",
+      "range": {
+        "startLine": 183,
+        "startChar": 59,
+        "endLine": 183,
+        "endChar": 73
+      },
+      "revId": "537a7cfa8b6f6a4a1861a19fe0e5e8655fc659b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
