@@ -21,6 +21,7 @@
     kindVolthaChange: ''
     cordTesterChange: ''
     oltAdapterAppLabel: 'adapter-open-olt'
+    oltJobType: 'single'
     num-of-onus: ''
     num-of-ponports: ''
 
@@ -491,6 +492,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
+          oltJobType: 'multi'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with olt/onu -  voltha-2.6 timer based job , two OLTs
@@ -522,6 +524,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
+          oltJobType: 'multi'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with olt/onu - voltha-2.6 Default tech profile and timer based job

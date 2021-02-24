@@ -241,6 +241,11 @@ pipeline {
         ROBOT_FILE="Voltha_DT_MultiOLT_Tests.robot"
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/MultipleOLTScenarios"
       }
+      when {
+        expression {
+          return "${oltJobType}" == 'single'
+        }
+      }
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
