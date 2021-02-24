@@ -432,6 +432,11 @@
           default: '{power-switch}'
           description: "Indicate whether POD has power switch to reboot ONUs/OLT remotely"
 
+      - bool:
+          name: soakTest
+          default: '{soak-test}'
+          description: "Indicate whether the job runs soak tests or not"
+
       - string:
           name: oltAdapterAppLabel
           default: '{oltAdapterAppLabel}'
