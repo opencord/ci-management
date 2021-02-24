@@ -35,7 +35,12 @@ def test_workflow(name) {
         extraHelmFlags = extraHelmFlags + customImageFlags("${gerritProject}")
       }
 
-      volthaDeploy([workflow: name, extraHelmFlags: extraHelmFlags])
+      def localCharts = false
+      if (gerritProject == "voltha-helm-charts") {
+        localCharts = true
+      }
+
+      volthaDeploy([workflow: name, extraHelmFlags: extraHelmFlags, localCharts: localCharts])
       // start logging
       sh """
       mkdir -p $WORKSPACE/${name}
