@@ -352,7 +352,7 @@ def deploy_voltha_stacks(numberOfStacks) {
   for (int i = 1; i <= numberOfStacks.toInteger(); i++) {
     stage("Deploy VOLTHA stack " + i) {
       // ${logLevel}
-      def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,enablePerf=true,onu=${onus},pon=${pons} "
+      def extraHelmFlags = "${extraHelmFlags} --set global.log_level=${logLevel},enablePerf=true,onu=${onus},pon=${pons} "
       extraHelmFlags += " --set securityContext.enabled=false,atomix.persistence.enabled=false "
       // FIXME having to set all of these values is annoying, is there a better solution?
       def controllerFlags = " "
