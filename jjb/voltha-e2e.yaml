@@ -176,6 +176,16 @@
           time-trigger: "@daily"
           work-flow: DT
 
+      - 'voltha-periodic-test':
+          name: 'nightly-onos-apps-software-upgrades-test-bbsim'
+          pipeline-script: 'onos-apps-software-upgrades-bbsim.groovy'
+          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          code-branch: 'master'
+          make-target: onos-app-upgrade-test
+          onus: 1
+          pons: 1
+          time-trigger: "@daily"
+
       # Per-patchset Pod builds on Tucson pod
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
