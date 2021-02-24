@@ -613,7 +613,7 @@
           branch: 'voltha-2.6'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: False
+          power-switch: True
           oltAdapterAppLabel: 'adapter-adtran-olt'
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
