@@ -15,6 +15,7 @@ def call(Map config) {
       stackId: 1,
       workflow: "att",
       extraHelmFlags: "",
+      localCharts: false, // wether to use locally cloned charts or upstream one (for local we assume they are stored in $WORKSPACE/voltha-helm-charts)
     ]
 
     if (!config) {

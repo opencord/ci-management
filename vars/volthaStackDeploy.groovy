@@ -9,6 +9,7 @@ def call(Map config) {
       stackId: 1, // NOTE this is used to differentiate between BBSims across multiple stacks
       workflow: "att",
       extraHelmFlags: "",
+      localCharts: false,
     ]
 
     if (!config) {
@@ -17,10 +18,22 @@ def call(Map config) {
 
     def cfg = defaultConfig + config
 
+    def volthaStackChart = "onf/voltha-stack"
+
+    if (cfg.localCharts) {
+      volthaStackChart = "$WORKSPACE/voltha-helm-charts/voltha-stack"
+
+      sh """
+      pushd $WORKSPACE/voltha-helm-charts/voltha-stack
+      helm dep update
+      popd
+      """
+    }
+
     println "Deploying VOLTHA Stack with the following parameters: ${cfg}."
 
     sh """
-    helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} ${cfg.stackName} onf/voltha-stack ${cfg.extraHelmFlags} \
+    helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} ${cfg.stackName} ${volthaStackChart} ${cfg.extraHelmFlags} \
           --set global.stack_name=${cfg.stackName} \
           --set global.voltha_infra_name=voltha-infra \
           --set global.voltha_infra_namespace=${cfg.infraNamespace} \
