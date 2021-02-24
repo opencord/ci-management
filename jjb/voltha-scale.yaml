@@ -377,6 +377,13 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
+          openoltAdapterImg: ''
+          openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
+          onosImg: ''
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-dt-subscribers'
@@ -397,6 +404,13 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
+          openoltAdapterImg: ''
+          openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
+          onosImg: ''
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2.6-10-stacks-2-16-32-tt-subscribers'
@@ -417,6 +431,13 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
+          bbsimImg: ''
+          rwCoreImg: ''
+          ofAgentImg: ''
+          openoltAdapterImg: ''
+          openonuAdapterImg: ''
+          openonuAdapterGoImg: ''
+          onosImg: ''
 
       # per patchset job
       - 'voltha-scale-measurements':
