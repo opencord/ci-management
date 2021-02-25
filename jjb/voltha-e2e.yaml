@@ -32,7 +32,7 @@
           olts: 1
           onus: 2
           pons: 2
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim'
@@ -48,7 +48,7 @@
           olts: 2
           onus: 2
           pons: 2
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/24 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-2.6-multiple-olts-test-bbsim'
@@ -64,7 +64,7 @@
           olts: 2
           onus: 2
           pons: 2
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/24 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
@@ -98,7 +98,7 @@
           make-target: bbsim-dmi-hw-management-test
           withAlarms: false
           code-branch: 'master'
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI-2.6'
@@ -107,7 +107,7 @@
           make-target: bbsim-dmi-hw-management-test
           withAlarms: false
           code-branch: 'voltha-2.6'
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-2.6'
@@ -121,7 +121,7 @@
           code-branch: 'voltha-2.6'
           onus: 2
           pons: 2
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test'
@@ -153,7 +153,7 @@
           onus: 1
           pons: 1
           test-runs: 5
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs-2.6'
@@ -164,7 +164,7 @@
           onus: 1
           pons: 1
           test-runs: 5
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
           name: 'nightly-voltha-DTflow-sanity-test'
