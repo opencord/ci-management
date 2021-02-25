@@ -172,7 +172,7 @@ pipeline {
       }
       steps {
         sh """
-        cd $WORKSPACE/voltha/kind-voltha/scripts
+        cd $WORKSPACE/kind-voltha/scripts
         ./log-collector.sh > /dev/null &
         ./log-combine.sh > /dev/null &
 
@@ -183,7 +183,7 @@ pipeline {
             else
                  export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i soak -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             fi
-            make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -200,7 +200,7 @@ pipeline {
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Failure" ]; then
            export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i soak -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
+           make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -217,7 +217,7 @@ pipeline {
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Dataplane" ]; then
            export ROBOT_MISC_ARGS="--removekeywords wuks -i BandwidthProfileUDPDt -i TechProfileDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
+           make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -242,14 +242,14 @@ pipeline {
       extract_errors_go() {
         echo
         echo "Error summary for $1:"
-        grep '"level":"error"' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
+        grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
         echo
       }
 
       extract_errors_python() {
         echo
         echo "Error summary for $1:"
-        grep 'ERROR' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
+        grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
         echo
       }
 
@@ -259,7 +259,7 @@ pipeline {
       extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
       extract_errors_python onos >> $WORKSPACE/error-report.log
 
-      cd $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/
+      cd $WORKSPACE/kind-voltha/scripts/logger/combined/
       tar czf $WORKSPACE/container-logs.tgz *
 
       cd $WORKSPACE
