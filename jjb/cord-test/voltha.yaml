@@ -476,7 +476,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '20'
+          time: '18'
 
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
@@ -506,8 +506,10 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
+          disable-job: true
           profile: '1T8GEM'
-          time: '1'
+          # Update this value accordingly once the job is enabled
+          time: ''
 
 
       # Berlin POD test job -  voltha-2.6 versions: two OLTs
@@ -566,7 +568,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '6'
+          time: '1'
 
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -599,7 +601,7 @@
           profile: '1T8GEM'
           reinstall-olt: false
           openoltAdapterChart: '/home/community/adtran-2021-01-29/voltha-adapter-adtran-olt'
-          time: '11'
+          time: '7'
 
 
       # Berlin POD adtran test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -631,7 +633,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '16'
+          time: '13'
 
 
       # Berlin POD test job - voltha-2.5 versions: uses 1T8GEM tech profile on voltha branch
@@ -662,7 +664,8 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '9'
+          # Update this value accordingly once the job is enabled
+          time: ''
 
 
       # Berlin POD test job - master versions, uses 1T8GEM tech profile and openonu go on voltha branch
