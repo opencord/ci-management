@@ -145,6 +145,9 @@ pipeline {
           # forward ONOS ports
           _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8101:8101& 2>&1 > /dev/null
           _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181& 2>&1 > /dev/null
+
+          # make sure the the port-forward has started before moving forward
+          sleep 5
           """
           sh returnStdout: false, script: """
           # TODO this needs to be repeated per stack
