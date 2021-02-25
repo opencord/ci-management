@@ -32,32 +32,100 @@ pipeline {
     PATH="$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   }
 
+
   stages {
-    stage ('Initialize') {
+    stage('Clone kind-voltha') {
       steps {
         step([$class: 'WsCleanup'])
-        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
-        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/kind-voltha"
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+            refspec: "${kindVolthaChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+      }
+    }
+    stage('Clone voltha-system-tests') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
         script {
-          deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+          sh(script:"""
+            if [ '${volthaSystemTestsChange}' != '' ] ; then
+              cd $WORKSPACE/voltha-system-tests;
+              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+            fi
+            """)
         }
-        // This checkout allows us to show changes in Jenkins
-        checkout(changelog: true,
-          poll: false,
-          scm: [$class: 'RepoScm',
-            manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.branch}",
-            currentBranch: true,
-            destinationDir: 'voltha',
-            forceSync: true,
-            resetFirst: true,
-            quiet: true,
-            jobs: 4,
-            showAllChanges: true]
-          )
+      }
+    }
+    stage('Clone cord-tester') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/cord-tester",
+            refspec: "${cordTesterChange}"
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "cord-tester"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+      }
+    }
+    // This checkout allows us to show changes in Jenkins
+    // we only do this on master as we don't branch all the repos for all the releases
+    // (we should compute the difference by tracking the container version, not the code)
+    stage('Download All the VOLTHA repos') {
+      when {
+        expression {
+          return "${branch}" == 'master';
+        }
+      }
+      steps {
+       checkout(changelog: true,
+         poll: false,
+         scm: [$class: 'RepoScm',
+           manifestRepositoryUrl: "${params.manifestUrl}",
+           manifestBranch: "${params.branch}",
+           currentBranch: true,
+           destinationDir: 'voltha',
+           forceSync: true,
+           resetFirst: true,
+           quiet: true,
+           jobs: 4,
+           showAllChanges: true]
+         )
+      }
+    }
+    stage ('Initialize') {
+      steps {
+        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
+        script {
+           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+        }
         sh returnStdout: false, script: """
-        cd voltha
-        git clone -b master ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
@@ -111,9 +179,9 @@ pipeline {
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Functional" ]; then
             if ( ${powerSwitch} ); then
-                 export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+                 export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i soak -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             else
-                 export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+                 export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i soak -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             fi
             make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         fi
@@ -131,11 +199,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Failure" ]; then
-           if ( ${powerSwitch} ); then
-              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           else
-              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           fi
+           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i soak -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         fi
         """
@@ -152,7 +216,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Dataplane" ]; then
-           export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+           export ROBOT_MISC_ARGS="--removekeywords wuks -i BandwidthProfileUDPDt -i TechProfileDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            make -C $WORKSPACE/voltha/voltha-system-tests voltha-dt-test || true
         fi
         """

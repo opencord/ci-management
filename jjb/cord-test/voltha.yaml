@@ -24,7 +24,6 @@
     num-of-onus: ''
     num-of-ponports: ''
 
-
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
       - 'build_pod_manual':
