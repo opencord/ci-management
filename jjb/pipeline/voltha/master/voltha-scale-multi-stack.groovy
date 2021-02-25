@@ -45,6 +45,10 @@ pipeline {
     stage ('Cleanup') {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
+          sh """
+          # remove orphaned port-forward from different namespaces
+            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+          """
           script {
             def namespaces = ["infra"]
             // FIXME we may have leftovers from more VOLTHA stacks (eg: run1 had 10 stacks, run2 had 2 stacks)
