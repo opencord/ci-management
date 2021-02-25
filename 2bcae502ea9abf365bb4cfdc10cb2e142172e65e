@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bae65828_c6b37352",
+        "filename": "jjb/pipeline/onos-apps-software-upgrades-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-02-25T14:36:02Z",
+      "side": 1,
+      "message": "please add extraction and save of the k8s pods with the restart and the images (teo has some way of doing it in the scale pipelines)",
+      "revId": "2bcae502ea9abf365bb4cfdc10cb2e142172e65e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bf0d678a_9edea023",
+        "filename": "jjb/pipeline/onos-apps-software-upgrades-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 171,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-02-25T14:36:02Z",
+      "side": 1,
+      "message": "this can be removed and changed to the go version",
+      "revId": "2bcae502ea9abf365bb4cfdc10cb2e142172e65e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "29c3b07c_90999c53",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-02-25T14:36:02Z",
+      "side": 1,
+      "message": "as discussed please add the capability to customise the ONOS image",
+      "revId": "2bcae502ea9abf365bb4cfdc10cb2e142172e65e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
