@@ -12,8 +12,8 @@
       # OpenONU PY Scale
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-dt-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
           pons: 16
@@ -37,8 +37,8 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
           pons: 16
@@ -61,8 +61,8 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
           pons: 16
@@ -129,8 +129,8 @@
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
           pons: 16
@@ -144,8 +144,8 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
           pons: 16
@@ -160,8 +160,8 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
           pons: 16
@@ -177,8 +177,8 @@
       # jobs for 1024 ONUs with a 8 openonu-adapters and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
           pons: 16
@@ -192,8 +192,8 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
           pons: 16
@@ -208,8 +208,8 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
           pons: 16
@@ -229,7 +229,7 @@
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-att-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
-          'disable-job': true
+          'disable-job': false
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -248,7 +248,7 @@
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
-          'disable-job': true
+          'disable-job': false
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -267,7 +267,7 @@
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
-          'disable-job': true
+          'disable-job': false
           time-trigger: "H H/4 * * *"
           withMonitoring: false
           logLevel: WARN
@@ -286,8 +286,8 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-1-16-32-att-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
           pons: 16
@@ -310,8 +310,8 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-2-16-32-dt-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
           pons: 16
@@ -335,8 +335,8 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-1-16-32-tt-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
-          build-node: 'onf-pod1-head-node'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
           pons: 16
@@ -442,7 +442,7 @@
       # per patchset job
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-patchset-1-16-32-att-subscribers'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-1'
           olts: 1
           pons: 16
           onus: 32
@@ -456,7 +456,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-patchset-1-16-32-tt-subscribers'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-1'
           olts: 1
           pons: 16
           onus: 32
@@ -471,7 +471,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-patchset-1-16-32-dt-subscribers'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-1'
           olts: 1
           pons: 16
           onus: 32
@@ -498,7 +498,7 @@
       # development matrix
       - 'voltha-scale-matrix':
           name: 'voltha-scale-matrix-voltha-master'
-          build-node: 'onf-pod1-head-node'
+          build-node: 'voltha-scale-1'
           onosReplicas: 3
           atomixReplicas: 3
           kafkaReplicas: 3
