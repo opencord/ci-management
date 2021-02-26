@@ -132,7 +132,7 @@
       # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -147,7 +147,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -163,7 +163,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -740,6 +740,9 @@
           name: kindVolthaChange
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+      - bool:
+          name: withMibTemplate
+          default: true
 
 - job-template:
     id: 'voltha-scale-measurements'
