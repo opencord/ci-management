@@ -12,6 +12,7 @@
       # OpenONU PY Scale
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-dt-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
           'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -37,6 +38,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
           'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -61,6 +63,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
+          pipeline-script: 'voltha-scale-test-2.6.groovy'
           'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -760,7 +763,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
-    pipeline-script: 'voltha-scale-test.groovy'
+    pipeline-script: 'voltha/master/voltha-scale-test.groovy'
     release: master
 
     bbsimImg: voltha/bbsim:master
@@ -862,7 +865,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
-    pipeline-script: 'voltha-scale-test.groovy'
+    pipeline-script: 'voltha/master/voltha-scale-test.groovy'
     release: master
 
     bbsimImg: voltha/bbsim:master
