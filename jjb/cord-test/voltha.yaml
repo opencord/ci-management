@@ -70,7 +70,6 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          'disable-job': true
           release: 'master'
           branch: 'master'
           num-of-openonu: '1'
@@ -86,7 +85,6 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          'disable-job': true
           release: 'master'
           branch: 'master'
           power-switch: True
@@ -99,7 +97,6 @@
           config-pod: 'flex-ocp-cord'
           release: '2.6'
           branch: 'voltha-2.6'
-          'disable-job': true
           num-of-openonu: '1'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -113,7 +110,6 @@
       - 'build_voltha_pod_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          'disable-job': true
           release: '2.6'
           branch: 'voltha-2.6'
           power-switch: True
@@ -126,7 +122,6 @@
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.6'
-          'disable-job': true
           branch: 'voltha-2.6'
           num-of-openonu: '1'
           num-of-onos: '3'
@@ -145,7 +140,6 @@
           config-pod: 'flex-ocp-cord'
           release: '2.6'
           branch: 'voltha-2.6'
-          'disable-job': true
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
@@ -160,7 +154,6 @@
           release: 'master'
           branch: 'master'
           num-of-openonu: '1'
-          'disable-job': true
           num-of-onos: '3'
           num-of-atomix: '3'
           name-extension: '_TT'
@@ -176,7 +169,6 @@
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
-          'disable-job': true
           branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
@@ -185,67 +177,6 @@
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
-
-     # Flex pod with xgs-pon olt/onu - master 1T4GEM tech profile and openonu go and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord-openonupy'
-          release: '2.6'
-          branch: 'voltha-2.6'
-          'disable-job': true
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          name-extension: '_openonupy'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          configurePod: true
-          profile: '1T4GEM'
-          time: '18'
-
-
-      # Flex POD test job - master versions, uses 1T4GEM tech profile and openonu go on voltha branch
-      - 'build_voltha_pod_test':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord-openonupy'
-          name-extension: '_openonupy'
-          'disable-job': true
-          release: '2.6'
-          branch: 'voltha-2.6'
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM'
-          power-switch: True
-
-     # Flex pod with xgs-pon olt/onu - master TT workflow openonu go and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord-openonupy'
-          'disable-job': true
-          release: '2.6'
-          branch: 'voltha-2.6'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          name-extension: '_TT_openonupy'
-          work-flow: 'TT'
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          configurePod: true
-          profile: 'TP'
-          time: '14'
-
-
-      # Flex POD test job - master versions, TT workflow and openonu go on voltha branch
-      - 'build_voltha_pod_test':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord-openonupy'
-          name-extension: '_TT_openonupy'
-          'disable-job': true
-          release: '2.6'
-          branch: 'voltha-2.6'
-          test-repo: 'voltha-system-tests'
-          work-flow: 'TT'
-          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
-          profile: 'TP'
-          power-switch: True
 
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
