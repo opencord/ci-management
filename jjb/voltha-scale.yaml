@@ -192,6 +192,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -208,6 +209,7 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -226,6 +228,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -246,6 +249,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
+          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
@@ -265,6 +269,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
+          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
@@ -284,6 +289,7 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
+          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
 
       # voltha-2.6 Jobs
       - 'voltha-scale-measurements':
