@@ -454,7 +454,8 @@ EOF
         '''
         timeout(time: 15, unit: 'MINUTES') {
           sh '''
-            ROBOT_PARAMS="-v olt:${olts} \
+            ROBOT_PARAMS="--exitonfailure \
+              -v olt:${olts} \
               -v pon:${pons} \
               -v onu:${onus} \
               -v workflow:${workflow} \
@@ -505,9 +506,10 @@ EOF
           cd $WORKSPACE/voltha-system-tests
           make vst_venv
         '''
-        timeout(time: 10, unit: 'MINUTES') {
+        timeout(time: 11, unit: 'MINUTES') {
           sh '''
-            ROBOT_PARAMS="-v olt:${olts} \
+            ROBOT_PARAMS="--exitonfailure \
+              -v olt:${olts} \
               -v pon:${pons} \
               -v onu:${onus} \
               -v workflow:${workflow} \
@@ -658,34 +660,40 @@ EOF
       '''
       // get ONOS debug infos
       sh '''
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 apps -a -s | tee $LOG_FOLDER/onos-apps.txt || true
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 nodes | tee $LOG_FOLDER/onos-nodes.txt || true
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 masters | tee $LOG_FOLDER/onos-masters.txt || true
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 roles | tee $LOG_FOLDER/onos-roles.txt || true
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 apps -a -s | tee $LOG_FOLDER/onos-apps.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 nodes | tee $LOG_FOLDER/onos-nodes.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 masters | tee $LOG_FOLDER/onos-masters.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 roles | tee $LOG_FOLDER/onos-roles.txt
 
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports | tee $LOG_FOLDER/onos-ports-list.txt || true
-        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 hosts | tee $LOG_FOLDER/onos-hosts-list.txt || true
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports | tee $LOG_FOLDER/onos-ports-list.txt
+        sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 hosts | tee $LOG_FOLDER/onos-hosts-list.txt
 
         if [ ${withFlows} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-olts | tee $LOG_FOLDER/onos-olt-list.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s | tee $LOG_FOLDER/onos-flows-list.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters | tee $LOG_FOLDER/onos-meters-list.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-olts | tee $LOG_FOLDER/onos-olt-list.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 flows -s | tee $LOG_FOLDER/onos-flows-list.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 meters | tee $LOG_FOLDER/onos-meters-list.txt
         fi
 
         if [ ${provisionSubscribers} = true ]; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers | tee $LOG_FOLDER/onos-programmed-subscribers.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters | tee $LOG_FOLDER/onos-programmed-meters.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-bpmeter-mappings | tee $LOG_FOLDER/onos-bpmeter-mappings.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-failed-subscribers | tee $LOG_FOLDER/onos-failed-subscribers.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-subscribers | tee $LOG_FOLDER/onos-programmed-subscribers.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-programmed-meters | tee $LOG_FOLDER/onos-programmed-meters.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-bpmeter-mappings | tee $LOG_FOLDER/onos-bpmeter-mappings.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 volt-failed-subscribers | tee $LOG_FOLDER/onos-failed-subscribers.txt
         fi
 
         if [ ${withEapol} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users | tee $LOG_FOLDER/onos-aaa-users.txt || true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-statistics | tee $LOG_FOLDER/onos-aaa-statistics.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-users | tee $LOG_FOLDER/onos-aaa-users.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 aaa-statistics | tee $LOG_FOLDER/onos-aaa-statistics.txt
         fi
 
         if [ ${withDhcp} = true ] ; then
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations | tee $LOG_FOLDER/onos-dhcp-allocations.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations | tee $LOG_FOLDER/onos-dhcp-allocations.txt
+        fi
+
+        if [ ${withIgmp} = true ] ; then
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 mcast-host-routes | tee $LOG_FOLDER/onos-mcast-host-routes.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 mcast-host-show | tee $LOG_FOLDER/onos-mcast-host-show.txt
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 groups | tee $LOG_FOLDER/onos-groups.txt
         fi
       '''
       // collect etcd metrics
