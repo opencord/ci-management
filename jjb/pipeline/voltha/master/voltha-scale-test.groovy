@@ -454,7 +454,8 @@ EOF
         '''
         timeout(time: 15, unit: 'MINUTES') {
           sh '''
-            ROBOT_PARAMS="-v olt:${olts} \
+            ROBOT_PARAMS="--exitonfailure \
+              -v olt:${olts} \
               -v pon:${pons} \
               -v onu:${onus} \
               -v workflow:${workflow} \
@@ -505,9 +506,10 @@ EOF
           cd $WORKSPACE/voltha-system-tests
           make vst_venv
         '''
-        timeout(time: 10, unit: 'MINUTES') {
+        timeout(time: 11, unit: 'MINUTES') {
           sh '''
-            ROBOT_PARAMS="-v olt:${olts} \
+            ROBOT_PARAMS="--exitonfailure \
+              -v olt:${olts} \
               -v pon:${pons} \
               -v onu:${onus} \
               -v workflow:${workflow} \
@@ -686,6 +688,11 @@ EOF
 
         if [ ${withDhcp} = true ] ; then
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 dhcpl2relay-allocations | tee $LOG_FOLDER/onos-dhcp-allocations.txt || true
+        fi
+
+        if [ ${withIgmp} = true ] ; then
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 mcast-host-routes | tee $LOG_FOLDER/onos-dhcp-allocations.txt || true
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 groups | tee $LOG_FOLDER/onos-dhcp-allocations.txt || true
         fi
       '''
       // collect etcd metrics
