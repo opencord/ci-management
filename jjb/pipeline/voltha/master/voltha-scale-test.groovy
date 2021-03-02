@@ -731,7 +731,7 @@ EOF
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'execution-time.txt,logs/*,logs/pprof/*,RobotLogs/*,plots/*,etcd-metrics/*'
+      archiveArtifacts artifacts: 'execution-time.txt,logs/*,logs/pprof/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
     }
   }
 }
