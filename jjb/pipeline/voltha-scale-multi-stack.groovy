@@ -359,6 +359,14 @@ EOF
             done
           fi
         done
+      '''
+      // compressing the logs to save space on Jenkins
+      sh '''
+        cd $LOG_FOLDER
+        tar -czf logs.tar.gz *.log
+        rm *.log
+      '''
+      sh '''
 
         if [ ${withPcap} = true ] && [ ${volthaStacks} -eq 1 ]; then
           # stop ofAgent tcpdump
@@ -543,7 +551,7 @@ EOF
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time-*.txt,logs/**/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time-*.txt,logs/**/*.txt,logs/**/*.tar.gz,RobotLogs/**/*,plots/*,etcd-metrics/*'
     }
   }
 }
