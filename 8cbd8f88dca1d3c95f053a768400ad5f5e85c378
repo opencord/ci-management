@@ -2,6 +2,75 @@
   "comments": [
     {
       "key": {
+        "uuid": "0e1c6fa0_4f0488eb",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-03T21:57:42Z",
+      "side": 1,
+      "message": "only needed in case of per-patch validation",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 28,
+        "endChar": 1
+      },
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8ecb515b_5dac58cf",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-03T21:57:42Z",
+      "side": 1,
+      "message": "May not be needed",
+      "range": {
+        "startLine": 34,
+        "startChar": 6,
+        "endLine": 36,
+        "endChar": 7
+      },
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c9a01607_60ef2b8e",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-03T21:57:42Z",
+      "side": 1,
+      "message": "if this is not a variable it should be quoted",
+      "range": {
+        "startLine": 51,
+        "startChar": 30,
+        "endLine": 51,
+        "endChar": 33
+      },
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2179920a_5b1c9600",
         "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
         "patchSetId": 2
@@ -19,6 +88,75 @@
     },
     {
       "key": {
+        "uuid": "66e7ebd1_6ac30ca1",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-03T21:57:42Z",
+      "side": 1,
+      "message": "this is just my personal preference, but isn\u0027t it more flexible/readable to invoke Robot directly?",
+      "range": {
+        "startLine": 81,
+        "startChar": 20,
+        "endLine": 81,
+        "endChar": 41
+      },
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "424301e8_938a935e",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-03T21:57:42Z",
+      "side": 1,
+      "message": "I think this will cause the pipeline to succeed even if there is an error in the Makefile",
+      "range": {
+        "startLine": 87,
+        "startChar": 54,
+        "endLine": 87,
+        "endChar": 61
+      },
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e85e4414_e9745d41",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 134,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-03T21:57:42Z",
+      "side": 1,
+      "message": "are we planning to run this job as a per-patchset validation? If not we probably won\u0027t need to use these parameters",
+      "range": {
+        "startLine": 133,
+        "startChar": 10,
+        "endLine": 134,
+        "endChar": 44
+      },
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "fafab12a_74206b47",
         "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
         "patchSetId": 2
@@ -30,6 +168,24 @@
       "writtenOn": "2021-03-03T14:18:58Z",
       "side": 1,
       "message": "I believe that the Build patch and the load image are not needed, nor the replace voltctl.",
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b292dd9c_a5dc4105",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-03T21:57:42Z",
+      "side": 1,
+      "message": "They are only needed if we run this job as validation on a patch",
+      "parentUuid": "fafab12a_74206b47",
       "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
