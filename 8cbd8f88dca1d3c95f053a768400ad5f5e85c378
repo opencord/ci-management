@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2179920a_5b1c9600",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-03-03T14:18:58Z",
+      "side": 1,
+      "message": "useless space",
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fafab12a_74206b47",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 150,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-03-03T14:18:58Z",
+      "side": 1,
+      "message": "I believe that the Build patch and the load image are not needed, nor the replace voltctl.",
+      "revId": "8cbd8f88dca1d3c95f053a768400ad5f5e85c378",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
