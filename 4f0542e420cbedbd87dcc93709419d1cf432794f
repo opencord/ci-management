@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c43e7f92_40fc66ce",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-03-04T09:54:49Z",
+      "side": 1,
+      "message": "can you add the voltha-component upgrade as well here ?",
+      "revId": "4f0542e420cbedbd87dcc93709419d1cf432794f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
