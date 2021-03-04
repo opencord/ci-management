@@ -13,7 +13,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-dt-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -39,7 +39,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -64,7 +64,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -193,11 +193,11 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
-          bbsimImg: matteoscandolo/bbsim:id-check
+          # bbsimImg: matteoscandolo/bbsim:id-check
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -211,11 +211,11 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
-          bbsimImg: matteoscandolo/bbsim:id-check
+          # bbsimImg: matteoscandolo/bbsim:id-check
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -231,7 +231,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
-          bbsimImg: matteoscandolo/bbsim:id-check
+          # bbsimImg: matteoscandolo/bbsim:id-check
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -298,7 +298,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-1-16-32-att-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
@@ -322,7 +322,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-2-16-32-dt-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -347,7 +347,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.6-1-16-32-tt-subscribers'
           pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 1
