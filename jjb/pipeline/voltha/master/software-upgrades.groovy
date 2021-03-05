@@ -27,7 +27,7 @@ def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
 
-      # ONOS custom image handling
+      // ONOS custom image handling
       if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
         IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
         extraHelmFlags = extraHelmFlags + "--set onos-classic.images.onos.repository=\$onosRepo,onos-classic.images.onos.tag=\$onosTag "
