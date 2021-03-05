@@ -11,10 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 // voltha-2.x e2e tests
 // uses bbsim to simulate OLT/ONUs
-
 // NOTE we are importing the library even if it's global so that it's
 // easier to change the keywords during a replay
 library identifier: 'cord-jenkins-libraries@master',
@@ -22,22 +20,15 @@ library identifier: 'cord-jenkins-libraries@master',
       $class: 'GitSCMSource',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
-
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
-
       // TODO: ONOS custom image handling
       // if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
       //   IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
       //   extraHelmFlags = extraHelmFlags + "--set onos-classic.images.onos.repository=\$onosRepo,onos-classic.images.onos.tag=\$onosTag "
       // fi
-
       def localCharts = false
-      if (gerritProject == "voltha-helm-charts") {
-        localCharts = true
-      }
-
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
       volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
@@ -55,45 +46,28 @@ def test_software_upgrade(name) {
   }
   stage('Test - '+ name) {
       sh """
-      ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name}"
-      mkdir -p \$ROBOT_LOGS_DIR
-
-      if ('${name}' == 'onos-app-upgrade') {
-        def onosAppsUnderTest = ""
-
-        def testAaa = false
-        if ('${aaaVer.trim()}' != '' && '${aaaOarUrl.trim()}' != '') {
-          testAaa = true
-          onosAppsUnderTest = onosAppsUnderTest + "org.opencord.aaa," + ${aaaVer.trim()} + "," + ${aaaOarUrl.trim()}
-        }
-
-        // TODO: Add other ONOS Apps
-
-        export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v onos_apps_under_test:${onosAppsUnderTest} -e PowerSwitch"
-
-        export TARGET=onos-app-upgrade-test
-      } else {
-        def volthaCompsUnderTest = ""
-
-        def testAdapterOpenOlt = false
-        if ('${adapterOpenOltImage.trim()}' != '') {
-          testAdapterOpenOlt = true
-          volthaCompsUnderTest = volthaCompsUnderTest + "adapter-open-olt,adapter-open-olt," + ${adapterOpenOltImage.trim()}
-        }
-
-        // TODO: Add other Voltha Components
-
-        export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v voltha_comps_under_test:${volthaCompsUnderTest} -e PowerSwitch"
-
-        export TARGET=voltha-comp-upgrade-test
-      }
-
-      export VOLTCONFIG=$HOME/.volt/config
-      export KUBECONFIG=$HOME/.kube/config
-
-      # Run the specified tests
-      make -C $WORKSPACE/voltha-system-tests \$TARGET
-
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name}"
+        mkdir -p \$ROBOT_LOGS_DIR
+        if [[ ${name} == 'onos-app-upgrade' ]]; then
+          export ONOS_APPS_UNDER_TEST+=''
+          if [[ ${aaaVer.trim()} != '' && ${aaaOarUrl.trim()} != '' ]]; then
+            ONOS_APPS_UNDER_TEST+="org.opencord.aaa,${aaaVer.trim()},${aaaOarUrl.trim()}"
+          fi
+          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v onos_apps_under_test:\$ONOS_APPS_UNDER_TEST -e PowerSwitch"
+          export TARGET=onos-app-upgrade-test
+        fi
+        if [[ ${name} == 'voltha-component-upgrade' ]]; then
+          export VOLTHA_COMPS_UNDER_TEST+=''
+          if [[ ${adapterOpenOltImage.trim()} != '' ]]; then
+            VOLTHA_COMPS_UNDER_TEST+="adapter-open-olt,adapter-open-olt,${adapterOpenOltImage.trim()}"
+          fi
+          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v voltha_comps_under_test:\$VOLTHA_COMPS_UNDER_TEST -e PowerSwitch"
+          export TARGET=voltha-comp-upgrade-test
+        fi
+        export VOLTCONFIG=$HOME/.volt/config-minimal
+        export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
+        # Run the specified tests
+        make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
       // stop logging
       sh """
@@ -119,9 +93,7 @@ def test_software_upgrade(name) {
       helmTeardown(['infra', 'voltha'])
   }
 }
-
 pipeline {
-
   /* no label, executor is determined by JJB */
   agent {
     label "${params.buildNode}"
@@ -131,9 +103,8 @@ pipeline {
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-    KUBECONFIG="$HOME/.kube/kind-config-${clusterName}"
+    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
   }
-
   stages{
     stage('Download Code') {
       steps {
@@ -144,11 +115,6 @@ pipeline {
         ])
       }
     }
-    stage('Create K8s Cluster') {
-      steps {
-        createKubernetesCluster([nodes: 3])
-      }
-    }
     stage('Run Test') {
       steps {
         test_software_upgrade("onos-app-upgrade")
@@ -156,7 +122,6 @@ pipeline {
       }
     }
   }
-
   post {
     always {
       sh '''
