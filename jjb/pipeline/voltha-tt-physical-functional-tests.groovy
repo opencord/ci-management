@@ -66,6 +66,14 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
+        script {
+          sh(script:"""
+            if [ '${volthaSystemTestsChange}' != '' ] ; then
+              cd $WORKSPACE/voltha-system-tests;
+              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+            fi
+            """)
+        }
       }
     }
    stage('Clone cord-tester') {
@@ -178,6 +186,26 @@ pipeline {
         """
       }
     }
+
+    stage('Failure/Recovery Tests') {
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+        ROBOT_FILE="Voltha_TT_FailureScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/FailureScenarios"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        if ( ${powerSwitch} ); then
+             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+        else
+             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+        fi
+        make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
+        """
+      }
+    }
+
   }
   post {
     always {
