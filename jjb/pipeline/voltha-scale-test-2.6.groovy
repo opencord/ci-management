@@ -118,7 +118,7 @@ pipeline {
           userRemoteConfigs: [[
             url: "https://gerrit.opencord.org/kind-voltha",
           ]],
-          branches: [[ name: "master", ]],
+          branches: [[name: 'refs/tags/6.0.0']],
           extensions: [
             [$class: 'WipeWorkspace'],
             [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
