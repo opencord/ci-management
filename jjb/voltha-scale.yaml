@@ -192,7 +192,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
           onosImg: andreacampanella/voltha-onos:app-update-sadis
           # bbsimImg: matteoscandolo/bbsim:id-check
 
@@ -211,7 +210,6 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
           onosImg: andreacampanella/voltha-onos:app-update-sadis
           # bbsimImg: matteoscandolo/bbsim:id-check
 
@@ -232,7 +230,6 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
           onosImg: andreacampanella/voltha-onos:app-update-sadis
           # bbsimImg: matteoscandolo/bbsim:id-check
 
@@ -255,7 +252,6 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
           onosImg: andreacampanella/voltha-onos:app-update-sadis
 
       - 'voltha-scale-measurements':
@@ -276,7 +272,6 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
           onosImg: andreacampanella/voltha-onos:app-update-sadis
 
       - 'voltha-scale-measurements':
@@ -297,7 +292,6 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
-          rwCoreImg: matteoscandolo/voltha-rw-core:kafka-retry
           onosImg: andreacampanella/voltha-onos:app-update-sadis
 
       # voltha-2.6 Jobs
