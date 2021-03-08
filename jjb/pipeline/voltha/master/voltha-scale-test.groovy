@@ -238,7 +238,7 @@ pipeline {
               # ONOS custom image handling
               if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
                 IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
-                EXTRA_HELM_FLAGS+="--set onos-classic.images.onos.repository=\$onosRepo,onos-classic.images.onos.tag=\$onosTag "
+                EXTRA_HELM_FLAGS+="--set onos-classic.image.repository=\$onosRepo,onos-classic.image.tag=\$onosTag "
               fi
 
               # set BBSim parameters
@@ -278,7 +278,7 @@ pipeline {
               fi
 
               if [ '\$GERRIT_PROJECT' == 'voltha-onos' ]; then
-                EXTRA_HELM_FLAGS+="--set onos-classic.images.onos.repository=${dockerRegistry}/voltha/voltha-onos,onos-classic.images.onos.tag=voltha-scale "
+                EXTRA_HELM_FLAGS+="--set onos-classic.image.repository=${dockerRegistry}/voltha/voltha-onos,onos-classic.image.tag=voltha-scale "
               fi
 
               if [ '\$GERRIT_PROJECT' == 'bbsim' ]; then
@@ -320,12 +320,14 @@ pipeline {
             sh """
               set +x
 
-              echo -ne "\nWaiting for VOLTHA to start..."
+              echo -ne "\nWaiting for VOLTHA and ONOS to start..."
               voltha=\$(kubectl get pods --all-namespaces -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
-              while [[ \$voltha != 0 ]]; do
+              onos=\$(kubectl get pods --all-namespaces -l app=onos-classic --no-headers | grep "0/" | wc -l)
+              while [[ \$voltha != 0 ]] && [[ \$onos != 0 ]]; do
                 sleep 5
                 echo -ne "."
                 voltha=\$(kubectl get pods --all-namespaces -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
+                onos=\$(kubectl get pods --all-namespaces -l app=onos-classic --no-headers | grep "0/" | wc -l)
               done
             """
             start_port_forward(olts)
