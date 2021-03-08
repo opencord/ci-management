@@ -323,12 +323,15 @@ pipeline {
               echo -ne "\nWaiting for VOLTHA and ONOS to start..."
               voltha=\$(kubectl get pods --all-namespaces -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
               onos=\$(kubectl get pods --all-namespaces -l app=onos-classic --no-headers | grep "0/" | wc -l)
-              while [[ \$voltha != 0 ]] && [[ \$onos != 0 ]]; do
+              while [[ \$voltha != 0 || \$onos != 0 ]]; do
                 sleep 5
                 echo -ne "."
                 voltha=\$(kubectl get pods --all-namespaces -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
                 onos=\$(kubectl get pods --all-namespaces -l app=onos-classic --no-headers | grep "0/" | wc -l)
               done
+              echo -ne "\nVOLTHA and ONOS pods ready\n"
+              kubectl get pods --all-namespaces -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l
+              kubectl get pods --all-namespaces -l app=onos-classic --no-headers | grep "0/" | wc -l
             """
             start_port_forward(olts)
           }
@@ -362,8 +365,8 @@ pipeline {
 
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager accumulatorMaxIdleMillis 500
 
-          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg log:set ${logLevel} org.onosproject
-          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg log:set ${logLevel} org.opencord
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set ${logLevel} org.onosproject
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set ${logLevel} org.opencord
 
 
           kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log ${logLevel.toLowerCase()} false
