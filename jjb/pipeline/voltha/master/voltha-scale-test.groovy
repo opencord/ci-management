@@ -238,7 +238,7 @@ pipeline {
               # ONOS custom image handling
               if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
                 IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
-                EXTRA_HELM_FLAGS+="--set onos-classic.images.onos.repository=\$onosRepo,onos-classic.images.onos.tag=\$onosTag "
+                EXTRA_HELM_FLAGS+="--set onos-classic.image.repository=\$onosRepo,onos-classic.image.tag=\$onosTag "
               fi
 
               # set BBSim parameters
