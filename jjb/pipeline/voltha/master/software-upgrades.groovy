@@ -51,7 +51,25 @@ def test_software_upgrade(name) {
         if [[ ${name} == 'onos-app-upgrade' ]]; then
           export ONOS_APPS_UNDER_TEST+=''
           if [[ ${aaaVer.trim()} != '' && ${aaaOarUrl.trim()} != '' ]]; then
-            ONOS_APPS_UNDER_TEST+="org.opencord.aaa,${aaaVer.trim()},${aaaOarUrl.trim()}"
+            ONOS_APPS_UNDER_TEST+="org.opencord.aaa,${aaaVer.trim()},${aaaOarUrl.trim()}*"
+          fi
+          if [[ ${oltVer.trim()} != '' && ${oltOarUrl.trim()} != '' ]]; then
+            ONOS_APPS_UNDER_TEST+="org.opencord.olt,${oltVer.trim()},${oltOarUrl.trim()}*"
+          fi
+          if [[ ${dhcpl2relayVer.trim()} != '' && ${dhcpl2relayOarUrl.trim()} != '' ]]; then
+            ONOS_APPS_UNDER_TEST+="org.opencord.dhcpl2relay,${dhcpl2relayVer.trim()},${dhcpl2relayOarUrl.trim()}*"
+          fi
+          if [[ ${igmpproxyVer.trim()} != '' && ${igmpproxyOarUrl.trim()} != '' ]]; then
+            ONOS_APPS_UNDER_TEST+="org.opencord.igmpproxy,${igmpproxyVer.trim()},${igmpproxyOarUrl.trim()}*"
+          fi
+          if [[ ${sadisVer.trim()} != '' && ${sadisOarUrl.trim()} != '' ]]; then
+            ONOS_APPS_UNDER_TEST+="org.opencord.sadis,${sadisVer.trim()},${sadisOarUrl.trim()}*"
+          fi
+          if [[ ${mcastVer.trim()} != '' && ${mcastOarUrl.trim()} != '' ]]; then
+            ONOS_APPS_UNDER_TEST+="org.opencord.mcast,${mcastVer.trim()},${mcastOarUrl.trim()}*"
+          fi
+          if [[ ${kafkaVer.trim()} != '' && ${kafkaOarUrl.trim()} != '' ]]; then
+            ONOS_APPS_UNDER_TEST+="org.opencord.kafka,${kafkaVer.trim()},${kafkaOarUrl.trim()}*"
           fi
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v onos_apps_under_test:\$ONOS_APPS_UNDER_TEST -e PowerSwitch"
           export TARGET=onos-app-upgrade-test
@@ -59,7 +77,16 @@ def test_software_upgrade(name) {
         if [[ ${name} == 'voltha-component-upgrade' ]]; then
           export VOLTHA_COMPS_UNDER_TEST+=''
           if [[ ${adapterOpenOltImage.trim()} != '' ]]; then
-            VOLTHA_COMPS_UNDER_TEST+="adapter-open-olt,adapter-open-olt,${adapterOpenOltImage.trim()}"
+            VOLTHA_COMPS_UNDER_TEST+="adapter-open-olt,adapter-open-olt,${adapterOpenOltImage.trim()}*"
+          fi
+          if [[ ${adapterOpenOnuImage.trim()} != '' ]]; then
+            VOLTHA_COMPS_UNDER_TEST+="adapter-open-onu,adapter-open-onu,${adapterOpenOnuImage.trim()}*"
+          fi
+          if [[ ${rwCoreImage.trim()} != '' ]]; then
+            VOLTHA_COMPS_UNDER_TEST+="rw-core,voltha,${rwCoreImage.trim()}*"
+          fi
+          if [[ ${ofAgentImage.trim()} != '' ]]; then
+            VOLTHA_COMPS_UNDER_TEST+="ofagent,ofagent,${ofAgentImage.trim()}*"
           fi
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v voltha_comps_under_test:\$VOLTHA_COMPS_UNDER_TEST -e PowerSwitch"
           export TARGET=voltha-comp-upgrade-test

@@ -13,7 +13,22 @@
           code-branch: 'master'
           aaa-version: '2.3.0.SNAPSHOT'
           aaa-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/aaa-app/2.3.0-SNAPSHOT/aaa-app-2.3.0-20201210.223737-1.oar'
+          olt-version: ''
+          olt-oar-url: ''
+          dhcpl2relay-version: ''
+          dhcpl2relay-oar-url: ''
+          igmpproxy-version: ''
+          igmpproxy-oar-url: ''
+          sadis-version: ''
+          sadis-oar-url: ''
+          mcast-version: ''
+          mcast-oar-url: ''
+          kafka-version: ''
+          kafka-oar-url: ''
           adapter-open-olt-image: 'voltha/voltha-openolt-adapter:3.1.3'
+          adapter-open-onu-image: 'voltha/voltha-openonu-adapter-go:1.2.4'
+          rw-core-image: 'voltha/voltha-rw-core:2.6.3'
+          ofagent-image: 'voltha/voltha-ofagent-go:1.5.1'
           time-trigger: "H H/23 * * *"
 
 - job-template:
@@ -85,14 +100,85 @@
           default: '{aaa-oar-url}'
           description: 'ONOS AAA App OAR File Url'
 
-      # TODO: Add other ONOS Apps
+      - string:
+          name: oltVer
+          default: '{olt-version}'
+          description: 'ONOS OLT App Version to Test Upgrade'
+
+      - string:
+          name: oltOarUrl
+          default: '{olt-oar-url}'
+          description: 'ONOS OLT App OAR File Url'
+
+      - string:
+          name: dhcpl2relayVer
+          default: '{dhcpl2relay-version}'
+          description: 'ONOS DHCP L2 Relay App Version to Test Upgrade'
+
+      - string:
+          name: dhcpl2relayOarUrl
+          default: '{dhcpl2relay-oar-url}'
+          description: 'ONOS DHCP L2 Relay App OAR File Url'
+
+      - string:
+          name: igmpproxyVer
+          default: '{igmpproxy-version}'
+          description: 'ONOS Igmp Proxy App Version to Test Upgrade'
+
+      - string:
+          name: igmpproxyOarUrl
+          default: '{igmpproxy-oar-url}'
+          description: 'ONOS Igmp Proxy App OAR File Url'
+
+      - string:
+          name: sadisVer
+          default: '{sadis-version}'
+          description: 'ONOS Sadis App Version to Test Upgrade'
+
+      - string:
+          name: sadisOarUrl
+          default: '{sadis-oar-url}'
+          description: 'ONOS Sadis App OAR File Url'
+
+      - string:
+          name: mcastVer
+          default: '{mcast-version}'
+          description: 'ONOS MCast App Version to Test Upgrade'
+
+      - string:
+          name: mcastOarUrl
+          default: '{mcast-oar-url}'
+          description: 'ONOS MCast App OAR File Url'
+
+      - string:
+          name: kafkaVer
+          default: '{kafka-version}'
+          description: 'ONOS Kafka App Version to Test Upgrade'
+
+      - string:
+          name: kafkaOarUrl
+          default: '{kafka-oar-url}'
+          description: 'ONOS Kafka App OAR File Url'
 
       - string:
           name: adapterOpenOltImage
           default: '{adapter-open-olt-image}'
           description: 'Voltha Adapter Open OLT Component Image'
 
-      # TODO: Add other Voltha Components
+      - string:
+          name: adapterOpenOnuImage
+          default: '{adapter-open-onu-image}'
+          description: 'Voltha Adapter Open ONU Component Image'
+
+      - string:
+          name: rwCoreImage
+          default: '{rw-core-image}'
+          description: 'Voltha RW Core Component Image'
+
+      - string:
+          name: ofAgentImage
+          default: '{ofagent-image}'
+          description: 'Voltha Ofagent Component Image'
 
     project-type: pipeline
     concurrent: true
