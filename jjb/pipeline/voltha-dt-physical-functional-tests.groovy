@@ -317,6 +317,14 @@ pipeline {
       gzip *-combined.log || true
       rm *-combined.log || true
 
+      # store information on running charts
+      helm ls > $WORKSPACE/helm-list.txt || true
+
+      # store information on the running pods
+      kubectl get pods -o wide > $WORKSPACE/pods.txt || true
+      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-images.txt || true
+      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-imagesId.txt || true
+
       # collect ETCD cluster logs
       mkdir -p $WORKSPACE/etcd
       printf '%s\n' $(kubectl get pods -l app=etcd -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I% bash -c "kubectl logs % > $WORKSPACE/etcd/%.log"
