@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0cb13e42_6c72b642",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 371,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-03-09T09:53:18Z",
+      "side": 1,
+      "message": "Shouldn\u0027t this and below ones be ${loglevel} like above.",
+      "range": {
+        "startLine": 371,
+        "startChar": 117,
+        "endLine": 371,
+        "endChar": 122
+      },
+      "revId": "7ba63afe906103cd8691dc767fd4259d9c813557",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
