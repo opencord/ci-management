@@ -256,7 +256,6 @@ pipeline {
     }
 
     stage('Reconcile DT workflow') {
-      when { beforeAgent true; expression { return "${olts}" == "1" } }
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileDT"
       }
@@ -305,7 +304,6 @@ pipeline {
     }
 
     stage('Reconcile ATT workflow') {
-      when { beforeAgent true; expression { return "${olts}" == "1" } }
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileATT"
       }
@@ -360,7 +358,6 @@ pipeline {
     }
 
     stage('Reconcile TT workflow') {
-      when { beforeAgent true; expression { return "${olts}" == "1" } }
       environment {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileTT"
       }
