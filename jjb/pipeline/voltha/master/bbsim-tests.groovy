@@ -98,13 +98,20 @@ def test_workflow(name) {
         ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
       """
       // collect pod details
-      sh """
-      kubectl get pods --all-namespaces -o wide > \$WORKSPACE/${name}/pods.txt || true
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee \$WORKSPACE/att/pod-images.txt || true
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee \$WORKSPACE/att/pod-imagesId.txt || true
-      """
+      get_pods_info("$WORKSPACE/${name}")
       helmTeardown(['infra', 'voltha'])
   }
+}
+
+def get_pods_info(dest) {
+  // collect pod details, this is here in case of failure
+  sh """
+  mkdir -p ${dest}
+  kubectl get pods --all-namespaces -o wide > ${dest}/pods.txt || true
+  kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
+  kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee ${dest}/pod-imagesId.txt || true
+  kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/pods-describe.txt
+  """
 }
 
 pipeline {
@@ -174,6 +181,12 @@ pipeline {
   }
 
   post {
+    aborted {
+      get_pods_info("$WORKSPACE/failed")
+    }
+    failure {
+      get_pods_info("$WORKSPACE/failed")
+    }
     always {
       sh '''
       gzip $WORKSPACE/att/onos-voltha-combined.log || true
@@ -189,7 +202,7 @@ pipeline {
          passThreshold: 100,
          reportFileName: 'RobotLogs/*/report*.html',
          unstableThreshold: 0]);
-      archiveArtifacts artifacts: '*.log,**/*.log,**/*.gz,*.gz'
+      archiveArtifacts artifacts: '*.log,**/*.log,**/*.gz,*.gz,*.txt,**/*.txt'
     }
   }
 }
