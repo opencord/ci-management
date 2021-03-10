@@ -355,7 +355,7 @@ pipeline {
         reportFileName: '**/report*.html',
         unstableThreshold: 0
         ]);
-      archiveArtifacts artifacts: '*.log,*.gz,*.tgz,etcd/*.log'
+      archiveArtifacts artifacts: '*.log,*.gz,*.tgz,etcd/*.log,*.txt'
     }
     unstable {
       step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
