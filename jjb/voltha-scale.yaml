@@ -193,7 +193,7 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           onosImg: andreacampanella/voltha-onos:app-update-sadis
-          # bbsimImg: matteoscandolo/bbsim:id-check
+          bbsimImg: matteoscandolo/bbsim:id-check
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -211,7 +211,7 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           onosImg: andreacampanella/voltha-onos:app-update-sadis
-          # bbsimImg: matteoscandolo/bbsim:id-check
+          bbsimImg: matteoscandolo/bbsim:id-check
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -231,7 +231,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           onosImg: andreacampanella/voltha-onos:app-update-sadis
-          # bbsimImg: matteoscandolo/bbsim:id-check
+          bbsimImg: matteoscandolo/bbsim:id-check
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
