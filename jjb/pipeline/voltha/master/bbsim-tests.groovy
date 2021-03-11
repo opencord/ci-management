@@ -111,6 +111,7 @@ def get_pods_info(dest) {
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee ${dest}/pod-imagesId.txt || true
   kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/pods-describe.txt
+  helm ls --all-namespaces > ${dest}/helm-charts.txt
   """
 }
 
@@ -121,7 +122,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 30, unit: 'MINUTES')
+    timeout(time: 35, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
@@ -173,9 +174,11 @@ pipeline {
     }
     stage('Run Test') {
       steps {
-        test_workflow("att")
-        test_workflow("dt")
-        test_workflow("tt")
+        timeout(time: 30, unit: 'MINUTES') {
+          test_workflow("att")
+          test_workflow("dt")
+          test_workflow("tt")
+        }
       }
     }
   }
