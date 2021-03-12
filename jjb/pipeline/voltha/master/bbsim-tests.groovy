@@ -23,8 +23,43 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
-def customImageFlags(image) {
-  return "--set images.${image}.tag=citest,images.${image}.pullPolicy=Never "
+// TODO move this in a keyword so it can be shared across pipelines
+def customImageFlags(project) {
+  def chart = "unknown"
+  def image = "unknown"
+  switch(project) {
+    case "ofagent-go":
+      chart = "voltha"
+      image = "ofagent"
+    break
+    case "voltha-go":
+      chart = "voltha"
+      image = "rw_core"
+    break
+    case "voltha-openonu-adapter-go":
+      chart = "voltha-adapter-openonu"
+      image = "adapter_open_onu_go"
+    break
+    // TODO remove after 2.7
+    case "voltha-openonu-adapter":
+      chart = "voltha-adapter-openonu"
+      image = "adapter_open_onu"
+    break
+    // TODO end
+    case "voltha-openolt-adapter":
+      chart = "voltha-adapter-openolt"
+      image = "adapter_open_olt"
+    break
+    case "bbsim":
+      // BBSIM has a different format that voltha, return directly
+      return "images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
+    break
+    default:
+      throw new Exception("Don't know how to customize helm flags for custom image on project ${project}")
+    break
+  }
+
+  return "--set ${chart}.images.${image}.tag=citest,${chart}.images.${image}.pullPolicy=Never "
 }
 
 def test_workflow(name) {
