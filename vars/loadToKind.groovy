@@ -28,7 +28,7 @@ def call(Map config) {
     println "Loading image ${image} on Kind cluster ${cfg.name}"
 
     sh """
-      kind load docker-image ${image}:citest --name ${cfg.name} --nodes ${cfg.name}-worker,${cfg.name}-worker2
+      kind load docker-image ${image}:citest --name ${cfg.name} --nodes ${cfg.name}-control-plane,${cfg.name}-worker,${cfg.name}-worker2
     """
   }
 }
