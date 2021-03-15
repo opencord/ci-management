@@ -221,16 +221,16 @@ pipeline {
     aborted {
       get_pods_info("$WORKSPACE/failed")
       sh """
-      kubectl logs app.kubernetes.io/part-of=voltha | tee $WORKSPACE/failed/voltha.log
+      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.log
       """
-      archiveArtifacts artifacts: '*.log,**/*.log'
+      archiveArtifacts artifacts: '**/*.log,**/*.txt'
     }
     failure {
       get_pods_info("$WORKSPACE/failed")
       sh """
-      kubectl logs app.kubernetes.io/part-of=voltha | tee $WORKSPACE/failed/voltha.logs
+      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.logs
       """
-      archiveArtifacts artifacts: '*.log,**/*.log'
+      archiveArtifacts artifacts: '**/*.log,**/*.txt'
     }
     always {
       sh '''
