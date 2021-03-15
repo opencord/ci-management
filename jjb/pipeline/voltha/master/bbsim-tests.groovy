@@ -52,10 +52,9 @@ def customImageFlags(project) {
     break
     case "bbsim":
       // BBSIM has a different format that voltha, return directly
-      return "images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
+      return "--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
     break
     default:
-      throw new Exception("Don't know how to customize helm flags for custom image on project ${project}")
     break
   }
 
