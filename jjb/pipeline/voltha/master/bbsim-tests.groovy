@@ -141,7 +141,7 @@ def get_pods_info(dest) {
   // collect pod details, this is here in case of failure
   sh """
   mkdir -p ${dest}
-  kubectl get pods --all-namespaces -o wide > ${dest}/pods.txt || true
+  kubectl get pods --all-namespaces -o wide | tee ${dest}/pods.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee ${dest}/pod-imagesId.txt || true
   kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/pods-describe.txt
