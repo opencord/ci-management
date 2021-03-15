@@ -55,7 +55,6 @@ def customImageFlags(project) {
       return "images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
     break
     default:
-      throw new Exception("Don't know how to customize helm flags for custom image on project ${project}")
     break
   }
 
