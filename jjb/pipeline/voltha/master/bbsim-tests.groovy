@@ -145,7 +145,7 @@ def get_pods_info(dest) {
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee ${dest}/pod-imagesId.txt || true
   kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/pods-describe.txt
-  helm ls --all-namespaces > ${dest}/helm-charts.txt
+  helm ls --all-namespaces | tee ${dest}/helm-charts.txt
   """
 }
 
@@ -220,9 +220,17 @@ pipeline {
   post {
     aborted {
       get_pods_info("$WORKSPACE/failed")
+      sh """
+      kubectl logs app.kubernetes.io/part-of=voltha | tee $WORKSPACE/failed/voltha.log
+      """
+      archiveArtifacts artifacts: '*.log,**/*.log'
     }
     failure {
       get_pods_info("$WORKSPACE/failed")
+      sh """
+      kubectl logs app.kubernetes.io/part-of=voltha | tee $WORKSPACE/failed/voltha.logs
+      """
+      archiveArtifacts artifacts: '*.log,**/*.log'
     }
     always {
       sh '''
