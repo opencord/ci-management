@@ -353,6 +353,7 @@ pipeline {
     stage('Configuration') {
       steps {
         script {
+          def tech_prof_directory = "XGS-PON"
           sh returnStdout: false, script: """
           #Setting link discovery
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${withLLDP}
@@ -381,6 +382,16 @@ pipeline {
 
           if [ ${withFlows} = false ]; then
             sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.olt
+          fi
+
+          if [ '${workflow}' = 'tt' ]; then
+            etcd_container=\$(kubectl get pods --all-namespaces | grep etcd | awk 'NR==1{print \$2}')
+            kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-HSIA.json \$etcd_container:/tmp/hsia.json
+            put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64')
+            kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-VoIP.json \$etcd_container:/tmp/voip.json
+            put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/voip.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/65')
+            kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST.json \$etcd_container:/tmp/mcast.json
+            put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/66')
           fi
 
           if [ ${withPcap} = true ] ; then
