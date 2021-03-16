@@ -258,7 +258,7 @@ pipeline {
       helm ls > $WORKSPACE/helm-list.txt || true
 
       # store information on the running pods
-      kubectl get pods -o wide > $WORKSPACE/pods.txt || true
+      kubectl get pods --all-namespaces -o wide > $WORKSPACE/pods.txt || true
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-images.txt || true
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-imagesId.txt || true
 
