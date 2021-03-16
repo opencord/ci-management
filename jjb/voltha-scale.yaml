@@ -96,8 +96,8 @@
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
           withMonitoring: true
-          olts: 2
-          pons: 16
+          olts: 1
+          pons: 1
           onus: 32
           withFlows: true
           provisionSubscribers: true
@@ -106,7 +106,8 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: false
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:writeThroughCache
+          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:id-validation
+          bbsimImg: matteoscandolo/bbsim:id-check
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental-multi-stack'
