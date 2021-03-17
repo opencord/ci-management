@@ -90,8 +90,7 @@
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
-          build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha-scale-test-etcd-kafka-bitnami.groovy'
+          build-node: 'voltha-scale-1'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
