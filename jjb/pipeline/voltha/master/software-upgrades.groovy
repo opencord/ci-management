@@ -23,6 +23,9 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
+      if ("${name}" == "onos-app-upgrade") {
+          extraHelmFlags = extraHelmFlags + "--set global.image_tag=master "
+      }
       // TODO: ONOS custom image handling
       // if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
       //   IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
