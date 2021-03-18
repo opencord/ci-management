@@ -22,15 +22,26 @@ library identifier: 'cord-jenkins-libraries@master',
 ])
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
-      def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
+      def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
       if ("${name}" == "onos-app-upgrade") {
           extraHelmFlags = extraHelmFlags + "--set global.image_tag=master "
       }
-      // TODO: ONOS custom image handling
-      // if [ '${onosImg.trim()}' != '' ] && [ '\$GERRIT_PROJECT' != 'voltha-onos' ]; then
-      //   IFS=: read -r onosRepo onosTag <<< '${onosImg.trim()}'
-      //   extraHelmFlags = extraHelmFlags + "--set onos-classic.images.onos.repository=\$onosRepo,onos-classic.images.onos.tag=\$onosTag "
-      // fi
+      extraHelmFlags = extraHelmFlags + """ --set voltha.services.controller[0].service=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc \
+      --set voltha.services.controller[0].port=6653 \
+      --set voltha.services.controller[0].address=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc:6653 \
+      --set voltha.services.controller[1].service=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc \
+      --set voltha.services.controller[1].port=6653 \
+      --set voltha.services.controller[1].address=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc:6653 \
+      --set voltha.services.controller[2].service=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc \
+      --set voltha.services.controller[2].port=6653 \
+      --set voltha.services.controller[2].address=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc:6653 """
+      //ONOS custom image handling
+      if ( onosImg.trim() != '' ) {
+         String[] split;
+         onosImg = onosImg.trim()
+         split = onosImg.split(':')
+        extraHelmFlags = extraHelmFlags + "--set onos-classic.images.onos.repository=" + split[0] +",onos-classic.images.onos.tag=" + split[1] + " "
+      }
       def localCharts = false
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
@@ -129,6 +140,10 @@ def get_pods_info(dest) {
   kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/pods-describe.txt
   helm ls --all-namespaces > ${dest}/helm-charts.txt
   """
+  sh '''
+  # copy the ONOS logs directly from the container to avoid the color codes
+  printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log ${dest}/#.log" || true
+  '''
 }
 pipeline {
   /* no label, executor is determined by JJB */
