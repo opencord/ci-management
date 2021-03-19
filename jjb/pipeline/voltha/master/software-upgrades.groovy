@@ -57,6 +57,9 @@ def test_software_upgrade(name) {
       _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181&
       _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555&
       """
+      sh """
+      sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord
+      """
   }
   stage('Test - '+ name) {
       sh """
@@ -133,6 +136,7 @@ def test_software_upgrade(name) {
 def get_pods_info(dest) {
   // collect pod details, this is here in case of failure
   sh """
+  rm -rf ${dest} || true
   mkdir -p ${dest}
   kubectl get pods --all-namespaces -o wide > ${dest}/pods.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
@@ -142,7 +146,7 @@ def get_pods_info(dest) {
   """
   sh '''
   # copy the ONOS logs directly from the container to avoid the color codes
-  printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log ${dest}/#.log" || true
+  printf '%s\\n' $(kubectl get pods -n infra -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c 'kubectl -n infra cp #:apache-karaf-4.2.9/data/log/karaf.log ''' + dest + '''/#.log' || true
   '''
 }
 pipeline {
@@ -156,6 +160,7 @@ pipeline {
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
+    SSHPASS="karaf"
   }
   stages{
     stage('Download Code') {

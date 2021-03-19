@@ -9,6 +9,7 @@
       - 'software-upgrades-test':
           name: 'periodic-software-upgrade-test-bbsim'
           pipeline-script: 'voltha/master/software-upgrades.groovy'
+          onosImg: 'andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix'
           build-node: 'qct-pod4-node2'
           code-branch: 'master'
           aaa-version: '2.3.0.SNAPSHOT'
