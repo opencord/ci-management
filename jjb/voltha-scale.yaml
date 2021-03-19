@@ -96,7 +96,7 @@
           time-trigger: "H 0 29 2 *"
           withMonitoring: true
           olts: 1
-          pons: 1
+          pons: 16
           onus: 32
           withFlows: true
           provisionSubscribers: true
@@ -106,6 +106,7 @@
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           withPcap: false
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:id-validation
+          openonuAdapterGoImg: matteoscandolo/voltha-openonu-adapter-go:id-validation
           bbsimImg: matteoscandolo/bbsim:id-check
 
       - 'voltha-scale-measurements':
@@ -193,7 +194,9 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
           onosImg: andreacampanella/voltha-onos:olt-mac-integration
-#          bbsimImg: matteoscandolo/bbsim:id-check
+          openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:id-validation
+          openonuAdapterGoImg: matteoscandolo/voltha-openonu-adapter-go:id-validation
+          bbsimImg: matteoscandolo/bbsim:id-check
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
