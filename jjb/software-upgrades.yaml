@@ -25,10 +25,10 @@
           mcast-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/mcast-app/2.2.0-SNAPSHOT/mcast-app-2.2.0-20210311.091251-4.oar'
           kafka-version: '2.6.0.SNAPSHOT'
           kafka-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/kafka/2.6.0-SNAPSHOT/kafka-2.6.0-20210311.093145-2.oar'
-          adapter-open-olt-image: 'voltha/voltha-openolt-adapter:3.1.3'
+          adapter-open-olt-image: 'voltha/voltha-openolt-adapter:3.1.5'
           adapter-open-onu-image: 'voltha/voltha-openonu-adapter-go:1.2.6'
           rw-core-image: 'voltha/voltha-rw-core:2.6.3'
-          ofagent-image: 'voltha/voltha-ofagent-go:1.5.1'
+          ofagent-image: 'voltha/voltha-ofagent-go:1.5.2'
           time-trigger: "H H/23 * * *"
 
 - job-template:
