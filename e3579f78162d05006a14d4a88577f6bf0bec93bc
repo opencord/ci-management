@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "88aa369e_66f56866",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-22T22:58:23Z",
+      "side": 1,
+      "message": "Do we need to check against `-dev` specifically?\n\nCould this be modified to require consecutive release versions as well (ie, so you wouldn\u0027t skip from 1.0.0 to 1.0.2 ?)",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 117,
+        "endChar": 39
+      },
+      "revId": "e3579f78162d05006a14d4a88577f6bf0bec93bc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b2d20665_0319bede",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 3
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-22T22:58:23Z",
+      "side": 1,
+      "message": "If there\u0027s very early code that hasn\u0027t made it to an 1.0.0 version (example: 0.0.1-dev), then MAJOR and MINOR would be 0, and new_major would be `-1`, which I think would break this check?",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 123,
+        "endChar": 33
+      },
+      "revId": "e3579f78162d05006a14d4a88577f6bf0bec93bc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
