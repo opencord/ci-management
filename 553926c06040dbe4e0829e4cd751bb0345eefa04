@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "16e7a599_5028ac3a",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-22T21:49:39Z",
+      "side": 1,
+      "message": "This looks like it\u0027s BSD 2-clause, so should be fine to include",
+      "range": {
+        "startLine": 96,
+        "startChar": 7,
+        "endLine": 96,
+        "endChar": 70
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a6b0b626_4e10a71b",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-22T21:49:39Z",
+      "side": 1,
+      "message": "Run this once and keep the output in a variable.  Also, would need to remove the `v` prefix that golang requires on some tags.",
+      "range": {
+        "startLine": 125,
+        "startChar": 26,
+        "endLine": 125,
+        "endChar": 36
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4bbe0e77_71e18d08",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-22T21:49:39Z",
+      "side": 1,
+      "message": "does not exist",
+      "range": {
+        "startLine": 159,
+        "startChar": 78,
+        "endLine": 159,
+        "endChar": 88
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ded3b73_b8a0601a",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-22T21:49:39Z",
+      "side": 1,
+      "message": "Set `$fail_validation` to 1 , and it will use that as an exit code.",
+      "range": {
+        "startLine": 160,
+        "startChar": 6,
+        "endLine": 160,
+        "endChar": 12
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
