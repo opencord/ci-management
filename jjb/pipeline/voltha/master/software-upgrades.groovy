@@ -40,7 +40,7 @@ def test_software_upgrade(name) {
          String[] split;
          onosImg = onosImg.trim()
          split = onosImg.split(':')
-        extraHelmFlags = extraHelmFlags + "--set onos-classic.images.onos.repository=" + split[0] +",onos-classic.images.onos.tag=" + split[1] + " "
+        extraHelmFlags = extraHelmFlags + "--set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
       }
       def localCharts = false
       // Currently only testing with ATT workflow
@@ -141,7 +141,8 @@ def get_pods_info(dest) {
   kubectl get pods --all-namespaces -o wide > ${dest}/pods.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee ${dest}/pod-imagesId.txt || true
-  kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/pods-describe.txt
+  kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/voltha-pods-describe.txt
+  kubectl describe pods -n infra -l app=onos-classic > ${dest}/onos-pods-describe.txt
   helm ls --all-namespaces > ${dest}/helm-charts.txt
   """
   sh '''
