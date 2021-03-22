@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "a8c7aa12_3cd58415",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-22T22:13:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "16e7a599_5028ac3a",
+      "range": {
+        "startLine": 96,
+        "startChar": 7,
+        "endLine": 96,
+        "endChar": 70
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a6b0b626_4e10a71b",
         "filename": "jjb/shell/tagcollisionreject.sh",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b9f7cd2a_c9e52f2b",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-22T22:13:48Z",
+      "side": 1,
+      "message": "semverParseInto strips out the \"v\"",
+      "parentUuid": "a6b0b626_4e10a71b",
+      "range": {
+        "startLine": 125,
+        "startChar": 26,
+        "endLine": 125,
+        "endChar": 36
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     },
     {
       "key": {
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "35116f05_608a1885",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 159,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-22T22:13:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4bbe0e77_71e18d08",
+      "range": {
+        "startLine": 159,
+        "startChar": 78,
+        "endLine": 159,
+        "endChar": 88
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ded3b73_b8a0601a",
         "filename": "jjb/shell/tagcollisionreject.sh",
         "patchSetId": 1
@@ -91,6 +163,30 @@
       "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56ba47cc_8f3a7233",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-22T22:13:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ded3b73_b8a0601a",
+      "range": {
+        "startLine": 160,
+        "startChar": 6,
+        "endLine": 160,
+        "endChar": 12
+      },
+      "revId": "553926c06040dbe4e0829e4cd751bb0345eefa04",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
