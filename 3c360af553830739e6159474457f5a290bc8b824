@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "227b3638_2747e5ef",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 720,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-03-23T15:01:39Z",
+      "side": 1,
+      "message": "please leave the Adtran job to 2.6",
+      "revId": "3c360af553830739e6159474457f5a290bc8b824",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
