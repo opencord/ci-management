@@ -283,10 +283,7 @@ pipeline {
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           export TARGET=reconcile-openonu-go-adapter-test-dt
-
-
-           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+           make -C $WORKSPACE/voltha-system-tests ${makeReconcileDtTestTarget} || true
 
            # stop logging
            P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-dt" | grep -v grep | awk '{print $1}')"
@@ -337,10 +334,7 @@ pipeline {
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           export TARGET=reconcile-openonu-go-adapter-test
-
-
-           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+           make -C $WORKSPACE/voltha-system-tests ${makeReconcileTestTarget} || true
 
            # stop logging
            P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-att" | grep -v grep | awk '{print $1}')"
@@ -385,9 +379,7 @@ pipeline {
            mkdir -p $ROBOT_LOGS_DIR
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           export TARGET=reconcile-openonu-go-adapter-test-tt
-
-           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+           make -C $WORKSPACE/voltha-system-tests ${makeReconcileTtTestTarget} || true
 
            # stop logging
            P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-tt" | grep -v grep | awk '{print $1}')"
