@@ -30,6 +30,11 @@
           adapter-open-onu-image: 'voltha/voltha-openonu-adapter-go:1.2.6'
           rw-core-image: 'voltha/voltha-rw-core:2.6.3'
           ofagent-image: 'voltha/voltha-ofagent-go:1.5.2'
+          onu-image-name: 'software-image.img'
+          onu-image-url: 'http://bbsim0:50074/images'
+          onu-image-version: 'v1.0.0'
+          onu-image-crc: '0'
+          onu-image-local-dir: '/tmp'
           time-trigger: "H H/23 * * *"
 
 - job-template:
@@ -180,6 +185,31 @@
           name: ofAgentImage
           default: '{ofagent-image}'
           description: 'Voltha Ofagent Component Image'
+
+      - string:
+          name: onuImageName
+          default: '{onu-image-name}'
+          description: 'Name of ONU Image to Upgrade'
+
+      - string:
+          name: onuImageUrl
+          default: '{onu-image-url}'
+          description: 'Url of ONU Image to Upgrade'
+
+      - string:
+          name: onuImageVersion
+          default: '{onu-image-version}'
+          description: 'Version of ONU Image to Upgrade'
+
+      - string:
+          name: onuImageCrc
+          default: '{onu-image-crc}'
+          description: 'CRC of ONU Image to Upgrade'
+
+      - string:
+          name: onuImageLocalDir
+          default: '{onu-image-local-dir}'
+          description: 'Local Dir of ONU Image to Upgrade'
 
     project-type: pipeline
     concurrent: true
