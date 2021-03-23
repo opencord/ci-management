@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "07acd21d_9bfe6107",
+        "filename": "jjb/software-upgrades.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-23T16:41:11Z",
+      "side": 1,
+      "message": "Should we add defaults for \"onuImageName\" etc?",
+      "range": {
+        "startLine": 46,
+        "startChar": 4,
+        "endLine": 46,
+        "endChar": 24
+      },
+      "revId": "520804de7653066d8230ef0e3c4dec5cbefac6b8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
