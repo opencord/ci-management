@@ -13,7 +13,7 @@
           build-node: 'qct-pod4-node2'
           code-branch: 'master'
           aaa-version: '2.3.0.SNAPSHOT'
-          aaa-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/aaa-app/2.3.0-SNAPSHOT/aaa-app-2.3.0-20210311.091026-2.oar'
+          aaa-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/aaa-app/2.3.0-SNAPSHOT/aaa-app-2.3.0-20210322.191830-3.oar'
           olt-version: '4.4.0.SNAPSHOT'
           olt-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/olt-app/4.4.0-SNAPSHOT/olt-app-4.4.0-20210319.122447-8.oar'
           dhcpl2relay-version: '2.4.0.SNAPSHOT'
