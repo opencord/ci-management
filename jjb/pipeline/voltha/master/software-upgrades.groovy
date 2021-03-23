@@ -109,6 +109,10 @@ def test_software_upgrade(name) {
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v voltha_comps_under_test:\$VOLTHA_COMPS_UNDER_TEST -e PowerSwitch"
           export TARGET=voltha-comp-upgrade-test
         fi
+        if [[ ${name} == 'onu-software-upgrade' ]]; then
+          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v onu_image_name:${onuImageName.trim()} -v onu_image_url:${onuImageUrl.trim()} -v onu_image_version:${onuImageVersion.trim()} -v onu_image_crc:${onuImageCrc.trim()} -v onu_image_local_dir:${onuImageLocalDir.trim()} -e PowerSwitch"
+          export TARGET=onu-upgrade-test
+        fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
         # Run the specified tests
@@ -157,7 +161,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 30, unit: 'MINUTES')
+    timeout(time: 40, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
@@ -174,10 +178,21 @@ pipeline {
         ])
       }
     }
+    stage('Cleanup') {
+      steps {
+        // remove port-forwarding
+        sh """
+          # remove orphaned port-forward from different namespaces
+          ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+        """
+        helmTeardown(['infra', 'voltha'])
+      }
+    }
     stage('Run Test') {
       steps {
         test_software_upgrade("onos-app-upgrade")
         test_software_upgrade("voltha-component-upgrade")
+        test_software_upgrade("onu-software-upgrade")
       }
     }
   }
@@ -192,6 +207,7 @@ pipeline {
       sh '''
       gzip $WORKSPACE/onos-app-upgrade/onos-voltha-combined.log || true
       gzip $WORKSPACE/voltha-component-upgrade/onos-voltha-combined.log || true
+      gzip $WORKSPACE/onu-software-upgrade/onos-voltha-combined.log || true
       '''
       step([$class: 'RobotPublisher',
          disableArchiveOutput: false,
