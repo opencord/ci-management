@@ -58,7 +58,7 @@ pipeline {
             url: "https://gerrit.opencord.org/voltha-system-tests",
             refspec: "${volthaSystemTestsChange}"
           ]],
-          branches: [[ name: "${branch}", ]],
+          branches: [[ name: "master", ]],
           extensions: [
             [$class: 'WipeWorkspace'],
             [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
