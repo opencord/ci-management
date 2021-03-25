@@ -22,6 +22,30 @@
       "revId": "7c6a1b9901f9b01415b4fd7c8f0227a15d1af0f5",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c357dc0_72e1a0af",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 601,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-03-25T15:32:18Z",
+      "side": 1,
+      "message": "Yes, we will remove them once 2.7 passes well.",
+      "parentUuid": "4105018e_9ed119e4",
+      "range": {
+        "startLine": 583,
+        "startChar": 0,
+        "endLine": 601,
+        "endChar": 18
+      },
+      "revId": "7c6a1b9901f9b01415b4fd7c8f0227a15d1af0f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
