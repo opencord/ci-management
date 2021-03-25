@@ -188,6 +188,21 @@ pipeline {
         helmTeardown(['infra', 'voltha'])
       }
     }
+    stage('Install latest voltctl') {
+      steps {
+        sh """
+          # install voltctl
+          HOSTOS="\$(uname -s | tr "[:upper:]" "[:lower:"])"
+          HOSTARCH="\$(uname -m | tr "[:upper:]" "[:lower:"])"
+          if [ "\$HOSTARCH" == "x86_64" ]; then
+              HOSTARCH="amd64"
+          fi
+          VC_VERSION="\$(curl --fail -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')"
+          curl -Lo $WORKSPACE/bin/voltctl https://github.com/opencord/voltctl/releases/download/v\$VC_VERSION/voltctl-\$VC_VERSION-\$HOSTOS-\$HOSTARCH
+          chmod +x $WORKSPACE/bin/voltctl
+        """
+      }
+    }
     stage('Run Test') {
       steps {
         test_software_upgrade("onos-app-upgrade")
