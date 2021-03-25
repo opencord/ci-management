@@ -189,8 +189,9 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-#          onosImg: andreacampanella/voltha-onos:olt-mac-integration
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true'
+          onosImg: registry.menlo.onlab.us/voltha-dev/voltha-onos:default-tp
+          volthaHelmChartsChange: refs/changes/29/23729/3
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
