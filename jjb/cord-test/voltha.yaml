@@ -584,6 +584,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
+          disable-job: true
           release: '2.6'
           branch: 'voltha-2.6'
           name-extension: '_DT'
@@ -604,8 +605,43 @@
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
+          disable-job: true
           release: '2.6'
           branch: 'voltha-2.6'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
+      # Berlin pod with olt/onu -  voltha-2.7 timer based job , two OLTs
+      - 'build_voltha_pod_release_timer':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-multi-olt'
+          release: '2.7'
+          branch: 'voltha-2.7'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          num-of-openonu: '1'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          disable-job: true
+          profile: '1T8GEM'
+          # Update this value accordingly once the job is enabled
+          time: ''
+
+
+      # Berlin POD test job -  voltha-2.7 versions: two OLTs
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-multi-olt'
+          disable-job: true
+          release: '2.7'
+          branch: 'voltha-2.7'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -617,6 +653,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
+          disable-job: true
           release: '2.6'
           branch: 'voltha-2.6'
           num-of-openonu: '1'
@@ -635,8 +672,38 @@
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod'
+          disable-job: true
           release: '2.6'
           branch: 'voltha-2.6'
+          test-repo: 'voltha-system-tests'
+          profile: 'Default'
+          power-switch: True
+
+
+     # Berlin pod with olt/onu - voltha-2.7 Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod'
+          release: '2.7'
+          branch: 'voltha-2.7'
+          num-of-openonu: '1'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          test-repo: 'voltha-system-tests'
+          Jenkinsfile: 'Jenkinsfile-voltha-build'
+          configurePod: true
+          disable-job: true
+          profile: 'Default'
+          # Update this value accordingly once the job is enabled
+          time: ''
+
+
+      # Berlin POD test job - released versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod'
+          release: '2.7'
+          branch: 'voltha-2.7'
           test-repo: 'voltha-system-tests'
           profile: 'Default'
           power-switch: True
