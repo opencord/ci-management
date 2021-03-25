@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4105018e_9ed119e4",
+        "filename": "jjb/cord-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 601,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-03-25T04:52:29Z",
+      "side": 1,
+      "message": "Do we still want to keep these voltha-2.6 jobs. They are disabled, but I do think we will ever enable them again.",
+      "range": {
+        "startLine": 583,
+        "startChar": 0,
+        "endLine": 601,
+        "endChar": 18
+      },
+      "revId": "7c6a1b9901f9b01415b4fd7c8f0227a15d1af0f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
