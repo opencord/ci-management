@@ -48,6 +48,7 @@ def test_software_upgrade(name) {
       volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
       // start logging
       sh """
+      rm -rf $WORKSPACE/${name} || true
       mkdir -p $WORKSPACE/${name}
       _TAG=kail-${name} kail -n infra -n voltha > $WORKSPACE/${name}/onos-voltha-combined.log &
       """
@@ -141,8 +142,7 @@ def test_software_upgrade(name) {
 def get_pods_info(dest) {
   // collect pod details, this is here in case of failure
   sh """
-  rm -rf ${dest} || true
-  mkdir -p ${dest}
+  mkdir -p ${dest} || true
   kubectl get pods --all-namespaces -o wide > ${dest}/pods.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee ${dest}/pod-imagesId.txt || true
