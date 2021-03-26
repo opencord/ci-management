@@ -208,7 +208,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
 #          onosImg: andreacampanella/voltha-onos:olt-mac-integration
 
       - 'voltha-scale-measurements':
@@ -227,7 +227,7 @@
           withIgmp: true
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
           onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
 
       # multi-stack jobs
@@ -249,7 +249,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          #onosImg: andreacampanella/voltha-onos:olt-mac-integration
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
@@ -269,7 +269,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          #onosImg: andreacampanella/voltha-onos:olt-mac-integration
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
@@ -289,7 +289,7 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
-          onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       # voltha-2.6 Jobs
       - 'voltha-scale-measurements':
