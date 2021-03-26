@@ -9,84 +9,6 @@
     jobs:
       # name format is <job-template>-<olts>-<pon>-<onus>-<setup>
 
-      # OpenONU PY Scale
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-dt-subscribers'
-          pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
-          build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          workflow: dt
-          release: voltha-2.6
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          extraHelmFlags: '--set use_openonu_adapter_go=false'
-          bbsimImg: ''
-          rwCoreImg: ''
-          ofAgentImg: ''
-          openoltAdapterImg: ''
-          openonuAdapterImg: ''
-          openonuAdapterGoImg: ''
-          onosImg: ''
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-att-subscribers'
-          pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
-          build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          release: voltha-2.6
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          extraHelmFlags: '--set use_openonu_adapter_go=false,authRetry=true,dhcpRetry=true'
-          bbsimImg: ''
-          rwCoreImg: ''
-          ofAgentImg: ''
-          openoltAdapterImg: ''
-          openonuAdapterImg: ''
-          openonuAdapterGoImg: ''
-          onosImg: ''
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-openonu-py-scale-measurements-2.6-2-16-32-tt-subscribers'
-          pipeline-script: 'voltha-scale-test-2.6.groovy'
-          'disable-job': true
-          build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
-          olts: 2
-          pons: 16
-          onus: 32
-          withFlows: true
-          workflow: tt
-          provisionSubscribers: true
-          release: voltha-2.6
-          withEapol: false
-          withDhcp: true
-          withIgmp: false
-          openonuAdapterReplicas: 8
-          extraHelmFlags: '--set use_openonu_adapter_go=false,dhcpRetry=true,defaults.incremental_evto_update=true'
-          bbsimImg: ''
-          rwCoreImg: ''
-          ofAgentImg: ''
-          openoltAdapterImg: ''
-          openonuAdapterImg: ''
-          openonuAdapterGoImg: ''
-          onosImg: ''
-
       # this job will be used to test custom images without disrupting tests on master
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental'
@@ -126,55 +48,6 @@
           withDhcp: false
           withIgmp: false
 
-
-      # jobs for 512 ONUs with a 8 openonu-adapters and clustered ONOS (1 OLT)
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-1-16-32-att-subscribers'
-          'disable-job': true
-          build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          withEapol: true
-          withDhcp: true
-          withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-1-16-32-tt-subscribers'
-          'disable-job': true
-          build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          workflow: tt
-          withEapol: false
-          withDhcp: true
-          withIgmp: true
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-
-      - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-1-16-32-dt-subscribers'
-          'disable-job': true
-          build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
-          olts: 1
-          pons: 16
-          onus: 32
-          withFlows: true
-          provisionSubscribers: true
-          workflow: dt
-          withEapol: false
-          withDhcp: false
-          withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
-
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
@@ -196,7 +69,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -208,12 +81,12 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
 #          onosImg: andreacampanella/voltha-onos:olt-mac-integration
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -227,7 +100,7 @@
           withIgmp: true
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
           onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
 
       # multi-stack jobs
@@ -249,7 +122,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          #onosImg: andreacampanella/voltha-onos:olt-mac-integration
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
@@ -269,7 +142,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          #onosImg: andreacampanella/voltha-onos:olt-mac-integration
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
@@ -289,7 +162,7 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
-          onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       # voltha-2.6 Jobs
       - 'voltha-scale-measurements':

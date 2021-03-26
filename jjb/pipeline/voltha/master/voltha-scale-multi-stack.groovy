@@ -22,6 +22,14 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
+def ofAgentConnections(numOfOnos, releaseName, namespace) {
+    def params = " "
+    numOfOnos.times {
+        params += "--set voltha.services.controller[${it}].address=${releaseName}-onos-classic-${it}.${releaseName}-onos-classic-hs.${namespace}.svc:6653 "
+    }
+    return params
+}
+
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -157,8 +165,9 @@ pipeline {
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.lldp.impl.LldpLinkProvider enabled ${withLLDP}
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager allowExtraneousRules true
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flow.impl.FlowRuleManager importExtraneousRules true
-          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager accumulatorMaxBatchMillis 1000
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager accumulatorMaxBatchMillis 900
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager accumulatorMaxIdleMillis 500
+          sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.opencord.olt.impl.Olt provisionDelay 1000
 
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg log:set ${logLevel} org.onosproject
           sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg log:set ${logLevel} org.opencord
@@ -367,13 +376,9 @@ def deploy_voltha_stacks(numberOfStacks) {
       // ${logLevel}
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=${logLevel},enablePerf=true,onu=${onus},pon=${pons} "
       extraHelmFlags += " --set securityContext.enabled=false,atomix.persistence.enabled=false "
-      // FIXME having to set all of these values is annoying, is there a better solution?
-      def controllerFlags = " "
-      onosReplicas.toInteger().times {
-        controllerFlags += " --set services.controller[${it}].address=onos-onos-classic-${it}.onos-onos-classic-hs.infra.svc:6653"
-      }
 
-      def volthaHelmFlags = "${controllerFlags} " + extraHelmFlags +
+      // FIXME having to set all of these values is annoying, is there a better solution?
+      def volthaHelmFlags = extraHelmFlags +
         "--set voltha.services.kafka.adapter.address=kafka.infra.svc:9092 " +
         "--set voltha.services.kafka.cluster.address=kafka.infra.svc:9092 " +
         "--set voltha.services.etcd.address=etcd.infra.svc:2379 " +
@@ -382,7 +387,9 @@ def deploy_voltha_stacks(numberOfStacks) {
         "--set voltha-adapter-openolt.services.etcd.address=etcd.infra.svc:2379 " +
         "--set voltha-adapter-openonu.services.kafka.adapter.address=kafka.infra.svc:9092 " +
         "--set voltha-adapter-openonu.services.kafka.cluster.address=kafka.infra.svc:9092 " +
-        "--set voltha-adapter-openonu.services.etcd.address=etcd.infra.svc:2379"
+        "--set voltha-adapter-openonu.services.etcd.address=etcd.infra.svc:2379" +
+        ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "infra")
+
       volthaStackDeploy([
         bbsimReplica: olts.toInteger(),
         infraNamespace: "infra",
