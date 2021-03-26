@@ -12,7 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-def app = '${app}'
+def appRepo = '${appRepo}'
+def appName = '${appName}'
+def apiVersion = '${apiVersion}'
+def nextApiVersion = '${nextApiVersion}'
 def version = '${version}'
 def nextVersion = '${nextVersion}'
 def branch = '${branch}'
@@ -27,17 +30,18 @@ def jdkDistro = '${jdkDistro}'
 // it's up to the maven-publish and version-tag jobs to complete the release by
 // uploading artifacts to Sonatype and creating Git tags.
 
-def changeVersion(def newVersion) {
+def changeVersion(def newVersion, def newApiVersion) {
   // Update the top-level <version> tag in the root pom.xml.
   sh 'mvn versions:set -DnewVersion=' + newVersion + ' versions:commit'
+  sh 'mvn versions:set-property -Dproperty=' + appName + '.api.version -DnewVersion=' + newApiVersion + ' -DallowSnapshots=true versions:commit'
 }
 
 // TODO: use the declarative pipeline syntax, like all other groovy files.
 //  This implementation is based on the legacy cord-onos-publisher/Jenkinsfile.release
 node ('ubuntu16.04-basebuild-1c-2g') {
 
-  sh 'echo Releasing ' + app + ' repository on ' + branch + ' branch'
-  sh 'echo Releasing version ' + version + ' and starting ' + nextVersion + '-SNAPSHOT'
+  sh 'echo Releasing ' + appRepo + ' repository on ' + branch + ' branch'
+  sh 'echo Releasing version ' + version + ' with API version ' + apiVersion + '"' + ' and starting ' + nextVersion + '-SNAPSHOT with API version ' + apiVersion + '-SNAPSHOT'"'
 
   // Set the JDK version
   sh 'echo Using JDK distribution: ' + jdkDistro
@@ -68,15 +72,15 @@ node ('ubuntu16.04-basebuild-1c-2g') {
     cleanWs()
 
     sshagent (credentials: ['gerrit-jenkins-user']) {
-      git branch: branch, url: 'ssh://jenkins@gerrit.opencord.org:29418/' + app, credentialsId: 'gerrit-jenkins-user'
+      git branch: branch, url: 'ssh://jenkins@gerrit.opencord.org:29418/' + appRepo, credentialsId: 'gerrit-jenkins-user'
 
       sh 'gitdir=$(git rev-parse --git-dir); scp -p -P 29418 jenkins@gerrit.opencord.org:hooks/commit-msg ${gitdir}/hooks/'
     }
   }
 
   stage ('Move to release version') {
-    changeVersion(version)
-    sh 'git add -A && git commit -m "Release version ' + version + '"'
+    changeVersion(version, apiVersion)
+    sh 'git add -A && git commit -m "Release app version ' + version + ' with API version ' + apiVersion + '"'
   }
 
   stage ('Verify code') {
@@ -99,8 +103,9 @@ node ('ubuntu16.04-basebuild-1c-2g') {
 
   stage ('Move to next SNAPSHOT version') {
     def snapshot = nextVersion + '-SNAPSHOT'
-    changeVersion(snapshot)
-    sh 'git add -A && git commit -m "Starting snapshot ' + snapshot + '"'
+    def apiSnapshot = nextApiVersion + '-SNAPSHOT'
+    changeVersion(snapshot, apiSnapshot)
+    sh 'git add -A && git commit -m "Starting snapshot ' + snapshot + ' with API version ' + apiSnapshot + '"'
     sshagent (credentials: ['gerrit-jenkins-user']) {
       sh 'git push origin HEAD:refs/for/' + branch
     }
