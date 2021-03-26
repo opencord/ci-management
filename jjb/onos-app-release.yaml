@@ -30,9 +30,24 @@
 
     parameters:
       - string:
-          name: app
+          name: appRepo
           default: ''
           description: 'Name of the app repository on the OpenCORD Gerrit server.\n e.g. vtn'
+
+      - string:
+          name: appName
+          default: ''
+          description: 'Name of the app in pom.xml API definition. \n e.g. olt'
+
+      - string:
+          name: apiVersion
+          default: ''
+          description: 'Version to release.\n e.g. 1.0.0'
+
+      - string:
+          name: nextApiVersion
+          default: ''
+          description: 'Version to release.\n e.g. 1.0.0'
 
       - string:
           name: version
