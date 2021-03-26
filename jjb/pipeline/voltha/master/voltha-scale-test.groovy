@@ -14,6 +14,16 @@
 
 // deploy VOLTHA and performs a scale test
 
+// this function generates the correct parameters for ofAgent
+// to connect to multple ONOS instances
+def ofAgentConnections(numOfOnos, releaseName, namespace) {
+    def params = " "
+    numOfOnos.times {
+        params += "--set voltha.services.controller[${it}].address=${releaseName}-onos-classic-${it}.${releaseName}-onos-classic-hs.${namespace}.svc:6653 "
+    }
+    return params
+}
+
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -28,36 +38,12 @@ pipeline {
     KUBECONFIG="$HOME/.kube/config"
     VOLTCONFIG="$HOME/.volt/config"
     SSHPASS="karaf"
-    // PATH="$PATH:$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    // SCHEDULE_ON_CONTROL_NODES="yes"
-    // FANCY=0
-    // WITH_SIM_ADAPTERS="no"
-    // WITH_RADIUS="${withRadius}"
-    // WITH_BBSIM="yes"
-    // LEGACY_BBSIM_INDEX="no"
-    // DEPLOY_K8S="no"
-    // CONFIG_SADIS="external"
-    // WITH_KAFKA="kafka.default.svc.cluster.local"
-    // WITH_ETCD="etcd.default.svc.cluster.local"
-    // VOLTHA_ETCD_PORT=9999
-
-    // configurable options
-    // WITH_EAPOL="${withEapol}"
-    // WITH_DHCP="${withDhcp}"
-    // WITH_IGMP="${withIgmp}"
     VOLTHA_LOG_LEVEL="${logLevel}"
     NUM_OF_BBSIM="${olts}"
     NUM_OF_OPENONU="${openonuAdapterReplicas}"
     NUM_OF_ONOS="${onosReplicas}"
     NUM_OF_ATOMIX="${atomixReplicas}"
-    // WITH_PPROF="${withProfiling}"
     EXTRA_HELM_FLAGS="${extraHelmFlags} " // note that the trailing space is required to separate the parameters from appends done later
-    // VOLTHA_CHART="${volthaChart}"
-    // VOLTHA_BBSIM_CHART="${bbsimChart}"
-    // VOLTHA_ADAPTER_OPEN_OLT_CHART="${openoltAdapterChart}"
-    // VOLTHA_ADAPTER_OPEN_ONU_CHART="${openonuAdapterChart}"
-    // ONOS_CLASSIC_CHART="${onosChart}"
-    // RADIUS_CHART="${radiusChart}"
 
     APPS_TO_LOG="etcd kafka onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server onos-config-loader"
     LOG_FOLDER="$WORKSPACE/logs"
@@ -296,6 +282,7 @@ pipeline {
                 --set global.voltha_infra_name=voltha-infra \
                 --set global.voltha_infra_namespace=default \
                 --set global.log_level=${logLevel} \
+                ${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} \
                 --set voltha.services.kafka.adapter.address=kafka.default.svc:9092 \
                 --set voltha.services.kafka.cluster.address=kafka.default.svc:9092 \
                 --set voltha.services.etcd.address=etcd.default.svc:2379 \
