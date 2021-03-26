@@ -63,7 +63,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml'
-          onosImg: registry.menlo.onlab.us/voltha-dev/voltha-onos:teo-olt
+          # onosImg: registry.menlo.onlab.us/voltha-dev/voltha-onos:teo-olt
           # volthaHelmChartsChange: refs/changes/29/23729/3
           openoltAdapterImg: gcgirish/voltha-openolt-adapter:meter
 
