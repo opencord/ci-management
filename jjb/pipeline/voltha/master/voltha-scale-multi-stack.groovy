@@ -148,11 +148,11 @@ pipeline {
           sh returnStdout: false, script: """
 
           # forward ETCD port
-          _TAG=etcd-port-forward kubectl -n infra port-forward --address 0.0.0.0 service/etcd 9999:2379& 2>&1 > /dev/null
+          JENKINS_NODE_COOKIE="dontKillMe" _TAG=etcd-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/etcd 9999:2379; done 2>&1 " &
 
           # forward ONOS ports
-          _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8101:8101& 2>&1 > /dev/null
-          _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181& 2>&1 > /dev/null
+          JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8101:8101; done 2>&1 " &
+          JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8181:8181; done 2>&1 " &
 
           # make sure the the port-forward has started before moving forward
           sleep 5
