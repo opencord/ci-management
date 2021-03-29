@@ -1,0 +1,22 @@
+---
+# verification jobs for 'opendm-agent' repo
+
+- project:
+    name: opendm-agent
+    project: '{name}'
+
+    jobs:
+      - 'verify-opendm-agent-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-opendm-agent-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          unit-test-targets: 'test'
+          # opendm-agent uses gtest which outputs in xunit format
+          junit-allow-empty-results: true
+          xunit-skip-if-no-test-files: false
