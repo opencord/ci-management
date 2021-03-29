@@ -527,6 +527,11 @@
           description: 'PatchSet number in Gerrit'
 
       - string:
+          name: gerritRefspec
+          default: '$GERRIT_REFSPEC'
+          description: 'RefSpec number in Gerrit'
+
+      - string:
           name: cordRepoUrl
           default: '{gerrit-server-url}'
           description: 'The URL of the CORD Project repository'
@@ -547,7 +552,7 @@
 
       - string:
           name: sadisConfigFile
-          default: 'voltha/voltha-system-tests/tests/data/{config-pod}-sadis.json'
+          default: 'voltha-system-tests/tests/data/{config-pod}-sadis.json'
           description: 'Path of SADIS config to load'
 
       - string:
@@ -671,6 +676,11 @@
           description: 'PatchSet number in Gerrit'
 
       - string:
+          name: gerritRefspec
+          default: '$GERRIT_REFSPEC'
+          description: 'RefSpec number in Gerrit'
+
+      - string:
           name: cordRepoUrl
           default: '{gerrit-server-url}'
           description: 'The URL of the CORD Project repository'
@@ -691,7 +701,7 @@
 
       - string:
           name: sadisConfigFile
-          default: 'voltha/voltha-system-tests/tests/data/{config-pod}-sadis.json'
+          default: 'voltha-system-tests/tests/data/{config-pod}-sadis.json'
           description: 'Path of SADIS config to load'
 
       - string:
@@ -814,6 +824,11 @@
           description: 'PatchSet number in Gerrit'
 
       - string:
+          name: gerritRefspec
+          default: '$GERRIT_REFSPEC'
+          description: 'RefSpec number in Gerrit'
+
+      - string:
           name: cordRepoUrl
           default: '{gerrit-server-url}'
           description: 'The URL of the CORD Project repository'
@@ -834,7 +849,7 @@
 
       - string:
           name: sadisConfigFile
-          default: 'voltha/voltha-system-tests/tests/data/{config-pod}-sadis.json'
+          default: 'voltha-system-tests/tests/data/{config-pod}-sadis.json'
           description: 'Path of SADIS config to load'
 
       - string:

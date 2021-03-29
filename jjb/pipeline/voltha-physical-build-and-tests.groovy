@@ -15,6 +15,14 @@
 // deploy VOLTHA built from patchset on a physical pod and run e2e test
 // uses kind-voltha to deploy voltha-2.X
 
+// NOTE we are importing the library even if it's global so that it's
+// easier to change the keywords during a replay
+library identifier: 'cord-jenkins-libraries@master',
+    retriever: modernSCM([
+      $class: 'GitSCMSource',
+      remote: 'https://gerrit.opencord.org/ci-management.git'
+])
+
 // Need this so that deployment_config has global scope when it's read later
 deployment_config = null
 localDeploymentConfigFile = null
@@ -43,7 +51,7 @@ pipeline {
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$WORKSPACE/bin:$WORKSPACE/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     NAME="minimal"
     FANCY=0
     //VOL-2194 ONOS SSH and REST ports hardcoded to 30115/30120 in tests
@@ -55,7 +63,7 @@ pipeline {
     stage ('Initialize') {
       steps {
         sh returnStdout: false, script: """
-        test -e $WORKSPACE/voltha/kind-voltha/voltha && cd $WORKSPACE/voltha/kind-voltha && ./voltha down
+        test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
         cd $WORKSPACE
         rm -rf $WORKSPACE/*
         """
@@ -71,33 +79,29 @@ pipeline {
       }
     }
 
-    stage('Repo') {
+    stage('Download Code') {
       steps {
-        checkout(changelog: true,
-          poll: false,
-          scm: [$class: 'RepoScm',
-            manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.branch}",
-            currentBranch: true,
-            destinationDir: 'voltha',
-            forceSync: true,
-            resetFirst: true,
-            quiet: true,
-            jobs: 4,
-            showAllChanges: true]
-          )
-      }
-    }
-
-    stage('Get Patch') {
-      when {
-        expression { params.manualBranch == "" }
-      }
-      steps {
-        sh returnStdout: false, script: """
-        cd voltha
-        repo download "${gerritProject}" "${gerritChangeNumber}/${gerritPatchsetNumber}"
-        """
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/kind-voltha",
+          ]],
+          branches: [[ name: "master", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+        getVolthaCode([
+          branch: "${branch}",
+          gerritProject: "${gerritProject}",
+          // FIXE fatal: couldn't find remote ref 23842/2
+          // gerritRefspec: "${gerritChangeNumber}/${gerritPatchsetNumber}",
+          gerritRefspec: "${gerritRefspec}",
+          // volthaSystemTestsChange: "${volthaSystemTestsChange}",
+          // volthaHelmChartsChange: "${volthaHelmChartsChange}",
+        ])
       }
     }
 
@@ -118,38 +122,42 @@ pipeline {
       }
     }
 
+    stage('Build patch') {
+      steps {
+        // NOTE that the correct patch has already been checked out
+        // during the getVolthaCode step
+        buildVolthaComponent("${gerritProject}")
+      }
+    }
+
     stage('Create KinD Cluster') {
       steps {
         sh returnStdout: false, script: """
         if [ "${branch}" != "master" ]; then
           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
+          source "$WORKSPACE/kind-voltha/releases/${branch}"
         else
           echo "on master, using default settings for kind-voltha"
         fi
-
-        cd $WORKSPACE/voltha/kind-voltha/
+        cd $WORKSPACE/kind-voltha/
         JUST_K8S=y ./voltha up
         """
       }
     }
 
-    stage('Build and Push Images') {
+    stage('Load image in kind nodes') {
       when {
         expression { params.manualBranch == "" }
       }
       steps {
         sh returnStdout: false, script: """
-
         if [ "${branch}" != "master" ]; then
           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
+          source "$WORKSPACE/kind-voltha/releases/${branch}"
         else
           echo "on master, using default settings for kind-voltha"
         fi
-
         if ! [[ "${gerritProject}" =~ ^(voltha-system-tests|kind-voltha|voltha-helm-charts)\$ ]]; then
-          make -C $WORKSPACE/voltha/${gerritProject} DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
           docker images | grep citest
           for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}")
           do
@@ -174,7 +182,7 @@ pipeline {
           sh returnStdout: false, script: """
           if [ "${branch}" != "master" ]; then
             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-            source "$WORKSPACE/voltha/kind-voltha/releases/${branch}"
+            source "$WORKSPACE/kind-voltha/releases/${branch}"
           else
             echo "on master, using default settings for kind-voltha"
           fi
@@ -206,7 +214,7 @@ pipeline {
           done
 
           if [ "${gerritProject}" = "voltha-helm-charts" ]; then
-              export CHART_PATH=$WORKSPACE/voltha/voltha-helm-charts
+              export CHART_PATH=$WORKSPACE/voltha-helm-charts
               export VOLTHA_CHART=\$CHART_PATH/voltha
               export VOLTHA_ADAPTER_OPEN_OLT_CHART=\$CHART_PATH/voltha-adapter-openolt
               export VOLTHA_ADAPTER_OPEN_ONU_CHART=\$CHART_PATH/voltha-adapter-openonu
@@ -215,7 +223,7 @@ pipeline {
               helm dep update \$VOLTHA_ADAPTER_OPEN_ONU_CHART
           fi
 
-          cd $WORKSPACE/voltha/kind-voltha/
+          cd $WORKSPACE/kind-voltha/
           echo \$EXTRA_HELM_FLAGS
           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
           ./voltha up
@@ -257,7 +265,7 @@ pipeline {
       steps {
         sh returnStdout: false, script: """
         etcd_container=\$(kubectl get pods -n voltha | grep voltha-etcd-cluster | awk 'NR==1{print \$1}')
-        kubectl cp $WORKSPACE/voltha/voltha-system-tests/tests/data/TechProfile-${profile}.json voltha/\$etcd_container:/tmp/flexpod.json
+        kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-${profile}.json voltha/\$etcd_container:/tmp/flexpod.json
         kubectl exec -it \$etcd_container -n voltha -- /bin/sh -c 'cat /tmp/flexpod.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/XGS-PON/64'
         """
       }
@@ -335,7 +343,6 @@ pipeline {
       }
       steps {
         sh returnStdout: false, script: """
-        cd voltha
         mkdir -p $WORKSPACE/RobotLogs
 
         # If the Gerrit comment contains a line with "functional tests" then run the full
@@ -351,7 +358,7 @@ pipeline {
           ROBOT_MISC_ARGS+="-i dataplane"
         fi
 
-        make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+        make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
       }
     }
@@ -374,7 +381,7 @@ pipeline {
     always {
       sh returnStdout: false, script: '''
       set +e
-      cp $WORKSPACE/voltha/kind-voltha/install-minimal.log $WORKSPACE/
+      cp $WORKSPACE/kind-voltha/install-minimal.log $WORKSPACE/
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
       kubectl get nodes -o wide
