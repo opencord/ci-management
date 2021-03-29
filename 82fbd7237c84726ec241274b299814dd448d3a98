@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b2653948_b4d749cf",
+        "filename": "jjb/verify/opendm-agent.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-29T15:18:51Z",
+      "side": 1,
+      "message": "What\u0027s the intended action of this section? This template doesn\u0027t seem to have a \"builders\" (action) section associated with it.  It also isn\u0027t being invoked by the job-group above.",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 65,
+        "endChar": 0
+      },
+      "revId": "82fbd7237c84726ec241274b299814dd448d3a98",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
