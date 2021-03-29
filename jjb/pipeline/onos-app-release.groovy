@@ -45,7 +45,7 @@ def changeApiVersion(def appName, def newApiVersion) {
 node ('ubuntu16.04-basebuild-1c-2g') {
 
   sh 'echo Releasing ' + appRepo + ' repository on ' + branch + ' branch'
-  sh 'echo Releasing version ' + version + ' with API version ' + apiVersion + '"' + ' and starting ' + nextVersion + '-SNAPSHOT with API version ' + apiVersion + '-SNAPSHOT'"'
+  sh 'echo Releasing version ' + version + ' with API version ' + apiVersion + ' and starting ' + nextVersion + '-SNAPSHOT with API version ' + apiVersion + '-SNAPSHOT'
 
   // Set the JDK version
   sh 'echo Using JDK distribution: ' + jdkDistro
@@ -85,7 +85,7 @@ node ('ubuntu16.04-basebuild-1c-2g') {
   stage ('Move to release version') {
     //Splitting version and apiVersion and check if apiVersion different from empty then update API it.
     //Allows to release apps that dont' have api.version (e.g. bng,pppoe,kafka)
-    changeVersion(version, apiVersion)
+    changeVersion(version)
     if (apiVersion != "") {
        changeApiVersion(appName, apiVersion)
     }
