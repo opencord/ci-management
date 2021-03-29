@@ -1,0 +1,64 @@
+---
+# verification jobs for 'opendm-agent' repo
+
+- project:
+    name: opendm-agent
+    project: '{name}'
+
+    jobs:
+      - 'verify-opendm-agent-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-opendm-agent-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          unit-test-targets: 'test'
+          # opendm-agent uses gtest which outputs in xunit format
+          junit-allow-empty-results: true
+          xunit-skip-if-no-test-files: false
+
+- job-template:
+    id: 'opendm-agent-tests'
+    name: 'verify_{project}_tests'
+
+    description: |
+      Created by {id} job-template from ci-management/jjb/verify/opendm-agent.yaml
+
+    triggers:
+      - cord-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '^{project}$'
+          branch-regexp: '{branch-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+          file-include-regexp: '{all-files-regexp}'
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    parameters:
+      - string:
+          name: notificationEmail
+          default: '$GERRIT_EVENT_ACCOUNT_EMAIL'
+          description: 'Verification failure of patch $GERRIT_CHANGE_NUMBER to {project} repo'
+
+    node: 'opendm_agent_deb_onf_agent'
+    project-type: pipeline
+    concurrent: true
+
+    pipeline-scm:
+      script-path: 'Jenkinsfile.test'
+      scm:
+        - cord-infra-gerrit-scm:
+            git-url: '$GIT_URL/$GERRIT_PROJECT'
+            refspec: '$GERRIT_REFSPEC'
+            branch: '$GERRIT_BRANCH'
+            submodule-recursive: 'false'
+            choosing-strategy: 'gerrit'
+            jenkins-ssh-credential: '{jenkins-ssh-credential}'
+            basedir: ''
