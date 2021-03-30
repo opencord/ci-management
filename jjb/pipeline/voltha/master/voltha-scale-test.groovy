@@ -181,6 +181,18 @@ pipeline {
       steps {
         timeout(time: 10, unit: 'MINUTES') {
           script {
+            sh returnStdout: false, script: '''
+            # start logging with kail
+
+            mkdir -p $LOG_FOLDER
+
+            list=($APPS_TO_LOG)
+            for app in "${list[@]}"
+            do
+              echo "Starting logs for: ${app}"
+              _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
+            done
+            '''
             sh returnStdout: false, script: """
 
               export EXTRA_HELM_FLAGS+=' '
@@ -271,7 +283,8 @@ pipeline {
                 EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
               fi
 
-              helm upgrade --install voltha-infra onf/voltha-infra \$EXTRA_HELM_FLAGS \
+              helm dep update /home/jenkins/voltha-helm-charts/voltha-infra
+              helm upgrade --install voltha-infra /home/jenkins/voltha-helm-charts/voltha-infra \$EXTRA_HELM_FLAGS \
                 --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
                 --set etcd.enabled=false,kafka.enabled=false \
                 --set global.log_level=${logLevel} \
@@ -323,18 +336,6 @@ pipeline {
             start_port_forward(olts)
           }
         }
-        sh returnStdout: false, script: '''
-        # start logging with kail
-
-        mkdir -p $LOG_FOLDER
-
-        list=($APPS_TO_LOG)
-        for app in "${list[@]}"
-        do
-          echo "Starting logs for: ${app}"
-          _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
-        done
-        '''
       }
     }
     stage('Configuration') {
@@ -645,6 +646,10 @@ EOF
 
         # copy the ONOS logs directly from the container to avoid the color codes
         printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
+
+        # get ONOS cfg from the 3 nodes
+        printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl exec -it # -- ${karafHome}/bin/client cfg get > $LOG_FOLDER/#.cfg" || true
+
 
         # get radius logs out of the container
         kubectl cp $(kubectl get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER/radius.log || true
