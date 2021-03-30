@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c50e19bd_479c0bd4",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-30T14:36:58Z",
+      "side": 1,
+      "message": "This doesn\u0027t cover the \"no tags exist\" scenario - someone could only have dev versions and want to tag the 1.0.0 version as the very first tag.",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 4
+      },
+      "revId": "93b531d4705074241308f49e51d2f810cb13a7b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
