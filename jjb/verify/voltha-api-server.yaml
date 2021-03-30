@@ -26,7 +26,7 @@
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
       - 'voltha-patch-test':
-          pipeline-script: 'voltha-bbsim-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.7/bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-voltha-api-server-jobs'
