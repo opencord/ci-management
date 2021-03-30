@@ -8,9 +8,9 @@
     jobs:
       - 'verify-voltha-system-tests-jobs':
           branch-regexp: '{all-branches-regexp}'
-      - 'verify-voltha-system-tests-jobs-voltha-2.6':
-          name-extension: '-voltha-2.6'
-          override-branch: 'voltha-2.6'
+      - 'verify-voltha-system-tests-jobs-voltha-2.7':
+          name-extension: '-voltha-2.7'
+          override-branch: 'voltha-2.7'
           branch-regexp: '{kind-voltha-regexp}'
       - 'verify-voltha-system-tests-jobs-master':
           branch-regexp: '^master$'
@@ -27,7 +27,7 @@
           junit-allow-empty-results: true
 
 - job-group:
-    name: 'verify-voltha-system-tests-jobs-voltha-2.6'
+    name: 'verify-voltha-system-tests-jobs-voltha-2.7'
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'

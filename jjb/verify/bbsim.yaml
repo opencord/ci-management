@@ -8,9 +8,9 @@
     jobs:
       - 'verify-bbsim-jobs':
           branch-regexp: '{all-branches-regexp}'
-      - 'verify-bbsim-jobs-voltha-2.6':
-          name-extension: '-voltha-2.6'
-          override-branch: 'voltha-2.6'
+      - 'verify-bbsim-jobs-voltha-2.7':
+          name-extension: '-voltha-2.7'
+          override-branch: 'voltha-2.7'
           branch-regexp: '{kind-voltha-regexp}'
       - 'verify-bbsim-jobs-master':
           branch-regexp: '^master$'
@@ -30,7 +30,7 @@
           unit-test-keep-going: 'true'
 
 - job-group:
-    name: 'verify-bbsim-jobs-voltha-2.6'
+    name: 'verify-bbsim-jobs-voltha-2.7'
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha-bbsim-tests.groovy'
