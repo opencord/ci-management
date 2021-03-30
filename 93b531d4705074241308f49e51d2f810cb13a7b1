@@ -22,6 +22,30 @@
       "revId": "93b531d4705074241308f49e51d2f810cb13a7b1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8406d98c_caa19fb1",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-03-30T18:19:40Z",
+      "side": 1,
+      "message": "Hey that\u0027s wrong 😊\nAccording to Semver the first released version should be 0.1.0 (https://semver.org/#how-should-i-deal-with-revisions-in-the-0yz-initial-development-phase)\n\nAs it\u0027s unlikely you\u0027ll have something stable on your first tag, thus considering the tagging scheme a.b.c you should reserve:\n- A: for the first stable release\n- C: for bugfixes\n\n(and if someone really wants to go for 1.0.0 he can override the -1)",
+      "parentUuid": "c50e19bd_479c0bd4",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 4
+      },
+      "revId": "93b531d4705074241308f49e51d2f810cb13a7b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
