@@ -46,6 +46,30 @@
       "revId": "93b531d4705074241308f49e51d2f810cb13a7b1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e5318d1c_832881d8",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-03-30T23:15:28Z",
+      "side": 1,
+      "message": "I think this is a great recommendation! 😊\n\nMaybe we should tell people their initial checkin should be the `0.1.0` version, which would have the benefit of testing the rest of the release pipeline for the repo.\n\nWould it be OK to make having a `0.1.0` initially a hard requirement?",
+      "parentUuid": "8406d98c_caa19fb1",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 4
+      },
+      "revId": "93b531d4705074241308f49e51d2f810cb13a7b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
