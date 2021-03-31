@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "bf13d3ac_686a1399",
+        "filename": "jjb/software-upgrades.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-03-31T09:29:29Z",
+      "side": 1,
+      "message": "H will do the numeric hash of the job name and so the 2 jobs will run at different times. It is same in all other jobs as well.",
+      "parentUuid": "4303ad2c_1180d39a",
+      "revId": "ae82ab74c8a1e5d9ac73165d6bc3d36eb10b3394",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9c3c2bbd_04e4e3e3",
         "filename": "jjb/software-upgrades.yaml",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "ae82ab74c8a1e5d9ac73165d6bc3d36eb10b3394",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6eb5d37d_768f8265",
+        "filename": "jjb/software-upgrades.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-03-31T09:29:29Z",
+      "side": 1,
+      "message": "We don\u0027t want to overwrite onos-image with any default value but use the one defined in helm charts.",
+      "parentUuid": "9c3c2bbd_04e4e3e3",
+      "revId": "ae82ab74c8a1e5d9ac73165d6bc3d36eb10b3394",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
