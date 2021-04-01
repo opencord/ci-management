@@ -190,6 +190,7 @@ pipeline {
     stage('Install latest voltctl') {
       steps {
         sh """
+          mkdir -p $WORKSPACE/bin || true
           # install voltctl
           HOSTOS="\$(uname -s | tr "[:upper:]" "[:lower:"])"
           HOSTARCH="\$(uname -m | tr "[:upper:]" "[:lower:"])"
