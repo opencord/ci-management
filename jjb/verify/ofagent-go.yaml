@@ -8,9 +8,9 @@
     jobs:
       - 'verify-ofagent-go-jobs':
           branch-regexp: '{all-branches-regexp}'
-      - 'verify-ofagent-jobs-voltha-2.6':
-          name-extension: '-voltha-2.6'
-          override-branch: 'voltha-2.6'
+      - 'verify-ofagent-jobs-voltha-2.7':
+          name-extension: '-voltha-2.7'
+          override-branch: 'voltha-2.7'
           branch-regexp: '{kind-voltha-regexp}'
       - 'verify-ofagent-jobs-master':
           branch-regexp: '^master$'
@@ -31,10 +31,10 @@
           junit-allow-empty-results: true
 
 - job-group:
-    name: 'verify-ofagent-jobs-voltha-2.6'
+    name: 'verify-ofagent-jobs-voltha-2.7'
     jobs:
       - 'voltha-patch-test':
-          pipeline-script: 'voltha-bbsim-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.7/bbsim-tests.groovy'
 
 - job-group:
     name: 'verify-ofagent-jobs-master'
