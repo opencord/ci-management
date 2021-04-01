@@ -145,7 +145,8 @@ function is_valid_version {
     parent_version="$MAJOR.$MINOR.$new_patch"
     for existing_tag in $existing_tags
     do
-      if [[ "$parent_version" == "$existing_tag" ]]
+      semverParseInto $existing_tag C_MAJOR C_MINOR C_PATCH C_SPECIAL
+      if [[ "$MAJOR" == "$C_MAJOR" && "$MINOR" == "$C_MINOR" && "$new_patch" == "$C_PATCH" ]]
       then
         found_parent=true
       fi
