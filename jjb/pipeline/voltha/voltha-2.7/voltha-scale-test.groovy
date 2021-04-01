@@ -71,11 +71,11 @@ pipeline {
 
             # wait for pods to be removed
             echo -ne "\nWaiting for PODs to be removed..."
-            PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry" | wc -l)
+            PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry|fleet" | wc -l)
             while [[ $PODS != 0 ]]; do
               sleep 5
               echo -ne "."
-              PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry" | wc -l)
+              PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry|fleet" | wc -l)
             done
 
             # remove orphaned port-forward from different namespaces
