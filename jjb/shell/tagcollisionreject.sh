@@ -119,37 +119,37 @@ function is_valid_version {
   if [[ "$MINOR" == 0 ]]; then
     new_major=$(( $MAJOR - 1 ))
     parent_version="$new_major.x.x"
-    while IFS= read -r existing_tag
+    for existing_tag in $existing_tags
     do
       semverParseInto $existing_tag C_MAJOR C_MINOR C_PATCH C_SPECIAL
       if [[ "$new_major" == "$C_MAJOR" ]]; then
         found_parent=true
       fi
-    done <<< $existing_tags
+    done
 
   # if patch == 0, check that there was a release with MAJOR.MINOR-1.X
   elif [[ "$PATCH" == 0 ]]; then
     new_minor=$(( $MINOR - 1 ))
     parent_version="$MAJOR.$new_minor.x"
-    while IFS= read -r existing_tag
+    for existing_tag in $existing_tags
     do
       semverParseInto $existing_tag C_MAJOR C_MINOR C_PATCH C_SPECIAL
       if [[ "$new_minor" == "$C_MINOR" ]]; then
         found_parent=true
       fi
-    done <<< $existing_tags
+    done
 
   # if patch != 0 check that there was a release with MAJOR.MINOR.PATCH-1
   elif [[ "$PATCH" != 0 ]]; then
     new_patch=$(( $PATCH - 1 ))
     parent_version="$MAJOR.$MINOR.$new_patch"
-    while IFS= read -r existing_tag
+    for existing_tag in $existing_tags
     do
       if [[ "$parent_version" == "$existing_tag" ]]
       then
         found_parent=true
       fi
-    done <<< $existing_tags
+    done
   fi
 
   # if we are the beginning the is no parent, but that's fine
@@ -225,7 +225,7 @@ branches=$(git branch -v)
 echo $branches
 
 echo "Existing git tags:"
-existing_tags=$(git tag)
+existing_tags=$(git tag -l)
 echo $existing_tags
 
 read_version
