@@ -46,9 +46,12 @@ def call(Map config) {
     kubectl create namespace ${cfg.infraNamespace} || true
     kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_config=$KUBECONFIG"  || true
     """
-    // TODO support multiple replicas
+
     sh """
     helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} ${cfg.extraHelmFlags} \
+          --set onos-classic.replicas=${cfg.onosReplica},onos-classic.atomix.replicas=${cfg.atomixReplica} \
           -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml
     """
+
+    // TODO wait on ONOS to start
 }
