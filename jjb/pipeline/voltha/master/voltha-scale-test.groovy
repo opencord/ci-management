@@ -503,6 +503,9 @@ EOF
         }
       }
       steps {
+        sh returnStdout: false, script: """
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.onosproject.store.group.impl
+        """
         sh '''
           set +e
           mkdir -p $ROBOT_LOGS_DIR
