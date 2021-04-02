@@ -14,6 +14,12 @@
 
 // deploy VOLTHA and performs a scale test
 
+library identifier: 'cord-jenkins-libraries@master',
+    retriever: modernSCM([
+      $class: 'GitSCMSource',
+      remote: 'https://gerrit.opencord.org/ci-management.git'
+])
+
 // this function generates the correct parameters for ofAgent
 // to connect to multple ONOS instances
 def ofAgentConnections(numOfOnos, releaseName, namespace) {
@@ -55,28 +61,12 @@ pipeline {
     stage ('Cleanup') {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
+          script {
+            helmTeardown(["default"])
+          }
           sh returnStdout: false, script: '''
             helm repo add onf https://charts.opencord.org
             helm repo update
-
-            NAMESPACES="voltha1 voltha2 infra default"
-            for NS in $NAMESPACES
-            do
-                for hchart in $(helm list -n $NS -q | grep -E -v 'docker-registry|kafkacat');
-                do
-                    echo "Purging chart: ${hchart}"
-                    helm delete -n $NS "${hchart}"
-                done
-            done
-
-            # wait for pods to be removed
-            echo -ne "\nWaiting for PODs to be removed..."
-            PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry|fleet" | wc -l)
-            while [[ $PODS != 0 ]]; do
-              sleep 5
-              echo -ne "."
-              PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry|fleet" | wc -l)
-            done
 
             # remove orphaned port-forward from different namespaces
             ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
@@ -282,41 +272,43 @@ pipeline {
               if [ '\$GERRIT_PROJECT' == 'bbsim' ]; then
                 EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
               fi
-
-              helm dep update /home/jenkins/voltha-helm-charts/voltha-infra
-              helm upgrade --install voltha-infra /home/jenkins/voltha-helm-charts/voltha-infra \$EXTRA_HELM_FLAGS \
-                --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
-                --set etcd.enabled=false,kafka.enabled=false \
-                --set global.log_level=${logLevel} \
-                -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml
-
-              helm upgrade --install voltha1 onf/voltha-stack \$EXTRA_HELM_FLAGS \
-                --set global.stack_name=voltha1 \
-                --set global.voltha_infra_name=voltha-infra \
-                --set global.voltha_infra_namespace=default \
-                --set global.log_level=${logLevel} \
-                ${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} \
-                --set voltha.services.kafka.adapter.address=kafka.default.svc:9092 \
-                --set voltha.services.kafka.cluster.address=kafka.default.svc:9092 \
-                --set voltha.services.etcd.address=etcd.default.svc:2379 \
-                --set voltha-adapter-openolt.services.kafka.adapter.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openolt.services.kafka.cluster.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openolt.services.etcd.address=etcd.default.svc:2379 \
-                --set voltha-adapter-openonu.services.kafka.adapter.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openonu.services.kafka.cluster.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379
-                # TODO having to set all of these values is annoying, is there a better solution?
-
-
-              for i in {0..${olts.toInteger() - 1}}; do
-                stackId=1
-                helm upgrade --install bbsim\$i onf/bbsim \$EXTRA_HELM_FLAGS \
-                  --set olt_id="\${stackId}\${i}" \
-                  --set onu=${onus},pon=${pons} \
-                  --set global.log_level=${logLevel.toLowerCase()} \
-                  -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml
-              done
             """
+            def extraHelmFlags = env.EXTRA_HELM_FLAGS + " -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml "
+            def infraHelmFlags = extraHelmFlags +
+              " --set etcd.enabled=false,kafka.enabled=false" +
+              " --set global.log_level=${logLevel}"
+
+            volthaInfraDeploy([
+              workflow: workflow,
+              infraNamespace: "default",
+              extraHelmFlags: infraHelmFlags,
+              localCharts: false, // TODO support custom charts
+              onosReplica: onosReplicas,
+              atomixReplica: atomixReplicas,
+            ])
+
+            def stackHelmFlags = extraHelmFlags + "${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} " +
+                "--set voltha.services.kafka.adapter.address=kafka.default.svc:9092 " +
+                "--set voltha.services.kafka.cluster.address=kafka.default.svc:9092 " +
+                "--set voltha.services.etcd.address=etcd.default.svc:2379 " +
+                "--set voltha-adapter-openolt.services.kafka.adapter.address=kafka.default.svc:9092 " +
+                "--set voltha-adapter-openolt.services.kafka.cluster.address=kafka.default.svc:9092 " +
+                "--set voltha-adapter-openolt.services.etcd.address=etcd.default.svc:2379 " +
+                "--set voltha-adapter-openonu.services.kafka.adapter.address=kafka.default.svc:9092 " +
+                "--set voltha-adapter-openonu.services.kafka.cluster.address=kafka.default.svc:9092 " +
+                "--set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379"
+
+            stackHelmFlags += " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
+
+            volthaStackDeploy([
+              bbsimReplica: olts.toInteger(),
+              infraNamespace: "default",
+              volthaNamespace: "default",
+              stackName: "voltha1", // TODO support custom charts
+              workflow: workflow,
+              extraHelmFlags: stackHelmFlags,
+              localCharts: false,
+            ])
             sh """
               set +x
 
@@ -407,6 +399,10 @@ pipeline {
               _TAG=\$INSTANCE kubectl exec \$INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap&
             done
           fi
+
+          # load MIB template
+          wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
+          cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
           """
         }
       }
