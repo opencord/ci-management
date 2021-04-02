@@ -274,9 +274,10 @@ pipeline {
               fi
             """
             def extraHelmFlags = env.EXTRA_HELM_FLAGS + " -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml "
-            def infraHelmFlags = extraHelmFlags +
+            def infraHelmFlags =
               " --set etcd.enabled=false,kafka.enabled=false" +
-              " --set global.log_level=${logLevel}"
+              " --set global.log_level=${logLevel} " +
+              extraHelmFlags
 
             volthaInfraDeploy([
               workflow: workflow,
@@ -287,7 +288,7 @@ pipeline {
               atomixReplica: atomixReplicas,
             ])
 
-            def stackHelmFlags = extraHelmFlags + "${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} " +
+            def stackHelmFlags = "${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} " +
                 "--set voltha.services.kafka.adapter.address=kafka.default.svc:9092 " +
                 "--set voltha.services.kafka.cluster.address=kafka.default.svc:9092 " +
                 "--set voltha.services.etcd.address=etcd.default.svc:2379 " +
@@ -299,6 +300,7 @@ pipeline {
                 "--set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379"
 
             stackHelmFlags += " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
+            stackHelmFlags += extraHelmFlags
 
             volthaStackDeploy([
               bbsimReplica: olts.toInteger(),

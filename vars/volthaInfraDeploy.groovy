@@ -48,8 +48,8 @@ def call(Map config) {
     """
     // TODO support multiple replicas
     sh """
-    helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} ${cfg.extraHelmFlags} \
+    helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
           --set onos-classic.replicas=${cfg.onosReplica},onos-classic.atomix.replicas=${cfg.atomixReplica} \
-          -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml
+          -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml ${cfg.extraHelmFlags}
     """
 }

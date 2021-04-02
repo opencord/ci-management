@@ -33,18 +33,20 @@ def call(Map config) {
     println "Deploying VOLTHA Stack with the following parameters: ${cfg}."
 
     sh """
-    helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} ${cfg.stackName} ${volthaStackChart} ${cfg.extraHelmFlags} \
+    helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} ${cfg.stackName} ${volthaStackChart} \
           --set global.stack_name=${cfg.stackName} \
           --set global.voltha_infra_name=voltha-infra \
           --set global.voltha_infra_namespace=${cfg.infraNamespace} \
+          ${cfg.extraHelmFlags}
     """
 
     for(int i = 0;i<cfg.bbsimReplica;i++) {
       // TODO differentiate olt_id between different stacks
        sh """
-         helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} onf/bbsim ${cfg.extraHelmFlags} \
+         helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} onf/bbsim \
          --set olt_id="${cfg.stackId}${i}" \
-         -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml
+         -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml \
+         ${cfg.extraHelmFlags}
        """
     }
 
