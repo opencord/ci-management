@@ -612,7 +612,7 @@
       - string:
           name: volthaHelmChartsChange
           default: '{volthaHelmChartsChange}'
-          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/32/19132/1"'
 
       - bool:
           name: inMemoryEtcdStorage

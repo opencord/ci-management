@@ -20,6 +20,7 @@ def call(Map config) {
       workflow: "att",
       extraHelmFlags: "",
       localCharts: false,
+      kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
     ]
 
     if (!config) {
@@ -42,11 +43,16 @@ def call(Map config) {
 
     println "Deploying VOLTHA Infra with the following parameters: ${cfg}."
 
+    def kubeconfig = cfg.kubeconfig
+    if (kubeconfig == null) {
+      kubeconfig = env.KUBECONFIG
+    }
+
     sh """
     kubectl create namespace ${cfg.infraNamespace} || true
-    kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_config=$KUBECONFIG"  || true
+    kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_config=${kubeconfig}"  || true
     """
-    // TODO support multiple replicas
+
     sh """
     helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
           --set onos-classic.replicas=${cfg.onosReplica},onos-classic.atomix.replicas=${cfg.atomixReplica} \
