@@ -83,14 +83,14 @@ function check_if_releaseversion {
 
 # check if the version is already a tag in git
 function is_git_tag_duplicated {
-  while IFS= read -r existing_tag
+  for existing_tag in $existing_tags
   do
     if [ "$TAG_VERSION" = "$existing_tag" ]
     then
       echo "ERROR: Duplicate tag: $existing_tag"
       fail_validation=2
     fi
-  done <<< $existing_tags
+  done
 }
 
 # from https://github.com/cloudflare/semver_bash/blob/master/semver.sh
