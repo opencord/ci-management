@@ -72,6 +72,7 @@
           default: '{work-flow}'
           description: 'Installs and uses the specified work flow on the POD'
 
+      # openonu-go only supports a single replica, remove after 2.8
       - string:
           name: NumOfOpenOnu
           default: '{num-of-openonu}'
@@ -112,6 +113,7 @@
           default: '{reinstall-olt}'
           description: "Re-install olt software bringing up CORD"
 
+      # withKind is not used in the master branch pipeline, remove after 2.8
       - bool:
           name: withKind
           default: '{with-kind}'
@@ -133,15 +135,23 @@
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
       - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/32/19132/1"'
+
+      # kind-voltha is not used in the master branch pipeline, remove after 2.8
+      - string:
           name: kindVolthaChange
           default: '{kindVolthaChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
+      # NOTE is this needed/used?
       - string:
           name: cordTesterChange
           default: '{cordTesterChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
+      # NOTE is this needed/used?
       - string:
           name: openoltAdapterChart
           default: '{openoltAdapterChart}'
@@ -172,28 +182,32 @@
                   Copyright (c) 2018 Open Networking Foundation (ONF)
 
     <<: *voltha-pipe-job-boiler-plate
-    VolthaEtcdPort: '2379'
+    # default values
+    pipeline-script: 'voltha/master/physical-build.groovy'
+    volthaEtcdPort: 2379
+    num-of-openonu: 1
+    num-of-onos: 3
+    num-of-atomix: 3
+    test-repo: 'voltha-system-tests'
+    release: 'master'
+    branch: 'master'
+    configurePod: true
 
     <<: *voltha-build-job-parameters
 
     concurrent: true
 
-    pipeline-scm:
-      script-path: '{Jenkinsfile}'
-      scm:
-        - git:
-            url: '{gerrit-server-url}/voltha-system-tests'
-            branches:
-              - '{branch}'
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
 
     triggers:
       - timed: |
                  TZ=America/Los_Angeles
                  H {time} * * *
 
+# this job template is defined to support VOLTHA-2.7 builds, remove after 2.8
 - job-template:
     name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}'
-    id: build_voltha_pod_release_dependent
+    id: build_voltha_pod_release_legacy
     disabled: '{disable-job}'
     description: |
                   Automatic Build on POD {config-pod}, using {Jenkinsfile} in {gerrit-server-url}/voltha-system-tests' <br /><br />
@@ -204,6 +218,8 @@
 
     <<: *voltha-pipe-job-boiler-plate
     VolthaEtcdPort: '2379'
+    release: '2.7'
+    branch: 'voltha-2.7'
 
     <<: *voltha-build-job-parameters
 
@@ -342,8 +358,8 @@
           result: 'success'
 
 
-# VOLTHA Test Job
-# This job is automatically triggered after a build job has successfully completed
+# VOLTHA Soak Test Job
+# This job is triggered by a timer defined in the job
 - job-template:
     name: 'build_{config-pod}_{profile}_voltha{name-extension}_{release}_test'
     id: build_voltha_pod_soak_test
