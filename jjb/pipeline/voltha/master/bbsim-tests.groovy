@@ -132,21 +132,9 @@ def test_workflow(name) {
         ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
       """
       // collect pod details
-      get_pods_info("$WORKSPACE/${name}")
+      getPodsInfo("$WORKSPACE/${name}")
       helmTeardown(['infra', 'voltha'])
   }
-}
-
-def get_pods_info(dest) {
-  // collect pod details, this is here in case of failure
-  sh """
-  mkdir -p ${dest}
-  kubectl get pods --all-namespaces -o wide | tee ${dest}/pods.txt || true
-  kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
-  kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee ${dest}/pod-imagesId.txt || true
-  kubectl describe pods --all-namespaces -l app.kubernetes.io/part-of=voltha > ${dest}/pods-describe.txt
-  helm ls --all-namespaces | tee ${dest}/helm-charts.txt
-  """
 }
 
 pipeline {
@@ -219,14 +207,14 @@ pipeline {
 
   post {
     aborted {
-      get_pods_info("$WORKSPACE/failed")
+      getPodsInfo("$WORKSPACE/failed")
       sh """
       kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.log
       """
       archiveArtifacts artifacts: '**/*.log,**/*.txt'
     }
     failure {
-      get_pods_info("$WORKSPACE/failed")
+      getPodsInfo("$WORKSPACE/failed")
       sh """
       kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.logs
       """

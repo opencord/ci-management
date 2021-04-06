@@ -16,6 +16,7 @@ def call(Map config) {
       workflow: "att",
       extraHelmFlags: "",
       localCharts: false, // wether to use locally cloned charts or upstream one (for local we assume they are stored in $WORKSPACE/voltha-helm-charts)
+      kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
     ]
 
     if (!config) {
