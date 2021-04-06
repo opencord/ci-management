@@ -401,12 +401,22 @@ pipeline {
               _TAG=\$INSTANCE kubectl exec \$INSTANCE -- /usr/bin/tcpdump -nei eth0 port 1812 -w out.pcap&
             done
           fi
-
-          # load MIB template
-          wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-          cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
           """
         }
+      }
+    }
+    stage('Load MIB Template') {
+      when {
+        expression {
+          return params.withMibTemplate
+        }
+      }
+      steps {
+        sh """
+        # load MIB template
+        wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
+        cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
+        """
       }
     }
     stage('Run Test') {
