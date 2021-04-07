@@ -178,20 +178,31 @@ function dockerfile_parentcheck {
     for df_parent in "${df_parents[@]}"
     do
 
-      df_pattern="FROM ([^:]*):(.*)"
+      df_pattern="[FfRrOoMm] +(--platform=[^ ]+ +)?([^@: ]+)(:([^: ]+)|@sha[^ ]+)?"
       if [[ "$df_parent" =~ $df_pattern ]]
       then
 
-        p_image="${BASH_REMATCH[1]}"
-        p_version="${BASH_REMATCH[2]}"
+        p_image="${BASH_REMATCH[2]}"
+        p_sha=${BASH_REMATCH[3]}
+        p_version="${BASH_REMATCH[4]}"
 
-        if [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+        echo "IMAGE: '${p_image}'"
+        echo "VERSION: '$p_version'"
+        echo "SHA: '$p_sha'"
+
+        if [[ "${p_image}" == "scratch" ]]
+        then
+          echo "  OK: Using the versionless 'scratch' parent: '$df_parent'"
+        elif [[ "${p_image}:${p_version}" == "gcr.io/distroless/static:nonroot" ]]
+        then
+          echo "  OK: Using static distroless image with nonroot: '${p_image}:${p_version}'"
+        elif [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
         then
           echo "  OK: Parent '$p_image:$p_version' is a released SemVer version"
-        elif [[ "${p_version}" =~ ^.*@sha256:[0-9a-f]{64}.*$ ]]
+        elif [[ "${p_sha}" =~ ^@sha256:[0-9a-f]{64}.*$ ]]
         then
           # allow sha256 hashes to be used as version specifiers
-          echo "  OK: Parent '$p_image:$p_version' is using a specific sha256 hash as a version"
+          echo "  OK: Parent '$p_image$p_sha' is using a specific sha256 hash as a version"
         elif [[ "${p_version}" =~ ^.*([0-9]+)\.([0-9]+).*$ ]]
         then
           # handle non-SemVer versions that have a Major.Minor version specifier in the name
@@ -199,16 +210,15 @@ function dockerfile_parentcheck {
           #  'postgres:10.3-alpine'
           #  'openjdk:8-jre-alpine3.8'
           echo "  OK: Parent '$p_image:$p_version' is using a non-SemVer, but sufficient, version"
+        elif [[ -z "${p_version}" ]]
+        then
+          echo "  ERROR: Parent '$p_image' is NOT using a specific version"
+          fail_validation=1
         else
-          echo "  ERROR: Parent '$p_image:$p_version' is NOT using an specific version"
+          echo "  ERROR: Parent '$p_image:$p_version' is NOT using a specific version"
           fail_validation=1
         fi
 
-      elif [[ "$df_parent" =~ ^FROM\ scratch$ ]]
-      then
-        # Handle the parent-less `FROM scratch` case:
-        #  https://docs.docker.com/develop/develop-images/baseimages/
-        echo "  OK: Using the versionless 'scratch' parent: '$df_parent'"
       else
         echo "  ERROR: Couldn't find a parent image in $df_parent"
       fi
