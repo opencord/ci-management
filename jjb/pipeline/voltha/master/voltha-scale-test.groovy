@@ -183,7 +183,7 @@ pipeline {
               _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
             done
             '''
-            sh returnStdout: false, script: """
+            def returned_flags = sh (returnStdout: true, script: """
 
               export EXTRA_HELM_FLAGS+=' '
 
@@ -238,11 +238,6 @@ pipeline {
               # No persistent-volume-claims in Atomix
               EXTRA_HELM_FLAGS+="--set onos-classic.atomix.persistence.enabled=false "
 
-              echo "Installing with the following extra arguments:"
-              echo $EXTRA_HELM_FLAGS
-
-
-
               # Use custom built images
 
               if [ '\$GERRIT_PROJECT' == 'voltha-go' ]; then
@@ -272,12 +267,17 @@ pipeline {
               if [ '\$GERRIT_PROJECT' == 'bbsim' ]; then
                 EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
               fi
-            """
-            def extraHelmFlags = env.EXTRA_HELM_FLAGS + " -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml "
+              echo \$EXTRA_HELM_FLAGS
+
+            """).trim()
+
+            def extraHelmFlags = returned_flags + " -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml "
             def infraHelmFlags =
               " --set etcd.enabled=false,kafka.enabled=false" +
               " --set global.log_level=${logLevel} " +
               extraHelmFlags
+
+            println "Passing the following parameters to the VOLTHA infra deploy: ${infraHelmFlags}."
 
             volthaInfraDeploy([
               workflow: workflow,
