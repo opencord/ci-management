@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1f3c3179_79b3617d",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-04-07T06:41:56Z",
+      "side": 1,
+      "message": "it is for the Adtran job where their OLT chart is not public and is kept on the community pod. not sure why it\u0027s not exposed here: https://jenkins.opencord.org/view/Community-PODs/job/build_dt-berlin-pod-gpon-adtran_1T8GEM_voltha_DT_2.6_test/build?delay\u003d0sec",
+      "revId": "aacb95b67ab035e03f2a339f54faaeee4a589a5f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
