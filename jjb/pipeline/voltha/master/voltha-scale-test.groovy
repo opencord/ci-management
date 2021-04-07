@@ -49,7 +49,7 @@ pipeline {
     NUM_OF_OPENONU="${openonuAdapterReplicas}"
     NUM_OF_ONOS="${onosReplicas}"
     NUM_OF_ATOMIX="${atomixReplicas}"
-    EXTRA_HELM_FLAGS="${extraHelmFlags} " // note that the trailing space is required to separate the parameters from appends done later
+    EXTRA_HELM_FLAGS=" "
 
     APPS_TO_LOG="etcd kafka onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server onos-config-loader"
     LOG_FOLDER="$WORKSPACE/logs"
@@ -271,11 +271,11 @@ pipeline {
 
             """).trim()
 
-            def extraHelmFlags = returned_flags + " -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml "
+            def extraHelmFlags = returned_flags
             def infraHelmFlags =
               " --set etcd.enabled=false,kafka.enabled=false" +
               " --set global.log_level=${logLevel} " +
-              extraHelmFlags
+              extraHelmFlags + params.extraHelmFlags
 
             println "Passing the following parameters to the VOLTHA infra deploy: ${infraHelmFlags}."
 
