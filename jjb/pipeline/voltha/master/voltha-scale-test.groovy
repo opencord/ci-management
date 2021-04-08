@@ -272,10 +272,11 @@ pipeline {
             """).trim()
 
             def extraHelmFlags = returned_flags
+            // The added space before params.extraHelmFlags is required due to the .trim() above
             def infraHelmFlags =
               " --set etcd.enabled=false,kafka.enabled=false" +
               " --set global.log_level=${logLevel} " +
-              extraHelmFlags + params.extraHelmFlags
+              extraHelmFlags + " " + params.extraHelmFlags
 
             println "Passing the following parameters to the VOLTHA infra deploy: ${infraHelmFlags}."
 
@@ -360,9 +361,10 @@ pipeline {
 
           kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log ${logLevel.toLowerCase()} false
 
-          # Set Flows/Ports/Meters poll frequency
+          # Set Flows/Ports/Meters/Groups poll frequency
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${onosStatInterval}
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${onosStatInterval}
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 cfg set org.onosproject.provider.of.group.impl.OpenFlowGroupProvider groupPollInterval ${onosGroupInterval}
 
           if [ ${withFlows} = false ]; then
             sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 app deactivate org.opencord.olt
