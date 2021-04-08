@@ -100,6 +100,7 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
           onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
+          bbsimImg: matteoscandolo/bbsim:gemport
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -528,6 +529,11 @@
           description: 'How often ONOS should poll for ports, flows and meters'
 
       - string:
+          name: onosGroupInterval
+          default: '{onosGroupInterval}'
+          description: 'How often ONOS should poll for groups'
+
+      - string:
           name: bbsimImg
           default: '{bbsimImg}'
           description: 'Custom image selection for BBSIM (repo:tag)'
@@ -683,6 +689,7 @@
     etcdReplicas: 3
     extraHelmFlags: ''
     onosStatInterval: 5
+    onosGroupInterval: 1
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
@@ -785,6 +792,7 @@
     etcdReplicas: 1
     extraHelmFlags: ''
     onosStatInterval: 5
+    onosGroupInterval: 1
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
