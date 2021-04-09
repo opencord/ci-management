@@ -301,7 +301,7 @@ pipeline {
                 "--set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379"
 
             stackHelmFlags += " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
-            stackHelmFlags += extraHelmFlags
+            stackHelmFlags += extraHelmFlags + " " + params.extraHelmFlags
 
             volthaStackDeploy([
               bbsimReplica: olts.toInteger(),
