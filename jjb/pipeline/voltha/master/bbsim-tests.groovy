@@ -52,40 +52,51 @@ def customImageFlags(project) {
     break
     case "bbsim":
       // BBSIM has a different format that voltha, return directly
-      return "--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never"
+      return "--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never,images.bbsim.registry='' "
     break
     default:
     break
   }
 
-  return "--set ${chart}.images.${image}.tag=citest,${chart}.images.${image}.pullPolicy=Never "
+  return "--set ${chart}.images.${image}.tag=citest,${chart}.images.${image}.pullPolicy=Never,${chart}.images.${image}.registry='' "
 }
 
 def test_workflow(name) {
-  stage('Deploy - '+ name + ' workflow') {
-      def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
+  timeout(time: 10, unit: 'MINUTES') {
+    stage('Deploy - '+ name + ' workflow') {
+        def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
 
-      if (gerritProject != "") {
-        extraHelmFlags = extraHelmFlags + customImageFlags("${gerritProject}")
-      }
+        // use harbor as passthrough cache for docker containers
+        extraHelmFlags += " --set global.image_registry=mirror.registry.opennetworking.org/ "
+        extraHelmFlags += " --set etcd.image.registry=mirror.registry.opennetworking.org "
+        extraHelmFlags += " --set kafka.image.registry=mirror.registry.opennetworking.org "
+        extraHelmFlags += " --set kafka.zookeper.image.registry=mirror.registry.opennetworking.org "
+        extraHelmFlags += " --set onos-classic.image.repository=mirror.registry.opennetworking.org/voltha/voltha-onos "
+        extraHelmFlags += " --set onos-classic.atomix.image.repository=mirror.registry.opennetworking.org/atomix/atomix "
+        extraHelmFlags += " --set freeradius.images.radius.registry=mirror.registry.opennetworking.org/ "
 
-      def localCharts = false
-      if (gerritProject == "voltha-helm-charts") {
-        localCharts = true
-      }
+        if (gerritProject != "") {
+          extraHelmFlags = extraHelmFlags + customImageFlags("${gerritProject}")
+        }
 
-      volthaDeploy([workflow: name, extraHelmFlags: extraHelmFlags, localCharts: localCharts])
-      // start logging
-      sh """
-      mkdir -p $WORKSPACE/${name}
-      _TAG=kail-${name} kail -n infra -n voltha > $WORKSPACE/${name}/onos-voltha-combined.log &
-      """
-      // forward ONOS and VOLTHA ports
-      sh """
-      _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8101:8101&
-      _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181&
-      _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555&
-      """
+        def localCharts = false
+        if (gerritProject == "voltha-helm-charts") {
+          localCharts = true
+        }
+
+        volthaDeploy([workflow: name, extraHelmFlags: extraHelmFlags, localCharts: localCharts])
+        // start logging
+        sh """
+        mkdir -p $WORKSPACE/${name}
+        _TAG=kail-${name} kail -n infra -n voltha > $WORKSPACE/${name}/onos-voltha-combined.log &
+        """
+        // forward ONOS and VOLTHA ports
+        sh """
+        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8101:8101&
+        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181&
+        _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555&
+        """
+    }
   }
   stage('Test VOLTHA - '+ name + ' workflow') {
       sh """
