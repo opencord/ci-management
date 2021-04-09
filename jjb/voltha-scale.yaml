@@ -63,6 +63,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml'
+          onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
           bbsimImg: matteoscandolo/bbsim:gemport
 
       - 'voltha-scale-measurements':
