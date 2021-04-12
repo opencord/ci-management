@@ -82,7 +82,7 @@ def call(Map config) {
       userRemoteConfigs: [[
         url: "https://gerrit.opencord.org/voltha-helm-charts",
       ]],
-      branches: [[ name: "master", ]],
+      branches: [[ name: "${cfg.branch}", ]],
       extensions: [
         [$class: 'WipeWorkspace'],
         [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-helm-charts"],
