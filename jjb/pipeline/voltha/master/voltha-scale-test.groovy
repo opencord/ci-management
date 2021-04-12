@@ -670,6 +670,9 @@ EOF
         # get ONOS cfg from the 3 nodes
         printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl exec -it # -- ${karafHome}/bin/client cfg get > $LOG_FOLDER/#.cfg" || true
 
+        # get ONOS next objectives from the 3 nodes
+        printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl exec -it # -- ${karafHome}/bin/client obj-next-ids > $LOG_FOLDER/#.cfg" || true
+
 
         # get radius logs out of the container
         kubectl cp $(kubectl get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER/radius.log || true
