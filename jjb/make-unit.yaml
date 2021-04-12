@@ -54,12 +54,40 @@
       - junit:
           results: "**/*results.xml,**/*report.xml"
           allow-empty-results: '{junit-allow-empty-results}'
-      - xunit:
-          types:
-            - gtest:
-                pattern: "**/*xunit.xml"
-                deleteoutput: false
-                skip-if-no-test-files: '{xunit-skip-if-no-test-files}'
+# NOTE: circa 2020-04-11, the Jenkins xUnit plugin version 3.x.x changed the
+# config XML to not be JJB compatible, replacing the previous XML <types> tag
+# with a <tools> tag.
+#
+# Temporarily switch to using raw XML to configure xUnit.
+#
+# The following xunit and XML should be equivalent, except that the variable
+# `xunit-skip-if-no-test-files` is assumed to always be true.
+#
+#     - xunit:
+#         types:
+#           - gtest:
+#               pattern: "**/*xunit.xml"
+#               deleteoutput: false
+#               skip-if-no-test-files: '{xunit-skip-if-no-test-files}'
+#
+      - raw:
+          xml: |
+            <xunit plugin="xunit">
+              <tools>
+                <GoogleTestType>
+                  <pattern>**/*xunit.xml</pattern>
+                  <failIfNotNew>true</failIfNotNew>
+                  <deleteOutputFiles>false</deleteOutputFiles>
+                  <skipNoTestFiles>True</skipNoTestFiles>
+                  <stopProcessingIfError>true</stopProcessingIfError>
+                </GoogleTestType>
+              </tools>
+              <thresholds/>
+              <thresholdMode>1</thresholdMode>
+              <extraConfiguration>
+                <testTimeMargin>3000</testTimeMargin>
+              </extraConfiguration>
+            </xunit>
       - cobertura:
           report-file: "**/*coverage.xml"
           targets:
