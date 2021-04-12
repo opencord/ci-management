@@ -108,6 +108,8 @@ done < <(find . -name ".git" -prune -o -type f \
   ! -path "*git*" \
   ! -path "*swagger*" \
   ! -path "*.drawio" \
+  ! -name "*.pb.h" \
+  ! -name "*.pb.cc" \
   -print0 )
 
 exit ${fail_licensecheck}
