@@ -1,0 +1,204 @@
+---
+# SPDX-FileCopyrightText: 2020 Open Networking Foundation <info@opennetworking.org>
+# SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
+
+- name: "Provision Packages for Jenkins image"
+  hosts: default
+  become: true
+
+  tasks:
+
+    # Install golang, per: https://github.com/golang/go/wiki/Ubuntu
+    # Install using this PPA https://launchpad.net/~longsleep/+archive/ubuntu/golang-backports
+    - name: Add golang backports APT repo GPG key
+      apt_key:
+        data: |
+          -----BEGIN PGP PUBLIC KEY BLOCK-----
+
+          xo0ET551kQEEAME7Iyb7+c79CVWVwe+QaNlAVgauke1Q9Ycw8Rdxj55lKBJ5Ilpp
+          LwiKreAVin4CCaGEtT9btePbYYKg8I+/dsiDbE9+o8e8FIMEBwy+FS+9bwLZ5WZP
+          6nEtKPrrk3E+RUUpNbmO6udA62E0q2w7NcoA1jRS2YucsIL39aFXJcmvABEBAAHN
+          IUxhdW5jaHBhZCBQUEEgZm9yIFNpbW9uIEVpc2VubWFubsK4BBMBAgAiBQJPnnWR
+          AhsDBgsJCAcDAgYVCAIJCgsEFgIDAQIeAQIXgAAKCRD2vIFzVqPUXle6BAC3FUrE
+          7j4ltlgGAT2vRNlqWe8W6v0v20e1M8GsFHNB24zL/iRitUMosaWX94ufExwm+83y
+          ka4Cq0J4oUCSJtgWDLb6K2hYMKLnofj889+4ZN0akNyMOg0O5usD0oJJuRXL0+e3
+          sZo8b2aj7MwrHe+rTLLnlyKlRTUpt1gGF5GuiA==
+          =iKVn
+          -----END PGP PUBLIC KEY BLOCK-----
+        state: "present"
+
+    - name: Add golang backports repo
+      apt_repository:
+        repo: >-
+          deb http://ppa.launchpad.net/longsleep/golang-backports/ubuntu
+          {{ ansible_lsb['codename'] }} main
+        update_cache: true
+
+    - name: Install apt packages
+      apt:
+        name:
+          - "facter"
+          - "golang-1.15"
+          - "libxml2-utils"
+          - "bzip2"
+          - "curl"
+          - "ebtables"
+          - "enchant"
+          - "ethtool"
+          - "git"
+          - "golang-1.12-go"
+          - "graphviz"
+          - "jq"
+          - "kafkacat"
+          - "less"
+          - "libmysqlclient-dev"
+          - "libpcap-dev"
+          - "libxml2-utils"
+          - "maven"
+          - "nodejs"
+          - "python"
+          - "python-dev"
+          - "python-pip"
+          - "python3-dev"
+          - "python3-pip"
+          - "ruby"
+          - "screen"
+          - "socat"
+          - "ssh"
+          - "sshpass"
+          - "zip"
+        state: "present"
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Download repo launcher
+      get_url:
+        url: "https://gerrit.googlesource.com/git-repo/+/refs/tags/v2.12.2/repo?format=TEXT"
+        checksum: "sha256:f5afffcc9afae128efd2b325ff19544a0b78acceb33a2edf368ce2de94e8c33e"
+        dest: /tmp/repo.b64
+
+    - name: Decode and make repo launcher executable
+      shell:
+        cmd: |
+          base64 --decode /tmp/repo.b64 > /usr/local/bin/repo;
+          chmod 755 /usr/local/bin/repo
+        creates: /usr/local/bin/repo
+
+    - name: Download helm archive
+      get_url:
+        url: "https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz"
+        checksum: "sha256:01b317c506f8b6ad60b11b1dc3f093276bb703281cb1ae01132752253ec706a2"
+        dest: "/tmp/helm.tgz"
+
+    - name: Unarchive helm
+      unarchive:
+        src: "/tmp/helm.tgz"
+        dest: "/tmp"
+        remote_src: yes
+
+    - name: Install helm binary
+      copy:
+        src: /tmp/linux-amd64/helm
+        dest: /usr/local/bin/helm
+        mode: "0755"
+        remote_src: yes
+
+    - name: Recursively remove helm download and directory
+      file:
+        path: /tmp/linux-amd64
+        state: absent
+      with_items:
+        - /tmp/linux-amd64
+        - /tmp/helm.tgz
+
+    - name: Download/install kubectl binary
+      get_url:
+        url: "https://storage.googleapis.com/kubernetes-release/release/v1.18.15/bin/linux/amd64/kubectl"
+        checksum: "sha256:eb5a5dd0a72795942ab81d1e4331625e80a90002c8bb39b2cb15aa707a3812c6"
+        dest: /usr/local/bin/kubectl
+        mode: "0755"
+
+    - name: load /etc/docker/daemon.json from file
+      slurp:
+        src: /etc/docker/daemon.json
+      register: imported_var
+
+    - name: append more key/values
+      set_fact:
+        imported_var: "{{ imported_var.content|b64decode|from_json | default([]) | combine({ 'registry-mirrors': ['https://mirror.registry.opennetworking.org'] }) }}"
+
+    - name: write var to file
+      copy:
+        content: "{{ imported_var | to_nice_json }}"
+        dest: /etc/docker/daemon.json
+
+    - name: restart Docker service
+      systemd:
+        name: docker
+        state: restarted
+        daemon_reload: true
+
+    - name: Install multi python3 packages with version specifiers
+      pip:
+        name:
+          - ansible
+          - ansible-lint
+          - docker
+          - docker-compose
+          - git-review
+          - httpie
+          - netaddr
+          - pylint
+          - tox
+          - twine
+          - virtualenv
+          - yamllint
+        executable: pip3
+    - name: Install multi python2 packages with version specifiers
+      pip:
+        name:
+        - Jinja2
+        - coverage
+        - certifi
+        - cryptography
+        - git+https://github.com/linkchecker/linkchecker.git@v9.4.0
+        - graphviz
+        - grpcio-tools
+        - isort
+        - more-itertools==5.0.0
+        - mock>2.0.0<2.1.0
+        - ndg-httpsclient
+        - nose2>0.9.0<0.10.0
+        - pyopenssl
+        - pexpect
+        - pyyaml>3.10.0<3.11.0
+        - requests>2.14.0<2.15.0
+        - robotframework
+        - robotframework-httplibrary
+        - robotframework-kafkalibrary
+        - robotframework-lint
+        - robotframework-requests
+        - robotframework-sshlibrary
+        - six
+        - urllib3
+
+    - name: Install multi ruby packages with version specifiers
+      gem:
+        name: mdl
+        version: 0.5.0
+
+    - name: Install gitbook-cli npm package with version specifiers
+      community.general.npm:
+        name: gitbook-cli
+        global: true
+
+    - name: Install markdownlint npm package with version specifiers
+      community.general.npm:
+        name: markdownlint
+        global: true
+
+    - name: Install typings npm package with version specifiers
+      community.general.npm:
+        name: typings
+        global: true
+
