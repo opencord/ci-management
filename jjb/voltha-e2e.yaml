@@ -161,7 +161,7 @@
           code-branch: 'voltha-2.7'
           onus: 2
           pons: 2
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * *"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test'
