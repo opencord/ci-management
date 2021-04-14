@@ -1,0 +1,248 @@
+---
+# SPDX-FileCopyrightText: 2020 Open Networking Foundation <info@opennetworking.org>
+# SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
+
+- name: "Provision Packages for Jenkins image"
+  hosts: default
+  become: true
+
+  tasks:
+    - name: Install apt packages
+      apt:
+        name:
+          - "facter"
+          - "golang-1.16"
+          - "libxml2-utils"
+          - "bzip2"
+          - "curl"
+          - "ebtables"
+          - "enchant"
+          - "ethtool"
+          - "git"
+          - "graphviz"
+          - "jq"
+          - "kafkacat"
+          - "less"
+          - "libpcap-dev"
+          - "libxml2-utils"
+          - "maven"
+          - "ruby"
+          - "screen"
+          - "socat"
+          - "ssh"
+          - "sshpass"
+          - "zip"
+          # below four packages are required by npm
+          - "nodejs"
+          - "libssl1.0-dev"
+          - "nodejs-dev"
+          - "node-gyp"
+          - "npm"
+        state: "present"
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Download repo launcher
+      get_url:
+        url: "https://gerrit.googlesource.com/git-repo/+/refs/tags/v2.12.2/repo?format=TEXT"
+        checksum: "sha256:f5afffcc9afae128efd2b325ff19544a0b78acceb33a2edf368ce2de94e8c33e"
+        dest: /tmp/repo.b64
+
+    - name: Decode and make repo launcher executable
+      shell:
+        cmd: |
+          base64 --decode /tmp/repo.b64 > /usr/local/bin/repo;
+          chmod 755 /usr/local/bin/repo
+        creates: /usr/local/bin/repo
+
+    - name: Download helm archive
+      get_url:
+        url: "https://get.helm.sh/helm-v3.5.2-linux-amd64.tar.gz"
+        checksum: "sha256:01b317c506f8b6ad60b11b1dc3f093276bb703281cb1ae01132752253ec706a2"
+        dest: "/tmp/helm.tgz"
+
+    - name: Unarchive helm
+      unarchive:
+        src: "/tmp/helm.tgz"
+        dest: "/tmp"
+        remote_src: yes
+
+    - name: Install helm binary
+      copy:
+        src: /tmp/linux-amd64/helm
+        dest: /usr/local/bin/helm
+        mode: "0755"
+        remote_src: yes
+
+    - name: Download/install kubectl binary
+      get_url:
+        url: "https://storage.googleapis.com/kubernetes-release/release/v1.18.15/bin/linux/amd64/kubectl"
+        checksum: "sha256:eb5a5dd0a72795942ab81d1e4331625e80a90002c8bb39b2cb15aa707a3812c6"
+        dest: /usr/local/bin/kubectl
+        mode: "0755"
+
+    - name: load /etc/docker/daemon.json from file
+      slurp:
+        src: /etc/docker/daemon.json
+      register: imported_var
+
+    - name: append more key/values
+      set_fact:
+        imported_var: "{{ imported_var.content|b64decode|from_json | default([]) | combine({ 'registry-mirrors': ['https://mirror.registry.opennetworking.org'] }) }}"
+
+    - name: write var to file
+      copy:
+        content: "{{ imported_var | to_nice_json }}"
+        dest: /etc/docker/daemon.json
+
+    - name: restart Docker service
+      systemd:
+        name: docker
+        state: restarted
+        daemon_reload: true
+
+    - name: Install multi python3 packages with version specifiers
+      pip:
+        name:
+          - ansible
+          - ansible-lint
+          - docker
+          - docker-compose
+          - git-review
+          - httpie
+          - netaddr
+          - pylint
+          - tox
+          - twine
+          - virtualenv
+          - yamllint
+        executable: pip3
+    - name: Install multi python2 packages with version specifiers
+      pip:
+        name:
+        - Jinja2
+        - coverage
+        - certifi
+        - cryptography
+        - git+https://github.com/linkchecker/linkchecker.git@v9.4.0
+        - graphviz
+        - grpcio-tools
+        - isort
+        - more-itertools==5.0.0
+        - mock>2.0.0<2.1.0
+        - ndg-httpsclient
+        - nose2>0.9.0<0.10.0
+        - pyopenssl
+        - pexpect
+        - pyyaml>3.10.0<3.11.0
+        - requests>2.14.0<2.15.0
+        - robotframework
+        - robotframework-httplibrary
+        - robotframework-kafkalibrary
+        - robotframework-lint
+        - robotframework-requests
+        - robotframework-sshlibrary
+        - six
+        - urllib3
+
+    - name: Install multi ruby packages with version specifiers
+      gem:
+        name: mdl
+        version: 0.5.0
+
+    - name: Install gitbook-cli npm package with version specifiers
+      community.general.npm:
+        name: gitbook-cli
+        global: true
+
+    - name: Install markdownlint npm package with version specifiers
+      community.general.npm:
+        name: markdownlint
+        global: true
+
+    - name: Install typings npm package with version specifiers
+      community.general.npm:
+        name: typings
+        global: true
+
+    - name: Download minikube
+      get_url:
+        url: "https://storage.googleapis.com/minikube/releases/latest/minikube_1.18.0-0_amd64.deb"
+        checksum: "sha256:6e3918b601704014f3d0b0a09e3116f1ea528ac255525743a800b5f0b5856622"
+        dest: /tmp/minikube.deb
+
+    - name: Install minikube deb
+      apt:
+        deb: /tmp/minikube.deb
+
+    - name: Download protobuf
+      get_url:
+        url: "https://github.com/google/protobuf/releases/download/v3.7.0/protoc-3.7.0-linux-x86_64.zip"
+        checksum: "sha256:a1b8ed22d6dc53c5b8680a6f1760a305b33ef471bece482e92728f00ba2a2969"
+        dest: /tmp/protobuf.zip
+
+    - name: Unzip and make protobuf launcher executable
+      shell:
+        cmd: |
+          unzip /tmp/protobuf.zip -d /tmp/protoc3;
+          mv /tmp/protoc3/bin/* /usr/local/bin/;
+          rm -rf /usr/local/include/google/*;
+          mv /tmp/protoc3/include/google/* /usr/local/include/google/*
+
+    - name: Download pandoc
+      get_url:
+        url: "https://github.com/jgm/pandoc/releases/download/2.10.1/pandoc-2.10.1-1-amd64.deb"
+        checksum: "sha256:4515d6fe2bf8b82765d8dfa1e1b63ccb0ff3332d60389f948672eaa37932e936"
+        dest: /tmp/pandoc.deb
+
+    - name: Install pandoc deb
+      apt:
+        deb: /tmp/pandoc.deb
+
+    - name: Download yq
+      get_url:
+        url: "https://github.com/mikefarah/yq/releases/download/3.4.0/yq_linux_amd64"
+        checksum: "sha256:f6bd1536a743ab170b35c94ed4c7c4479763356bd543af5d391122f4af852460"
+        dest: /usr/local/bin/yq
+
+    - name: Change yq Permission
+      file:
+        path: /usr/local/bin/yq
+        mode: 0755
+
+    - name: Download hadolint
+      get_url:
+        url: "https://github.com/hadolint/hadolint/releases/download/v1.18.0/hadolint-Linux-x86_64"
+        checksum: "sha256:f9bc9de12438b463ca84e77fde70b07b155d4da07ca21bc3f4354a62c6199db4"
+        dest: /usr/local/bin/hadolint
+
+    - name: Change hadolint Permission
+      file:
+        path: /usr/local/bin/hadolint
+        mode: 0755
+
+    - name: Download golang
+      get_url:
+        url: "https://dl.google.com/go/go1.16.3.linux-amd64.tar.gz"
+        checksum: "sha256:951a3c7c6ce4e56ad883f97d9db74d3d6d80d5fec77455c6ada6c1f7ac4776d2"
+        dest: /tmp/golang_1.16.3.tar.gz
+
+    - name: Unarchive golang
+      unarchive:
+        src: "/tmp/golang_1.16.3.tar.gz"
+        dest: "/usr/local"
+        remote_src: yes
+
+    - name: Recursively remove download files and folders
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - /tmp/linux-amd64
+        - /tmp/helm.tgz
+        - /tmp/minikube.deb
+        - /tmp/protoc3
+        - /tmp/protobuf.zip
+        - /tmp/pandoc.deb
+        - /tmp/repo.b64
+        - /tmp/golang_1.16.3.tar.gz
