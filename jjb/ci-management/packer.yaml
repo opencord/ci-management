@@ -1,0 +1,20 @@
+- project:
+    archive-artifacts: '**/*.log'
+    branch: 'master'
+    build-timeout: '60'
+    build-node: 'ubuntu18.04-basebuild-1c-1g'
+
+    jobs:
+      - '{project-name}-packer-jobs':
+          platforms:
+            - 'ubuntu-18.04'
+          templates:
+            - basebuild_1804
+
+    name: packer-jobs
+    project: 'ci-management'
+    project-name: 'ci-management-ami'
+
+    jjb-version: 3.2.0
+    packer-version: 1.6.5
+    packer-builder: aws
