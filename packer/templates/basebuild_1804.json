@@ -1,0 +1,94 @@
+{
+    "variables": {
+        "ansible_roles_path": ".galaxy",
+        "aws_access_key": null,
+        "aws_security_key": null,
+        "arch": "x86_64",
+        "cloud_user_data": null,
+        "distro": null,
+        "instance_type": "t2.medium",
+        "security_group_id": null,
+        "source_ami_filter_name": null,
+        "source_ami_filter_owner": null,
+        "source_ami_filter_product_code": "",
+        "subnet_id": null,
+        "ssh_user": null
+    },
+    "builders": [
+        {
+            "name": "aws",
+            "access_key": "{{user `aws_access_key`}}",
+            "ami_name": "{{user `distro`}} - basebuild - {{user `arch`}} - {{isotime \"20060102-1504\"}}",
+            "instance_type": "{{user `instance_type`}}",
+            "region": "us-west-2",
+            "secret_key": "{{user `aws_security_key`}}",
+            "security_group_id": "{{user `security_group_id`}}",
+            "source_ami_filter": {
+                "filters": {
+                    "name": "{{user `source_ami_filter_name`}}",
+                    "product-code": "{{user `source_ami_filter_product_code`}}",
+                    "architecture": "{{user `arch`}}",
+                    "root-device-type": "ebs",
+                    "virtualization-type": "hvm"
+                },
+                "most_recent": true,
+                "owners": ["{{user `source_ami_filter_owner`}}"]
+            },
+            "ssh_username": "{{user `ssh_user`}}",
+            "subnet_id": "{{user `subnet_id`}}",
+            "type": "amazon-ebs",
+            "user_data_file": "{{user `cloud_user_data`}}"
+        }
+    ],
+    "provisioners": [
+        {
+          "type": "shell-local",
+          "command": "./common-packer/ansible-galaxy.sh {{user `ansible_roles_path`}}"
+      },
+      {
+          "type": "ansible",
+          "user": "{{user `ssh_user`}}",
+          "playbook_file": "provision/local-builder.yaml",
+          "ansible_env_vars": [
+              "ANSIBLE_NOCOWS=1",
+              "ANSIBLE_PIPELINING=False",
+              "ANSIBLE_HOST_KEY_CHECKING=False",
+              "ANSIBLE_ROLES_PATH={{user `ansible_roles_path`}}",
+              "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
+              "ANSIBLE_STDOUT_CALLBACK=debug"
+          ]
+      },
+      {
+          "type": "ansible",
+          "user": "{{user `ssh_user`}}",
+          "playbook_file": "./common-packer/provision/local-docker.yaml",
+          "ansible_env_vars": [
+              "ANSIBLE_NOCOWS=1",
+              "ANSIBLE_PIPELINING=False",
+              "ANSIBLE_HOST_KEY_CHECKING=False",
+              "ANSIBLE_ROLES_PATH={{user `ansible_roles_path`}}",
+              "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
+              "ANSIBLE_STDOUT_CALLBACK=debug"
+          ]
+      },
+      {
+          "type": "ansible",
+          "user": "{{user `ssh_user`}}",
+          "playbook_file": "provision/onf-playbook.yaml",
+          "ansible_env_vars": [
+              "ANSIBLE_NOCOWS=1",
+              "ANSIBLE_PIPELINING=False",
+              "ANSIBLE_HOST_KEY_CHECKING=False",
+              "ANSIBLE_ROLES_PATH={{user `ansible_roles_path`}}",
+              "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
+              "ANSIBLE_STDOUT_CALLBACK=debug"
+          ]
+      },
+      {
+        "type": "shell",
+        "scripts": [
+           "provision/jenkins_exec_go1_16.sh"
+        ]
+      }
+  ]
+}
