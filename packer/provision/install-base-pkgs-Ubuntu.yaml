@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2020 Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
+
+---
+- name: Install base packages
+  apt:
+    name:
+      - build-essential
+      - devscripts
+      - dh-systemd
+      - equivs
+      - gdebi
+    state: latest
+  become: yes
