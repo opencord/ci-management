@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f4979615_390552ac",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 673,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-04-15T17:42:09Z",
+      "side": 1,
+      "message": "why are these hardcoded?",
+      "range": {
+        "startLine": 673,
+        "startChar": 26,
+        "endLine": 673,
+        "endChar": 53
+      },
+      "revId": "89550ac1ca81d152e2b5a9afc8a0efcc5d190342",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
