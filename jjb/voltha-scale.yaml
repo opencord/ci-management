@@ -535,6 +535,11 @@
           description: 'How often ONOS should poll for groups'
 
       - string:
+          name: flowObjWorkerThreads
+          default: '{flowObjWorkerThreads}'
+          description: 'How many threads are used by the FlowObjectiveManager worker pool'
+
+      - string:
           name: bbsimImg
           default: '{bbsimImg}'
           description: 'Custom image selection for BBSIM (repo:tag)'
@@ -691,6 +696,7 @@
     extraHelmFlags: ''
     onosStatInterval: 5
     onosGroupInterval: 1
+    flowObjWorkerThreads: 12
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
@@ -794,6 +800,7 @@
     extraHelmFlags: ''
     onosStatInterval: 5
     onosGroupInterval: 1
+    flowObjWorkerThreads: 12
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
