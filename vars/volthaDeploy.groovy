@@ -16,6 +16,7 @@ def call(Map config) {
       workflow: "att",
       extraHelmFlags: "",
       localCharts: false, // wether to use locally cloned charts or upstream one (for local we assume they are stored in $WORKSPACE/voltha-helm-charts)
+      dockerRegistry: "", // use a different docker registry for all images, eg: "mirror.registry.opennetworking.org"
     ]
 
     if (!config) {
@@ -23,6 +24,16 @@ def call(Map config) {
     }
 
     def cfg = defaultConfig + config
+
+    if (dockerRegistry != "") {
+      extraHelmFlags += " --set global.image_registry=${cfg.dockerRegistry}/ "
+      extraHelmFlags += " --set etcd.image.registry=${cfg.dockerRegistry} "
+      extraHelmFlags += " --set kafka.image.registry=${cfg.dockerRegistry} "
+      extraHelmFlags += " --set kafka.zookeper.image.registry=${cfg.dockerRegistry} "
+      extraHelmFlags += " --set onos-classic.image.repository=${cfg.dockerRegistry}/voltha/voltha-onos "
+      extraHelmFlags += " --set onos-classic.atomix.image.repository=${cfg.dockerRegistry}/atomix/atomix "
+      extraHelmFlags += " --set freeradius.images.radius.registry=${cfg.dockerRegistry}/ "
+    }
 
     println "Deploying VOLTHA with the following parameters: ${cfg}."
 

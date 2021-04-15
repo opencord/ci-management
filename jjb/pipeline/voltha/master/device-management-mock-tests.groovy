@@ -12,9 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// voltha-2.x e2e tests
-// uses kind-voltha to deploy voltha-2.X
-// uses bbsim to simulate OLT/ONUs
+// NOTE we are importing the library even if it's global so that it's
+// easier to change the keywords during a replay
+library identifier: 'cord-jenkins-libraries@master',
+    retriever: modernSCM([
+      $class: 'GitSCMSource',
+      remote: 'https://gerrit.opencord.org/ci-management.git'
+])
+
+def localCharts = false
 
 pipeline {
 
@@ -27,62 +33,23 @@ pipeline {
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
-    VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/voltha/kind-voltha/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    NAME="minimal"
-    FANCY=0
-    WITH_SIM_ADAPTERS="n"
-    WITH_RADIUS="y"
-    WITH_BBSIM="y"
-    DEPLOY_K8S="y"
-    VOLTHA_LOG_LEVEL="DEBUG"
-    CONFIG_SADIS="n"
+    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     ROBOT_MISC_ARGS="-d $WORKSPACE/RobotLogs"
   }
 
   stages {
 
-    stage('Repo') {
+    stage('Download Code') {
       steps {
-        step([$class: 'WsCleanup'])
-        checkout(changelog: false, \
-          poll: false,
-          scm: [$class: 'RepoScm', \
-            manifestRepositoryUrl: "${params.manifestUrl}", \
-            manifestBranch: "${params.manifestBranch}", \
-            currentBranch: true, \
-            destinationDir: 'voltha', \
-            forceSync: true,
-            resetFirst: true, \
-            quiet: true, \
-            jobs: 4, \
-            showAllChanges: true] \
-          )
+        getVolthaCode([
+          branch: "${branch}",
+          gerritProject: "${gerritProject}",
+          gerritRefspec: "${gerritRefspec}",
+          // volthaSystemTestsChange: "${volthaSystemTestsChange}",
+          // volthaHelmChartsChange: "${volthaHelmChartsChange}",
+        ])
       }
     }
-    stage('Patch') {
-      steps {
-        sh """
-           pushd $WORKSPACE/
-           echo "${gerritProject}" "${gerritChangeNumber}" "${gerritPatchsetNumber}"
-           echo "${GERRIT_REFSPEC}"
-           git clone https://gerrit.opencord.org/${gerritProject}
-           cd "${gerritProject}"
-           git fetch https://gerrit.opencord.org/${gerritProject} "${GERRIT_REFSPEC}" && git checkout FETCH_HEAD
-           popd
-           """
-      }
-    }
-    stage('Create K8s Cluster') {
-      steps {
-        sh """
-           cd $WORKSPACE/voltha/kind-voltha/
-           JUST_K8S=y ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/voltha/kind-voltha/bin"
-           """
-      }
-    }
-
     stage('Build Redfish Importer Image') {
       steps {
         sh """
@@ -90,7 +57,6 @@ pipeline {
            """
       }
     }
-
     stage('Build demo_test Image') {
       steps {
         sh """
@@ -98,7 +64,6 @@ pipeline {
            """
       }
     }
-
     stage('Build mock-redfish-server  Image') {
       steps {
         sh """
@@ -106,25 +71,41 @@ pipeline {
            """
       }
     }
-
-    stage('Push Images') {
+    stage('Create K8s Cluster') {
       steps {
-        sh '''
-             docker images | grep citest
-             for image in \$(docker images -f "reference=*/*citest" --format "{{.Repository}}"); do echo "Pushing \$image to nodes"; kind load docker-image \$image:citest --name voltha-\$NAME --nodes voltha-\$NAME-worker,voltha-\$NAME-worker2; done
-           '''
+        createKubernetesCluster([nodes: 3])
+      }
+    }
+    stage('Load image in kind nodes') {
+      steps {
+        loadToKind()
       }
     }
     stage('Deploy Voltha') {
       steps {
-        sh '''
-           export EXTRA_HELM_FLAGS="--set log_agent.enabled=False ${extraHelmFlags} "
-
-           cd $WORKSPACE/voltha/kind-voltha/
-           echo \$EXTRA_HELM_FLAGS
-           kail -n voltha -n default > $WORKSPACE/onos-voltha-combined.log &
-           ./voltha up
-           '''
+        script {
+          if (branch != "master" || volthaHelmChartsChange != "") {
+            // if we're using a release or testing changes in the charts, then use the local clone
+            localCharts = true
+          }
+        }
+        volthaDeploy([
+          workflow: "att",
+          extraHelmFlags: extraHelmFlags,
+          dockerRegistry: "mirror.registry.opennetworking.org",
+          localCharts: localCharts,
+        ])
+        // start logging
+        sh """
+        mkdir -p $WORKSPACE/att
+        _TAG=kail-att kail -n infra -n voltha > $WORKSPACE/att/onos-voltha-combined.log &
+        """
+        // forward ONOS and VOLTHA ports
+        sh """
+        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8101:8101&
+        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181&
+        _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555&
+        """
       }
     }
 
@@ -146,7 +127,6 @@ pipeline {
     always {
       sh '''
          set +e
-         cp $WORKSPACE/voltha/kind-voltha/install-minimal.log $WORKSPACE/
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
          kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
          kubectl get nodes -o wide
@@ -155,7 +135,6 @@ pipeline {
 
          sync
          pkill kail || true
-         md5sum $WORKSPACE/voltha/kind-voltha/bin/voltctl
 
          ## Pull out errors from log files
          extract_errors_go() {
@@ -178,10 +157,6 @@ pipeline {
          extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
 
          gzip $WORKSPACE/onos-voltha-combined.log
-
-         ## shut down kind-voltha
-         cd $WORKSPACE/voltha/kind-voltha
-	       WAIT_ON_DOWN=y ./voltha down
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
