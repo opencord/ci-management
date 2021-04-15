@@ -66,15 +66,6 @@ def test_workflow(name) {
     stage('Deploy - '+ name + ' workflow') {
         def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
 
-        // use harbor as passthrough cache for docker containers
-        extraHelmFlags += " --set global.image_registry=mirror.registry.opennetworking.org/ "
-        extraHelmFlags += " --set etcd.image.registry=mirror.registry.opennetworking.org "
-        extraHelmFlags += " --set kafka.image.registry=mirror.registry.opennetworking.org "
-        extraHelmFlags += " --set kafka.zookeper.image.registry=mirror.registry.opennetworking.org "
-        extraHelmFlags += " --set onos-classic.image.repository=mirror.registry.opennetworking.org/voltha/voltha-onos "
-        extraHelmFlags += " --set onos-classic.atomix.image.repository=mirror.registry.opennetworking.org/atomix/atomix "
-        extraHelmFlags += " --set freeradius.images.radius.registry=mirror.registry.opennetworking.org/ "
-
         if (gerritProject != "") {
           extraHelmFlags = extraHelmFlags + customImageFlags("${gerritProject}")
         }
@@ -84,7 +75,12 @@ def test_workflow(name) {
           localCharts = true
         }
 
-        volthaDeploy([workflow: name, extraHelmFlags: extraHelmFlags, localCharts: localCharts])
+        volthaDeploy([
+          workflow: name,
+          extraHelmFlags:extraHelmFlags,
+          localCharts: localCharts,
+          dockerRegistry: "mirror.registry.opennetworking.org"
+        ])
         // start logging
         sh """
         mkdir -p $WORKSPACE/${name}
