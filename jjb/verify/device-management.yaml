@@ -21,7 +21,7 @@
           junit-allow-empty-results: true
           build-node: 'ubuntu16.04-basebuild-2c-4g'
       - 'device-management-patch-test':
-          pipeline-script: 'device-management-mock-tests.groovy'
+          pipeline-script: 'voltha/master/device-management-mock-tests.groovy'
 
 - job-group:
     name: 'publish-device-management-jobs'
