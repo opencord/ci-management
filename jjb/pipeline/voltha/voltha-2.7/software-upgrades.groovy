@@ -42,10 +42,11 @@ def test_software_upgrade(name) {
          split = onosImg.split(':')
         extraHelmFlags = extraHelmFlags + "--set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
       }
-      def localCharts = false
+
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
-      volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
+      // NOTE localCharts is set to "true" so that we use the locally cloned version of the chart (set to voltha-2.7)
+      volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: true])
       // start logging
       sh """
       rm -rf $WORKSPACE/${name} || true
