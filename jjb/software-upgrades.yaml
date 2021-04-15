@@ -38,7 +38,7 @@
 
       - 'software-upgrades-test':
           name: 'periodic-software-upgrade-test-bbsim-2.7'
-          pipeline-script: 'voltha/master/software-upgrades.groovy'
+          pipeline-script: 'voltha/voltha-2.7/software-upgrades.groovy'
           build-node: 'qct-pod4-node2'
           code-branch: 'voltha-2.7'
           aaa-version: '2.3.0'
@@ -249,4 +249,3 @@
       - timed: |
                  TZ=America/Los_Angeles
                  {time-trigger}
-
