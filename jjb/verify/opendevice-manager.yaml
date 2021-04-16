@@ -1,0 +1,22 @@
+---
+# verification jobs for 'opendevice-manager' repo
+
+- project:
+    name: opendevice-manager
+    project: '{name}'
+
+    jobs:
+      - 'verify-opendevice-manager-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'verify-opendevice-manager-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          unit-test-targets: 'test'
+          # opendm-agent uses gtest which outputs in xunit format
+          junit-allow-empty-results: true
+          xunit-skip-if-no-test-files: false
