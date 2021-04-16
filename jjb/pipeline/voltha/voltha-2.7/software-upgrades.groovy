@@ -23,9 +23,7 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
-      if ("${name}" == "onos-app-upgrade") {
-          extraHelmFlags = extraHelmFlags + "--set global.image_tag=master "
-      }
+
       extraHelmFlags = extraHelmFlags + """ --set voltha.services.controller[0].service=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc \
       --set voltha.services.controller[0].port=6653 \
       --set voltha.services.controller[0].address=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc:6653 \
@@ -42,10 +40,11 @@ def test_software_upgrade(name) {
          split = onosImg.split(':')
         extraHelmFlags = extraHelmFlags + "--set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
       }
-      def localCharts = false
+
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
-      volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
+      // NOTE localCharts is set to "true" so that we use the locally cloned version of the chart (set to voltha-2.7)
+      volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: true])
       // start logging
       sh """
       rm -rf $WORKSPACE/${name} || true
