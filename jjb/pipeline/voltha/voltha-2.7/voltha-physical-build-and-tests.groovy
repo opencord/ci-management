@@ -96,11 +96,9 @@ pipeline {
         getVolthaCode([
           branch: "${branch}",
           gerritProject: "${gerritProject}",
-          // FIXE fatal: couldn't find remote ref 23842/2
-          // gerritRefspec: "${gerritChangeNumber}/${gerritPatchsetNumber}",
           gerritRefspec: "${gerritRefspec}",
-          // volthaSystemTestsChange: "${volthaSystemTestsChange}",
-          // volthaHelmChartsChange: "${volthaHelmChartsChange}",
+          volthaSystemTestsChange: "${volthaSystemTestsChange}",
+          volthaHelmChartsChange: "${volthaHelmChartsChange}",
         ])
       }
     }
