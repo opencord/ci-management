@@ -27,11 +27,12 @@ def call(String project = "unknown", String tag = "citest", String pullPolicy = 
     break
     case "bbsim":
       // BBSIM has a different format that voltha, return directly
-      return "--set images.bbsim.tag=${tag},images.bbsim.pullPolicy=${pullPolicy}"
+      return "--set images.bbsim.tag=${tag},images.bbsim.pullPolicy=${pullPolicy},images.bbsim.registry='' "
     break
     default:
+      return ""
     break
   }
 
-  return "--set ${chart}.images.${image}.tag=${tag},${chart}.images.${image}.pullPolicy=${pullPolicy} "
+  return "--set ${chart}.images.${image}.tag=${tag},${chart}.images.${image}.pullPolicy=${pullPolicy},${chart}.images.${image}.registry=''  "
 }
