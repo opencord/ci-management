@@ -20,9 +20,26 @@ def call(Map config) {
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
+- role: worker
+- role: worker
 - role: control-plane
-- role: worker
-- role: worker
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        node-labels: "ingress-ready=true"
+  extraPortMappings:
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+  - containerPort: 30115
+    hostPort: 30115
+  - containerPort: 30120
+    hostPort: 30120
     """
     writeFile(file: 'kind.cfg', text: data)
 
