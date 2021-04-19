@@ -390,7 +390,7 @@
 
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
-# to use in a job: `parameters: *voltha-build-job-parameters`
+# to use in a job: `parameters: *voltha-scale-job-parameters`
 - voltha-scale-job-parameters: &voltha-scale-job-parameters
     name: voltha-scale-job-parameters
     parameters:
