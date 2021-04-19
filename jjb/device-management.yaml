@@ -22,6 +22,8 @@
     name: 'verify_{project}_sanity-test{name-extension}'
     extra-helm-flags: ''
     skip-vote: false
+    volthaSystemTestsChange: ''
+    volthaHelmChartsChange: ''
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -45,12 +47,7 @@
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
-          name: manifestUrl
-          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
-          description: 'URL to the repo manifest'
-
-      - string:
-          name: manifestBranch
+          name: branch
           default: 'master'
           description: 'Name of the repo branch to use'
 
@@ -60,19 +57,24 @@
           description: 'Name of the Gerrit project'
 
       - string:
-          name: gerritChangeNumber
-          default: '$GERRIT_CHANGE_NUMBER'
-          description: 'Changeset number in Gerrit'
-
-      - string:
-          name: gerritPatchsetNumber
-          default: '$GERRIT_PATCHSET_NUMBER'
-          description: 'PatchSet number in Gerrit'
+          name: gerritRefspec
+          default: '$GERRIT_REFSPEC'
+          description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
 
       - string:
           name: extraHelmFlags
           default: '{extra-helm-flags}'
           description: 'Helm flags to pass to ./voltha up'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: '{volthaSystemTestsChange}'
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/79/18779/13"'
 
     project-type: pipeline
     concurrent: true
@@ -247,4 +249,3 @@
       - timed: |
                  TZ=America/Los_Angeles
                  {time-trigger}
-
