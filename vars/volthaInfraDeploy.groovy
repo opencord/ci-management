@@ -50,6 +50,8 @@ def call(Map config) {
     sh """
     helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
           --set onos-classic.replicas=${cfg.onosReplica},onos-classic.atomix.replicas=${cfg.atomixReplica} \
+          --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
+          --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
           -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml ${cfg.extraHelmFlags}
     """
 }
