@@ -402,7 +402,7 @@
       - string:
           name: release
           default: '{release}'
-          description: 'Version of the code to test (matches a branch in kind-voltha and voltha-system-tests repos)'
+          description: 'Version of the code to test (matches a branch in voltha-helm-charts and voltha-system-tests repos)'
 
       - string:
           name: buildNode
@@ -545,11 +545,6 @@
           description: 'Custom image selection for BBSIM (repo:tag)'
 
       - string:
-          name: bbsimChart
-          default: '{bbsimChart}'
-          description: 'BBSim chart name (or location on file system)'
-
-      - string:
           name: rwCoreImg
           default: '{rwCoreImg}'
           description: 'Custom image selection for VOLTHA (repo:tag)'
@@ -560,19 +555,9 @@
           description: 'Custom image selection for OfAgent (repo:tag), only supports the go version'
 
       - string:
-          name: volthaChart
-          default: '{volthaChart}'
-          description: 'VOLTHA chart name (or location on file system)'
-
-      - string:
           name: openoltAdapterImg
           default: '{openoltAdapterImg}'
           description: 'Custom image selection for Openolt Adapter (repo:tag)'
-
-      - string:
-          name: openoltAdapterChart
-          default: '{openoltAdapterChart}'
-          description: 'OpenOLT chart name (or location on file system)'
 
       - string:
           name: openonuAdapterImg
@@ -585,24 +570,9 @@
           description: 'Custom image selection for Openonu Go Adapter (repo:tag)'
 
       - string:
-          name: openonuAdapterChart
-          default: '{openonuAdapterChart}'
-          description: 'OpenONU chart name (or location on file system)'
-
-      - string:
           name: onosImg
           default: '{onosImg}'
           description: 'Custom image selection for Openonu Adapter (repo:tag)'
-
-      - string:
-          name: onosChart
-          default: '{onosChart}'
-          description: 'ONOS chart name (or location on file system)'
-
-      - string:
-          name: radiusChart
-          default: '{radiusChart}'
-          description: 'freeradius chart name (or location on file system)'
 
       - string:
           name: volthaSystemTestsChange

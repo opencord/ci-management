@@ -77,54 +77,13 @@ pipeline {
         }
       }
     }
-    stage('Clone voltha-system-tests') {
+    stage('Download Code') {
       steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/voltha-system-tests",
-            refspec: "${volthaSystemTestsChange}"
-          ]],
-          branches: [[ name: "${release}", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
+        getVolthaCode([
+          branch: "${release}",
+          volthaSystemTestsChange: "${volthaSystemTestsChange}",
+          volthaHelmChartsChange: "${volthaHelmChartsChange}",
         ])
-        script {
-          sh(script:"""
-            if [ '${volthaSystemTestsChange}' != '' ] ; then
-              cd $WORKSPACE/voltha-system-tests;
-              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-            fi
-            """)
-        }
-      }
-    }
-    stage('Clone voltha-helm-charts') {
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/voltha-helm-charts",
-            refspec: "${volthaHelmChartsChange}"
-          ]],
-          branches: [[ name: "master", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-helm-charts"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
-        script {
-          sh(script:"""
-            if [ '${volthaHelmChartsChange}' != '' ] ; then
-              cd $WORKSPACE/voltha-helm-charts;
-              git fetch https://gerrit.opencord.org/voltha-helm-charts ${volthaHelmChartsChange} && git checkout FETCH_HEAD
-            fi
-            """)
-        }
       }
     }
     stage('Build patch') {
@@ -282,11 +241,16 @@ pipeline {
 
             println "Passing the following parameters to the VOLTHA infra deploy: ${infraHelmFlags}."
 
+            def localCharts = false
+            if (volthaHelmChartsChange != "") {
+              localCharts = true
+            }
+
             volthaInfraDeploy([
               workflow: workflow,
               infraNamespace: "default",
               extraHelmFlags: infraHelmFlags,
-              localCharts: false, // TODO support custom charts
+              localCharts: localCharts,
               onosReplica: onosReplicas,
               atomixReplica: atomixReplicas,
             ])
