@@ -34,6 +34,7 @@
           num-of-openonu: '1'
           num-of-onos: '3'
           num-of-atomix: '3'
+          VolthaEtcdPort: 9999
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           profile: '1T4GEM'
@@ -72,6 +73,9 @@
           config-pod: 'flex-ocp-cord'
           profile: 'Default'
           time: '4'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -97,6 +101,7 @@
           configurePod: true
           profile: '1T4GEM'
           time: '1'
+          VolthaEtcdPort: 9999
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -124,6 +129,7 @@
           configurePod: true
           profile: 'TP'
           time: '22'
+          VolthaEtcdPort: 9999
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -148,6 +154,9 @@
           work-flow: 'TT'
           profile: 'TP'
           time: '9'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -158,7 +167,6 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
-          # TODO do we need different test pipelines for different tests?
           pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
@@ -221,7 +229,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          VolthaEtcdPort: '9999'
+          VolthaEtcdPort: 9999
           in-band-management: true
           time: '7'
 
