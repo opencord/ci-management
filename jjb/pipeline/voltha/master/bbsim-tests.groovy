@@ -55,7 +55,7 @@ def customImageFlags(project) {
       return "--set images.bbsim.tag=citest,images.bbsim.pullPolicy=Never,images.bbsim.registry='' "
     break
     default:
-    break
+      return ""
   }
 
   return "--set ${chart}.images.${image}.tag=citest,${chart}.images.${image}.pullPolicy=Never,${chart}.images.${image}.registry='' "
