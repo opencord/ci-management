@@ -237,6 +237,11 @@
             branches:
               - '{branch}'
 
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 H {time} * * *
+
 # VOLTHA Test Job
 # This job is automatically triggered after a build job has successfully completed
 - job-template:
