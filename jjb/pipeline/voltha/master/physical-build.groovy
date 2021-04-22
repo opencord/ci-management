@@ -74,9 +74,12 @@ pipeline {
             helmTeardown(["default", infraNamespace, volthaNamespace])
           }
           timeout(1) {
+            // TODO drop port-forward and use ingresses (see scale pipeline for an example)
             sh returnStdout: false, script: '''
-            # remove orphaned port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
+            # remove port-forwards
+            # they are up on a bash loop, so kill the loop first, then kill any lingering process
+            ps aux | grep port-forw | grep bash | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
+            ps aux | grep port-forw | grep -v bash | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9"
             '''
           }
         }
