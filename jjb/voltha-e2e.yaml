@@ -71,7 +71,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
+          pipeline-script: 'voltha/master/openonu-go-periodic-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-8c-15g'
           make-target: openonu-go-adapter-test
           make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
@@ -85,7 +85,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.7'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-8c-15g'
           make-target: openonu-go-adapter-test
           make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
@@ -99,7 +99,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
+          pipeline-script: 'voltha/master/openonu-go-periodic-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-8c-15g'
           make-target: openonu-go-adapter-multi-olt-test
           make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test
@@ -116,7 +116,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.7'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
           build-node: 'ubuntu16.04-basebuild-8c-15g'
           make-target: openonu-go-adapter-multi-olt-test
           make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test
@@ -293,6 +293,7 @@
     gerrit-project: ''
     work-flow: ''
     volthaSystemTestsChange: ''
+    volthaHelmChartsChange: ''
     kindVolthaChange: ''
     extraHelmFlags: ''
     sandbox: true
@@ -335,6 +336,8 @@
           default: '{make-target}'
           description: 'Makefile target to invoke during test'
 
+      # TODO is there a better way to manage the test targets?
+      # maybe we can use a comma separated list?
       - string:
           name: makeFailtestTarget
           default: '{make-target-failtest}'
@@ -395,6 +398,7 @@
           default: '{gerrit-project}'
           description: 'Name of the Gerrit project'
 
+      # used in voltha-2.7
       - string:
           name: gerritChangeNumber
           default: ''
@@ -405,6 +409,11 @@
           default: ''
           description: 'PatchSet number in Gerrit'
 
+      # used in master
+      - string:
+          name: gerritRefspec
+          default: ''
+          description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
       - string:
           name: testRuns
           default: '{test-runs}'
@@ -430,6 +439,12 @@
           default: '{volthaSystemTestsChange}'
           description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
 
+      - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/79/18779/13"'
+
+      # deprecated, remove after 2.7 is dropped from support
       - string:
           name: kindVolthaChange
           default: '{kindVolthaChange}'
