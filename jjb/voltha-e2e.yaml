@@ -21,7 +21,7 @@
     make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
 
     jobs:
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-test-bbsim'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
@@ -37,7 +37,7 @@
           pons: 2
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-test-bbsim'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
@@ -53,7 +53,7 @@
           pons: 2
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.7'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
@@ -71,21 +71,19 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
-          build-node: 'ubuntu18.04-basebuild-8c-15g'
-          make-target: openonu-go-adapter-test
-          make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
-          make-target-1t8gemtest: 1t8gem-openonu-go-adapter-test
-          make-target-reconciletest: reconcile-openonu-go-adapter-test
-          make-target-reconciledttest: reconcile-openonu-go-adapter-test-dt
-          make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
-          withAlarms: false
           code-branch: 'master'
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
+          name: 'patchset-voltha-openonu-go-test-bbsim'
+          trigger-comment: "voltha test openonu"
+          code-branch: '$GERRIT_BRANCH'
+          gerrit-project: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.7'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           make-target: openonu-go-adapter-test
           make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
@@ -99,15 +97,6 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
-          build-node: 'ubuntu18.04-basebuild-8c-15g'
-          make-target: openonu-go-adapter-multi-olt-test
-          make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test
-          make-target-1t8gemtest: 1t8gem-openonu-go-adapter-multi-olt-test
-          make-target-reconciletest: reconcile-openonu-go-adapter-multi-olt-test
-          make-target-reconciledttest: reconcile-openonu-go-adapter-multi-olt-test-dt
-          make-target-reconciletttest: reconcile-openonu-go-adapter-multi-olt-test-tt
-          withAlarms: false
           code-branch: 'master'
           olts: 2
           onus: 2
@@ -115,8 +104,18 @@
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
+          name: 'patchset-voltha-multiple-olts-openonu-go-test-bbsim'
+          trigger-comment: "voltha test openonu multiolt"
+          code-branch: '$GERRIT_BRANCH'
+          gerrit-project: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          olts: 2
+          onus: 2
+          pons: 2
+
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.7'
-          pipeline-script: 'voltha-openonu-go-test-bbsim.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           make-target: openonu-go-adapter-multi-olt-test
           make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test
@@ -131,7 +130,7 @@
           pons: 2
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-test-DMI'
           pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
           build-node: 'qct-pod4-node2'
@@ -140,7 +139,7 @@
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-test-DMI-2.7'
           pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
           build-node: 'qct-pod4-node2'
@@ -149,7 +148,7 @@
           code-branch: 'voltha-2.7'
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-test-bbsim-2.7'
           pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
@@ -163,7 +162,7 @@
           pons: 2
           time-trigger: "H H * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-etcd-test'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
@@ -173,7 +172,7 @@
           pons: 2
           time-trigger: "H H/12 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-etcd-test-2.7'
           pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
@@ -184,7 +183,7 @@
           time-trigger: "H H/12 * * *"
 
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-sanity-test-multi-runs'
           pipeline-script: 'voltha-go-multi-tests.groovy'
           build-node: 'qct-pod4-node2'
@@ -195,7 +194,7 @@
           test-runs: 5
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-sanity-test-multi-runs-2.7'
           pipeline-script: 'voltha-go-multi-tests.groovy'
           build-node: 'qct-pod4-node2'
@@ -206,7 +205,7 @@
           test-runs: 5
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test':
+      - 'voltha-periodic-test-kind-voltha-based':
           name: 'nightly-voltha-DTflow-sanity-test'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
@@ -285,7 +284,174 @@
           default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
 
 - job-template:
+  # as of now this template is only used by the openonu-go periodic test,
+  # in order to use for multiple pipelines we should change it so that
+  # we can specify a list of make targets and iterate over that
     id: 'voltha-periodic-test'
+    name: '{name}'
+    pipeline-script: 'voltha/master/openonu-go-periodic-test-bbsim.groovy'
+    build-node: 'ubuntu18.04-basebuild-8c-15g'
+    test-runs: 1
+    robot-args: ''
+    gerrit-project: ''
+    gerritRefspec: ''
+    work-flow: ''
+    volthaSystemTestsChange: ''
+    volthaHelmChartsChange: ''
+    extraHelmFlags: ''
+    sandbox: true
+    olts: 1
+    make-target: openonu-go-adapter-test
+    make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
+    make-target-1t8gemtest: 1t8gem-openonu-go-adapter-test
+    make-target-reconciletest: reconcile-openonu-go-adapter-test
+    make-target-reconciledttest: reconcile-openonu-go-adapter-test-dt
+    make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
+    trigger-comment: vv7CBoQQYYonvaN8xcru
+    time-trigger: 0 0 29 2 *
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/voltha-e2e.yaml  <br /><br />
+      E2E Validation for Voltha 2.X
+
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{big-build-days-to-keep}'
+          artifact-num-to-keep: '{big-artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: extraHelmFlags
+          default: '--set onu={onus},pon={pons},{extraHelmFlags}'
+          description: 'Helm flags to pass to ./voltha up'
+
+      # TODO is there a better way to manage the test targets?
+      # maybe we can use a comma separated list?
+      - string:
+          name: makeTarget
+          default: '{make-target}'
+          description: 'Makefile target to invoke during test'
+
+      - string:
+          name: makeFailtestTarget
+          default: '{make-target-failtest}'
+          description: 'Makefile target to invoke during failure/based test'
+
+      - string:
+          name: makeMultiOltTarget
+          default: '{make-target-multipleolt}'
+          description: 'Makefile target to invoke during multiple olt test'
+
+      - string:
+          name: makeErrortestTarget
+          default: '{make-target-errortest}'
+          description: 'Makefile target to invoke during error test'
+
+      - string:
+          name: makeAlarmtestTarget
+          default: '{make-target-alarmtest}'
+          description: 'Makefile target to invoke during alarm test'
+
+      - string:
+          name: make1t4gemTestTarget
+          default: '{make-target-1t4gemtest}'
+          description: 'Makefile target to invoke during 1t4gem test'
+
+      - string:
+          name: make1t8gemTestTarget
+          default: '{make-target-1t8gemtest}'
+          description: 'Makefile target to invoke during 1t8gem test'
+
+      - string:
+          name: makeReconcileTestTarget
+          default: '{make-target-reconciletest}'
+          description: 'Makefile target to invoke during reconcile test'
+
+      - string:
+          name: makeReconcileDtTestTarget
+          default: '{make-target-reconciledttest}'
+          description: 'Makefile target to invoke during reconcile dt test'
+
+      - string:
+          name: makeReconcileTtTestTarget
+          default: '{make-target-reconciletttest}'
+          description: 'Makefile target to invoke during reconcile tt test'
+
+      - string:
+          name: branch
+          default: '{code-branch}'
+          description: 'Repo manifest branch for code checkout'
+
+      - string:
+          name: gerritProject
+          default: '{gerrit-project}'
+          description: 'Name of the Gerrit project'
+
+      - string:
+          name: gerritRefspec
+          default: ''
+          description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: extraRobotArgs
+          default: '{robot-args}'
+          description: 'Arguments to pass to robot'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: '{volthaSystemTestsChange}'
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: olts
+          default: '{olts}'
+          description: 'How many BBSim instances to run'
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+    triggers:
+      # patchset jobs will set this to "0 0 29 2 *" (feb 29th, it's once every 4 years)
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
+      # periodic jobs will set this to vv7CBoQQYYonvaN8xcru (hopefully no-one will comment with that)
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          silent-start: false
+          successful-message: "PASSED openonu-go test"
+          failure-message: "FAILED openonu-go test"
+          unstable-message: "UNSTABLE openonu-go test"
+          trigger-on:
+            - comment-added-contains-event:
+                comment-contains-value: '.*{trigger-comment}.*'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter-go|ofagent-go|voltha-onos|bbsim)$'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{all-branches-regexp}'
+
+- job-template:
+    id: 'voltha-periodic-test-kind-voltha-based'
     name: '{name}'
     pipeline-script: 'voltha-go-tests.groovy'
     test-runs: 1
@@ -293,6 +459,7 @@
     gerrit-project: ''
     work-flow: ''
     volthaSystemTestsChange: ''
+    volthaHelmChartsChange: ''
     kindVolthaChange: ''
     extraHelmFlags: ''
     sandbox: true
