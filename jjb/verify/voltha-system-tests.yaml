@@ -7,12 +7,15 @@
 
     jobs:
       - 'verify-voltha-system-tests-jobs':
+          buildNode: 'ubuntu18.04-basebuild-4c-8g'
           branch-regexp: '{all-branches-regexp}'
       - 'verify-voltha-system-tests-jobs-voltha-2.7':
+          buildNode:  'ubuntu18.04-basebuild-4c-8g'
           name-extension: '-voltha-2.7'
           override-branch: 'voltha-2.7'
           branch-regexp: '{kind-voltha-regexp}'
       - 'verify-voltha-system-tests-jobs-master':
+          buildNode:  'ubuntu18.04-basebuild-4c-8g'
           branch-regexp: '^master$'
 
 - job-group:
