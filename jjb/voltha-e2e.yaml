@@ -748,7 +748,7 @@
               project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-openonu-adapter-go|voltha-go)$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{all-branches-regexp}'
+                  branch-pattern: '{branch-pattern}'
 
 
 - job-template:
