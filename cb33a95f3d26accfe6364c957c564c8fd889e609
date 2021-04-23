@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7e5c5bbf_e5dff5a8",
+        "filename": "jjb/ci-management/ci-management.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-04-23T06:22:05Z",
+      "side": 0,
+      "message": "Is this not needed?  If not specified, what version is used?",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 25
+      },
+      "revId": "cb33a95f3d26accfe6364c957c564c8fd889e609",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
