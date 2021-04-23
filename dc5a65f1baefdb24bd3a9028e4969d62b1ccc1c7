@@ -16,6 +16,24 @@
       "revId": "dc5a65f1baefdb24bd3a9028e4969d62b1ccc1c7",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "617717b2_49c7fc7a",
+        "filename": "jjb/pipeline/voltha/master/voltha-go-multi-periodic-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-04-23T09:15:03Z",
+      "side": 1,
+      "message": "Yes, this is based on reference from that patch and be submitted only after the other patch. Also, yet to test.",
+      "parentUuid": "08d9e977_ace1ee48",
+      "revId": "dc5a65f1baefdb24bd3a9028e4969d62b1ccc1c7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
