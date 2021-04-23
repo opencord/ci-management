@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b4ed6f15_629e8b3e",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 483,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-04-23T13:15:47Z",
+      "side": 1,
+      "message": "To be consistent I would make it {build-node}. Considering this as well: https://github.com/opencord/ci-management/blob/master/jjb/make-unit.yaml#L40 \nAlso, then change is required in this patch: https://gerrit.opencord.org/c/ci-management/+/24324/1/jjb/verify/voltha-system-tests.yaml",
+      "range": {
+        "startLine": 483,
+        "startChar": 21,
+        "endLine": 483,
+        "endChar": 30
+      },
+      "revId": "98d965c343ce005237460d8acb12ff903c70c801",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
