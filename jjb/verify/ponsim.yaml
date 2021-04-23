@@ -18,7 +18,7 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_ponsim_licensed'
       - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'test docker-build'
           unit-test-keep-going: 'true'

@@ -42,7 +42,7 @@ def changeApiVersion(def appName, def newApiVersion) {
 
 // TODO: use the declarative pipeline syntax, like all other groovy files.
 //  This implementation is based on the legacy cord-onos-publisher/Jenkinsfile.release
-node ('ubuntu16.04-basebuild-1c-2g') {
+node ('ubuntu18.04-basebuild-1c-2g') {
 
   sh 'echo Releasing ' + appRepo + ' repository on ' + branch + ' branch'
   sh 'echo Releasing version ' + version + ' with API version ' + apiVersion + ' and starting ' + nextVersion + '-SNAPSHOT with API version ' + nextApiVersion + '-SNAPSHOT'

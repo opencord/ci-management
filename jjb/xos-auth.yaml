@@ -32,7 +32,7 @@
           branch: '$GERRIT_BRANCH'
           destination-dir: 'cord'
 
-    node: 'ubuntu16.04-basebuild-4c-8g'
+    node: 'ubuntu18.04-basebuild-4c-8g'
     project-type: freestyle
     concurrent: true
 

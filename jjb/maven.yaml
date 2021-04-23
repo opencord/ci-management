@@ -8,7 +8,7 @@
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
+    node: 'ubuntu18.04-basebuild-1c-2g'
     project-type: freestyle
 
     parameters:
@@ -81,7 +81,7 @@
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
+    node: 'ubuntu18.04-basebuild-1c-2g'
     project-type: freestyle
 
     parameters:

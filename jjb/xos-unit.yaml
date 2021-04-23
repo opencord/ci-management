@@ -32,7 +32,7 @@
           branch: 'master'
           destination-dir: 'cord'
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
+    node: 'ubuntu18.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: true
 

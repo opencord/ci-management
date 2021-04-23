@@ -31,7 +31,7 @@
     jobs:
       - 'python-unit-test':
           build-timeout: 45
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
       - 'api-test':
           pipeline-script: 'xos-core.groovy'
 

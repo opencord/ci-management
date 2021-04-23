@@ -13,7 +13,7 @@
           stream: "master"
           # As we run integration tests with 3 ONOS instances,
           # we need a beefy node.
-          build-node: "ubuntu16.04-basebuild-8c-15g"
+          build-node: "ubuntu18.04-basebuild-8c-15g"
 
 - job-group:
     name: "up4-jobs"

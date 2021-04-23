@@ -40,7 +40,7 @@
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
+    node: 'ubuntu18.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: true
 
