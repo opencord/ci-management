@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4332957b_3b9487dc",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-04-23T06:51:10Z",
+      "side": 1,
+      "message": "May be 2021.",
+      "range": {
+        "startLine": 1,
+        "startChar": 13,
+        "endLine": 1,
+        "endChar": 17
+      },
+      "revId": "294f7866377a83d7d0d8d4a1c5c29a2ccf6016da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ddfa735b_23ff6063",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-04-23T06:51:10Z",
+      "side": 1,
+      "message": "att",
+      "range": {
+        "startLine": 187,
+        "startChar": 38,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "294f7866377a83d7d0d8d4a1c5c29a2ccf6016da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
