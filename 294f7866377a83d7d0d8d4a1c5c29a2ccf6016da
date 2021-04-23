@@ -65,6 +65,24 @@
     },
     {
       "key": {
+        "uuid": "adbf8e3e_391bfecb",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-04-23T17:24:20Z",
+      "side": 1,
+      "message": "This is not really needed in this job as we don\u0027t use a physical switch, but I\u0027m trying to get rid of the port forwards as much as I can",
+      "parentUuid": "8a203097_c1030309",
+      "revId": "294f7866377a83d7d0d8d4a1c5c29a2ccf6016da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e0e44906_601d77ce",
         "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
         "patchSetId": 1
@@ -76,6 +94,30 @@
       "writtenOn": "2021-04-23T08:15:03Z",
       "side": 1,
       "message": "It should be better to use ${testName}, because same \u0027workflow\u0027 will be used multiple for different tests. So there will be no diffentiation possible afterwards in the artefacts.",
+      "range": {
+        "startLine": 81,
+        "startChar": 16,
+        "endLine": 81,
+        "endChar": 27
+      },
+      "revId": "294f7866377a83d7d0d8d4a1c5c29a2ccf6016da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1188e2e9_9e621087",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-04-23T17:24:20Z",
+      "side": 1,
+      "message": "the \"workflow\" is only used to tag the process so that we can kill it, and we clean it up with every test cycle. The logs are stored under \"outputDir\" so they\u0027ll be in a different location for each iteration, eg: \"$WORKSPACE/1t4gem\", \"$WORKSPACE/1t8gem\"",
+      "parentUuid": "e0e44906_601d77ce",
       "range": {
         "startLine": 81,
         "startChar": 16,
@@ -108,6 +150,30 @@
       "revId": "294f7866377a83d7d0d8d4a1c5c29a2ccf6016da",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b928b095_87b5459a",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 187,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-04-23T17:24:20Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ddfa735b_23ff6063",
+      "range": {
+        "startLine": 187,
+        "startChar": 38,
+        "endLine": 187,
+        "endChar": 40
+      },
+      "revId": "294f7866377a83d7d0d8d4a1c5c29a2ccf6016da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
