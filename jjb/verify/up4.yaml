@@ -73,6 +73,10 @@
       - lf-infra-wrappers:
           build-timeout: "{build-timeout}"
           jenkins-ssh-credential: "{jenkins-ssh-credential}"
+      - credentials-binding:
+          - text:
+              credential-id: codecov-up4
+              variable: CODECOV_TOKEN
 
 - job-template:
     id: "up4-postmerge"
@@ -124,3 +128,7 @@
       - lf-infra-wrappers:
           build-timeout: "{build-timeout}"
           jenkins-ssh-credential: "{jenkins-ssh-credential}"
+      - credentials-binding:
+          - text:
+              credential-id: codecov-up4
+              variable: CODECOV_TOKEN
