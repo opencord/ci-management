@@ -40,7 +40,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # `npm install` fails on 1Gb RAM
-    node: 'ubuntu16.04-basebuild-1c-2g'
+    node: 'ubuntu18.04-basebuild-1c-2g'
     project-type: freestyle
     concurrent: true
 

@@ -56,7 +56,7 @@
     # The most frequently used type of Build Executor. Name is per the LF global-jjb.
     # See build node types under "Cloud > Amazon EC2" at
     #  https://jenkins.opencord.org/configure
-    build-node: ubuntu16.04-basebuild-1c-1g
+    build-node: ubuntu18.04-basebuild-1c-1g
 
     # CORD Gerrit server definition, set in configuration
     gerrit-server-name: 'CORD Gerrit'

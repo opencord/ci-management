@@ -21,7 +21,7 @@
           unit-test-targets: 'test'
           dest-gopath: "github.com/opencord"
           junit-allow-empty-results: true
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
 
 - job-group:
     name: 'publish-voltha-bbsim-jobs'

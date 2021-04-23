@@ -33,7 +33,7 @@
     parameters:
       - string:
           name: buildNode
-          default: 'ubuntu16.04-basebuild-4c-8g'
+          default: 'ubuntu18.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
@@ -92,7 +92,7 @@
     parameters:
       - string:
           name: buildNode
-          default: 'ubuntu16.04-basebuild-4c-8g'
+          default: 'ubuntu18.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
@@ -151,7 +151,7 @@
     parameters:
       - string:
           name: buildNode
-          default: 'ubuntu16.04-basebuild-4c-8g'
+          default: 'ubuntu18.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:
@@ -210,7 +210,7 @@
     parameters:
       - string:
           name: buildNode
-          default: 'ubuntu16.04-basebuild-4c-8g'
+          default: 'ubuntu18.04-basebuild-4c-8g'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:

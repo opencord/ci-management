@@ -15,7 +15,7 @@
       - 'verify-licensed'
       - 'tag-collision-reject'
       - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
           unit-test-targets: 'test'
           # opendm-agent uses gtest which outputs in xunit format
           junit-allow-empty-results: true
