@@ -28,14 +28,14 @@
           unit-test-targets: 'lint sca'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
-          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-tests"
           unit-test-targets: 'test'
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
 
 - job-group:
     name: 'verify-voltha-openonu-adapter-go-jobs-voltha-2.7'

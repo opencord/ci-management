@@ -94,14 +94,14 @@
           pipeline-file: 'Jenkinsfile-omec-install-ngic-rtc-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
-          build-node: 'ubuntu16.04-basebuild-4c-8g'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
       - 'omec-container'
 
 # for c3po
@@ -131,14 +131,14 @@
           pipeline-file: 'Jenkinsfile-omec-install-c3po-hss-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
-          build-node: 'ubuntu16.04-basebuild-8c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
       - 'omec-container'
       - 'omec-container-remote':
           pod: 'dev'
@@ -168,14 +168,14 @@
           pipeline-file: 'Jenkinsfile-omec-install-openmme-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
 
 # for nucleus
 - project:
@@ -200,17 +200,17 @@
           pipeline-file: 'Jenkinsfile-omec-install-Nucleus-vnf.groovy'
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-cppcheck':
           pipeline-file: 'omec-cppcheck.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 60
           docker-repo: 'omecproject'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-container'
       - 'omec-container-remote':
           pod: 'dev'
@@ -233,10 +233,10 @@
     jobs:
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
 
 # for ignite
 - project:
@@ -254,10 +254,10 @@
     jobs:
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
 
 # for upf-epc
 - project:
@@ -274,14 +274,14 @@
     jobs:
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'omec-reuse':
           pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
           extraEnvironmentVars: CPU=haswell
       - 'omec-container'
       - 'omec-container-remote':

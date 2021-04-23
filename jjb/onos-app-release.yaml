@@ -69,7 +69,7 @@
           default: '{jdk-distribution}'
           description: 'Distribution of the JDK to use with update-java-alternatives'
 
-    node: 'ubuntu16.04-basebuild-1c-2g'
+    node: 'ubuntu18.04-basebuild-1c-2g'
     project-type: pipeline
     concurrent: true
 

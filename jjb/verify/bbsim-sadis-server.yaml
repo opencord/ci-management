@@ -23,7 +23,7 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_bbsim-sadis-server_licensed'
       - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'

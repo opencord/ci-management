@@ -9,7 +9,7 @@
       - 'voltha-publish':
           project-regexp: 'voltha'
           branch-regexp: '^(master|voltha-1.6|voltha-1.7)$'
-          build-node: 'ubuntu16.04-basebuild-1c-2g'
+          build-node: 'ubuntu18.04-basebuild-1c-2g'
           dependency-jobs: ''
 
 - job-template:

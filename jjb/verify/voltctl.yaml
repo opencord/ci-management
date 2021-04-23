@@ -20,7 +20,7 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltctl_licensed'
       - 'make-unit-test':
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
           dependency-jobs: 'verify_voltctl_tag-collision'
@@ -31,7 +31,7 @@
     name: 'post-submit-voltctl-jobs'
     jobs:
       - 'github-release':
-          build-node: 'ubuntu16.04-basebuild-2c-4g'
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
           dependency-jobs: 'version-tag'
           github-organization: 'opencord'
           artifact-glob: 'release/*'
