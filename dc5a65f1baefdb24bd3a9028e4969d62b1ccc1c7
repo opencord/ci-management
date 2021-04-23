@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "08d9e977_ace1ee48",
+        "filename": "jjb/pipeline/voltha/master/voltha-go-multi-periodic-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-04-23T08:33:25Z",
+      "side": 1,
+      "message": "this file seems very similar to https://gerrit.opencord.org/c/ci-management/+/24340/1/jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy could we actually merge the two ?",
+      "revId": "dc5a65f1baefdb24bd3a9028e4969d62b1ccc1c7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
