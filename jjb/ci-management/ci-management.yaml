@@ -3,20 +3,13 @@
     archive-artifacts: '**/*.log'
     branch: 'master'
     build-timeout: '60'
-    build-node: 'centos7-basebuild-1c-1g'
+    build-node: 'ubuntu18.04-basebuild-1c-1g'
 
     jobs:
       - '{project-name}-ci-jobs'
-      - '{project-name}-packer-jobs':
-          platforms:
-            - 'centos-7'
-            - 'ubuntu-16.04'
-          templates:
-            - basebuild
 
     name: ci-management-jobs
     project: 'ci-management'
     project-name: 'ci-management'
 
     jjb-version: 3.2.0
-    packer-version: 1.2.4
