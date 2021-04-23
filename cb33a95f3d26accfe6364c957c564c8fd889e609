@@ -22,6 +22,30 @@
       "revId": "cb33a95f3d26accfe6364c957c564c8fd889e609",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "347f29b7_388ef702",
+        "filename": "jjb/ci-management/ci-management.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000596
+      },
+      "writtenOn": "2021-04-23T06:31:57Z",
+      "side": 0,
+      "message": "After grep the `packer-version` string in the global-jjb repository, I think this variable is required only by packer related jobs and packer jobs are described in another file as we did in the Aether Jenkins, see the following link.\nhttps://gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/jjb/ci-management/packer.yaml\n\nAfter removing the packet-jobs, this fill will only generate jjb related jobs, I also checked the configuration page of ci-management-jjb-verify but can\u0027t find any variable related to packer version.\nhttps://jenkins.opencord.org/job/ci-management-jjb-verify/configure\n\nBased on the above observation, I think it\u0027s safe to remove the packer version from this file.",
+      "parentUuid": "7e5c5bbf_e5dff5a8",
+      "range": {
+        "startLine": 22,
+        "startChar": 4,
+        "endLine": 22,
+        "endChar": 25
+      },
+      "revId": "cb33a95f3d26accfe6364c957c564c8fd889e609",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
