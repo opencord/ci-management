@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2467915_39819712",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-26T12:12:38Z",
+      "side": 0,
+      "message": "Removing this leads to a single ONU test in multiple OLTs scenario! Please take care about the different targets between single ONU and multiple OLTs scenarios (see also L74-82)!",
+      "range": {
+        "startLine": 105,
+        "startChar": 10,
+        "endLine": 109,
+        "endChar": 85
+      },
+      "revId": "f6cbde2af0afea55e445cad1f7c22b8acdd1cbf6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}

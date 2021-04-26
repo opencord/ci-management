@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "198fe272_d5207ec8",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-26T12:12:38Z",
+      "side": 1,
+      "message": "should be something like \u0027mibupload\u0027",
+      "range": {
+        "startLine": 169,
+        "startChar": 24,
+        "endLine": 169,
+        "endChar": 30
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3d5dddd4_8fb023c1",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-26T12:12:38Z",
+      "side": 1,
+      "message": "should be something like \u0027mibupload\u0027",
+      "range": {
+        "startLine": 169,
+        "startChar": 101,
+        "endLine": 169,
+        "endChar": 107
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
