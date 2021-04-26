@@ -74,12 +74,9 @@ pipeline {
             helmTeardown(["default", infraNamespace, volthaNamespace])
           }
           timeout(1) {
-            // TODO drop port-forward and use ingresses (see scale pipeline for an example)
             sh returnStdout: false, script: '''
-            # remove port-forwards
-            # they are up on a bash loop, so kill the loop first, then kill any lingering process
-            ps aux | grep port-forw | grep bash | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
-            ps aux | grep port-forw | grep -v bash | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
+            # remove orphaned port-forward from different namespaces
+            ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
             '''
           }
         }
@@ -95,10 +92,18 @@ pipeline {
               localCharts = true
             }
 
+            // should the config file be suffixed with the workflow? see "deployment_config"
             def extraHelmFlags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml "
 
+            if (workFlow.toLowerCase() == "dt") {
+              extraHelmFlags += " --set radius.enabled=false "
+            }
+            if (workFlow.toLowerCase() == "tt") {
+              extraHelmFlags += " --set radius.enabled=false --set global.incremental_evto_update=true "
+            }
+
             // NOTE temporary workaround expose ONOS node ports (pod-config needs to be updated to contain these values)
-            extraHelmFlags = extraHelmFlags + "--set onos-classic.onosSshPort=30115 " +
+            extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 " +
             "--set onos-classic.onosApiPort=30120 " +
             "--set onos-classic.onosOfPort=31653 " +
             "--set onos-classic.individualOpenFlowNodePorts=true "
@@ -113,6 +118,7 @@ pipeline {
               // NOTE does this needs to be configured?
               kafkaReplica: 3,
               etcdReplica: 3,
+              bbsimReplica: 0,
               ])
           }
           sh """
