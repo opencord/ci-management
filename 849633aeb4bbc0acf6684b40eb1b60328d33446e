@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "7e4eb184_fda0c6d9",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-26T12:38:02Z",
+      "side": 1,
+      "message": "Only a small question: What for is this flag? And why ist it not set for the three previous tests, but for all following tests beginning here?",
+      "range": {
+        "startLine": 167,
+        "startChar": 42,
+        "endLine": 167,
+        "endChar": 65
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "198fe272_d5207ec8",
         "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
         "patchSetId": 4
