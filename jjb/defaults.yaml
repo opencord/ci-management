@@ -207,3 +207,7 @@
     # karaf-home
     # Use to grab the logs or onos-diagnostics
     karaf-home: 'apache-karaf-4.2.9'
+
+    # maven version
+    # Have to setup JAVA_HOME correctly if we upgrade to mvn36
+    maven-version: mvn33

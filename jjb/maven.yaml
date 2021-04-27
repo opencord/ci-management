@@ -57,6 +57,7 @@
           settings: 'cord-apps-maven-settings'
           settings-type: cfp
           goals: '-Pci-verify clean test install spotbugs:check'
+          maven-version: '{maven-version}'
 
     publishers:
       - junit:

@@ -11,6 +11,7 @@
         "source_ami_filter_name": null,
         "source_ami_filter_owner": null,
         "source_ami_filter_product_code": "",
+        "vm_volume_size": "20",
         "subnet_id": null,
         "ssh_user": null
     },
@@ -37,6 +38,14 @@
             "ssh_username": "{{user `ssh_user`}}",
             "subnet_id": "{{user `subnet_id`}}",
             "type": "amazon-ebs",
+            "launch_block_device_mappings": [
+                {
+                    "device_name": "/dev/sda1",
+                    "volume_size": "{{user `vm_volume_size`}}",
+                    "volume_type": "gp2",
+                    "delete_on_termination": true
+                }
+            ],
             "user_data_file": "{{user `cloud_user_data`}}"
         }
     ],
