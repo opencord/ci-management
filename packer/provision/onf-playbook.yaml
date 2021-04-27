@@ -7,6 +7,16 @@
   become: true
 
   tasks:
+    - name: Add Java Amazon Corretto Jdk repo GPG key
+      apt_key:
+        url: https://apt.corretto.aws/corretto.key
+        state: present
+
+    - name: Add Java Amazon Corretto Jdk repo
+      apt_repository:
+        repo: deb https://apt.corretto.aws stable main
+        state: present
+
     - name: Install apt packages
       apt:
         name:
@@ -37,6 +47,8 @@
           - "nodejs-dev"
           - "node-gyp"
           - "npm"
+          - "java-1.8.0-amazon-corretto-jdk"
+          - "java-11-amazon-corretto-jdk"
         state: "present"
         update_cache: true
         cache_valid_time: 3600
