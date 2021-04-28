@@ -27,13 +27,16 @@ def call(Map config) {
     def cfg = defaultConfig + config
 
     if (cfg.dockerRegistry != "") {
-      cfg.extraHelmFlags += " --set global.image_registry=${cfg.dockerRegistry}/ "
-      cfg.extraHelmFlags += " --set etcd.image.registry=${cfg.dockerRegistry} "
-      cfg.extraHelmFlags += " --set kafka.image.registry=${cfg.dockerRegistry} "
-      cfg.extraHelmFlags += " --set kafka.zookeper.image.registry=${cfg.dockerRegistry} "
-      cfg.extraHelmFlags += " --set onos-classic.image.repository=${cfg.dockerRegistry}/voltha/voltha-onos "
-      cfg.extraHelmFlags += " --set onos-classic.atomix.image.repository=${cfg.dockerRegistry}/atomix/atomix "
-      cfg.extraHelmFlags += " --set freeradius.images.radius.registry=${cfg.dockerRegistry}/ "
+      def registryFlags = " --set global.image_registry=${cfg.dockerRegistry}/ "
+      registryFlags += " --set etcd.image.registry=${cfg.dockerRegistry} "
+      registryFlags += " --set kafka.image.registry=${cfg.dockerRegistry} "
+      registryFlags += " --set kafka.zookeper.image.registry=${cfg.dockerRegistry} "
+      registryFlags += " --set onos-classic.image.repository=${cfg.dockerRegistry}/voltha/voltha-onos "
+      registryFlags += " --set onos-classic.atomix.image.repository=${cfg.dockerRegistry}/atomix/atomix "
+      registryFlags += " --set freeradius.images.radius.registry=${cfg.dockerRegistry}/ "
+
+      // we want to alway leave the user provided flags at the end, to override changes
+      cfg.extraHelmFlags = registryFlags + " " + cfg.extraHelmFlags
     }
 
     println "Deploying VOLTHA with the following parameters: ${cfg}."

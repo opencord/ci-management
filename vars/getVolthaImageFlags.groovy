@@ -29,6 +29,8 @@ def call(String project = "unknown", String tag = "citest", String pullPolicy = 
       // BBSIM has a different format that voltha, return directly
       return "--set images.bbsim.tag=${tag},images.bbsim.pullPolicy=${pullPolicy},images.bbsim.registry='' "
     break
+    case "voltha-onos":
+      return "--set onos-classic.image.repository=voltha/voltha-onos,onos-classic.image.tag=citest,onos-classic.image.pullPolicy=${pullPolicy}"
     default:
       return ""
     break
