@@ -371,6 +371,30 @@
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H */3 * *"
 
+        # Berlin pod with olt/onu - master versions timer based job , two OLTs
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-gpon'
+          disable-job: false
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM-unencrypted'
+          time: '1'
+
+          # Berlin POD test job - master versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-gpon'
+          disable-job: false
+          release: 'master'
+          branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM-unencrypted'
+          power-switch: false
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
