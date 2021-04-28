@@ -17,7 +17,7 @@
         dest: /etc/sudoers.d/89-jenkins-user-defaults
         content: |
           Defaults:jenkins !requiretty
-          jenkins ALL=(ALL) NOPASSWD:ALL
+          jenkins ALL = NOPASSWD: /usr/sbin/update-alternatives, /usr/sbin/update-java-alternatives
         validate: /usr/sbin/visudo -cf %s
       become: yes
 
