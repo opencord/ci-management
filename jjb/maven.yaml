@@ -138,3 +138,4 @@
           settings: 'cord-apps-maven-settings'
           settings-type: cfp
           goals: '-Prelease clean deploy'
+          maven-version: '{maven-version}'

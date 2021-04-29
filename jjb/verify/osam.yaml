@@ -91,6 +91,7 @@
       - maven-target:
           goals: "test"
           pom: "pom.xml"
+          maven-version: '{maven-version}'
 
     publishers:
       - postbuildscript:
