@@ -229,6 +229,26 @@
         path: /usr/local/bin/hadolint
         mode: 0755
 
+    - name: Download github-release
+      get_url:
+        url: "https://github.com/github-release/github-release/releases/download/v0.10.0/linux-amd64-github-release.bz2"
+        checksum: "sha256:b360af98188c5988314d672bb604efd1e99daae3abfb64d04051ee17c77f84b6"
+        dest: /tmp/github-release.bz2
+
+
+    # Unarchive target doesn't support the bz2 format
+    - name: Unarchive github-release
+      shell:
+        cmd: |
+          bzip2 -d /tmp/github-release.bz2
+
+    - name: Install github-release binary
+      copy:
+        src: /tmp/github-release
+        dest: /usr/local/bin/github-release
+        mode: "0755"
+        remote_src: yes
+
     - name: Recursively remove download files and folders
       file:
         path: "{{ item }}"
@@ -240,4 +260,3 @@
         - /tmp/protobuf.zip
         - /tmp/pandoc.deb
         - /tmp/repo.b64
-        - /tmp/golang_1.16.3.tar.gz
