@@ -103,6 +103,7 @@ pipeline {
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
              source "$WORKSPACE/kind-voltha/releases/${branch}"
            else
+             export INFRA_NS="infra"
              echo "on master, using default settings for kind-voltha"
            fi
 
