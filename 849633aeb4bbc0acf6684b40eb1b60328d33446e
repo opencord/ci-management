@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "765f2d80_64f4b181",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-30T14:42:32Z",
+      "side": 1,
+      "message": "Why do you setup stage Cleanup first? Is it really ok? I thought first stage is Deploy Voltha, then Run Test and at the end Cleanup.",
+      "range": {
+        "startLine": 30,
+        "startChar": 2,
+        "endLine": 30,
+        "endChar": 18
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7e4eb184_fda0c6d9",
         "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
         "patchSetId": 4
@@ -64,6 +87,144 @@
         "startChar": 101,
         "endLine": 169,
         "endChar": 107
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dfe43bb_7a553e92",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-30T14:42:32Z",
+      "side": 1,
+      "message": "same above",
+      "range": {
+        "startLine": 177,
+        "startChar": 35,
+        "endLine": 177,
+        "endChar": 67
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8f7df5b1_fadeecae",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-30T14:42:32Z",
+      "side": 1,
+      "message": "same above",
+      "range": {
+        "startLine": 186,
+        "startChar": 35,
+        "endLine": 186,
+        "endChar": 67
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aab7159f_8b4dcfdd",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-30T14:42:32Z",
+      "side": 1,
+      "message": "same above",
+      "range": {
+        "startLine": 195,
+        "startChar": 35,
+        "endLine": 195,
+        "endChar": 67
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c0127f6d_c758883a",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-30T14:42:32Z",
+      "side": 1,
+      "message": "For multiple OLTs following make targets has to be set:\n          make-target: openonu-go-adapter-multi-olt-test\n          make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test\n          make-target-1t8gemtest: 1t8gem-openonu-go-adapter-multi-olt-test\n          make-target-reconciletest: reconcile-openonu-go-adapter-multi-olt-test\n          make-target-reconciledttest: reconcile-openonu-go-adapter-multi-olt-test-dt\n          make-target-reconciletttest: reconcile-openonu-go-adapter-multi-olt-test-tt",
+      "range": {
+        "startLine": 107,
+        "startChar": 0,
+        "endLine": 114,
+        "endChar": 17
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e05372df_43273d14",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 309,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-30T14:42:32Z",
+      "side": 1,
+      "message": "make targets for single onu scenarios has to be set up above in periodic-voltha-openonu-go-test-bbsim and patchset-voltha-openonu-go-test-bbsim. or remove it here because these all default values except make-target (or you take over my comment below...)",
+      "range": {
+        "startLine": 304,
+        "startChar": 4,
+        "endLine": 309,
+        "endChar": 68
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71044c17_abef7c86",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 343,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-04-30T14:42:32Z",
+      "side": 1,
+      "message": "for openonu use as default: openonu-go-adapter-test (see comment above)",
+      "range": {
+        "startLine": 343,
+        "startChar": 21,
+        "endLine": 343,
+        "endChar": 32
       },
       "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
