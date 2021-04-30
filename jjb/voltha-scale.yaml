@@ -64,7 +64,6 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml'
           onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
-          bbsimImg: matteoscandolo/bbsim:gemport
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -81,7 +80,6 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
-          bbsimImg: matteoscandolo/bbsim:gemport
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -101,7 +99,6 @@
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.rw_core.core_timeout=60s --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
           onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
-          bbsimImg: matteoscandolo/bbsim:gemport
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -181,7 +178,7 @@
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.7
-          bbsimImg: matteoscandolo/bbsim:gemport
+          bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
           openoltAdapterImg: ''
@@ -206,7 +203,7 @@
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.7
-          bbsimImg: matteoscandolo/bbsim:gemport
+          bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
           openoltAdapterImg: ''
@@ -231,7 +228,7 @@
           withIgmp: true
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.7
-          bbsimImg: matteoscandolo/bbsim:gemport
+          bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
           openoltAdapterImg: ''
