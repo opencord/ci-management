@@ -22,6 +22,30 @@
       "revId": "1cd71d3b1a941b7ea453508c7e60f94b618c8ce4",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "62f50e17_2540f072",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 387,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-04-30T12:44:03Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5045d12a_5e587a27",
+      "range": {
+        "startLine": 387,
+        "startChar": 23,
+        "endLine": 387,
+        "endChar": 54
+      },
+      "revId": "1cd71d3b1a941b7ea453508c7e60f94b618c8ce4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
