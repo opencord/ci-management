@@ -376,6 +376,7 @@
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-gpon'
           disable-job: false
+          reinstall-olt: false
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM-unencrypted'
