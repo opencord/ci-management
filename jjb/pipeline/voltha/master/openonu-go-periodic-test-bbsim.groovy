@@ -38,16 +38,6 @@ def execute_test(testName, workflow, testTarget, outputDir, testSpecificHelmFlag
         ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
         '''
       }
-      // stop logging
-      sh """
-        P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${workflow}" | grep -v grep | awk '{print \$1}')"
-        if [ -n "\$P_IDS" ]; then
-          echo \$P_IDS
-          for P_ID in \$P_IDS; do
-            kill -9 \$P_ID
-          done
-        fi
-      """
     }
   }
   stage('Deploy Voltha') {
@@ -98,7 +88,40 @@ def execute_test(testName, workflow, testTarget, outputDir, testSpecificHelmFlag
 
     make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
     """
+    // stop logging
+    sh """
+      P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${workflow}" | grep -v grep | awk '{print \$1}')"
+      if [ -n "\$P_IDS" ]; then
+        echo \$P_IDS
+        for P_ID in \$P_IDS; do
+          kill -9 \$P_ID
+        done
+      fi
+    """
   }
+}
+
+def collectArtifacts(exitStatus) {
+  getPodsInfo("$WORKSPACE/${exitStatus}")
+  sh """
+  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log
+  """
+  archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html'
+  sh '''
+    sync
+    pkill kail || true
+    which voltctl
+    md5sum $(which voltctl)
+  '''
+  step([$class: 'RobotPublisher',
+    disableArchiveOutput: false,
+    logFileName: "RobotLogs/*/log*.html",
+    otherFiles: '',
+    outputFileName: "RobotLogs/*/output*.xml",
+    outputPath: '.',
+    passThreshold: 100,
+    reportFileName: "RobotLogs/*/report*.html",
+    unstableThreshold: 0]);
 }
 
 pipeline {
@@ -165,7 +188,7 @@ pipeline {
       steps {
         script {
           def mibUploadHelmFlags = "--set pon=2,onu=2,controlledActivation=only-onu "
-          execute_test("1t8gem", "att", "mib-upload-templating-openonu-go-adapter-test", "$WORKSPACE/mibupload", mibUploadHelmFlags)
+          execute_test("mibupload", "att", "mib-upload-templating-openonu-go-adapter-test", "$WORKSPACE/mibupload", mibUploadHelmFlags)
         }
       }
     }
@@ -196,36 +219,13 @@ pipeline {
   }
   post {
     aborted {
-      getPodsInfo("$WORKSPACE/failed")
-      sh """
-      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.log
-      """
-      archiveArtifacts artifacts: '**/*.log,**/*.txt,**/*.html'
+      collectArtifacts("aborted")
     }
     failure {
-      getPodsInfo("$WORKSPACE/failed")
-      sh """
-      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.log
-      """
-      archiveArtifacts artifacts: '**/*.log,**/*.txt,**/*.html'
+      collectArtifacts("failed")
     }
     always {
-      step([$class: 'RobotPublisher',
-        disableArchiveOutput: false,
-        logFileName: "RobotLogs/*/log*.html",
-        otherFiles: '',
-        outputFileName: "RobotLogs/*/output*.xml",
-        outputPath: '.',
-        passThreshold: 100,
-        reportFileName: "RobotLogs/*/report*.html",
-        unstableThreshold: 0]);
-      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html'
-      sh '''
-        sync
-        pkill kail || true
-        which voltctl
-        md5sum $(which voltctl)
-      '''
+      collectArtifacts("always")
     }
   }
 }
