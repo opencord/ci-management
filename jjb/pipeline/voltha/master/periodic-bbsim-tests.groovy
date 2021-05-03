@@ -23,67 +23,71 @@ library identifier: 'cord-jenkins-libraries@master',
 
 def clusterName = "kind-ci"
 
-def execute_test(testTarget, workflow, testSpecificHelmFlags = "") {
+def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
   def infraNamespace = "default"
   def volthaNamespace = "voltha"
   def robotLogsDir = "RobotLogs"
   stage('Cleanup') {
-    timeout(15) {
-      script {
-        helmTeardown(["default", infraNamespace, volthaNamespace])
-      }
-      timeout(1) {
-        sh returnStdout: false, script: '''
-        # remove orphaned port-forward from different namespaces
-        ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
-        '''
+    if (teardown) {
+      timeout(15) {
+        script {
+          helmTeardown(["default", infraNamespace, volthaNamespace])
+        }
+        timeout(1) {
+          sh returnStdout: false, script: '''
+          # remove orphaned port-forward from different namespaces
+          ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
+          '''
+        }
       }
     }
   }
   stage('Deploy Voltha') {
-    timeout(20) {
-      script {
+    if (teardown) {
+      timeout(20) {
+        script {
 
-        // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
-        def localCharts = false
-        if (volthaHelmChartsChange != "") {
-          localCharts = true
+          // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+          def localCharts = false
+          if (volthaHelmChartsChange != "") {
+            localCharts = true
+          }
+
+          // NOTE temporary workaround expose ONOS node ports
+          def localHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 " +
+          " --set onos-classic.onosApiPort=30120 " +
+          " --set onos-classic.onosOfPort=31653 " +
+          " --set onos-classic.individualOpenFlowNodePorts=true " + testSpecificHelmFlags
+          volthaDeploy([
+            infraNamespace: infraNamespace,
+            volthaNamespace: volthaNamespace,
+            workflow: workflow.toLowerCase(),
+            extraHelmFlags: localHelmFlags,
+            localCharts: localCharts,
+            bbsimReplica: olts.toInteger(),
+            dockerRegistry: registry,
+            ])
         }
-
-        // NOTE temporary workaround expose ONOS node ports
-        def localHelmFlags = extraHelmFlags + " --set global.log_level=DEBUG --set onos-classic.onosSshPort=30115 " +
-        " --set onos-classic.onosApiPort=30120 " +
-        " --set onos-classic.onosOfPort=31653 " +
-        " --set onos-classic.individualOpenFlowNodePorts=true " + testSpecificHelmFlags
-        volthaDeploy([
-          infraNamespace: infraNamespace,
-          volthaNamespace: volthaNamespace,
-          workflow: workflow.toLowerCase(),
-          extraHelmFlags: localHelmFlags,
-          localCharts: localCharts,
-          bbsimReplica: olts.toInteger(),
-          dockerRegistry: "mirror.registry.opennetworking.org"
-          ])
+        sh """
+        JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
+        JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
+        JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
+        ps aux | grep port-forward
+        """
+        getPodsInfo("$WORKSPACE/${testTarget}")
       }
-      // start logging
-      sh """
-      mkdir -p $WORKSPACE/${testTarget}
-      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}/onos-voltha-combined.log &
-      """
-      sh """
-      JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
-      JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
-      JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
-      ps aux | grep port-forward
-      """
-      getPodsInfo("$WORKSPACE/${testTarget}")
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
+    // start logging
+    sh """
+    mkdir -p $WORKSPACE/${testTarget}
+    _TAG=kail-${workflow} kail -n infra -n voltha --since 10m > $WORKSPACE/${testTarget}/onos-voltha-combined.log &
+    """
     sh """
     mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}
     export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget} "
-    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
+    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -V INFRA_NAMESPACE:${infraNamespace}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
     make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
@@ -174,8 +178,9 @@ pipeline {
               def target = test["target"]
               def workflow = test["workflow"]
               def flags = test["flags"]
+              def teardown = test["teardown"].toBoolean()
               println "Executing test ${target} on workflow ${workflow} with extra flags ${flags}"
-              execute_test(target, workflow, flags)
+              execute_test(target, workflow, teardown, flags)
             }
           }
         }
