@@ -21,41 +21,55 @@
     make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
 
     jobs:
-      - 'voltha-periodic-test-kind-voltha-based':
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
-          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
-          build-node: 'qct-pod4-node2'
-          make-target: functional-single-kind
-          make-target-failtest: bbsim-failurescenarios
-          make-target-errortest: bbsim-errorscenarios
-          make-target-alarmtest: bbsim-alarms-kind
-          make-target-multipleolt: bbsim-multiolt-kind
-          withAlarms: true
           code-branch: 'master'
-          olts: 1
-          onus: 2
-          pons: 2
+          extraHelmFlags: '--set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
-
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-multiple-olts-test-bbsim'
-          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
+          # NOTE why not a remote executor?
           build-node: 'qct-pod4-node2'
-          make-target: functional-multi-olt
-          make-target-failtest: bbsim-multiolt-failurescenarios
-          make-target-errortest: bbsim-multiolt-errorscenarios
-          make-target-alarmtest: bbsim-alarms-kind
-          make-target-multipleolt: bbsim-multiolt-kind
-          withAlarms: false
+          registry: 'registry.menlo.onlab.us'
+          volthaSystemTestsChange: refs/changes/92/24492/1
+          testTargets: |
+            - target: functional-single-kind
+              workflow: att
+              flags: ""
+            - target: bbsim-alarms-kind
+              workflow: att
+              flags: ""
+            - target: bbsim-failurescenarios
+              workflow: att
+              flags: ""
+            - target: bbsim-errorscenarios
+              workflow: att
+              flags: ""
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-test-bbsim'
+          # NOTE why not a remote executor?
+          build-node: 'qct-pod4-node2'
+          registry: 'registry.menlo.onlab.us'
           code-branch: 'master'
           olts: 2
-          onus: 2
-          pons: 2
+          extraHelmFlags: '--set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-multi-olt
+              workflow: att
+              flags: ""
+            - target: bbsim-multiolt-failurescenarios
+              workflow: att
+              flags: ""
+            - target: bbsim-multiolt-errorscenarios
+              workflow: att
+              flags: ""
+            - target: bbsim-multiolt-kind
+              workflow: att
+              flags: ""
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.7'
-          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
           make-target: functional-multi-olt
           make-target-failtest: bbsim-multiolt-failurescenarios
@@ -69,6 +83,7 @@
           pons: 2
           time-trigger: "H H * * *"
 
+      # openonu Go periodic tests
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
@@ -172,6 +187,7 @@
           code-branch: '$GERRIT_BRANCH'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
+          extraHelmFlags: '--set onu=2,pon=2'
           testTargets: |
             - target: openonu-go-adapter-multi-olt-test
               workflow: att
@@ -192,8 +208,6 @@
               workflow: tt
               flags: ""
           olts: 2
-          onus: 2
-          pons: 2
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.7'
@@ -212,18 +226,21 @@
           pons: 2
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test-kind-voltha-based':
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI'
-          pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
+          # NOTE why not a remote executor?
           build-node: 'qct-pod4-node2'
-          make-target: bbsim-dmi-hw-management-test
-          withAlarms: false
+          registry: 'registry.menlo.onlab.us'
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: bbsim-dmi-hw-management-test
+              workflow: att
+              flags: ""
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-test-DMI-2.7'
-          pipeline-script: 'voltha-DMI-bbsim-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-DMI-bbsim-tests.groovy'
           build-node: 'qct-pod4-node2'
           make-target: bbsim-dmi-hw-management-test
           withAlarms: false
@@ -232,7 +249,7 @@
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-test-bbsim-2.7'
-          pipeline-script: 'voltha-nightly-tests-bbsim.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-nightly-tests-bbsim.groovy'
           build-node: 'qct-pod4-node2'
           make-target: functional-single-kind
           make-target-failtest: bbsim-failurescenarios
@@ -244,19 +261,20 @@
           pons: 2
           time-trigger: "H H * * *"
 
-      - 'voltha-periodic-test-kind-voltha-based':
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test'
-          pipeline-script: 'voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
-          make-target: sanity-multi-kind
-          onus: 2
-          pons: 2
+          extraHelmFlags: '--set onu=2,pon=2'
           time-trigger: "H H/12 * * *"
+          testTargets: |
+            - target: sanity-multi-kind
+              workflow: att
+              flags: ""
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-etcd-test-2.7'
-          pipeline-script: 'voltha-system-test-bbsim.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-system-test-bbsim.groovy'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'voltha-2.7'
           make-target: sanity-multi-kind
@@ -264,21 +282,23 @@
           pons: 2
           time-trigger: "H H/12 * * *"
 
-
-      - 'voltha-periodic-test-kind-voltha-based':
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs'
-          pipeline-script: 'voltha-go-multi-tests.groovy'
+          # NOTE why not a remote executor?
           build-node: 'qct-pod4-node2'
+          registry: 'registry.menlo.onlab.us'
           code-branch: 'master'
           make-target: sanity-kind
-          onus: 1
-          pons: 1
-          test-runs: 5
+          test-runs: 5 # FIXME how do we run a test multiple times without tearing down the setup?
           time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: sanity-kind
+              workflow: att
+              flags: ""
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-sanity-test-multi-runs-2.7'
-          pipeline-script: 'voltha-go-multi-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-go-multi-tests.groovy'
           build-node: 'qct-pod4-node2'
           code-branch: 'voltha-2.7'
           make-target: sanity-kind
@@ -287,15 +307,15 @@
           test-runs: 5
           time-trigger: "H H/23 * * *"
 
-      - 'voltha-periodic-test-kind-voltha-based':
+      - 'voltha-periodic-test':
           name: 'nightly-voltha-DTflow-sanity-test'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
-          make-target: sanity-kind-dt
-          onus: 1
-          pons: 1
           time-trigger: "@daily"
-          work-flow: DT
+          testTargets: |
+            - target: sanity-kind-dt
+              workflow: dt
+              flags: ""
 
       # Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
@@ -370,14 +390,13 @@
     name: '{name}'
     pipeline-script: 'voltha/master/periodic-bbsim-tests.groovy'
     build-node: 'ubuntu18.04-basebuild-8c-15g'
-    test-runs: 1
     robot-args: ''
     gerrit-project: ''
     gerritRefspec: ''
-    work-flow: ''
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
+    registry:  mirror.registry.opennetworking.org
     sandbox: true
     olts: 1
 
@@ -407,7 +426,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set onu={onus},pon={pons},{extraHelmFlags}'
+          default: '{extraHelmFlags}'
           description: 'Helm flags (passed to each deployment)'
 
       # test configuration
@@ -457,6 +476,11 @@
           name: olts
           default: '{olts}'
           description: 'How many BBSim instances to run'
+
+      - string:
+          name: registry
+          default: '{registry}'
+          description: 'Which registry to use (amazon vs menlo)'
 
     project-type: pipeline
     concurrent: true
@@ -952,7 +976,6 @@
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{branch-pattern}'
 
-
 - job-template:
     name: '{name}'
     id: verify_physical_voltha_patchset_manual
@@ -1007,7 +1030,6 @@
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{branch-pattern}'
-
 
 - job-template:
     name: '{name}'
