@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "41f155f9_b6d02a9b",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 167,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-03T17:09:48Z",
+      "side": 1,
+      "message": "Good question, I copied it from the old pipeline. There\u0027s no such parameter in the helm charts, I removed it",
+      "parentUuid": "7e4eb184_fda0c6d9",
+      "range": {
+        "startLine": 167,
+        "startChar": 42,
+        "endLine": 167,
+        "endChar": 65
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "198fe272_d5207ec8",
         "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
         "patchSetId": 4
@@ -91,6 +115,54 @@
       "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f99785cc_067fc3ad",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-03T17:09:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "198fe272_d5207ec8",
+      "range": {
+        "startLine": 169,
+        "startChar": 24,
+        "endLine": 169,
+        "endChar": 30
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "4b218aca_cddcfc19",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-03T17:09:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3d5dddd4_8fb023c1",
+      "range": {
+        "startLine": 169,
+        "startChar": 101,
+        "endLine": 169,
+        "endChar": 107
+      },
+      "revId": "849633aeb4bbc0acf6684b40eb1b60328d33446e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     },
     {
       "key": {

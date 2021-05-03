@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "d4010dfa_6675d43a",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-03T17:09:48Z",
+      "side": 1,
+      "message": "No that\u0027s correct, good point. We can\u0027t have a POST in a loop, but I moved it after the tests so they are cleaned every time.\nIf the test times out the process won\u0027t be stopped (not a problem since the VM is shut down after a single run anyway) but the logs will be capture in the \"archiveArtifacts\" step",
+      "parentUuid": "e64c9fc6_e26c9cbe",
+      "range": {
+        "startLine": 41,
+        "startChar": 1,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "075740f0b23bec6d61815f6f77005d068b0a813c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "943cedcb_d5598cb1",
         "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
         "patchSetId": 5
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "947fd3b6_de0c912a",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-03T17:09:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "943cedcb_d5598cb1",
+      "range": {
+        "startLine": 168,
+        "startChar": 24,
+        "endLine": 168,
+        "endChar": 30
+      },
+      "revId": "075740f0b23bec6d61815f6f77005d068b0a813c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4fe5425b_b0d994f2",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 5
@@ -68,6 +116,30 @@
       "revId": "075740f0b23bec6d61815f6f77005d068b0a813c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8c989759_3cadce1b",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-03T17:09:48Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4fe5425b_b0d994f2",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 85
+      },
+      "revId": "075740f0b23bec6d61815f6f77005d068b0a813c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
