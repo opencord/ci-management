@@ -62,7 +62,7 @@ def execute_test(testTarget, workflow, testSpecificHelmFlags = "") {
           extraHelmFlags: localHelmFlags,
           localCharts: localCharts,
           bbsimReplica: olts.toInteger(),
-          dockerRegistry: "mirror.registry.opennetworking.org"
+          dockerRegistry: registry,
           ])
       }
       // start logging
@@ -83,7 +83,7 @@ def execute_test(testTarget, workflow, testSpecificHelmFlags = "") {
     sh """
     mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}
     export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget} "
-    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
+    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -V INFRA_NAMESPACE:${infraNamespace}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
     make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
