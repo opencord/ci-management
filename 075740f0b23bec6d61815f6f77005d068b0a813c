@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e64c9fc6_e26c9cbe",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-03T08:51:24Z",
+      "side": 1,
+      "message": "\u0027stop logging\u0027 has to move at the end of execute_test! Maybe in a new stage called \u0027post\u0027 or similar.\nThe existing code will not work correctly:\n- if the \u0027workflow\u0027 is changed, nothing will be greped (e.g. previous test got workflow att, current test is for dt\n- for the last test no loggings will be available\nMaybe the results of run https://jenkins.opencord.org/view/All%20Jobs/job/periodic-voltha-openonu-go-test-bbsim/238/ shows this behavour, because all combined-logs of reconcile artefacts contains the same timestamp?!\nOr do I misunderstand the mechanism?",
+      "range": {
+        "startLine": 41,
+        "startChar": 1,
+        "endLine": 51,
+        "endChar": 0
+      },
+      "revId": "075740f0b23bec6d61815f6f77005d068b0a813c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "943cedcb_d5598cb1",
+        "filename": "jjb/pipeline/voltha/master/openonu-go-periodic-test-bbsim.groovy",
+        "patchSetId": 5
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-03T08:51:24Z",
+      "side": 1,
+      "message": "Still a wrong testcase name, should be something like MibUpload or similar.",
+      "range": {
+        "startLine": 168,
+        "startChar": 24,
+        "endLine": 168,
+        "endChar": 30
+      },
+      "revId": "075740f0b23bec6d61815f6f77005d068b0a813c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4fe5425b_b0d994f2",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-03T08:51:24Z",
+      "side": 1,
+      "message": "make-target: openonu-go-adapter-multi-olt-testis missing, else single ONU scenario will be executed! (same above).",
+      "range": {
+        "startLine": 117,
+        "startChar": 0,
+        "endLine": 121,
+        "endChar": 85
+      },
+      "revId": "075740f0b23bec6d61815f6f77005d068b0a813c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}

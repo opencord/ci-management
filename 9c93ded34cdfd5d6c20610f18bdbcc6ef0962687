@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f98857a7_bafc0a49",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-03T08:51:24Z",
+      "side": 0,
+      "message": "Do not remove this line, else single ONU scenario will be executed!",
+      "range": {
+        "startLine": 104,
+        "startChar": 10,
+        "endLine": 104,
+        "endChar": 56
+      },
+      "revId": "9c93ded34cdfd5d6c20610f18bdbcc6ef0962687",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
