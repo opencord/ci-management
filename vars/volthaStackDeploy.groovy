@@ -41,13 +41,32 @@ def call(Map config) {
     """
 
     for(int i = 0;i<cfg.bbsimReplica;i++) {
-      // TODO differentiate olt_id between different stacks
-       sh """
-         helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} onf/bbsim \
-         --set olt_id="${cfg.stackId}${i}" \
-         -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml \
-         ${cfg.extraHelmFlags}
-       """
+      // NOTE we don't need to update the tag for DT
+      script {
+        sh """
+        rm -f $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml
+        """
+        if (cfg.workflow == "att" || cfg.workflow == "tt") {
+          def startingStag = 900
+          def bbsimCfg = readYaml file: "$WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml"
+          // NOTE we assume that the only service that needs a different s_tag is the first one in the list
+          bbsimCfg["servicesConfig"]["services"][0]["s_tag"] = startingStag + i
+          println "Using BBSim Service config ${bbsimCfg}"
+          writeYaml file: "$WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml", data: bbsimCfg
+        } else {
+          // NOTE if it's DT just copy the file over
+          sh """
+          cp $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml
+          """
+        }
+      }
+
+      sh """
+        helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} onf/bbsim \
+        --set olt_id="${cfg.stackId}${i}" \
+        -f $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml \
+        ${cfg.extraHelmFlags}
+      """
     }
 
     println "Wait for VOLTHA Stack ${cfg.stackName} to start"
