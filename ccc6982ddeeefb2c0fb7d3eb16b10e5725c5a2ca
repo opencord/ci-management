@@ -118,6 +118,30 @@
       "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "27665d22_8adef9ff",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-04T22:34:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "882938bf_0a8ceb96",
+      "range": {
+        "startLine": 27,
+        "startChar": 24,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
