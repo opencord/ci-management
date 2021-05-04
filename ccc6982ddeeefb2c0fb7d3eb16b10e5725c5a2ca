@@ -46,6 +46,30 @@
       "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "963e2bd4_4848461b",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-04T08:22:52Z",
+      "side": 1,
+      "message": "A few TCs will fail like radius restart which now expect it to be part of infra namespace. Or we need to set the INFRA_NAMESPACE robot variable (https://gerrit.opencord.org/c/voltha-system-tests/+/24492) to default/infra based on deployment.",
+      "parentUuid": "24d149d9_aeb9c4d9",
+      "range": {
+        "startLine": 27,
+        "startChar": 24,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
