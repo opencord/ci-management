@@ -235,7 +235,7 @@
       # Per-patchset Pod builds on Tucson pod (voltha-2.7)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto_voltha-2.7'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
+          oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
           default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
           pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
@@ -263,7 +263,7 @@
       # Per-patchset Pod builds on Tucson pod (voltha-2.7)
       - 'verify_physical_voltha_patchset_manual':
           name: 'verify_physical_voltha_patchset_manual_voltha-2.7'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
+          oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
           profile: 'Default'
           pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
@@ -276,7 +276,7 @@
       - 'verify_physical_voltha_patchset_manual':
           name: 'verify_physical_voltha_patchset_manual_DT_voltha-2.7'
           workflow: 'dt'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
+          oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
           profile: 'Default'
           pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
@@ -290,7 +290,7 @@
           name: 'build_tucson-pod_manual'
           config-pod: 'tucson-pod'
           manualBranch: 'master'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
+          oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
           profile: 'Default'
           default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
@@ -887,7 +887,7 @@
     config-pod: 'tucson-pod'
     workflow: 'att'
     profile: 'Default'
-    oltDebVersionMaster: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
+    oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
@@ -936,7 +936,7 @@
     sandbox: true
     build-node: 'tucson-pod'
     config-pod: 'tucson-pod'
-    oltDebVersionMaster: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
+    oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
     trigger-string: 'hardware test'
