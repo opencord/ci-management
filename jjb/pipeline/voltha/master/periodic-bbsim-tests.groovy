@@ -23,7 +23,7 @@ library identifier: 'cord-jenkins-libraries@master',
 
 def clusterName = "kind-ci"
 
-def execute_test(testName, workflow, testTarget, outputDir, testSpecificHelmFlags = "") {
+def execute_test(testTarget, workflow, testSpecificHelmFlags = "") {
   def infraNamespace = "default"
   def volthaNamespace = "voltha"
   def robotLogsDir = "RobotLogs"
@@ -67,8 +67,8 @@ def execute_test(testName, workflow, testTarget, outputDir, testSpecificHelmFlag
       }
       // start logging
       sh """
-      mkdir -p ${outputDir}
-      _TAG=kail-${workflow} kail -n infra -n voltha > ${outputDir}/onos-voltha-combined.log &
+      mkdir -p $WORKSPACE/${testTarget}
+      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}/onos-voltha-combined.log &
       """
       sh """
       JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
@@ -76,13 +76,13 @@ def execute_test(testName, workflow, testTarget, outputDir, testSpecificHelmFlag
       JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
       ps aux | grep port-forward
       """
-      getPodsInfo("${outputDir}")
+      getPodsInfo("$WORKSPACE/${testTarget}")
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
     sh """
-    mkdir -p $WORKSPACE/${robotLogsDir}/${testName}
-    export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testName} "
+    mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}
+    export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget} "
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
@@ -164,57 +164,21 @@ pipeline {
         }
       }
     }
+    stage('Parse and execute tests') {
+        steps {
+          script {
+            def tests = readYaml text: testTargets
 
-    stage('Run E2E Tests 1t1gem') {
-      steps {
-        execute_test("1t1gem", "att", makeTarget, "$WORKSPACE/1t1gem")
-       }
-     }
-
-    stage('Run E2E Tests 1t4gem') {
-      steps {
-        execute_test("1t4gem", "att", make1t4gemTestTarget, "$WORKSPACE/1t4gem")
-       }
-     }
-
-    stage('Run E2E Tests 1t8gem') {
-      steps {
-        execute_test("1t8gem", "att", make1t8gemTestTarget, "$WORKSPACE/1t8gem")
-      }
-    }
-
-    stage('Run MIB Upload Tests') {
-      when { beforeAgent true; expression { return "${olts}" == "1" } }
-      steps {
-        script {
-          def mibUploadHelmFlags = "--set pon=2,onu=2,controlledActivation=only-onu "
-          execute_test("mibupload", "att", "mib-upload-templating-openonu-go-adapter-test", "$WORKSPACE/mibupload", mibUploadHelmFlags)
+            for(int i = 0;i<tests.size();i++) {
+              def test = tests[i]
+              def target = test["target"]
+              def workflow = test["workflow"]
+              def flags = test["flags"]
+              println "Executing test ${target} on workflow ${workflow} with extra flags ${flags}"
+              execute_test(target, workflow, flags)
+            }
+          }
         }
-      }
-    }
-
-    stage('Reconcile DT workflow') {
-      steps {
-        script {
-          execute_test("ReconcileDT", "dt", makeReconcileDtTestTarget, "$WORKSPACE/ReconcileDT")
-        }
-      }
-    }
-
-    stage('Reconcile ATT workflow') {
-      steps {
-        script {
-          execute_test("ReconcileATT", "att", makeReconcileTestTarget, "$WORKSPACE/ReconcileATT")
-        }
-      }
-    }
-
-    stage('Reconcile TT workflow') {
-      steps {
-        script {
-          execute_test("ReconcileTT", "tt", makeReconcileTtTestTarget, "$WORKSPACE/ReconcileTT")
-        }
-      }
     }
   }
   post {
