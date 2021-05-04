@@ -70,6 +70,30 @@
       "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "55222d5a_6a4be7c1",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-04T08:25:49Z",
+      "side": 1,
+      "message": "Issue example: https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/periodic-voltha-test-bbsim/721/robot/report/RobotLogs/bbsim-failurescenarios/log.html",
+      "parentUuid": "963e2bd4_4848461b",
+      "range": {
+        "startLine": 27,
+        "startChar": 24,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
