@@ -49,6 +49,7 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/master/bbsim-tests.groovy'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
 
 - job-group:
     name: 'publish-voltha-go-jobs'

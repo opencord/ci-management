@@ -638,7 +638,7 @@
     build-timeout: 20
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
-    kindVolthaChange: ''
+    extraHelmFlags: ''
     branch-regexp: '{all-branches-regexp}'
 
     description: |
@@ -674,7 +674,7 @@
 
       - string:
           name: extraHelmFlags
-          default: ''
+          default: '{extraHelmFlags}'
           description: 'Helm flags to pass to ./voltha up'
 
       - string:
@@ -691,12 +691,6 @@
           name: branch
           default: '{override-branch}'
           description: 'Name of the branch to use'
-
-      # deprecated params (not used in master, remove after 2.6 support is dropped)
-      - string:
-          name: kindVolthaChange
-          default: '{kindVolthaChange}'
-          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
     project-type: pipeline
     concurrent: true
