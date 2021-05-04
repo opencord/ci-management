@@ -22,6 +22,30 @@
       "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "24d149d9_aeb9c4d9",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-04T07:45:22Z",
+      "side": 1,
+      "message": "I think it can be default as long as it\u0027s consistent.",
+      "parentUuid": "89ce9e0c_49ba45ec",
+      "range": {
+        "startLine": 27,
+        "startChar": 24,
+        "endLine": 27,
+        "endChar": 31
+      },
+      "revId": "ccc6982ddeeefb2c0fb7d3eb16b10e5725c5a2ca",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
