@@ -114,15 +114,15 @@ pipeline {
             if (volthaHelmChartsChange != "" || gerritProject == "voltha-helm-charts") {
               localCharts = true
             }
-            def extraHelmFlags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml ${imageFlags} "
+            def flags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml ${imageFlags} "
             // NOTE temporary workaround expose ONOS node ports (pod-config needs to be updated to contain these values)
-            extraHelmFlags = extraHelmFlags + "--set onos-classic.onosSshPort=30115 " +
+            flags = flags + "--set onos-classic.onosSshPort=30115 " +
             "--set onos-classic.onosApiPort=30120 " +
             "--set onos-classic.onosOfPort=31653 " +
-            "--set onos-classic.individualOpenFlowNodePorts=true "
+            "--set onos-classic.individualOpenFlowNodePorts=true " + extraHelmFlags
             volthaDeploy([
               workflow: workFlow.toLowerCase(),
-              extraHelmFlags: extraHelmFlags,
+              extraHelmFlags: flags,
               localCharts: localCharts,
               kubeconfig: "$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf",
               onosReplica: 3,
