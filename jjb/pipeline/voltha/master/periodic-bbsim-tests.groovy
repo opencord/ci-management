@@ -68,7 +68,7 @@ def execute_test(testTarget, workflow, testSpecificHelmFlags = "") {
       // start logging
       sh """
       mkdir -p $WORKSPACE/${testTarget}
-      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}/onos-voltha-combined.log &
+      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
       """
       sh """
       JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
@@ -76,13 +76,13 @@ def execute_test(testTarget, workflow, testSpecificHelmFlags = "") {
       JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
       ps aux | grep port-forward
       """
-      getPodsInfo("$WORKSPACE/${testTarget}")
+      getPodsInfo("$WORKSPACE/${testTarget}-components")
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
     sh """
-    mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}
-    export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget} "
+    mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
+    export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
