@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "38d813f3_84989ee8",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T12:08:44Z",
+      "side": 1,
+      "message": "Don\u0027t see this defined anywhere.",
+      "range": {
+        "startLine": 57,
+        "startChar": 31,
+        "endLine": 57,
+        "endChar": 45
+      },
+      "revId": "707a514b41667d57ca9fff85ce13d2056f7cf051",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
