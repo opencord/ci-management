@@ -16,7 +16,7 @@
     make-target-multipleolt: bbsim-multiolt-kind
     make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
     make-target-1t8gemtest: 1t8gem-openonu-go-adapter-test
-    make-target-reconciletest: reconcile-openonu-go-adapter-test
+    make-target-reconciletest: reconcile-openonu-go-adapter-test-att
     make-target-reconciledttest: reconcile-openonu-go-adapter-test-dt
     make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
 
@@ -74,7 +74,7 @@
           code-branch: 'master'
           time-trigger: "H H/12 * * *"
           testTargets: |
-            - target: openonu-go-adapter-test
+            - target: 1t1gem-openonu-go-adapter-test
               workflow: att
               flags: ""
             - target: 1t4gem-openonu-go-adapter-test
@@ -86,7 +86,7 @@
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
               flags: "--set pon=2,onu=2,controlledActivation=only-onu"
-            - target: reconcile-openonu-go-adapter-test
+            - target: reconcile-openonu-go-adapter-test-att
               workflow: att
               flags: ""
             - target: reconcile-openonu-go-adapter-test-dt
@@ -103,7 +103,7 @@
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           testTargets: |
-            - target: openonu-go-adapter-test
+            - target: 1t1gem-openonu-go-adapter-test
               workflow: att
               flags: ""
             - target: 1t4gem-openonu-go-adapter-test
@@ -115,7 +115,7 @@
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
               flags: "--set pon=2,onu=2,controlledActivation=only-onu"
-            - target: reconcile-openonu-go-adapter-test
+            - target: reconcile-openonu-go-adapter-test-att
               workflow: att
               flags: ""
             - target: reconcile-openonu-go-adapter-test-dt
@@ -146,7 +146,7 @@
           onus: 2
           pons: 2
           testTargets: |
-            - target: openonu-go-adapter-multi-olt-test
+            - target: 1t1gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
             - target: 1t4gem-openonu-go-adapter-multi-olt-test
@@ -155,7 +155,7 @@
             - target: 1t8gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
-            - target: reconcile-openonu-go-adapter-multi-olt-test
+            - target: reconcile-openonu-go-adapter-multi-olt-test-att
               workflow: att
               flags: ""
             - target: reconcile-openonu-go-adapter-multi-olt-test-dt
@@ -173,7 +173,7 @@
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           testTargets: |
-            - target: openonu-go-adapter-multi-olt-test
+            - target: 1t1gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
             - target: 1t4gem-openonu-go-adapter-multi-olt-test
@@ -182,7 +182,7 @@
             - target: 1t8gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
-            - target: reconcile-openonu-go-adapter-multi-olt-test
+            - target: reconcile-openonu-go-adapter-multi-olt-test-att
               workflow: att
               flags: ""
             - target: reconcile-openonu-go-adapter-multi-olt-test-dt
@@ -195,6 +195,80 @@
           onus: 2
           pons: 2
 
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-pm-data-test-bbsim'
+          code-branch: 'master'
+          time-trigger: "H H/12 * * *"
+          testTargets: |
+            - target: voltha-pm-data-single-kind-att
+              workflow: att
+              flags: ""
+            - target: voltha-pm-data-single-kind-dt
+              workflow: dt
+              flags: ""
+            - target: voltha-pm-data-single-kind-tt
+              workflow: tt
+              flags: ""
+          timeout: 140
+
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-pm-data-test-bbsim'
+          trigger-comment: "voltha test pm data"
+          code-branch: '$GERRIT_BRANCH'
+          gerrit-project: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          testTargets: |
+            - target: voltha-pm-data-single-kind-att
+              workflow: att
+              flags: ""
+            - target: voltha-pm-data-single-kind-dt
+              workflow: dt
+              flags: ""
+            - target: voltha-pm-data-single-kind-tt
+              workflow: tt
+              flags: ""
+          timeout: 140
+
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-multiple-olts-pm-data-test-bbsim'
+          code-branch: 'master'
+          olts: 2
+          onus: 2
+          pons: 2
+          timeout: 180
+          testTargets: |
+            - target: voltha-pm-data-multiolt-kind-att
+              workflow: att
+              flags: ""
+            - target: voltha-pm-data-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+            - target: voltha-pm-data-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-multiple-olts-pm-data-test-bbsim'
+          trigger-comment: "voltha test pm data multiolt"
+          code-branch: '$GERRIT_BRANCH'
+          gerrit-project: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          testTargets: |
+            - target: voltha-pm-data-multiolt-kind-att
+              workflow: att
+              flags: ""
+            - target: voltha-pm-data-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+            - target: voltha-pm-data-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+          olts: 2
+          onus: 2
+          pons: 2
+          timeout: 180
+
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.7'
           pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
@@ -202,9 +276,9 @@
           make-target: openonu-go-adapter-multi-olt-test
           make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test
           make-target-1t8gemtest: 1t8gem-openonu-go-adapter-multi-olt-test
-          make-target-reconciletest: reconcile-openonu-go-adapter-test
-          make-target-reconciledttest: reconcile-openonu-go-adapter-test-dt
-          make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
+          make-target-reconciletest: reconcile-openonu-go-adapter-multi-olt-test
+          make-target-reconciledttest: reconcile-openonu-go-adapter-multi-olt-test-dt
+          make-target-reconciletttest: reconcile-openonu-go-adapter-multi-olt-test-tt
           withAlarms: false
           code-branch: 'voltha-2.7'
           olts: 2
@@ -380,6 +454,7 @@
     extraHelmFlags: ''
     sandbox: true
     olts: 1
+    timeout: 130
 
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
@@ -415,7 +490,7 @@
       # the provided configuration and then the make target is invoked,
       # example value (has to be valid YAML):
       # testTargets: |
-      #   - target: openonu-go-adapter-test
+      #   - target: 1t1gem-openonu-go-adapter-test
       #     workflow: att
       #     flags: ""
       - text:
@@ -457,6 +532,11 @@
           name: olts
           default: '{olts}'
           description: 'How many BBSim instances to run'
+
+      - string:
+          name: timeout
+          default: '{timeout}'
+          description: 'Timeout of pipeline job [minutes]'
 
     project-type: pipeline
     concurrent: true
