@@ -362,77 +362,58 @@
               flags: ""
               teardown: true
 
-      # Per-patchset Pod builds on Tucson pod (master)
+      # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
-          default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          workflow: 'att'
 
-      # Per-patchset Pod builds on Tucson pod (voltha-2.7)
+      # ATT Per-patchset Pod builds on Tucson pod (voltha-2.7)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto_voltha-2.7'
           oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
-          default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
           pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
           branch-pattern: voltha-2.7
+          workflow: 'att'
 
-      # Per-patchset Pod builds on Tucson pod (master)
+      # ATT Manual Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_manual':
           name: 'verify_physical_voltha_patchset_manual'
-          profile: 'Default'
           trigger-string: 'hardware test'
-          default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
           branch-pattern: master
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          workflow: 'att'
 
+      #  ATT Manual Pod builds on Tucson pod (voltha-2.7)
+      - 'verify_physical_voltha_patchset_manual':
+          name: 'verify_physical_voltha_patchset_manual_voltha-2.7'
+          oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
+          oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
+          pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
+          trigger-string: 'hardware test'
+          branch-pattern: voltha-2.7
+          workflow: 'att'
 
-      # Per-patchset Pod builds on Tucson pod  (master)
+      # DT Manual Pod builds on Tucson pod  (master)
       - 'verify_physical_voltha_patchset_manual':
           name: 'verify_physical_voltha_patchset_manual_DT'
           workflow: 'dt'
-          profile: 'Default'
-          pipeline-script: 'voltha/voltha-2.7/voltha-dt-physical-build-and-tests.groovy'
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
           branch-pattern: master
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
 
-      # Per-patchset Pod builds on Tucson pod (voltha-2.7)
-      - 'verify_physical_voltha_patchset_manual':
-          name: 'verify_physical_voltha_patchset_manual_voltha-2.7'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
-          profile: 'Default'
-          pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
-          trigger-string: 'hardware test'
-          default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
-          branch-pattern: voltha-2.7
-
-
-      # Per-patchset Pod builds on Tucson pod  (voltha-2.7)
+      # DT Per-patchset Pod builds on Tucson pod  (voltha-2.7)
       - 'verify_physical_voltha_patchset_manual':
           name: 'verify_physical_voltha_patchset_manual_DT_voltha-2.7'
           workflow: 'dt'
           oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
-          profile: 'Default'
           pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
           branch-pattern: voltha-2.7
-
-      # Manual build job for Tucson pod
-      # Allow local testing without disrupting above job
-      - 'build_physical_voltha_manual':
-          name: 'build_tucson-pod_manual'
-          config-pod: 'tucson-pod'
-          manualBranch: 'master'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
-          profile: 'Default'
-          default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
 
 - job-template:
     id: 'voltha-periodic-test'
@@ -996,11 +977,10 @@
                   Copyright (c) 2019 Open Networking Foundation (ONF)
     sandbox: true
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
-    default-test-args: '-i sanityORDeleteOLT -X'
+    default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
     branch-pattern: '{all-branches-regexp}'
     build-node: 'tucson-pod'
     config-pod: 'tucson-pod'
-    workflow: 'att'
     profile: 'Default'
     oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
@@ -1055,11 +1035,11 @@
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
     trigger-string: 'hardware test'
-    default-test-args: '-i sanityORDeleteOLT -X'
+    default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
     branch-pattern: '{all-branches-regexp}'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
-    workflow: 'att'
+    profile: 'Default'
     extraHelmFlags: ''
 
     properties:
@@ -1094,130 +1074,3 @@
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{branch-pattern}'
-
-- job-template:
-    name: '{name}'
-    id: build_physical_voltha_manual
-    description: |
-                  <!-- Managed by Jenkins Job Builder -->
-                  Automated build on POD {config-pod} using {pipeline-script} <br /><br />
-                  Created from job-template {id} from ci-management/jjb/voltha-e2e.yaml <br />
-                  Created by Andy Bavier, andy@opennetworking.org <br />
-                  Copyright (c) 2019 Open Networking Foundation (ONF)
-    sandbox: true
-    pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
-
-    properties:
-      - cord-infra-properties:
-          build-days-to-keep: '{build-days-to-keep}'
-          artifact-num-to-keep: '{artifact-num-to-keep}'
-
-    parameters:
-      - string:
-          name: buildNode
-          default: '{build-node}'
-          description: 'Pod management node'
-
-      - string:
-          name: manifestUrl
-          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
-          description: 'URL to the repo manifest'
-
-      - string:
-          name: branch
-          default: "$GERRIT_BRANCH"
-          description: 'Name of the repo manifest branch to use'
-
-      - string:
-          name: gerritProject
-          default: '$GERRIT_PROJECT'
-          description: 'Name of the Gerrit project'
-
-      - string:
-          name: gerritChangeNumber
-          default: '$GERRIT_CHANGE_NUMBER'
-          description: 'Changeset number in Gerrit'
-
-      - string:
-          name: gerritPatchsetNumber
-          default: '$GERRIT_PATCHSET_NUMBER'
-          description: 'PatchSet number in Gerrit'
-
-      - string:
-          name: gerritRefspec
-          default: '$GERRIT_REFSPEC'
-          description: 'RefSpec number in Gerrit'
-
-      - string:
-          name: cordRepoUrl
-          default: '{gerrit-server-url}'
-          description: 'The URL of the CORD Project repository'
-
-      - string:
-          name: podName
-          default: '{config-pod}'
-
-      - string:
-          name: deploymentConfigFile
-          default: 'pod-configs/deployment-configs/{config-pod}.yaml'
-          description: 'Path of deployment config file'
-
-      - string:
-          name: kindVolthaValuesFile
-          default: 'pod-configs/kubernetes-configs/voltha/{config-pod}.yml'
-          description: 'Path of kind-voltha values override file'
-
-      - string:
-          name: sadisConfigFile
-          default: 'voltha-system-tests/tests/data/{config-pod}-sadis.json'
-          description: 'Path of SADIS config to load'
-
-      - string:
-          name: localConfigDir
-          default: null
-          description: 'If specified, config file paths are relative to this dir; otherwise $WORKSPACE'
-
-      - string:
-          name: configRepo
-          default: 'pod-configs'
-          description: 'A repository containing the config files, will be checked out if specified'
-
-      - string:
-          name: oltDebVersionMaster
-          default: '{oltDebVersionMaster}'
-          description: 'OLT Software version to install for master branch builds'
-
-      - string:
-          name: oltDebVersionVoltha23
-          default: '{oltDebVersionVoltha23}'
-          description: 'OLT Software version to install for voltha-2.3 branch builds'
-
-      - string:
-          name: profile
-          default: '{profile}'
-          description: 'Technology Profile pushed to the ETCD'
-
-      - string:
-          name: notificationEmail
-          default: 'andy@opennetworking.org'
-          description: ''
-
-      - bool:
-          name: reinstallOlt
-          default: false
-          description: "Re-install OLT software"
-
-      - string:
-          name: manualBranch
-          default: '{manualBranch}'
-          description: "If a non-empty string, build manually on a specific branch, not with a specific patchset"
-
-      - string:
-          name: extraRobotArgs
-          default: '-e bbsim -X'
-          description: 'Arguments to pass to robot'
-
-    project-type: pipeline
-    concurrent: true
-
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
