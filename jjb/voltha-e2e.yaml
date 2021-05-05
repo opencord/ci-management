@@ -72,6 +72,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           time-trigger: "H H/12 * * *"
           testTargets: |
             - target: openonu-go-adapter-test
@@ -100,6 +101,7 @@
           name: 'patchset-voltha-openonu-go-test-bbsim'
           trigger-comment: "voltha test openonu"
           code-branch: '$GERRIT_BRANCH'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           testTargets: |
@@ -142,6 +144,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           olts: 2
           onus: 2
           pons: 2
@@ -170,6 +173,7 @@
           name: 'patchset-voltha-multiple-olts-openonu-go-test-bbsim'
           trigger-comment: "voltha test openonu multiolt"
           code-branch: '$GERRIT_BRANCH'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           testTargets: |
