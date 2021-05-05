@@ -53,6 +53,11 @@ pipeline {
         sh returnStdout: true, script: "rm -rf ${configBaseDir}"
         sh returnStdout: true, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
         script {
+
+          if (params.workflow.toUpperCase() == "TT") {
+            error("The Tucson POD does not support TT workflow at the moment")
+          }
+
           if ( params.workflow.toUpperCase() == "DT" ) {
             deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
           }
@@ -247,14 +252,21 @@ pipeline {
     stage('Run E2E Tests') {
       steps {
         script {
+          // different workflows need different make targets and different robot files
           if ( params.workflow.toUpperCase() == "DT" ) {
             robotConfigFile = "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+            robotFile = "Voltha_PODTests.robot"
+            makeTarget = "voltha-dt-test"
           }
           else if ( params.workflow.toUpperCase() == "TT" ) {
             robotConfigFile = "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+            robotFile = "Voltha_PODTests.robot"
+            makeTarget = "voltha-tt-test"
           }
           else {
             robotConfigFile = "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
+            robotFile = "Voltha_PODTests.robot"
+            makeTarget = "voltha-test"
           }
         }
         sh returnStdout: false, script: """
@@ -262,7 +274,7 @@ pipeline {
 
         export ROBOT_CONFIG_FILE="$WORKSPACE/${robotConfigFile}"
         export ROBOT_MISC_ARGS="${params.extraRobotArgs} --removekeywords wuks -d $WORKSPACE/RobotLogs -v container_log_dir:$WORKSPACE "
-        export ROBOT_FILE="Voltha_PODTests.robot"
+        export ROBOT_FILE="${robotFile}"
 
         # If the Gerrit comment contains a line with "functional tests" then run the full
         # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
@@ -277,7 +289,7 @@ pipeline {
           ROBOT_MISC_ARGS+="-i dataplane"
         fi
 
-        make -C $WORKSPACE/voltha-system-tests voltha-test || true
+        make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
         """
       }
     }
