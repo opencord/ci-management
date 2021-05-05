@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "88d64b69_8426326c",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-05T15:52:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "acd73285_16adc369",
+      "revId": "34ddfaa465be4793f89056cd9af57fc91b566fb1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "73feab28_ae9c4cba",
         "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
         "patchSetId": 1
@@ -39,6 +57,30 @@
       "revId": "34ddfaa465be4793f89056cd9af57fc91b566fb1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8dfe8b6d_2bd4a395",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-05T15:52:12Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "73feab28_ae9c4cba",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 73
+      },
+      "revId": "34ddfaa465be4793f89056cd9af57fc91b566fb1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     },
     {
       "key": {
