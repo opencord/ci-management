@@ -241,6 +241,93 @@
               teardown: true
           olts: 2
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-pm-data-test-bbsim'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: voltha-pm-data-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+          timeout: 140
+
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-pm-data-test-bbsim'
+          trigger-comment: "voltha test pm data singleolt"
+          code-branch: '$GERRIT_BRANCH'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          code-branch: '$GERRIT_BRANCH'
+          gerrit-project: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          testTargets: |
+            - target: voltha-pm-data-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+          timeout: 140
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-pm-data-test-bbsim'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          olts: 2
+          timeout: 180
+          testTargets: |
+            - target: voltha-pm-data-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+          time-trigger: "H H/23 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-multiple-olts-pm-data-test-bbsim'
+          trigger-comment: "voltha test pm data multiolt"
+          code-branch: '$GERRIT_BRANCH'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          gerrit-project: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          testTargets: |
+            - target: voltha-pm-data-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-pm-data-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+          olts: 2
+          timeout: 180
+
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.7'
           pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
@@ -448,6 +535,7 @@
     registry:  mirror.registry.opennetworking.org
     sandbox: true
     olts: 1
+    timeout: 130
     logLevel: 'INFO'
 
     trigger-comment: vv7CBoQQYYonvaN8xcru
@@ -537,6 +625,11 @@
           name: logLevel
           default: '{logLevel}'
           description: 'Log level for all the components'
+
+      - string:
+          name: timeout
+          default: '{timeout}'
+          description: 'Timeout of pipeline job [minutes]'
 
     project-type: pipeline
     concurrent: true
