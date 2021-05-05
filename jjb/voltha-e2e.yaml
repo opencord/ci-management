@@ -316,6 +316,7 @@
           name: 'verify_physical_voltha_patchset_manual'
           profile: 'Default'
           trigger-string: 'hardware test'
+          extra-helm-falgs: '--set global.image_tag=master --set onos-classic.image.tag=master'
           default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
           branch-pattern: master
 
@@ -325,6 +326,7 @@
           name: 'verify_physical_voltha_patchset_manual_DT'
           workflow: 'dt'
           profile: 'Default'
+          extra-helm-falgs: '--set global.image_tag=master --set onos-classic.image.tag=master'
           pipeline-script: 'voltha/voltha-2.7/voltha-dt-physical-build-and-tests.groovy'
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
@@ -964,6 +966,7 @@
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
     trigger-string: 'hardware test'
     default-test-args: '-i sanityORDeleteOLT -X'
+    extra-helm-flags: ''
     branch-pattern: '{all-branches-regexp}'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
@@ -1124,6 +1127,11 @@
           name: extraRobotArgs
           default: '-e bbsim -X'
           description: 'Arguments to pass to robot'
+
+      - string:
+          name: extraHelmFlags
+          default: '{extra-helm-flags}'
+          description: 'Arguments to pass to helm'
 
     project-type: pipeline
     concurrent: true
