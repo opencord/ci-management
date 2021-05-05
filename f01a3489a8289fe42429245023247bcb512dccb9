@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a87a91e7_f500d347",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-05T15:56:46Z",
+      "side": 1,
+      "message": "do we need ? --set images.onos_config_loader.tag\u003dmaster-onos-config-loader",
+      "revId": "f01a3489a8289fe42429245023247bcb512dccb9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
