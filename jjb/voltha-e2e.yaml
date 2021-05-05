@@ -856,6 +856,11 @@
           default: '{workflow}'
           description: 'Installs and uses the specified work flow on the POD'
 
+      - string:
+          name: extraHelmFlags
+          default: '{extraHelmFlags}'
+          description: 'Helm flags (passed to each helm command)'
+
       # deprecated parameters, remove after VOLTHA-2.8 is released
       - string:
           name: deploymentConfigFile
@@ -918,6 +923,7 @@
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
+    extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
 
     properties:
       - cord-infra-properties:
@@ -972,6 +978,7 @@
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     workflow: 'att'
+    extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
 
     properties:
       - cord-infra-properties:
