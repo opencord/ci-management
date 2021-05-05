@@ -32,6 +32,7 @@
           make-target-multipleolt: bbsim-multiolt-kind
           withAlarms: true
           code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           olts: 1
           onus: 2
           pons: 2
@@ -48,6 +49,7 @@
           make-target-multipleolt: bbsim-multiolt-kind
           withAlarms: false
           code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           olts: 2
           onus: 2
           pons: 2
@@ -72,6 +74,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           time-trigger: "H H/12 * * *"
           testTargets: |
             - target: openonu-go-adapter-test
@@ -102,6 +105,7 @@
           code-branch: '$GERRIT_BRANCH'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           testTargets: |
             - target: openonu-go-adapter-test
               workflow: att
@@ -142,6 +146,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           olts: 2
           onus: 2
           pons: 2
@@ -172,6 +177,7 @@
           code-branch: '$GERRIT_BRANCH'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           testTargets: |
             - target: openonu-go-adapter-multi-olt-test
               workflow: att
