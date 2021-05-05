@@ -162,7 +162,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 130, unit: 'MINUTES')
+    timeout(time: "${timeout}", unit: 'MINUTES')
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-${clusterName}"
