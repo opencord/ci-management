@@ -316,6 +316,7 @@
           name: 'verify_physical_voltha_patchset_manual'
           profile: 'Default'
           trigger-string: 'hardware test'
+          extra-helm-falgs: '--set global.image_tag=master --set onos-classic.image.tag=master'
           default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
           branch-pattern: master
 
@@ -325,7 +326,7 @@
           name: 'verify_physical_voltha_patchset_manual_DT'
           workflow: 'dt'
           profile: 'Default'
-          pipeline-script: 'voltha/voltha-2.7/voltha-dt-physical-build-and-tests.groovy'
+          extra-helm-falgs: '--set global.image_tag=master --set onos-classic.image.tag=master'
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
           branch-pattern: master
@@ -349,7 +350,7 @@
           oltDebVersionMaster: 'openolt_asfvolt16-3.4.1-dev-c5dcc7f2b27df1c42868b3a79a5416808511bb1d-40G-NNI.deb'
           oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
           profile: 'Default'
-          pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.7/voltha-dt-physical-build-and-tests.groovy'
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
           branch-pattern: voltha-2.7
@@ -964,6 +965,7 @@
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
     trigger-string: 'hardware test'
     default-test-args: '-i sanityORDeleteOLT -X'
+    extra-helm-flags: ''
     branch-pattern: '{all-branches-regexp}'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
@@ -1124,6 +1126,11 @@
           name: extraRobotArgs
           default: '-e bbsim -X'
           description: 'Arguments to pass to robot'
+
+      - string:
+          name: extraHelmFlags
+          default: '{extra-helm-flags}'
+          description: 'Arguments to pass to helm'
 
     project-type: pipeline
     concurrent: true

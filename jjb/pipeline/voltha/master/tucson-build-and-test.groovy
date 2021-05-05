@@ -115,6 +115,7 @@ pipeline {
               localCharts = true
             }
             def extraHelmFlags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml ${imageFlags} "
+            extraHelmFlags = extraHelmFlags + params.extraHelmFlags + " "
             // NOTE temporary workaround expose ONOS node ports (pod-config needs to be updated to contain these values)
             extraHelmFlags = extraHelmFlags + "--set onos-classic.onosSshPort=30115 " +
             "--set onos-classic.onosApiPort=30120 " +
