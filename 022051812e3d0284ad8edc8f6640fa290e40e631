@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "21f6c7ba_bd0867f5",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 330,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T10:10:30Z",
+      "side": 1,
+      "message": "This is using 2.7 pipeline!!",
+      "range": {
+        "startLine": 330,
+        "startChar": 35,
+        "endLine": 330,
+        "endChar": 45
+      },
+      "revId": "022051812e3d0284ad8edc8f6640fa290e40e631",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "589edfd1_48b6d872",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 354,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T10:10:30Z",
+      "side": 1,
+      "message": "This is non DT pipeline!!",
+      "range": {
+        "startLine": 354,
+        "startChar": 46,
+        "endLine": 354,
+        "endChar": 84
+      },
+      "revId": "022051812e3d0284ad8edc8f6640fa290e40e631",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a1afe56f_81ff15af",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1132,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T10:10:30Z",
+      "side": 1,
+      "message": "Equivalent support is required in pipeline script .groovy file as well to read the param",
+      "range": {
+        "startLine": 1132,
+        "startChar": 16,
+        "endLine": 1132,
+        "endChar": 30
+      },
+      "revId": "022051812e3d0284ad8edc8f6640fa290e40e631",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e679977a_550d4292",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 374,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T10:10:30Z",
+      "side": 1,
+      "message": "I guess we currently have single OLT here.",
+      "range": {
+        "startLine": 374,
+        "startChar": 77,
+        "endLine": 374,
+        "endChar": 85
+      },
+      "revId": "022051812e3d0284ad8edc8f6640fa290e40e631",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
