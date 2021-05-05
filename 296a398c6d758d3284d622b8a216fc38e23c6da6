@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "913bd7d1_78649d4b",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T11:53:31Z",
+      "side": 1,
+      "message": "Not sure if this will work here. Or you can try like ${extraHelmFlags}. E.g: https://github.com/opencord/ci-management/blob/master/jjb/pipeline/voltha/master/software-upgrades.groovy#L25",
+      "range": {
+        "startLine": 118,
+        "startChar": 46,
+        "endLine": 118,
+        "endChar": 67
+      },
+      "revId": "296a398c6d758d3284d622b8a216fc38e23c6da6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be5d58f0_481d8b8c",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T11:53:31Z",
+      "side": 1,
+      "message": "This will not work for DT and TT workflow.",
+      "range": {
+        "startLine": 261,
+        "startChar": 1,
+        "endLine": 281,
+        "endChar": 66
+      },
+      "revId": "296a398c6d758d3284d622b8a216fc38e23c6da6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f2d5219_7b48f48a",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 319,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T11:53:31Z",
+      "side": 1,
+      "message": "I think we also need to add this everywhere : --set images.onos_config_loader.tag\u003dmaster-onos-config-loader",
+      "revId": "296a398c6d758d3284d622b8a216fc38e23c6da6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
