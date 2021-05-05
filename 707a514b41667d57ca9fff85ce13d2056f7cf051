@@ -22,6 +22,29 @@
       "revId": "707a514b41667d57ca9fff85ce13d2056f7cf051",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fe5f6bb3_e5f0912f",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-05T16:38:51Z",
+      "side": 1,
+      "message": "use master images in all \"master\" jobs",
+      "range": {
+        "startLine": 25,
+        "startChar": 17,
+        "endLine": 25,
+        "endChar": 43
+      },
+      "revId": "707a514b41667d57ca9fff85ce13d2056f7cf051",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
