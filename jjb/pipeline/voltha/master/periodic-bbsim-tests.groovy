@@ -68,7 +68,7 @@ def execute_test(testTarget, workflow, testSpecificHelmFlags = "") {
       // start logging
       sh """
       mkdir -p $WORKSPACE/${testTarget}
-      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}/onos-voltha-combined.log &
+      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}/${testTarget}-onos-voltha-combined.log &
       """
       sh """
       JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
