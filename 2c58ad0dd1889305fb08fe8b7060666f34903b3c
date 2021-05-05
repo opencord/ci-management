@@ -19,6 +19,23 @@
     },
     {
       "key": {
+        "uuid": "5b828903_c7928b20",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-05T11:55:44Z",
+      "side": 1,
+      "message": "Based on the similar change (https://github.com/opencord/ci-management/blob/master/jjb/pipeline/voltha/master/software-upgrades.groovy#L27) made sometime back, may be need to add this as well: --set images.onos_config_loader.tag\u003dmaster-onos-config-loader",
+      "revId": "2c58ad0dd1889305fb08fe8b7060666f34903b3c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "46f79eae_34398ef8",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 1
