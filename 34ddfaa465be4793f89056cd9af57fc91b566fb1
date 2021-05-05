@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "acd73285_16adc369",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-05T15:50:25Z",
+      "side": 1,
+      "message": "I think Jenkins functionality uses the path to create the archive name. Therefore I would like to suggest something like:\n      mkdir -p $WORKSPACE/${testTarget}-traces\n      _TAG\u003dkail-${workflow} kail -n infra -n voltha \u003e $WORKSPACE/${testTarget}-traces/onos-voltha-combined.log \u0026",
+      "revId": "34ddfaa465be4793f89056cd9af57fc91b566fb1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "73feab28_ae9c4cba",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 85,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-05T15:50:25Z",
+      "side": 1,
+      "message": "suggestion:\n    mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot-logs\n    export ROBOT_MISC_ARGS\u003d\"-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot-logs \"",
+      "range": {
+        "startLine": 84,
+        "startChar": 0,
+        "endLine": 85,
+        "endChar": 73
+      },
+      "revId": "34ddfaa465be4793f89056cd9af57fc91b566fb1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0fc413e4_ed1e0aa7",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-05T15:50:25Z",
+      "side": 1,
+      "message": "As I already mentioned in comments for patch https://gerrit.opencord.org/c/ci-management/+/24552:\nWouldn\u0027t it be better to change it at a single point in \u0027jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy\u0027after line 54, e.g:\n        def localHelmFlags \u003d extraHelmFlags + \" --set global.log_level\u003dDEBUG --set onos-classic.onosSshPort\u003d30115 \" +\n        \" --set global.image_tag\u003dmaster --set onos-classic.image.tag\u003dmaster \" +\n        \" --set onos-classic.onosApiPort\u003d30120 \" +\n        \" --set onos-classic.onosOfPort\u003d31653 \" +\n        \" --set onos-classic.individualOpenFlowNodePorts\u003dtrue \" + testSpecificHelmFlags\n\nThe same for all three following inserts...",
+      "revId": "34ddfaa465be4793f89056cd9af57fc91b566fb1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
