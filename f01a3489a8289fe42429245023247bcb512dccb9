@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "72a4a14f_969d5432",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-05T15:58:07Z",
+      "side": 1,
+      "message": "getPodsInfo(\"$WORKSPACE/${testTarget}-components\")\nTo have it all in one directory/archive",
+      "range": {
+        "startLine": 79,
+        "startChar": 6,
+        "endLine": 79,
+        "endChar": 45
+      },
+      "revId": "f01a3489a8289fe42429245023247bcb512dccb9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a87a91e7_f500d347",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 2
