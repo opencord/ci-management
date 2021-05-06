@@ -29,7 +29,6 @@
           # NOTE why not a remote executor?
           build-node: 'qct-pod4-node2'
           registry: 'registry.menlo.onlab.us'
-          volthaSystemTestsChange: refs/changes/92/24492/1
           testTargets: |
             - target: functional-single-kind
               workflow: att
