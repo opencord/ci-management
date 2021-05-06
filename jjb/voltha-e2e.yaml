@@ -26,9 +26,6 @@
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
-          # NOTE why not a remote executor?
-          build-node: 'qct-pod4-node2'
-          registry: 'registry.menlo.onlab.us'
           testTargets: |
             - target: functional-single-kind
               workflow: att
@@ -49,9 +46,6 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim'
-          # NOTE why not a remote executor?
-          build-node: 'qct-pod4-node2'
-          registry: 'registry.menlo.onlab.us'
           code-branch: 'master'
           olts: 2
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
@@ -265,9 +259,6 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI'
-          # NOTE why not a remote executor?
-          build-node: 'qct-pod4-node2'
-          registry: 'registry.menlo.onlab.us'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
@@ -324,9 +315,6 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs'
-          # NOTE why not a remote executor?
-          build-node: 'qct-pod4-node2'
-          registry: 'registry.menlo.onlab.us'
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
