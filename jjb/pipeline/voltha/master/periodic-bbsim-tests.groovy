@@ -47,6 +47,11 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
       timeout(20) {
         script {
 
+          sh """
+          mkdir -p $WORKSPACE/${testTarget}-components
+          _TAG=kail-startup kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-startup-combined.log &
+          """
+
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
           def localCharts = false
           if (volthaHelmChartsChange != "") {
@@ -68,12 +73,18 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
             dockerRegistry: registry,
             ])
         }
+
+        // stop logging
+        sh """
+          P_IDS="\$(ps e -ww -A | grep "_TAG=kail-startup" | grep -v grep | awk '{print \$1}')"
+          if [ -n "\$P_IDS" ]; then
+            echo \$P_IDS
+            for P_ID in \$P_IDS; do
+              kill -9 \$P_ID
+            done
+          fi
+        """
       }
-      // start logging
-      sh """
-      mkdir -p $WORKSPACE/${testTarget}-components
-      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
-      """
       sh """
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
@@ -83,6 +94,11 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
+    // start logging
+    sh """
+    mkdir -p $WORKSPACE/${testTarget}-components
+    _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
+    """
     sh """
     mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
     export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
