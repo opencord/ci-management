@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f9b90c32_f5e7380f",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-06T08:06:25Z",
+      "side": 1,
+      "message": "I\u0027m not sure we want to double this also in the multi-olt. what is the benefit ? I believe just the single one could be fine, thoughts ?",
+      "revId": "448c2c6088cdb814c740bdc507baddd9dc59c73a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
