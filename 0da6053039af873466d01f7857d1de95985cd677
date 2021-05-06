@@ -16,6 +16,24 @@
       "revId": "0da6053039af873466d01f7857d1de95985cd677",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "313178cf_2229427c",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-06T21:40:07Z",
+      "side": 0,
+      "message": "It will use \"ubuntu18.04-basebuild-8c-15g\" in EC2, I don\u0027t have a node to dedicate to this in Menlo",
+      "parentUuid": "fa4a487a_d7a6760c",
+      "revId": "0da6053039af873466d01f7857d1de95985cd677",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
