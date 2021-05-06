@@ -108,7 +108,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
 def collectArtifacts(exitStatus) {
   getPodsInfo("$WORKSPACE/${exitStatus}")
   sh """
-  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log
+  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log || true
   """
   archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html'
   sh '''

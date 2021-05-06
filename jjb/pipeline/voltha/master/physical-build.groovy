@@ -338,6 +338,20 @@ pipeline {
   }
 
   post {
+    aborted {
+      getPodsInfo("$WORKSPACE/failed")
+      sh """
+      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.log || true
+      """
+      archiveArtifacts artifacts: '**/*.log,**/*.txt'
+    }
+    failure {
+      getPodsInfo("$WORKSPACE/failed")
+      sh """
+      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.logs || true
+      """
+      archiveArtifacts artifacts: '**/*.log,**/*.txt'
+    }
     always {
       archiveArtifacts artifacts: '*.txt'
     }
