@@ -35,9 +35,17 @@ def call(Map config) {
       registryFlags += " --set onos-classic.atomix.image.repository=${cfg.dockerRegistry}/atomix/atomix "
       registryFlags += " --set freeradius.images.radius.registry=${cfg.dockerRegistry}/ "
 
-      // we want to alway leave the user provided flags at the end, to override changes
+      // we want to always leave the user provided flags at the end, to override changes
       cfg.extraHelmFlags = registryFlags + " " + cfg.extraHelmFlags
     }
+
+    // Add helm repositories
+    println "Updating helm repos"
+
+    sh """
+      helm repo add onf https://charts.opencord.org
+      helm repo update
+    """
 
     println "Deploying VOLTHA with the following parameters: ${cfg}."
 
