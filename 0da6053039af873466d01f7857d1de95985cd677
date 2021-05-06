@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fa4a487a_d7a6760c",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-05-06T21:20:45Z",
+      "side": 0,
+      "message": "which node are you going to use in menlo?",
+      "revId": "0da6053039af873466d01f7857d1de95985cd677",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
