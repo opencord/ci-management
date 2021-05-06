@@ -16,6 +16,24 @@
       "revId": "448c2c6088cdb814c740bdc507baddd9dc59c73a",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9cd02834_02942564",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-06T09:50:52Z",
+      "side": 1,
+      "message": "If we decide to use only one, then I prefer to keep multiple OLTs. But at least I will keep for gerrit trigger both, single and multiple.",
+      "parentUuid": "f9b90c32_f5e7380f",
+      "revId": "448c2c6088cdb814c740bdc507baddd9dc59c73a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
