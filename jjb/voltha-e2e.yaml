@@ -612,7 +612,7 @@
 
       - string:
           name: extraHelmFlags
-          default: '--set onu={onus},pon={pons},{extraHelmFlags}'
+          default: '--set onu={onus},pon={pons} {extraHelmFlags}'
           description: 'Helm flags to pass to ./voltha up'
 
       - bool:
