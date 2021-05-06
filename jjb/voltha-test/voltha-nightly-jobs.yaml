@@ -151,7 +151,7 @@
           default: '{cordTesterChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
 
-      # NOTE is this needed/used?
+      # this is used in the Adtran DT job
       - string:
           name: openoltAdapterChart
           default: '{openoltAdapterChart}'

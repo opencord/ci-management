@@ -400,18 +400,18 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
-          disable-job: true
+          disable-job: false
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
           # Update this value accordingly once the job is enabled
-          time: ''
+          time: '4'
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -575,3 +575,32 @@
           branch: 'master'
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
+
+      # Berlin pod with adtran gpon olt/onu - master 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon-adtran'
+          release: '2.6'
+          branch: 'voltha-2.6'
+          VolthaEtcdPort: 9999
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          reinstall-olt: false
+          Jenkinsfile: 'Jenkinsfile-voltha-build' # we are cloning voltha-system-test@2.6 that still has it
+          openoltAdapterChart: '/home/community/adtran-2021-01-29/voltha-adapter-adtran-olt'
+          time: '7'
+
+      # Berlin POD adtran test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon-adtran'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          release: '2.6'
+          branch: 'voltha-2.6'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          oltAdapterAppLabel: 'adapter-adtran-olt'
+          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
