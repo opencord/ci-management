@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d7a951be_c5d9a220",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-06T18:06:28Z",
+      "side": 1,
+      "message": "do we need to run these with master images?\n\"extraHelmFlags: \u0027--set global.image_tag\u003dmaster --set onos-classic.image.tag\u003dmaster\u0027\"",
+      "range": {
+        "startLine": 251,
+        "startChar": 17,
+        "endLine": 251,
+        "endChar": 51
+      },
+      "revId": "6926a86ab94a7a8ddb81c7b078ea303f9f7955cf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
