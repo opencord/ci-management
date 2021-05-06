@@ -23,8 +23,11 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
-      if ("${name}" == "onos-app-upgrade") {
-          extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master "
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade") {
+          extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set onos-classic.image.tag=master "
+      }
+      if ("${name}" == "voltha-component-upgrade") {
+          extraHelmFlags = extraHelmFlags + "--set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master "
       }
       extraHelmFlags = extraHelmFlags + """ --set voltha.services.controller[0].service=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc \
       --set voltha.services.controller[0].port=6653 \
