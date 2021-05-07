@@ -202,6 +202,11 @@ pipeline {
         """
       }
     }
+    stage('Create K8s Cluster') {
+      steps {
+        createKubernetesCluster([nodes: 3])
+      }
+    }
     stage('Run Test') {
       steps {
         test_software_upgrade("onos-app-upgrade")

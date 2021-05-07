@@ -9,7 +9,7 @@
       - 'software-upgrades-test':
           name: 'periodic-software-upgrade-test-bbsim'
           pipeline-script: 'voltha/master/software-upgrades.groovy'
-          build-node: 'qct-pod4-node2'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'master'
           aaa-version: '2.4.0.SNAPSHOT'
           aaa-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/aaa-app/2.4.0-SNAPSHOT/aaa-app-2.4.0-20210504.145538-2.oar'
@@ -39,7 +39,7 @@
       - 'software-upgrades-test':
           name: 'periodic-software-upgrade-test-bbsim-2.7'
           pipeline-script: 'voltha/voltha-2.7/software-upgrades.groovy'
-          build-node: 'qct-pod4-node2'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'voltha-2.7'
           aaa-version: '2.3.0'
           aaa-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/aaa-app/2.3.0/aaa-app-2.3.0.oar'
@@ -56,7 +56,7 @@
           kafka-version: '2.6.0'
           kafka-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/kafka/2.6.0/kafka-2.6.0.oar'
           adapter-open-olt-image: 'voltha/voltha-openolt-adapter:3.1.8'
-          adapter-open-onu-image: 'voltha/voltha-openonu-adapter-go:1.2.8'
+          adapter-open-onu-image: 'voltha/voltha-openonu-adapter-go:1.2.11'
           rw-core-image: 'voltha/voltha-rw-core:2.7.0'
           ofagent-image: 'voltha/voltha-ofagent-go:1.5.2'
           onu-image-name: 'software-image.img'
