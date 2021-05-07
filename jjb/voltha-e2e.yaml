@@ -209,10 +209,9 @@
           name: 'patchset-voltha-multiple-olts-openonu-go-test-bbsim'
           trigger-comment: "voltha test openonu multiolt"
           code-branch: '$GERRIT_BRANCH'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set onu=2,pon=2 --set global.image_tag=master --set onos-classic.image.tag=master'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
-          extraHelmFlags: '--set onu=2,pon=2'
           testTargets: |
             - target: openonu-go-adapter-multi-olt-test
               workflow: att
