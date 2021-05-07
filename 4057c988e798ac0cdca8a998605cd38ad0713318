@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0b262882_f770796d",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-07T10:24:58Z",
+      "side": 1,
+      "message": "can be removed, not used anymore",
+      "range": {
+        "startLine": 10,
+        "startChar": 1,
+        "endLine": 11,
+        "endChar": 11
+      },
+      "revId": "4057c988e798ac0cdca8a998605cd38ad0713318",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05417f76_b0b3d353",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-07T10:24:58Z",
+      "side": 1,
+      "message": "Should be:\n         extraHelmFlags: \u0027--set onu\u003d2,pon\u003d2 --set global.image_tag\u003dmaster --set onos-classic.image.tag\u003dmaster\u0027",
+      "revId": "4057c988e798ac0cdca8a998605cd38ad0713318",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8da1bc95_2dfd6212",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-07T10:24:58Z",
+      "side": 1,
+      "message": "should be removed!",
+      "range": {
+        "startLine": 179,
+        "startChar": 10,
+        "endLine": 180,
+        "endChar": 17
+      },
+      "revId": "4057c988e798ac0cdca8a998605cd38ad0713318",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
