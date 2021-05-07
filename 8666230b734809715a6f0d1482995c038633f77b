@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7a66fb9a_f6da8b14",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 291,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-07T12:03:04Z",
+      "side": 1,
+      "message": "as Torsten mentioned I think these two can be removed",
+      "revId": "8666230b734809715a6f0d1482995c038633f77b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "736d4875_2f028fa7",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 541,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-07T12:03:04Z",
+      "side": 1,
+      "message": "description is wrong",
+      "revId": "8666230b734809715a6f0d1482995c038633f77b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
