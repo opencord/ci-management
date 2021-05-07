@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "68c9838d_c5eb6832",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 579,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-07T08:40:59Z",
+      "side": 1,
+      "message": "Not sure if we need a change this file as well https://github.com/opencord/voltha-system-tests/blob/voltha-2.6/Jenkinsfile-voltha-build in the CleanUp section as did in 2.7.",
+      "revId": "6eb673ec5e343a7bda7da56662919f757700a293",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
