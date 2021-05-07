@@ -97,7 +97,7 @@
       - string:
           name: extraHelmFlags
           default: ''
-          description: 'Helm flags to pass to ./voltha up'
+          description: 'Helm flags to pass to every helm install command'
 
       - string:
           name: volthaSystemTestsChange

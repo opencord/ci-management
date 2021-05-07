@@ -64,6 +64,11 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
           " --set onos-classic.onosApiPort=30120 " +
           " --set onos-classic.onosOfPort=31653 " +
           " --set onos-classic.individualOpenFlowNodePorts=true " + testSpecificHelmFlags
+
+          if (gerritProject != "") {
+            extraHelmFlags = extraHelmFlags + getVolthaImageFlags("${gerritProject}")
+          }
+          
           volthaDeploy([
             infraNamespace: infraNamespace,
             volthaNamespace: volthaNamespace,
