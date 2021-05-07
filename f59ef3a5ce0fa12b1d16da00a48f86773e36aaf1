@@ -16,6 +16,24 @@
       "revId": "f59ef3a5ce0fa12b1d16da00a48f86773e36aaf1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "71c6aeb4_e3e26b4f",
+        "filename": "jjb/verify/opendevice-manager.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-07T15:47:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "162ba27e_760a4868",
+      "revId": "f59ef3a5ce0fa12b1d16da00a48f86773e36aaf1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
