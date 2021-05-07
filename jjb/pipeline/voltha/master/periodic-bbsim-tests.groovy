@@ -173,6 +173,19 @@ pipeline {
         ])
       }
     }
+    stage('Build patch') {
+      // build the patch only if gerritProject is specified
+      when {
+        expression {
+          return !gerritProject.isEmpty()
+        }
+      }
+      steps {
+        // NOTE that the correct patch has already been checked out
+        // during the getVolthaCode step
+        buildVolthaComponent("${gerritProject}")
+      }
+    }
     stage('Create K8s Cluster') {
       steps {
         script {
@@ -183,6 +196,16 @@ pipeline {
             createKubernetesCluster([nodes: 3, name: clusterName])
           }
         }
+      }
+    }
+    stage('Load image in kind nodes') {
+      when {
+        expression {
+          return !gerritProject.isEmpty()
+        }
+      }
+      steps {
+        loadToKind()
       }
     }
     stage('Parse and execute tests') {
