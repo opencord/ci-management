@@ -21,3 +21,4 @@
           pipeline-script: 'voltha/voltha-2.7/voltha-bbsim-tests.groovy'
           name-extension: '-2.7'
           override-branch: 'voltha-2.7'
+          kindVolthaChange: '$GERRIT_REFSPEC'
