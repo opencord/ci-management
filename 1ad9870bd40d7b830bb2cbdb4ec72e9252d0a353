@@ -22,6 +22,30 @@
       "revId": "1ad9870bd40d7b830bb2cbdb4ec72e9252d0a353",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f1a6a6e1_f2ec1d42",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-07T05:39:28Z",
+      "side": 1,
+      "message": "In my opinion, we should not run more than 4 jobs on this POD in 24hrs cycle considering single or multi OLT and number of TCs they execute, as it will increase the chance of jobs overlapping each other.",
+      "parentUuid": "e398af9d_617ea6b9",
+      "range": {
+        "startLine": 408,
+        "startChar": 17,
+        "endLine": 408,
+        "endChar": 18
+      },
+      "revId": "1ad9870bd40d7b830bb2cbdb4ec72e9252d0a353",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
