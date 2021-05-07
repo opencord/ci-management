@@ -24,7 +24,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -90,6 +90,7 @@
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           time-trigger: "H H/12 * * *"
+          logLevel: 'DEBUG'
           testTargets: |
             - target: openonu-go-adapter-test
               workflow: att
@@ -127,6 +128,7 @@
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
+          logLevel: 'DEBUG'
           testTargets: |
             - target: openonu-go-adapter-test
               workflow: att
@@ -174,10 +176,9 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           olts: 2
-          onus: 2
-          pons: 2
+          logLevel: 'DEBUG'
           testTargets: |
             - target: openonu-go-adapter-multi-olt-test
               workflow: att
@@ -209,10 +210,10 @@
           name: 'patchset-voltha-multiple-olts-openonu-go-test-bbsim'
           trigger-comment: "voltha test openonu multiolt"
           code-branch: '$GERRIT_BRANCH'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
-          extraHelmFlags: '--set onu=2,pon=2'
+          logLevel: 'DEBUG'
           testTargets: |
             - target: openonu-go-adapter-multi-olt-test
               workflow: att
@@ -287,8 +288,6 @@
           make-target-alarmtest: bbsim-alarms-kind
           withAlarms: true
           code-branch: 'voltha-2.7'
-          onus: 2
-          pons: 2
           time-trigger: "H H * * *"
 
       - 'voltha-periodic-test':
@@ -449,6 +448,7 @@
     registry:  mirror.registry.opennetworking.org
     sandbox: true
     olts: 1
+    logLevel: 'INFO'
 
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
@@ -532,6 +532,11 @@
           name: registry
           default: '{registry}'
           description: 'Which registry to use (amazon vs menlo)'
+
+      - string:
+          name: logLevel
+          default: '{logLevel}'
+          description: 'Log level for all the components'
 
     project-type: pipeline
     concurrent: true
