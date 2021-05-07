@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "162ba27e_760a4868",
+        "filename": "jjb/verify/opendevice-manager.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-05-07T15:40:49Z",
+      "side": 1,
+      "message": "Need to add `publish-voltha-opendevice-manager-jobs` here",
+      "revId": "f59ef3a5ce0fa12b1d16da00a48f86773e36aaf1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
