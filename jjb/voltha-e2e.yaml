@@ -212,7 +212,9 @@
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
-          extraHelmFlags: '--set onu=2,pon=2'
+          olts: 2
+          onus: 2
+          pons: 2
           testTargets: |
             - target: openonu-go-adapter-multi-olt-test
               workflow: att
@@ -238,7 +240,6 @@
               workflow: tt
               flags: ""
               teardown: true
-          olts: 2
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.7'
