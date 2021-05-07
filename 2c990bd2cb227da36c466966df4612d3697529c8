@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf63d82d_cb244590",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-07T11:41:57Z",
+      "side": 1,
+      "message": "please make this parametrisable",
+      "revId": "2c990bd2cb227da36c466966df4612d3697529c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
