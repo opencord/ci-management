@@ -46,6 +46,30 @@
       "revId": "1ad9870bd40d7b830bb2cbdb4ec72e9252d0a353",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cbb6624a_25474772",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-07T07:49:00Z",
+      "side": 1,
+      "message": "ok, let\u0027s keep this disabled for now, we do have the multi-olt 2.7, leave the ADTRAN in please.",
+      "parentUuid": "f1a6a6e1_f2ec1d42",
+      "range": {
+        "startLine": 408,
+        "startChar": 17,
+        "endLine": 408,
+        "endChar": 18
+      },
+      "revId": "1ad9870bd40d7b830bb2cbdb4ec72e9252d0a353",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
