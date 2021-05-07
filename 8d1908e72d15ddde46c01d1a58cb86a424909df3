@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "2bf207bc_e043d2a3",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 258,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-07T05:53:20Z",
+      "side": 1,
+      "message": "Voltha_DT_PODTests.robot",
+      "range": {
+        "startLine": 258,
+        "startChar": 25,
+        "endLine": 258,
+        "endChar": 46
+      },
+      "revId": "8d1908e72d15ddde46c01d1a58cb86a424909df3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "981b8b95_517c01e6",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 263,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-07T05:53:20Z",
+      "side": 1,
+      "message": "Voltha_TT_PODTests.robot",
+      "revId": "8d1908e72d15ddde46c01d1a58cb86a424909df3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "131ebd52_d32f7041",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-07T05:53:20Z",
+      "side": 1,
+      "message": "This also depends on workflow.",
+      "range": {
+        "startLine": 284,
+        "startChar": 31,
+        "endLine": 284,
+        "endChar": 41
+      },
+      "revId": "8d1908e72d15ddde46c01d1a58cb86a424909df3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
