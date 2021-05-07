@@ -16,6 +16,52 @@
       "revId": "2c990bd2cb227da36c466966df4612d3697529c8",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77016613_5c5f5ef4",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-07T11:48:41Z",
+      "side": 1,
+      "message": "I think it is not necessary",
+      "range": {
+        "startLine": 27,
+        "startChar": 92,
+        "endLine": 27,
+        "endChar": 110
+      },
+      "revId": "2c990bd2cb227da36c466966df4612d3697529c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ced520e_8ba62d06",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 289,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-07T11:48:41Z",
+      "side": 1,
+      "message": "I think it is not necessary because it is default",
+      "range": {
+        "startLine": 287,
+        "startChar": 0,
+        "endLine": 289,
+        "endChar": 0
+      },
+      "revId": "2c990bd2cb227da36c466966df4612d3697529c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
