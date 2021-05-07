@@ -8,6 +8,8 @@
     jobs:
       - 'verify-opendevice-manager-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'publish-voltha-openolt-adapter-jobs':
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-opendevice-manager-jobs'
@@ -20,3 +22,13 @@
           # opendm-agent uses gtest which outputs in xunit format
           junit-allow-empty-results: true
           xunit-skip-if-no-test-files: false
+
+- job-group:
+    name: 'publish-voltha-opendevice-manager-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
+
+
