@@ -22,6 +22,30 @@
       "revId": "6926a86ab94a7a8ddb81c7b078ea303f9f7955cf",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "79ddd894_359be2bd",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 251,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-07T11:39:50Z",
+      "side": 1,
+      "message": "Yes, it seems so, but currently the base of voltha-e2e.yaml is very dynamicaly. When it get more stable I will do a rebase and insert extraHelmFlags.",
+      "parentUuid": "d7a951be_c5d9a220",
+      "range": {
+        "startLine": 251,
+        "startChar": 17,
+        "endLine": 251,
+        "endChar": 51
+      },
+      "revId": "6926a86ab94a7a8ddb81c7b078ea303f9f7955cf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
