@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25e5a6a9_e130102b",
+        "filename": "jjb/pipeline/voltha/master/periodic-bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-05-07T08:08:01Z",
+      "side": 1,
+      "message": "Missing \" --set global.log_level\u003dDEBUG \"\nOr is it some where else set?",
+      "range": {
+        "startLine": 62,
+        "startChar": 10,
+        "endLine": 62,
+        "endChar": 90
+      },
+      "revId": "0d04af8271a0d461aa2aabbfe29c32fe939272d0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
