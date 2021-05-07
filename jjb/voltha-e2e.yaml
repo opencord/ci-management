@@ -122,7 +122,7 @@
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-openonu-go-test-bbsim'
-          trigger-comment: "voltha test openonu"
+          trigger-comment: "voltha test openonu singleolt"
           code-branch: '$GERRIT_BRANCH'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           gerrit-project: '$GERRIT_PROJECT'
