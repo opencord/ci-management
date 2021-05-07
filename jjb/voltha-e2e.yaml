@@ -743,6 +743,7 @@
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
     branch-regexp: '{all-branches-regexp}'
+    kindVolthaChange: '' # this is only needed to test kind-voltha patches
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -794,6 +795,12 @@
           name: branch
           default: '{override-branch}'
           description: 'Name of the branch to use'
+
+      # Used in the 2.7 based pipeline, can be removed after 2.8
+      - string:
+          name: kindVolthaChange
+          default: '{kindVolthaChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1" (only used to test kind-voltha changes in 2.7)'
 
     project-type: pipeline
     concurrent: true
