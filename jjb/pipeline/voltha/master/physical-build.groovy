@@ -93,7 +93,7 @@ pipeline {
             }
 
             // should the config file be suffixed with the workflow? see "deployment_config"
-            def extraHelmFlags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml "
+            def extraHelmFlags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml --set global.log_level=${logLevel} "
 
             if (workFlow.toLowerCase() == "dt") {
               extraHelmFlags += " --set radius.enabled=false "

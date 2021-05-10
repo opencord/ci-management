@@ -195,6 +195,7 @@
     configurePod: true
     volthaHelmChartsChange: ''
     profile: 'Default'
+    logLevel: 'DEBUG'
 
     <<: *voltha-build-job-parameters
 
