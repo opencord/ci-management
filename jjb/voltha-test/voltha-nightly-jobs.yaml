@@ -19,6 +19,11 @@
           description: 'DEPRECATED - use buildNode instead'
 
       - string:
+          name: logLevel
+          default: '{logLevel}'
+          description: 'Log level for all the components'
+
+      - string:
           name: cordRepoUrl
           default: '{gerrit-server-url}'
           description: 'The URL of the CORD Project repository'
@@ -225,6 +230,7 @@
     release: '2.7'
     branch: 'voltha-2.7'
     volthaHelmChartsChange: '' # this is not supported in the VOLTHA-2.7 build, but the parameters are shared, ideally we should split them
+    logLevel: 'DEBUG'
 
     <<: *voltha-build-job-parameters
 
