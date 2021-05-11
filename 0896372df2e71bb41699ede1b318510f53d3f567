@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1c023f66_1e36dd62",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 266,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-11T08:01:35Z",
+      "side": 1,
+      "message": "voltha test pm data singleolt, else it could give issues like triggering this for multiolt case as well.",
+      "range": {
+        "startLine": 266,
+        "startChar": 28,
+        "endLine": 266,
+        "endChar": 47
+      },
+      "revId": "0896372df2e71bb41699ede1b318510f53d3f567",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
