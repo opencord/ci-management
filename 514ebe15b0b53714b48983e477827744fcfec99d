@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "17940422_3c00f480",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-11T08:14:49Z",
+      "side": 1,
+      "message": "Voltha_TT_PODTests.robot",
+      "range": {
+        "startLine": 265,
+        "startChar": 25,
+        "endLine": 265,
+        "endChar": 49
+      },
+      "revId": "514ebe15b0b53714b48983e477827744fcfec99d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58723859_75282c08",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-11T08:14:49Z",
+      "side": 1,
+      "message": "The tags for TT are different. Need to harmonise them in tests as well. But since Tucson POD currently doesn\u0027t support TT workflow we can leave this as is with a TODO comment to fix this.",
+      "range": {
+        "startLine": 267,
+        "startChar": 0,
+        "endLine": 268,
+        "endChar": 52
+      },
+      "revId": "514ebe15b0b53714b48983e477827744fcfec99d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6ebe3ada_215dd2aa",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 295,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-11T08:14:49Z",
+      "side": 1,
+      "message": "Already added above while assigning value to robotDataplaneKeyword",
+      "range": {
+        "startLine": 295,
+        "startChar": 28,
+        "endLine": 295,
+        "endChar": 31
+      },
+      "revId": "514ebe15b0b53714b48983e477827744fcfec99d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
