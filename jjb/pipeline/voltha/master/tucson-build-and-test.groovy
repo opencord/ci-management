@@ -51,7 +51,7 @@ pipeline {
     stage ("Parse deployment configuration file") {
       steps {
         sh returnStdout: true, script: "rm -rf ${configBaseDir}"
-        sh returnStdout: true, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: true, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
         script {
           if ( params.workflow.toUpperCase() == "DT" ) {
             deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"

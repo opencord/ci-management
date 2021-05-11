@@ -120,7 +120,7 @@ pipeline {
     }
     stage ('Initialize') {
       steps {
-        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: false, script: "git clone -b ${params.branch} ${cordRepoUrl}/${configBaseDir}"
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }

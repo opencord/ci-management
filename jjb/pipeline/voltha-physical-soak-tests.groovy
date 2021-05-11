@@ -36,7 +36,7 @@ pipeline {
     stage ('Initialize') {
       steps {
         step([$class: 'WsCleanup'])
-        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: false, script: "git clone -b ${params.branch} ${cordRepoUrl}/${configBaseDir}"
         sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/kind-voltha"
         script {
           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
