@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e7766040_718ea8e8",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 245,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-11T10:27:46Z",
+      "side": 1,
+      "message": "Not sure if you want to set log level here as well to DEBUG.",
+      "range": {
+        "startLine": 245,
+        "startChar": 17,
+        "endLine": 245,
+        "endChar": 51
+      },
+      "revId": "37a1919962faf88f72f86e9b1c88b85bd2dce6f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a160dd24_bfc2392f",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 7
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-11T10:27:46Z",
+      "side": 1,
+      "message": "I suggest we run this and other once 24 hours. May be also openonu-go jobs like all other jobs. Can be set to \"H H/23 * * *\".",
+      "range": {
+        "startLine": 248,
+        "startChar": 25,
+        "endLine": 248,
+        "endChar": 37
+      },
+      "revId": "37a1919962faf88f72f86e9b1c88b85bd2dce6f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
