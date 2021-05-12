@@ -293,24 +293,17 @@
           test-repo: 'voltha-system-tests'
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
-      # Menlo pod with olt/onu - Default tech profile and timer based job
       # ONF Menlo Soak POD build job - voltha-master branch
-      # FIXME once the soak-pod is back use 'build_voltha_pod_release_timer'
       - 'build_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          release: 'master'
-          installBBSim: true
-          branch: 'master'
+          # installBBSim: true
           profile: '1T8GEM'
-          test-repo: 'voltha-system-tests'
           name-extension: '_DT'
           work-flow: 'DT'
           reinstall-olt: false
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          configurePod: true
-          num-of-onus: 16
-          num-of-ponports: 8
+          # num-of-onus: 16
+          # num-of-ponports: 8
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # FIXME once the soak-pod is back use 'build_voltha_pod_test'

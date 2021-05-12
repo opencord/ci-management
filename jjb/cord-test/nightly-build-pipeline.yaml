@@ -27,6 +27,21 @@
 
     <<: *test-pipe-job-boiler-plate
 
+    # default values
+    pipeline-script: 'voltha/master/physical-build.groovy'
+    VolthaEtcdPort: 2379
+    num-of-openonu: 1
+    num-of-onos: 3
+    num-of-atomix: 3
+    test-repo: 'voltha-system-tests'
+    release: 'master'
+    name-extension: ''
+    branch: 'master'
+    configurePod: true
+    volthaHelmChartsChange: ''
+    profile: 'Default'
+    logLevel: 'DEBUG'
+
     parameters:
       - string:
           name: buildNode
@@ -37,6 +52,11 @@
           name: TestNodeName
           default: '{build-node}'
           description: 'DEPRECATED - use buildNode instead'
+
+      - string:
+          name: logLevel
+          default: '{logLevel}'
+          description: 'Log level for all the components'
 
       - string:
           name: cordRepoUrl
@@ -142,6 +162,40 @@
           default: '{num-of-atomix}'
           description: 'Installs the specified Number of Atomix Instances'
 
+      # withKind is not used in the master branch pipeline, remove after 2.8
+      - bool:
+          name: withKind
+          default: '{with-kind}'
+          description: "The pods uses kind and a physical fabric thus port forward to the management is needed"
+
+      - string:
+          name: VolthaEtcdPort
+          default: '{VolthaEtcdPort}'
+          description: 'Localhost port that is forwarded to VOLTHA etcd'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: '{volthaSystemTestsChange}'
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/32/19132/1"'
+
+      # kind-voltha is not used in the master branch pipeline, remove after 2.8
+      - string:
+          name: kindVolthaChange
+          default: '{kindVolthaChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      # NOTE is this needed/used?
+      - string:
+          name: cordTesterChange
+          default: '{cordTesterChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      # this is used in the Adtran DT job
       - string:
           name: openoltAdapterChart
           default: '{openoltAdapterChart}'

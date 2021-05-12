@@ -108,6 +108,12 @@ pipeline {
             "--set onos-classic.onosOfPort=31653 " +
             "--set onos-classic.individualOpenFlowNodePorts=true "
 
+            def bbsimReplica = 0
+            if (installBBSim) {
+              bbsimReplica = 1
+              extraHelmFlags = extraHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
+            }
+
             volthaDeploy([
               workflow: workFlow.toLowerCase(),
               extraHelmFlags: extraHelmFlags,
@@ -118,7 +124,7 @@ pipeline {
               // NOTE does this needs to be configured?
               kafkaReplica: 3,
               etcdReplica: 3,
-              bbsimReplica: 0,
+              bbsimReplica: bbsimReplica.toInteger(),
               ])
           }
           sh """
