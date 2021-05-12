@@ -120,6 +120,14 @@
               workflow: tt
               flags: ""
               teardown: true
+            - target: openonu-go-adapter-omci-hardening-passed-test
+              workflow: att
+              flags: "--set omci_response_rate=9 --set omci_timeout=1s"
+              teardown: true
+            - target: openonu-go-adapter-omci-hardening-failed-test
+              workflow: att
+              flags: "--set omci_response_rate=7"
+              teardown: true
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-openonu-go-test-bbsim'
@@ -157,6 +165,14 @@
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
               flags: ""
+              teardown: true
+            - target: openonu-go-adapter-omci-hardening-passed-test
+              workflow: att
+              flags: "--set omci_response_rate=9 --set omci_timeout=1s"
+              teardown: true
+            - target: openonu-go-adapter-omci-hardening-failed-test
+              workflow: att
+              flags: "--set omci_response_rate=7"
               teardown: true
 
       - 'voltha-periodic-test-kind-voltha-based':
