@@ -260,7 +260,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set externalAccess.enabled=true,externalAccess.service.type=NodePort,externalAccess.service.nodePorts[0]=30201,externalAccess.service.domain=127.0.0.1'
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
           testTargets: |
@@ -282,7 +282,7 @@
           name: 'patchset-voltha-pm-data-test-bbsim'
           trigger-comment: "voltha test pm data singleolt"
           code-branch: '$GERRIT_BRANCH'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set externalAccess.enabled=true,externalAccess.service.type=NodePort,externalAccess.service.nodePorts[0]=30201,externalAccess.service.domain=127.0.0.1'
           code-branch: '$GERRIT_BRANCH'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
@@ -305,7 +305,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-pm-data-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set externalAccess.enabled=true,externalAccess.service.type=NodePort,externalAccess.service.nodePorts[0]=30201,externalAccess.service.domain=127.0.0.1'
           olts: 2
           timeout: 180
           logLevel: 'DEBUG'
@@ -328,7 +328,7 @@
           name: 'patchset-voltha-multiple-olts-pm-data-test-bbsim'
           trigger-comment: "voltha test pm data multiolt"
           code-branch: '$GERRIT_BRANCH'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set externalAccess.enabled=true,externalAccess.service.type=NodePort,externalAccess.service.nodePorts[0]=30201,externalAccess.service.domain=127.0.0.1'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           logLevel: 'DEBUG'
