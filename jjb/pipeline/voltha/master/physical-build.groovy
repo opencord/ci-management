@@ -108,6 +108,12 @@ pipeline {
             "--set onos-classic.onosOfPort=31653 " +
             "--set onos-classic.individualOpenFlowNodePorts=true "
 
+            def bbsimReplica = 0
+            if (installBBSim) {
+              bbsimReplica = 1
+              extraHelmFlags = extraHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
+            }
+
             volthaDeploy([
               workflow: workFlow.toLowerCase(),
               extraHelmFlags: extraHelmFlags,
@@ -115,10 +121,9 @@ pipeline {
               kubeconfig: "$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf",
               onosReplica: params.NumOfOnos,
               atomixReplica: params.NumOfAtomix,
-              // NOTE does this needs to be configured?
-              kafkaReplica: 3,
-              etcdReplica: 3,
-              bbsimReplica: 0,
+              kafkaReplica: params.NumOfKafka,
+              etcdReplica: params.NumOfAtomix,
+              bbsimReplica: bbsimReplica.toInteger(),
               ])
           }
           sh """

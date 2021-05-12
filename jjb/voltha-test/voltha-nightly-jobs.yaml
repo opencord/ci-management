@@ -108,6 +108,16 @@
           default: '{num-of-atomix}'
           description: 'Installs the specified Number of Atomix Instances'
 
+      - string:
+          name: NumOfKafka
+          default: '{num-of-kafka}'
+          description: 'Installs the specified Number of Kafka Instances'
+
+      - string:
+          name: NumOfAtomix
+          default: '{num-of-etcd}'
+          description: 'Installs the specified Number of Etcd Instances'
+
       - bool:
           name: configurePod
           default: true
@@ -193,6 +203,8 @@
     num-of-openonu: 1
     num-of-onos: 3
     num-of-atomix: 3
+    num-of-kafka: 3
+    num-of-etcd: 3
     test-repo: 'voltha-system-tests'
     release: 'master'
     name-extension: ''
