@@ -16,13 +16,193 @@
 
 - job-template:
     name: 'build_{profile}{name-extension}_{config-pod}_{branch}_manual'
+    id: build_voltha_pod_manual
+    description: |
+                  Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
+                  Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
+                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
+                  Copyright (c) 2018 Open Networking Foundation (ONF)
+
+    openoltAdapterChart: onf/voltha-adapter-openolt
+
+    <<: *test-pipe-job-boiler-plate
+
+    # default values
+    pipeline-script: 'voltha/master/physical-build.groovy'
+    VolthaEtcdPort: 2379
+    num-of-openonu: 1
+    num-of-onos: 1
+    num-of-atomix: 0
+    num-of-kafka: 1
+    num-of-etcd: 1
+    test-repo: 'voltha-system-tests'
+    release: 'master'
+    name-extension: ''
+    branch: 'master'
+    configurePod: true
+    volthaHelmChartsChange: ''
+    profile: 'Default'
+    logLevel: 'DEBUG'
+    installBBSim: false
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: TestNodeName
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
+
+      - string:
+          name: logLevel
+          default: '{logLevel}'
+          description: 'Log level for all the components'
+
+      - string:
+          name: cordRepoUrl
+          default: '{gerrit-server-url}'
+          description: 'The URL of the CORD Project repository'
+
+      - string:
+          name: configBaseDir
+          default: 'pod-configs'
+          description: 'The directory inside the POD configs repository'
+
+      - string:
+          name: configDeploymentDir
+          default: 'deployment-configs'
+          description: 'The deployment configs folder'
+
+      - string:
+          name: configKubernetesDir
+          default: 'kubernetes-configs'
+          description: 'The kubernetes config folder'
+
+      - string:
+          name: configToscaDir
+          default: 'tosca-configs'
+          description: 'The tosca config folder'
+
+      - string:
+          name: configFileName
+          default: '{config-pod}'
+          description: 'The config file'
+
+      - string:
+          name: branch
+          default: '{branch}'
+
+      - string:
+          name: helmRepoUrl
+          default: 'https://charts.opencord.org'
+          description: 'URL where helm-charts are published'
+
+      - string:
+          name: profile
+          default: '{profile}'
+          description: 'Profile in which this job installs'
+
+      - string:
+          name: notificationEmail
+          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
+          description: ''
+
+      - bool:
+          name: configurePod
+          default: '{configurePod}'
+          description: "Configure POD via TOSCA post build"
+
+      - bool:
+          name: reinstallOlt
+          default: '{reinstall-olt}'
+          description: "Re-install olt software bringing up CORD"
+
+      - bool:
+          name: installBBSim
+          default: '{installBBSim}'
+          description: "Install the BBSim container"
+
+      - string:
+          name: onuNumber
+          default: '{num-of-onus}'
+          description: "Onus per PonPort"
+
+      - string:
+          name: ponNumber
+          default: '{num-of-ponports}'
+          description: "Number of PON Ports"
+
+      - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Installs and uses the specified work flow on the POD'
+
+      - string:
+          name: NumOfOpenOnu
+          default: '{num-of-openonu}'
+          description: 'Installs the specified Number of OpenOnu Adapters'
+
+      - string:
+          name: NumOfOnos
+          default: '{num-of-onos}'
+          description: 'Installs the specified Number of ONOS instances'
+
+      - bool:
+          name: inBandManagement
+          default: '{in-band-management}'
+          description: 'Indicates whether POD is configured for in band management'
+
+      - string:
+          name: NumOfAtomix
+          default: '{num-of-atomix}'
+          description: 'Installs the specified Number of Atomix Instances'
+
+      - string:
+          name: NumOfKafka
+          default: '{num-of-kafka}'
+          description: 'Installs the specified Number of Kafka Instances'
+
+      - string:
+          name: NumOfEtcd
+          default: '{num-of-etcd}'
+          description: 'Installs the specified Number of Etcd Instances'
+
+      - string:
+          name: VolthaEtcdPort
+          default: '{VolthaEtcdPort}'
+          description: 'Localhost port that is forwarded to VOLTHA etcd'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: ''
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/32/19132/1"'
+
+      # this is used in the Adtran DT job
+      - string:
+          name: openoltAdapterChart
+          default: '{openoltAdapterChart}'
+          description: 'OpenOLT chart name (or location on file system)'
+
+    concurrent: true
+    project-type: pipeline
+    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+
+- job-template:
+    name: 'build_{profile}{name-extension}_{config-pod}_{branch}_manual'
     id: build_pod_manual
     description: |
                   Manual Build on POD {config-pod} using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
                   Copyright (c) 2018 Open Networking Foundation (ONF)
-
     openoltAdapterChart: onf/voltha-adapter-openolt
 
     <<: *test-pipe-job-boiler-plate
