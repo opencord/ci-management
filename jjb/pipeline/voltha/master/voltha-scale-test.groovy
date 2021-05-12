@@ -69,7 +69,7 @@ pipeline {
             helm repo update
 
             # remove orphaned port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
+            ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
 
             cd $WORKSPACE
             rm -rf $WORKSPACE/*

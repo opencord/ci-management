@@ -55,7 +55,7 @@ pipeline {
         timeout(time: 11, unit: 'MINUTES') {
           sh """
           # remove orphaned port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
           """
           script {
             def namespaces = ["infra"]
@@ -71,7 +71,7 @@ pipeline {
             helm repo update
 
             # remove all port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
           """
         }
       }
@@ -347,7 +347,7 @@ pipeline {
             printf '%s\n' \$(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice port list # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-ports-#.txt" || true
 
             # remove VOLTHA port-forward
-            ps aux | grep port-forw | grep voltha-api | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+            ps aux | grep port-forw | grep voltha-api | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
             """
           } catch(e) {
             sh '''
@@ -455,7 +455,7 @@ def test_voltha_stacks(numberOfStacks) {
         """
         sh """
           # remove VOLTHA port-forward
-          ps aux | grep port-forw | grep voltha-api | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 2>&1 > /dev/null
+          ps aux | grep port-forw | grep voltha-api | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 2>&1 > /dev/null || true
         """
       }
     }

@@ -130,7 +130,7 @@ def test_software_upgrade(name) {
       // remove port-forwarding
       sh """
         # remove orphaned port-forward from different namespaces
-        ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+        ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
       """
       // collect pod details
       get_pods_info("$WORKSPACE/${name}")
@@ -181,7 +181,7 @@ pipeline {
         // remove port-forwarding
         sh """
           # remove orphaned port-forward from different namespaces
-          ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9
+          ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
         """
         helmTeardown(['infra', 'voltha'])
       }
