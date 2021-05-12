@@ -27,6 +27,25 @@
 
     <<: *test-pipe-job-boiler-plate
 
+    # default values
+    pipeline-script: 'voltha/master/physical-build.groovy'
+    VolthaEtcdPort: 2379
+    num-of-openonu: 1
+    num-of-onos: 1
+    num-of-atomix: 0
+    num-of-kafka: 1
+    num-of-etcd: 1
+    test-repo: 'voltha-system-tests'
+    release: 'master'
+    name-extension: ''
+    branch: 'master'
+    configurePod: true
+    volthaHelmChartsChange: ''
+    profile: 'Default'
+    logLevel: 'DEBUG'
+    installBBSim: false
+    
+
     parameters:
       - string:
           name: buildNode
@@ -37,6 +56,11 @@
           name: TestNodeName
           default: '{build-node}'
           description: 'DEPRECATED - use buildNode instead'
+
+      - string:
+          name: logLevel
+          default: '{logLevel}'
+          description: 'Log level for all the components'
 
       - string:
           name: cordRepoUrl
@@ -88,13 +112,8 @@
           description: ''
 
       - bool:
-          name: installMonitoringAndLogging
-          default: false
-          description: "Wether to install prometheus and Elk-stack"
-
-      - bool:
           name: configurePod
-          default: true
+          default: '{configurePod}'
           description: "Configure POD via TOSCA post build"
 
       - bool:
@@ -104,7 +123,7 @@
 
       - bool:
           name: installBBSim
-          default: false
+          default: '{installBBSim}'
           description: "Install the BBSim container"
 
       - string:
@@ -142,6 +161,32 @@
           default: '{num-of-atomix}'
           description: 'Installs the specified Number of Atomix Instances'
 
+      - string:
+          name: NumOfKafka
+          default: '{num-of-kafka}'
+          description: 'Installs the specified Number of Kafka Instances'
+
+      - string:
+          name: NumOfEtcd
+          default: '{num-of-etcd}'
+          description: 'Installs the specified Number of Etcd Instances'
+
+      - string:
+          name: VolthaEtcdPort
+          default: '{VolthaEtcdPort}'
+          description: 'Localhost port that is forwarded to VOLTHA etcd'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: ''
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: volthaHelmChartsChange
+          default: '{volthaHelmChartsChange}'
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/32/19132/1"'
+
+      # this is used in the Adtran DT job
       - string:
           name: openoltAdapterChart
           default: '{openoltAdapterChart}'
