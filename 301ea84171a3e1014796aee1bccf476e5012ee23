@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7fe1d152_329d784c",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 125,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-12T08:33:59Z",
+      "side": 1,
+      "message": "on the soak pod we only have 1 k8s node, so I think these would need to be made configurable.",
+      "revId": "301ea84171a3e1014796aee1bccf476e5012ee23",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2c4fc42_9075e96f",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 300,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-12T08:33:59Z",
+      "side": 1,
+      "message": "why is this commented ?",
+      "revId": "301ea84171a3e1014796aee1bccf476e5012ee23",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b230b62d_d03b9eb4",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 305,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-12T08:33:59Z",
+      "side": 1,
+      "message": "should this be \nonus\npon \n\nand be un-commented ?",
+      "revId": "301ea84171a3e1014796aee1bccf476e5012ee23",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
