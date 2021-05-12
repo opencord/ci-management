@@ -141,7 +141,7 @@
           build-node: 'ubuntu16.04-basebuild-8c-15g'
       - 'omec-container'
       - 'omec-container-remote':
-          pod: 'dev'
+          pod: 'ci-4g'
           remote-jenkins-name: 'Aether Jenkins'
           pipeline-file: 'omec-container-remote.groovy'
 
@@ -213,7 +213,7 @@
           build-node: 'ubuntu16.04-basebuild-1c-2g'
       - 'omec-container'
       - 'omec-container-remote':
-          pod: 'dev'
+          pod: 'ci-4g'
           remote-jenkins-name: 'Aether Jenkins'
           pipeline-file: 'omec-container-remote.groovy'
 
@@ -285,7 +285,7 @@
           extraEnvironmentVars: CPU=haswell
       - 'omec-container'
       - 'omec-container-remote':
-          pod: 'dev'
+          pod: 'ci-4g'
           remote-jenkins-name: 'Aether Jenkins'
           pipeline-file: 'omec-container-remote.groovy'
 
