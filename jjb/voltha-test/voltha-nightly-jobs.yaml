@@ -90,7 +90,7 @@
 
       - bool:
           name: installBBSim
-          default: false
+          default: '{installBBSim}'
           description: "Install the BBSim container"
 
       - string:
@@ -107,6 +107,16 @@
           name: NumOfAtomix
           default: '{num-of-atomix}'
           description: 'Installs the specified Number of Atomix Instances'
+
+      - string:
+          name: NumOfKafka
+          default: '{num-of-kafka}'
+          description: 'Installs the specified Number of Kafka Instances'
+
+      - string:
+          name: NumOfEtcd
+          default: '{num-of-etcd}'
+          description: 'Installs the specified Number of Etcd Instances'
 
       - bool:
           name: configurePod
@@ -177,6 +187,42 @@
 
 # VOLTHA Build Jobs
 - job-template:
+    name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}_manual'
+    id: build_voltha_pod_manual
+    disabled: '{disable-job}'
+    description: |
+                  Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
+                  Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
+                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
+                  Copyright (c) 2018 Open Networking Foundation (ONF)
+
+    <<: *voltha-pipe-job-boiler-plate
+    # default values
+    pipeline-script: 'voltha/master/physical-build.groovy'
+    VolthaEtcdPort: 2379
+    num-of-openonu: 1
+    num-of-onos: 1
+    num-of-atomix: 0
+    num-of-kafka: 1
+    num-of-etcd: 1
+    test-repo: 'voltha-system-tests'
+    release: 'master'
+    name-extension: ''
+    branch: 'master'
+    configurePod: true
+    volthaHelmChartsChange: ''
+    profile: 'Default'
+    logLevel: 'DEBUG'
+    installBBSim: false
+
+    <<: *voltha-build-job-parameters
+
+    concurrent: true
+    project-type: pipeline
+    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+
+# VOLTHA Build Jobs
+- job-template:
     name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}'
     id: build_voltha_pod_release_timer
     disabled: '{disable-job}'
@@ -193,6 +239,8 @@
     num-of-openonu: 1
     num-of-onos: 3
     num-of-atomix: 3
+    num-of-kafka: 3
+    num-of-etcd: 3
     test-repo: 'voltha-system-tests'
     release: 'master'
     name-extension: ''
@@ -201,6 +249,7 @@
     volthaHelmChartsChange: ''
     profile: 'Default'
     logLevel: 'DEBUG'
+    installBBSim: false
 
     <<: *voltha-build-job-parameters
 
@@ -231,6 +280,9 @@
     branch: 'voltha-2.7'
     volthaHelmChartsChange: '' # this is not supported in the VOLTHA-2.7 build, but the parameters are shared, ideally we should split them
     logLevel: 'DEBUG'
+    installBBSim: false
+    num-of-kafka: 1
+    num-of-etcd: 1
 
     <<: *voltha-build-job-parameters
 
