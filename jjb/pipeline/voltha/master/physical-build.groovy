@@ -122,7 +122,7 @@ pipeline {
               onosReplica: params.NumOfOnos,
               atomixReplica: params.NumOfAtomix,
               kafkaReplica: params.NumOfKafka,
-              etcdReplica: params.NumOfAtomix,
+              etcdReplica: params.NumOfEtcd,
               bbsimReplica: bbsimReplica.toInteger(),
               ])
           }
