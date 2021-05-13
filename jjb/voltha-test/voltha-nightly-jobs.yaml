@@ -214,6 +214,8 @@
     profile: 'Default'
     logLevel: 'DEBUG'
     installBBSim: false
+    num-of-onus: 0
+    num-of-ponports: 0
 
     <<: *voltha-build-job-parameters
 
@@ -250,6 +252,8 @@
     profile: 'Default'
     logLevel: 'DEBUG'
     installBBSim: false
+    num-of-onus: 0
+    num-of-ponports: 0
 
     <<: *voltha-build-job-parameters
 
@@ -281,6 +285,8 @@
     volthaHelmChartsChange: '' # this is not supported in the VOLTHA-2.7 build, but the parameters are shared, ideally we should split them
     logLevel: 'DEBUG'
     installBBSim: false
+    num-of-onus: 0
+    num-of-ponports: 0
     num-of-kafka: 1
     num-of-etcd: 1
 

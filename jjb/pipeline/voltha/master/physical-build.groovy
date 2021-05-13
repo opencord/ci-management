@@ -109,7 +109,7 @@ pipeline {
             "--set onos-classic.individualOpenFlowNodePorts=true "
 
             def bbsimReplica = 0
-            if (installBBSim) {
+            if (installBBSim.toBoolean()) {
               bbsimReplica = 1
               extraHelmFlags = extraHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
             }
