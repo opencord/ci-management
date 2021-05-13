@@ -577,7 +577,7 @@
           Jenkinsfile: 'Jenkinsfile-voltha-test'
 
       # Berlin pod with adtran gpon olt/onu - master 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
+      - 'build_voltha_pod_release_legacy':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon-adtran'
           release: '2.6'
