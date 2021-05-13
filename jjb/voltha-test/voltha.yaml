@@ -386,7 +386,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM-unencrypted'
-          power-switch: false
+          power-switch: True
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
