@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "19235d4e_e6cf451b",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-05-13T17:32:38Z",
+      "side": 1,
+      "message": "Should there be valid default values for this one. I thought we discussed that the default values were 0 (i could have misunderstood).",
+      "range": {
+        "startLine": 114,
+        "startChar": 60,
+        "endLine": 114,
+        "endChar": 89
+      },
+      "revId": "1e46d72fb784baf274186d27368b4d6884e4a3f5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
