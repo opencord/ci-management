@@ -321,7 +321,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
