@@ -45,6 +45,35 @@
               teardown: false
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-test-bbsim-grpc'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master \
+                           --set voltha.images.rw_core.repository=volthacore/voltha-rw-core \
+                           --set voltha.images.rw_core.tag=grkhen \
+                           --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go \
+                           --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grkhen \
+                           --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter \
+                           --set voltha-adapter-openolt.images.adapter_open_olt.tag=grkhen \'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-single-kind
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-alarms-kind
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-failurescenarios
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-errorscenarios
+              workflow: att
+              flags: ""
+              teardown: false
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim'
           code-branch: 'master'
           olts: 2
