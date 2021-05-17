@@ -216,7 +216,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Dataplane" ]; then
-           export ROBOT_MISC_ARGS="--removekeywords wuks -i BandwidthProfileUDPDt -i TechProfileDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+           export ROBOT_MISC_ARGS="--removekeywords wuks -i soakDataplane -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
