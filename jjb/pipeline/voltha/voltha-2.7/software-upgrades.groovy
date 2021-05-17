@@ -159,7 +159,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 40, unit: 'MINUTES')
+    timeout(time: 60, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
