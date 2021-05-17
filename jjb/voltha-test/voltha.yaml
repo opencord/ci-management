@@ -301,7 +301,7 @@
           profile: '1T8GEM'
           name-extension: '_DT'
           work-flow: 'DT'
-          reinstall-olt: false
+          reinstall-olt: true
           num-of-onus: 16
           num-of-ponports: 8
 
@@ -393,18 +393,15 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
-          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
-          # Update this value accordingly once the job is enabled
-          time: ''
+          time: '18'
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
-          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -418,6 +415,7 @@
       - 'build_voltha_pod_release_legacy':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
+          disable-job: true
           release: '2.7'
           branch: 'voltha-2.7'
           name-extension: '_DT'
@@ -429,12 +427,14 @@
           Jenkinsfile: 'Jenkinsfile-voltha-build'
           configurePod: true
           profile: '1T8GEM'
-          time: '18'
+          # Update this value accordingly once the job is enabled
+          time: ''
 
       # Berlin POD test job -  voltha-2.7 versions: two OLTs
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
+          disable-job: true
           release: '2.7'
           branch: 'voltha-2.7'
           name-extension: '_DT'
