@@ -97,7 +97,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
       bbsimDmiPortFwd=50075
       for i in {0..${olts.toInteger() - 1}}; do
-        JENKINS_NODE_COOKIE="dontKillMe" _TAG="bbsim\${i}" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/bbsim\${i} 50075:\${bbsimDmiPortFwd}; done"&
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="bbsim\${i}" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/bbsim\${i} \${bbsimDmiPortFwd}:50075; done"&
         ((bbsimDmiPortFwd++))
       done
       ps aux | grep port-forward
