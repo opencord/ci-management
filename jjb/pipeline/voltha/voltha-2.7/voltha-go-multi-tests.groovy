@@ -89,6 +89,12 @@ pipeline {
 
            EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
 
+           if [ "${branch}" != "master" ]; then
+              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+              source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+              echo "on master, using default settings for kind-voltha"
+           fi
            cd $WORKSPACE/kind-voltha/
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
            ./voltha up
@@ -161,6 +167,12 @@ pipeline {
          gzip *-combined.log || true
 
          ## shut down voltha but leave kind-voltha cluster
+         if [ "${branch}" != "master" ]; then
+           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+           source "$WORKSPACE/kind-voltha/releases/${branch}"
+         else
+           echo "on master, using default settings for kind-voltha"
+         fi
          cd $WORKSPACE/kind-voltha/
          DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
          '''

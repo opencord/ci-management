@@ -64,6 +64,12 @@ pipeline {
     stage('Cleanup') {
       steps {
         sh """
+        if [ "${branch}" != "master" ]; then
+          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+          source "$WORKSPACE/kind-voltha/releases/${branch}"
+        else
+          echo "on master, using default settings for kind-voltha"
+        fi
         cd $WORKSPACE/kind-voltha/
         WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || true
         """
@@ -107,7 +113,12 @@ pipeline {
            fi
 
            EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
-
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
            cd $WORKSPACE/kind-voltha/
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
            ./voltha up
