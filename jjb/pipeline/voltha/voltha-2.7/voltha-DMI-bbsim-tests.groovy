@@ -23,7 +23,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 190, unit: 'MINUTES')
+      timeout(time: 30, unit: 'MINUTES')
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
@@ -63,16 +63,18 @@ pipeline {
     }
     stage('Cleanup') {
       steps {
-        sh """
-        if [ "${branch}" != "master" ]; then
-          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "$WORKSPACE/kind-voltha/releases/${branch}"
-        else
-          echo "on master, using default settings for kind-voltha"
-        fi
-        cd $WORKSPACE/kind-voltha/
-        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
-        """
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+          if [ "${branch}" != "master" ]; then
+            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+            source "$WORKSPACE/kind-voltha/releases/${branch}"
+          else
+            echo "on master, using default settings for kind-voltha"
+          fi
+          cd $WORKSPACE/kind-voltha/
+          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
+          """
+        }
       }
     }
     stage('Clone voltha-system-tests') {
@@ -95,20 +97,22 @@ pipeline {
 
     stage('Deploy Voltha') {
       steps {
-        sh """
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
 
-           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags}"
+             EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags}"
 
-           cd $WORKSPACE/kind-voltha/
-           ./voltha up
-           """
+             cd $WORKSPACE/kind-voltha/
+             ./voltha up
+             """
+         }
       }
     }
 
@@ -117,6 +121,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DMITests"
       }
       steps {
+        timeout(time: 10, unit: 'MINUTES') {
         sh '''
            set +e
            mkdir -p $ROBOT_LOGS_DIR
@@ -127,6 +132,7 @@ pipeline {
            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
            make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
            '''
+         }
       }
     }
   }

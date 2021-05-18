@@ -63,16 +63,18 @@ pipeline {
     }
     stage('Cleanup') {
       steps {
-        sh """
-        if [ "${branch}" != "master" ]; then
-          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "$WORKSPACE/kind-voltha/releases/${branch}"
-        else
-          echo "on master, using default settings for kind-voltha"
-        fi
-        cd $WORKSPACE/kind-voltha/
-        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || true
-        """
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+          if [ "${branch}" != "master" ]; then
+            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+            source "$WORKSPACE/kind-voltha/releases/${branch}"
+          else
+            echo "on master, using default settings for kind-voltha"
+          fi
+          cd $WORKSPACE/kind-voltha/
+          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || true
+          """
+        }
       }
     }
     stage('Clone voltha-system-tests') {
@@ -95,43 +97,47 @@ pipeline {
 
     stage('Deploy Voltha') {
       steps {
-        sh """
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
 
-           if [ "${workFlow}" == "DT" ]; then
-             export WITH_DHCP=no
-             export WITH_IGMP=no
-             export WITH_EAPOL=no
-             export WITH_RADIUS=no
-             export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
-           fi
+             if [ "${workFlow}" == "DT" ]; then
+               export WITH_DHCP=no
+               export WITH_IGMP=no
+               export WITH_EAPOL=no
+               export WITH_RADIUS=no
+               export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
+             fi
 
-           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
-           cd $WORKSPACE/kind-voltha/
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
-           ./voltha up
-           """
+             EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
+             cd $WORKSPACE/kind-voltha/
+             WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
+             ./voltha up
+             """
+           }
       }
     }
 
     stage('Run E2E Tests') {
       steps {
-        sh '''
-           set +e
-           mkdir -p $WORKSPACE/RobotLogs
+        timeout(time: 5, unit: 'MINUTES') {
+          sh '''
+             set +e
+             mkdir -p $WORKSPACE/RobotLogs
 
-           cd $WORKSPACE/kind-voltha/scripts
-           ./log-collector.sh > /dev/null &
-           ./log-combine.sh > /dev/null &
+             cd $WORKSPACE/kind-voltha/scripts
+             ./log-collector.sh > /dev/null &
+             ./log-combine.sh > /dev/null &
 
-           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
-           '''
+             make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
+             '''
+         }
       }
     }
   }

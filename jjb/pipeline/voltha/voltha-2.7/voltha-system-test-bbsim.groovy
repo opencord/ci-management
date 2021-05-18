@@ -47,12 +47,20 @@ pipeline {
   stages {
     stage('Create Kubernetes Cluster') {
       steps {
-        sh """
-           git clone https://gerrit.opencord.org/kind-voltha
-           pushd kind-voltha/
-           JUST_K8S=y ./voltha up
-           popd
-           """
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+             git clone https://gerrit.opencord.org/kind-voltha
+             pushd kind-voltha/
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             JUST_K8S=y ./voltha up
+             popd
+             """
+         }
       }
     }
 
@@ -67,48 +75,56 @@ pipeline {
 
     stage('Deploy Voltha') {
       steps {
-        sh """
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
 
-           EXTRA_HELM_FLAGS+="${params.extraHelmFlags} "
-           echo \$EXTRA_HELM_FLAGS
+             EXTRA_HELM_FLAGS+="${params.extraHelmFlags} "
+             echo \$EXTRA_HELM_FLAGS
 
-           pushd kind-voltha/
-           ./voltha up
-           popd
-           """
+             pushd kind-voltha/
+             ./voltha up
+             popd
+             """
+           }
       }
     }
 
     stage('Run E2E Tests') {
       steps {
-        sh '''
-           rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
-           git clone -b ${branch} https://gerrit.opencord.org/voltha-system-tests
-           make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_report.html -o sanity_output.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
-           '''
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+             rm -rf $WORKSPACE/RobotLogs; mkdir -p $WORKSPACE/RobotLogs
+             git clone -b ${branch} https://gerrit.opencord.org/voltha-system-tests
+             make ROBOT_DEBUG_LOG_OPT="-l sanity_log.html -r sanity_report.html -o sanity_output.xml" -C $WORKSPACE/voltha-system-tests ${makeTarget}
+             '''
+         }
       }
     }
 
     stage('Kubernetes ETCD Scale Test') {
       steps {
-        sh '''
-           make ROBOT_DEBUG_LOG_OPT="-l functional_log.html -r functional_report.html -o functional_output.xml" -C $WORKSPACE/voltha-system-tests system-scale-test
-           '''
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+             make ROBOT_DEBUG_LOG_OPT="-l functional_log.html -r functional_report.html -o functional_output.xml" -C $WORKSPACE/voltha-system-tests system-scale-test
+             '''
+         }
       }
     }
 
     stage('Kubernetes ETCD Failure Test') {
       steps {
-        sh '''
-           make ROBOT_DEBUG_LOG_OPT="-l failure_log.html -r failure_report.html -o failure_output.xml"  -C $WORKSPACE/voltha-system-tests failure-test
-           '''
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+             make ROBOT_DEBUG_LOG_OPT="-l failure_log.html -r failure_report.html -o failure_output.xml"  -C $WORKSPACE/voltha-system-tests failure-test
+             '''
+         }
       }
     }
 

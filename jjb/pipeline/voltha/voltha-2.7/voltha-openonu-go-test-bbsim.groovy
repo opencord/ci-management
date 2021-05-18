@@ -63,16 +63,18 @@ pipeline {
     }
     stage('Cleanup') {
       steps {
-        sh """
-        if [ "${branch}" != "master" ]; then
-          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "$WORKSPACE/kind-voltha/releases/${branch}"
-        else
-          echo "on master, using default settings for kind-voltha"
-        fi
-        cd $WORKSPACE/kind-voltha/
-        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
-        """
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+          if [ "${branch}" != "master" ]; then
+            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+            source "$WORKSPACE/kind-voltha/releases/${branch}"
+          else
+            echo "on master, using default settings for kind-voltha"
+          fi
+          cd $WORKSPACE/kind-voltha/
+          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
+          """
+        }
       }
     }
     stage('Clone voltha-system-tests') {
@@ -95,21 +97,23 @@ pipeline {
 
     stage('Deploy Voltha') {
       steps {
-        sh """
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
 
-           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} --set defaults.image_registry=mirror.registry.opennetworking.org/ "
+             EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} --set defaults.image_registry=mirror.registry.opennetworking.org/ "
 
-           cd $WORKSPACE/kind-voltha/
-           ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
-           """
+             cd $WORKSPACE/kind-voltha/
+             ./voltha up
+             bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
+             """
+         }
       }
     }
 
@@ -118,29 +122,31 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t1gem"
       }
       steps {
-        sh '''
-          # start logging
-          mkdir -p $WORKSPACE/1t1gem
-          _TAG=kail-1t1gem kail -n voltha -n default > $WORKSPACE/1t1gem/onos-voltha-combined.log &
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+            # start logging
+            mkdir -p $WORKSPACE/1t1gem
+            _TAG=kail-1t1gem kail -n voltha -n default > $WORKSPACE/1t1gem/onos-voltha-combined.log &
 
-          mkdir -p $ROBOT_LOGS_DIR/1t1gem
-          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export KVSTOREPREFIX=voltha_voltha
+            mkdir -p $ROBOT_LOGS_DIR/1t1gem
+            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+            export KVSTOREPREFIX=voltha_voltha
 
-          make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
+            make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
 
-          # stop logging
-          P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t1gem" | grep -v grep | awk '{print $1}')"
-          if [ -n "$P_IDS" ]; then
-            echo $P_IDS
-            for P_ID in $P_IDS; do
-              kill -9 $P_ID
-            done
-          fi
+            # stop logging
+            P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t1gem" | grep -v grep | awk '{print $1}')"
+            if [ -n "$P_IDS" ]; then
+              echo $P_IDS
+              for P_ID in $P_IDS; do
+                kill -9 $P_ID
+              done
+            fi
 
-          # get pods information
-          kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t1gem/pods.txt || true
-        '''
+            # get pods information
+            kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t1gem/pods.txt || true
+          '''
+         }
        }
      }
 
@@ -149,49 +155,51 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t4gem"
       }
       steps {
-        sh '''
-          if [ "${branch}" != "master" ]; then
-            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-            source "$WORKSPACE/kind-voltha/releases/${branch}"
-          else
-            echo "on master, using default settings for kind-voltha"
-          fi
-          cd $WORKSPACE/kind-voltha/
-          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+            if [ "${branch}" != "master" ]; then
+              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+              source "$WORKSPACE/kind-voltha/releases/${branch}"
+            else
+              echo "on master, using default settings for kind-voltha"
+            fi
+            cd $WORKSPACE/kind-voltha/
+            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
-          export EXTRA_HELM_FLAGS=""
-          if [ "${branch}" != "master" ]; then
-            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-            source "$WORKSPACE/kind-voltha/releases/${branch}"
-          else
-            echo "on master, using default settings for kind-voltha"
-          fi
-          export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+            export EXTRA_HELM_FLAGS=""
+            if [ "${branch}" != "master" ]; then
+              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+              source "$WORKSPACE/kind-voltha/releases/${branch}"
+            else
+              echo "on master, using default settings for kind-voltha"
+            fi
+            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
-          # start logging
-          mkdir -p $WORKSPACE/1t4gem
-          _TAG=kail-1t4gem kail -n voltha -n default > $WORKSPACE/1t4gem/onos-voltha-combined.log &
+            # start logging
+            mkdir -p $WORKSPACE/1t4gem
+            _TAG=kail-1t4gem kail -n voltha -n default > $WORKSPACE/1t4gem/onos-voltha-combined.log &
 
-          DEPLOY_K8S=n ./voltha up
+            DEPLOY_K8S=n ./voltha up
 
-          mkdir -p $ROBOT_LOGS_DIR/1t4gem
-          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export KVSTOREPREFIX=voltha_voltha
+            mkdir -p $ROBOT_LOGS_DIR/1t4gem
+            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+            export KVSTOREPREFIX=voltha_voltha
 
-          make -C $WORKSPACE/voltha-system-tests ${make1t4gemTestTarget} || true
+            make -C $WORKSPACE/voltha-system-tests ${make1t4gemTestTarget} || true
 
-          # stop logging
-          P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t4gem" | grep -v grep | awk '{print $1}')"
-          if [ -n "$P_IDS" ]; then
-            echo $P_IDS
-            for P_ID in $P_IDS; do
-              kill -9 $P_ID
-            done
-          fi
+            # stop logging
+            P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t4gem" | grep -v grep | awk '{print $1}')"
+            if [ -n "$P_IDS" ]; then
+              echo $P_IDS
+              for P_ID in $P_IDS; do
+                kill -9 $P_ID
+              done
+            fi
 
-          # get pods information
-          kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t4gem/pods.txt || true
-        '''
+            # get pods information
+            kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t4gem/pods.txt || true
+          '''
+         }
        }
      }
 
@@ -200,49 +208,51 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/1t8gem"
       }
       steps {
-        sh '''
-          if [ "${branch}" != "master" ]; then
-            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-            source "$WORKSPACE/kind-voltha/releases/${branch}"
-          else
-            echo "on master, using default settings for kind-voltha"
-          fi
-          cd $WORKSPACE/kind-voltha/
-          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+            if [ "${branch}" != "master" ]; then
+              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+              source "$WORKSPACE/kind-voltha/releases/${branch}"
+            else
+              echo "on master, using default settings for kind-voltha"
+            fi
+            cd $WORKSPACE/kind-voltha/
+            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
-          export EXTRA_HELM_FLAGS=""
-          if [ "${branch}" != "master" ]; then
-            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-            source "$WORKSPACE/kind-voltha/releases/${branch}"
-          else
-            echo "on master, using default settings for kind-voltha"
-          fi
-          export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+            export EXTRA_HELM_FLAGS=""
+            if [ "${branch}" != "master" ]; then
+              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+              source "$WORKSPACE/kind-voltha/releases/${branch}"
+            else
+              echo "on master, using default settings for kind-voltha"
+            fi
+            export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
-          # start logging
-          mkdir -p $WORKSPACE/1t8gem
-          _TAG=kail-1t8gem kail -n voltha -n default > $WORKSPACE/1t8gem/onos-voltha-combined.log &
+            # start logging
+            mkdir -p $WORKSPACE/1t8gem
+            _TAG=kail-1t8gem kail -n voltha -n default > $WORKSPACE/1t8gem/onos-voltha-combined.log &
 
-          DEPLOY_K8S=n ./voltha up
+            DEPLOY_K8S=n ./voltha up
 
-          mkdir -p $ROBOT_LOGS_DIR/1t8gem
-          export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-          export KVSTOREPREFIX=voltha_voltha
+            mkdir -p $ROBOT_LOGS_DIR/1t8gem
+            export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+            export KVSTOREPREFIX=voltha_voltha
 
-          make -C $WORKSPACE/voltha-system-tests ${make1t8gemTestTarget} || true
+            make -C $WORKSPACE/voltha-system-tests ${make1t8gemTestTarget} || true
 
-          # stop logging
-          P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t8gem" | grep -v grep | awk '{print $1}')"
-          if [ -n "$P_IDS" ]; then
-            echo $P_IDS
-            for P_ID in $P_IDS; do
-              kill -9 $P_ID
-            done
-          fi
+            # stop logging
+            P_IDS="$(ps e -ww -A | grep "_TAG=kail-1t8gem" | grep -v grep | awk '{print $1}')"
+            if [ -n "$P_IDS" ]; then
+              echo $P_IDS
+              for P_ID in $P_IDS; do
+                kill -9 $P_ID
+              done
+            fi
 
-          # get pods information
-          kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t8gem/pods.txt || true
-        '''
+            # get pods information
+            kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t8gem/pods.txt || true
+          '''
+        }
       }
     }
 
@@ -252,50 +262,52 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/openonu-go-MIB"
       }
       steps {
-        sh '''
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           cd $WORKSPACE/kind-voltha/
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             cd $WORKSPACE/kind-voltha/
+             WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
-           export EXTRA_HELM_FLAGS+="--set pon=2,onu=2,controlledActivation=only-onu "
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+             export EXTRA_HELM_FLAGS+="--set pon=2,onu=2,controlledActivation=only-onu "
 
-           # start logging
-           mkdir -p $WORKSPACE/mib
-           _TAG=kail-mib kail -n voltha -n default > $WORKSPACE/mib/onos-voltha-combined.log &
+             # start logging
+             mkdir -p $WORKSPACE/mib
+             _TAG=kail-mib kail -n voltha -n default > $WORKSPACE/mib/onos-voltha-combined.log &
 
-           DEPLOY_K8S=n ./voltha up
+             DEPLOY_K8S=n ./voltha up
 
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           export TARGET_DEFAULT=mib-upload-templating-openonu-go-adapter-test
+             mkdir -p $ROBOT_LOGS_DIR
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+             export TARGET_DEFAULT=mib-upload-templating-openonu-go-adapter-test
 
-           make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
+             make -C $WORKSPACE/voltha-system-tests \$TARGET_DEFAULT || true
 
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-mib" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
+             # stop logging
+             P_IDS="$(ps e -ww -A | grep "_TAG=kail-mib" | grep -v grep | awk '{print $1}')"
+             if [ -n "$P_IDS" ]; then
+               echo $P_IDS
+               for P_ID in $P_IDS; do
+                 kill -9 $P_ID
+               done
+             fi
 
-           # get pods information
-           kubectl get pods -o wide --all-namespaces > $WORKSPACE/mib/pods.txt || true
-        '''
+             # get pods information
+             kubectl get pods -o wide --all-namespaces > $WORKSPACE/mib/pods.txt || true
+          '''
+        }
       }
     }
 
@@ -304,56 +316,58 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileDT"
       }
       steps {
-        sh '''
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           cd $WORKSPACE/kind-voltha/
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+        timeout(time: 20, unit: 'MINUTES') {
+          sh '''
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             cd $WORKSPACE/kind-voltha/
+             WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
-           # Workflow-specific flags
-           export WITH_RADIUS=no
-           export WITH_EAPOL=no
-           export WITH_DHCP=no
-           export WITH_IGMP=no
-           export CONFIG_SADIS="external"
-           export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
+             # Workflow-specific flags
+             export WITH_RADIUS=no
+             export WITH_EAPOL=no
+             export WITH_DHCP=no
+             export WITH_IGMP=no
+             export CONFIG_SADIS="external"
+             export BBSIM_CFG="configs/bbsim-sadis-dt.yaml"
 
-           # start logging
-           mkdir -p $WORKSPACE/reconciledt
-           _TAG=kail-reconcile-dt kail -n voltha -n default > $WORKSPACE/reconciledt/onos-voltha-combined.log &
+             # start logging
+             mkdir -p $WORKSPACE/reconciledt
+             _TAG=kail-reconcile-dt kail -n voltha -n default > $WORKSPACE/reconciledt/onos-voltha-combined.log &
 
-           DEPLOY_K8S=n ./voltha up
+             DEPLOY_K8S=n ./voltha up
 
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+             mkdir -p $ROBOT_LOGS_DIR
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           make -C $WORKSPACE/voltha-system-tests ${makeReconcileDtTestTarget} || true
+             make -C $WORKSPACE/voltha-system-tests ${makeReconcileDtTestTarget} || true
 
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-dt" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
+             # stop logging
+             P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-dt" | grep -v grep | awk '{print $1}')"
+             if [ -n "$P_IDS" ]; then
+               echo $P_IDS
+               for P_ID in $P_IDS; do
+                 kill -9 $P_ID
+               done
+             fi
 
-           # get pods information
-           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconciledt/pods.txt || true
-           '''
+             # get pods information
+             kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconciledt/pods.txt || true
+             '''
+         }
       }
     }
 
@@ -362,62 +376,64 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileATT"
       }
       steps {
-        sh '''
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           cd $WORKSPACE/kind-voltha/
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+        timeout(time: 20, unit: 'MINUTES') {
+          sh '''
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             cd $WORKSPACE/kind-voltha/
+             WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
-           # Workflow-specific flags
-           export WITH_RADIUS=yes
-           export WITH_EAPOL=yes
-           export WITH_BBSIM=yes
-           export DEPLOY_K8S=yes
-           export CONFIG_SADIS="external"
-           export BBSIM_CFG="configs/bbsim-sadis-att.yaml"
+             # Workflow-specific flags
+             export WITH_RADIUS=yes
+             export WITH_EAPOL=yes
+             export WITH_BBSIM=yes
+             export DEPLOY_K8S=yes
+             export CONFIG_SADIS="external"
+             export BBSIM_CFG="configs/bbsim-sadis-att.yaml"
 
-           if [ "${gerritProject}" = "voltctl" ]; then
-             export VOLTCTL_VERSION=$(cat $WORKSPACE/voltctl/VERSION)
-             cp $WORKSPACE/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
-             md5sum $WORKSPACE/kind-voltha/bin/voltctl
-           fi
+             if [ "${gerritProject}" = "voltctl" ]; then
+               export VOLTCTL_VERSION=$(cat $WORKSPACE/voltctl/VERSION)
+               cp $WORKSPACE/voltctl/voltctl $WORKSPACE/kind-voltha/bin/voltctl
+               md5sum $WORKSPACE/kind-voltha/bin/voltctl
+             fi
 
-           # start logging
-           mkdir -p $WORKSPACE/reconcileatt
-           _TAG=kail-reconcile-att kail -n voltha -n default > $WORKSPACE/reconcileatt/onos-voltha-combined.log &
+             # start logging
+             mkdir -p $WORKSPACE/reconcileatt
+             _TAG=kail-reconcile-att kail -n voltha -n default > $WORKSPACE/reconcileatt/onos-voltha-combined.log &
 
-           DEPLOY_K8S=n ./voltha up
+             DEPLOY_K8S=n ./voltha up
 
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+             mkdir -p $ROBOT_LOGS_DIR
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           make -C $WORKSPACE/voltha-system-tests ${makeReconcileTestTarget} || true
+             make -C $WORKSPACE/voltha-system-tests ${makeReconcileTestTarget} || true
 
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-att" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
+             # stop logging
+             P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-att" | grep -v grep | awk '{print $1}')"
+             if [ -n "$P_IDS" ]; then
+               echo $P_IDS
+               for P_ID in $P_IDS; do
+                 kill -9 $P_ID
+               done
+             fi
 
-           # get pods information
-           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcileatt/pods.txt || true
-           '''
+             # get pods information
+             kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcileatt/pods.txt || true
+             '''
+         }
       }
     }
 
@@ -426,56 +442,58 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileTT"
       }
       steps {
-        sh '''
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           cd $WORKSPACE/kind-voltha/
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+        timeout(time: 20, unit: 'MINUTES') {
+          sh '''
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             cd $WORKSPACE/kind-voltha/
+             WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             export EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${extraHelmFlags} "
 
-           # Workflow-specific flags
-           export WITH_RADIUS=no
-           export WITH_EAPOL=no
-           export WITH_DHCP=yes
-           export WITH_IGMP=yes
-           export CONFIG_SADIS="external"
-           export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
+             # Workflow-specific flags
+             export WITH_RADIUS=no
+             export WITH_EAPOL=no
+             export WITH_DHCP=yes
+             export WITH_IGMP=yes
+             export CONFIG_SADIS="external"
+             export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
 
-           # start logging
-           mkdir -p $WORKSPACE/reconcilett
-           _TAG=kail-reconcile-tt kail -n voltha -n default > $WORKSPACE/reconcilett/onos-voltha-combined.log &
+             # start logging
+             mkdir -p $WORKSPACE/reconcilett
+             _TAG=kail-reconcile-tt kail -n voltha -n default > $WORKSPACE/reconcilett/onos-voltha-combined.log &
 
-           DEPLOY_K8S=n ./voltha up
+             DEPLOY_K8S=n ./voltha up
 
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+             mkdir -p $ROBOT_LOGS_DIR
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           make -C $WORKSPACE/voltha-system-tests ${makeReconcileTtTestTarget} || true
+             make -C $WORKSPACE/voltha-system-tests ${makeReconcileTtTestTarget} || true
 
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-tt" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
+             # stop logging
+             P_IDS="$(ps e -ww -A | grep "_TAG=kail-reconcile-tt" | grep -v grep | awk '{print $1}')"
+             if [ -n "$P_IDS" ]; then
+               echo $P_IDS
+               for P_ID in $P_IDS; do
+                 kill -9 $P_ID
+               done
+             fi
 
-           # get pods information
-           kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcilett/pods.txt || true
-           '''
+             # get pods information
+             kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcilett/pods.txt || true
+             '''
+           }
       }
     }
   }

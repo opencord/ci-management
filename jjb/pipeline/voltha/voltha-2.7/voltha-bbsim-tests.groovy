@@ -132,24 +132,27 @@ pipeline {
     }
     stage('Create K8s Cluster') {
       steps {
-        sh """
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
 
-           cd $WORKSPACE/kind-voltha/
-           JUST_K8S=y ./voltha up
-           bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
-           """
+             cd $WORKSPACE/kind-voltha/
+             JUST_K8S=y ./voltha up
+             bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/kind-voltha/bin"
+             """
+         }
       }
     }
 
     stage('Build Images') {
       steps {
-        sh """
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
            make-local () {
              make -C $WORKSPACE/\$1 DOCKER_REGISTRY=mirror.registry.opennetworking.org/ DOCKER_REPOSITORY=voltha/ DOCKER_TAG=citest docker-build
            }
@@ -178,6 +181,7 @@ pipeline {
              make-local ${gerritProject}
            fi
            """
+        }
       }
     }
 
@@ -206,7 +210,8 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ATTWorkflow"
       }
       steps {
-        sh '''
+        timeout(time: 15, unit: 'MINUTES') {
+          sh '''
            if [ "${branch}" != "master" ]; then
              echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
              source "$WORKSPACE/kind-voltha/releases/${branch}"
@@ -321,6 +326,7 @@ pipeline {
            kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/att/pod-images.txt || true
            kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/att/pod-imagesId.txt || true
            '''
+         }
       }
     }
 
@@ -329,7 +335,8 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DTWorkflow"
       }
       steps {
-        sh '''
+        timeout(time: 15, unit: 'MINUTES') {
+          sh '''
            cd $WORKSPACE/kind-voltha/
            source $NAME-env.sh
            if [ "${branch}" != "master" ]; then
@@ -389,6 +396,7 @@ pipeline {
            kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/dt/pod-images.txt || true
            kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/dt/pod-imagesId.txt || true
            '''
+         }
       }
     }
 
@@ -397,66 +405,68 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/TTWorkflow"
       }
       steps {
-        sh '''
-           cd $WORKSPACE/kind-voltha/
-           source $NAME-env.sh
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
+        timeout(time: 15, unit: 'MINUTES') {
+          sh '''
+             cd $WORKSPACE/kind-voltha/
+             source $NAME-env.sh
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
+             WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
-           # Workflow-specific flags
-           export WITH_RADIUS=no
-           export WITH_EAPOL=no
-           export WITH_DHCP=yes
-           export WITH_IGMP=yes
-           export CONFIG_SADIS="external"
-           export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
+             # Workflow-specific flags
+             export WITH_RADIUS=no
+             export WITH_EAPOL=no
+             export WITH_DHCP=yes
+             export WITH_IGMP=yes
+             export CONFIG_SADIS="external"
+             export BBSIM_CFG="configs/bbsim-sadis-tt.yaml"
 
-           if [[ "${gerritProject}" == voltha-helm-charts ]]; then
-             export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
-           fi
+             if [[ "${gerritProject}" == voltha-helm-charts ]]; then
+               export EXTRA_HELM_FLAGS+="--set global.image_tag=null "
+             fi
 
-           # start logging
-           mkdir -p $WORKSPACE/tt
-           _TAG=kail-tt kail -n voltha -n default > $WORKSPACE/tt/onos-voltha-combined.log &
+             # start logging
+             mkdir -p $WORKSPACE/tt
+             _TAG=kail-tt kail -n voltha -n default > $WORKSPACE/tt/onos-voltha-combined.log &
 
-           DEPLOY_K8S=n ./voltha up
+             DEPLOY_K8S=n ./voltha up
 
-           mkdir -p $ROBOT_LOGS_DIR
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
+             mkdir -p $ROBOT_LOGS_DIR
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR -e PowerSwitch"
 
-           # By default, all tests tagged 'sanityTt' are run.  This covers basic functionality
-           # like running through the TT workflow for a single subscriber.
-           export TARGET=sanity-kind-tt
+             # By default, all tests tagged 'sanityTt' are run.  This covers basic functionality
+             # like running through the TT workflow for a single subscriber.
+             export TARGET=sanity-kind-tt
 
-           # If the Gerrit comment contains a line with "functional tests" then run the full
-           # functional test suite.  This covers tests tagged either 'sanityTt' or 'functionalTt'.
-           # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-           REGEX="functional tests"
-           if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-             TARGET=functional-single-kind-tt
-           fi
+             # If the Gerrit comment contains a line with "functional tests" then run the full
+             # functional test suite.  This covers tests tagged either 'sanityTt' or 'functionalTt'.
+             # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
+             REGEX="functional tests"
+             if [[ "$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
+               TARGET=functional-single-kind-tt
+             fi
 
-           make -C $WORKSPACE/voltha-system-tests \$TARGET || true
+             make -C $WORKSPACE/voltha-system-tests \$TARGET || true
 
-           # stop logging
-           P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
-           if [ -n "$P_IDS" ]; then
-             echo $P_IDS
-             for P_ID in $P_IDS; do
-               kill -9 $P_ID
-             done
-           fi
+             # stop logging
+             P_IDS="$(ps e -ww -A | grep "_TAG=kail-att" | grep -v grep | awk '{print $1}')"
+             if [ -n "$P_IDS" ]; then
+               echo $P_IDS
+               for P_ID in $P_IDS; do
+                 kill -9 $P_ID
+               done
+             fi
 
-           # get pods information
-           kubectl get pods -o wide > $WORKSPACE/tt/pods.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/tt/pod-images.txt || true
-           kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/tt/pod-imagesId.txt || true
-           '''
+             # get pods information
+             kubectl get pods -o wide > $WORKSPACE/tt/pods.txt || true
+             kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/tt/pod-images.txt || true
+             kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/tt/pod-imagesId.txt || true
+             '''
+        }
       }
     }
   }

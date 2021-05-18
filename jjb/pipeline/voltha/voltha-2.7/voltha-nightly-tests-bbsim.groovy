@@ -23,7 +23,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 300, unit: 'MINUTES')
+      timeout(time: 100, unit: 'MINUTES')
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
@@ -63,16 +63,18 @@ pipeline {
     }
     stage('Cleanup') {
       steps {
-        sh """
-        if [ "${branch}" != "master" ]; then
-          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-          source "$WORKSPACE/kind-voltha/releases/${branch}"
-        else
-          echo "on master, using default settings for kind-voltha"
-        fi
-        cd $WORKSPACE/kind-voltha/
-        WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
-        """
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+          if [ "${branch}" != "master" ]; then
+            echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+            source "$WORKSPACE/kind-voltha/releases/${branch}"
+          else
+            echo "on master, using default settings for kind-voltha"
+          fi
+          cd $WORKSPACE/kind-voltha/
+          WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
+          """
+        }
       }
     }
     stage('Clone voltha-system-tests') {
@@ -103,21 +105,23 @@ pipeline {
 
     stage('Deploy Voltha') {
       steps {
-        sh """
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             export INFRA_NS="infra"
-             echo "on master, using default settings for kind-voltha"
-           fi
+        timeout(time: 10, unit: 'MINUTES') {
+          sh """
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               export INFRA_NS="infra"
+               echo "on master, using default settings for kind-voltha"
+             fi
 
-           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} --set defaults.image_registry=mirror.registry.opennetworking.org/ "
+             EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} --set defaults.image_registry=mirror.registry.opennetworking.org/ "
 
-           cd $WORKSPACE/kind-voltha/
-           ./voltha up
-           """
+             cd $WORKSPACE/kind-voltha/
+             ./voltha up
+             """
+           }
       }
     }
 
@@ -126,16 +130,18 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FunctionalTests"
       }
       steps {
-        sh '''
-           set +e
-           mkdir -p $ROBOT_LOGS_DIR
-           cd $WORKSPACE/kind-voltha/scripts
-           ./log-collector.sh > /dev/null &
-           ./log-combine.sh > /dev/null &
+        timeout(time: 20, unit: 'MINUTES') {
+          sh '''
+             set +e
+             mkdir -p $ROBOT_LOGS_DIR
+             cd $WORKSPACE/kind-voltha/scripts
+             ./log-collector.sh > /dev/null &
+             ./log-combine.sh > /dev/null &
 
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
-           '''
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+             make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
+             '''
+         }
       }
     }
 
@@ -149,13 +155,15 @@ pipeline {
         }
       }
       steps {
-        sh '''
-           set +e
-           mkdir -p $WORKSPACE/RobotLogs
+        timeout(time: 5, unit: 'MINUTES') {
+          sh '''
+             set +e
+             mkdir -p $WORKSPACE/RobotLogs
 
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeAlarmtestTarget} || true
-           '''
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+             make -C $WORKSPACE/voltha-system-tests ${makeAlarmtestTarget} || true
+             '''
+         }
       }
     }
 
@@ -164,13 +172,15 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureTests"
       }
       steps {
-        sh '''
-           set +e
-           mkdir -p $WORKSPACE/RobotLogs
+        timeout(time: 30, unit: 'MINUTES') {
+          sh '''
+             set +e
+             mkdir -p $WORKSPACE/RobotLogs
 
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeFailtestTarget} || true
-           '''
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+             make -C $WORKSPACE/voltha-system-tests ${makeFailtestTarget} || true
+             '''
+         }
       }
     }
     stage('Multiple OLT Tests') {
@@ -178,14 +188,16 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/MultipleOLTTests"
       }
       steps {
-        sh '''
-           if [ "${olts}" -gt 1 ]; then
-              set +e
-              mkdir -p $WORKSPACE/RobotLogs
-              export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-              make -C $WORKSPACE/voltha-system-tests ${makeMultiOltTarget} || true
-           fi
-           '''
+        timeout(time: 15, unit: 'MINUTES') {
+          sh '''
+             if [ "${olts}" -gt 1 ]; then
+                set +e
+                mkdir -p $WORKSPACE/RobotLogs
+                export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+                make -C $WORKSPACE/voltha-system-tests ${makeMultiOltTarget} || true
+             fi
+             '''
+         }
       }
     }
 
@@ -194,13 +206,15 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ErrorTests"
       }
       steps {
-        sh '''
-           set +e
-           mkdir -p $WORKSPACE/RobotLogs
+        timeout(time: 10, unit: 'MINUTES') {
+          sh '''
+             set +e
+             mkdir -p $WORKSPACE/RobotLogs
 
-           export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
-           make -C $WORKSPACE/voltha-system-tests ${makeErrortestTarget} || true
-           '''
+             export ROBOT_MISC_ARGS="-d $ROBOT_LOGS_DIR"
+             make -C $WORKSPACE/voltha-system-tests ${makeErrortestTarget} || true
+             '''
+        }
       }
     }
   }

@@ -78,42 +78,47 @@ pipeline {
 
     stage('Deploy Voltha') {
       steps {
-        sh """
-           export EXTRA_HELM_FLAGS=""
-           if [ "${branch}" != "master" ]; then
-             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
-             source "$WORKSPACE/kind-voltha/releases/${branch}"
-           else
-             echo "on master, using default settings for kind-voltha"
-           fi
+        timeout(time: 15, unit: 'MINUTES') {
+          sh """
+             export EXTRA_HELM_FLAGS=""
+             if [ "${branch}" != "master" ]; then
+               echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+               source "$WORKSPACE/kind-voltha/releases/${branch}"
+             else
+               echo "on master, using default settings for kind-voltha"
+             fi
 
-           EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
+             EXTRA_HELM_FLAGS+="--set log_agent.enabled=False ${params.extraHelmFlags} "
 
-           cd $WORKSPACE/kind-voltha/
-           WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
-           ./voltha up
-           """
+             cd $WORKSPACE/kind-voltha/
+             WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down || ./voltha down
+             ./voltha up
+             """
+         }
       }
     }
 
     stage('Run E2E Tests') {
       steps {
-        sh """
-           set +e
-           mkdir -p $WORKSPACE/RobotLogs
+        // this may potentially fail as we don't know how many times we repeat this tests
+        timeout(time: 30, unit: 'MINUTES') {
+          sh """
+             set +e
+             mkdir -p $WORKSPACE/RobotLogs
 
-           cd $WORKSPACE/kind-voltha/scripts
-           ./log-collector.sh > /dev/null &
-           ./log-combine.sh > /dev/null &
+             cd $WORKSPACE/kind-voltha/scripts
+             ./log-collector.sh > /dev/null &
+             ./log-combine.sh > /dev/null &
 
-           for i in \$(seq 1 ${testRuns})
-           do
-             export ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs/\$i -e PowerSwitch"
-             make -C $WORKSPACE/voltha-system-tests ${makeTarget}
-             echo "Completed run: \$i"
-             echo ""
-           done
-           """
+             for i in \$(seq 1 ${testRuns})
+             do
+               export ROBOT_MISC_ARGS="${params.extraRobotArgs} -d $WORKSPACE/RobotLogs/\$i -e PowerSwitch"
+               make -C $WORKSPACE/voltha-system-tests ${makeTarget}
+               echo "Completed run: \$i"
+               echo ""
+             done
+             """
+         }
       }
     }
   }
