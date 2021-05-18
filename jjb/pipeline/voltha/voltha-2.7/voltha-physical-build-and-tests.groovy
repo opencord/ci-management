@@ -63,6 +63,12 @@ pipeline {
     stage ('Initialize') {
       steps {
         sh returnStdout: false, script: """
+        if [ "${branch}" != "master" ]; then
+          echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+          source "$WORKSPACE/kind-voltha/releases/${branch}"
+        else
+          echo "on master, using default settings for kind-voltha"
+        fi
         test -e $WORKSPACE/kind-voltha/voltha && cd $WORKSPACE/kind-voltha && ./voltha down
         cd $WORKSPACE
         rm -rf $WORKSPACE/*

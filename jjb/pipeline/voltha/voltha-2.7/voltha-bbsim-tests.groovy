@@ -332,6 +332,12 @@ pipeline {
         sh '''
            cd $WORKSPACE/kind-voltha/
            source $NAME-env.sh
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
            # Workflow-specific flags
@@ -394,6 +400,12 @@ pipeline {
         sh '''
            cd $WORKSPACE/kind-voltha/
            source $NAME-env.sh
+           if [ "${branch}" != "master" ]; then
+             echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+             source "$WORKSPACE/kind-voltha/releases/${branch}"
+           else
+             echo "on master, using default settings for kind-voltha"
+           fi
            WAIT_ON_DOWN=y DEPLOY_K8S=n ./voltha down
 
            # Workflow-specific flags
