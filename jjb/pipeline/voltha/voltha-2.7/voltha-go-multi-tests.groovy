@@ -161,6 +161,12 @@ pipeline {
          gzip *-combined.log || true
 
          ## shut down voltha but leave kind-voltha cluster
+         if [ "${branch}" != "master" ]; then
+           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+           source "$WORKSPACE/kind-voltha/releases/${branch}"
+         else
+           echo "on master, using default settings for kind-voltha"
+         fi
          cd $WORKSPACE/kind-voltha/
          DEPLOY_K8S=n WAIT_ON_DOWN=y ./voltha down
          '''

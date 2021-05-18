@@ -149,6 +149,12 @@ pipeline {
          extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
 
          ## shut down kind-voltha
+         if [ "${branch}" != "master" ]; then
+           echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
+           source "$WORKSPACE/kind-voltha/releases/${branch}"
+         else
+           echo "on master, using default settings for kind-voltha"
+         fi
          cd $WORKSPACE/kind-voltha
 	       WAIT_ON_DOWN=y ./voltha down
 
