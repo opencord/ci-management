@@ -25,6 +25,53 @@
     },
     {
       "key": {
+        "uuid": "b44d5079_78a96e42",
+        "filename": "jjb/pipeline/voltha/voltha-2.7/voltha-go-multi-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-18T16:40:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f7e12398_fcc6955c",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 97,
+        "endChar": 13
+      },
+      "revId": "fa2eb4e9d32cbcc59d6c0ab2c61104fe80a578a1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "cd1c8ad1_bfca7294",
+        "filename": "jjb/pipeline/voltha/voltha-2.7/voltha-go-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-18T16:40:54Z",
+      "side": 1,
+      "message": "duplicate (from line 100)",
+      "range": {
+        "startLine": 116,
+        "startChar": 11,
+        "endLine": 121,
+        "endChar": 13
+      },
+      "revId": "fa2eb4e9d32cbcc59d6c0ab2c61104fe80a578a1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2dcd64c3_e236c750",
         "filename": "jjb/pipeline/voltha/voltha-2.7/voltha-go-tests.groovy",
         "patchSetId": 1
@@ -48,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "4e7dd187_3fbd1677",
+        "filename": "jjb/pipeline/voltha/voltha-2.7/voltha-go-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-18T16:40:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "2dcd64c3_e236c750",
+      "range": {
+        "startLine": 189,
+        "startChar": 39,
+        "endLine": 189,
+        "endChar": 50
+      },
+      "revId": "fa2eb4e9d32cbcc59d6c0ab2c61104fe80a578a1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "72cdc7fb_46369e97",
         "filename": "jjb/pipeline/voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy",
         "patchSetId": 1
@@ -59,6 +130,30 @@
       "writtenOn": "2021-05-18T11:55:25Z",
       "side": 1,
       "message": "We can skip to do it here and below as already been set above, but fine, no harm to be extra careful.",
+      "range": {
+        "startLine": 153,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 12
+      },
+      "revId": "fa2eb4e9d32cbcc59d6c0ab2c61104fe80a578a1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a7332ab_18925e49",
+        "filename": "jjb/pipeline/voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-18T16:40:54Z",
+      "side": 1,
+      "message": "we can\u0027t skip it, each `sh` command runs in a different sub-shell, we can skip the one below",
+      "parentUuid": "72cdc7fb_46369e97",
       "range": {
         "startLine": 153,
         "startChar": 0,
