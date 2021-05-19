@@ -179,9 +179,9 @@ pipeline {
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Functional" ]; then
             if ( ${powerSwitch} ); then
-                 export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i soak -e dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+                 export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i soak -e dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             else
-                 export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i soak -e dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+                 export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i soak -e dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             fi
             make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
@@ -199,7 +199,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Failure" ]; then
-           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i soak -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i soak -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
@@ -216,7 +216,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Dataplane" ]; then
-           export ROBOT_MISC_ARGS="--removekeywords wuks -i soakDataplane -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+           export ROBOT_MISC_ARGS="--removekeywords wuks -i soakDataplane -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
