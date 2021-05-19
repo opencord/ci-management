@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f1a3e8ce_489fc0f0",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-05-19T23:53:25Z",
+      "side": 1,
+      "message": "should this be \u0026\u0026 ?",
+      "range": {
+        "startLine": 36,
+        "startChar": 50,
+        "endLine": 36,
+        "endChar": 52
+      },
+      "revId": "fe9e87d019b4d0f14a0189fc3856193dcd7026f6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d93e43d0_9f7c46e5",
+        "filename": "jjb/pipeline/voltha/voltha-2.7/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-05-19T23:53:25Z",
+      "side": 1,
+      "message": "should this be \u0026\u0026?",
+      "range": {
+        "startLine": 73,
+        "startChar": 48,
+        "endLine": 73,
+        "endChar": 50
+      },
+      "revId": "fe9e87d019b4d0f14a0189fc3856193dcd7026f6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
