@@ -70,11 +70,16 @@ def test_workflow(name) {
       }
 
       def localCharts = false
-      if (gerritProject == "voltha-helm-charts") {
+      if (gerritProject == "voltha-helm-charts" || branch != "master") {
         localCharts = true
       }
 
-      volthaDeploy([workflow: name, extraHelmFlags: extraHelmFlags, localCharts: localCharts])
+      volthaDeploy([
+        workflow: name,
+        extraHelmFlags: extraHelmFlags,
+        localCharts: localCharts,
+        dockerRegistry: "mirror.registry.opennetworking.org"
+      ])
       // start logging
       sh """
       mkdir -p $WORKSPACE/${name}

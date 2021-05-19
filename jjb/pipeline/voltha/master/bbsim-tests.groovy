@@ -33,7 +33,7 @@ def test_workflow(name) {
         }
 
         def localCharts = false
-        if (gerritProject == "voltha-helm-charts") {
+        if (gerritProject == "voltha-helm-charts" || branch != "master") {
           localCharts = true
         }
 
