@@ -302,8 +302,8 @@
           name-extension: '_DT'
           work-flow: 'DT'
           reinstall-olt: true
-          num-of-onus: 16
-          num-of-ponports: 8
+          num-of-onus: 32
+          num-of-ponports: 16
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # FIXME once the soak-pod is back use 'build_voltha_pod_test'
@@ -333,11 +333,11 @@
           time-trigger: "H H 2 * *"
 
       # ONF Menlo Soak POD test job - voltha-master branch
-      # Run tests every three days
+      # Run failure/recovery tests every Wednesday
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          'disable-job': false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -346,14 +346,14 @@
           test-type: 'Failure'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H */2 * *"
+          time-trigger: "H H * * 3"
 
       # ONF Menlo Soak POD test job - voltha-master branch
-      # Run dataplane tests every three days
+      # Run dataplane tests every Saturday
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          'disable-job': false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -362,7 +362,7 @@
           test-type: 'Dataplane'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H */3 * *"
+          time-trigger: "H H * * 6"
 
       # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
