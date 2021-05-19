@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f4a62051_ada964fb",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-05-19T03:18:51Z",
+      "side": 1,
+      "message": "How about TechProfile-TT-VoIP.json?",
+      "revId": "fc2cdcba3c97ccce536a28738ac6f7128619c1cb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
