@@ -304,6 +304,7 @@
           reinstall-olt: true
           num-of-onus: 32
           num-of-ponports: 16
+          logLevel: 'WARN'
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # FIXME once the soak-pod is back use 'build_voltha_pod_test'
