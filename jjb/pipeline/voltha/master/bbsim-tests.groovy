@@ -26,7 +26,9 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_workflow(name) {
   timeout(time: 5, unit: 'MINUTES') {
     stage('Deploy - '+ name + ' workflow') {
-        def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
+        def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 " +
+          " --set onos-classic.onosSshPort=30115 " +
+          "--set onos-classic.onosApiPort=30120 "
 
         if (gerritProject != "") {
           extraHelmFlags = extraHelmFlags + getVolthaImageFlags("${gerritProject}")
@@ -50,18 +52,17 @@ def test_workflow(name) {
         """
         // forward ONOS and VOLTHA ports
         sh """
-        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8101:8101&
-        _TAG=onos-port-forward kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181&
-        _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555&
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555; done"&
         """
     }
   }
   stage('Test VOLTHA - '+ name + ' workflow') {
-    timeout(time: 5, unit: 'MINUTES') {
+    timeout(time: 10, unit: 'MINUTES') {
       sh """
       ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name.toUpperCase()}Workflow"
       mkdir -p \$ROBOT_LOGS_DIR
-      export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -e PowerSwitch"
+      export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -e PowerSwitch "
+      ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
 
       # By default, all tests tagged 'sanity' are run.  This covers basic functionality
       # like running through the ATT workflow for a single subscriber.
@@ -115,7 +116,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 35, unit: 'MINUTES')
+    timeout(time: 50, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
