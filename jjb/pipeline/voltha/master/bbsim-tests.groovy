@@ -24,7 +24,7 @@ library identifier: 'cord-jenkins-libraries@master',
 ])
 
 def test_workflow(name) {
-  timeout(time: 10, unit: 'MINUTES') {
+  timeout(time: 5, unit: 'MINUTES') {
     stage('Deploy - '+ name + ' workflow') {
         def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 "
 
@@ -57,6 +57,7 @@ def test_workflow(name) {
     }
   }
   stage('Test VOLTHA - '+ name + ' workflow') {
+    timeout(time: 5, unit: 'MINUTES') {
       sh """
       ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name.toUpperCase()}Workflow"
       mkdir -p \$ROBOT_LOGS_DIR
@@ -103,6 +104,7 @@ def test_workflow(name) {
       // collect pod details
       getPodsInfo("$WORKSPACE/${name}")
       helmTeardown(['infra', 'voltha'])
+    }
   }
 }
 
@@ -165,11 +167,13 @@ pipeline {
     }
     stage('Run Test') {
       steps {
-        timeout(time: 30, unit: 'MINUTES') {
-          test_workflow("att")
-          test_workflow("dt")
-          test_workflow("tt")
-        }
+        // preload the venv so it's not included in the timeout for the first test execution
+        sh """
+        make -C $WORKSPACE/voltha-system-tests vst_venv || true
+        """
+        test_workflow("att")
+        test_workflow("dt")
+        test_workflow("tt")
       }
     }
   }
@@ -180,14 +184,14 @@ pipeline {
       sh """
       kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.log || true
       """
-      archiveArtifacts artifacts: '**/*.log,**/*.txt'
+      archiveArtifacts artifacts: '**/*.log,**/*.txt,**/*.html'
     }
     failure {
       getPodsInfo("$WORKSPACE/failed")
       sh """
       kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.logs || true
       """
-      archiveArtifacts artifacts: '**/*.log,**/*.txt'
+      archiveArtifacts artifacts: '**/*.log,**/*.txt,**/*.html'
     }
     always {
       sh '''
