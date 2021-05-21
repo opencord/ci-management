@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e3e22a4f_b3adde09",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-21T07:31:37Z",
+      "side": 1,
+      "message": "are you sure about this TP ? I think you need the 1T4GEM for TT",
+      "revId": "77221c606ac235bfeeb99622c75c0297e66a3646",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7aabadc2_f64bbea6",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 329,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-21T07:31:37Z",
+      "side": 1,
+      "message": "why are you disabling this ?",
+      "revId": "77221c606ac235bfeeb99622c75c0297e66a3646",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
