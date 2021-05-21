@@ -551,3 +551,122 @@
       - timed: |
                  TZ=America/Los_Angeles
                  {time-trigger}
+
+
+# VOLTHA Manual Test Job
+# This job is triggered manually
+- job-template:
+    name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}_manual_test'
+    id: build_voltha_pod_manual_test
+    disabled: '{disable-job}'
+    description: |
+                  Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {pipeline-script}<br /><br />
+                  Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
+                  Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
+                  Copyright (c) 2017 Open Networking Foundation (ONF)
+    <<: *voltha-pipe-job-boiler-plate
+    pipeline-script: 'voltha-physical-functional-tests.groovy'
+    manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
+    manifest-branch: 'master'
+
+    oltAdapterAppLabel: 'adapter-open-olt'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins executor node to run the job on'
+
+      - string:
+          name: TestNodeName
+          default: '{build-node}'
+          description: 'DEPRECATED - use buildNode instead'
+
+      - string:
+          name: cordRepoUrl
+          default: '{gerrit-server-url}'
+          description: 'The URL of the CORD Project repository'
+
+      - string:
+          name: configBaseDir
+          default: 'pod-configs'
+          description: 'The directory inside the POD configs repository'
+
+      - string:
+          name: configDeploymentDir
+          default: 'deployment-configs'
+          description: 'The deployment configs folder'
+
+      - string:
+          name: configKubernetesDir
+          default: 'kubernetes-configs'
+          description: 'The kubernetes config folder'
+
+      - string:
+          name: configToscaDir
+          default: 'tosca-configs'
+          description: 'The tosca config folder'
+
+      - string:
+          name: configFileName
+          default: '{config-pod}'
+          description: 'The config file'
+
+      - string:
+          name: profile
+          default: '{profile}'
+          description: 'Technology Profile pushed to the ETCD'
+
+      - string:
+          name: branch
+          default: '{branch}'
+          description: 'Branch of the test libraries to check out'
+
+      - string:
+          name: manifestUrl
+          default: '{manifest-url}'
+          description: 'Repo manifest URL for code checkout (so we can display changes in Jenkins)'
+
+      - string:
+          name: manifestBranch
+          default: '{manifest-branch}'
+          description: 'Repo manifest branch for code checkout (so we can display changes in Jenkins)'
+
+      - string:
+          name: workFlow
+          default: '{work-flow}'
+          description: 'Installs and uses the specified work flow on the POD'
+
+      - bool:
+          name: powerSwitch
+          default: '{power-switch}'
+          description: "Indicate whether POD has power switch to reboot ONUs/OLT remotely"
+
+      - string:
+          name: oltAdapterAppLabel
+          default: '{oltAdapterAppLabel}'
+          description: 'OLT adapter pod name'
+
+      - string:
+          name: testType
+          default: '{test-type}'
+          description: 'Passes the required test category to the groovy script'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: '{volthaSystemTestsChange}'
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: kindVolthaChange
+          default: '{kindVolthaChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: cordTesterChange
+          default: '{cordTesterChange}'
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+    concurrent: true
+
+    project-type: pipeline
+    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
