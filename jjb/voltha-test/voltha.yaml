@@ -26,27 +26,30 @@
 
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
-      - 'build_pod_manual':
+      - 'build_voltha_pod_manual':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: 'master'
-          branch: 'master'
-          num-of-openonu: '1'
           num-of-onos: '3'
           num-of-atomix: '3'
+          num-of-kafka: '3'
+          num-of-etcd: '3'
           VolthaEtcdPort: 9999
-          test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-build'
-          profile: '1T4GEM'
+          profile: 'TP'
+          name-extension: '_TT'
+          work-flow: 'TT'
 
       # flex pod1 test job - using voltha branch
-      - 'build_pod_test':
+      - 'build_voltha_pod_manual_test':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          profile: '1T4GEM'
+          disable-job: false
+          profile: 'TP'
           branch: 'master'
+          work-flow: 'TT'
+          name-extension: '_TT'
+          test-type: ''
           test-repo: 'voltha-system-tests'
-          Jenkinsfile: 'Jenkinsfile-voltha-test'
+          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
 
       # onlab pod1 OCP pod with olt/onu - Manual testing BAL3.1 release voltha master build job
       - 'build_pod_manual':
@@ -319,10 +322,10 @@
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # Run tests every three days
-      - 'build_voltha_pod_soak_test':
+      - 'build_voltha_pod_manual_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -331,7 +334,6 @@
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H 2 * *"
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # Run failure/recovery tests every Wednesday
