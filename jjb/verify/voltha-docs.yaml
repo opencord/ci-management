@@ -28,3 +28,4 @@
           build-output-path: '_build/multiversion/'
           sync-target-server: 'guide.opencord.org'
           sync-target-path: '/var/www/voltha-docs/'
+          build-timeout: 60
