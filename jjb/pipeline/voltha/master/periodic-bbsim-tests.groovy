@@ -89,6 +89,9 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
               kill -9 \$P_ID
             done
           fi
+          cd $WORKSPACE/${testTarget}-components/
+          gzip onos-voltha-startup-combined.log
+          rm onos-voltha-startup-combined.log
         """
       }
       sh """
@@ -127,6 +130,9 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
           kill -9 \$P_ID
         done
       fi
+      cd $WORKSPACE/${testTarget}-components/
+      gzip onos-voltha-combined.log
+      rm onos-voltha-combined.log
     """
     getPodsInfo("$WORKSPACE/${testTarget}-components")
   }

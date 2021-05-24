@@ -142,7 +142,9 @@ pipeline {
                 kill -9 $P_ID
               done
             fi
-
+            cd $WORKSPACE/1t1gem/
+            gzip onos-voltha-combined.log
+            rm onos-voltha-combined.log
             # get pods information
             kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t1gem/pods.txt || true
           '''
@@ -195,7 +197,9 @@ pipeline {
                 kill -9 $P_ID
               done
             fi
-
+            cd $WORKSPACE/1t4gem/
+            gzip onos-voltha-combined.log
+            rm onos-voltha-combined.log
             # get pods information
             kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t4gem/pods.txt || true
           '''
@@ -248,7 +252,9 @@ pipeline {
                 kill -9 $P_ID
               done
             fi
-
+            cd $WORKSPACE/1t8gem/
+            gzip onos-voltha-combined.log
+            rm onos-voltha-combined.log
             # get pods information
             kubectl get pods -o wide --all-namespaces > $WORKSPACE/1t8gem/pods.txt || true
           '''
@@ -303,7 +309,9 @@ pipeline {
                  kill -9 $P_ID
                done
              fi
-
+             cd $WORKSPACE/mib/
+             gzip onos-voltha-combined.log
+             rm onos-voltha-combined.log
              # get pods information
              kubectl get pods -o wide --all-namespaces > $WORKSPACE/mib/pods.txt || true
           '''
@@ -363,7 +371,9 @@ pipeline {
                  kill -9 $P_ID
                done
              fi
-
+             cd $WORKSPACE/reconciledt/
+             gzip onos-voltha-combined.log
+             rm onos-voltha-combined.log
              # get pods information
              kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconciledt/pods.txt || true
              '''
@@ -429,7 +439,9 @@ pipeline {
                  kill -9 $P_ID
                done
              fi
-
+             cd $WORKSPACE/reconcileatt/
+             gzip onos-voltha-combined.log
+             rm onos-voltha-combined.log
              # get pods information
              kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcileatt/pods.txt || true
              '''
@@ -489,7 +501,9 @@ pipeline {
                  kill -9 $P_ID
                done
              fi
-
+             cd $WORKSPACE/reconcilett/
+             gzip onos-voltha-combined.log
+             rm onos-voltha-combined.log
              # get pods information
              kubectl get pods -o wide --all-namespaces > $WORKSPACE/reconcilett/pods.txt || true
              '''
@@ -509,27 +523,6 @@ pipeline {
          pkill kail || true
          md5sum $WORKSPACE/kind-voltha/bin/voltctl
 
-         ## Pull out errors from log files
-         extract_errors_go() {
-           echo
-           echo "Error summary for $1:"
-           grep $1 $WORKSPACE/onos-voltha-combined.log | grep '"level":"error"' | cut -d ' ' -f 2- | jq -r '.msg'
-           echo
-         }
-
-         extract_errors_python() {
-           echo
-           echo "Error summary for $1:"
-           grep $1 $WORKSPACE/onos-voltha-combined.log | grep 'ERROR' | cut -d ' ' -f 2-
-           echo
-         }
-
-         extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log || true
-         extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log || true
-         extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log || true
-         extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log || true
-
-         gzip $WORKSPACE/onos-voltha-combined.log || true
          '''
          step([$class: 'RobotPublisher',
             disableArchiveOutput: false,
