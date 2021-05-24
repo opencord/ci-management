@@ -93,30 +93,34 @@ pipeline {
             }
 
             // should the config file be suffixed with the workflow? see "deployment_config"
-            def extraHelmFlags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml --set global.log_level=${logLevel} "
+            def localHelmFlags = "-f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml --set global.log_level=${logLevel} "
 
             if (workFlow.toLowerCase() == "dt") {
-              extraHelmFlags += " --set radius.enabled=false "
+              localHelmFlags += " --set radius.enabled=false "
             }
             if (workFlow.toLowerCase() == "tt") {
-              extraHelmFlags += " --set radius.enabled=false --set global.incremental_evto_update=true "
+              localHelmFlags += " --set radius.enabled=false --set global.incremental_evto_update=true "
             }
 
             // NOTE temporary workaround expose ONOS node ports (pod-config needs to be updated to contain these values)
-            extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 " +
+            localHelmFlags = localHelmFlags + " --set onos-classic.onosSshPort=30115 " +
             "--set onos-classic.onosApiPort=30120 " +
             "--set onos-classic.onosOfPort=31653 " +
             "--set onos-classic.individualOpenFlowNodePorts=true "
 
+
             def bbsimReplica = 0
             if (installBBSim.toBoolean()) {
               bbsimReplica = 1
-              extraHelmFlags = extraHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
+              localHelmFlags = localHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
             }
+
+            // adding user specified helm flags at the end so they'll have priority over everything else
+            localHelmFlags = localHelmFlags += " ${extraHelmFlags}"
 
             volthaDeploy([
               workflow: workFlow.toLowerCase(),
-              extraHelmFlags: extraHelmFlags,
+              extraHelmFlags: localHelmFlags,
               localCharts: localCharts,
               kubeconfig: "$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf",
               onosReplica: params.NumOfOnos,

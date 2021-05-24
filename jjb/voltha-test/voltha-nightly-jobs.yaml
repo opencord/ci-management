@@ -77,6 +77,11 @@
           default: '{work-flow}'
           description: 'Installs and uses the specified work flow on the POD'
 
+      - string:
+          name: extraHelmFlags
+          default: '{extraHelmFlags}'
+          description: 'Helm flags (passed to each deployment)'
+
       # openonu-go only supports a single replica, remove after 2.8
       - string:
           name: NumOfOpenOnu
@@ -216,6 +221,7 @@
     installBBSim: false
     num-of-onus: 0
     num-of-ponports: 0
+    extraHelmFlags: ''
 
     <<: *voltha-build-job-parameters
 
@@ -254,6 +260,7 @@
     installBBSim: false
     num-of-onus: 0
     num-of-ponports: 0
+    extraHelmFlags: ''
 
     <<: *voltha-build-job-parameters
 
@@ -289,6 +296,7 @@
     num-of-ponports: 0
     num-of-kafka: 1
     num-of-etcd: 1
+    extraHelmFlags: ''
 
     <<: *voltha-build-job-parameters
 
