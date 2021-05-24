@@ -88,10 +88,16 @@
           default: '{num-of-onos}'
           description: 'Installs the specified Number of ONOS instances'
 
+      # installBBSim is not used in the master branch pipeline, remove after 2.8
       - bool:
           name: installBBSim
           default: '{installBBSim}'
           description: "Install the BBSim container"
+
+      - string:
+          name: bbsimReplicas
+          default: '{bbsimReplicas}'
+          description: 'Installs the specified Number of BBSim Instances'
 
       - string:
           name: onuNumber
@@ -213,7 +219,9 @@
     volthaHelmChartsChange: ''
     profile: 'Default'
     logLevel: 'DEBUG'
+    # installBBSim is not used in the master branch pipeline, remove after 2.8
     installBBSim: false
+    bbsimReplicas: 0
     num-of-onus: 0
     num-of-ponports: 0
 
@@ -251,7 +259,9 @@
     volthaHelmChartsChange: ''
     profile: 'Default'
     logLevel: 'DEBUG'
+    # installBBSim is not used in the master branch pipeline, remove after 2.8
     installBBSim: false
+    bbsimReplicas: 0
     num-of-onus: 0
     num-of-ponports: 0
 
@@ -285,6 +295,8 @@
     volthaHelmChartsChange: '' # this is not supported in the VOLTHA-2.7 build, but the parameters are shared, ideally we should split them
     logLevel: 'DEBUG'
     installBBSim: false
+    # bbsimReplicas is not applicable for 2.7 Jobs
+    bbsimReplicas: 0
     num-of-onus: 0
     num-of-ponports: 0
     num-of-kafka: 1

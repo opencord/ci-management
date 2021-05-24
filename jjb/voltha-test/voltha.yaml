@@ -301,7 +301,7 @@
       - 'build_voltha_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          installBBSim: true
+          bbsimReplicas: 1
           profile: '1T8GEM'
           name-extension: '_DT'
           work-flow: 'DT'

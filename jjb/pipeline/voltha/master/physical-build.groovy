@@ -108,9 +108,7 @@ pipeline {
             "--set onos-classic.onosOfPort=31653 " +
             "--set onos-classic.individualOpenFlowNodePorts=true "
 
-            def bbsimReplica = 0
-            if (installBBSim.toBoolean()) {
-              bbsimReplica = 1
+            if (bbsimReplicas.toInteger() != 0) {
               extraHelmFlags = extraHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
             }
 
@@ -123,7 +121,7 @@ pipeline {
               atomixReplica: params.NumOfAtomix,
               kafkaReplica: params.NumOfKafka,
               etcdReplica: params.NumOfEtcd,
-              bbsimReplica: bbsimReplica.toInteger(),
+              bbsimReplica: bbsimReplicas.toInteger(),
               ])
           }
           sh """
