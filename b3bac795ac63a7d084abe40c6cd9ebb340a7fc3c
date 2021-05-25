@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "e33fc766_ae77a329",
+        "filename": "vars/getPodsInfo.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-25T15:50:47Z",
+      "side": 1,
+      "message": "while you are at it, please add the persistent volume claim\nkubectl get pvc --all-namespaces -o wide | tee ${dest}/svc.txt || true",
+      "revId": "b3bac795ac63a7d084abe40c6cd9ebb340a7fc3c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
