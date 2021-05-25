@@ -16,6 +16,24 @@
       "revId": "b3bac795ac63a7d084abe40c6cd9ebb340a7fc3c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb47eccc_75312238",
+        "filename": "vars/getPodsInfo.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-05-25T17:04:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e33fc766_ae77a329",
+      "revId": "b3bac795ac63a7d084abe40c6cd9ebb340a7fc3c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
