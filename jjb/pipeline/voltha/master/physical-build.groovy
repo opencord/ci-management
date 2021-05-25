@@ -113,7 +113,7 @@ pipeline {
             }
 
             // adding user specified helm flags at the end so they'll have priority over everything else
-            localHelmFlags = localHelmFlags += " ${extraHelmFlags}"
+            localHelmFlags = localHelmFlags + " ${extraHelmFlags}"
 
             volthaDeploy([
               workflow: workFlow.toLowerCase(),
