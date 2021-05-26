@@ -117,7 +117,10 @@ pipeline {
           --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
           --set radius.enabled=${withEapol} \
           --set kafka.enabled=false \
-          --set etcd.enabled=false
+          --set etcd.enabled=false \
+          --set global.log_level=${logLevel} \
+          --set onos-classic.onosSshPort=30115 \
+          --set onos-classic.onosApiPort=30120
         '''
       }
     }
@@ -127,6 +130,7 @@ pipeline {
       }
     }
     stage('Start logging') {
+      //FIXME this collects the logs all in one file for all the 10 stacks
       steps {
         sh returnStdout: false, script: '''
         # start logging with kail
@@ -262,23 +266,25 @@ pipeline {
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
 
         # copy the ONOS logs directly from the container to avoid the color codes
-        printf '%s\n' $(kubectl -n \$INFRA_NS get pods -l app=onos-onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl -n \$INFRA_NS cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
+        printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
 
-        # get radius logs out of the container
-        kubectl -n \$INFRA_NS  cp $(kubectl -n \$INFRA_NS get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER//radius.log || true
       '''
       // dump all the BBSim(s) ONU information
       script {
         for (int i = 1; i <= params.volthaStacks.toInteger(); i++) {
           stack_ns="voltha"+i
           sh """
+          mkdir -p \$LOG_FOLDER/${stack_ns}
           BBSIM_IDS=\$(kubectl -n ${stack_ns} get pods | grep bbsim | grep -v server | awk '{print \$1}')
           IDS=(\$BBSIM_IDS)
 
           for bbsim in "\${IDS[@]}"
           do
-            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl onu list > $LOG_FOLDER/${stack_ns}/\$bbsim-device-list.txt || true
-            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl service list > $LOG_FOLDER/${stack_ns}/\$bbsim-service-list.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl onu list > \$LOG_FOLDER/${stack_ns}/\$bbsim-device-list.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl service list > \$LOG_FOLDER/${stack_ns}/\$bbsim-service-list.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl olt resources GEM_PORT > \$LOG_FOLDER/${stack_ns}/\$bbsim-flows-gem-ports.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl olt resources ALLOC_ID > \$LOG_FOLDER/${stack_ns}/\$bbsim-flows-alloc-ids.txt || true
+            kubectl -n ${stack_ns} exec -t \$bbsim -- bbsimctl olt pons > \$LOG_FOLDER/${stack_ns}/\$bbsim-pon-resources.txt || true
           done
           """
         }
@@ -332,7 +338,10 @@ pipeline {
           try {
             sh """
 
-            _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& 2>&1 > /dev/null
+            # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
+            _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
+
+            ps aux | grep port-forw
 
             voltctl -m 8MB device list -o json > $LOG_FOLDER/${stack_ns}/device-list.json || true
             python -m json.tool $LOG_FOLDER/${stack_ns}/device-list.json > $LOG_FOLDER/${stack_ns}/voltha-devices-list.json || true
@@ -350,8 +359,9 @@ pipeline {
             ps aux | grep port-forw | grep voltha-api | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
             """
           } catch(e) {
+            println e
             sh '''
-            echo "Can't get device list from voltclt"
+            echo "Can't get device list from voltctl"
             '''
           }
         }
@@ -413,7 +423,9 @@ def test_voltha_stacks(numberOfStacks) {
         voltctl -s 127.0.0.1:55555 config > $HOME/.volt/config
         export VOLTCONFIG=$HOME/.volt/config
 
-        _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& 2>&1 > /dev/null
+        # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
+        _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
+
 
           ROBOT_PARAMS="-v stackId:${i} \
             -v olt:${olts} \
