@@ -117,7 +117,10 @@ pipeline {
           --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
           --set radius.enabled=${withEapol} \
           --set kafka.enabled=false \
-          --set etcd.enabled=false
+          --set etcd.enabled=false \
+          --set global.log_level=${logLevel} \
+          --set onos-classic.onosSshPort=30115 \
+          --set onos-classic.onosApiPort=30120
         '''
       }
     }
@@ -332,7 +335,8 @@ pipeline {
           try {
             sh """
 
-            _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& 2>&1 > /dev/null
+            # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
+            _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
 
             voltctl -m 8MB device list -o json > $LOG_FOLDER/${stack_ns}/device-list.json || true
             python -m json.tool $LOG_FOLDER/${stack_ns}/device-list.json > $LOG_FOLDER/${stack_ns}/voltha-devices-list.json || true
@@ -413,7 +417,9 @@ def test_voltha_stacks(numberOfStacks) {
         voltctl -s 127.0.0.1:55555 config > $HOME/.volt/config
         export VOLTCONFIG=$HOME/.volt/config
 
-        _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& 2>&1 > /dev/null
+        # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
+        _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
+
 
           ROBOT_PARAMS="-v stackId:${i} \
             -v olt:${olts} \
