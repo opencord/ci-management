@@ -346,7 +346,7 @@ pipeline {
             put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64')
             kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-VoIP.json \$etcd_container:/tmp/voip.json
             put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/voip.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/65')
-            kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST.json \$etcd_container:/tmp/mcast.json
+            kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST-AdditionalBW-NA.json \$etcd_container:/tmp/mcast.json
             put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/66')
           fi
 
