@@ -22,6 +22,30 @@
       "revId": "6a233e863b681d9b8d409f6bef2c4103d99dab15",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e84ee104_8a0e919f",
+        "filename": "jjb/pipeline/voltha-tt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000064
+      },
+      "writtenOn": "2021-05-27T05:40:17Z",
+      "side": 1,
+      "message": "This is good, no need to maintain multiple files",
+      "parentUuid": "acfc88b0_fadd0695",
+      "range": {
+        "startLine": 219,
+        "startChar": 8,
+        "endLine": 219,
+        "endChar": 51
+      },
+      "revId": "6a233e863b681d9b8d409f6bef2c4103d99dab15",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
