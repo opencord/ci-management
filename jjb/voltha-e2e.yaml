@@ -1091,7 +1091,6 @@
     sandbox: true
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
     default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
-    branch-pattern: '{all-branches-regexp}'
     build-node: 'tucson-pod'
     config-pod: 'tucson-pod'
     profile: 'Default'
@@ -1130,7 +1129,7 @@
               project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-openonu-adapter-go|voltha-go)$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{branch-pattern}'
+                  branch-pattern: '{all-files-regexp}'
 
 - job-template:
     name: '{name}'
@@ -1149,7 +1148,6 @@
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
     trigger-string: 'hardware test'
     default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
-    branch-pattern: '{all-branches-regexp}'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     profile: 'Default'
@@ -1186,4 +1184,4 @@
               project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-openonu-adapter-go|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos|kind-voltha|voltha-helm-charts)$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{branch-pattern}'
+                  branch-pattern: '{all-branches-regexp}'
