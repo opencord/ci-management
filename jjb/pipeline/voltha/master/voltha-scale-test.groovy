@@ -21,7 +21,7 @@ library identifier: 'cord-jenkins-libraries@master',
 ])
 
 // this function generates the correct parameters for ofAgent
-// to connect to multple ONOS instances
+// to connect to multiple ONOS instances
 def ofAgentConnections(numOfOnos, releaseName, namespace) {
     def params = " "
     numOfOnos.times {
