@@ -24,7 +24,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.registry=andreacampanella/voltha-onos --set onos-classic.image.tag=voltha-onos-2.5'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -48,7 +48,7 @@
           name: 'periodic-voltha-multiple-olts-test-bbsim'
           code-branch: 'master'
           olts: 2
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.registry=andreacampanella/voltha-onos --set onos-classic.image.tag=voltha-onos-2.5 --set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-multi-olt
@@ -88,7 +88,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.registry=andreacampanella/voltha-onos --set onos-classic.image.tag=voltha-onos-2.5'
           time-trigger: "H H/12 * * *"
           logLevel: 'DEBUG'
           testTargets: |
@@ -133,7 +133,7 @@
           name: 'patchset-voltha-openonu-go-test-bbsim'
           trigger-comment: "voltha test openonu singleolt"
           code-branch: '$GERRIT_BRANCH'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.registry=andreacampanella/voltha-onos --set onos-classic.image.tag=voltha-onos-2.5'
           gerrit-project: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           logLevel: 'DEBUG'
@@ -192,7 +192,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.registry=andreacampanella/voltha-onos --set onos-classic.image.tag=voltha-onos-2.5 --set onu=2,pon=2'
           olts: 2
           logLevel: 'DEBUG'
           testTargets: |
@@ -260,7 +260,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.registry=andreacampanella/voltha-onos --set onos-classic.image.tag=voltha-onos-2.5 --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
           testTargets: |
