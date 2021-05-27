@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d3d7bba9_2dadb043",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-multi-stack.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-27T07:35:26Z",
+      "side": 1,
+      "message": "From the above \u0027Deploy VOLTHA infrastructure\u0027 stage ONOS is getting deployed in infra namespace, so we still need to pass namespace here to fetch the results.",
+      "range": {
+        "startLine": 269,
+        "startChar": 24,
+        "endLine": 269,
+        "endChar": 103
+      },
+      "revId": "043f5bf0a140c28f030f3a8de92002db98af77c7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
