@@ -22,6 +22,30 @@
       "revId": "043f5bf0a140c28f030f3a8de92002db98af77c7",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f42619cb_1ed357ce",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-multi-stack.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 269,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-05-27T07:56:43Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d3d7bba9_2dadb043",
+      "range": {
+        "startLine": 269,
+        "startChar": 24,
+        "endLine": 269,
+        "endChar": 103
+      },
+      "revId": "043f5bf0a140c28f030f3a8de92002db98af77c7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
