@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "acfc88b0_fadd0695",
+        "filename": "jjb/pipeline/voltha-tt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 219,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-05-27T04:14:23Z",
+      "side": 1,
+      "message": "Is it okay to have this check here? Or have separate files for 2.7 (jjb/pipeline/voltha/voltha-2.7/) and master (jjb/pipeline/voltha/master/) each..",
+      "range": {
+        "startLine": 219,
+        "startChar": 8,
+        "endLine": 219,
+        "endChar": 51
+      },
+      "revId": "6a233e863b681d9b8d409f6bef2c4103d99dab15",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
