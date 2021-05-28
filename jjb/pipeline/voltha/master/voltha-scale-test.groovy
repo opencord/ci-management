@@ -107,15 +107,15 @@ pipeline {
       // includes monitoring, kafka, etcd
       steps {
         sh '''
-        helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas},replicas=${kafkaReplicas} --set persistence.enabled=false \
-          --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
-          --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
+        # helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas},replicas=${kafkaReplicas} --set persistence.enabled=false \
+        #   --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
+        #   --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
 
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
-        ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
-        ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
-        ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
+        # ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
+        # ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
+        # ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
+        # helm install --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
           helm install nem-monitoring onf/nem-monitoring \
@@ -233,7 +233,7 @@ pipeline {
             def extraHelmFlags = returned_flags
             // The added space before params.extraHelmFlags is required due to the .trim() above
             def infraHelmFlags =
-              " --set etcd.enabled=false,kafka.enabled=false" +
+              // " --set etcd.enabled=false,kafka.enabled=false" +
               " --set global.log_level=${logLevel} " +
               "--set onos-classic.onosSshPort=30115 " +
               "--set onos-classic.onosApiPort=30120 " +
