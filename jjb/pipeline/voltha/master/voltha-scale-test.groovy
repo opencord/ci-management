@@ -107,15 +107,15 @@ pipeline {
       // includes monitoring, kafka, etcd
       steps {
         sh '''
-        helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas},replicas=${kafkaReplicas} --set persistence.enabled=false \
-          --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
-          --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
+        # helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas},replicas=${kafkaReplicas} --set persistence.enabled=false \
+        #   --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
+        #   --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
 
         # the ETCD chart use "auth" for resons different than BBsim, so strip that away
-        ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
-        ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
-        ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
+        # ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
+        # ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
+        # ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
+        # helm install --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
 
         if [ ${withMonitoring} = true ] ; then
           helm install nem-monitoring onf/nem-monitoring \
@@ -233,7 +233,7 @@ pipeline {
             def extraHelmFlags = returned_flags
             // The added space before params.extraHelmFlags is required due to the .trim() above
             def infraHelmFlags =
-              " --set etcd.enabled=false,kafka.enabled=false" +
+              // " --set etcd.enabled=false,kafka.enabled=false" +
               " --set global.log_level=${logLevel} " +
               "--set onos-classic.onosSshPort=30115 " +
               "--set onos-classic.onosApiPort=30120 " +
@@ -255,18 +255,18 @@ pipeline {
               atomixReplica: atomixReplicas,
             ])
 
-            def stackHelmFlags = "${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} " +
-                "--set voltha.services.kafka.adapter.address=kafka.default.svc:9092 " +
-                "--set voltha.services.kafka.cluster.address=kafka.default.svc:9092 " +
-                "--set voltha.services.etcd.address=etcd.default.svc:2379 " +
-                "--set voltha-adapter-openolt.services.kafka.adapter.address=kafka.default.svc:9092 " +
-                "--set voltha-adapter-openolt.services.kafka.cluster.address=kafka.default.svc:9092 " +
-                "--set voltha-adapter-openolt.services.etcd.address=etcd.default.svc:2379 " +
-                "--set voltha-adapter-openonu.services.kafka.adapter.address=kafka.default.svc:9092 " +
-                "--set voltha-adapter-openonu.services.kafka.cluster.address=kafka.default.svc:9092 " +
-                "--set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379"
+            // def stackHelmFlags = "${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} " +
+            //     "--set voltha.services.kafka.adapter.address=kafka.default.svc:9092 " +
+            //     "--set voltha.services.kafka.cluster.address=kafka.default.svc:9092 " +
+            //     "--set voltha.services.etcd.address=etcd.default.svc:2379 " +
+            //     "--set voltha-adapter-openolt.services.kafka.adapter.address=kafka.default.svc:9092 " +
+            //     "--set voltha-adapter-openolt.services.kafka.cluster.address=kafka.default.svc:9092 " +
+            //     "--set voltha-adapter-openolt.services.etcd.address=etcd.default.svc:2379 " +
+            //     "--set voltha-adapter-openonu.services.kafka.adapter.address=kafka.default.svc:9092 " +
+            //     "--set voltha-adapter-openonu.services.kafka.cluster.address=kafka.default.svc:9092 " +
+            //     "--set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379"
 
-            stackHelmFlags += " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
+            stackHelmFlags = " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
             stackHelmFlags += " --set voltha.ingress.enabled=true --set voltha.ingress.enableVirtualHosts=true --set voltha.fullHostnameOverride=voltha.scale1.dev "
             stackHelmFlags += extraHelmFlags + " " + params.extraHelmFlags
 
@@ -341,7 +341,7 @@ pipeline {
           fi
 
           if [ '${workflow}' = 'tt' ]; then
-            etcd_container=\$(kubectl get pods --all-namespaces | grep etcd | awk 'NR==1{print \$2}')
+            etcd_container=\$(kubectl get pods --all-namespaces | grep etcd-0 | awk 'NR==1{print \$2}')
             kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-HSIA.json \$etcd_container:/tmp/hsia.json
             put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64')
             kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-VoIP.json \$etcd_container:/tmp/voip.json
