@@ -366,7 +366,7 @@ pipeline {
         sh """
         # load MIB template
         wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-        cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
+        cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
         """
       }
     }
