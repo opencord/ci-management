@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4578d744_a849a4d3",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 5
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-05-28T20:58:02Z",
+      "side": 1,
+      "message": "can you set withMonitoring to true here.",
+      "revId": "756f3ec4c62828e9b5b66096d7596f057b6a288b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
