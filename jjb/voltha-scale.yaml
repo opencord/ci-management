@@ -67,7 +67,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -84,7 +84,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -165,7 +165,7 @@
       # voltha-2.7 Jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.7-2-16-32-att-subscribers'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.7/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -189,7 +189,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.7-2-16-32-dt-subscribers'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.7/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -214,7 +214,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.7-2-16-32-tt-subscribers'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.7/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
