@@ -44,6 +44,7 @@ pipeline {
       steps {
         getVolthaCode([
           branch: "${branch}",
+          volthaSystemTestsChange: "${volthaSystemTestsChange}",
           volthaHelmChartsChange: "${volthaHelmChartsChange}",
         ])
       }
