@@ -474,6 +474,7 @@
           name: 'verify_physical_voltha_patchset_auto'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           workflow: 'att'
+          branch-pattern: master
 
       # ATT Per-patchset Pod builds on Tucson pod (voltha-2.7)
       - 'verify_physical_voltha_patchset_auto':
@@ -1129,7 +1130,7 @@
               project-pattern: '^(voltha-openolt-adapter|voltha-openonu-adapter|voltha-openonu-adapter-go|voltha-go)$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{all-files-regexp}'
+                  branch-pattern: '{branch-pattern}'
 
 - job-template:
     name: '{name}'
@@ -1184,4 +1185,4 @@
               project-pattern: '^(voltha-go|voltha-openolt-adapter|voltha-openonu-adapter|voltha-openonu-adapter-go|voltha-api-server|voltha-system-tests|ofagent-py|ofagent-go|voltha-onos|kind-voltha|voltha-helm-charts)$'
               branches:
                 - branch-compare-type: REG_EXP
-                  branch-pattern: '{all-branches-regexp}'
+                  branch-pattern: '{branch-pattern}'
