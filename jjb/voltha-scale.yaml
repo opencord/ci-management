@@ -64,6 +64,11 @@
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml'
           onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
+          bbsimImg: gcgirish/bbsim:etcd
+          rwCoreImg: volthacore/voltha-rw-core:noflows
+          ofAgentImg: volthacore/voltha-ofagent:noflows
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:etcdNew
+          openonuAdapterGoImg: gcgirish/voltha-openonu-adapter-go:etcdNew
           volthaHelmChartsChange: refs/changes/69/25069/7
 
       - 'voltha-scale-measurements':
