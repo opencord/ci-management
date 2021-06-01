@@ -376,7 +376,7 @@
           reinstall-olt: false
           name-extension: '_DT'
           work-flow: 'DT'
-          profile: '1T8GEM-unencrypted'
+          profile: '1T8GEM'
           time: '1'
 
       # Certification (Radisys) POD test job - master versions: uses tech profile on voltha branch
@@ -389,7 +389,7 @@
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
-          profile: '1T8GEM-unencrypted'
+          profile: '1T8GEM'
           power-switch: True
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
