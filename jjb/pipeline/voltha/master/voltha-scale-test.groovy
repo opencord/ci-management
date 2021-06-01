@@ -68,6 +68,9 @@ pipeline {
             helm repo add onf https://charts.opencord.org
             helm repo update
 
+            # remove all pv and pvc from the cluste
+            kubectl delete pvc --all
+
             # remove orphaned port-forward from different namespaces
             ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
 

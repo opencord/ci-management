@@ -53,11 +53,14 @@ def call(Map config) {
     kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_config=${kubeconfig}"  || true
     """
 
+    // bitnamic/etch has change the replica format between the currently used 5.4.2 and the latest 6.2.5
+    // for now put both values in the extra helm chart flags
     sh """
     helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
           --set onos-classic.replicas=${cfg.onosReplica},onos-classic.atomix.replicas=${cfg.atomixReplica} \
           --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
           --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
+          --set etcd.replicaCount=${cfg.etcdReplica} \
           -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml ${cfg.extraHelmFlags}
     """
 }

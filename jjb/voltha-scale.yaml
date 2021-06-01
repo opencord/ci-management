@@ -62,7 +62,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
           onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
           bbsimImg: gcgirish/bbsim:etcd
           rwCoreImg: volthacore/voltha-rw-core:noflows
