@@ -31,8 +31,8 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental-multi-stack'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
-          'disable-job': true
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack-experimental.groovy'
+          'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
           withMonitoring: true
@@ -47,6 +47,9 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
+          volthaHelmChartsChange: "refs/changes/04/23104/1"
+          volthaSystemTestsChange: "refs/changes/31/25131/4"
+          # extraHelmFlags: "-f voltha-stack/values-redis.yaml "
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
