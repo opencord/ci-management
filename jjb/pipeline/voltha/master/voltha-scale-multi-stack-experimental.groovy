@@ -72,6 +72,14 @@ pipeline {
             helmTeardown(namespaces)
           }
           sh returnStdout: false, script: """
+            # remove all persistent volume claims
+            kubectl delete pvc --all-namespaces --all
+            PVCS=\$(kubectl get pvc --all-namespaces} --no-headers | wc -l)
+            while [[ \$PVCS != 0 ]]; do
+              sleep 5
+              PVCS=\$(kubectl get pvc --all-namespaces} --no-headers | wc -l)
+            done
+
             helm repo add onf https://charts.opencord.org
             helm repo add cord https://charts.opencord.org
             helm repo update
@@ -388,44 +396,46 @@ pipeline {
 
 def deploy_voltha_stacks(numberOfStacks) {
   for (int i = 1; i <= numberOfStacks.toInteger(); i++) {
-    stage("Deploy VOLTHA stack " + i) {
-      def extraHelmFlags = "${params.extraHelmFlags} --set global.log_level=${logLevel},enablePerf=true,onu=${onus},pon=${pons} "
-      extraHelmFlags += " --set securityContext.enabled=false "
+    timeout(time: 10, unit: 'MINUTES') {
+      stage("Deploy VOLTHA stack " + i) {
+        def extraHelmFlags = "${params.extraHelmFlags} --set global.log_level=${logLevel},enablePerf=true,onu=${onus},pon=${pons} "
+        extraHelmFlags += " --set securityContext.enabled=false "
 
-      // temporary for Redis patch
-      extraHelmFlags += " -f $WORKSPACE/voltha-helm-charts/voltha-stack/values-redis.yaml "
+        // temporary for Redis patch
+        extraHelmFlags += " -f $WORKSPACE/voltha-helm-charts/voltha-stack/values-redis.yaml "
 
-      // override BBSim to use the public one
-      extraHelmFlags += " --set images.bbsim.repository=voltha/bbsim,images.bbsim.tag=master "
+        // override BBSim to use the public one
+        extraHelmFlags += " --set images.bbsim.repository=voltha/bbsim,images.bbsim.tag=master "
 
-      def volthaHelmFlags = extraHelmFlags +
-        ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "infra")
+        def volthaHelmFlags = extraHelmFlags +
+          ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "infra")
 
-      volthaHelmFlags += " --set voltha.ingress.enabled=true --set voltha.ingress.enableVirtualHosts=true --set voltha.fullHostnameOverride=voltha${i}.scale2.dev "
+        volthaHelmFlags += " --set voltha.ingress.enabled=true --set voltha.ingress.enableVirtualHosts=true --set voltha.fullHostnameOverride=voltha${i}.scale2.dev "
 
-      def localCharts = false
-      if (volthaHelmChartsChange != "") {
-        localCharts = true
+        def localCharts = false
+        if (volthaHelmChartsChange != "") {
+          localCharts = true
+        }
+
+        volthaStackDeploy([
+          bbsimReplica: olts.toInteger(),
+          infraNamespace: "infra",
+          volthaNamespace: "voltha${i}",
+          stackName: "voltha${i}",
+          stackId: i,
+          workflow: workflow,
+          extraHelmFlags: volthaHelmFlags,
+          localCharts: localCharts,
+        ])
       }
-
-      volthaStackDeploy([
-        bbsimReplica: olts.toInteger(),
-        infraNamespace: "infra",
-        volthaNamespace: "voltha${i}",
-        stackName: "voltha${i}",
-        stackId: i,
-        workflow: workflow,
-        extraHelmFlags: volthaHelmFlags,
-        localCharts: localCharts,
-      ])
     }
   }
 }
 
 def test_voltha_stacks(numberOfStacks) {
   for (int i = 1; i <= numberOfStacks.toInteger(); i++) {
-    stage("Test VOLTHA stack " + i) {
-      timeout(time: 15, unit: 'MINUTES') {
+    timeout(time: 15, unit: 'MINUTES') {
+      stage("Test VOLTHA stack " + i) {
         sh """
 
         # we are restarting the voltha-api port-forward for each stack, no need to have a different voltconfig file

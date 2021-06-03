@@ -22,8 +22,8 @@ def call(List namespaces = ['default'], List excludes = ['docker-registry']) {
         set +x
         PODS=\$(kubectl get pods -n ${n} --no-headers | wc -l)
         while [[ \$PODS != 0 ]]; do
-        sleep 5
-        PODS=\$(kubectl get pods -n ${n} --no-headers | wc -l)
+          sleep 5
+          PODS=\$(kubectl get pods -n ${n} --no-headers | wc -l)
         done
         """
     }
