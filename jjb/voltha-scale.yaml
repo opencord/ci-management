@@ -37,19 +37,18 @@
           time-trigger: "H 0 29 2 *"
           withMonitoring: true
           logLevel: WARN
-          volthaStacks: 2
+          volthaStacks: 10
           olts: 2
-          pons: 2
-          onus: 2
+          pons: 16
+          onus: 32
           withFlows: true
           provisionSubscribers: true
           workflow: dt
           withEapol: false
           withDhcp: false
           withIgmp: false
-          volthaHelmChartsChange: "refs/changes/04/23104/1"
-          volthaSystemTestsChange: "refs/changes/31/25131/4"
-          # extraHelmFlags: "-f voltha-stack/values-redis.yaml "
+          volthaHelmChartsChange: "refs/changes/04/23104/4"
+          extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis "
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -114,7 +113,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-att-subscribers'
           build-node: 'voltha-scale-2'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           time-trigger: "H H/4 * * *"
           withMonitoring: false
@@ -134,7 +133,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-2'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           time-trigger: "H H/4 * * *"
           withMonitoring: false
@@ -154,7 +153,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-2'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           time-trigger: "H H/4 * * *"
           withMonitoring: false
