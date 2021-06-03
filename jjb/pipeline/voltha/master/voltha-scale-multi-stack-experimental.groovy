@@ -74,10 +74,10 @@ pipeline {
           sh returnStdout: false, script: """
             # remove all persistent volume claims
             kubectl delete pvc --all-namespaces --all
-            PVCS=\$(kubectl get pvc --all-namespaces} --no-headers | wc -l)
+            PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
             while [[ \$PVCS != 0 ]]; do
               sleep 5
-              PVCS=\$(kubectl get pvc --all-namespaces} --no-headers | wc -l)
+              PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
             done
 
             helm repo add onf https://charts.opencord.org
@@ -168,7 +168,7 @@ pipeline {
           sh returnStdout: false, script: """
 
           # forward ETCD port
-          JENKINS_NODE_COOKIE="dontKillMe" _TAG=etcd-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/etcd 9999:2379; done 2>&1 " &
+          # JENKINS_NODE_COOKIE="dontKillMe" _TAG=etcd-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/etcd 9999:2379; done 2>&1 " &
 
           # forward ONOS ports
           JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8101:8101; done 2>&1 " &

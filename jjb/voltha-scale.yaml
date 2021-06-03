@@ -48,7 +48,7 @@
           withDhcp: false
           withIgmp: false
           volthaHelmChartsChange: "refs/changes/04/23104/4"
-          extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis "
+          extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis --set redis.master.persistence.size=1Gi,redis.replica.persistence.size=1Gi "
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
