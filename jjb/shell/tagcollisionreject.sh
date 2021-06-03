@@ -126,9 +126,10 @@ function is_valid_version {
         found_parent=true
       fi
     done
+  fi
 
   # if patch == 0, check that there was a release with MAJOR.MINOR-1.X
-  elif [[ "$PATCH" == 0 ]]; then
+  if [[ "$PATCH" == 0 ]]; then
     new_minor=$(( $MINOR - 1 ))
     parent_version="$MAJOR.$new_minor.x"
     for existing_tag in $existing_tags
@@ -138,9 +139,10 @@ function is_valid_version {
         found_parent=true
       fi
     done
+  fi
 
   # if patch != 0 check that there was a release with MAJOR.MINOR.PATCH-1
-  elif [[ "$PATCH" != 0 ]]; then
+  if [[ "$PATCH" != 0 ]]; then
     new_patch=$(( $PATCH - 1 ))
     parent_version="$MAJOR.$MINOR.$new_patch"
     for existing_tag in $existing_tags
