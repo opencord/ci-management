@@ -74,10 +74,10 @@ pipeline {
           sh returnStdout: false, script: """
             # remove all persistent volume claims
             kubectl delete pvc --all-namespaces --all
-            PVCS=\$(kubectl get pvc --all-namespaces} --no-headers | wc -l)
+            PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
             while [[ \$PVCS != 0 ]]; do
               sleep 5
-              PVCS=\$(kubectl get pvc --all-namespaces} --no-headers | wc -l)
+              PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
             done
 
             helm repo add onf https://charts.opencord.org
