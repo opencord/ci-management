@@ -70,6 +70,30 @@
       "revId": "93b531d4705074241308f49e51d2f810cb13a7b1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "0caacc71_a7d54eca",
+        "filename": "jjb/shell/tagcollisionreject.sh",
+        "patchSetId": 4
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-06-03T10:48:44Z",
+      "side": 1,
+      "message": "This has now bit us: https://jenkins.opencord.org/job/verify_mac-learning_tag-collision/33/console. Thoughts on how to deal with this ? is it always going to fail due to lack of 0.1.0 ?",
+      "parentUuid": "e5318d1c_832881d8",
+      "range": {
+        "startLine": 155,
+        "startChar": 0,
+        "endLine": 158,
+        "endChar": 4
+      },
+      "revId": "93b531d4705074241308f49e51d2f810cb13a7b1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
