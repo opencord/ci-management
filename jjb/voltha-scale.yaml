@@ -394,6 +394,70 @@
           topologies: 1-16-16, 1-16-32, 2-16-32
           time-trigger: H 0 * * *
 
+      # temporary redis based jobs
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-redis-att-multi-stack'
+          build-node: 'voltha-scale-2'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack-experimental.groovy'
+          'disable-job': false
+          time-trigger: "H H/6 * * *"  #every 6 hours
+          withMonitoring: true
+          logLevel: WARN
+          volthaStacks: 10
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: att
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          volthaHelmChartsChange: "refs/changes/04/23104/4"
+          extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis --set redis.master.persistence.size=1Gi,redis.replica.persistence.size=1Gi "
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-redis-dt-multi-stack'
+          build-node: 'voltha-scale-2'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack-experimental.groovy'
+          'disable-job': false
+          time-trigger: "H H/6 * * *" # every 6 hours
+          withMonitoring: true
+          logLevel: WARN
+          volthaStacks: 10
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          volthaHelmChartsChange: "refs/changes/04/23104/4"
+          extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis --set redis.master.persistence.size=1Gi,redis.replica.persistence.size=1Gi "
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-redis-tt-multi-stack'
+          build-node: 'voltha-scale-2'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack-experimental.groovy'
+          'disable-job': false
+          time-trigger: "H H/6 * * *" # every 6 hours
+          withMonitoring: true
+          logLevel: WARN
+          volthaStacks: 10
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          workflow: tt
+          withEapol: false
+          withDhcp: true
+          withIgmp: false
+          volthaHelmChartsChange: "refs/changes/04/23104/4"
+          extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis --set redis.master.persistence.size=1Gi,redis.replica.persistence.size=1Gi "
+
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
 # to use in a job: `parameters: *voltha-scale-job-parameters`
