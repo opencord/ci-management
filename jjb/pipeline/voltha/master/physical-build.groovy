@@ -104,10 +104,24 @@ pipeline {
             }
 
             // NOTE temporary workaround expose ONOS node ports (pod-config needs to be updated to contain these values)
+            // and to connect the ofagent to all instances of ONOS
             localHelmFlags = localHelmFlags + " --set onos-classic.onosSshPort=30115 " +
             "--set onos-classic.onosApiPort=30120 " +
             "--set onos-classic.onosOfPort=31653 " +
             "--set onos-classic.individualOpenFlowNodePorts=true "
+
+            if (params.NumOfOnos == 3) {
+              localHelmFlags = localHelmFlags +
+              "--set voltha.services.controller[0].service=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc " +
+              "--set voltha.services.controller[0].port=6653 " +
+              "--set voltha.services.controller[0].address=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc:6653 " +
+              "--set voltha.services.controller[1].service=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc " +
+              "--set voltha.services.controller[1].port=6653 " +
+              "--set voltha.services.controller[1].address=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc:6653 " +
+              "--set voltha.services.controller[2].service=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc " +
+              "--set voltha.services.controller[2].port=6653 " +
+              "--set voltha.services.controller[2].address=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc:6653'"
+            }
 
             if (bbsimReplicas.toInteger() != 0) {
               localHelmFlags = localHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
