@@ -104,10 +104,12 @@ pipeline {
             }
 
             // NOTE temporary workaround expose ONOS node ports (pod-config needs to be updated to contain these values)
+            // and to connect the ofagent to all instances of ONOS
             localHelmFlags = localHelmFlags + " --set onos-classic.onosSshPort=30115 " +
             "--set onos-classic.onosApiPort=30120 " +
             "--set onos-classic.onosOfPort=31653 " +
-            "--set onos-classic.individualOpenFlowNodePorts=true "
+            "--set onos-classic.individualOpenFlowNodePorts=true " +
+            "--set voltha.onos_classic.replicas=${params.NumOfOnos}"
 
             if (bbsimReplicas.toInteger() != 0) {
               localHelmFlags = localHelmFlags + " --set onu=${onuNumber},pon=${ponNumber} "
