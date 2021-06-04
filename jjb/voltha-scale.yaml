@@ -63,7 +63,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml'
-          onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
+          onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -98,7 +98,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.rw_core.core_timeout=60s --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
-          onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
+          onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
