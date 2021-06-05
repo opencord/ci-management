@@ -399,6 +399,31 @@
           power-switch: True
           pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
 
+        # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
+      - 'build_voltha_pod_release_timer':
+            build-node: 'menlo-certification-pod'
+            config-pod: 'menlo-certification-pod-radisys-gpon'
+            disable-job: false
+            reinstall-olt: false
+            work-flow: 'ATT'
+            profile: '1T4GEM'
+            num-of-onos: '3'
+            num-of-atomix: '3'
+            time: '5'
+
+        # Certification (Radisys) POD test job - master versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+            build-node: 'menlo-certification-pod'
+            config-pod: 'menlo-certification-pod-radisys-gpon'
+            disable-job: false
+            release: 'master'
+            branch: 'master'
+            work-flow: 'ATT'
+            test-repo: 'voltha-system-tests'
+            profile: '1T4GEM'
+            power-switch: True
+            pipeline-script: 'voltha-physical-functional-tests.groovy'
+
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
