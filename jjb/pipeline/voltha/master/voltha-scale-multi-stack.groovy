@@ -81,7 +81,7 @@ pipeline {
         getVolthaCode([
           branch: "${release}",
           volthaSystemTestsChange: "${volthaSystemTestsChange}",
-          //volthaHelmChartsChange: "${volthaHelmChartsChange}",
+          volthaHelmChartsChange: "${volthaHelmChartsChange}",
         ])
       }
     }
@@ -398,6 +398,11 @@ def deploy_voltha_stacks(numberOfStacks) {
         "--set voltha-adapter-openonu.services.etcd.address=etcd.infra.svc:2379" +
         ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "infra")
 
+      def localCharts = false
+      if (volthaHelmChartsChange != "") {
+        localCharts = true
+      }
+
       volthaStackDeploy([
         bbsimReplica: olts.toInteger(),
         infraNamespace: "infra",
@@ -405,7 +410,8 @@ def deploy_voltha_stacks(numberOfStacks) {
         stackName: "voltha${i}",
         stackId: i,
         workflow: workflow,
-        extraHelmFlags: volthaHelmFlags
+        extraHelmFlags: volthaHelmFlags,
+        localCharts: localCharts
       ])
     }
   }
