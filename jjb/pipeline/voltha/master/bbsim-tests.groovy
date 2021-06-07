@@ -1,4 +1,4 @@
-// Copyright 2017-present Open Networking Foundation
+// Copyright 2021-present Open Networking Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,101 +12,153 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// voltha-2.x e2e tests
+// voltha-2.x e2e tests for openonu-go
 // uses bbsim to simulate OLT/ONUs
 
-// NOTE we are importing the library even if it's global so that it's
-// easier to change the keywords during a replay
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
-def test_workflow(name) {
-  timeout(time: 5, unit: 'MINUTES') {
-    stage('Deploy - '+ name + ' workflow') {
-        def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 " +
+def clusterName = "kind-ci"
+
+def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
+  def infraNamespace = "default"
+  def volthaNamespace = "voltha"
+  def robotLogsDir = "RobotLogs"
+  stage('Cleanup') {
+    if (teardown) {
+      timeout(15) {
+        script {
+          helmTeardown(["default", infraNamespace, volthaNamespace])
+        }
+        timeout(1) {
+          sh returnStdout: false, script: '''
+          # remove orphaned port-forward from different namespaces
+          ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
+          '''
+        }
+      }
+    }
+  }
+  stage('Deploy Voltha') {
+    if (teardown) {
+      timeout(20) {
+        script {
+
+          sh """
+          mkdir -p $WORKSPACE/${testTarget}-components
+          _TAG=kail-startup kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-startup-combined.log &
+          """
+
+          // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+          def localCharts = false
+          if (volthaHelmChartsChange != "") {
+            localCharts = true
+          }
+
+          // NOTE temporary workaround expose ONOS node ports
+          def localHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()} " +
           " --set onos-classic.onosSshPort=30115 " +
-          "--set onos-classic.onosApiPort=30120 "
+          " --set onos-classic.onosApiPort=30120 " +
+          " --set onos-classic.onosOfPort=31653 " +
+          " --set onos-classic.individualOpenFlowNodePorts=true " + testSpecificHelmFlags
 
-        if (gerritProject != "") {
-          extraHelmFlags = extraHelmFlags + getVolthaImageFlags("${gerritProject}")
+          if (gerritProject != "") {
+            localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
+          }
+
+          volthaDeploy([
+            infraNamespace: infraNamespace,
+            volthaNamespace: volthaNamespace,
+            workflow: workflow.toLowerCase(),
+            extraHelmFlags: localHelmFlags,
+            localCharts: localCharts,
+            bbsimReplica: olts.toInteger(),
+            dockerRegistry: registry,
+            ])
         }
 
-        def localCharts = false
-        if (gerritProject == "voltha-helm-charts" || branch != "master") {
-          localCharts = true
-        }
-
-        volthaDeploy([
-          workflow: name,
-          extraHelmFlags:extraHelmFlags,
-          localCharts: localCharts,
-          dockerRegistry: "mirror.registry.opennetworking.org"
-        ])
-        // start logging
+        // stop logging
         sh """
-        mkdir -p $WORKSPACE/${name}
-        _TAG=kail-${name} kail -n infra -n voltha > $WORKSPACE/${name}/onos-voltha-combined.log &
+          P_IDS="\$(ps e -ww -A | grep "_TAG=kail-startup" | grep -v grep | awk '{print \$1}')"
+          if [ -n "\$P_IDS" ]; then
+            echo \$P_IDS
+            for P_ID in \$P_IDS; do
+              kill -9 \$P_ID
+            done
+          fi
+          cd $WORKSPACE/${testTarget}-components/
+          gzip -k onos-voltha-startup-combined.log
+          rm onos-voltha-startup-combined.log
         """
-        // forward ONOS and VOLTHA ports
-        sh """
-        JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555; done"&
-        """
+      }
+      sh """
+      JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
+      JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
+      JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
+      bbsimDmiPortFwd=50075
+      for i in {0..${olts.toInteger() - 1}}; do
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="bbsim\${i}" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/bbsim\${i} \${bbsimDmiPortFwd}:50075; done"&
+        ((bbsimDmiPortFwd++))
+      done
+      ps aux | grep port-forward
+      """
     }
   }
-  stage('Test VOLTHA - '+ name + ' workflow') {
-    timeout(time: 10, unit: 'MINUTES') {
-      sh """
-      ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name.toUpperCase()}Workflow"
-      mkdir -p \$ROBOT_LOGS_DIR
-      export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -e PowerSwitch "
-      ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
+  stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
+    // start logging
+    sh """
+    mkdir -p $WORKSPACE/${testTarget}-components
+    _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
+    """
+    sh """
+    mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
+    export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
+    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v INFRA_NAMESPACE:${infraNamespace}"
+    export KVSTOREPREFIX=voltha/voltha_voltha
 
-      # By default, all tests tagged 'sanity' are run.  This covers basic functionality
-      # like running through the ATT workflow for a single subscriber.
-      export TARGET=sanity-kind-${name}
-
-      # If the Gerrit comment contains a line with "functional tests" then run the full
-      # functional test suite.  This covers tests tagged either 'sanity' or 'functional'.
-      # Note: Gerrit comment text will be prefixed by "Patch set n:" and a blank line
-      REGEX="functional tests"
-      if [[ "\$GERRIT_EVENT_COMMENT_TEXT" =~ \$REGEX ]]; then
-        export TARGET=functional-single-kind-${name}
+    make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
+    """
+    // stop logging
+    sh """
+      P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${workflow}" | grep -v grep | awk '{print \$1}')"
+      if [ -n "\$P_IDS" ]; then
+        echo \$P_IDS
+        for P_ID in \$P_IDS; do
+          kill -9 \$P_ID
+        done
       fi
-
-      if [[ "${gerritProject}" == "bbsim" ]]; then
-        echo "Running BBSim specific Tests"
-        export TARGET=sanity-bbsim-${name}
-      fi
-
-      export VOLTCONFIG=$HOME/.volt/config
-      export KUBECONFIG=$HOME/.kube/config
-
-      # Run the specified tests
-      make -C $WORKSPACE/voltha-system-tests \$TARGET || true
-      """
-      // stop logging
-      sh """
-        P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
-        if [ -n "\$P_IDS" ]; then
-          echo \$P_IDS
-          for P_ID in \$P_IDS; do
-            kill -9 \$P_ID
-          done
-        fi
-      """
-      // remove port-forwarding
-      sh """
-        # remove orphaned port-forward from different namespaces
-        ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
-      """
-      // collect pod details
-      getPodsInfo("$WORKSPACE/${name}")
-      helmTeardown(['infra', 'voltha'])
-    }
+      cd $WORKSPACE/${testTarget}-components/
+      gzip -k onos-voltha-combined.log
+      rm onos-voltha-combined.log
+    """
+    getPodsInfo("$WORKSPACE/${testTarget}-components")
   }
+}
+
+def collectArtifacts(exitStatus) {
+  getPodsInfo("$WORKSPACE/${exitStatus}")
+  sh """
+  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log || true
+  """
+  archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html'
+  sh '''
+    sync
+    pkill kail || true
+    which voltctl
+    md5sum $(which voltctl)
+  '''
+  step([$class: 'RobotPublisher',
+    disableArchiveOutput: false,
+    logFileName: "RobotLogs/*/log*.html",
+    otherFiles: '',
+    outputFileName: "RobotLogs/*/output*.xml",
+    outputPath: '.',
+    passThreshold: 100,
+    reportFileName: "RobotLogs/*/report*.html",
+    unstableThreshold: 0]);
 }
 
 pipeline {
@@ -116,14 +168,16 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 50, unit: 'MINUTES')
+    timeout(time: "${timeout}", unit: 'MINUTES')
   }
   environment {
-    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-    KUBECONFIG="$HOME/.kube/kind-config-${clusterName}"
+    KUBECONFIG="$HOME/.kube/kind-${clusterName}"
+    VOLTCONFIG="$HOME/.volt/config"
+    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    ROBOT_MISC_ARGS="-e PowerSwitch ${params.extraRobotArgs}"
+    DIAGS_PROFILE="VOLTHA_PROFILE"
   }
-
-  stages{
+  stages {
     stage('Download Code') {
       steps {
         getVolthaCode([
@@ -136,6 +190,12 @@ pipeline {
       }
     }
     stage('Build patch') {
+      // build the patch only if gerritProject is specified
+      when {
+        expression {
+          return !gerritProject.isEmpty()
+        }
+      }
       steps {
         // NOTE that the correct patch has already been checked out
         // during the getVolthaCode step
@@ -144,72 +204,53 @@ pipeline {
     }
     stage('Create K8s Cluster') {
       steps {
-        createKubernetesCluster([nodes: 3])
+        script {
+          def clusterExists = sh returnStdout: true, script: """
+          kind get clusters | grep ${clusterName} | wc -l
+          """
+          if (clusterExists.trim() == "0") {
+            createKubernetesCluster([nodes: 3, name: clusterName])
+          }
+        }
       }
     }
     stage('Load image in kind nodes') {
+      when {
+        expression {
+          return !gerritProject.isEmpty()
+        }
+      }
       steps {
         loadToKind()
       }
     }
-    stage('Replace voltctl') {
-      // if the project is voltctl override the downloaded one with the built one
-      when {
-        expression {
-          return gerritProject == "voltctl"
+    stage('Parse and execute tests') {
+        steps {
+          script {
+            def tests = readYaml text: testTargets
+
+            for(int i = 0;i<tests.size();i++) {
+              def test = tests[i]
+              def target = test["target"]
+              def workflow = test["workflow"]
+              def flags = test["flags"]
+              def teardown = test["teardown"].toBoolean()
+              println "Executing test ${target} on workflow ${workflow} with extra flags ${flags}"
+              execute_test(target, workflow, teardown, flags)
+            }
+          }
         }
-      }
-      steps{
-        sh """
-        mv `ls $WORKSPACE/voltctl/release/voltctl-*-linux-amd*` $WORKSPACE/bin/voltctl
-        chmod +x $WORKSPACE/bin/voltctl
-        """
-      }
-    }
-    stage('Run Test') {
-      steps {
-        // preload the venv so it's not included in the timeout for the first test execution
-        sh """
-        make -C $WORKSPACE/voltha-system-tests vst_venv || true
-        """
-        test_workflow("att")
-        test_workflow("dt")
-        test_workflow("tt")
-      }
     }
   }
-
   post {
     aborted {
-      getPodsInfo("$WORKSPACE/failed")
-      sh """
-      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.log || true
-      """
-      archiveArtifacts artifacts: '**/*.log,**/*.txt,**/*.html'
+      collectArtifacts("aborted")
     }
     failure {
-      getPodsInfo("$WORKSPACE/failed")
-      sh """
-      kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/failed/voltha.logs || true
-      """
-      archiveArtifacts artifacts: '**/*.log,**/*.txt,**/*.html'
+      collectArtifacts("failed")
     }
     always {
-      sh '''
-      gzip $WORKSPACE/att/onos-voltha-combined.log || true
-      gzip $WORKSPACE/dt/onos-voltha-combined.log || true
-      gzip $WORKSPACE/tt/onos-voltha-combined.log || true
-      '''
-      step([$class: 'RobotPublisher',
-         disableArchiveOutput: false,
-         logFileName: 'RobotLogs/*/log*.html',
-         otherFiles: '',
-         outputFileName: 'RobotLogs/*/output*.xml',
-         outputPath: '.',
-         passThreshold: 100,
-         reportFileName: 'RobotLogs/*/report*.html',
-         unstableThreshold: 0]);
-      archiveArtifacts artifacts: '*.log,**/*.log,**/*.gz,*.gz,*.txt,**/*.txt'
+      collectArtifacts("always")
     }
   }
 }
