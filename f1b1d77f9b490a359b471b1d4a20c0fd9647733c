@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3ce52bfb_472ddf0c",
+        "filename": "jjb/verify/bbsim-sadis-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-06-07T14:59:23Z",
+      "side": 1,
+      "message": "Yes. Agreed.",
+      "parentUuid": "255585df_38ececca",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 41,
+        "endChar": 25
+      },
+      "revId": "f1b1d77f9b490a359b471b1d4a20c0fd9647733c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6072cec0_964e278e",
         "filename": "jjb/verify/bbsim.yaml",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "f1b1d77f9b490a359b471b1d4a20c0fd9647733c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e25d6c76_f6ed21ab",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-06-07T14:59:23Z",
+      "side": 1,
+      "message": "Yes. Agreed.",
+      "parentUuid": "6072cec0_964e278e",
+      "range": {
+        "startLine": 42,
+        "startChar": 42,
+        "endLine": 42,
+        "endChar": 51
+      },
+      "revId": "f1b1d77f9b490a359b471b1d4a20c0fd9647733c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
