@@ -47,8 +47,25 @@
     name: 'verify-voltha-openonu-adapter-go-jobs-master'
     jobs:
       - 'voltha-patch-test':
-          pipeline-script: 'voltha/master/bbsim-tests.groovy'
+          pipeline-script: 'voltha/master/periodic-bbsim-tests.groovy'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          testTargets: |
+            - target: sanity-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: sanity-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: sanity-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: 1t4gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
 
 - job-group:
     name: 'publish-voltha-openonu-adapter-go-jobs'

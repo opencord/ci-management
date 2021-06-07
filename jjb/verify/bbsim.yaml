@@ -39,8 +39,21 @@
     name: 'verify-bbsim-jobs-master'
     jobs:
       - 'voltha-patch-test':
-          pipeline-script: 'voltha/master/bbsim-tests.groovy'
+          pipeline-script: 'voltha/master/periodic-bbsim-tests.groovy'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          testTargets: |
+            - target: sanity-bbsim-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: sanity-bbsim-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: sanity-bbsim-tt
+              workflow: tt
+              flags: ""
+              teardown: true
 
 - job-group:
     name: 'publish-bbsim-jobs'

@@ -838,6 +838,19 @@
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
     branch-regexp: '{all-branches-regexp}'
+    testTargets: |
+      - target: sanity-kind-att
+        workflow: att
+        flags: ""
+        teardown: true
+      - target: sanity-kind-dt
+        workflow: dt
+        flags: ""
+        teardown: true
+      - target: sanity-kind-tt
+        workflow: tt
+        flags: ""
+        teardown: true
     kindVolthaChange: '' # this is only needed to test kind-voltha patches
 
     description: |
@@ -890,6 +903,20 @@
           name: branch
           default: '{override-branch}'
           description: 'Name of the branch to use'
+
+      # test configuration
+      # this is a parameter to drive the test execution, VOLTHA is redeployed each time with
+      # the provided configuration and then the make target is invoked,
+      # example value (has to be valid YAML):
+      # testTargets: |
+      #   - target: 1t1gem-openonu-go-adapter-test
+      #     workflow: att
+      #     flags: ""
+      #     teardown: true
+      - text:
+          name: testTargets
+          default: '{testTargets}'
+          description: 'Test configuration, see the ci-management job definition for more info'
 
       # Used in the 2.7 based pipeline, can be removed after 2.8
       - string:

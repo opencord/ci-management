@@ -45,7 +45,7 @@
     name: 'verify-voltha-openonu-adapter-jobs-master'
     jobs:
       - 'voltha-patch-test':
-          pipeline-script: 'voltha/master/bbsim-tests.groovy'
+          pipeline-script: 'voltha/master/periodic-bbsim-tests.groovy'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
 
 - job-group:
