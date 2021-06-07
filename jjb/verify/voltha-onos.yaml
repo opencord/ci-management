@@ -35,6 +35,11 @@
     jobs:
       - 'voltha-patch-test':
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+      # the unit test job will fail on all the branches that are not "master" as the "make test"
+      # target was not available
+      - 'make-unit-test':
+          unit-test-targets: 'test'
+          junit-allow-empty-results: true
 
 - job-group:
     name: 'publish-voltha-onos-jobs'
