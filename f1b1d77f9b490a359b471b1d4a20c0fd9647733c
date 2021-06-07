@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "255585df_38ececca",
+        "filename": "jjb/verify/bbsim-sadis-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-06-07T14:43:14Z",
+      "side": 1,
+      "message": "we can probably remove the pipeline-script override here (and in all the other files) as it\u0027s using the default in the \"voltha-patch-test\" job",
+      "range": {
+        "startLine": 41,
+        "startChar": 10,
+        "endLine": 41,
+        "endChar": 25
+      },
+      "revId": "f1b1d77f9b490a359b471b1d4a20c0fd9647733c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6072cec0_964e278e",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-06-07T14:43:14Z",
+      "side": 1,
+      "message": "should we drop \"periodic\" from the pipeline name since now it\u0027s used for all kind of tests?",
+      "range": {
+        "startLine": 42,
+        "startChar": 42,
+        "endLine": 42,
+        "endChar": 51
+      },
+      "revId": "f1b1d77f9b490a359b471b1d4a20c0fd9647733c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
