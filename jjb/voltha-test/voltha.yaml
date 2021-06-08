@@ -409,7 +409,7 @@
             profile: '1T4GEM'
             num-of-onos: '3'
             num-of-atomix: '3'
-            time: '5'
+            time: '7'
 
         # Certification (Radisys) POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
