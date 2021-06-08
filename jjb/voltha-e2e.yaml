@@ -835,6 +835,7 @@
     override-branch: '$GERRIT_BRANCH'
     sandbox: true
     build-timeout: 20
+    timeout: 50
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
@@ -918,6 +919,11 @@
           name: testTargets
           default: '{testTargets}'
           description: 'Test configuration, see the ci-management job definition for more info'
+
+      - string:
+          name: timeout
+          default: '{timeout}'
+          description: 'Timeout of pipeline job [minutes]'
 
       # Used in the 2.7 based pipeline, can be removed after 2.8
       - string:
