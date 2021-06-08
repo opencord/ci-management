@@ -50,6 +50,28 @@
           volthaHelmChartsChange: "refs/changes/04/23104/4"
           extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis --set redis.master.persistence.size=1Gi,redis.replica.persistence.size=1Gi "
 
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-ssd'
+          'disable-job': false
+          build-node: 'voltha-scale-z1d'
+          time-trigger: "H H/1 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+          onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
+          bbsimImg: gcgirish/bbsim:etcd
+          rwCoreImg: volthacore/voltha-rw-core:noflows
+          ofAgentImg: volthacore/voltha-ofagent:noflows
+          openoltAdapterImg: gcgirish/voltha-openolt-adapter:etcdNew
+          openonuAdapterGoImg: gcgirish/voltha-openonu-adapter-go:etcdNew
+          volthaHelmChartsChange: refs/changes/69/25069/7
+
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
