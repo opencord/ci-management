@@ -33,5 +33,4 @@
 - job-group:
     name: 'verify-voltha-helm-charts-jobs-master'
     jobs:
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha/master/bbsim-tests.groovy'
+      - 'voltha-patch-test'
