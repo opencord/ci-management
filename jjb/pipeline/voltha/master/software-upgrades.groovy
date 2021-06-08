@@ -29,15 +29,8 @@ def test_software_upgrade(name) {
       if ("${name}" == "voltha-component-upgrade") {
           extraHelmFlags = extraHelmFlags + "--set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master "
       }
-      extraHelmFlags = extraHelmFlags + """ --set voltha.services.controller[0].service=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc \
-      --set voltha.services.controller[0].port=6653 \
-      --set voltha.services.controller[0].address=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc:6653 \
-      --set voltha.services.controller[1].service=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc \
-      --set voltha.services.controller[1].port=6653 \
-      --set voltha.services.controller[1].address=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc:6653 \
-      --set voltha.services.controller[2].service=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc \
-      --set voltha.services.controller[2].port=6653 \
-      --set voltha.services.controller[2].address=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc:6653 """
+      extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
+      extraHelmFlags = extraHelmFlags + " --set voltha.onos_classic.replicas=3"
       //ONOS custom image handling
       if ( onosImg.trim() != '' ) {
          String[] split;
@@ -118,6 +111,7 @@ def test_software_upgrade(name) {
         fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
+        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """

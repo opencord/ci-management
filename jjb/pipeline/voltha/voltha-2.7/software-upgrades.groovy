@@ -23,7 +23,7 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
-
+      extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
       extraHelmFlags = extraHelmFlags + """ --set voltha.services.controller[0].service=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc \
       --set voltha.services.controller[0].port=6653 \
       --set voltha.services.controller[0].address=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc:6653 \
@@ -114,6 +114,7 @@ def test_software_upgrade(name) {
         fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
+        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
