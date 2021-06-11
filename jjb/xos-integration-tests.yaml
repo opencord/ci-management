@@ -7,7 +7,8 @@
     project-name: 'xos-integration-tests'
 
     jobs:
-      - 'data-model-scale'
+      - 'data-model-scale':
+          'disable-job': true
       - 'data-migrations'
       - 'data-backup'
       - 'att-wf'
@@ -15,6 +16,7 @@
 - job-template:
     id: 'data-model-scale'
     name: 'xos-data-model-scale'
+    disabled: '{disable-job}'
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
