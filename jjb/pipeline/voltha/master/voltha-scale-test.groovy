@@ -68,8 +68,13 @@ pipeline {
             helm repo add onf https://charts.opencord.org
             helm repo update
 
-            # remove all pv and pvc from the cluste
-            kubectl delete pvc --all
+            # remove all persistent volume claims
+            kubectl delete pvc --all-namespaces --all
+            PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
+            while [[ \$PVCS != 0 ]]; do
+              sleep 5
+              PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
+            done
 
             # remove orphaned port-forward from different namespaces
             ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
