@@ -264,7 +264,7 @@ pipeline {
               stackName: "voltha1", // TODO support custom charts
               workflow: workflow,
               extraHelmFlags: stackHelmFlags,
-              localCharts: false,
+              localCharts: localCharts,
             ])
             sh """
               set +x
