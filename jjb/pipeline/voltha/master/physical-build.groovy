@@ -326,7 +326,7 @@ pipeline {
             timeout(15) {
               sh returnStdout: true, script: """
               ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
-              sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'rm -f /var/log/openolt.log; rm -f /var/log/dev_mgmt_daemon.log; rm -f /var/log/openolt_process_watchdog.log; reboot -f > /dev/null &' || true
+              sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'rm -f /var/log/openolt.log; rm -f /var/log/dev_mgmt_daemon.log; rm -f /var/log/openolt_process_watchdog.log; reboot > /dev/null &' || true
               sleep ${waitTimerForOltUp}
               """
             }
