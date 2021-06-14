@@ -138,6 +138,7 @@ pipeline {
           }
           // start logging
           sh """
+          rm -rf $WORKSPACE/${workFlow}/
           mkdir -p $WORKSPACE/${workFlow}
           _TAG=kail-${workFlow} kail -n infra -n voltha > $WORKSPACE/${workFlow}/onos-voltha-combined.log &
           """
