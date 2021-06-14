@@ -108,35 +108,33 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
-    timeout(10) {
-      // start logging
-      sh """
-      mkdir -p $WORKSPACE/${testTarget}-components
-      _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
-      """
-      sh """
-      mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
-      export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
-      ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v INFRA_NAMESPACE:${infraNamespace}"
-      export KVSTOREPREFIX=voltha/voltha_voltha
+    // start logging
+    sh """
+    mkdir -p $WORKSPACE/${testTarget}-components
+    _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
+    """
+    sh """
+    mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
+    export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
+    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v INFRA_NAMESPACE:${infraNamespace}"
+    export KVSTOREPREFIX=voltha/voltha_voltha
 
-      make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
-      """
-      // stop logging
-      sh """
-        P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${workflow}" | grep -v grep | awk '{print \$1}')"
-        if [ -n "\$P_IDS" ]; then
-          echo \$P_IDS
-          for P_ID in \$P_IDS; do
-            kill -9 \$P_ID
-          done
-        fi
-        cd $WORKSPACE/${testTarget}-components/
-        gzip -k onos-voltha-combined.log
-        rm onos-voltha-combined.log
-      """
-      getPodsInfo("$WORKSPACE/${testTarget}-components")
-    }
+    make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
+    """
+    // stop logging
+    sh """
+      P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${workflow}" | grep -v grep | awk '{print \$1}')"
+      if [ -n "\$P_IDS" ]; then
+        echo \$P_IDS
+        for P_ID in \$P_IDS; do
+          kill -9 \$P_ID
+        done
+      fi
+      cd $WORKSPACE/${testTarget}-components/
+      gzip -k onos-voltha-combined.log
+      rm onos-voltha-combined.log
+    """
+    getPodsInfo("$WORKSPACE/${testTarget}-components")
   }
 }
 
