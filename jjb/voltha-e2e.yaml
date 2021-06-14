@@ -472,7 +472,7 @@
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
           workflow: 'att'
           branch-pattern: master
 
@@ -490,7 +490,7 @@
           name: 'verify_physical_voltha_patchset_manual'
           trigger-string: 'hardware test'
           branch-pattern: master
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
           workflow: 'att'
 
       #  ATT Manual Pod builds on Tucson pod (voltha-2.7)
@@ -510,7 +510,7 @@
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
           branch-pattern: master
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
 
       # DT Per-patchset Pod builds on Tucson pod  (voltha-2.7)
       - 'verify_physical_voltha_patchset_manual':

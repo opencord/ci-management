@@ -35,6 +35,9 @@ pipeline {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
     KUBECONFIG="$HOME/.kube/kind-${clusterName}"
     VOLTCONFIG="$HOME/.volt/config"
+    LOG_FOLDER="$WORKSPACE/${workflow}/"
+    APPS_TO_LOG="etcd kafka onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server onos-config-loader"
+
   }
   stages{
     stage('Download Code') {
@@ -142,6 +145,18 @@ pipeline {
           mkdir -p $WORKSPACE/${workFlow}
           _TAG=kail-${workFlow} kail -n infra -n voltha > $WORKSPACE/${workFlow}/onos-voltha-combined.log &
           """
+          sh returnStdout: false, script: '''
+          # start logging with kail
+
+          mkdir -p $LOG_FOLDER
+
+          list=($APPS_TO_LOG)
+          for app in "${list[@]}"
+          do
+            echo "Starting logs for: ${app}"
+            _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
+          done
+          '''
           sh """
           JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
           JENKINS_NODE_COOKIE="dontKillMe" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
@@ -315,6 +330,22 @@ pipeline {
         fi
         gzip $WORKSPACE/${workFlow}/onos-voltha-combined.log || true
       """
+      sh '''
+      # stop the kail processes
+      list=($APPS_TO_LOG)
+      for app in "${list[@]}"
+      do
+        echo "Stopping logs for: ${app}"
+        _TAG="kail-$app"
+        P_IDS="$(ps e -ww -A | grep "_TAG=$_TAG" | grep -v grep | awk '{print $1}')"
+        if [ -n "$P_IDS" ]; then
+          echo $P_IDS
+          for P_ID in $P_IDS; do
+            kill -9 $P_ID
+          done
+        fi
+      done
+      '''
       step([$class: 'RobotPublisher',
         disableArchiveOutput: false,
         logFileName: 'RobotLogs/log*.html',
@@ -324,7 +355,7 @@ pipeline {
         passThreshold: 100,
         reportFileName: 'RobotLogs/report*.html',
         unstableThreshold: 0]);
-      archiveArtifacts artifacts: '**/*.txt,**/*.gz,*.gz'
+      archiveArtifacts artifacts: '**/*.txt,**/*.gz,*.gz,**/*.log'
     }
   }
 }
