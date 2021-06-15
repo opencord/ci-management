@@ -23,7 +23,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-      timeout(time: 100, unit: 'MINUTES')
+      timeout(time: 150, unit: 'MINUTES')
   }
   environment {
     KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
@@ -130,7 +130,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FunctionalTests"
       }
       steps {
-        timeout(time: 20, unit: 'MINUTES') {
+        timeout(time: 50, unit: 'MINUTES') {
           sh '''
              set +e
              mkdir -p $ROBOT_LOGS_DIR
@@ -172,7 +172,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureTests"
       }
       steps {
-        timeout(time: 30, unit: 'MINUTES') {
+        timeout(time: 70, unit: 'MINUTES') {
           sh '''
              set +e
              mkdir -p $WORKSPACE/RobotLogs
@@ -206,7 +206,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ErrorTests"
       }
       steps {
-        timeout(time: 10, unit: 'MINUTES') {
+        timeout(time: 15, unit: 'MINUTES') {
           sh '''
              set +e
              mkdir -p $WORKSPACE/RobotLogs
