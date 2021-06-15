@@ -22,6 +22,30 @@
       "revId": "1198cd5597db9db7e2b6dec6375e4e4a421a45a7",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f2ea4bef_e0c83bad",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 475,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-06-15T07:30:22Z",
+      "side": 1,
+      "message": "I looked at the scale pipeline and we use a toLowerCase method. so I put it in lower case.",
+      "parentUuid": "5039629d_42e6a305",
+      "range": {
+        "startLine": 475,
+        "startChar": 116,
+        "endLine": 475,
+        "endChar": 121
+      },
+      "revId": "1198cd5597db9db7e2b6dec6375e4e4a421a45a7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
     }
   ]
 }
