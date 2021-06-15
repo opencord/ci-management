@@ -131,6 +131,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
         done
       fi
       cd $WORKSPACE/${testTarget}-components/
+      rm onos-voltha-combined.log.gz || true
       gzip -k onos-voltha-combined.log
       rm onos-voltha-combined.log
     """
