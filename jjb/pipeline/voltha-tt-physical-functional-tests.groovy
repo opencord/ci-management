@@ -303,7 +303,8 @@ pipeline {
         outputPath: 'RobotLogs',
         passThreshold: 100,
         reportFileName: '**/report*.html',
-        unstableThreshold: 0
+        unstableThreshold: 0,
+        onlyCritical: true
         ]);
       archiveArtifacts artifacts: '*.log,*.gz,*.tgz'
     }

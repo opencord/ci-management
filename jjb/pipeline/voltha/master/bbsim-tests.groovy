@@ -159,7 +159,8 @@ def collectArtifacts(exitStatus) {
     outputPath: '.',
     passThreshold: 100,
     reportFileName: "RobotLogs/*/report*.html",
-    unstableThreshold: 0]);
+    unstableThreshold: 0,
+    onlyCritical: true]);
 }
 
 pipeline {
