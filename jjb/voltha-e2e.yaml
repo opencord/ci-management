@@ -128,6 +128,18 @@
               workflow: att
               flags: "--set omci_response_rate=7"
               teardown: true
+            - target: voltha-onu-omci-get-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-openonu-go-test-bbsim'
@@ -173,6 +185,18 @@
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
               flags: "--set omci_response_rate=7"
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
               teardown: true
 
       - 'voltha-periodic-test-kind-voltha-based':
@@ -220,6 +244,18 @@
               workflow: tt
               flags: ""
               teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
@@ -252,6 +288,18 @@
               flags: ""
               teardown: true
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
