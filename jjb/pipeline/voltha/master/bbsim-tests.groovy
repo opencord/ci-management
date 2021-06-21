@@ -49,7 +49,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
 
           sh """
           mkdir -p $WORKSPACE/${testTarget}-components
-          _TAG=kail-startup kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-startup-combined.log &
+          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > $WORKSPACE/${testTarget}-components/onos-voltha-startup-combined.log &
           """
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
