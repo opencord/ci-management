@@ -111,7 +111,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
     // start logging
     sh """
     mkdir -p $WORKSPACE/${testTarget}-components
-    _TAG=kail-${workflow} kail -n infra -n voltha > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
+    _TAG=kail-${workflow} kail -n ${infraNamespace} -n ${volthaNamespace} > $WORKSPACE/${testTarget}-components/onos-voltha-combined.log &
     """
     sh """
     mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
