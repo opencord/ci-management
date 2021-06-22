@@ -106,7 +106,7 @@ def test_software_upgrade(name) {
           export TARGET=voltha-comp-upgrade-test
         fi
         if [[ ${name} == 'onu-software-upgrade' ]]; then
-          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v onu_image_name:${onuImageName.trim()} -v onu_image_url:${onuImageUrl.trim()} -v onu_image_version:${onuImageVersion.trim()} -v onu_image_crc:${onuImageCrc.trim()} -v onu_image_local_dir:${onuImageLocalDir.trim()} -e PowerSwitch"
+          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
           export TARGET=onu-upgrade-test
         fi
         export VOLTCONFIG=$HOME/.volt/config-minimal

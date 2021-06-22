@@ -29,14 +29,15 @@
           adapter-open-onu-image: 'voltha/voltha-openonu-adapter-go:1.3.1'
           rw-core-image: 'voltha/voltha-rw-core:2.9.2'
           ofagent-image: 'voltha/voltha-ofagent-go:1.6.3'
-          onu-image-name: 'software-image.img'
-          onu-image-url: 'http://bbsim0:50074/images'
-          onu-image-version: 'v1.0.0'
+          onu-image-version: 'BBSM_IMG_00002'
+          onu-image-url: 'http://bbsim0:50074/images/software-image.img'
+          onu-image-vendor: 'BBSM'
+          onu-image-activate-on-success: 'false'
+          onu-image-commit-on-success: 'false'
           onu-image-crc: '0'
-          onu-image-local-dir: '/tmp'
           time-trigger: "H H/23 * * *"
 
-      - 'software-upgrades-test':
+      - 'software-upgrades-test-legacy':
           name: 'periodic-software-upgrade-test-bbsim-2.7'
           pipeline-script: 'voltha/voltha-2.7/software-upgrades.groovy'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
@@ -67,7 +68,7 @@
           time-trigger: "H H/23 * * *"
 
 - job-template:
-    id: 'software-upgrades-test'
+    id: 'software-upgrades-test-legacy'
     name: '{name}'
     sandbox: true
     volthaSystemTestsChange: ''
@@ -239,6 +240,195 @@
           name: onuImageLocalDir
           default: '{onu-image-local-dir}'
           description: 'Local Dir of ONU Image to Upgrade'
+
+    project-type: pipeline
+    concurrent: true
+
+    dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+    triggers:
+      - timed: |
+                 TZ=America/Los_Angeles
+                 {time-trigger}
+
+- job-template:
+    id: 'software-upgrades-test'
+    name: '{name}'
+    sandbox: true
+    volthaSystemTestsChange: ''
+    volthaHelmChartsChange: ''
+    kindVolthaChange: ''
+
+    description: |
+      <!-- Managed by Jenkins Job Builder -->
+      Created by {id} job-template from ci-management/jjb/software-upgrades.yaml  <br /><br />
+      E2E Validation for Voltha 2.X
+    properties:
+      - cord-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - string:
+          name: buildNode
+          default: '{build-node}'
+          description: 'Name of the Jenkins node to run the job on'
+
+      - string:
+          name: extraHelmFlags
+          default: ''
+          description: 'Helm flags to pass to every helm install command'
+
+      - string:
+          name: volthaSystemTestsChange
+          default: ''
+          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: volthaHelmChartsChange
+          default: ''
+          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/79/18779/13"'
+
+      - string:
+          name: branch
+          default: '{code-branch}'
+          description: 'Name of the branch to use'
+
+      # deprecated params (not used in master, remove after 2.6 support is dropped)
+      - string:
+          name: kindVolthaChange
+          default: ''
+          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
+      - string:
+          name: onosImg
+          default: ''
+          description: 'ONOS Image to use'
+
+      - string:
+          name: aaaVer
+          default: '{aaa-version}'
+          description: 'ONOS AAA App Version to Test Upgrade'
+
+      - string:
+          name: aaaOarUrl
+          default: '{aaa-oar-url}'
+          description: 'ONOS AAA App OAR File Url'
+
+      - string:
+          name: oltVer
+          default: '{olt-version}'
+          description: 'ONOS OLT App Version to Test Upgrade'
+
+      - string:
+          name: oltOarUrl
+          default: '{olt-oar-url}'
+          description: 'ONOS OLT App OAR File Url'
+
+      - string:
+          name: dhcpl2relayVer
+          default: '{dhcpl2relay-version}'
+          description: 'ONOS DHCP L2 Relay App Version to Test Upgrade'
+
+      - string:
+          name: dhcpl2relayOarUrl
+          default: '{dhcpl2relay-oar-url}'
+          description: 'ONOS DHCP L2 Relay App OAR File Url'
+
+      - string:
+          name: igmpproxyVer
+          default: '{igmpproxy-version}'
+          description: 'ONOS Igmp Proxy App Version to Test Upgrade'
+
+      - string:
+          name: igmpproxyOarUrl
+          default: '{igmpproxy-oar-url}'
+          description: 'ONOS Igmp Proxy App OAR File Url'
+
+      - string:
+          name: sadisVer
+          default: '{sadis-version}'
+          description: 'ONOS Sadis App Version to Test Upgrade'
+
+      - string:
+          name: sadisOarUrl
+          default: '{sadis-oar-url}'
+          description: 'ONOS Sadis App OAR File Url'
+
+      - string:
+          name: mcastVer
+          default: '{mcast-version}'
+          description: 'ONOS MCast App Version to Test Upgrade'
+
+      - string:
+          name: mcastOarUrl
+          default: '{mcast-oar-url}'
+          description: 'ONOS MCast App OAR File Url'
+
+      - string:
+          name: kafkaVer
+          default: '{kafka-version}'
+          description: 'ONOS Kafka App Version to Test Upgrade'
+
+      - string:
+          name: kafkaOarUrl
+          default: '{kafka-oar-url}'
+          description: 'ONOS Kafka App OAR File Url'
+
+      - string:
+          name: adapterOpenOltImage
+          default: '{adapter-open-olt-image}'
+          description: 'Voltha Adapter Open OLT Component Image'
+
+      - string:
+          name: adapterOpenOnuImage
+          default: '{adapter-open-onu-image}'
+          description: 'Voltha Adapter Open ONU Component Image'
+
+      - string:
+          name: rwCoreImage
+          default: '{rw-core-image}'
+          description: 'Voltha RW Core Component Image'
+
+      - string:
+          name: ofAgentImage
+          default: '{ofagent-image}'
+          description: 'Voltha Ofagent Component Image'
+
+      - string:
+          name: onuImageVersion
+          default: '{onu-image-version}'
+          description: 'Version of ONU Image to Upgrade'
+
+      - string:
+          name: onuImageUrl
+          default: '{onu-image-url}'
+          description: 'Url of ONU Image to Upgrade'
+
+      - string:
+          name: onuImageVendor
+          default: '{onu-image-vendor}'
+          description: 'Vendor of ONU Image to Upgrade'
+
+      - string:
+          name: onuImageActivateOnSuccess
+          default: '{onu-image-activate-on-success}'
+          description: 'Activate ONU Image'
+
+      - string:
+          name: onuImageCommitOnSuccess
+          default: '{onu-image-commit-on-success}'
+          description: 'Commit ONU Image'
+
+      - string:
+          name: onuImageCrc
+          default: '{onu-image-crc}'
+          description: 'CRC of ONU Image to Upgrade'
 
     project-type: pipeline
     concurrent: true
