@@ -19,9 +19,11 @@ def call(Map config) {
     def cfg = defaultConfig + config
 
     def volthaStackChart = "onf/voltha-stack"
+    def bbsimChart = "onf/bbsim"
 
     if (cfg.localCharts) {
       volthaStackChart = "$WORKSPACE/voltha-helm-charts/voltha-stack"
+      bbsimChart = "$WORKSPACE/voltha-helm-charts/bbsim"
 
       sh """
       pushd $WORKSPACE/voltha-helm-charts/voltha-stack
@@ -62,7 +64,7 @@ def call(Map config) {
       }
 
       sh """
-        helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} onf/bbsim \
+        helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} ${bbsimChart} \
         --set olt_id="${cfg.stackId}${i}" \
         -f $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml \
         ${cfg.extraHelmFlags}
