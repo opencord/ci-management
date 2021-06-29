@@ -31,7 +31,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental-multi-stack'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha/master/voltha-scale-multi-stack-experimental.groovy'
+          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           'disable-job': false
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
@@ -47,8 +47,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          volthaHelmChartsChange: "refs/changes/04/23104/4"
-          extraHelmFlags: " --set global.image_org=matteoscandolo/,global.image_tag=redis --set redis.master.persistence.size=1Gi,redis.replica.persistence.size=1Gi "
+          extraHelmFlags: " -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-ssd'
@@ -64,7 +63,7 @@
           withDhcp: true
           withIgmp: false
           inMemoryEtcdStorage: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
           onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
           bbsimImg: gcgirish/bbsim:etcd
           rwCoreImg: volthacore/voltha-rw-core:noflows
@@ -87,18 +86,11 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml --set voltha.global.rw_core.timeout=60s --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
-          onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
-          bbsimImg: gcgirish/bbsim:etcd
-          rwCoreImg: gcgirish/voltha-rw-core:etcdRetry
-          ofAgentImg: voltha/voltha-ofagent-go:master
-          openoltAdapterImg: gcgirish/voltha-openolt-adapter:etcdPool
-          openonuAdapterGoImg: gcgirish/voltha-openonu-adapter-go:etcdPool
-          volthaHelmChartsChange: refs/changes/69/25069/20
+          extraHelmFlags: '--set authRetry=true,dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -110,8 +102,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
-          onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
+          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml '
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -129,17 +120,15 @@
           withIgmp: true
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set global.rw_core.core_timeout=60s --set global.log_correlation.enabled=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
-          onosImg: andreacampanella/voltha-onos:olt-group-pkt-req-mcast-fix
+          extraHelmFlags: '--set dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-att-subscribers'
           build-node: 'voltha-scale-2'
-          'disable-job': true
+          'disable-job': false
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           time-trigger: "H H/4 * * *"
-          withMonitoring: false
           logLevel: WARN
           volthaStacks: 10
           olts: 2
@@ -156,10 +145,9 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-2'
-          'disable-job': true
+          'disable-job': false
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           time-trigger: "H H/4 * * *"
-          withMonitoring: false
           logLevel: WARN
           volthaStacks: 10
           olts: 2
@@ -176,10 +164,9 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-2'
-          'disable-job': true
+          'disable-job': false
           pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
           time-trigger: "H H/4 * * *"
-          withMonitoring: false
           logLevel: WARN
           volthaStacks: 10
           olts: 2
