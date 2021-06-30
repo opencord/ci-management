@@ -51,7 +51,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-ssd'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-z1d'
           time-trigger: "H H/1 * * *"
           olts: 2
