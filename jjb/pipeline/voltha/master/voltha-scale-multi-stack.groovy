@@ -102,25 +102,26 @@ pipeline {
       steps {
         sh returnStdout: false, script: '''
 
-        helm install kafka -n infra $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas},replicas=${kafkaReplicas} --set persistence.enabled=false \
-          --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
-          --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
+        kubectl create configmap -n infra kube-config "--from-file=kube_config=\$KUBECONFIG"  || true
 
-        # the ETCD chart use "auth" for resons different than BBsim, so strip that away
-        ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
-        ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
-        ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install -n infra --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
+        export EXTRA_HELM_FLAGS+=' '
+
+        # No persistent-volume-claims in Atomix
+        EXTRA_HELM_FLAGS+="--set onos-classic.atomix.persistence.enabled=false "
+        # disable the securityContext, this is a development cluster
+        EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
+
+        echo \$EXTRA_HELM_FLAGS
 
         helm upgrade --install -n infra voltha-infra onf/voltha-infra \
           -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml \
           --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
           --set radius.enabled=${withEapol} \
-          --set kafka.enabled=false \
-          --set etcd.enabled=false \
           --set global.log_level=${logLevel} \
           --set onos-classic.onosSshPort=30115 \
-          --set onos-classic.onosApiPort=30120
+          --set onos-classic.onosApiPort=30120 \
+          --set kafka.replicaCount=3,kafka.zookeeper.replicaCount=3 \
+          --set etcd.statefulset.replicaCount=3 \$EXTRA_HELM_FLAGS
         '''
       }
     }
@@ -387,15 +388,6 @@ def deploy_voltha_stacks(numberOfStacks) {
 
       // FIXME having to set all of these values is annoying, is there a better solution?
       def volthaHelmFlags = extraHelmFlags +
-        "--set voltha.services.kafka.adapter.address=kafka.infra.svc:9092 " +
-        "--set voltha.services.kafka.cluster.address=kafka.infra.svc:9092 " +
-        "--set voltha.services.etcd.address=etcd.infra.svc:2379 " +
-        "--set voltha-adapter-openolt.services.kafka.adapter.address=kafka.infra.svc:9092 " +
-        "--set voltha-adapter-openolt.services.kafka.cluster.address=kafka.infra.svc:9092 " +
-        "--set voltha-adapter-openolt.services.etcd.address=etcd.infra.svc:2379 " +
-        "--set voltha-adapter-openonu.services.kafka.adapter.address=kafka.infra.svc:9092 " +
-        "--set voltha-adapter-openonu.services.kafka.cluster.address=kafka.infra.svc:9092 " +
-        "--set voltha-adapter-openonu.services.etcd.address=etcd.infra.svc:2379" +
         ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "infra")
 
       def localCharts = false
