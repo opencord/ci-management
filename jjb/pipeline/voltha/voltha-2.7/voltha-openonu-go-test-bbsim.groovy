@@ -324,7 +324,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileDT"
       }
       steps {
-        timeout(time: 20, unit: 'MINUTES') {
+        timeout(time: 25, unit: 'MINUTES') {
           sh '''
              if [ "${branch}" != "master" ]; then
                echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
@@ -386,7 +386,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileATT"
       }
       steps {
-        timeout(time: 20, unit: 'MINUTES') {
+        timeout(time: 25, unit: 'MINUTES') {
           sh '''
              if [ "${branch}" != "master" ]; then
                echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
@@ -454,7 +454,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ReconcileTT"
       }
       steps {
-        timeout(time: 20, unit: 'MINUTES') {
+        timeout(time: 25, unit: 'MINUTES') {
           sh '''
              if [ "${branch}" != "master" ]; then
                echo "on branch: ${branch}, sourcing kind-voltha/releases/${branch}"
