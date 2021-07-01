@@ -254,6 +254,7 @@ pipeline {
         outputPath: '.',
         passThreshold: 100,
         reportFileName: 'RobotLogs/**/report.html',
+        onlyCritical: true,
         unstableThreshold: 0]);
       // get all the logs from kubernetes PODs
       sh returnStdout: false, script: '''
