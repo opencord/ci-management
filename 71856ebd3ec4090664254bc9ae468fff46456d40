@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "63054152_2c9a369d",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-multi-stack.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-07-02T15:50:43Z",
+      "side": 1,
+      "message": "Don\u0027t we want to use -q (quiet mode) here like everywhere else?",
+      "range": {
+        "startLine": 185,
+        "startChar": 21,
+        "endLine": 185,
+        "endChar": 27
+      },
+      "revId": "71856ebd3ec4090664254bc9ae468fff46456d40",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
