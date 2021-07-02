@@ -101,6 +101,9 @@ pipeline {
             }
             if (workFlow.toLowerCase() == "tt") {
               localHelmFlags += " --set radius.enabled=false --set global.incremental_evto_update=true "
+                if (enableMultiUni) {
+                    localHelmFlags += " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=${uniPortMask} "
+                }
             }
 
             // NOTE temporary workaround expose ONOS node ports (pod-config needs to be updated to contain these values)
@@ -155,14 +158,25 @@ pipeline {
                 export KUBECONFIG=$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf
                 etcd_container=\$(kubectl get pods -n ${infraNamespace} | grep etcd | awk 'NR==1{print \$1}')
                 if [[ "${workFlow}" == "TT" ]]; then
-                   kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-HSIA.json \$etcd_container:/tmp/hsia.json
-                   kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64'
-                   kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-VoIP.json \$etcd_container:/tmp/voip.json
-                   kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/voip.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/65'
-                   kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST-AdditionalBW-None.json \$etcd_container:/tmp/mcast_additionalBW_none.json
-                   kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast_additionalBW_none.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/66'
-                   kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST-AdditionalBW-NA.json \$etcd_container:/tmp/mcast_additionalBW_na.json
-                   kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast_additionalBW_na.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/67'
+                   if [[ ${enableMultiUni} ]]; then
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-multi-uni-HSIA.json \$etcd_container:/tmp/hsia.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64'
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-multi-uni-VoIP.json \$etcd_container:/tmp/voip.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/voip.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/65'
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-multi-uni-MCAST-AdditionalBW-None.json \$etcd_container:/tmp/mcast_additionalBW_none.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast_additionalBW_none.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/66'
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-multi-uni-MCAST-AdditionalBW-NA.json \$etcd_container:/tmp/mcast_additionalBW_na.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast_additionalBW_na.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/67'
+                   else
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-HSIA.json \$etcd_container:/tmp/hsia.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64'
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-VoIP.json \$etcd_container:/tmp/voip.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/voip.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/65'
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST-AdditionalBW-None.json \$etcd_container:/tmp/mcast_additionalBW_none.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast_additionalBW_none.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/66'
+                      kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST-AdditionalBW-NA.json \$etcd_container:/tmp/mcast_additionalBW_na.json
+                      kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast_additionalBW_na.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/67'
+                   fi
                 else
                    kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-${profile}.json \$etcd_container:/tmp/flexpod.json
                    kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/flexpod.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64'
