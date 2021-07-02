@@ -101,7 +101,7 @@ pipeline {
             }
             if (workFlow.toLowerCase() == "tt") {
               localHelmFlags += " --set radius.enabled=false --set global.incremental_evto_update=true "
-                if (enableMultiUni) {
+                if (enableMultiUni.toBoolean()) {
                     localHelmFlags += " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=${uniPortMask} "
                 }
             }
@@ -158,7 +158,7 @@ pipeline {
                 export KUBECONFIG=$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf
                 etcd_container=\$(kubectl get pods -n ${infraNamespace} | grep etcd | awk 'NR==1{print \$1}')
                 if [[ "${workFlow}" == "TT" ]]; then
-                   if [[ ${enableMultiUni} ]]; then
+                   if [[ "${params.enableMultiUni}" == "true" ]]; then
                       kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-multi-uni-HSIA.json \$etcd_container:/tmp/hsia.json
                       kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64'
                       kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-multi-uni-VoIP.json \$etcd_container:/tmp/voip.json
