@@ -93,6 +93,16 @@
           default: '{num-of-onos}'
           description: 'Installs the specified Number of ONOS instances'
 
+      - bool:
+          name: enableMultiUni
+          default: '{enableMultiUni}'
+          description: "Enables the Multi UNI feature"
+
+      - string:
+          name: uniPortMask
+          default: '{uniPortMask}'
+          description: 'Open ONU adapter uni_port_mask, used when enableMultiUni is set to True, values: 0x0001-0x00FF'
+
       # installBBSim is not used in the master branch pipeline, remove after 2.8
       - bool:
           name: installBBSim
@@ -224,6 +234,8 @@
     volthaHelmChartsChange: ''
     profile: 'Default'
     logLevel: 'DEBUG'
+    enableMultiUni: false
+    uniPortMask: '0x0001'
     # installBBSim is not used in the master branch pipeline, remove after 2.8
     installBBSim: false
     bbsimReplicas: 0
@@ -265,6 +277,8 @@
     volthaHelmChartsChange: ''
     profile: 'Default'
     logLevel: 'DEBUG'
+    enableMultiUni: false
+    uniPortMask: '0x0001'
     # installBBSim is not used in the master branch pipeline, remove after 2.8
     installBBSim: false
     bbsimReplicas: 0
@@ -301,6 +315,8 @@
     branch: 'voltha-2.7'
     volthaHelmChartsChange: '' # this is not supported in the VOLTHA-2.7 build, but the parameters are shared, ideally we should split them
     logLevel: 'DEBUG'
+    enableMultiUni: false
+    uniPortMask: '0x0001'
     installBBSim: false
     # bbsimReplicas is not applicable for 2.7 Jobs
     bbsimReplicas: 0
@@ -345,6 +361,7 @@
     manifest-branch: 'master'
 
     oltAdapterAppLabel: 'adapter-open-olt'
+    enableMultiUni: false
 
     parameters:
       - string:
@@ -411,6 +428,11 @@
           name: workFlow
           default: '{work-flow}'
           description: 'Installs and uses the specified work flow on the POD'
+
+      - bool:
+          name: enableMultiUni
+          default: '{enableMultiUni}'
+          description: "Enables the Multi UNI feature"
 
       - bool:
           name: powerSwitch
@@ -590,6 +612,7 @@
     manifest-branch: 'master'
 
     oltAdapterAppLabel: 'adapter-open-olt'
+    enableMultiUni: false
 
     parameters:
       - string:
@@ -661,6 +684,11 @@
           name: powerSwitch
           default: '{power-switch}'
           description: "Indicate whether POD has power switch to reboot ONUs/OLT remotely"
+
+      - bool:
+          name: enableMultiUni
+          default: '{enableMultiUni}'
+          description: "Enables the Multi UNI feature"
 
       - string:
           name: oltAdapterAppLabel

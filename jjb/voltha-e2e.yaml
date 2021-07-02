@@ -68,6 +68,45 @@
               flags: ""
               teardown: false
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multi-uni-test-bbsim'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-single-kind-multiuni-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-multiuni-failurescenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-multiuni-errorscenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim'
+          code-branch: 'master'
+          olts: 2
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-multiuni-multiolt-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-multiuni-multiolt-failurescenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-multiuni-multiolt-errorscenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.7'
           pipeline-script: 'voltha/voltha-2.7/voltha-nightly-tests-bbsim.groovy'
