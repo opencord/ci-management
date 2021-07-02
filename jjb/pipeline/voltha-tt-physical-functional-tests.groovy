@@ -196,7 +196,7 @@ pipeline {
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
-        if ( !${enableMultiUni} ); then
+        if [ ${params.enableMultiUni} = true ]; then
           if ( ${powerSwitch} ); then
                export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           else
@@ -219,7 +219,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.branch}" == "master" ]; then
-          if ( !${enableMultiUni} ); then
+          if [ ${params.enableMultiUni} = true ]; then
             if ( ${powerSwitch} ); then
               export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
             else
