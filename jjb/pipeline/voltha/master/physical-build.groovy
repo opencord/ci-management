@@ -255,7 +255,7 @@ pipeline {
                 return sr_active_out == 0
               }
             }
-            timeout(5) {
+            timeout(7) {
               for(int i=0; i < deployment_config.hosts.src.size(); i++) {
                 for(int j=0; j < deployment_config.olts.size(); j++) {
                   def aggPort = -1
