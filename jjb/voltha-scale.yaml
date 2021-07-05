@@ -87,6 +87,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=true,dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
+          rwCoreImg: volthacore/voltha-rw-core:meter
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -103,6 +104,7 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml '
+          rwCoreImg: volthacore/voltha-rw-core:meter
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -121,6 +123,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: '--set dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
+          rwCoreImg: volthacore/voltha-rw-core:meter
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
