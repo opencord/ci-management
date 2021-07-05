@@ -325,8 +325,5 @@ pipeline {
         ]);
       archiveArtifacts artifacts: '*.log,*.gz,*.tgz,etcd/*.log'
     }
-    unstable {
-      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
-    }
   }
 }

@@ -58,11 +58,6 @@
           default: 'robot -d Log -T -v xos_chameleon_url:127.0.0.1 -v xos_chameleon_port:30006 -v cord_kafka:\$CORD_KAFKA_IP -v num_olts:10 -v num_onus:1 -v num_pon_ports:10 -v timeout:360s xos-scale-att-workflow.robot'
           description: 'Exact command to execute the tests including arguments'
 
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, teo@opennetworking.org'
-          description: ''
-
     project-type: pipeline
     concurrent: false
 
@@ -117,11 +112,6 @@
           default: 'robot -d Log -T -v helm_chart:$WORKSPACE/cord/helm-charts/xos-services/simpleexampleservice xos-remove-service.robot xos-service-migrations.robot'
           description: 'Exact command to execute the tests including arguments'
 
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, smbaker@opennetworking.org'
-          description: ''
-
     project-type: pipeline
     concurrent: false
 
@@ -175,11 +165,6 @@
           name: TestCommand
           default: 'robot -d Log -T xos-backup.robot'
           description: 'Exact command to execute the tests including arguments'
-
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, smbaker@opennetworking.org'
-          description: ''
 
     project-type: pipeline
     concurrent: false
@@ -244,11 +229,6 @@
           name: TestCommand
           default: 'robot -d Log -T -v server_ip:127.0.0.1 -v server_port:30006 -v cord_kafka:\$CORD_KAFKA_IP ATT_Workflow.robot'
           description: 'Exact command to execute the tests including arguments'
-
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, teo@opennetworking.org'
-          description: ''
 
       - bool:
           name: InstallService

@@ -30,12 +30,6 @@
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
-    parameters:
-      - string:
-          name: notificationEmail
-          default: 'shad@opennetworking.org kailash@opennetworking.org'
-          description: ''
-
     node: 'qct-pod3-node2'
 
     project-type: pipeline
