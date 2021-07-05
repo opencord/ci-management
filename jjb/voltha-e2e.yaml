@@ -24,11 +24,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master \
-          --set voltha.images.rw_core.repository=andreacampanella/voltha-rw-core \
-          --set voltha.images.rw_core.tag=meter \
-          --set voltha.images.ofagent.repository=volthacore/voltha-ofagent \
-          --set voltha.images.ofagent.tag=noflows '
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha.images.rw_core.repository=andreacampanella/voltha-rw-core --set voltha.images.rw_core.tag=meter --set voltha.images.ofagent.repository=volthacore/voltha-ofagent --set voltha.images.ofagent.tag=noflows '
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -372,7 +368,6 @@
       - 'voltha-periodic-test':
           name: 'patchset-voltha-pm-data-test-bbsim'
           trigger-comment: "voltha test pm data singleolt"
-          code-branch: '$GERRIT_BRANCH'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           code-branch: '$GERRIT_BRANCH'
           gerrit-project: '$GERRIT_PROJECT'
