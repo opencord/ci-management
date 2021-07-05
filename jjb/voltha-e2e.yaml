@@ -24,7 +24,11 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha.images.rw_core.repository=andreacampanella/voltha-rw-core --set voltha.images.rw_core.tag=meter '
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master \
+          --set voltha.images.rw_core.repository=andreacampanella/voltha-rw-core \
+          --set voltha.images.rw_core.tag=meter \
+          --set voltha.images.ofagent.repository=volthacore/voltha-ofagent \
+          --set voltha.images.ofagent.tag=noflows '
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
