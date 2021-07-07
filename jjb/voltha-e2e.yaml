@@ -106,6 +106,7 @@
               workflow: att
               flags: ""
               teardown: false
+          timeout: 150
 
       - 'voltha-periodic-test-kind-voltha-based':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.7'
