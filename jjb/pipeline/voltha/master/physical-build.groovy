@@ -149,9 +149,8 @@ pipeline {
           if ( params.configurePod && params.profile != "Default" ) {
             for(int i=0; i < deployment_config.olts.size(); i++) {
               def tech_prof_directory = "XGS-PON"
-              // If no debian package is specified we default to GPON for the ADTRAN OLT.
-              if (!deployment_config.olts[i].containsKey("oltDebVersion") || deployment_config.olts[i].oltDebVersion.contains("asgvolt64")){
-                tech_prof_directory = "GPON"
+              if (!deployment_config.olts[i].containsKey("board_technology")){
+                tech_prof_directory = deployment_config.olts[i]["board_technology"]
               }
               timeout(1) {
                 sh returnStatus: true, script: """
