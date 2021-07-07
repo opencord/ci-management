@@ -149,7 +149,7 @@ pipeline {
           if ( params.configurePod && params.profile != "Default" ) {
             for(int i=0; i < deployment_config.olts.size(); i++) {
               def tech_prof_directory = "XGS-PON"
-              if (!deployment_config.olts[i].containsKey("board_technology")){
+              if (deployment_config.olts[i].containsKey("board_technology")){
                 tech_prof_directory = deployment_config.olts[i]["board_technology"]
               }
               timeout(1) {
