@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5c9b0d32_1defcebe",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-08T17:46:20Z",
+      "side": 1,
+      "message": "we should always use the local charts so we get the released ones",
+      "range": {
+        "startLine": 57,
+        "startChar": 10,
+        "endLine": 59,
+        "endChar": 11
+      },
+      "revId": "630884469763ed98769fbaab1e9ed662070715d5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f114ba4_c2f74f19",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-08T17:46:20Z",
+      "side": 1,
+      "message": "in a released version we should always use the local chart, as we clone the release branch, otherwise we\u0027ll deploy the latest charts",
+      "range": {
+        "startLine": 240,
+        "startChar": 12,
+        "endLine": 243,
+        "endChar": 13
+      },
+      "revId": "630884469763ed98769fbaab1e9ed662070715d5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
