@@ -1,5 +1,6 @@
 ---
 # verification jobs for 'kind-voltha' repo
+# Is this required in Voltha-2.8 ?
 
 - project:
     name: kind-voltha
