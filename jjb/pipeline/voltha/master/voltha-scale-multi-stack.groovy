@@ -115,6 +115,7 @@ pipeline {
 
         helm upgrade --install -n infra voltha-infra onf/voltha-infra \
           -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml \
+          -f /home/jenkins/voltha-scale/voltha-values.yaml \
           --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
           --set radius.enabled=${withEapol} \
           --set global.log_level=${logLevel} \
