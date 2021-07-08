@@ -18,7 +18,7 @@
           unit-test-targets: 'test'
           junit-allow-empty-results: true
       - 'voltha-patch-test':
-          pipeline-script: 'voltha/voltha-2.7/voltha-bbsim-tests.groovy'
-          name-extension: '-2.7'
-          override-branch: 'voltha-2.7'
+          pipeline-script: 'voltha/voltha-2.8/voltha-bbsim-tests.groovy'
+          name-extension: '-2.8'
+          override-branch: 'voltha-2.8'
           kindVolthaChange: '$GERRIT_REFSPEC'
