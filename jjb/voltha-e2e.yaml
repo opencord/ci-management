@@ -24,7 +24,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha.images.rw_core.repository=andreacampanella/voltha-rw-core --set voltha.images.rw_core.tag=meter --set voltha.images.ofagent.repository=volthacore/voltha-ofagent --set voltha.images.ofagent.tag=noflows '
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -49,6 +49,54 @@
           code-branch: 'master'
           olts: 2
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-multi-olt
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-multiolt-failurescenarios
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-multiolt-errorscenarios
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-multiolt-kind
+              workflow: att
+              flags: ""
+              teardown: false
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-test-bbsim-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-single-kind
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-alarms-kind
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-failurescenarios
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-errorscenarios
+              workflow: att
+              flags: ""
+              teardown: false
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-test-bbsim-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
+          olts: 2
+          extraHelmFlags: '--set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-multi-olt
@@ -107,27 +155,108 @@
               flags: ""
               teardown: false
 
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-multiple-olts-test-bbsim-2.7'
-          pipeline-script: 'voltha/voltha-2.7/voltha-nightly-tests-bbsim.groovy'
-          build-node: 'qct-pod4-node2'
-          make-target: functional-multi-olt
-          make-target-failtest: bbsim-multiolt-failurescenarios
-          make-target-errortest: bbsim-multiolt-errorscenarios
-          make-target-alarmtest: bbsim-alarms-kind
-          make-target-multipleolt: bbsim-multiolt-kind
-          withAlarms: false
-          code-branch: 'voltha-2.7'
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multi-uni-test-bbsim-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
+          extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-single-kind-multiuni-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-multiuni-failurescenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-multiuni-errorscenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
           olts: 2
-          onus: 2
-          pons: 2
-          time-trigger: "H H * * *"
+          extraHelmFlags: '--set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-multiuni-multiolt-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-multiuni-multiolt-failurescenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-multiuni-multiolt-errorscenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
 
       # openonu Go periodic tests
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          time-trigger: "H H/12 * * *"
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: 1t4gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: 1t8gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: mib-upload-templating-openonu-go-adapter-test
+              workflow: att
+              flags: "--set pon=2,onu=2,controlledActivation=only-onu"
+              teardown: true
+            - target: reconcile-openonu-go-adapter-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: reconcile-openonu-go-adapter-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: reconcile-openonu-go-adapter-test-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: openonu-go-adapter-omci-hardening-passed-test
+              workflow: att
+              flags: "--set omci_response_rate=9 --set omci_timeout=1s"
+              teardown: true
+            - target: openonu-go-adapter-omci-hardening-failed-test
+              workflow: att
+              flags: "--set omci_response_rate=7"
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
           time-trigger: "H H/12 * * *"
           logLevel: 'DEBUG'
           testTargets: |
@@ -238,24 +367,56 @@
               flags: ""
               teardown: true
 
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-openonu-go-test-bbsim-2.7'
-          pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
-          build-node: 'ubuntu18.04-basebuild-8c-15g'
-          make-target: openonu-go-adapter-test
-          make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
-          make-target-1t8gemtest: 1t8gem-openonu-go-adapter-test
-          make-target-reconciletest: reconcile-openonu-go-adapter-test
-          make-target-reconciledttest: reconcile-openonu-go-adapter-test-dt
-          make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
-          withAlarms: false
-          code-branch: 'voltha-2.7'
-          time-trigger: "H H/23 * * *"
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          olts: 2
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: 1t4gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: 1t8gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+          time-trigger: "H H/12 * * *"
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
+          extraHelmFlags: '--set onu=2,pon=2'
           olts: 2
           logLevel: 'DEBUG'
           testTargets: |
@@ -434,23 +595,6 @@
           olts: 2
           timeout: 180
 
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.7'
-          pipeline-script: 'voltha/voltha-2.7/voltha-openonu-go-test-bbsim.groovy'
-          build-node: 'ubuntu18.04-basebuild-8c-15g'
-          make-target: openonu-go-adapter-multi-olt-test
-          make-target-1t4gemtest: 1t4gem-openonu-go-adapter-multi-olt-test
-          make-target-1t8gemtest: 1t8gem-openonu-go-adapter-multi-olt-test
-          make-target-reconciletest: reconcile-openonu-go-adapter-multi-olt-test
-          make-target-reconciledttest: reconcile-openonu-go-adapter-multi-olt-test-dt
-          make-target-reconciletttest: reconcile-openonu-go-adapter-multi-olt-test-tt
-          withAlarms: false
-          code-branch: 'voltha-2.7'
-          olts: 2
-          onus: 2
-          pons: 2
-          time-trigger: "H H/23 * * *"
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
@@ -462,26 +606,16 @@
               flags: ""
               teardown: true
 
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-test-DMI-2.7'
-          pipeline-script: 'voltha/voltha-2.7/voltha-DMI-bbsim-tests.groovy'
-          build-node: 'qct-pod4-node2'
-          make-target: bbsim-dmi-hw-management-test
-          withAlarms: false
-          code-branch: 'voltha-2.7'
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-test-DMI-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
           time-trigger: "H H/23 * * *"
-
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-test-bbsim-2.7'
-          pipeline-script: 'voltha/voltha-2.7/voltha-nightly-tests-bbsim.groovy'
-          build-node: 'qct-pod4-node2'
-          make-target: functional-single-kind
-          make-target-failtest: bbsim-failurescenarios
-          make-target-errortest: bbsim-errorscenarios
-          make-target-alarmtest: bbsim-alarms-kind
-          withAlarms: true
-          code-branch: 'voltha-2.7'
-          time-trigger: "H H * * *"
+          testTargets: |
+            - target: bbsim-dmi-hw-management-test
+              workflow: att
+              flags: ""
+              teardown: true
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test'
@@ -495,15 +629,18 @@
               flags: ""
               teardown: true
 
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-etcd-test-2.7'
-          pipeline-script: 'voltha/voltha-2.7/voltha-system-test-bbsim.groovy'
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-etcd-test-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
-          code-branch: 'voltha-2.7'
-          make-target: sanity-multi-kind
-          onus: 2
-          pons: 2
+          code-branch: 'voltha-2.8'
+          extraHelmFlags: '--set onu=2,pon=2'
           time-trigger: "H H/12 * * *"
+          testTargets: |
+            - target: sanity-multi-kind
+              workflow: att
+              flags: ""
+              teardown: true
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs'
@@ -532,16 +669,32 @@
               flags: ""
               teardown: false
 
-      - 'voltha-periodic-test-kind-voltha-based':
-          name: 'periodic-voltha-sanity-test-multi-runs-2.7'
-          pipeline-script: 'voltha/voltha-2.7/voltha-go-multi-tests.groovy'
-          build-node: 'qct-pod4-node2'
-          code-branch: 'voltha-2.7'
-          make-target: sanity-kind
-          onus: 1
-          pons: 1
-          test-runs: 5
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-sanity-test-multi-runs-2.8'
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: 'voltha-2.8'
           time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
 
       - 'voltha-periodic-test':
           name: 'nightly-voltha-DTflow-sanity-test'
@@ -562,14 +715,14 @@
           workflow: 'att'
           branch-pattern: master
 
-      # ATT Per-patchset Pod builds on Tucson pod (voltha-2.7)
+
+      # ATT Per-patchset Pod builds on Tucson pod (voltha-2.8)
       - 'verify_physical_voltha_patchset_auto':
-          name: 'verify_physical_voltha_patchset_auto_voltha-2.7'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.4.8-eec0fc9e9a01dc0d35b0b8441e0a22a4c0cc51b4-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
-          pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
-          branch-pattern: voltha-2.7
+          name: 'verify_physical_voltha_patchset_auto-2.8'
+          pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
+          extraHelmFlags: '--set global.log_level=debug'
           workflow: 'att'
+          branch-pattern: voltha-2.8
 
       # ATT Manual Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_manual':
@@ -579,14 +732,13 @@
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
           workflow: 'att'
 
-      #  ATT Manual Pod builds on Tucson pod (voltha-2.7)
+      # ATT Manual Pod builds on Tucson pod (voltha-2.8)
       - 'verify_physical_voltha_patchset_manual':
-          name: 'verify_physical_voltha_patchset_manual_voltha-2.7'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.4.8-eec0fc9e9a01dc0d35b0b8441e0a22a4c0cc51b4-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
-          pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
+          name: 'verify_physical_voltha_patchset_manual-2.8'
+          pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
           trigger-string: 'hardware test'
-          branch-pattern: voltha-2.7
+          branch-pattern: voltha-2.8
+          extraHelmFlags: '--set global.log_level=debug'
           workflow: 'att'
 
       # DT Manual Pod builds on Tucson pod  (master)
@@ -598,16 +750,15 @@
           branch-pattern: master
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
 
-      # DT Per-patchset Pod builds on Tucson pod  (voltha-2.7)
+      # DT Manual Pod builds on Tucson pod  (voltha-2.8)
       - 'verify_physical_voltha_patchset_manual':
-          name: 'verify_physical_voltha_patchset_manual_DT_voltha-2.7'
+          name: 'verify_physical_voltha_patchset_manual_DT-2.8'
+          pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
           workflow: 'dt'
-          oltDebVersionMaster: 'openolt_asfvolt16-3.4.8-eec0fc9e9a01dc0d35b0b8441e0a22a4c0cc51b4-40G-NNI.deb'
-          oltDebVersionVoltha23: 'openolt_asfvolt16-3.3.3-1a5d68b50d8bcc5ba6cb1630d3294c30c37cd2f5-40G-NNI.deb'
-          pipeline-script: 'voltha/voltha-2.7/voltha-physical-build-and-tests.groovy'
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
-          branch-pattern: voltha-2.7
+          branch-pattern: voltha-2.8
+          extraHelmFlags: '--set global.log_level=debug'
 
 - job-template:
     id: 'voltha-periodic-test'
@@ -747,173 +898,6 @@
                   branch-pattern: '{all-branches-regexp}'
 
 - job-template:
-    id: 'voltha-periodic-test-kind-voltha-based'
-    name: '{name}'
-    pipeline-script: 'voltha/voltha-2.7/voltha-go-tests.groovy'
-    test-runs: 1
-    robot-args: ''
-    gerrit-project: ''
-    work-flow: ''
-    volthaSystemTestsChange: ''
-    volthaHelmChartsChange: ''
-    kindVolthaChange: ''
-    extraHelmFlags: ''
-    sandbox: true
-    olts: 1
-    withAlarms: false
-
-    description: |
-      <!-- Managed by Jenkins Job Builder -->
-      Created by {id} job-template from ci-management/jjb/voltha-e2e.yaml  <br /><br />
-      E2E Validation for Voltha 2.X
-
-    properties:
-      - cord-infra-properties:
-          build-days-to-keep: '{big-build-days-to-keep}'
-          artifact-num-to-keep: '{big-artifact-num-to-keep}'
-
-    wrappers:
-      - lf-infra-wrappers:
-          build-timeout: '{build-timeout}'
-          jenkins-ssh-credential: '{jenkins-ssh-credential}'
-
-    parameters:
-      - string:
-          name: buildNode
-          default: '{build-node}'
-          description: 'Name of the Jenkins node to run the job on'
-
-      - string:
-          name: extraHelmFlags
-          default: '--set onu={onus},pon={pons} {extraHelmFlags}'
-          description: 'Helm flags to pass to ./voltha up'
-
-      - bool:
-          name: withAlarms
-          default: '{withAlarms}'
-          description: "Run alarm based tests when true"
-
-      - string:
-          name: makeTarget
-          default: '{make-target}'
-          description: 'Makefile target to invoke during test'
-
-      - string:
-          name: makeFailtestTarget
-          default: '{make-target-failtest}'
-          description: 'Makefile target to invoke during failure/based test'
-
-      - string:
-          name: makeMultiOltTarget
-          default: '{make-target-multipleolt}'
-          description: 'Makefile target to invoke during multiple olt test'
-
-      - string:
-          name: makeErrortestTarget
-          default: '{make-target-errortest}'
-          description: 'Makefile target to invoke during error test'
-
-      - string:
-          name: makeAlarmtestTarget
-          default: '{make-target-alarmtest}'
-          description: 'Makefile target to invoke during alarm test'
-
-      - string:
-          name: make1t4gemTestTarget
-          default: '{make-target-1t4gemtest}'
-          description: 'Makefile target to invoke during 1t4gem test'
-
-      - string:
-          name: make1t8gemTestTarget
-          default: '{make-target-1t8gemtest}'
-          description: 'Makefile target to invoke during 1t8gem test'
-
-      - string:
-          name: makeReconcileTestTarget
-          default: '{make-target-reconciletest}'
-          description: 'Makefile target to invoke during reconcile test'
-
-      - string:
-          name: makeReconcileDtTestTarget
-          default: '{make-target-reconciledttest}'
-          description: 'Makefile target to invoke during reconcile dt test'
-
-      - string:
-          name: makeReconcileTtTestTarget
-          default: '{make-target-reconciletttest}'
-          description: 'Makefile target to invoke during reconcile tt test'
-
-      - string:
-          name: manifestUrl
-          default: '{gerrit-server-url}/{voltha-test-manifest-repo}'
-          description: 'Repo manifest URL for code checkout'
-
-      - string:
-          name: branch
-          default: '{code-branch}'
-          description: 'Repo manifest branch for code checkout'
-
-      - string:
-          name: gerritProject
-          default: '{gerrit-project}'
-          description: 'Name of the Gerrit project'
-
-      - string:
-          name: gerritChangeNumber
-          default: ''
-          description: 'Changeset number in Gerrit'
-
-      - string:
-          name: gerritPatchsetNumber
-          default: ''
-          description: 'PatchSet number in Gerrit'
-
-      - string:
-          name: testRuns
-          default: '{test-runs}'
-          description: 'How many times to repeat the tests'
-
-      - string:
-          name: extraRobotArgs
-          default: '{robot-args}'
-          description: 'Arguments to pass to robot'
-
-      - string:
-          name: workFlow
-          default: '{work-flow}'
-          description: 'Workflow for testcase'
-
-      - string:
-          name: karafHome
-          default: '{karaf-home}'
-          description: 'Karaf home'
-
-      - string:
-          name: volthaSystemTestsChange
-          default: '{volthaSystemTestsChange}'
-          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
-
-      - string:
-          name: kindVolthaChange
-          default: '{kindVolthaChange}'
-          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
-
-      - string:
-          name: olts
-          default: '{olts}'
-          description: 'How many BBSim instances to run'
-
-    project-type: pipeline
-    concurrent: true
-
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
-
-    triggers:
-      - timed: |
-                 TZ=America/Los_Angeles
-                 {time-trigger}
-
-- job-template:
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
     build-node: 'ubuntu18.04-basebuild-4c-8g'
@@ -942,7 +926,6 @@
         workflow: tt
         flags: ""
         teardown: true
-    kindVolthaChange: '' # this is only needed to test kind-voltha patches
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -1028,12 +1011,6 @@
           name: logLevel
           default: '{logLevel}'
           description: 'Log level for all the components'
-
-      # Used in the 2.7 based pipeline, can be removed after 2.8
-      - string:
-          name: kindVolthaChange
-          default: '{kindVolthaChange}'
-          description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1" (only used to test kind-voltha changes in 2.7)'
 
     project-type: pipeline
     concurrent: true
