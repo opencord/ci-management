@@ -177,11 +177,11 @@
           withIgmp: true
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
-      # voltha-2.7 Jobs
+      # voltha-2.8 Jobs
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.7-2-16-32-att-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.8-2-16-32-att-subscribers'
           'disable-job': true
-          pipeline-script: 'voltha/voltha-2.7/voltha-scale-test.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -193,7 +193,7 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          release: voltha-2.7
+          release: voltha-2.8
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -203,9 +203,9 @@
           onosImg: ''
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.7-2-16-32-dt-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.8-2-16-32-dt-subscribers'
           'disable-job': true
-          pipeline-script: 'voltha/voltha-2.7/voltha-scale-test.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -218,7 +218,7 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          release: voltha-2.7
+          release: voltha-2.8
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -228,9 +228,9 @@
           onosImg: ''
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-voltha-2.7-2-16-32-tt-subscribers'
+          name: 'voltha-scale-measurements-voltha-2.8-2-16-32-tt-subscribers'
           'disable-job': true
-          pipeline-script: 'voltha/voltha-2.7/voltha-scale-test.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -243,7 +243,7 @@
           withDhcp: true
           withIgmp: true
           extraHelmFlags: '--set defaults.rw_core.timeout=30s '
-          release: voltha-2.7
+          release: voltha-2.8
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
