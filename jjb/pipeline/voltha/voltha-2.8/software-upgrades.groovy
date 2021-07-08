@@ -23,16 +23,14 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade") {
+          extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set onos-classic.image.tag=master "
+      }
+      if ("${name}" == "voltha-component-upgrade") {
+          extraHelmFlags = extraHelmFlags + "--set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master "
+      }
       extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
-      extraHelmFlags = extraHelmFlags + """ --set voltha.services.controller[0].service=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc \
-      --set voltha.services.controller[0].port=6653 \
-      --set voltha.services.controller[0].address=voltha-infra-onos-classic-0.voltha-infra-onos-classic-hs.infra.svc:6653 \
-      --set voltha.services.controller[1].service=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc \
-      --set voltha.services.controller[1].port=6653 \
-      --set voltha.services.controller[1].address=voltha-infra-onos-classic-1.voltha-infra-onos-classic-hs.infra.svc:6653 \
-      --set voltha.services.controller[2].service=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc \
-      --set voltha.services.controller[2].port=6653 \
-      --set voltha.services.controller[2].address=voltha-infra-onos-classic-2.voltha-infra-onos-classic-hs.infra.svc:6653 """
+      extraHelmFlags = extraHelmFlags + " --set voltha.onos_classic.replicas=3"
       //ONOS custom image handling
       if ( onosImg.trim() != '' ) {
          String[] split;
@@ -40,11 +38,13 @@ def test_software_upgrade(name) {
          split = onosImg.split(':')
         extraHelmFlags = extraHelmFlags + "--set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
       }
-
+      def localCharts = false
+      if (branch != "master") {
+         localCharts = true
+      }
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
-      // NOTE localCharts is set to "true" so that we use the locally cloned version of the chart (set to voltha-2.7)
-      volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: true])
+      volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
       // start logging
       sh """
       rm -rf $WORKSPACE/${name} || true
@@ -109,7 +109,7 @@ def test_software_upgrade(name) {
           export TARGET=voltha-comp-upgrade-test
         fi
         if [[ ${name} == 'onu-software-upgrade' ]]; then
-          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v onu_image_name:${onuImageName.trim()} -v onu_image_url:${onuImageUrl.trim()} -v onu_image_version:${onuImageVersion.trim()} -v onu_image_crc:${onuImageCrc.trim()} -v onu_image_local_dir:${onuImageLocalDir.trim()} -e PowerSwitch"
+          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
           export TARGET=onu-upgrade-test
         fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
@@ -237,7 +237,8 @@ pipeline {
          outputPath: '.',
          passThreshold: 100,
          reportFileName: 'RobotLogs/*/report*.html',
-         unstableThreshold: 0]);
+         unstableThreshold: 0,
+         onlyCritical: true]);
       archiveArtifacts artifacts: '*.log,**/*.log,**/*.gz,*.gz,*.txt,**/*.txt'
     }
   }
