@@ -15,11 +15,6 @@ def call(String project = "unknown", String tag = "citest", String pullPolicy = 
       chart = "voltha-adapter-openonu"
       image = "adapter_open_onu_go"
     break
-    // TODO remove after 2.7
-    case "voltha-openonu-adapter":
-      chart = "voltha-adapter-openonu"
-      image = "adapter_open_onu"
-    break
     // TODO end
     case "voltha-openolt-adapter":
       chart = "voltha-adapter-openolt"

@@ -14,8 +14,14 @@
 
 // deploy VOLTHA and performs a scale test
 
+library identifier: 'cord-jenkins-libraries@master',
+    retriever: modernSCM([
+      $class: 'GitSCMSource',
+      remote: 'https://gerrit.opencord.org/ci-management.git'
+])
+
 // this function generates the correct parameters for ofAgent
-// to connect to multple ONOS instances
+// to connect to multiple ONOS instances
 def ofAgentConnections(numOfOnos, releaseName, namespace) {
     def params = " "
     numOfOnos.times {
@@ -36,14 +42,14 @@ pipeline {
   environment {
     JENKINS_NODE_COOKIE="dontKillMe" // do not kill processes after the build is done
     KUBECONFIG="$HOME/.kube/config"
-    VOLTCONFIG="$HOME/.volt/config-2.7" // voltha-2.7 does not have ingress and still relies on port-forwarding
+    VOLTCONFIG="$HOME/.volt/config"
     SSHPASS="karaf"
     VOLTHA_LOG_LEVEL="${logLevel}"
     NUM_OF_BBSIM="${olts}"
     NUM_OF_OPENONU="${openonuAdapterReplicas}"
     NUM_OF_ONOS="${onosReplicas}"
     NUM_OF_ATOMIX="${atomixReplicas}"
-    EXTRA_HELM_FLAGS="${extraHelmFlags} " // note that the trailing space is required to separate the parameters from appends done later
+    EXTRA_HELM_FLAGS=" "
 
     APPS_TO_LOG="etcd kafka onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server onos-config-loader"
     LOG_FOLDER="$WORKSPACE/logs"
@@ -55,27 +61,19 @@ pipeline {
     stage ('Cleanup') {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
+          script {
+            helmTeardown(["default"])
+          }
           sh returnStdout: false, script: '''
             helm repo add onf https://charts.opencord.org
             helm repo update
 
-            NAMESPACES="voltha1 voltha2 infra default"
-            for NS in $NAMESPACES
-            do
-                for hchart in $(helm list -n $NS -q | grep -E -v 'docker-registry|kafkacat');
-                do
-                    echo "Purging chart: ${hchart}"
-                    helm delete -n $NS "${hchart}"
-                done
-            done
-
-            # wait for pods to be removed
-            echo -ne "\nWaiting for PODs to be removed..."
-            PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry|fleet|ingress-nginx" | wc -l)
-            while [[ $PODS != 0 ]]; do
+            # remove all persistent volume claims
+            kubectl delete pvc --all-namespaces --all
+            PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
+            while [[ \$PVCS != 0 ]]; do
               sleep 5
-              echo -ne "."
-              PODS=$(kubectl get pods --all-namespaces --no-headers  | grep -v -E "kube|cattle|registry|fleet|ingress-nginx" | wc -l)
+              PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
             done
 
             # remove orphaned port-forward from different namespaces
@@ -87,54 +85,13 @@ pipeline {
         }
       }
     }
-    stage('Clone voltha-system-tests') {
+    stage('Download Code') {
       steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/voltha-system-tests",
-            refspec: "${volthaSystemTestsChange}"
-          ]],
-          branches: [[ name: "${release}", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
+        getVolthaCode([
+          branch: "${release}",
+          volthaSystemTestsChange: "${volthaSystemTestsChange}",
+          volthaHelmChartsChange: "${volthaHelmChartsChange}",
         ])
-        script {
-          sh(script:"""
-            if [ '${volthaSystemTestsChange}' != '' ] ; then
-              cd $WORKSPACE/voltha-system-tests;
-              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
-            fi
-            """)
-        }
-      }
-    }
-    stage('Clone voltha-helm-charts') {
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/voltha-helm-charts",
-            refspec: "${volthaHelmChartsChange}"
-          ]],
-          branches: [[ name: "${release}", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-helm-charts"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
-        script {
-          sh(script:"""
-            if [ '${volthaHelmChartsChange}' != '' ] ; then
-              cd $WORKSPACE/voltha-helm-charts;
-              git fetch https://gerrit.opencord.org/voltha-helm-charts ${volthaHelmChartsChange} && git checkout FETCH_HEAD
-            fi
-            """)
-        }
       }
     }
     stage('Build patch') {
@@ -155,19 +112,8 @@ pipeline {
       }
     }
     stage('Deploy common infrastructure') {
-      // includes monitoring, kafka, etcd
       steps {
         sh '''
-        helm install kafka $HOME/teone/helm-charts/kafka --set replicaCount=${kafkaReplicas},replicas=${kafkaReplicas} --set persistence.enabled=false \
-          --set zookeeper.replicaCount=${kafkaReplicas} --set zookeeper.persistence.enabled=false \
-          --set prometheus.kafka.enabled=true,prometheus.operator.enabled=true,prometheus.jmx.enabled=true,prometheus.operator.serviceMonitor.namespace=default
-
-        # the ETCD chart use "auth" for resons different than BBsim, so strip that away
-        ETCD_FLAGS=$(echo ${extraHelmFlags} | sed -e 's/--set auth=false / /g') | sed -e 's/--set auth=true / /g'
-        ETCD_FLAGS+=" --set auth.rbac.enabled=false,persistence.enabled=false,statefulset.replicaCount=${etcdReplicas}"
-        ETCD_FLAGS+=" --set memoryMode=${inMemoryEtcdStorage} "
-        helm install --set replicas=${etcdReplicas} etcd $HOME/teone/helm-charts/etcd $ETCD_FLAGS
-
         if [ ${withMonitoring} = true ] ; then
           helm install nem-monitoring onf/nem-monitoring \
           -f $HOME/voltha-scale/grafana.yaml \
@@ -193,7 +139,7 @@ pipeline {
               _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
             done
             '''
-            sh returnStdout: false, script: """
+            def returned_flags = sh (returnStdout: true, script: """
 
               export EXTRA_HELM_FLAGS+=' '
 
@@ -248,11 +194,6 @@ pipeline {
               # No persistent-volume-claims in Atomix
               EXTRA_HELM_FLAGS+="--set onos-classic.atomix.persistence.enabled=false "
 
-              echo "Installing with the following extra arguments:"
-              echo $EXTRA_HELM_FLAGS
-
-
-
               # Use custom built images
 
               if [ '\$GERRIT_PROJECT' == 'voltha-go' ]; then
@@ -282,43 +223,49 @@ pipeline {
               if [ '\$GERRIT_PROJECT' == 'bbsim' ]; then
                 EXTRA_HELM_FLAGS+="--set images.bbsim.repository=${dockerRegistry}/voltha/bbsim,images.bbsim.tag=voltha-scale "
               fi
+              echo \$EXTRA_HELM_FLAGS
 
-              helm upgrade --install voltha-infra onf/voltha-infra \$EXTRA_HELM_FLAGS \
-                --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
-                --set etcd.enabled=false,kafka.enabled=false \
-                --set global.log_level=${logLevel} \
-                -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml \
-                --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 \
-                --version 0.1.13
+            """).trim()
 
-              helm upgrade --install voltha1 onf/voltha-stack \$EXTRA_HELM_FLAGS \
-                --set global.stack_name=voltha1 \
-                --set global.voltha_infra_name=voltha-infra \
-                --set global.voltha_infra_namespace=default \
-                --set global.log_level=${logLevel} \
-                ${ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "default")} \
-                --set voltha.services.kafka.adapter.address=kafka.default.svc:9092 \
-                --set voltha.services.kafka.cluster.address=kafka.default.svc:9092 \
-                --set voltha.services.etcd.address=etcd.default.svc:2379 \
-                --set voltha-adapter-openolt.services.kafka.adapter.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openolt.services.kafka.cluster.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openolt.services.etcd.address=etcd.default.svc:2379 \
-                --set voltha-adapter-openonu.services.kafka.adapter.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openonu.services.kafka.cluster.address=kafka.default.svc:9092 \
-                --set voltha-adapter-openonu.services.etcd.address=etcd.default.svc:2379 \
-                --version 0.1.17
+            def extraHelmFlags = returned_flags
+            // The added space before params.extraHelmFlags is required due to the .trim() above
+            def infraHelmFlags =
+              " --set global.log_level=${logLevel} " +
+              "--set onos-classic.onosSshPort=30115 " +
+              "--set onos-classic.onosApiPort=30120 " +
+              extraHelmFlags + " " + params.extraHelmFlags
 
+            println "Passing the following parameters to the VOLTHA infra deploy: ${infraHelmFlags}."
 
-              for i in {0..${olts.toInteger() - 1}}; do
-                stackId=1
-                helm upgrade --install bbsim\$i onf/bbsim \$EXTRA_HELM_FLAGS \
-                  --set olt_id="\${stackId}\${i}" \
-                  --set onu=${onus},pon=${pons} \
-                  --set global.log_level=${logLevel.toLowerCase()} \
-                  -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml \
-                  --version 4.2.0
-              done
-            """
+            def localCharts = false
+            if (volthaHelmChartsChange != "" || branch != "master") {
+              localCharts = true
+            }
+
+            volthaInfraDeploy([
+              workflow: workflow,
+              infraNamespace: "default",
+              extraHelmFlags: infraHelmFlags,
+              localCharts: localCharts,
+              onosReplica: onosReplicas,
+              atomixReplica: atomixReplicas,
+              kafkaReplica: kafkaReplicas,
+              etcdReplica: etcdReplicas,
+            ])
+
+            stackHelmFlags = " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
+            stackHelmFlags += " --set voltha.ingress.enabled=true --set voltha.ingress.enableVirtualHosts=true --set voltha.fullHostnameOverride=voltha.scale1.dev "
+            stackHelmFlags += extraHelmFlags + " " + params.extraHelmFlags
+
+            volthaStackDeploy([
+              bbsimReplica: olts.toInteger(),
+              infraNamespace: "default",
+              volthaNamespace: "default",
+              stackName: "voltha1", // TODO support custom charts
+              workflow: workflow,
+              extraHelmFlags: stackHelmFlags,
+              localCharts: localCharts,
+            ])
             sh """
               set +x
 
@@ -365,24 +312,31 @@ pipeline {
           # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.mcast
           # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.opencord.igmpproxy
           # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.opencord.olt
+          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.net.flowobjective.impl.FlowObjectiveManager
 
           kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log ${logLevel.toLowerCase()} false
 
-          # Set Flows/Ports/Meters poll frequency
+          # Set Flows/Ports/Meters/Groups poll frequency
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${onosStatInterval}
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.device.impl.OpenFlowDeviceProvider portStatsPollFrequency ${onosStatInterval}
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.group.impl.OpenFlowGroupProvider groupPollInterval ${onosGroupInterval}
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.FlowObjectiveManager numThreads ${flowObjWorkerThreads}
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager objectiveTimeoutMs 300000
+
+          #SR is not needed in scale tests and not currently used by operators in production, can be disabled.
+          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.onosproject.segmentrouting
 
           if [ ${withFlows} = false ]; then
             sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 app deactivate org.opencord.olt
           fi
 
           if [ '${workflow}' = 'tt' ]; then
-            etcd_container=\$(kubectl get pods --all-namespaces | grep etcd | awk 'NR==1{print \$2}')
+            etcd_container=\$(kubectl get pods --all-namespaces | grep etcd-0 | awk 'NR==1{print \$2}')
             kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-HSIA.json \$etcd_container:/tmp/hsia.json
             put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/hsia.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/64')
             kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-VoIP.json \$etcd_container:/tmp/voip.json
             put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/voip.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/65')
-            kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST.json \$etcd_container:/tmp/mcast.json
+            kubectl cp $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-MCAST-AdditionalBW-NA.json \$etcd_container:/tmp/mcast.json
             put_result=\$(kubectl exec -it \$etcd_container -- /bin/sh -c 'cat /tmp/mcast.json | ETCDCTL_API=3 etcdctl put service/voltha/technology_profiles/${tech_prof_directory}/66')
           fi
 
@@ -423,7 +377,7 @@ pipeline {
         sh """
         # load MIB template
         wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-        cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
+        cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
         """
       }
     }
@@ -477,12 +431,12 @@ EOF
               -v olt:${olts} \
               -v pon:${pons} \
               -v onu:${onus} \
+              -v ONOS_SSH_PORT:30115 \
+              -v ONOS_REST_PORT:30120 \
               -v workflow:${workflow} \
               -v withEapol:${withEapol} \
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
-              -v ONOS_SSH_PORT:30115 \
-              -v ONOS_REST_PORT:30120 \
               --noncritical non-critical \
               -e igmp -e teardown "
 
@@ -521,6 +475,9 @@ EOF
         }
       }
       steps {
+        sh returnStdout: false, script: """
+          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.store.group.impl
+        """
         sh '''
           set +e
           mkdir -p $ROBOT_LOGS_DIR
@@ -537,6 +494,8 @@ EOF
               -v withEapol:${withEapol} \
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
+              -v ONOS_SSH_PORT:30115 \
+              -v ONOS_REST_PORT:30120 \
               --noncritical non-critical \
               -i igmp \
               -e setup -e activation -e flow-before \
@@ -610,7 +569,7 @@ EOF
         fi
 
         cd voltha-system-tests
-        source ./vst_venv/bin/activate
+        source ./vst_venv/bin/activate || true
         python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
         cat $WORKSPACE/execution-time.txt
       '''
@@ -650,6 +609,7 @@ EOF
         outputPath: 'RobotLogs',
         passThreshold: 100,
         reportFileName: '**/report*.html',
+        onlyCritical: true,
         unstableThreshold: 0]);
       // get all the logs from kubernetes PODs
       sh returnStdout: false, script: '''
@@ -666,8 +626,13 @@ EOF
         printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
 
         # get ONOS cfg from the 3 nodes
-        printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl exec -it # -- ${karafHome}/bin/client cfg get > $LOG_FOLDER/#.cfg" || true
+        # kubectl exec -t voltha-infra-onos-classic-0 -- sh /root/onos/apache-karaf-4.2.9/bin/client cfg get > ~/voltha-infra-onos-classic-0-cfg.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-1 -- sh /root/onos/apache-karaf-4.2.9/bin/client cfg get > ~/voltha-infra-onos-classic-1-cfg.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-2 -- sh /root/onos/apache-karaf-4.2.9/bin/client cfg get > ~/voltha-infra-onos-classic-2-cfg.txt || true
 
+        # kubectl exec -t voltha-infra-onos-classic-0 -- sh /root/onos/apache-karaf-4.2.9/bin/client obj-next-ids > ~/voltha-infra-onos-classic-0-next-objs.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-1 -- sh /root/onos/apache-karaf-4.2.9/bin/client obj-next-ids > ~/voltha-infra-onos-classic-1-next-objs.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-2 -- sh /root/onos/apache-karaf-4.2.9/bin/client obj-next-ids > ~/voltha-infra-onos-classic-2-next-objs.txt || true
 
         # get radius logs out of the container
         kubectl cp $(kubectl get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER/radius.log || true
@@ -751,6 +716,10 @@ EOF
         curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_disk_backend_commit_duration_seconds_bucket' | jq '.data'  > $WORKSPACE/etcd-metrics/etcd-backend-write-time-bucket.json || true
         curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_disk_wal_fsync_duration_seconds_bucket' | jq '.data'  > $WORKSPACE/etcd-metrics/etcd-wal-fsync-time-bucket.json || true
         curl -s -X GET -G http://10.90.0.101:31301/api/v1/query --data-urlencode 'query=etcd_network_peer_round_trip_time_seconds_bucket' | jq '.data'  > $WORKSPACE/etcd-metrics/etcd-network-peer-round-trip-time-seconds.json || true
+        etcd_namespace=\$(kubectl get pods --all-namespaces | grep etcd-0 | awk 'NR==1{print \$1}')
+        etcd_container=\$(kubectl get pods --all-namespaces | grep etcd-0 | awk 'NR==1{print \$2}')
+        kubectl exec -it -n  \$etcd_namespace \$etcd_container -- etcdctl defrag --cluster || true
+        kubectl exec -it -n  \$etcd_namespace \$etcd_container -- etcdctl endpoint status -w table > $WORKSPACE/etcd-metrics/etcd-status-table.txt || true
 
       '''
       // get VOLTHA debug infos
@@ -778,7 +747,7 @@ EOF
       sh '''
       if [ ${withMonitoring} = true ] ; then
         cd $WORKSPACE/voltha-system-tests
-        source ./vst_venv/bin/activate
+        source ./vst_venv/bin/activate || true
         sleep 60 # we have to wait for prometheus to collect all the information
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
@@ -790,8 +759,6 @@ EOF
 
 def start_port_forward(olts) {
   sh """
-  daemonize -E JENKINS_NODE_COOKIE="dontKillMe" /usr/local/bin/kubectl port-forward --address 0.0.0.0 -n default svc/voltha1-voltha-api 55555:55555
-
   bbsimRestPortFwd=50071
   for i in {0..${olts.toInteger() - 1}}; do
     daemonize -E JENKINS_NODE_COOKIE="dontKillMe" /usr/local/bin/kubectl port-forward --address 0.0.0.0 -n default svc/bbsim\${i} \${bbsimRestPortFwd}:50071
