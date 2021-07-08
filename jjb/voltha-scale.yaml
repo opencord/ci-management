@@ -25,7 +25,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true'
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false'
           withPcap: false
 
       - 'voltha-scale-measurements':
@@ -63,7 +63,7 @@
           withDhcp: true
           withIgmp: false
           inMemoryEtcdStorage: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
           onosImg: andreacampanella/voltha-onos:voltha-onos-2.5
           bbsimImg: gcgirish/bbsim:etcd
           rwCoreImg: volthacore/voltha-rw-core:noflows
@@ -86,7 +86,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml '
           rwCoreImg: volthacore/voltha-rw-core:meter
 
       - 'voltha-scale-measurements':
@@ -122,7 +122,7 @@
           withIgmp: true
           onosReplicas: 3
           atomixReplicas: 3
-          extraHelmFlags: '--set dhcpRetry=true -f /home/jenkins/voltha-scale/voltha-values.yaml '
+          extraHelmFlags: '--set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml '
           rwCoreImg: volthacore/voltha-rw-core:meter
 
       # multi-stack jobs
