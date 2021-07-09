@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "687db6bd_9a1e0903",
+        "filename": "jjb/verify/kind-voltha.yaml",
+        "patchSetId": 4
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-07-09T08:37:20Z",
+      "side": 1,
+      "message": "@Teo: Is this file required in 2.8 and future?",
+      "range": {
+        "startLine": 2,
+        "startChar": 0,
+        "endLine": 2,
+        "endChar": 42
+      },
+      "revId": "4ae8e0235a10b7aa12dd93f8c6a8242eb0e8e646",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
