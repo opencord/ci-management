@@ -54,7 +54,7 @@ pipeline {
     stage ("Parse deployment configuration file") {
       steps {
         sh returnStdout: true, script: "rm -rf ${configBaseDir}"
-        sh returnStdout: true, script: "git clone -b master ${cordRepoUrl}/${configBaseDir}"
+        sh returnStdout: true, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
         script {
 
           if (params.workflow.toUpperCase() == "TT") {
@@ -102,7 +102,7 @@ pipeline {
           kind get clusters | grep ${clusterName} | wc -l
           """
           if (clusterExists.trim() == "0") {
-            createKubernetesCluster([nodes: 3, name: clusterName])
+            createKubernetesCluster([branch: "${branch}", nodes: 3, name: clusterName])
           }
         }
       }

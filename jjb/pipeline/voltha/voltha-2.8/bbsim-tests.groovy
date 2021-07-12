@@ -211,7 +211,7 @@ pipeline {
           kind get clusters | grep ${clusterName} | wc -l
           """
           if (clusterExists.trim() == "0") {
-            createKubernetesCluster([nodes: 3, name: clusterName])
+            createKubernetesCluster([branch: "${branch}", nodes: 3, name: clusterName])
           }
         }
       }

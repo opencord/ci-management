@@ -73,7 +73,7 @@ pipeline {
     }
     stage('Create K8s Cluster') {
       steps {
-        createKubernetesCluster([nodes: 3])
+        createKubernetesCluster([branch: "${branch}", nodes: 3])
       }
     }
     stage('Load image in kind nodes') {
