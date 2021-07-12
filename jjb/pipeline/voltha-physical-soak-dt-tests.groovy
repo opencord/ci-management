@@ -130,9 +130,8 @@ pipeline {
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
         if [ "${params.branch}" != "master" ]; then
-           cd $WORKSPACE/kind-voltha
-           source releases/${params.branch}
-           VC_VERSION=1.1.8
+           # voltctl version for voltha-2.8 release
+           VC_VERSION=1.6.10
         else
            VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
         fi
