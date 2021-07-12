@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "1b68e17f_548ae827",
+        "filename": "jjb/pipeline/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-12T17:55:17Z",
+      "side": 1,
+      "message": "if [ \"${cfg.branch}\" \u003d\u003d \"voltha-2.8\" ]; then\n\nWould be a better match",
+      "revId": "bbfb1d13061e8b7038a81a064500ec1a1ce7540f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18b9d30c_2fc13577",
+        "filename": "jjb/pipeline/voltha-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-12T17:55:17Z",
+      "side": 1,
+      "message": "if [ \"${cfg.branch}\" \u003d\u003d \"voltha-2.8\" ]; then\n\nWould be a better match",
+      "revId": "bbfb1d13061e8b7038a81a064500ec1a1ce7540f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67237675_a9bb2c22",
+        "filename": "jjb/pipeline/voltha-physical-soak-dt-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-12T17:55:17Z",
+      "side": 1,
+      "message": "if [ \"${cfg.branch}\" \u003d\u003d \"voltha-2.8\" ]; then\n\nWould be a better match",
+      "revId": "bbfb1d13061e8b7038a81a064500ec1a1ce7540f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "aa1f2f43_a855378b",
+        "filename": "jjb/pipeline/voltha-physical-soak-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-12T17:55:17Z",
+      "side": 1,
+      "message": "if [ \"${cfg.branch}\" \u003d\u003d \"voltha-2.8\" ]; then\n\nWould be a better match",
+      "revId": "bbfb1d13061e8b7038a81a064500ec1a1ce7540f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4535eac4_e7af3c43",
+        "filename": "jjb/pipeline/voltha-tt-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 131,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-12T17:55:17Z",
+      "side": 1,
+      "message": "if [ \"${cfg.branch}\" \u003d\u003d \"voltha-2.8\" ]; then\n\nWould be a better match",
+      "revId": "bbfb1d13061e8b7038a81a064500ec1a1ce7540f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c2d6ae14_3e67d655",
+        "filename": "jjb/pipeline/voltha/master/tucson-build-and-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-12T17:55:17Z",
+      "side": 1,
+      "message": "I’m not opposed to this change, but isn’t this pipeline dedicated to the master branch only? We have the one in voltha-2.8 for the different branch",
+      "revId": "bbfb1d13061e8b7038a81a064500ec1a1ce7540f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "455c1590_a8c77de6",
+        "filename": "vars/createKubernetesCluster.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-12T17:55:17Z",
+      "side": 1,
+      "message": "if [ \"${cfg.branch}\" \u003d\u003d \"voltha-2.8\" ]; then\n\nWould be a better match",
+      "revId": "bbfb1d13061e8b7038a81a064500ec1a1ce7540f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
