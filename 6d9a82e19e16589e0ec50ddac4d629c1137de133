@@ -16,6 +16,24 @@
       "revId": "6d9a82e19e16589e0ec50ddac4d629c1137de133",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6087e3bd_d7597e78",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/software-upgrades.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 190,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-07-12T16:55:51Z",
+      "side": 0,
+      "message": "createKubernetesCluster is already doing that for us.",
+      "parentUuid": "50384737_db6b77b8",
+      "revId": "6d9a82e19e16589e0ec50ddac4d629c1137de133",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
