@@ -201,7 +201,6 @@ pipeline {
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
-         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${params.notificationEmail}", sendToIndividuals: false])
 
     }
   }

@@ -82,11 +82,6 @@
           default: '{profile}'
           description: 'Profile in which this job installs'
 
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
-
       - bool:
           name: installMonitoringAndLogging
           default: false
@@ -252,11 +247,6 @@
           description: "Onus per PonPort"
 
       - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
-
-      - string:
           name: openoltAdapterChart
           default: '{openoltAdapterChart}'
           description: 'OpenOLT chart name (or location on file system)'
@@ -334,11 +324,6 @@
           name: branch
           default: '{branch}'
 
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
-
     concurrent: true
 
     pipeline-scm:
@@ -414,11 +399,6 @@
       - string:
           name: branch
           default: '{branch}'
-
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
 
       - bool:
           name: configurePod
@@ -516,11 +496,6 @@
           name: branch
           default: '{branch}'
 
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
-
       - bool:
           name: configurePod
           default: true
@@ -612,11 +587,6 @@
           name: branch
           default: '{branch}'
 
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
-
     concurrent: true
 
     pipeline-scm:
@@ -688,11 +658,6 @@
       - string:
           name: branch
           default: '{branch}'
-
-      - string:
-          name: notificationEmail
-          default: 'kailash@opennetworking.org, you@opennetworking.org, suchitra@opennetworking.org'
-          description: ''
 
     concurrent: true
 
@@ -770,11 +735,6 @@
           name: profile
           default: '{profile}'
           description: 'Profile in which this job installs'
-
-      - string:
-          name: notificationEmail
-          default: 'luca@opennetworking.org, teo@opennetworking.org, weiyu@opennetworking.org'
-          description: ''
 
       - bool:
           name: configurePod

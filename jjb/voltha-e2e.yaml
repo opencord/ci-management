@@ -1120,11 +1120,6 @@
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
 
-      - string:
-          name: notificationEmail
-          default: 'andy@opennetworking.org'
-          description: ''
-
       - bool:
           name: reinstallOlt
           default: true

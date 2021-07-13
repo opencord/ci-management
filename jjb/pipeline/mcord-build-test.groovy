@@ -132,7 +132,6 @@ EOF
           sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'export OS_CLOUD=openstack_helm; openstack server list --all-projects 1>&2'", returnStdout: true)
 
           }
-          step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "${notificationEmail}", sendToIndividuals: false])
-     }
+       }
     }
 }
