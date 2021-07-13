@@ -225,7 +225,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
           power-switch: True
 
       # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
@@ -254,7 +254,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
           power-switch: True
 
       # ONF Menlo Soak POD build job - voltha-master branch
@@ -342,7 +342,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
       # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
@@ -416,7 +416,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -440,7 +440,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -467,7 +467,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
      # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and openonu go and timer based job
       - 'build_voltha_pod_release_timer':
@@ -495,4 +495,4 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'

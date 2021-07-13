@@ -33,26 +33,9 @@ pipeline {
   }
 
   stages {
-    stage('Clone kind-voltha') {
-      steps {
-        step([$class: 'WsCleanup'])
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/kind-voltha",
-            refspec: "${kindVolthaChange}"
-          ]],
-          branches: [[ name: "master", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
-      }
-    }
     stage('Clone voltha-system-tests') {
       steps {
+        step([$class: 'WsCleanup'])
         checkout([
           $class: 'GitSCM',
           userRemoteConfigs: [[
@@ -74,23 +57,6 @@ pipeline {
             fi
             """)
         }
-      }
-    }
-    stage('Clone cord-tester') {
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/cord-tester",
-            refspec: "${cordTesterChange}"
-          ]],
-          branches: [[ name: "master", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "cord-tester"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
       }
     }
     // This checkout allows us to show changes in Jenkins
@@ -170,11 +136,8 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FunctionalTests"
       }
       steps {
+        startComponentsLog(logsDir: "$WORKSPACE/logs/FunctionalTests")
         sh """
-        cd $WORKSPACE/kind-voltha/scripts
-        ./log-collector.sh > /dev/null &
-        ./log-combine.sh > /dev/null &
-
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
@@ -183,6 +146,7 @@ pipeline {
         fi
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
+        stopComponentsLog(logsDir: "$WORKSPACE/logs/FunctionalTests", compress: true)
       }
     }
 
@@ -193,6 +157,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FailureScenarios"
       }
       steps {
+        startComponentsLog(logsDir: "$WORKSPACE/logs/FailureScenarios")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
@@ -202,6 +167,7 @@ pipeline {
         fi
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
+        stopComponentsLog(logsDir: "$WORKSPACE/logs/FailureScenarios", compress: true)
       }
     }
 
@@ -212,11 +178,13 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/DataplaneTests"
       }
       steps {
+        startComponentsLog(logsDir: "$WORKSPACE/logs/DataplaneTests")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
+        stopComponentsLog(logsDir: "$WORKSPACE/logs/DataplaneTests", compress: true)
       }
     }
     stage('HA Tests') {
@@ -226,11 +194,13 @@ pipeline {
        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ONOSHAScenarios"
       }
       steps {
-       sh """
-       mkdir -p $ROBOT_LOGS_DIR
-       export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-       make -C $WORKSPACE/voltha-system-tests voltha-test || true
-       """
+        startComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios")
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+        make -C $WORKSPACE/voltha-system-tests voltha-test || true
+        """
+        stopComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios", compress: true)
       }
     }
 
@@ -241,6 +211,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/MultipleOLTScenarios"
       }
       steps {
+        startComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
@@ -250,6 +221,7 @@ pipeline {
         fi
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
+        stopComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios", compress: true)
       }
     }
 
@@ -261,11 +233,13 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/ErrorScenarios"
       }
       steps {
+        startComponentsLog(logsDir: "$WORKSPACE/logs/ErrorScenarios")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
+        stopComponentsLog(logsDir: "$WORKSPACE/logs/ErrorScenarios", compress: true)
       }
     }
   }
@@ -279,43 +253,6 @@ pipeline {
       kubectl get pods -n voltha -o wide
       kubectl get pods -o wide
 
-      sleep 60 # Wait for log-collector and log-combine to complete
-
-      # Clean up "announcer" pod used by the tests if present
-      kubectl delete pod announcer || true
-
-      ## Pull out errors from log files
-      extract_errors_go() {
-        echo
-        echo "Error summary for $1:"
-        grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
-        echo
-      }
-
-      extract_errors_python() {
-        echo
-        echo "Error summary for $1:"
-        grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
-        echo
-      }
-
-      extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
-      extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
-      extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-      extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
-      extract_errors_python onos >> $WORKSPACE/error-report.log
-
-      gzip error-report.log || true
-      rm error-report.log || true
-
-      cd $WORKSPACE/kind-voltha/scripts/logger/combined/
-      tar czf $WORKSPACE/container-logs.tgz *
-      rm * || true
-
-      cd $WORKSPACE
-      gzip *-combined.log || true
-      rm *-combined.log || true
-
       # store information on running charts
       helm ls > $WORKSPACE/helm-list.txt || true
 
@@ -323,10 +260,6 @@ pipeline {
       kubectl get pods --all-namespaces -o wide > $WORKSPACE/pods.txt || true
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-images.txt || true
       kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-imagesId.txt || true
-
-      # collect ETCD cluster logs
-      mkdir -p $WORKSPACE/etcd
-      printf '%s\n' $(kubectl get pods -l app=etcd -o=jsonpath="{.items[*]['metadata.name']}") | xargs -I% bash -c "kubectl logs % > $WORKSPACE/etcd/%.log"
       '''
       script {
         deployment_config.olts.each { olt ->
@@ -355,7 +288,7 @@ pipeline {
         unstableThreshold: 0,
         onlyCritical: true
         ]);
-      archiveArtifacts artifacts: '*.log,*.gz,*.tgz,etcd/*.log,*.txt'
+      archiveArtifacts artifacts: '**/*.log,**/*.tgz,*.txt'
     }
   }
 }
