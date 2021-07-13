@@ -11,7 +11,7 @@
       - 'verify-bbsim-jobs-voltha-2.8':
           name-extension: '-voltha-2.8'
           override-branch: 'voltha-2.8'
-          branch-regexp: '{kind-voltha-regexp}'
+          branch-regexp: '^voltha-2.8$'
       - 'verify-bbsim-jobs-master':
           branch-regexp: '^master$'
       - 'publish-bbsim-jobs':
@@ -34,6 +34,19 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          testTargets: |
+            - target: sanity-bbsim-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: sanity-bbsim-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: sanity-bbsim-tt
+              workflow: tt
+              flags: ""
+              teardown: true
 
 - job-group:
     name: 'verify-bbsim-jobs-master'

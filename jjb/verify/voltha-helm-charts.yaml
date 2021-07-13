@@ -11,7 +11,7 @@
       - 'verify-voltha-helm-charts-jobs-voltha-2.8':
           name-extension: '-voltha-2.8'
           override-branch: 'voltha-2.8'
-          branch-regexp: '{kind-voltha-regexp}'
+          branch-regexp: '^voltha-2.8$'
       - 'verify-voltha-helm-charts-jobs-master':
           branch-regexp: '^master$'
 

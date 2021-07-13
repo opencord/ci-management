@@ -13,7 +13,7 @@
           build-node:  'ubuntu18.04-basebuild-4c-8g'
           name-extension: '-voltha-2.8'
           override-branch: 'voltha-2.8'
-          branch-regexp: '{kind-voltha-regexp}'
+          branch-regexp: '^voltha-2.8$'
       - 'verify-voltha-system-tests-jobs-master':
           build-node:  'ubuntu18.04-basebuild-4c-8g'
           branch-regexp: '^master$'

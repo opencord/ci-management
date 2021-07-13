@@ -10,7 +10,7 @@
           branch-regexp: '{all-branches-regexp}'
       - 'verify-bbsim-sadis-server-jobs-voltha-2.8':
           name-extension: '-voltha-2.8'
-          branch-regexp: '{kind-voltha-regexp}'
+          branch-regexp: '^voltha-2.8$'
       - 'verify-bbsim-sadis-server-jobs-master':
           branch-regexp: '^master$'
       - 'publish-bbsim-sadis-server-jobs':

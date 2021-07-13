@@ -11,7 +11,7 @@
       - 'verify-voltha-openonu-adapter-go-jobs-voltha-2.8':
           name-extension: '-voltha-2.8'
           override-branch: 'voltha-2.8'
-          branch-regexp: '{kind-voltha-regexp}'
+          branch-regexp: '^voltha-2.8$'
       - 'verify-voltha-openonu-adapter-go-jobs-master':
           branch-regexp: '^master$'
       - 'publish-voltha-openonu-adapter-go-jobs':
