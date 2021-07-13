@@ -237,10 +237,8 @@ pipeline {
 
             println "Passing the following parameters to the VOLTHA infra deploy: ${infraHelmFlags}."
 
-            def localCharts = false
-            if (volthaHelmChartsChange != "" || branch != "master") {
-              localCharts = true
-            }
+            // in a released version we always want to use the local version of the helm-charts
+            def localCharts = true
 
             volthaInfraDeploy([
               workflow: workflow,
