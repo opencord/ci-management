@@ -460,6 +460,7 @@ EOF
         }
       }
     }
+  }
   post {
     always {
       // collect result, done in the "post" step so it's executed even in the
