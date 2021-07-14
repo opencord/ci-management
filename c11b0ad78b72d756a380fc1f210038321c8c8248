@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9265ae84_5a2047f0",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-14T18:01:17Z",
+      "side": 0,
+      "message": "that only works for \"master\", otherwise is skipped.\nIn a released version the component tag will tell us what the difference is",
+      "parentUuid": "f8f6406e_2843a65d",
+      "revId": "c11b0ad78b72d756a380fc1f210038321c8c8248",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5b679cd9_6e9c831f",
         "filename": "jjb/pipeline/voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy",
         "patchSetId": 1
@@ -33,6 +51,24 @@
       "revId": "c11b0ad78b72d756a380fc1f210038321c8c8248",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5c96870a_246b2a61",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-14T18:01:17Z",
+      "side": 0,
+      "message": "This is a container that was created by the tests, it has been removed in this commit more than a year ago: https://github.com/opencord/voltha-system-tests/commit/e187eda51317d35af807ae5accc493e9dd85731a",
+      "parentUuid": "5b679cd9_6e9c831f",
+      "revId": "c11b0ad78b72d756a380fc1f210038321c8c8248",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
