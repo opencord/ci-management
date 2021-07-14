@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25caef01_9924ee1b",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 360,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-07-14T09:22:07Z",
+      "side": 1,
+      "message": "Value \u00271\u0027 is already in use. Use a different value for time. May be \u00277\u0027. \nAlso, add pipeline-script param:\npipeline-script: \u0027voltha/voltha-2.8/physical-build.groovy\u0027",
+      "range": {
+        "startLine": 360,
+        "startChar": 10,
+        "endLine": 360,
+        "endChar": 19
+      },
+      "revId": "28fa72ad8c8c1fea3d56c00d9b2098fdcf211f7c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
