@@ -460,51 +460,6 @@ EOF
         }
       }
     }
-    stage('Run Igmp Tests') {
-      environment {
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/IgmpTests"
-      }
-      when {
-        expression {
-          return params.withIgmp
-        }
-      }
-      steps {
-        sh returnStdout: false, script: """
-          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.store.group.impl
-        """
-        sh '''
-          set +e
-          mkdir -p $ROBOT_LOGS_DIR
-          cd $WORKSPACE/voltha-system-tests
-          make vst_venv
-        '''
-        timeout(time: 11, unit: 'MINUTES') {
-          sh '''
-            ROBOT_PARAMS="--exitonfailure \
-              -v olt:${olts} \
-              -v pon:${pons} \
-              -v onu:${onus} \
-              -v workflow:${workflow} \
-              -v withEapol:${withEapol} \
-              -v withDhcp:${withDhcp} \
-              -v withIgmp:${withIgmp} \
-              -v ONOS_SSH_PORT:30115 \
-              -v ONOS_REST_PORT:30120 \
-              --noncritical non-critical \
-              -i igmp \
-              -e setup -e activation -e flow-before \
-              -e authentication -e provision -e flow-after \
-              -e dhcp -e teardown "
-            cd $WORKSPACE/voltha-system-tests
-            source ./vst_venv/bin/activate
-            robot -d $ROBOT_LOGS_DIR \
-            $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
-          '''
-        }
-      }
-    }
-  }
   post {
     always {
       // collect result, done in the "post" step so it's executed even in the
