@@ -471,6 +471,9 @@ EOF
           return params.withIgmp
         }
       }
+      options {
+          timeout(time: 11, unit: 'MINUTES')
+      }
       steps {
         sh returnStdout: false, script: """
           # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.store.group.impl
@@ -481,28 +484,43 @@ EOF
           cd $WORKSPACE/voltha-system-tests
           make vst_venv
         '''
-        timeout(time: 11, unit: 'MINUTES') {
-          sh '''
-            ROBOT_PARAMS="--exitonfailure \
-              -v olt:${olts} \
-              -v pon:${pons} \
-              -v onu:${onus} \
-              -v workflow:${workflow} \
-              -v withEapol:${withEapol} \
-              -v withDhcp:${withDhcp} \
-              -v withIgmp:${withIgmp} \
-              -v ONOS_SSH_PORT:30115 \
-              -v ONOS_REST_PORT:30120 \
-              --noncritical non-critical \
-              -i igmp \
-              -e setup -e activation -e flow-before \
-              -e authentication -e provision -e flow-after \
-              -e dhcp -e teardown "
-            cd $WORKSPACE/voltha-system-tests
-            source ./vst_venv/bin/activate
-            robot -d $ROBOT_LOGS_DIR \
-            $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
-          '''
+        script {
+          Exception caughtException = null
+
+          catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') { 
+            try {
+              sh '''
+                ROBOT_PARAMS="--exitonfailure \
+                  -v olt:${olts} \
+                  -v pon:${pons} \
+                  -v onu:${onus} \
+                  -v workflow:${workflow} \
+                  -v withEapol:${withEapol} \
+                  -v withDhcp:${withDhcp} \
+                  -v withIgmp:${withIgmp} \
+                  -v ONOS_SSH_PORT:30115 \
+                  -v ONOS_REST_PORT:30120 \
+                  --noncritical non-critical \
+                  -i igmp \
+                  -e setup -e activation -e flow-before \
+                  -e authentication -e provision -e flow-after \
+                  -e dhcp -e teardown "
+                cd $WORKSPACE/voltha-system-tests
+                source ./vst_venv/bin/activate
+                robot -d $ROBOT_LOGS_DIR \
+                $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+              '''
+            } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
+              // if the error is a timeout don't mark the build as failed
+              println "IGMP test timed out" 
+            } catch (Throwable e) {
+              caughtException = e
+            }
+          }
+
+          if (caughtException) {
+            error caughtException.message
+          }
         }
       }
     }
