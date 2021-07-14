@@ -217,15 +217,13 @@ pipeline {
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
-        if [ "${params.branch}" == "master" ]; then
-          if [ ${params.enableMultiUni} = false ]; then
-            if ( ${powerSwitch} ); then
-              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
-            else
-              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
-            fi
-            make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
+        if [ ${params.enableMultiUni} = false ]; then
+          if ( ${powerSwitch} ); then
+            export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
+          else
+            export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
           fi
+          make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """
       }
