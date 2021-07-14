@@ -261,6 +261,7 @@
       - 'build_voltha_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
+          disable-job: true
           bbsimReplicas: 1
           profile: '1T8GEM'
           name-extension: '_DT'
@@ -275,7 +276,7 @@
       - 'build_voltha_pod_manual_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: false
+          disable-job: true
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -290,7 +291,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': false
+          'disable-job': true
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -306,10 +307,74 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': false
+          'disable-job': true
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_DP'
+          test-type: 'Dataplane'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H * * 6"
+
+      # ONF Menlo Soak POD build job - voltha-2.8 branch
+      - 'build_voltha_pod_manual':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: false
+          branch: 'voltha-2.8'
+          release: '2.8'
+          bbsimReplicas: 1
+          profile: '1T8GEM'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          reinstall-olt: true
+          num-of-onus: 32
+          num-of-ponports: 16
+          logLevel: 'WARN'
+          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+
+      # ONF Menlo Soak POD test job - voltha-2.8 branch
+      # Run tests manually triggering the job
+      - 'build_voltha_pod_manual_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: false
+          profile: '1T8GEM'
+          branch: 'voltha-2.8'
+          release: '2.8'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_Func'
+          test-type: 'Functional'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+
+      # ONF Menlo Soak POD test job - voltha-2.8 branch
+      # Run failure/recovery tests every Wednesday
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          'disable-job': false
+          profile: '1T8GEM'
+          branch: 'voltha-2.8'
+          release: '2.8'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_Fail'
+          test-type: 'Failure'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H * * 3"
+
+      # ONF Menlo Soak POD test job - voltha-2.8 branch
+      # Run dataplane tests every Saturday
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          'disable-job': false
+          profile: '1T8GEM'
+          branch: 'voltha-2.8'
+          release: '2.8'
           work-flow: 'DT'
           name-extension: '_DT_soak_DP'
           test-type: 'Dataplane'
