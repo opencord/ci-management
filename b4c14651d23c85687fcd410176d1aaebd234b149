@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "9db61d82_accd0f90",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-14T17:47:24Z",
+      "side": 1,
+      "message": "we could append if we keep the keyword VOLTHA specific, in this way it\u0027s generic and can be used by non-voltha projects as well (just in case we\u0027ll ever go back working on SEBA)",
+      "parentUuid": "f469cc00_73fa447d",
+      "revId": "b4c14651d23c85687fcd410176d1aaebd234b149",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b5617ea2_5ecfa3d1",
         "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
         "patchSetId": 1
@@ -30,6 +48,24 @@
       "writtenOn": "2021-07-14T08:29:45Z",
       "side": 1,
       "message": "also I\u0027d in any way extract this list to avoid mismatch and leakages of mail processes",
+      "revId": "b4c14651d23c85687fcd410176d1aaebd234b149",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "be4c92ea_edb080d2",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-07-14T17:47:24Z",
+      "side": 1,
+      "message": "I considered that too, I can change the keyword to stop all the running kail-processes",
+      "parentUuid": "b5617ea2_5ecfa3d1",
       "revId": "b4c14651d23c85687fcd410176d1aaebd234b149",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
