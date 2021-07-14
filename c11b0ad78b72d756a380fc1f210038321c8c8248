@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f8f6406e_2843a65d",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-14T08:29:45Z",
+      "side": 0,
+      "message": "this used to show the different commits that wen in between builds, do we still have a way to do so now ?",
+      "revId": "c11b0ad78b72d756a380fc1f210038321c8c8248",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5b679cd9_6e9c831f",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 285,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-14T08:29:45Z",
+      "side": 0,
+      "message": "what is this pod ? is it something that might get stuck if we do not remove it ?",
+      "revId": "c11b0ad78b72d756a380fc1f210038321c8c8248",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}

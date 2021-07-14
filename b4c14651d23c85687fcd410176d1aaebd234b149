@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f469cc00_73fa447d",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-14T08:29:45Z",
+      "side": 1,
+      "message": "I\u0027m wondering if we ought to have an append strategy instead of having to re-define them all. I\u0027m ok doing this append later",
+      "revId": "b4c14651d23c85687fcd410176d1aaebd234b149",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b5617ea2_5ecfa3d1",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-14T08:29:45Z",
+      "side": 1,
+      "message": "also I\u0027d in any way extract this list to avoid mismatch and leakages of mail processes",
+      "revId": "b4c14651d23c85687fcd410176d1aaebd234b149",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
