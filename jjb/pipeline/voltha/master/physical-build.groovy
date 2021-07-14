@@ -282,24 +282,11 @@ pipeline {
             for(int i=0; i < deployment_config.olts.size(); i++) {
               // NOTE what is oltDebVersion23? is that for VOLTHA-2.3? do we still need this differentiation?
               sh returnStdout: true, script: """
-              if [[ "${branch}" != "master" ]] && [[ "${params.inBandManagement}" == "true" ]]; then
-                ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
+              ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
+              if [ "${params.inBandManagement}" == "true" ]; then
                 sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'kill -9 `pgrep -f "[b]ash /opt/openolt/openolt_dev_mgmt_daemon_process_watchdog"` || true'
-                sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} "dpkg --install ${deployment_config.olts[i].oltDebVersion23}"
               fi
-              if [[ "${branch}" != "master" ]] && [[ "${params.inBandManagement}" == "false" ]]; then
-                ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
-                sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} "dpkg --install ${deployment_config.olts[i].oltDebVersion23}"
-              fi
-              if [[ "${branch}" == "master" ]] && [[ "${params.inBandManagement}" == "true" ]]; then
-                ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
-                sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'kill -9 `pgrep -f "[b]ash /opt/openolt/openolt_dev_mgmt_daemon_process_watchdog"` || true'
-                sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} "dpkg --install ${deployment_config.olts[i].oltDebVersion}"
-              fi
-              if [[ "${branch}" == "master" ]] && [[ "${params.inBandManagement}" == "false" ]]; then
-                ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
-                sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} "dpkg --install ${deployment_config.olts[i].oltDebVersion}"
-              fi
+              sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} "dpkg --install ${deployment_config.olts[i].oltDebVersion}"
               sleep 10
               """
               timeout(5) {
