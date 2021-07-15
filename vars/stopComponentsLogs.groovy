@@ -10,16 +10,16 @@ def call(Map config) {
     def tag = "jenkins-"
     println "Stopping all kail logging process"
     sh """
-    P_IDS="$(ps e -ww -A | grep "_TAG=jenkins-kail" | grep -v grep | awk '{print $1}')"
-    if [ -n "$P_IDS" ]; then
-        for P_ID in $P_IDS; do
-            kill -9 $P_ID
+    P_IDS="\$(ps e -ww -A | grep "_TAG=jenkins-kail" | grep -v grep | awk '{print \$1}')"
+    if [ -n "\$P_IDS" ]; then
+        for P_ID in \$P_IDS; do
+            kill -9 \$P_ID
         done
     fi
     """
-    if (compress) {
+    if (cfg.compress) {
         sh """
-        tar czf ${logsDir}/combined.tgz *
+        tar czf ${cfg.logsDir}/combined.tgz *
         rm *.log
         """
 
