@@ -437,7 +437,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          pipeline-script: 'voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
       # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
