@@ -124,7 +124,7 @@ pipeline {
       steps {
         timeout(time: 10, unit: 'MINUTES') {
           script {
-            startComponentsLog([
+            startComponentsLogs([
               appsToLog: [
                 'app.kubernetes.io/name=etcd',
                 'app.kubernetes.io/name=kafka',
@@ -527,19 +527,7 @@ EOF
   }
   post {
     always {
-      stopComponentsLog([
-        'app.kubernetes.io/name=etcd',
-        'app.kubernetes.io/name=kafka',
-        'app=onos-classic',
-        'app=adapter-open-onu',
-        'app=adapter-open-olt',
-        'app=rw-core',
-        'app=ofagent',
-        'app=bbsim',
-        'app=radius',
-        'app=bbsim-sadis-server',
-        'app=onos-config-loader',
-      ])
+      stopComponentsLogs()
       // collect result, done in the "post" step so it's executed even in the
       // event of a timeout in the tests
       sh '''
