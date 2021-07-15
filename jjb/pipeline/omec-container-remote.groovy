@@ -40,7 +40,7 @@ pipeline {
     always {
       // Copy artifacts from the remote job dir (make sure both jobs run on the same node)
       sh """
-      cp -r ../${params.project}_premerge_${params.pod}/artifacts/* ./
+      cp -r ../${params.project}_premerge_${params.pod}/* ./
       """
       archiveArtifacts artifacts: "**/*.*", allowEmptyArchive: true
     }
