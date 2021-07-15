@@ -50,10 +50,7 @@ pipeline {
     NUM_OF_ONOS="${onosReplicas}"
     NUM_OF_ATOMIX="${atomixReplicas}"
     EXTRA_HELM_FLAGS=" "
-
-    APPS_TO_LOG="etcd kafka onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server onos-config-loader"
     LOG_FOLDER="$WORKSPACE/logs"
-
     GERRIT_PROJECT="${GERRIT_PROJECT}"
   }
 
@@ -127,18 +124,21 @@ pipeline {
       steps {
         timeout(time: 10, unit: 'MINUTES') {
           script {
-            sh returnStdout: false, script: '''
-            # start logging with kail
-
-            mkdir -p $LOG_FOLDER
-
-            list=($APPS_TO_LOG)
-            for app in "${list[@]}"
-            do
-              echo "Starting logs for: ${app}"
-              _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
-            done
-            '''
+            startComponentsLog([
+              appsToLog: [
+                'app.kubernetes.io/name=etcd',
+                'app.kubernetes.io/name=kafka',
+                'app=onos-classic',
+                'app=adapter-open-onu',
+                'app=adapter-open-olt',
+                'app=rw-core',
+                'app=ofagent',
+                'app=bbsim',
+                'app=radius',
+                'app=bbsim-sadis-server',
+                'app=onos-config-loader',
+              ]
+            ])
             def returned_flags = sh (returnStdout: true, script: """
 
               export EXTRA_HELM_FLAGS+=' '
@@ -527,25 +527,22 @@ EOF
   }
   post {
     always {
+      stopComponentsLog([
+        'app.kubernetes.io/name=etcd',
+        'app.kubernetes.io/name=kafka',
+        'app=onos-classic',
+        'app=adapter-open-onu',
+        'app=adapter-open-olt',
+        'app=rw-core',
+        'app=ofagent',
+        'app=bbsim',
+        'app=radius',
+        'app=bbsim-sadis-server',
+        'app=onos-config-loader',
+      ])
       // collect result, done in the "post" step so it's executed even in the
       // event of a timeout in the tests
       sh '''
-
-        # stop the kail processes
-        list=($APPS_TO_LOG)
-        for app in "${list[@]}"
-        do
-          echo "Stopping logs for: ${app}"
-          _TAG="kail-$app"
-          P_IDS="$(ps e -ww -A | grep "_TAG=$_TAG" | grep -v grep | awk '{print $1}')"
-          if [ -n "$P_IDS" ]; then
-            echo $P_IDS
-            for P_ID in $P_IDS; do
-              kill -9 $P_ID
-            done
-          fi
-        done
-
         if [ ${withPcap} = true ] ; then
           # stop ofAgent tcpdump
           P_ID="\$(ps e -ww -A | grep "_TAG=ofagent-tcpdump" | grep -v grep | awk '{print \$1}')"
@@ -668,7 +665,7 @@ EOF
       '''
       script {
         // first make sure the port-forward is still running,
-        // sometimes Jenkins kills it relardless of the JENKINS_NODE_COOKIE=dontKillMe
+        // sometimes Jenkins kills it regardless of the JENKINS_NODE_COOKIE=dontKillMe
         def running = sh (
             script: 'ps aux | grep port-forw | grep -E "onos|voltha" | grep -v grep | wc -l',
             returnStdout: true
