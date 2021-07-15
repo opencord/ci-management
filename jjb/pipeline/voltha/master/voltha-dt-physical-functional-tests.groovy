@@ -136,7 +136,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FunctionalTests"
       }
       steps {
-        startComponentsLog(logsDir: "$WORKSPACE/logs/FunctionalTests")
+        startComponentsLogs(logsDir: "$WORKSPACE/logs/FunctionalTests")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
@@ -146,7 +146,7 @@ pipeline {
         fi
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
-        stopComponentsLog(logsDir: "$WORKSPACE/logs/FunctionalTests", compress: true)
+        stopComponentsLogs(logsDir: "$WORKSPACE/logs/FunctionalTests", compress: true)
       }
     }
 
@@ -157,7 +157,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FailureScenarios"
       }
       steps {
-        startComponentsLog(logsDir: "$WORKSPACE/logs/FailureScenarios")
+        startComponentsLogs(logsDir: "$WORKSPACE/logs/FailureScenarios")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
@@ -167,7 +167,7 @@ pipeline {
         fi
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
-        stopComponentsLog(logsDir: "$WORKSPACE/logs/FailureScenarios", compress: true)
+        stopComponentsLogs(logsDir: "$WORKSPACE/logs/FailureScenarios", compress: true)
       }
     }
 
@@ -178,13 +178,13 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/DataplaneTests"
       }
       steps {
-        startComponentsLog(logsDir: "$WORKSPACE/logs/DataplaneTests")
+        startComponentsLogs(logsDir: "$WORKSPACE/logs/DataplaneTests")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
-        stopComponentsLog(logsDir: "$WORKSPACE/logs/DataplaneTests", compress: true)
+        stopComponentsLogs(logsDir: "$WORKSPACE/logs/DataplaneTests", compress: true)
       }
     }
     stage('HA Tests') {
@@ -194,13 +194,13 @@ pipeline {
        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/ONOSHAScenarios"
       }
       steps {
-        startComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios")
+        startComponentsLogs(logsDir: "$WORKSPACE/logs/ONOSHAScenarios")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
-        stopComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios", compress: true)
+        stopComponentsLogs(logsDir: "$WORKSPACE/logs/ONOSHAScenarios", compress: true)
       }
     }
 
@@ -211,7 +211,7 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/MultipleOLTScenarios"
       }
       steps {
-        startComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios")
+        startComponentsLogs(logsDir: "$WORKSPACE/logs/ONOSHAScenarios")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
@@ -221,7 +221,7 @@ pipeline {
         fi
         make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
-        stopComponentsLog(logsDir: "$WORKSPACE/logs/ONOSHAScenarios", compress: true)
+        stopComponentsLogs(logsDir: "$WORKSPACE/logs/ONOSHAScenarios", compress: true)
       }
     }
 
@@ -233,13 +233,13 @@ pipeline {
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/ErrorScenarios"
       }
       steps {
-        startComponentsLog(logsDir: "$WORKSPACE/logs/ErrorScenarios")
+        startComponentsLogs(logsDir: "$WORKSPACE/logs/ErrorScenarios")
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
-        stopComponentsLog(logsDir: "$WORKSPACE/logs/ErrorScenarios", compress: true)
+        stopComponentsLogs(logsDir: "$WORKSPACE/logs/ErrorScenarios", compress: true)
       }
     }
   }

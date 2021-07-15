@@ -124,7 +124,7 @@ pipeline {
       steps {
         timeout(time: 10, unit: 'MINUTES') {
           script {
-            startComponentsLog([
+            startComponentsLogs([
               appsToLog: [
                 'app.kubernetes.io/name=etcd',
                 'app.kubernetes.io/name=kafka',
@@ -527,7 +527,7 @@ EOF
   }
   post {
     always {
-      stopComponentsLog([
+      stopComponentsLogs([
         'app.kubernetes.io/name=etcd',
         'app.kubernetes.io/name=kafka',
         'app=onos-classic',
