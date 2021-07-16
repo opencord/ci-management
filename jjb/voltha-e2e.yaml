@@ -235,7 +235,7 @@
               teardown: true
             - target: openonu-go-adapter-omci-hardening-passed-test
               workflow: att
-              flags: "--set omci_response_rate=9 --set omci_timeout=1s"
+              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
               teardown: true
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
@@ -291,7 +291,7 @@
               teardown: true
             - target: openonu-go-adapter-omci-hardening-passed-test
               workflow: att
-              flags: "--set omci_response_rate=9 --set omci_timeout=1s"
+              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
               teardown: true
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
@@ -349,7 +349,7 @@
               teardown: true
             - target: openonu-go-adapter-omci-hardening-passed-test
               workflow: att
-              flags: "--set omci_response_rate=9 --set omci_timeout=1s"
+              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
               teardown: true
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
