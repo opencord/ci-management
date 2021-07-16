@@ -32,32 +32,65 @@ pipeline {
     PATH="$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   }
 
+
   stages {
+    stage('Clone voltha-system-tests') {
+      steps {
+        checkout([
+          $class: 'GitSCM',
+          userRemoteConfigs: [[
+            url: "https://gerrit.opencord.org/voltha-system-tests",
+            refspec: "${volthaSystemTestsChange}"
+          ]],
+          branches: [[ name: "${branch}", ]],
+          extensions: [
+            [$class: 'WipeWorkspace'],
+            [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+          ],
+        ])
+        script {
+          sh(script:"""
+            if [ '${volthaSystemTestsChange}' != '' ] ; then
+              cd $WORKSPACE/voltha-system-tests;
+              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+            fi
+            """)
+        }
+      }
+    }
+    // This checkout allows us to show changes in Jenkins
+    // we only do this on master as we don't branch all the repos for all the releases
+    // (we should compute the difference by tracking the container version, not the code)
+    stage('Download All the VOLTHA repos') {
+      when {
+        expression {
+          return "${branch}" == 'master';
+        }
+      }
+      steps {
+       checkout(changelog: true,
+         poll: false,
+         scm: [$class: 'RepoScm',
+           manifestRepositoryUrl: "${params.manifestUrl}",
+           manifestBranch: "${params.branch}",
+           currentBranch: true,
+           destinationDir: 'voltha',
+           forceSync: true,
+           resetFirst: true,
+           quiet: true,
+           jobs: 4,
+           showAllChanges: true]
+         )
+      }
+    }
     stage ('Initialize') {
       steps {
-        step([$class: 'WsCleanup'])
         sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
-        sh returnStdout: false, script: "git clone -b master ${cordRepoUrl}/kind-voltha"
         script {
-          deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
+           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
-        // This checkout allows us to show changes in Jenkins
-        checkout(changelog: true,
-          poll: false,
-          scm: [$class: 'RepoScm',
-            manifestRepositoryUrl: "${params.manifestUrl}",
-            manifestBranch: "${params.branch}",
-            currentBranch: true,
-            destinationDir: 'voltha',
-            forceSync: true,
-            resetFirst: true,
-            quiet: true,
-            jobs: 4,
-            showAllChanges: true]
-          )
         sh returnStdout: false, script: """
-        cd voltha
-        git clone -b master ${cordRepoUrl}/cord-tester
         mkdir -p $WORKSPACE/bin
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
@@ -96,24 +129,20 @@ pipeline {
 
     stage('Functional Tests') {
       environment {
-        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
-        ROBOT_FILE="Voltha_PODTests.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FunctionalTests"
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+        ROBOT_FILE="Voltha_DT_PODTests.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FunctionalTests"
       }
       steps {
         sh """
-        cd $WORKSPACE/voltha/kind-voltha/scripts
-        ./log-collector.sh > /dev/null &
-        ./log-combine.sh > /dev/null &
-
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Functional" ]; then
             if ( ${powerSwitch} ); then
-                export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanity -i functional -e DeleteOLT -e DisableONU_AuthCheck -e DisableDeleteONUandOLT -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+                 export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i soak -e dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             else
-                export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanity -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+                 export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i soak -e dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
             fi
-            make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -121,20 +150,16 @@ pipeline {
 
     stage('Failure/Recovery Tests') {
       environment {
-        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
-        ROBOT_FILE="Voltha_FailureScenarios.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/FailureScenarios"
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+        ROBOT_FILE="Voltha_DT_FailureScenarios.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FailureScenarios"
       }
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Failure" ]; then
-           if ( ${powerSwitch} ); then
-              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           else
-              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           fi
-           make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i soak -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+           make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -142,16 +167,16 @@ pipeline {
 
     stage('Dataplane Tests') {
       environment {
-        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
-        ROBOT_FILE="Voltha_PODTests.robot"
-        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/DataplaneTests"
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+        ROBOT_FILE="Voltha_DT_PODTests.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/DataplaneTests"
       }
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Dataplane" ]; then
-           export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplane -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
-           make -C $WORKSPACE/voltha/voltha-system-tests voltha-test || true
+           export ROBOT_MISC_ARGS="--removekeywords wuks -i soakDataplane -e bbsim -e notready -d $ROBOT_LOGS_DIR -v SOAK_TEST:True -v logging:False -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+           make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
         """
       }
@@ -160,44 +185,14 @@ pipeline {
   }
   post {
     always {
+      getPodsInfo("$WORKSPACE/pods")
       sh returnStdout: false, script: '''
       set +e
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
-      kubectl get nodes -o wide
-      kubectl get pods -n voltha -o wide
 
-      sleep 60 # Wait for log-collector and log-combine to complete
-
-      # Clean up "announcer" pod used by the tests if present
-      kubectl delete pod announcer || true
-
-      ## Pull out errors from log files
-      extract_errors_go() {
-        echo
-        echo "Error summary for $1:"
-        grep '"level":"error"' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
-        echo
-      }
-
-      extract_errors_python() {
-        echo
-        echo "Error summary for $1:"
-        grep 'ERROR' $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/$1*
-        echo
-      }
-
-      extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
-      extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
-      extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-      extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
-      extract_errors_python onos >> $WORKSPACE/error-report.log
-
-      cd $WORKSPACE/voltha/kind-voltha/scripts/logger/combined/
-      tar czf $WORKSPACE/container-logs.tgz *
-
+      # collect logs collected in the Robot Framework StartLogging keyword
       cd $WORKSPACE
       gzip *-combined.log || true
+      rm *-combined.log || true
 
       # collect ETCD cluster logs
       mkdir -p $WORKSPACE/etcd
@@ -228,7 +223,7 @@ pipeline {
         unstableThreshold: 0,
         onlyCritical: true
         ]);
-      archiveArtifacts artifacts: '*.log,*.gz,*.tgz,etcd/*.log'
+      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt'
     }
   }
 }
