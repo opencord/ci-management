@@ -50,7 +50,7 @@
           name-extension: '_TT'
           test-type: ''
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
 
       # flex OCP pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -118,7 +118,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
-          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
@@ -146,7 +146,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
-          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
@@ -176,7 +176,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
-          pipeline-script: 'voltha-tt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
           enableMultiUni: true
@@ -284,7 +284,7 @@
           name-extension: '_DT_soak_Func'
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-physical-soak-dt-tests.groovy'
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # Run failure/recovery tests every Wednesday
@@ -299,7 +299,7 @@
           name-extension: '_DT_soak_Fail'
           test-type: 'Failure'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H * * 3"
 
       # ONF Menlo Soak POD test job - voltha-master branch
@@ -315,7 +315,7 @@
           name-extension: '_DT_soak_DP'
           test-type: 'Dataplane'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H * * 6"
 
       # ONF Menlo Soak POD build job - voltha-2.8 branch
@@ -348,7 +348,7 @@
           name-extension: '_DT_soak_Func'
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
 
       # ONF Menlo Soak POD test job - voltha-2.8 branch
       # Run failure/recovery tests every Wednesday
@@ -363,7 +363,7 @@
           name-extension: '_DT_soak_Fail'
           test-type: 'Failure'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H * * 3"
 
       # ONF Menlo Soak POD test job - voltha-2.8 branch
@@ -379,7 +379,7 @@
           name-extension: '_DT_soak_DP'
           test-type: 'Dataplane'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H * * 6"
 
       # Certification (Radisys) pod with olt/onu - master versions timer based job
@@ -462,7 +462,7 @@
             test-repo: 'voltha-system-tests'
             profile: '1T4GEM'
             power-switch: True
-            pipeline-script: 'voltha-physical-functional-tests.groovy'
+            pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
 
         # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
@@ -487,7 +487,7 @@
             test-repo: 'voltha-system-tests'
             profile: '1T4GEM-unencrypted'
             power-switch: True
-            pipeline-script: 'voltha-physical-functional-tests.groovy'
+            pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
 
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':

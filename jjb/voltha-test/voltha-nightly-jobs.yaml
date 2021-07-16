@@ -283,7 +283,7 @@
                   Copyright (c) 2017 Open Networking Foundation (ONF)
 
     <<: *voltha-pipe-job-boiler-plate
-    pipeline-script: 'voltha-physical-functional-tests.groovy'
+    pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
@@ -410,7 +410,7 @@
                   Copyright (c) 2017 Open Networking Foundation (ONF)
 
     <<: *voltha-pipe-job-boiler-plate
-    pipeline-script: 'voltha-physical-functional-tests.groovy'
+    pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
@@ -534,7 +534,7 @@
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
                   Copyright (c) 2017 Open Networking Foundation (ONF)
     <<: *voltha-pipe-job-boiler-plate
-    pipeline-script: 'voltha-physical-functional-tests.groovy'
+    pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
