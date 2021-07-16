@@ -47,7 +47,7 @@ def call(Map config) {
             def tag = "${tagPrefix}-kail-${logFile}"
             println "Starting logging process for label: ${label}"
             sh """
-            _TAG=${tag} kail -l ${label} --since 1h > ${cfg.logsDir}/${logFile}.log&
+            _TAG=${tag} kail -l ${label} > ${cfg.logsDir}/${logFile}.log&
             """
         }
     }
