@@ -239,21 +239,14 @@ pipeline {
   }
   post {
     always {
+      getPodsInfo("$WORKSPACE/pods")
       sh returnStdout: false, script: '''
       set +e
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
-      kubectl get nodes -o wide
-      kubectl get pods -n voltha -o wide
-      kubectl get pods -o wide
 
-      # store information on running charts
-      helm ls > $WORKSPACE/helm-list.txt || true
-
-      # store information on the running pods
-      kubectl get pods --all-namespaces -o wide > $WORKSPACE/pods.txt || true
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-images.txt || true
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-imagesId.txt || true
+      # collect logs collected in the Robot Framework StartLogging keyword
+      cd $WORKSPACE
+      gzip *-combined.log || true
+      rm *-combined.log || true
       '''
       script {
         deployment_config.olts.each { olt ->
@@ -282,7 +275,7 @@ pipeline {
         unstableThreshold: 0,
         onlyCritical: true
         ]);
-      archiveArtifacts artifacts: '**/*.log,**/*.tgz,*.txt'
+      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt'
     }
   }
 }

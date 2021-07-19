@@ -611,17 +611,9 @@ EOF
         reportFileName: '**/report*.html',
         onlyCritical: true,
         unstableThreshold: 0]);
+      getPodsInfo("$LOG_FOLDER")
       // get all the logs from kubernetes PODs
       sh returnStdout: false, script: '''
-
-        # store information on running charts
-        helm ls > $LOG_FOLDER/helm-list.txt || true
-
-        # store information on the running pods
-        kubectl get pods -o wide > $LOG_FOLDER/pods.txt || true
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-images.txt || true
-        kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
-
         # copy the ONOS logs directly from the container to avoid the color codes
         printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
 

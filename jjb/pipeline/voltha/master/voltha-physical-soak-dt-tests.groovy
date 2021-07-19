@@ -34,24 +34,6 @@ pipeline {
 
 
   stages {
-    stage('Clone kind-voltha') {
-      steps {
-        step([$class: 'WsCleanup'])
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/kind-voltha",
-            refspec: "${kindVolthaChange}"
-          ]],
-          branches: [[ name: "master", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "kind-voltha"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
-      }
-    }
     stage('Clone voltha-system-tests') {
       steps {
         checkout([
@@ -75,23 +57,6 @@ pipeline {
             fi
             """)
         }
-      }
-    }
-    stage('Clone cord-tester') {
-      steps {
-        checkout([
-          $class: 'GitSCM',
-          userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/cord-tester",
-            refspec: "${cordTesterChange}"
-          ]],
-          branches: [[ name: "master", ]],
-          extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'RelativeTargetDirectory', relativeTargetDir: "cord-tester"],
-            [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-          ],
-        ])
       }
     }
     // This checkout allows us to show changes in Jenkins
@@ -170,10 +135,6 @@ pipeline {
       }
       steps {
         sh """
-        cd $WORKSPACE/kind-voltha/scripts
-        ./log-collector.sh > /dev/null &
-        ./log-combine.sh > /dev/null &
-
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Functional" ]; then
             if ( ${powerSwitch} ); then
@@ -224,44 +185,14 @@ pipeline {
   }
   post {
     always {
+      getPodsInfo("$WORKSPACE/pods")
       sh returnStdout: false, script: '''
       set +e
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
-      kubectl get nodes -o wide
-      kubectl get pods -n voltha -o wide
 
-      sleep 60 # Wait for log-collector and log-combine to complete
-
-      # Clean up "announcer" pod used by the tests if present
-      kubectl delete pod announcer || true
-
-      ## Pull out errors from log files
-      extract_errors_go() {
-        echo
-        echo "Error summary for $1:"
-        grep '"level":"error"' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
-        echo
-      }
-
-      extract_errors_python() {
-        echo
-        echo "Error summary for $1:"
-        grep 'ERROR' $WORKSPACE/kind-voltha/scripts/logger/combined/$1*
-        echo
-      }
-
-      extract_errors_go voltha-rw-core > $WORKSPACE/error-report.log
-      extract_errors_go adapter-open-olt >> $WORKSPACE/error-report.log
-      extract_errors_python adapter-open-onu >> $WORKSPACE/error-report.log
-      extract_errors_python voltha-ofagent >> $WORKSPACE/error-report.log
-      extract_errors_python onos >> $WORKSPACE/error-report.log
-
-      cd $WORKSPACE/kind-voltha/scripts/logger/combined/
-      tar czf $WORKSPACE/container-logs.tgz *
-
+      # collect logs collected in the Robot Framework StartLogging keyword
       cd $WORKSPACE
       gzip *-combined.log || true
+      rm *-combined.log || true
 
       # collect ETCD cluster logs
       mkdir -p $WORKSPACE/etcd
@@ -292,7 +223,7 @@ pipeline {
         unstableThreshold: 0,
         onlyCritical: true
         ]);
-      archiveArtifacts artifacts: '*.log,*.gz,*.tgz,etcd/*.log'
+      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt'
     }
   }
 }
