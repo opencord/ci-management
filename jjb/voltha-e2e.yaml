@@ -154,7 +154,7 @@
               workflow: att
               flags: ""
               teardown: false
-          timeout: 150
+          timeout: 180
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.8'
@@ -196,6 +196,7 @@
               workflow: att
               flags: ""
               teardown: false
+          timeout: 180
 
       # openonu Go periodic tests
       - 'voltha-periodic-test':
@@ -258,7 +259,7 @@
           name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
           pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
           code-branch: 'voltha-2.8'
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
           testTargets: |
             - target: 1t1gem-openonu-go-adapter-test
@@ -457,7 +458,7 @@
               workflow: tt
               flags: ""
               teardown: true
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-multiple-olts-openonu-go-test-bbsim'
@@ -636,7 +637,7 @@
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'voltha-2.8'
           extraHelmFlags: '--set onu=2,pon=2'
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/23 * * *"
           testTargets: |
             - target: sanity-multi-kind
               workflow: att
