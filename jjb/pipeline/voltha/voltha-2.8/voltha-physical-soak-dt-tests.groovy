@@ -36,6 +36,7 @@ pipeline {
   stages {
     stage('Clone voltha-system-tests') {
       steps {
+        step([$class: 'WsCleanup'])
         checkout([
           $class: 'GitSCM',
           userRemoteConfigs: [[
