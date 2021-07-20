@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+library identifier: 'cord-jenkins-libraries@master',
+    retriever: modernSCM([
+      $class: 'GitSCMSource',
+      remote: 'https://gerrit.opencord.org/ci-management.git'
+])
+
 node {
   // Need this so that deployment_config has global scope when it's read later
   deployment_config = null
