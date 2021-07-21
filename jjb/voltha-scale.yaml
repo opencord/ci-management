@@ -47,7 +47,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: " -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn "
+          # extraHelmFlags: " -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-ssd'
@@ -192,7 +192,6 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.8
           bbsimImg: ''
           rwCoreImg: ''
@@ -217,7 +216,6 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.8
           bbsimImg: ''
           rwCoreImg: ''
@@ -242,7 +240,6 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
           release: voltha-2.8
           bbsimImg: ''
           rwCoreImg: ''
@@ -279,6 +276,7 @@
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
           onosImg: ''
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2.8-10-stacks-2-16-32-dt-subscribers'
@@ -306,6 +304,7 @@
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
           onosImg: ''
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2.8-10-stacks-2-16-32-tt-subscribers'
@@ -333,6 +332,7 @@
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
           onosImg: ''
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       # per patchset job
       - 'voltha-scale-measurements':
@@ -383,7 +383,6 @@
       - 'voltha-scale-measurements-dev':
           name: 'voltha-scale-measurements-master-dev'
           build-node: 'voltha-scale'
-          extraHelmFlags: '--set defaults.rw_core.timeout=30s '
 
 
 # list of parameters for the VOLTHA Jobs,
