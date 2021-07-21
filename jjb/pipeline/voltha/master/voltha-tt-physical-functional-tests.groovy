@@ -200,6 +200,7 @@ pipeline {
   }
   post {
     always {
+      getPodsInfo("$WORKSPACE/pods")
       sh returnStdout: false, script: '''
       set +e
 
