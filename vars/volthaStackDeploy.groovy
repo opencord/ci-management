@@ -10,6 +10,7 @@ def call(Map config) {
       workflow: "att",
       extraHelmFlags: "",
       localCharts: false,
+      onosReplica: 1,
     ]
 
     if (!config) {
@@ -38,6 +39,7 @@ def call(Map config) {
     helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} ${cfg.stackName} ${volthaStackChart} \
           --set global.stack_name=${cfg.stackName} \
           --set global.voltha_infra_name=voltha-infra \
+          --set voltha.onos_classic.replicas=${cfg.onosReplica} \
           --set global.voltha_infra_namespace=${cfg.infraNamespace} \
           ${cfg.extraHelmFlags}
     """
@@ -86,6 +88,7 @@ def call(Map config) {
     """
 
     // also make sure that the ONOS config is loaded
+    // NOTE that this is only required for VOLTHA-2.8, 2.9 switched to a Deployment
     println "Wait for ONOS Config loader to complete"
 
     sh """

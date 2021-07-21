@@ -22,14 +22,6 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
-def ofAgentConnections(numOfOnos, releaseName, namespace) {
-    def params = " "
-    numOfOnos.times {
-        params += "--set voltha.services.controller[${it}].address=${releaseName}-onos-classic-${it}.${releaseName}-onos-classic-hs.${namespace}.svc:6653 "
-    }
-    return params
-}
-
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -45,7 +37,6 @@ pipeline {
     SSHPASS="karaf"
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
 
-    APPS_TO_LOG="etcd kafka onos-onos-classic adapter-open-onu adapter-open-olt rw-core ofagent bbsim radius bbsim-sadis-server"
     LOG_FOLDER="$WORKSPACE/logs"
   }
 
@@ -98,54 +89,60 @@ pipeline {
         '''
       }
     }
+    stage('Start logging') {
+      steps {
+        script {
+          startComponentsLogs([
+            appsToLog: [
+              'app.kubernetes.io/name=etcd',
+              'app.kubernetes.io/name=kafka',
+              'app=onos-classic',
+              'app=adapter-open-onu',
+              'app=adapter-open-olt',
+              'app=rw-core',
+              'app=ofagent',
+              'app=bbsim',
+              'app=radius',
+              'app=bbsim-sadis-server',
+              'app=onos-config-loader',
+            ]
+          ])
+        }
+      }
+    }
     stage('Deploy VOLTHA infrastructure') {
       steps {
-        sh returnStdout: false, script: '''
+        timeout(time: 5, unit: 'MINUTES') {
+          script {
+            def localCharts = false
+            if (volthaHelmChartsChange != "" || release != "master") {
+              localCharts = true
+            }
 
-        kubectl create configmap -n infra kube-config "--from-file=kube_config=\$KUBECONFIG"  || true
+            def infraHelmFlags =
+                "--set global.log_level=${logLevel} " +
+                "--set radius.enabled=${withEapol} " +
+                "--set onos-classic.onosSshPort=30115 " +
+                "--set onos-classic.onosApiPort=30120 " + 
+                params.extraHelmFlags
 
-        export EXTRA_HELM_FLAGS+=' '
-
-        # No persistent-volume-claims in Atomix
-        EXTRA_HELM_FLAGS+="--set onos-classic.atomix.persistence.enabled=false "
-        # disable the securityContext, this is a development cluster
-        EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
-
-        echo \$EXTRA_HELM_FLAGS
-
-        helm upgrade --install -n infra voltha-infra onf/voltha-infra \
-          -f $WORKSPACE/voltha-helm-charts/examples/${workflow}-values.yaml \
-          -f /home/jenkins/voltha-scale/voltha-values.yaml \
-          --set onos-classic.replicas=${onosReplicas},onos-classic.atomix.replicas=${atomixReplicas} \
-          --set radius.enabled=${withEapol} \
-          --set global.log_level=${logLevel} \
-          --set onos-classic.onosSshPort=30115 \
-          --set onos-classic.onosApiPort=30120 \
-          --set kafka.replicaCount=3,kafka.zookeeper.replicaCount=3 \
-          --set etcd.statefulset.replicaCount=3 \$EXTRA_HELM_FLAGS
-        '''
+            volthaInfraDeploy([
+              workflow: workflow,
+              infraNamespace: "infra",
+              extraHelmFlags: infraHelmFlags,
+              localCharts: localCharts,
+              onosReplica: onosReplicas,
+              atomixReplica: atomixReplicas,
+              kafkaReplica: kafkaReplicas,
+              etcdReplica: etcdReplicas,
+            ])
+          }
+        }
       }
     }
     stage('Deploy Voltha') {
       steps {
         deploy_voltha_stacks(params.volthaStacks)
-      }
-    }
-    stage('Start logging') {
-      //FIXME this collects the logs all in one file for all the 10 stacks
-      steps {
-        sh returnStdout: false, script: '''
-        # start logging with kail
-
-        mkdir -p $LOG_FOLDER
-
-        list=($APPS_TO_LOG)
-        for app in "${list[@]}"
-        do
-          echo "Starting logs for: ${app}"
-          _TAG=kail-$app kail -l app=$app --since 1h > $LOG_FOLDER/$app.log&
-        done
-        '''
       }
     }
     stage('Configuration') {
@@ -210,31 +207,9 @@ pipeline {
   }
   post {
     always {
+      stopComponentsLogs([compress: true])
       // collect result, done in the "post" step so it's executed even in the
       // event of a timeout in the tests
-      sh '''
-
-        # stop the kail processes
-        list=($APPS_TO_LOG)
-        for app in "${list[@]}"
-        do
-          echo "Stopping logs for: ${app}"
-          _TAG="kail-$app"
-          P_IDS="$(ps e -ww -A | grep "_TAG=$_TAG" | grep -v grep | awk '{print $1}')"
-          if [ -n "$P_IDS" ]; then
-            echo $P_IDS
-            for P_ID in $P_IDS; do
-              kill -9 $P_ID
-            done
-          fi
-        done
-      '''
-      // compressing the logs to save space on Jenkins
-      sh '''
-      cd $LOG_FOLDER
-      tar -czf logs.tar.gz *.log
-      rm *.log
-      '''
       plot([
         csvFileName: 'scale-test.csv',
         csvSeries: [
@@ -303,6 +278,9 @@ pipeline {
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 nodes > $LOG_FOLDER/onos-nodes.txt || true
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 masters > $LOG_FOLDER/onos-masters.txt || true
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 roles > $LOG_FOLDER/onos-roles.txt || true
+
+        sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 netcfg > $LOG_FOLDER/onos-netcfg.txt || true
+        sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg get > $LOG_FOLDER/onos-cfg.txt || true
 
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 ports > $LOG_FOLDER/onos-ports-list.txt || true
         sshpass -e ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 hosts > $LOG_FOLDER/onos-hosts-list.txt || true
@@ -387,30 +365,32 @@ pipeline {
 
 def deploy_voltha_stacks(numberOfStacks) {
   for (int i = 1; i <= numberOfStacks.toInteger(); i++) {
-    stage("Deploy VOLTHA stack " + i) {
-      // ${logLevel}
-      def extraHelmFlags = "${extraHelmFlags} --set global.log_level=${logLevel},enablePerf=true,onu=${onus},pon=${pons} "
-      extraHelmFlags += " --set securityContext.enabled=false,atomix.persistence.enabled=false "
+    timeout(time: 5, unit: 'MINUTES') {
+      stage("Deploy VOLTHA stack " + i) {
 
-      // FIXME having to set all of these values is annoying, is there a better solution?
-      def volthaHelmFlags = extraHelmFlags +
-        ofAgentConnections(onosReplicas.toInteger(), "voltha-infra", "infra")
+        def localCharts = false
+        if (volthaHelmChartsChange != "" || release != "master") {
+          localCharts = true
+        }
 
-      def localCharts = false
-      if (volthaHelmChartsChange != "") {
-        localCharts = true
+        def volthaHelmFlags =
+                "--set global.log_level=${logLevel} " +
+                "--set enablePerf=true,onu=${onus},pon=${pons} " +
+                "--set securityContext.enabled=false " +
+                params.extraHelmFlags
+
+        volthaStackDeploy([
+          bbsimReplica: olts.toInteger(),
+          infraNamespace: "infra",
+          volthaNamespace: "voltha${i}",
+          stackName: "voltha${i}",
+          stackId: i,
+          workflow: workflow,
+          extraHelmFlags: volthaHelmFlags,
+          localCharts: localCharts,
+          onosReplica: onosReplicas,
+        ])
       }
-
-      volthaStackDeploy([
-        bbsimReplica: olts.toInteger(),
-        infraNamespace: "infra",
-        volthaNamespace: "voltha${i}",
-        stackName: "voltha${i}",
-        stackId: i,
-        workflow: workflow,
-        extraHelmFlags: volthaHelmFlags,
-        localCharts: localCharts
-      ])
     }
   }
 }

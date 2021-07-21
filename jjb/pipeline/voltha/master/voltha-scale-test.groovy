@@ -230,7 +230,8 @@ pipeline {
             def extraHelmFlags = returned_flags
             // The added space before params.extraHelmFlags is required due to the .trim() above
             def infraHelmFlags =
-              " --set global.log_level=${logLevel} " +
+              "--set global.log_level=${logLevel} " +
+              "--set radius.enabled=${withEapol} " +
               "--set onos-classic.onosSshPort=30115 " +
               "--set onos-classic.onosApiPort=30120 " +
               extraHelmFlags + " " + params.extraHelmFlags
@@ -265,6 +266,7 @@ pipeline {
               workflow: workflow,
               extraHelmFlags: stackHelmFlags,
               localCharts: localCharts,
+              onosReplica: onosReplicas,
             ])
             sh """
               set +x
