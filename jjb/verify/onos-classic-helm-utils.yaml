@@ -1,0 +1,30 @@
+---
+# verification jobs for 'onos-classic-helm-utils' repo
+
+- project:
+    name: onos-classic-helm-utils
+    project: '{name}'
+
+    jobs:
+      - 'verify-onos-classic-helm-utils-jobs':
+          branch-regexp: '{all-branches-regexp}'
+      - 'publish-onos-classic-helm-utils-jobs'
+
+- job-group:
+    name: 'verify-onos-classic-helm-utils-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_onos-classic-helm-utils_licensed'
+      - 'make-unit-test':
+          build-timeout: 30
+          unit-test-targets: 'docker-build'
+          junit-allow-empty-results: true
+
+- job-group:
+    name: 'publish-onos-classic-helm-utils-jobs'
+    jobs:
+      - 'docker-publish':
+          build-timeout: 30
+          docker-repo: 'opennetworking'
+          dependency-jobs: 'version-tag'
