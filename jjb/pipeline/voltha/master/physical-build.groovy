@@ -155,7 +155,7 @@ pipeline {
               timeout(1) {
                 sh returnStatus: true, script: """
                 export KUBECONFIG=$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf
-                etcd_container=\$(kubectl get pods -n ${infraNamespace} | grep etcd | awk 'NR==1{print \$1}')
+                etcd_container=\$(kubectl get pods -n ${infraNamespace} -l app.kubernetes.io/name=etcd | grep etcd | awk 'NR==1{print \$1}')
                 if [[ "${workFlow}" == "TT" ]]; then
                    if [[ "${params.enableMultiUni}" == "true" ]]; then
                       kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/TechProfile-TT-multi-uni-HSIA.json \$etcd_container:/tmp/hsia.json
@@ -185,7 +185,7 @@ pipeline {
               timeout(1) {
                 sh returnStatus: true, script: """
                 export KUBECONFIG=$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf
-                etcd_container=\$(kubectl get pods -n ${infraNamespace} | grep etcd | awk 'NR==1{print \$1}')
+                etcd_container=\$(kubectl get pods -n ${infraNamespace} -l app.kubernetes.io/name=etcd | grep etcd | awk 'NR==1{print \$1}')
                 kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'ETCDCTL_API=3 etcdctl get --prefix service/voltha/technology_profiles/${tech_prof_directory}/64'
                 """
               }
@@ -198,7 +198,7 @@ pipeline {
       steps {
         sh """
         export KUBECONFIG=$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf
-        etcd_container=\$(kubectl get pods -n ${infraNamespace} | grep etcd | awk 'NR==1{print \$1}')
+        etcd_container=\$(kubectl get pods -n ${infraNamespace} -l app.kubernetes.io/name=etcd | grep etcd | awk 'NR==1{print \$1}')
         kubectl cp -n ${infraNamespace} $WORKSPACE/voltha-system-tests/tests/data/MIB_Alpha.json \$etcd_container:/tmp/MIB_Alpha.json
         kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/MIB_Alpha.json | ETCDCTL_API=3 etcdctl put service/voltha/omci_mibs/go_templates/BRCM/BVM4K00BRA0915-0083/5023_020O02414'
         kubectl exec -n ${infraNamespace} -it \$etcd_container -- /bin/sh -c 'cat /tmp/MIB_Alpha.json | ETCDCTL_API=3 etcdctl put service/voltha/omci_mibs/templates/BRCM/BVM4K00BRA0915-0083/5023_020O02414'
