@@ -88,15 +88,26 @@ def call(Map config) {
     """
 
     // also make sure that the ONOS config is loaded
-    // NOTE that this is only required for VOLTHA-2.8, 2.9 switched to a Deployment
+    // NOTE that this is only required for VOLTHA-2.8
     println "Wait for ONOS Config loader to complete"
 
+    // NOTE that this is only required for VOLTHA-2.8,
     sh """
         set +x
         config=\$(kubectl get jobs.batch -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
         while [[ \$config != 0 ]]; do
           sleep 5
           config=\$(kubectl get jobs.batch -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
+        done
+    """
+    // NOTE that this is only required for VOLTHA-2.9 onwards, to wait until the pod completed,
+    //meaning ONOS fully deployed
+    sh """
+        set +x
+        config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
+        while [[ \$config != 0 ]]; do
+          sleep 5
+          config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
         done
     """
 }
