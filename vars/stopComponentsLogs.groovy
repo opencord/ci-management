@@ -25,8 +25,10 @@ def call(Map config) {
     """
     if (cfg.compress) {
         sh """
+        pushd ${cfg.logsDir}
         tar czf ${cfg.logsDir}/combined.tgz *
         rm *.log
+        popd
         """
 
     }
