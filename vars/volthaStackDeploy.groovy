@@ -104,10 +104,10 @@ def call(Map config) {
     //meaning ONOS fully deployed
     sh """
         set +x
-        config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
+        config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running | grep "0/" | wc -l)
         while [[ \$config != 0 ]]; do
           sleep 5
-          config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
+          config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running | grep "0/" | wc -l)
         done
     """
 }
