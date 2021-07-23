@@ -44,10 +44,6 @@ pipeline {
     stage ('Cleanup') {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
-          sh """
-          # remove orphaned port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
-          """
           script {
             def namespaces = ["infra"]
             // FIXME we may have leftovers from more VOLTHA stacks (eg: run1 had 10 stacks, run2 had 2 stacks)
@@ -56,14 +52,24 @@ pipeline {
             }
             helmTeardown(namespaces)
           }
-          sh returnStdout: false, script: """
+          sh returnStdout: false, script: '''
             helm repo add onf https://charts.opencord.org
-            helm repo add cord https://charts.opencord.org
             helm repo update
 
-            # remove all port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
-          """
+            # remove all persistent volume claims
+            kubectl delete pvc --all-namespaces --all
+            PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
+            while [[ \$PVCS != 0 ]]; do
+              sleep 5
+              PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
+            done
+
+            # remove orphaned port-forward from different namespaces
+            ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
+
+            cd $WORKSPACE
+            rm -rf $WORKSPACE/*
+          '''
         }
       }
     }
@@ -248,7 +254,7 @@ pipeline {
         kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $LOG_FOLDER/pod-imagesId.txt || true
 
         # copy the ONOS logs directly from the container to avoid the color codes
-        printf '%s\n' $(kubectl get pods -n infra -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
+        printf '%s\n' $(kubectl get pods -n infra -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp -n infra #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
 
       '''
       // dump all the BBSim(s) ONU information
@@ -332,7 +338,7 @@ pipeline {
             voltctl -m 8MB device list > $LOG_FOLDER/${stack_ns}/voltha-devices-list.txt || true
 
             DEVICE_LIST=
-            printf '%s\n' \$(voltctl -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl-m 8MB device flows # > $LOG_FOLDER/${stack_ns}/voltha-device-flows-#.txt" || true
+            printf '%s\n' \$(voltctl -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device flows # > $LOG_FOLDER/${stack_ns}/voltha-device-flows-#.txt" || true
             printf '%s\n' \$(voltctl -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/${stack_ns}/voltha-device-ports-#.txt" || true
 
             printf '%s\n' \$(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice flows # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-flows-#.txt" || true
@@ -358,7 +364,7 @@ pipeline {
         python tests/scale/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
-      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time-*.txt,logs/**/*.txt,logs/**/*.tar.gz,RobotLogs/**/*,plots/*,etcd-metrics/*'
+      archiveArtifacts artifacts: 'kind-voltha/install-*.log,execution-time-*.txt,logs/**/*.txt,logs/**/*.tar.gz,logs/**/*.tgz,RobotLogs/**/*,plots/*,etcd-metrics/*'
     }
   }
 }
