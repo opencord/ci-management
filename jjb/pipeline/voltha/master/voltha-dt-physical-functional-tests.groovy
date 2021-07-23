@@ -101,7 +101,7 @@ pipeline {
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
         cd $WORKSPACE
         if [ "${params.branch}" == "voltha-2.8" ]; then
-           VOLTCTL_VERSION=1.6.10
+           VOLTCTL_VERSION=1.6.11
         else
            VOLTCTL_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
         fi

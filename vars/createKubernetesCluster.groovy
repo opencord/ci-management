@@ -60,7 +60,7 @@ nodes:
           HOSTARCH="amd64"
       fi
       if [ "${cfg.branch}" == "voltha-2.8" ]; then
-          VC_VERSION="1.6.10"
+          VC_VERSION="1.6.11"
       else
           VC_VERSION="\$(curl --fail -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')"
       fi
