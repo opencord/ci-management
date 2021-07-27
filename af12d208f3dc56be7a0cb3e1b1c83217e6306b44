@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f3f3a8a0_e025086f",
+        "filename": "jjb/pipeline/voltha/master/voltha-tt-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-27T08:01:44Z",
+      "side": 1,
+      "message": "you mentioned that this happens also in other jobs, why do it only in multi-uni ?",
+      "revId": "af12d208f3dc56be7a0cb3e1b1c83217e6306b44",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
