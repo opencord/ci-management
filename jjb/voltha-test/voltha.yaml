@@ -564,30 +564,29 @@
           power-switch: True
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
-     # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and openonu go and timer based job
+      # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod-openonugo'
-          'disable-job': true
-          name-extension: '_DT_openonugo'
+          config-pod: 'dt-berlin-pod-multi-olt'
+          name-extension: '_DT'
           work-flow: 'DT'
-          configurePod: true
+          release: '2.8'
+          branch: 'voltha-2.8'
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
-          # Update this value accordingly once the job is enabled
-          time: ''
+          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          time: '6'
 
-      # Berlin POD test job - master versions, uses 1T8GEM tech profile and openonu go on voltha branch
+      # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod-openonugo'
-          'disable-job': true
-          name-extension: '_DT_openonugo'
+          config-pod: 'dt-berlin-pod-multi-olt'
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_DT'
           work-flow: 'DT'
-          release: 'master'
-          branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
