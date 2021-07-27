@@ -55,10 +55,7 @@ def call(Map config) {
           def bbsimCfg = readYaml file: "$WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml"
           // NOTE we assume that the only service that needs a different s_tag is the first one in the list
           bbsimCfg["servicesConfig"]["services"][0]["s_tag"] = startingStag + i
-          // remove the ONOS config that is defined in the values file
-          // it's not relevant for BBSim (it won't break anything, but it will clustter the console output)
-          bbsimCfg.remove('onos')
-          println "Using BBSim Service config ${bbsimCfg}"
+          println "Using BBSim Service config ${bbsimCfg['servicesConfig']}"
           writeYaml file: "$WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml", data: bbsimCfg
         } else {
           // NOTE if it's DT just copy the file over
