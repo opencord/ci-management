@@ -564,30 +564,49 @@
           power-switch: True
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
-     # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and openonu go and timer based job
+      # Berlin pod with olt/onu - master XGS-PON Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod-openonugo'
-          'disable-job': true
-          name-extension: '_DT_openonugo'
-          work-flow: 'DT'
-          configurePod: true
-          profile: '1T8GEM'
+          config-pod: 'dt-berlin-pod'
+          release: 'master'
+          branch: 'master'
           num-of-onos: '3'
           num-of-atomix: '3'
-          # Update this value accordingly once the job is enabled
-          time: ''
+          configurePod: true
+          profile: 'Default'
+          time: '5'
 
-      # Berlin POD test job - master versions, uses 1T8GEM tech profile and openonu go on voltha branch
+      # Berlin POD test job - master XGS-PON uses Default tech profile
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod-openonugo'
-          'disable-job': true
-          name-extension: '_DT_openonugo'
-          work-flow: 'DT'
+          config-pod: 'dt-berlin-pod'
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          profile: '1T8GEM'
+          profile: 'Default'
           power-switch: True
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
+
+      # Berlin pod with olt/onu - voltha-2.8 XGS-PON Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+            build-node: 'dt-berlin-community-pod'
+            config-pod: 'dt-berlin-pod'
+            release: '2.8'
+            branch: 'voltha-2.8'
+            num-of-onos: '3'
+            num-of-atomix: '3'
+            configurePod: true
+            profile: 'Default'
+            time: '9'
+            pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+
+    # Berlin POD test job - voltha-2.8 XGS-PON uses Default tech profile
+      - 'build_voltha_pod_test':
+            build-node: 'dt-berlin-community-pod'
+            config-pod: 'dt-berlin-pod'
+            release: '2.8'
+            branch: 'voltha-2.8'
+            test-repo: 'voltha-system-tests'
+            profile: 'Default'
+            power-switch: True
+            pipeline-script: 'voltha/voltha-2.8/voltha-physical-functional-tests.groovy'
