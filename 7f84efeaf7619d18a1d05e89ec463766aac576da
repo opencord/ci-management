@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "abf7d34c_d49467b0",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-28T08:25:22Z",
+      "side": 1,
+      "message": "I think we should not backport this to 2.8. @Hardik, thoughts ?",
+      "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2112a01a_90fac0c7",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-28T08:25:22Z",
+      "side": 1,
+      "message": "I think we can avoid them on a per peatchset verification and keep them only nightly jobs.",
+      "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b52cf7ea_af3e2beb",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-07-28T08:25:22Z",
+      "side": 1,
+      "message": "same",
+      "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
