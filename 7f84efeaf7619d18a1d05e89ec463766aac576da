@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "88bbd5e6_52f17def",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-07-28T09:35:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "c11d3450_ed7e4a08",
+      "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "2112a01a_90fac0c7",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 3
@@ -48,6 +66,24 @@
       "writtenOn": "2021-07-28T08:25:22Z",
       "side": 1,
       "message": "I think we can avoid them on a per peatchset verification and keep them only nightly jobs.",
+      "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f9765837_2a5ff26f",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 395,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-07-28T09:35:05Z",
+      "side": 1,
+      "message": "Path set verification has to be triggered manually. So it is preferred to keep it.",
+      "parentUuid": "2112a01a_90fac0c7",
       "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
@@ -68,6 +104,24 @@
       "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f0b09c5_3d36c9f4",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 509,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-07-28T09:35:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b52cf7ea_af3e2beb",
+      "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
