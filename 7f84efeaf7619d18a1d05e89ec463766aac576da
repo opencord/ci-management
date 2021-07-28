@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c11d3450_ed7e4a08",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 257,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-07-28T08:27:39Z",
+      "side": 1,
+      "message": "Yes, I agree. Having it only for master should be okay.",
+      "parentUuid": "abf7d34c_d49467b0",
+      "revId": "7f84efeaf7619d18a1d05e89ec463766aac576da",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2112a01a_90fac0c7",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 3
