@@ -254,6 +254,18 @@
               workflow: tt
               flags: ""
               teardown: true
+            - target: voltha-onu-flows-check-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
@@ -307,6 +319,18 @@
               flags: ""
               teardown: true
             - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
@@ -368,6 +392,18 @@
               workflow: tt
               flags: ""
               teardown: true
+            - target: voltha-onu-flows-check-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
@@ -409,6 +445,18 @@
               flags: ""
               teardown: true
             - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
@@ -458,6 +506,18 @@
               workflow: tt
               flags: ""
               teardown: true
+             - target: voltha-onu-flows-check-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
           time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
@@ -502,6 +562,18 @@
               flags: ""
               teardown: true
             - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+             - target: voltha-onu-flows-check-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
