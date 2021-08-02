@@ -96,7 +96,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml '
+          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
