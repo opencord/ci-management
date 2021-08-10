@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25cb4424_ac3a1bbc",
+        "filename": "jjb/pipeline/voltha/master/voltha-physical-soak-dt-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-08-10T15:01:26Z",
+      "side": 1,
+      "message": "Do we need to start the port-forward before the tests or can it be done in the \"post\" step?\nAlso we\u0027ll probably need to stop the port-forward before running another job",
+      "range": {
+        "startLine": 147,
+        "startChar": 8,
+        "endLine": 148,
+        "endChar": 34
+      },
+      "revId": "5cfb29a3f89db6014de0bfaf39b93a61b17dfb5a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
