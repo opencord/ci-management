@@ -702,7 +702,7 @@ EOF
         cd $WORKSPACE/voltha-system-tests
         source ./vst_venv/bin/activate || true
         sleep 60 # we have to wait for prometheus to collect all the information
-        python tests/scale/sizing.py -o $WORKSPACE/plots || true
+        python scripts/sizing.py -o $WORKSPACE/plots || true
       fi
       '''
       archiveArtifacts artifacts: 'execution-time.txt,logs/*,logs/pprof/*,RobotLogs/**/*,plots/*,etcd-metrics/*'
