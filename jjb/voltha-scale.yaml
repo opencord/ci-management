@@ -50,10 +50,12 @@
           # extraHelmFlags: " -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn "
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-ssd'
-          'disable-job': true
-          build-node: 'voltha-scale-z1d'
-          time-trigger: "H H/1 * * *"
+          name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-grpc'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
+          # trigger on Feb 29th (a.k.a only trigger it manually)
+          time-trigger: "H 0 29 2 *"
+          logLevel: DEBUG
           olts: 2
           pons: 16
           onus: 32
@@ -63,8 +65,19 @@
           withDhcp: true
           withIgmp: false
           inMemoryEtcdStorage: false
-          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
-          volthaHelmChartsChange: refs/changes/69/25069/7
+          extraHelmFlags: >
+            --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
+            --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha1-voltha-api.voltha1.svc:55555
+            --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha1-voltha-adapter-openolt-api.voltha1.svc:50060
+            --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha1-voltha-api.voltha1.svc:55555
+            --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha1-voltha-adapter-openonu-api.voltha1.svc:50060
+            --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+            --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+            --set global.tracing.enabled=true
+          volthaHelmChartsChange: refs/changes/69/26569/3
+          rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
+          openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
+          openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go'
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
