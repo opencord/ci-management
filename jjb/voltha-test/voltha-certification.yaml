@@ -1,0 +1,176 @@
+---
+# POD Build Pipeline Jobs for Voltha Releases
+
+- project:
+    name: voltha-certification-jobs
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    with-kind: false
+    power-switch: False
+    work-flow: 'ATT'
+    in-band-management: false
+    num-of-openonu: '1'
+    num-of-onos: '3'
+    num-of-atomix: '3'
+    reinstall-olt: true
+    test-type: ''
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
+    cordTesterChange: ''
+    oltAdapterAppLabel: 'adapter-open-olt'
+    num-of-onus: ''
+    num-of-ponports: ''
+
+    jobs:
+
+      # Certification (Radisys 1600G) pod with olt/onu - master versions timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-1600g'
+          disable-job: false
+          reinstall-olt: false
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          time: '21'
+
+      # Certification (Radisys 1600G) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-1600g'
+          disable-job: false
+          release: 'master'
+          branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+
+      # Certification (Radisys 1600X) pod with olt/onu - master versions timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-1600x'
+          disable-job: false
+          reinstall-olt: false
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          time: '1'
+
+      # Certification (Radisys 1600X) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-1600x'
+          disable-job: false
+          release: 'master'
+          branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+
+      # Certification (Radisys) pod with olt/onu - master versions timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-3200g'
+          disable-job: false
+          reinstall-olt: false
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          time: '5'
+
+      # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-3200g'
+          disable-job: false
+          release: 'master'
+          branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+
+      # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-3200g'
+          disable-job: false
+          reinstall-olt: false
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          time: '9'
+          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+
+      # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-certification-pod'
+          config-pod: 'menlo-certification-pod-radisys-3200g'
+          disable-job: false
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: True
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
+
+      # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
+      - 'build_voltha_pod_release_timer':
+            build-node: 'menlo-certification-pod'
+            config-pod: 'menlo-certification-pod-radisys-3200g'
+            disable-job: true
+            reinstall-olt: false
+            work-flow: 'ATT'
+            profile: '1T4GEM'
+            time: '13'
+
+      # Certification (Radisys) POD test job - master versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+            build-node: 'menlo-certification-pod'
+            config-pod: 'menlo-certification-pod-radisys-3200g'
+            disable-job: true
+            release: 'master'
+            branch: 'master'
+            work-flow: 'ATT'
+            test-repo: 'voltha-system-tests'
+            profile: '1T4GEM'
+            power-switch: True
+            pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
+
+        # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
+      - 'build_voltha_pod_release_timer':
+            build-node: 'menlo-certification-pod'
+            config-pod: 'menlo-certification-pod-radisys-3200g'
+            disable-job: true
+            reinstall-olt: false
+            work-flow: 'ATT'
+            profile: '1T4GEM-unencrypted'
+            time: '17'
+
+        # Certification (Radisys) POD test job - master versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+            build-node: 'menlo-certification-pod'
+            config-pod: 'menlo-certification-pod-radisys-3200g'
+            disable-job: true
+            release: 'master'
+            branch: 'master'
+            work-flow: 'ATT'
+            test-repo: 'voltha-system-tests'
+            profile: '1T4GEM-unencrypted'
+            power-switch: True
+            pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
