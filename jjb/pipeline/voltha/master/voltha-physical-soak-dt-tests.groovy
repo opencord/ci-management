@@ -235,13 +235,13 @@ pipeline {
         onlyCritical: true
         ]);
       // get cpu usage by container
-      sh '''
+      sh """
       mkdir -p $WORKSPACE/plots || true
       cd $WORKSPACE/voltha-system-tests
       source ./vst_venv/bin/activate || true
       sleep 60 # we have to wait for prometheus to collect all the information
       python scripts/sizing.py -o $WORKSPACE/plots -a 0.0.0.0:31301 -n ${volthaNamespace} -s 7200 || true
-      '''
+      """
       archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt,plots/*'
     }
   }
