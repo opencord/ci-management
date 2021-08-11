@@ -23,6 +23,8 @@ node {
   deployment_config = null
 }
 
+def volthaNamespace = "voltha"
+
 pipeline {
   /* no label, executor is determined by JJB */
   agent {
@@ -142,6 +144,8 @@ pipeline {
       }
       steps {
         sh """
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="prometheus" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n cattle-prometheus svc/access-prometheus 31301:80; done"&
+        ps aux | grep port-forward
         mkdir -p $ROBOT_LOGS_DIR
         if [ "${params.testType}" == "Functional" ]; then
             if ( ${powerSwitch} ); then
@@ -230,7 +234,15 @@ pipeline {
         unstableThreshold: 0,
         onlyCritical: true
         ]);
-      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt'
+      // get cpu usage by container
+      sh '''
+      mkdir -p $WORKSPACE/plots || true
+      cd $WORKSPACE/voltha-system-tests
+      source ./vst_venv/bin/activate || true
+      sleep 60 # we have to wait for prometheus to collect all the information
+      python scripts/sizing.py -o $WORKSPACE/plots -a 0.0.0.0:31301 -n ${volthaNamespace} -s 7200 || true
+      '''
+      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt,plots/*'
     }
   }
 }
