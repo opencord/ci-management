@@ -22,6 +22,30 @@
       "revId": "5cfb29a3f89db6014de0bfaf39b93a61b17dfb5a",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9701448c_13e45578",
+        "filename": "jjb/pipeline/voltha/master/voltha-physical-soak-dt-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-08-11T14:26:35Z",
+      "side": 1,
+      "message": "As discussed, we cannot put this in build/deployment job as that is common for all the physical pod jobs and we need this particularly for soak job only.\nAnother reason to have it here is that functional suite will be executed manually only once after the pod deployment during the lifecycle of the soak job and we need not to create and kill the port-forward each time during failure and dataplane job runs which happens periodically every few days. The kill of this will be taken care of in the cleanup stage during the fresh deployment of the soak pod.",
+      "parentUuid": "25cb4424_ac3a1bbc",
+      "range": {
+        "startLine": 147,
+        "startChar": 8,
+        "endLine": 148,
+        "endChar": 34
+      },
+      "revId": "5cfb29a3f89db6014de0bfaf39b93a61b17dfb5a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
