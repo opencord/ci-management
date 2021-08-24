@@ -140,6 +140,27 @@
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
 
+      # OLT app rewrite jobs
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-new-olt-app'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
+          # trigger on Feb 29th (a.k.a only trigger it manually)
+          time-trigger: "H 0 29 2 *"
+          logLevel: DEBUG
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          inMemoryEtcdStorage: false
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml'
+          rwCoreImg: 'matteoscandolo/voltha-rw-core:flow-update'
+          onosImg: 'matteoscandolo/voltha-onos:oltapp'
+
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
