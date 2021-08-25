@@ -493,6 +493,7 @@
           release: '2.8'
           branch: 'voltha-2.8'
           profile: '1T8GEM'
+          reinstall-olt: false
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
