@@ -25,6 +25,12 @@ library identifier: 'cord-jenkins-libraries@master',
 def infraNamespace = "infra"
 def volthaNamespace = "voltha"
 
+def deploy_custom_oltAdapterChart(namespace, name, chart, extraHelmFlags) {
+  sh """
+    helm install --create-namespace --set defaults.image_pullPolicy=Always --namespace ${namespace} ${extraHelmFlags} ${name} ${chart}
+   """
+}
+
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -121,6 +127,10 @@ pipeline {
             // adding user specified helm flags at the end so they'll have priority over everything else
             localHelmFlags = localHelmFlags + " ${extraHelmFlags}"
 
+            if(openoltAdapterChart != "") {
+              localHelmFlags = localHelmFlags + " --set voltha-adapter-openolt.enabled=false"
+            }
+
             volthaDeploy([
               workflow: workFlow.toLowerCase(),
               extraHelmFlags: localHelmFlags,
@@ -132,6 +142,10 @@ pipeline {
               etcdReplica: params.NumOfEtcd,
               bbsimReplica: bbsimReplicas.toInteger(),
               ])
+
+              if(openoltAdapterChart != ""){
+                deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
+              }
           }
           sh """
           JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
