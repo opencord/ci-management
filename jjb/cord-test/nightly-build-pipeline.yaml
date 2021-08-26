@@ -25,6 +25,8 @@
 
     openoltAdapterChart: onf/voltha-adapter-openolt
 
+    oltAdapterReleaseName: open-olt
+
     <<: *test-pipe-job-boiler-plate
 
     parameters:
@@ -140,7 +142,12 @@
       - string:
           name: openoltAdapterChart
           default: '{openoltAdapterChart}'
-          description: 'OpenOLT chart name (or location on file system)'
+          description: 'Olt adapter chart name (or location on file system)'
+
+      - string:
+          name: oltAdapterReleaseName
+          default: '{oltAdapterReleaseName}'
+          description: 'Olt adapter release name'
 
     concurrent: true
 
@@ -165,6 +172,8 @@
     <<: *test-pipe-job-boiler-plate
 
     openoltAdapterChart: onf/voltha-adapter-openolt
+
+    oltAdapterReleaseName: open-olt
 
     parameters:
       - string:
@@ -249,7 +258,12 @@
       - string:
           name: openoltAdapterChart
           default: '{openoltAdapterChart}'
-          description: 'OpenOLT chart name (or location on file system)'
+          description: 'Olt adapter chart name (or location on file system)'
+
+      - string:
+          name: oltAdapterReleaseName
+          default: '{oltAdapterReleaseName}'
+          description: 'Olt adapter release name'
 
     concurrent: true
 

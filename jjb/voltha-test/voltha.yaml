@@ -494,11 +494,13 @@
           branch: 'voltha-2.8'
           profile: '1T8GEM'
           reinstall-olt: false
+          extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_voltha' --set global.image_registry='10.34.90.43:443/' --set global.image_org='' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore"
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
           VolthaEtcdPort: 9999
           openoltAdapterChart: '/home/community/adtran-21.4-voltha-2.8/voltha-adapter-adtran-olt'
+          oltAdapterReleaseName: 'adtran-olt'
           time: '21'
 
       # Berlin POD adtran test job - 2.8 versions: uses 1T8GEM tech profile on voltha branch
