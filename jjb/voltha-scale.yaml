@@ -147,7 +147,7 @@
           build-node: 'voltha-scale-1'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          logLevel: DEBUG
+          logLevel: INFO
           olts: 2
           pons: 16
           onus: 32
@@ -158,7 +158,8 @@
           withIgmp: false
           inMemoryEtcdStorage: false
           extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml'
-          rwCoreImg: 'matteoscandolo/voltha-rw-core:flow-update'
+          rwCoreImg: 'matteoscandolo/voltha-rw-core:test'
+          ofAgentImg: 'matteoscandolo/voltha-ofagent-go:test'
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
