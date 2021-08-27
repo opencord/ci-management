@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b6fd2a1a_a729bf7f",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 341,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-08-27T15:43:53Z",
+      "side": 1,
+      "message": "should we sleep outside of the loop so if we have multiple OLT we reboot all of them at the same time?",
+      "range": {
+        "startLine": 341,
+        "startChar": 16,
+        "endLine": 341,
+        "endChar": 49
+      },
+      "revId": "1eb6cfe8eb16cc8037ff5b47555b7d43ff908c2a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
