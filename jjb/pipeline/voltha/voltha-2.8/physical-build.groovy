@@ -127,7 +127,7 @@ pipeline {
             // adding user specified helm flags at the end so they'll have priority over everything else
             localHelmFlags = localHelmFlags + " ${extraHelmFlags}"
 
-            if(openoltAdapterChart != "") {
+            if(openoltAdapterChart != "onf/voltha-adapter-openolt") {
               localHelmFlags = localHelmFlags + " --set voltha-adapter-openolt.enabled=false"
             }
 
@@ -143,7 +143,7 @@ pipeline {
               bbsimReplica: bbsimReplicas.toInteger(),
               ])
 
-              if(openoltAdapterChart != ""){
+              if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
                 deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
               }
           }
