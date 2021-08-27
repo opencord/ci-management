@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "69a40b7d_1b643728",
+        "filename": "jjb/cord-test/nightly-build-pipeline.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-08-27T02:54:37Z",
+      "side": 1,
+      "message": "Cosmetic comment: Capital O in olt, just to be consistent, here and other changes. 😉",
+      "range": {
+        "startLine": 145,
+        "startChar": 24,
+        "endLine": 145,
+        "endChar": 25
+      },
+      "revId": "ff9f1c33f21f244addb3e1a0d6bf990c1fd179f1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
