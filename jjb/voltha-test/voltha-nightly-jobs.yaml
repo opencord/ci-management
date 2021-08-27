@@ -9,6 +9,8 @@
 
     oltAdapterReleaseName: open-olt
 
+    waitTimerForOltUp: 360
+
     parameters:
       - string:
           name: buildNode
@@ -172,10 +174,16 @@
           default: '{openoltAdapterChart}'
           description: 'Olt adapter chart name (or location on file system)'
 
+      # this is used in the Adtran DT job
       - string:
           name: oltAdapterReleaseName
           default: '{oltAdapterReleaseName}'
           description: 'Olt adapter release name'
+
+      - string:
+          name: waitTimerForOltUp
+          default: '{waitTimerForOltUp}'
+          description: 'Wait timer for the OLT to come up after reboot'
 
 # defualt properties for the VOLTHA scale jobs
 - voltha-pipe-job-boiler-plate: &voltha-pipe-job-boiler-plate

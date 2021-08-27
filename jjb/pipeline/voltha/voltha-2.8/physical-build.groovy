@@ -333,28 +333,32 @@ pipeline {
       steps {
         script {
           for(int i=0; i < deployment_config.olts.size(); i++) {
-            int waitTimerForOltUp = 360
-            if ( params.inBandManagement ) {
-              waitTimerForOltUp = 540
-            }
-            timeout(15) {
+            if ( params.oltAdapterReleaseName != "open-olt" ) {
+              timeout(15) {
+                sh returnStdout: true, script: """
+                ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
+                sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'rm -f /var/log/openolt.log; rm -f /var/log/dev_mgmt_daemon.log; rm -f /var/log/openolt_process_watchdog.log; reboot > /dev/null &' || true
+                sleep ${params.waitTimerForOltUp}
+                """
+              }
+              timeout(15) {
+                waitUntil {
+                  devprocess = sh returnStdout: true, script: "sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'ps -ef | grep dev_mgmt_daemon | wc -l'"
+                  return devprocess.toInteger() > 0
+                }
+              }
+              timeout(15) {
+                waitUntil {
+                  openoltprocess = sh returnStdout: true, script: "sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'ps -ef | grep openolt | wc -l'"
+                  return openoltprocess.toInteger() > 0
+                }
+              }
+            } else {
               sh returnStdout: true, script: """
               ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
-              sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'rm -f /var/log/openolt.log; rm -f /var/log/dev_mgmt_daemon.log; rm -f /var/log/openolt_process_watchdog.log; reboot > /dev/null &' || true
-              sleep ${waitTimerForOltUp}
+              sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'reboot > /dev/null &' || true
+              sleep ${params.waitTimerForOltUp}
               """
-            }
-            timeout(15) {
-              waitUntil {
-                devprocess = sh returnStdout: true, script: "sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'ps -ef | grep dev_mgmt_daemon | wc -l'"
-                return devprocess.toInteger() > 0
-              }
-            }
-            timeout(15) {
-              waitUntil {
-                openoltprocess = sh returnStdout: true, script: "sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'ps -ef | grep openolt | wc -l'"
-                return openoltprocess.toInteger() > 0
-              }
             }
           }
         }

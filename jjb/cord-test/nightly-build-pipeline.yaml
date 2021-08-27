@@ -27,6 +27,8 @@
 
     oltAdapterReleaseName: open-olt
 
+    waitTimerForOltUp: 360
+
     <<: *test-pipe-job-boiler-plate
 
     parameters:
@@ -149,6 +151,11 @@
           default: '{oltAdapterReleaseName}'
           description: 'Olt adapter release name'
 
+      - string:
+          name: waitTimerForOltUp
+          default: '{waitTimerForOltUp}'
+          description: 'Wait timer for the OLT to come up after reboot'
+
     concurrent: true
 
     pipeline-scm:
@@ -174,6 +181,8 @@
     openoltAdapterChart: onf/voltha-adapter-openolt
 
     oltAdapterReleaseName: open-olt
+
+    waitTimerForOltUp: 360
 
     parameters:
       - string:
@@ -264,6 +273,11 @@
           name: oltAdapterReleaseName
           default: '{oltAdapterReleaseName}'
           description: 'Olt adapter release name'
+
+      - string:
+          name: waitTimerForOltUp
+          default: '{waitTimerForOltUp}'
+          description: 'Wait timer for the OLT to come up after reboot'
 
     concurrent: true
 

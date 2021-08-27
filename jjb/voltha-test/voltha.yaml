@@ -189,6 +189,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           in-band-management: true
+          waitTimerForOltUp: 540
           VolthaEtcdPort: 9999
           time: '1'
 
@@ -213,6 +214,7 @@
           num-of-atomix: '3'
           VolthaEtcdPort: 9999
           in-band-management: true
+          waitTimerForOltUp: 540
           time: '4'
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -501,6 +503,7 @@
           VolthaEtcdPort: 9999
           openoltAdapterChart: '/home/community/adtran-21.4-voltha-2.8/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
+          waitTimerForOltUp: 420
           time: '21'
 
       # Berlin POD adtran test job - 2.8 versions: uses 1T8GEM tech profile on voltha branch
