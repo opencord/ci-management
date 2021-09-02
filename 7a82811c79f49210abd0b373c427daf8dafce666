@@ -16,6 +16,24 @@
       "revId": "7a82811c79f49210abd0b373c427daf8dafce666",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5436529d_c36c69cb",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-09-02T13:48:39Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "4ada6f34_4540a2af",
+      "revId": "7a82811c79f49210abd0b373c427daf8dafce666",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": false
     }
   ]
 }
