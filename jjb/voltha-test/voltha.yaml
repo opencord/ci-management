@@ -195,6 +195,7 @@
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -219,6 +220,7 @@
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -248,6 +250,7 @@
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: '2.8'
