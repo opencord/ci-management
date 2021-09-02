@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7b745a14_c57277f0",
+        "filename": "jjb/voltha-test/voltha-certification.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-09-02T14:21:51Z",
+      "side": 1,
+      "message": "240 is not enough ?",
+      "revId": "9ed73664f85c5a2f011c7b73a84ad5a292e96c1a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "681217df_505bce5c",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-09-02T14:21:51Z",
+      "side": 1,
+      "message": "why is this 390 ? this is a single olt job. I was expecting flex (which is in band) to change",
+      "revId": "9ed73664f85c5a2f011c7b73a84ad5a292e96c1a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
