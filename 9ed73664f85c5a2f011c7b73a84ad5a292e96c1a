@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "72a01fee_93c2000c",
+        "filename": "jjb/voltha-test/voltha-certification.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-09-02T14:29:08Z",
+      "side": 1,
+      "message": "Referred job: https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/build_menlo-certification-pod-radisys-3200g_1T8GEM_voltha_DT_master_test/18/",
+      "parentUuid": "7b745a14_c57277f0",
+      "revId": "9ed73664f85c5a2f011c7b73a84ad5a292e96c1a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "681217df_505bce5c",
         "filename": "jjb/voltha-test/voltha.yaml",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2021-09-02T14:21:51Z",
       "side": 1,
       "message": "why is this 390 ? this is a single olt job. I was expecting flex (which is in band) to change",
+      "revId": "9ed73664f85c5a2f011c7b73a84ad5a292e96c1a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7678b401_05894515",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-09-02T14:29:08Z",
+      "side": 1,
+      "message": "Only onf-demo-pod has in-band-management flag set to true which I have already set to 300.\nFor this, I checked the Jenkins job https://jenkins.opencord.org/view/Community-PODs/job/build_dt-berlin-pod-gpon-adtran_1T8GEM_voltha_DT_2.8_test/ Currently, this is continuously failing for some suites but taking 6+ hours to cover all, and hence this value. Once fixed, we can lower this value accordingly.",
+      "parentUuid": "681217df_505bce5c",
       "revId": "9ed73664f85c5a2f011c7b73a84ad5a292e96c1a",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
       "unresolved": true
