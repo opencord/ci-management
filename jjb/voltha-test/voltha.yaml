@@ -195,6 +195,7 @@
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -219,6 +220,7 @@
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -248,6 +250,7 @@
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: '2.8'
@@ -397,6 +400,7 @@
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 300
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
@@ -508,6 +512,7 @@
 
       # Berlin POD adtran test job - 2.8 versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 390
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon-adtran'
           release: '2.8'

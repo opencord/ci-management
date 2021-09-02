@@ -304,8 +304,14 @@
 
     oltAdapterAppLabel: 'adapter-open-olt'
     enableMultiUni: false
+    timeout: 240
 
     parameters:
+      - string:
+          name: timeout
+          default: '{timeout}'
+          description: 'Job pipeline timeout value'
+
       - string:
           name: buildNode
           default: '{build-node}'
@@ -430,8 +436,14 @@
     manifest-branch: 'master'
 
     oltAdapterAppLabel: 'adapter-open-olt'
+    timeout: 240
 
     parameters:
+      - string:
+          name: timeout
+          default: '{timeout}'
+          description: 'Job pipeline timeout value'
+
       - string:
           name: buildNode
           default: '{build-node}'
@@ -555,8 +567,14 @@
 
     oltAdapterAppLabel: 'adapter-open-olt'
     enableMultiUni: false
+    timeout: 240
 
     parameters:
+      - string:
+          name: timeout
+          default: '{timeout}'
+          description: 'Job pipeline timeout value'
+
       - string:
           name: buildNode
           default: '{build-node}'

@@ -89,6 +89,7 @@
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 270
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false
