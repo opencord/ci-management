@@ -31,7 +31,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: ${params.timeout}, unit: 'MINUTES')
+    timeout(time: "${timeout}", unit: 'MINUTES')
   }
 
   environment {

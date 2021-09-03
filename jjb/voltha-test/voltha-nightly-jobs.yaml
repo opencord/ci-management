@@ -310,7 +310,7 @@
       - string:
           name: timeout
           default: '{timeout}'
-          description: 'Job pipeline timeout value'
+          description: 'Job pipeline timeout value [minutes]'
 
       - string:
           name: buildNode
@@ -442,7 +442,7 @@
       - string:
           name: timeout
           default: '{timeout}'
-          description: 'Job pipeline timeout value'
+          description: 'Job pipeline timeout value [minutes]'
 
       - string:
           name: buildNode
@@ -573,7 +573,7 @@
       - string:
           name: timeout
           default: '{timeout}'
-          description: 'Job pipeline timeout value'
+          description: 'Job pipeline timeout value [minutes]'
 
       - string:
           name: buildNode
