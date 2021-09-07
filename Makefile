@@ -1,7 +1,7 @@
 # Makefile for testing JJB jobs in a virtualenv
-
 .PHONY: test clean
 
+SHELL := /bin/bash
 VENV_DIR      ?= venv-jjb
 JJB_VERSION   ?= 3.2.0
 JOBCONFIG_DIR ?= job-configs
