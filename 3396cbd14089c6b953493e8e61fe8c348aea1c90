@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0e508b9d_bff5626c",
+        "filename": "Makefile",
+        "patchSetId": 2
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-09-08T05:48:02Z",
+      "side": 1,
+      "message": "Not all systems have bash at /bin/bash - better to use this (which will exit on failures):\n\n   SHELL \u003d bash -e -o pipefail",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 18
+      },
+      "revId": "3396cbd14089c6b953493e8e61fe8c348aea1c90",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388",
+      "unresolved": true
+    }
+  ]
+}
