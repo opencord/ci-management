@@ -158,7 +158,7 @@
           withIgmp: false
           inMemoryEtcdStorage: false
           extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml'
-          rwCoreImg: 'matteoscandolo/voltha-rw-core:test'
+          rwCoreImg: 'matteoscandolo/voltha-rw-core:sync-delete'
           ofAgentImg: 'matteoscandolo/voltha-ofagent-go:test'
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
