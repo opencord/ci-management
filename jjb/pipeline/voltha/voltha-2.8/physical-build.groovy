@@ -258,6 +258,8 @@ pipeline {
                 sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.opencord.dhcpl2relay"
                 sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.opencord.aaa"
                 sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.opencord.olt"
+                #TRACE in the pipeliner is too chatty, moving to DEBUG
+                sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set DEBUG org.opencord.olt.driver"
                 sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set DEBUG org.onosproject.net.flowobjective.impl.FlowObjectiveManager"
                 sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set DEBUG org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager"
                 curl -sSL --user karaf:karaf -X GET http://${deployment_config.nodes[0].ip}:30120/onos/v1/applications/org.onosproject.segmentrouting | jq '.state' | grep ACTIVE
