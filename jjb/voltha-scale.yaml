@@ -161,6 +161,7 @@
           rwCoreImg: 'matteoscandolo/voltha-rw-core:sync-delete'
           ofAgentImg: 'matteoscandolo/voltha-ofagent-go:test'
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
+          openonuAdapterGoImg: 'gcgirish/voltha-openonu-adapter-go:syncFlow'
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
