@@ -22,7 +22,8 @@ library identifier: 'cord-jenkins-libraries@master',
 ])
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
-      def extraHelmFlags = "${extraHelmFlags} --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
+      def extraHelmFlags = extraHelmFlags.trim()
+      extraHelmFlags = extraHelmFlags + " --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
       if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade") {
           extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set onos-classic.image.tag=master "
       }

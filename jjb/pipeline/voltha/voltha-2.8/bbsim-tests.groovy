@@ -59,7 +59,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
           }
 
           // NOTE temporary workaround expose ONOS node ports
-          def localHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()} " +
+          def localHelmFlags = extraHelmFlags.trim() + " --set global.log_level=${logLevel.toUpperCase()} " +
           " --set onos-classic.onosSshPort=30115 " +
           " --set onos-classic.onosApiPort=30120 " +
           " --set onos-classic.onosOfPort=31653 " +
