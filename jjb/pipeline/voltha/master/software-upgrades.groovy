@@ -50,9 +50,9 @@ def test_software_upgrade(name) {
       """
       // forward ONOS and VOLTHA ports
       sh """
-      _TAG=onos-port-forward bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8101:8101; done &"
-      _TAG=onos-port-forward bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n infra svc/voltha-infra-onos-classic-hs 8181:8181; done &"
-      _TAG=port-forward-voltha-api bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-api 55555:55555; done &"
+      JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8101:8101; done 2>&1 " &
+      JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8181:8181; done 2>&1 " &
+      JENKINS_NODE_COOKIE="dontKillMe" _TAG=port-forward-voltha-api /bin/bash -c "while true; do kubectl -n voltha port-forward --address 0.0.0.0 service/voltha-voltha-api 55555:55555; done 2>&1 " &
       """
       sh """
       sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord
