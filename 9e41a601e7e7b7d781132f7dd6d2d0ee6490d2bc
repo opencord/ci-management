@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bdf37da_91cb64e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-09-14T12:45:45Z",
+      "side": 1,
+      "message": "tested here: https://jenkins.opencord.org/view/grpc/job/periodic-voltha-test-bbsim-grpc/7/console",
+      "revId": "9e41a601e7e7b7d781132f7dd6d2d0ee6490d2bc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
