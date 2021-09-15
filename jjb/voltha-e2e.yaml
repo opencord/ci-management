@@ -49,7 +49,8 @@
           code-branch: 'master'
           volthaHelmChartsChange: refs/changes/69/26569/7
           extraHelmFlags: >
-            --set global.image_tag=master --set onos-classic.image.tag=master
+            --set global.image_tag=master
+            --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=port-remove
             --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
             --set voltha.images.rw_core.tag=grpc_v1
             --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
@@ -242,7 +243,8 @@
           code-branch: 'master'
           volthaHelmChartsChange: refs/changes/69/26569/7
           extraHelmFlags: >
-            --set global.image_tag=master --set onos-classic.image.tag=master
+            --set global.image_tag=master
+            --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=port-remove
             --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
             --set voltha.images.rw_core.tag=grpc_v1
             --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
