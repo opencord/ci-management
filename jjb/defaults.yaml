@@ -74,7 +74,7 @@
     failure-email-address: 'cord-dev@opencord.org'
 
     # Projects containing helm-charts
-    helm-charts-projects-regexp: '^(?!aether)(.*helm-charts|cord-platform|seba)$'
+    helm-charts-projects-regexp: '^(?!aether|roc)(.*helm-charts|cord-platform|seba)$'
 
     # regexp for gerrit triggers
     # list of supported branches, for branch-regexp
