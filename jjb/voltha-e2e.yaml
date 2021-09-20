@@ -47,16 +47,17 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-grpc'
           code-branch: 'master'
-          volthaHelmChartsChange: refs/changes/69/26569/7
+          volthaHelmChartsChange: refs/changes/69/26569/8
+          volthaSystemTestsChange: refs/changes/58/27458/1
           extraHelmFlags: >
             --set global.image_tag=master
             --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=port-remove
-            --set voltha.images.rw_core.repository=dbainbriciena/voltha-rw-core
-            --set voltha.images.rw_core.tag=grpc009
-            --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=dbainbriciena/voltha-openonu-adapter-go
-            --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc009
-            --set voltha-adapter-openolt.images.adapter_open_olt.repository=dbainbriciena/voltha-openolt-adapter
-            --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc009
+            --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+            --set voltha.images.rw_core.tag=grpc_v1
+            --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+            --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+            --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+            --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
@@ -241,16 +242,17 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-grpc'
           code-branch: 'master'
-          volthaHelmChartsChange: refs/changes/69/26569/7
+          volthaHelmChartsChange: refs/changes/69/26569/9
+          volthaSystemTestsChange: refs/changes/32/27532/1
           extraHelmFlags: >
             --set global.image_tag=master
             --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=port-remove
-            --set voltha.images.rw_core.repository=dbainbriciena/voltha-rw-core
-            --set voltha.images.rw_core.tag=grpc009
-            --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=dbainbriciena/voltha-openonu-adapter-go
-            --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc009
-            --set voltha-adapter-openolt.images.adapter_open_olt.repository=dbainbriciena/voltha-openolt-adapter
-            --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc009
+            --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+            --set voltha.images.rw_core.tag=grpc_v1
+            --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+            --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+            --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+            --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
