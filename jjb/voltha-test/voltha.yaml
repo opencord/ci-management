@@ -505,7 +505,7 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
           VolthaEtcdPort: 9999
-          openoltAdapterChart: '/home/community/adtran-21.4-voltha-2.8/voltha-adapter-adtran-olt'
+          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.8/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
           time: '21'
