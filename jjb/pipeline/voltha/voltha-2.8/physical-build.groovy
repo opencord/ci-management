@@ -144,6 +144,7 @@ pipeline {
               ])
 
               if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
+                extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
                 deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
               }
           }
