@@ -61,6 +61,7 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -84,6 +85,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -108,6 +110,7 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -136,6 +139,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -166,6 +170,7 @@
           reinstall-olt: true
           enableMultiUni: true
           uniPortMask: '0x0003'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -192,6 +197,7 @@
           waitTimerForOltUp: 540
           VolthaEtcdPort: 9999
           time: '1'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -217,6 +223,7 @@
           in-band-management: true
           waitTimerForOltUp: 540
           time: '4'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -247,6 +254,7 @@
           in-band-management: true
           time: '7'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -397,6 +405,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '16'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -422,6 +431,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '1'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -449,6 +459,7 @@
           num-of-atomix: '3'
           time: '11'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -463,7 +474,7 @@
           power-switch: True
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
-      # Berlin pod with olt/onu - master versions timer based job , two OLTs
+      # Berlin pod with olt/onu - voltha-2.8 versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
@@ -476,8 +487,9 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
           time: '5'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
-      # Berlin POD test job - master versions: uses tech profile on voltha branch
+      # Berlin POD test job - voltha-2.8 versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
@@ -500,7 +512,7 @@
           branch: 'voltha-2.8'
           profile: '1T8GEM'
           reinstall-olt: false
-          extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_voltha' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore"
+          extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_voltha' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore -set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
