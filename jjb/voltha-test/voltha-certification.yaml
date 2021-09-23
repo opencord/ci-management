@@ -36,6 +36,7 @@
           work-flow: 'DT'
           profile: '1T8GEM'
           time: '21'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Certification (Radisys 1600G) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -61,6 +62,7 @@
           work-flow: 'DT'
           profile: '1T8GEM'
           time: '1'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Certification (Radisys 1600X) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -86,6 +88,7 @@
           work-flow: 'DT'
           profile: '1T8GEM'
           time: '5'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -115,6 +118,7 @@
           profile: '1T8GEM'
           time: '9'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -143,6 +147,7 @@
           profile: '1T8GEM'
           time: '13'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -171,6 +176,7 @@
           profile: '1T8GEM'
           time: '17'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
