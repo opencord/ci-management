@@ -242,7 +242,7 @@
           name: 'periodic-voltha-openonu-go-test-bbsim-grpc'
           code-branch: 'master'
           volthaHelmChartsChange: refs/changes/69/26569/9
-          volthaSystemTestsChange: refs/changes/36/27536/1
+          volthaSystemTestsChange: refs/changes/32/27532/1
           extraHelmFlags: >
             --set global.image_tag=master
             --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
@@ -258,7 +258,7 @@
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H/4 * * *"
           logLevel: 'DEBUG'
           testTargets: |
             - target: 1t1gem-openonu-go-adapter-test
@@ -279,7 +279,7 @@
               teardown: true
             - target: reconcile-openonu-go-adapter-test-att
               workflow: att
-              flags: ""
+              flags: '--set onos-classic.config.componentConfig."org\.opencord\.olt\.impl\.OltMeterService"="\{\"deleteMeters\":\"false\"\}"'
               teardown: true
             - target: reconcile-openonu-go-adapter-test-dt
               workflow: dt
