@@ -1,0 +1,28 @@
+---
+# verification jobs for 'grpc-robot' repo
+
+- project:
+    name: grpc-robot
+    project: '{name}'
+
+    jobs:
+      - 'verify-grpc-robot-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+#     - 'publish-grpc-robot-jobs':
+#         branch-regexp: '{supported-branches-regexp}'
+#         pypi-index: 'pypi'
+
+- job-group:
+    name: 'verify-grpc-robot-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          junit-allow-empty-results: true
+
+# - job-group:
+#     name: 'publish-grpc-robot-jobs'
+#     jobs:
+#       - 'pypi-publish':
+#           project-regexp: '^{name}$'
+#           dependency-jobs: 'version-tag'

@@ -1,0 +1,28 @@
+---
+# verification jobs for 'kafka-robot' repo
+
+- project:
+    name: kafka-robot
+    project: '{name}'
+
+    jobs:
+      - 'verify-kafka-robot-jobs':
+          branch-regexp: '{supported-branches-regexp}'
+#     - 'publish-kafka-robot-jobs':
+#         branch-regexp: '{supported-branches-regexp}'
+#         pypi-index: 'pypi'
+
+- job-group:
+    name: 'verify-kafka-robot-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject'
+      - 'make-unit-test':
+          junit-allow-empty-results: true
+
+# - job-group:
+#     name: 'publish-kafka-robot-jobs'
+#     jobs:
+#       - 'pypi-publish':
+#           project-regexp: '^{name}$'
+#           dependency-jobs: 'version-tag'
