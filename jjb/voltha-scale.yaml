@@ -68,9 +68,9 @@
           inMemoryEtcdStorage: false
           extraHelmFlags: >
             --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
-            --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.default.svc:55558
+            --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha1-voltha-core.default.svc:55558
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.default.svc:50060
-            --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.default.svc:55558
+            --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha1-voltha-core.default.svc:55558
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.default.svc:50060
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
@@ -99,9 +99,9 @@
           inMemoryEtcdStorage: false
           extraHelmFlags: >
             -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
-            --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.default.svc:55558
+            --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha1-voltha-core.default.svc:55558
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.default.svc:50060
-            --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.default.svc:55558
+            --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha1-voltha-core.default.svc:55558
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.default.svc:50060
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
@@ -130,9 +130,9 @@
           inMemoryEtcdStorage: false
           extraHelmFlags: >
             --set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
-            --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.default.svc:55558
+            --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha1-voltha-core.default.svc:55558
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.default.svc:50060
-            --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.default.svc:55558
+            --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha1-voltha-core.default.svc:55558
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.default.svc:50060
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
