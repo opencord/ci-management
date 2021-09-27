@@ -75,7 +75,7 @@
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
             --set global.tracing.enabled=true
-          volthaHelmChartsChange: refs/changes/69/26569/8
+          volthaHelmChartsChange: refs/changes/69/26569/11
           rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
@@ -106,7 +106,7 @@
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
             --set global.tracing.enabled=true
-          volthaHelmChartsChange: refs/changes/69/26569/8
+          volthaHelmChartsChange: refs/changes/69/26569/11
           rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
@@ -137,7 +137,7 @@
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
             --set global.tracing.enabled=true
-          volthaHelmChartsChange: refs/changes/69/26569/8
+          volthaHelmChartsChange: refs/changes/69/26569/11
           rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
