@@ -48,7 +48,7 @@
           name: 'periodic-voltha-test-bbsim-grpc'
           code-branch: 'master'
           volthaHelmChartsChange: refs/changes/69/26569/11
-          volthaSystemTestsChange: refs/changes/32/27532/2
+          volthaSystemTestsChange: refs/changes/32/27532/4
           extraHelmFlags: >
             --set global.image_tag=master
             --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
@@ -243,7 +243,7 @@
           name: 'periodic-voltha-openonu-go-test-bbsim-grpc'
           code-branch: 'master'
           volthaHelmChartsChange: refs/changes/69/26569/11
-          volthaSystemTestsChange: refs/changes/32/27532/2
+          volthaSystemTestsChange: refs/changes/32/27532/4
           extraHelmFlags: >
             --set global.image_tag=master
             --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
