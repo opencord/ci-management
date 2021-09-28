@@ -56,7 +56,7 @@
           build-node: 'voltha-scale-1'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          logLevel: DEBUG
+          logLevel: INFO
           olts: 2
           pons: 16
           onus: 32
@@ -86,7 +86,7 @@
           build-node: 'voltha-scale-1'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          logLevel: DEBUG
+          logLevel: INFO
           olts: 2
           pons: 16
           onus: 32
@@ -117,7 +117,7 @@
           build-node: 'voltha-scale-1'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          logLevel: DEBUG
+          logLevel: INFO
           olts: 2
           pons: 16
           onus: 32
