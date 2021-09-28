@@ -11,6 +11,12 @@ def call(Map config) {
 
     def cfg = defaultConfig + config
 
+    if (cfg.adaptersToWait == 0){
+       //no need to wait
+       println "No need to wait for adapters to be registered"
+       return
+    }
+
     println "Wait for adapters to be registered"
 
     // guarantee that at least the specified number of adapters are registered with VOLTHA before proceeding
