@@ -56,7 +56,7 @@
           build-node: 'voltha-scale-1'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          logLevel: DEBUG
+          logLevel: INFO
           olts: 2
           pons: 16
           onus: 32
@@ -79,6 +79,7 @@
           rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
+          ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
           onosImg: andreacampanella/voltha-onos:port-remove
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers-grpc'
@@ -86,7 +87,7 @@
           build-node: 'voltha-scale-1'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          logLevel: DEBUG
+          logLevel: INFO
           olts: 2
           pons: 16
           onus: 32
@@ -110,6 +111,7 @@
           rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
+          ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
           onosImg: andreacampanella/voltha-onos:port-remove
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-grpc'
@@ -117,7 +119,7 @@
           build-node: 'voltha-scale-1'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
-          logLevel: DEBUG
+          logLevel: INFO
           olts: 2
           pons: 16
           onus: 32
@@ -141,6 +143,7 @@
           rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
+          ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
           onosImg: andreacampanella/voltha-onos:port-remove
 
       # OLT app rewrite jobs
