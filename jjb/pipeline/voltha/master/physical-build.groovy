@@ -127,8 +127,11 @@ pipeline {
             // adding user specified helm flags at the end so they'll have priority over everything else
             localHelmFlags = localHelmFlags + " ${extraHelmFlags}"
 
+            def numberOfAdaptersToWait = 2
+
             if(openoltAdapterChart != "onf/voltha-adapter-openolt") {
               localHelmFlags = localHelmFlags + " --set voltha-adapter-openolt.enabled=false"
+              numberOfAdaptersToWait = 1
             }
 
             volthaDeploy([
@@ -141,11 +144,15 @@ pipeline {
               kafkaReplica: params.NumOfKafka,
               etcdReplica: params.NumOfEtcd,
               bbsimReplica: bbsimReplicas.toInteger(),
+              adaptersToWait: numberOfAdaptersToWait,
               ])
 
               if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
                 extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
                 deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
+                waitForAdapters([
+                  adaptersToWait: 2
+                ])
               }
           }
           sh """
