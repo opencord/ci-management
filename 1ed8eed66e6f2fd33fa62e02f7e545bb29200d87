@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e68629ca_03d2ec1e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-09-28T16:20:20Z",
+      "side": 1,
+      "message": "can you include the of agent image as well please volthacore/voltha-ofagent-go:grpc_v1",
+      "revId": "1ed8eed66e6f2fd33fa62e02f7e545bb29200d87",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
