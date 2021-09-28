@@ -16,6 +16,24 @@
       "message": "can you include the of agent image as well please volthacore/voltha-ofagent-go:grpc_v1",
       "revId": "1ed8eed66e6f2fd33fa62e02f7e545bb29200d87",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b76278bf_c23bd3e2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-09-28T17:06:49Z",
+      "side": 1,
+      "message": "done",
+      "parentUuid": "e68629ca_03d2ec1e",
+      "revId": "1ed8eed66e6f2fd33fa62e02f7e545bb29200d87",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
