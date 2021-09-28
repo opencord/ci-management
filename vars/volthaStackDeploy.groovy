@@ -11,6 +11,7 @@ def call(Map config) {
       extraHelmFlags: "",
       localCharts: false,
       onosReplica: 1,
+      adaptersToWait: 2,
     ]
 
     if (!config) {
@@ -84,21 +85,7 @@ def call(Map config) {
         done
     """
 
-    println "Wait for adapters to be registered"
-
-    // guarantee that at least two adapters are registered with VOLTHA before proceeding
-    // this is potentially open to issue if we'll run test with multiple adapter pairs (eg: adtran + open)
-    // untill then it is safe to assume we'll be ready once we have two adapters in the system
-    sh """
-        set +x
-        _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${cfg.volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
-        adapters=\$(voltctl adapter list -q | wc -l)
-        while [[ \$adapters -lt 2 ]]; do
-          sleep 5
-          adapters=\$(voltctl adapter list -q | wc -l)
-        done
-        ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
-    """
+    waitForAdapters(cfg)
 
     // also make sure that the ONOS config is loaded
     // NOTE that this is only required for VOLTHA-2.8
