@@ -141,12 +141,17 @@ pipeline {
               kafkaReplica: params.NumOfKafka,
               etcdReplica: params.NumOfEtcd,
               bbsimReplica: bbsimReplicas.toInteger(),
+              adaptersToWait: 1,
               ])
 
               if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
                 extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
                 deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
               }
+
+              waitForAdapters([
+                adaptersToWait: 2
+              ])
           }
           sh """
           JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
