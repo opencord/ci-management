@@ -489,7 +489,7 @@ EOF
         script {
           Exception caughtException = null
 
-          catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') { 
+          catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
             try {
               sh '''
                 ROBOT_PARAMS="--exitonfailure \
@@ -514,7 +514,7 @@ EOF
               '''
             } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
               // if the error is a timeout don't mark the build as failed
-              println "IGMP test timed out" 
+              println "IGMP test timed out"
             } catch (Throwable e) {
               caughtException = e
             }
@@ -639,6 +639,7 @@ EOF
       for bbsim in "${IDS[@]}"
       do
         kubectl exec -t $bbsim -- bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
+        kubectl exec -t $bbsim -- bbsimctl uni list > $LOG_FOLDER/$bbsim-uni-list.txt || true
         kubectl exec -t $bbsim -- bbsimctl service list > $LOG_FOLDER/$bbsim-service-list.txt || true
         kubectl exec -t $bbsim -- bbsimctl olt resources GEM_PORT > $LOG_FOLDER/$bbsim-flows-gem-ports.txt || true
         kubectl exec -t $bbsim -- bbsimctl olt resources ALLOC_ID > $LOG_FOLDER/$bbsim-flows-alloc-ids.txt || true
