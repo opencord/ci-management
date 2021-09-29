@@ -456,7 +456,7 @@
           trigger-comment: "voltha test openonu singleolt"
           code-branch: '$GERRIT_BRANCH'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
-          gerrit-project: '$GERRIT_PROJECT'
+          gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           logLevel: 'DEBUG'
           testTargets: |
@@ -629,7 +629,7 @@
           trigger-comment: "voltha test openonu multiolt"
           code-branch: '$GERRIT_BRANCH'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
-          gerrit-project: '$GERRIT_PROJECT'
+          gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           logLevel: 'DEBUG'
           testTargets: |
@@ -709,7 +709,7 @@
           trigger-comment: "voltha test pm data singleolt"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           code-branch: '$GERRIT_BRANCH'
-          gerrit-project: '$GERRIT_PROJECT'
+          gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           logLevel: 'DEBUG'
           testTargets: |
@@ -776,7 +776,7 @@
           trigger-comment: "voltha test pm data multiolt"
           code-branch: '$GERRIT_BRANCH'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
-          gerrit-project: '$GERRIT_PROJECT'
+          gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
           logLevel: 'DEBUG'
           testTargets: |
@@ -989,7 +989,7 @@
     pipeline-script: 'voltha/master/bbsim-tests.groovy'
     build-node: 'ubuntu18.04-basebuild-8c-15g'
     robot-args: ''
-    gerrit-project: ''
+    gerritProject: ''
     gerritRefspec: ''
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
@@ -1050,12 +1050,12 @@
 
       - string:
           name: gerritProject
-          default: '{gerrit-project}'
+          default: '{gerritProject}'
           description: 'Name of the Gerrit project'
 
       - string:
           name: gerritRefspec
-          default: ''
+          default: '{gerritRefspec}'
           description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
 
       - string:
