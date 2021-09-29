@@ -188,6 +188,30 @@
       },
       "revId": "01910b3c688d64153ad0dc0e0a1658f62d0fdaa9",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4c94bfbf_58ccd6ff",
+        "filename": "vars/waitForAdapters.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-09-29T12:24:05Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "70607455_ed6b7ab6",
+      "range": {
+        "startLine": 19,
+        "startChar": 8,
+        "endLine": 19,
+        "endChar": 163
+      },
+      "revId": "01910b3c688d64153ad0dc0e0a1658f62d0fdaa9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
