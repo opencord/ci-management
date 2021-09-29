@@ -316,7 +316,8 @@ pipeline {
           # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.opencord.olt
           # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.net.flowobjective.impl.FlowObjectiveManager
 
-          kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log ${logLevel.toLowerCase()} false
+          # BBSim logs at debug level don't slow down the system much and are very helpful while troubleshooting
+          kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log DEBUG false
 
           # Set Flows/Ports/Meters/Groups poll frequency
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${onosStatInterval}
@@ -489,7 +490,7 @@ EOF
         script {
           Exception caughtException = null
 
-          catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') { 
+          catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
             try {
               sh '''
                 ROBOT_PARAMS="--exitonfailure \
@@ -514,7 +515,7 @@ EOF
               '''
             } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
               // if the error is a timeout don't mark the build as failed
-              println "IGMP test timed out" 
+              println "IGMP test timed out"
             } catch (Throwable e) {
               caughtException = e
             }
@@ -639,6 +640,7 @@ EOF
       for bbsim in "${IDS[@]}"
       do
         kubectl exec -t $bbsim -- bbsimctl onu list > $LOG_FOLDER/$bbsim-device-list.txt || true
+        kubectl exec -t $bbsim -- bbsimctl uni list > $LOG_FOLDER/$bbsim-uni-list.txt || true
         kubectl exec -t $bbsim -- bbsimctl service list > $LOG_FOLDER/$bbsim-service-list.txt || true
         kubectl exec -t $bbsim -- bbsimctl olt resources GEM_PORT > $LOG_FOLDER/$bbsim-flows-gem-ports.txt || true
         kubectl exec -t $bbsim -- bbsimctl olt resources ALLOC_ID > $LOG_FOLDER/$bbsim-flows-alloc-ids.txt || true
