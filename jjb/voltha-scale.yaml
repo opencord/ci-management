@@ -124,7 +124,7 @@
           provisionSubscribers: true
           withEapol: false
           withDhcp: true
-          withIgmp: false
+          withIgmp: true
           workflow: tt
           inMemoryEtcdStorage: false
           extraHelmFlags: >
