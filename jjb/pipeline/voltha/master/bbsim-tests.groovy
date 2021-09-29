@@ -116,7 +116,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
     sh """
     mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
     export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
-    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v INFRA_NAMESPACE:${infraNamespace}"
+    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
     make -C $WORKSPACE/voltha-system-tests ${testTarget} || true

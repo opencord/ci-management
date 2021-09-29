@@ -21,6 +21,8 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 def test_software_upgrade(name) {
+  def infraNamespace = "infra"
+  def volthaNamespace = "voltha"
   stage('Deploy Voltha - '+ name) {
       def extraHelmFlags = extraHelmFlags.trim()
       extraHelmFlags = extraHelmFlags + " --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
@@ -112,7 +114,7 @@ def test_software_upgrade(name) {
         fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
-        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120"
+        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
