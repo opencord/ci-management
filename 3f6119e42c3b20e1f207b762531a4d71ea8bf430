@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d256476_06eb3144",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-09-29T21:24:30Z",
+      "side": 1,
+      "message": "Minor comment,\nlet\u0027s wait for https://jenkins.opencord.org/view/Community-PODs/job/build_dt-berlin-pod-gpon-adtran_1T8GEM_DT_voltha_2.8/60/ before merging",
+      "revId": "3f6119e42c3b20e1f207b762531a4d71ea8bf430",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "45690dd1_393796a5",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-09-29T21:24:30Z",
+      "side": 1,
+      "message": "I think we can skip declaring the variable, but I would add a not on why we\u0027re not waiting on adapters the first time",
+      "range": {
+        "startLine": 130,
+        "startChar": 16,
+        "endLine": 130,
+        "endChar": 38
+      },
+      "revId": "3f6119e42c3b20e1f207b762531a4d71ea8bf430",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
