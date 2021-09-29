@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "418bbc5b_f3b21d99",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-09-29T12:15:20Z",
+      "side": 1,
+      "message": "This I do not understand, thought we want to check for 1?",
+      "range": {
+        "startLine": 154,
+        "startChar": 18,
+        "endLine": 154,
+        "endChar": 35
+      },
+      "revId": "01910b3c688d64153ad0dc0e0a1658f62d0fdaa9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "84d981cb_16cbe367",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/physical-build.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-09-29T12:15:20Z",
+      "side": 1,
+      "message": "This I do not understand, thought we want to check for 1?",
+      "range": {
+        "startLine": 154,
+        "startChar": 18,
+        "endLine": 154,
+        "endChar": 35
+      },
+      "revId": "01910b3c688d64153ad0dc0e0a1658f62d0fdaa9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d17e15f4_417226ad",
+        "filename": "vars/waitForAdapters.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-09-29T12:15:20Z",
+      "side": 1,
+      "message": "Should it be better to start it in own shell like Teo did in https://gerrit.opencord.org/c/ci-management/+/27631/1?",
+      "range": {
+        "startLine": 19,
+        "startChar": 8,
+        "endLine": 19,
+        "endChar": 163
+      },
+      "revId": "01910b3c688d64153ad0dc0e0a1658f62d0fdaa9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
