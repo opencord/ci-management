@@ -48,7 +48,7 @@
           name: 'periodic-voltha-test-bbsim-grpc'
           code-branch: 'master'
           volthaHelmChartsChange: refs/changes/69/26569/11
-          volthaSystemTestsChange: refs/changes/32/27532/5
+          volthaSystemTestsChange: refs/changes/60/27660/1
           gerritProject: voltctl
           gerritRefspec: refs/changes/83/26983/4
           extraHelmFlags: >
@@ -245,7 +245,7 @@
           name: 'periodic-voltha-openonu-go-test-bbsim-grpc'
           code-branch: 'master'
           volthaHelmChartsChange: refs/changes/69/26569/11
-          volthaSystemTestsChange: refs/changes/32/27532/5
+          volthaSystemTestsChange: refs/changes/60/27660/1
           gerritProject: voltctl
           gerritRefspec: refs/changes/83/26983/4
           extraHelmFlags: >
