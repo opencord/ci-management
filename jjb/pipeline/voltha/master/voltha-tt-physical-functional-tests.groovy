@@ -23,6 +23,9 @@ node {
   deployment_config = null
 }
 
+def infraNamespace = "infra"
+def volthaNamespace = "voltha"
+
 pipeline {
   /* no label, executor is determined by JJB */
   agent {
@@ -153,6 +156,7 @@ pipeline {
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -i functionalTT -e PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:\${device_teardown} -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         fi
+        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
         make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         """
       }
@@ -173,6 +177,7 @@ pipeline {
           else
                export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           fi
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
           make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """
@@ -195,6 +200,7 @@ pipeline {
           else
             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
           fi
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
           make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """

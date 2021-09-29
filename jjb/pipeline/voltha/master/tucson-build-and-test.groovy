@@ -314,6 +314,7 @@ pipeline {
           ROBOT_MISC_ARGS+="${robotDataplaneKeyword}"
         fi
 
+        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
         make -C $WORKSPACE/voltha-system-tests ${makeTarget} || true
         """
       }
