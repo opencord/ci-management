@@ -54,8 +54,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-grpc'
           'disable-job': false
           build-node: 'voltha-scale-1'
-          # trigger on Feb 29th (a.k.a only trigger it manually)
-          time-trigger: "H 0 29 2 *"
+          time-trigger: "H H/4 * * *"
           logLevel: INFO
           olts: 2
           pons: 16
@@ -85,8 +84,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers-grpc'
           'disable-job': false
           build-node: 'voltha-scale-1'
-          # trigger on Feb 29th (a.k.a only trigger it manually)
-          time-trigger: "H 0 29 2 *"
+          time-trigger: "H H/4 * * *"
           logLevel: INFO
           olts: 2
           pons: 16
@@ -117,8 +115,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-grpc'
           'disable-job': false
           build-node: 'voltha-scale-1'
-          # trigger on Feb 29th (a.k.a only trigger it manually)
-          time-trigger: "H 0 29 2 *"
+          time-trigger: "H H/4 * * *"
           logLevel: INFO
           olts: 2
           pons: 16
