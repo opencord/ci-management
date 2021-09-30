@@ -72,6 +72,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "29fe9648_71779ac3",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-09-30T23:29:11Z",
+      "side": 1,
+      "message": "Should we use master images now given that ONOS was released? Same comment in other cases.",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 126
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bd85367f_93188c9a",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 2
