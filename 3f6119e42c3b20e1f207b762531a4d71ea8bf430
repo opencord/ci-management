@@ -39,6 +39,30 @@
       },
       "revId": "3f6119e42c3b20e1f207b762531a4d71ea8bf430",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a0e3b5f7_eb028dab",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-09-30T08:09:01Z",
+      "side": 1,
+      "message": "variable is needed to be customised. Added a note",
+      "parentUuid": "45690dd1_393796a5",
+      "range": {
+        "startLine": 130,
+        "startChar": 16,
+        "endLine": 130,
+        "endChar": 38
+      },
+      "revId": "3f6119e42c3b20e1f207b762531a4d71ea8bf430",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
