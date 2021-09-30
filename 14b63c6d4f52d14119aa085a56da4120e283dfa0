@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6e1b5b07_50dc547b",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1000056
+      },
+      "writtenOn": "2021-09-30T16:01:11Z",
+      "side": 1,
+      "message": "Would be good to use the latest ofagent (compiled with latest protos and lib) as well:\n\n  --set voltha.images.ofagent.repository\u003dvolthacore/voltha-ofagent-go \\\n  --set voltha.images.ofagent.tag\u003dgrpc_v1  \\",
+      "revId": "14b63c6d4f52d14119aa085a56da4120e283dfa0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
