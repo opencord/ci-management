@@ -24,7 +24,27 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -60,6 +80,8 @@
             --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
             --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
             --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+            --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+            --set voltha.images.ofagent.tag=grpc_v1
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
@@ -89,7 +111,28 @@
           name: 'periodic-voltha-multiple-olts-test-bbsim'
           code-branch: 'master'
           olts: 2
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set onu=2,pon=2
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-multi-olt
@@ -160,7 +203,28 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind-multiuni-att
@@ -180,7 +244,28 @@
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim'
           code-branch: 'master'
           olts: 2
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-multiuni-multiolt-att
@@ -201,7 +286,28 @@
           name: 'periodic-voltha-multi-uni-test-bbsim-2.8'
           pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
           code-branch: 'voltha-2.8'
-          extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind-multiuni-att
@@ -257,6 +363,8 @@
             --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
             --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
             --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+            --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+            --set voltha.images.ofagent.tag=grpc_v1
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
             --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
             --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
@@ -330,7 +438,27 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
           time-trigger: "H H/12 * * *"
           logLevel: 'DEBUG'
           testTargets: |
@@ -524,7 +652,28 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set onu=2,pon=2
           olts: 2
           logLevel: 'DEBUG'
           testTargets: |
@@ -686,7 +835,28 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
           testTargets: |
@@ -752,7 +922,29 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-pm-data-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set onu=2,pon=2
+              --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1
           olts: 2
           timeout: 180
           logLevel: 'DEBUG'
@@ -844,7 +1036,28 @@
           name: 'periodic-voltha-etcd-test'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set onu=2,pon=2
           time-trigger: "H H/12 * * *"
           testTargets: |
             - target: sanity-multi-kind
@@ -869,7 +1082,28 @@
           name: 'periodic-voltha-sanity-test-multi-runs'
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          volthaHelmChartsChange: refs/changes/69/26569/11
+          volthaSystemTestsChange: refs/changes/32/27532/5
+          gerritProject: voltctl
+          gerritRefspec: refs/changes/83/26983/4
+          extraHelmFlags: >
+              --set global.image_tag=master
+              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
+              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
+              --set voltha.images.rw_core.tag=grpc_v1
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
+              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
+              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
+              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
+              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
+              --set voltha.images.ofagent.tag=grpc_v1
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
+              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
+              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
+              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
+              --set onu=2,pon=2
           testTargets: |
             - target: sanity-kind
               workflow: att
