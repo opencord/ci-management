@@ -127,8 +127,13 @@ pipeline {
             // adding user specified helm flags at the end so they'll have priority over everything else
             localHelmFlags = localHelmFlags + " ${extraHelmFlags}"
 
+            def numberOfAdaptersToWait = 2
+
             if(openoltAdapterChart != "onf/voltha-adapter-openolt") {
               localHelmFlags = localHelmFlags + " --set voltha-adapter-openolt.enabled=false"
+              // We skip waiting for adapters in the volthaDeploy step because it's already waiting for
+              // both of them after the deployment of the custom olt adapter. See line 156.
+              numberOfAdaptersToWait = 0
             }
 
             volthaDeploy([
@@ -141,12 +146,16 @@ pipeline {
               kafkaReplica: params.NumOfKafka,
               etcdReplica: params.NumOfEtcd,
               bbsimReplica: bbsimReplicas.toInteger(),
+              adaptersToWait: numberOfAdaptersToWait,
               ])
 
-              if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
-                extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
-                deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
-              }
+            if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
+              extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
+              deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
+              waitForAdapters([
+                adaptersToWait: 2
+              ])
+            }
           }
           sh """
           JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
