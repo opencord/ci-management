@@ -729,6 +729,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a9b1e84_5b8ae455",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fcd0b52e_791784e1",
+      "range": {
+        "startLine": 65,
+        "startChar": 35,
+        "endLine": 65,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b7c55e53_73bc268d",
@@ -742,6 +766,30 @@
       "writtenOn": "2021-10-01T06:52:54Z",
       "side": 1,
       "message": "same as for voltha-e2e.yaml",
+      "range": {
+        "startLine": 68,
+        "startChar": 10,
+        "endLine": 84,
+        "endChar": 76
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1063b6f5_ffa09e25",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "same reply",
+      "parentUuid": "b7c55e53_73bc268d",
       "range": {
         "startLine": 68,
         "startChar": 10,
@@ -775,6 +823,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd5b942a_df1b481d",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ea6db3be_d0f4bdbf",
+      "range": {
+        "startLine": 109,
+        "startChar": 35,
+        "endLine": 109,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "299456a1_8cf61df8",
@@ -788,6 +860,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as other comments",
+      "range": {
+        "startLine": 154,
+        "startChar": 35,
+        "endLine": 154,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d1330a5c_1e76a9c8",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "299456a1_8cf61df8",
       "range": {
         "startLine": 154,
         "startChar": 35,
@@ -844,6 +940,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ca220a13_17603d2d",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ef5c9276_db18dcf3",
+      "range": {
+        "startLine": 281,
+        "startChar": 35,
+        "endLine": 281,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "13ea6895_76a87234",
@@ -857,6 +977,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as other comments",
+      "range": {
+        "startLine": 328,
+        "startChar": 35,
+        "endLine": 328,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd0534d3_31724799",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 328,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "13ea6895_76a87234",
       "range": {
         "startLine": 328,
         "startChar": 35,
@@ -890,6 +1034,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "25813947_293b78bf",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 530,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4a3c67b0_c0e67337",
+      "range": {
+        "startLine": 530,
+        "startChar": 35,
+        "endLine": 530,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "78c1f8a1_79692879",
@@ -903,6 +1071,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as other comments",
+      "range": {
+        "startLine": 576,
+        "startChar": 35,
+        "endLine": 576,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "969f5bd4_72f88857",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 576,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:53:07Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "78c1f8a1_79692879",
       "range": {
         "startLine": 576,
         "startChar": 35,
