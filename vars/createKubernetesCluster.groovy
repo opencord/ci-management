@@ -49,7 +49,7 @@ nodes:
       mkdir -p $WORKSPACE/bin
 
       # download kind (should we add it to the base image?)
-      curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.9.0/kind-linux-amd64
+      curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.0/kind-linux-amd64
       chmod +x ./kind
       mv ./kind $WORKSPACE/bin/kind
 
