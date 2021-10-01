@@ -2,6 +2,7 @@ def call(Map config) {
 
     def defaultConfig = [
         volthaNamespace: "voltha",
+        stackName: "voltha",
         adaptersToWait: 2,
     ]
 
@@ -22,7 +23,7 @@ def call(Map config) {
     // guarantee that at least the specified number of adapters are registered with VOLTHA before proceeding
      sh """
         set +x
-        _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${cfg.volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
+        _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${cfg.volthaNamespace} svc/${cfg.stackName}-voltha-api 55555:55555; done"&
        """
 
     sh """
