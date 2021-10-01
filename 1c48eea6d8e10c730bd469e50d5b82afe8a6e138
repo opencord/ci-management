@@ -24,6 +24,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7cece9fa_a9261093",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "044dc732_e88b886f",
+      "range": {
+        "startLine": 28,
+        "startChar": 35,
+        "endLine": 28,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d5c3e56_cdd8eb2d",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-01T06:52:54Z",
       "side": 1,
       "message": "Just for (my) understanding: Will be all these extraHelmFlags needed in future or will they removed after some future merges?\nAnd if not, I think it would be much simpler to put this at a central place e.g. in the job-template?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 76
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5df55944_196af40e",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "these are just custom flags that will become standard when the patches are merged into the master branches",
+      "parentUuid": "4d5c3e56_cdd8eb2d",
       "range": {
         "startLine": 33,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f5c6608_929afcb0",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "171d3ec1_f2f35030",
+      "range": {
+        "startLine": 67,
+        "startChar": 0,
+        "endLine": 108,
+        "endChar": 29
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "09a061b3_45cb86ed",
@@ -83,6 +155,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 115,
+        "startChar": 35,
+        "endLine": 115,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ef65370_2a790ae2",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "09a061b3_45cb86ed",
       "range": {
         "startLine": 115,
         "startChar": 35,
@@ -116,6 +212,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dea9713c_8d56af05",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "29fe9648_71779ac3",
+      "range": {
+        "startLine": 120,
+        "startChar": 0,
+        "endLine": 120,
+        "endChar": 126
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd85367f_93188c9a",
@@ -129,6 +249,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 207,
+        "startChar": 35,
+        "endLine": 207,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "606fb8b9_f12b1558",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bd85367f_93188c9a",
       "range": {
         "startLine": 207,
         "startChar": 35,
@@ -162,6 +306,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f558481e_b13f7f20",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 248,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "abfcab8e_82147002",
+      "range": {
+        "startLine": 248,
+        "startChar": 35,
+        "endLine": 248,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "9beff022_18d01609",
@@ -175,6 +343,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 290,
+        "startChar": 36,
+        "endLine": 290,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "82e035ba_98963962",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9beff022_18d01609",
       "range": {
         "startLine": 290,
         "startChar": 36,
@@ -208,6 +400,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "50a17baf_caef6be2",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f789ceb8_4262a833",
+      "range": {
+        "startLine": 350,
+        "startChar": 6,
+        "endLine": 351,
+        "endChar": 60
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bcfa98a_2890ec6b",
@@ -221,6 +437,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 442,
+        "startChar": 35,
+        "endLine": 442,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62bc6d60_c60b09f9",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 442,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bcfa98a_2890ec6b",
       "range": {
         "startLine": 442,
         "startChar": 35,
@@ -254,6 +494,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3bfed25_e0fdae90",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b3aba3f9_af59606f",
+      "range": {
+        "startLine": 656,
+        "startChar": 35,
+        "endLine": 656,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b35076c_4ced4da6",
@@ -267,6 +531,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 839,
+        "startChar": 35,
+        "endLine": 839,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f8ca9d3e_376e77f1",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 839,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5b35076c_4ced4da6",
       "range": {
         "startLine": 839,
         "startChar": 35,
@@ -300,6 +588,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6833e1bd_f6a6bce0",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 926,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d8bafd16_f5e4f82a",
+      "range": {
+        "startLine": 926,
+        "startChar": 36,
+        "endLine": 926,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fb31ed73_f89491f4",
@@ -323,6 +635,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f66f2c74_84d4922b",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1040,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fb31ed73_f89491f4",
+      "range": {
+        "startLine": 1040,
+        "startChar": 35,
+        "endLine": 1040,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "52c3f877_f1fcc91f",
@@ -336,6 +672,30 @@
       "writtenOn": "2021-09-30T18:44:48Z",
       "side": 1,
       "message": "same as above",
+      "range": {
+        "startLine": 1086,
+        "startChar": 35,
+        "endLine": 1086,
+        "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dde25811_5a2a22ed",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 1086,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-01T07:36:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "52c3f877_f1fcc91f",
       "range": {
         "startLine": 1086,
         "startChar": 35,
