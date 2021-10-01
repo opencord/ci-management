@@ -33,7 +33,6 @@ def call(Map config) {
           sleep 5
           adapters=\$(voltctl adapter list -q | wc -l)
         done
-        ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
     """
 
         // NOTE that we need to wait for LastCommunication to be equal or shorter that 5s
