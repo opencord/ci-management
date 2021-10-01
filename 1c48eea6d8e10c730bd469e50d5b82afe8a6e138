@@ -26,6 +26,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4d5c3e56_cdd8eb2d",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-10-01T06:52:54Z",
+      "side": 1,
+      "message": "Just for (my) understanding: Will be all these extraHelmFlags needed in future or will they removed after some future merges?\nAnd if not, I think it would be much simpler to put this at a central place e.g. in the job-template?",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 76
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "171d3ec1_f2f35030",
         "filename": "jjb/voltha-e2e.yaml",
         "patchSetId": 2
@@ -341,6 +364,29 @@
         "startChar": 35,
         "endLine": 65,
         "endChar": 58
+      },
+      "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b7c55e53_73bc268d",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-10-01T06:52:54Z",
+      "side": 1,
+      "message": "same as for voltha-e2e.yaml",
+      "range": {
+        "startLine": 68,
+        "startChar": 10,
+        "endLine": 84,
+        "endChar": 76
       },
       "revId": "1c48eea6d8e10c730bd469e50d5b82afe8a6e138",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
