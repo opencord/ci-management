@@ -280,7 +280,7 @@ pipeline {
                 return sr_active_out == 0
               }
             }
-            timeout(7) {
+            timeout(5) {
               for(int i=0; i < deployment_config.hosts.src.size(); i++) {
                 for(int j=0; j < deployment_config.olts.size(); j++) {
                   def aggPort = -1
@@ -290,7 +290,7 @@ pipeline {
                         throw new Exception("Upstream port for the olt is not configured, field aggPort is empty")
                       }
                       sh """
-                      sleep 30 # NOTE why are we sleeping?
+                      sleep 10 # NOTE why are we sleeping?
                       curl -X POST --user karaf:karaf --header 'Content-Type: application/json' --header 'Accept: application/json' -d '{"deviceId": "${deployment_config.fabric_switches[0].device_id}", "vlanId": "${deployment_config.hosts.src[i].s_tag}", "endpoints": [${deployment_config.fabric_switches[0].bngPort},${aggPort}]}' 'http://${deployment_config.nodes[0].ip}:30120/onos/segmentrouting/xconnect'
                       """
                   }
