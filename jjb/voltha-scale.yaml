@@ -110,6 +110,7 @@
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
           ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
+          onosImg: 'matteoscandolo/voltha-onos:oltapp'
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-grpc'
           'disable-job': false
@@ -140,6 +141,7 @@
           openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
           openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
           ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
+          onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       # OLT app rewrite jobs
       - 'voltha-scale-measurements':
