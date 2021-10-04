@@ -22,7 +22,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'aether-jenkins-remote-trigger-token-omec', variable: 'token')]) {
           script {
-            def handle = triggerRemoteJob job: "${params.project}_premerge_${params.pod}",
+            def handle = triggerRemoteJob job: "${params.project}_premerge_${params.pod}_4g_bess",
                          parameters: """
                                      ghprbTargetBranch=${params.ghprbTargetBranch}
                                      ghprbPullId=${params.ghprbPullId}
@@ -40,7 +40,7 @@ pipeline {
     always {
       // Copy artifacts from the remote job dir (make sure both jobs run on the same node)
       sh """
-      cp -r ../${params.project}_premerge_${params.pod}/* ./
+      cp -r ../${params.project}_premerge_${params.pod}_4g_bess/* ./
       """
       archiveArtifacts artifacts: "**/*.*", allowEmptyArchive: true
     }
