@@ -74,11 +74,6 @@
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
             --set global.tracing.enabled=true
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
-          openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
-          openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
-          ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
           onosImg: matteoscandolo/voltha-onos:oltapp
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers-grpc'
@@ -105,11 +100,6 @@
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
             --set global.tracing.enabled=true
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
-          openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
-          openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
-          ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-grpc'
@@ -136,11 +126,6 @@
             --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
             --set services.etcd.address=voltha-infra-etcd.default.svc:2379
             --set global.tracing.enabled=true
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          rwCoreImg: 'volthacore/voltha-rw-core:grpc_v1'
-          openoltAdapterImg: 'volthacore/voltha-openolt-adapter:grpc_v1'
-          openonuAdapterGoImg: 'volthacore/voltha-openonu-adapter-go:grpc_v1'
-          ofAgentImg: 'volthacore/voltha-ofagent-go:grpc_v1'
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       # OLT app rewrite jobs
@@ -161,8 +146,6 @@
           withIgmp: false
           inMemoryEtcdStorage: false
           extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml'
-          rwCoreImg: 'matteoscandolo/voltha-rw-core:sync-delete'
-          ofAgentImg: 'matteoscandolo/voltha-ofagent-go:test'
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
           openonuAdapterGoImg: 'gcgirish/voltha-openonu-adapter-go:syncFlow'
 
