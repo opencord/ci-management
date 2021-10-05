@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e427d553_e5e59809",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-05T20:00:02Z",
+      "side": 1,
+      "message": "Better to leave it on \"master\" as for all the other images",
+      "parentUuid": "f9eb9b36_88f44e1b",
+      "revId": "b0169acd4a7d80164a0e3fed040e0527555c04ef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a60288ee_2008dc68",
         "filename": "jjb/voltha-scale.yaml",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2021-10-05T19:17:47Z",
       "side": 1,
       "message": "retained the new oltapp image as you might still want to test it. Let me know if you need this or not.",
+      "revId": "b0169acd4a7d80164a0e3fed040e0527555c04ef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e004bbe_f33d9408",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-05T20:00:02Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a60288ee_2008dc68",
       "revId": "b0169acd4a7d80164a0e3fed040e0527555c04ef",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
