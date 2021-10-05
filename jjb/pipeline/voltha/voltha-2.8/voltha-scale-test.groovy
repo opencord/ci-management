@@ -61,6 +61,23 @@ pipeline {
     stage ('Cleanup') {
       steps {
         timeout(time: 11, unit: 'MINUTES') {
+          sh returnStdout: false, script: '''
+          cd $WORKSPACE
+          rm -rf $WORKSPACE/*
+          '''
+          // removing the voltha-infra chart first
+          // if we don't ONOS might get stuck because of all the events when BBSim goes down
+          sh returnStdout: false, script: '''
+          set +x
+          helm del voltha-infra || true
+          echo -ne "\nWaiting for ONOS to be removed..."
+          onos=$(kubectl get pod -n default -l app=onos-classic --no-headers | wc -l)
+          while [[ $onos != 0 ]]; do
+            onos=$(kubectl get pod -n default -l app=onos-classic --no-headers | wc -l)
+            sleep 5
+            echo -ne "."
+          done
+          '''
           script {
             helmTeardown(["default"])
           }
@@ -78,9 +95,6 @@ pipeline {
 
             # remove orphaned port-forward from different namespaces
             ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
-
-            cd $WORKSPACE
-            rm -rf $WORKSPACE/*
           '''
         }
       }
