@@ -2,7 +2,7 @@
 - project:
     archive-artifacts: '**/*.log'
     branch: 'master'
-    build-timeout: '60'
+    build-timeout: '100'
     build-node: 'ubuntu18.04-basebuild-1c-1g'
 
     jobs:
