@@ -117,13 +117,16 @@
         name:
           - ansible
           - ansible-lint
-          - docker
-          - docker-compose
+          - pip
+          - docker==4.2.2
+          - docker-compose==1.26.2
           - git-review
           - httpie
           - netaddr
           - pylint
           - tox
+          - requests==2.22.0
+          - websocket-client==1.2.1
           - twine
           - virtualenv
           - yamllint
