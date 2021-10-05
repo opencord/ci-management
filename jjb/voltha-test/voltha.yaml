@@ -61,26 +61,6 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -104,26 +84,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -148,26 +108,6 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -196,7 +136,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -227,26 +166,6 @@
           reinstall-olt: true
           enableMultiUni: true
           uniPortMask: '0x0003'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -273,27 +192,6 @@
           waitTimerForOltUp: 540
           VolthaEtcdPort: 9999
           time: '1'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
-
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -319,26 +217,6 @@
           in-band-management: true
           waitTimerForOltUp: 540
           time: '4'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -369,7 +247,6 @@
           in-band-management: true
           time: '7'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -520,26 +397,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '16'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -565,27 +422,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '1'
-          volthaHelmChartsChange: refs/changes/69/26569/11
-          gerritProject: voltctl
-          gerritRefspec: refs/changes/83/26983/4
-          extraHelmFlags: >
-              --set global.image_tag=master
-              --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple
-              --set voltha.images.rw_core.repository=volthacore/voltha-rw-core
-              --set voltha.images.rw_core.tag=grpc_v1
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.repository=volthacore/voltha-openonu-adapter-go
-              --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=grpc_v1
-              --set voltha-adapter-openolt.images.adapter_open_olt.repository=volthacore/voltha-openolt-adapter
-              --set voltha-adapter-openolt.images.adapter_open_olt.tag=grpc_v1
-              --set voltha.images.ofagent.repository=volthacore/voltha-ofagent-go
-              --set voltha.images.ofagent.tag=grpc_v1
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openolt.adapter_open_olt.endpoints.adapter_endpoint=voltha-voltha-adapter-openolt-api.voltha.svc:50060
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.core_endpoint=voltha-voltha-core.voltha.svc:55558
-              --set voltha-adapter-openonu.adapter_open_onu.endpoints.adapter_endpoint=voltha-voltha-adapter-openonu-api.voltha.svc:50060
-              --set services.kafka.cluster.address=voltha-infra-kafka.default.svc:9092
-              --set services.etcd.address=voltha-infra-etcd.default.svc:2379
-
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -613,7 +449,6 @@
           num-of-atomix: '3'
           time: '11'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -641,7 +476,6 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
           time: '5'
-          extraHelmFlags: "--set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=meter-fixes-simple"
 
       # Berlin POD test job - voltha-2.8 versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
