@@ -49,12 +49,13 @@
           withIgmp: false
           # extraHelmFlags: " -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn "
 
-      # GRPC jobs
+      # new OLT App jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-newoltapp'
           'disable-job': false
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          # time-trigger: "H H/4 * * *"
+          time-trigger: "H 0 29 2 *"
           logLevel: INFO
           olts: 2
           pons: 16
@@ -72,7 +73,8 @@
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers-newoltapp'
           'disable-job': false
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          # time-trigger: "H H/4 * * *"
+          time-trigger: "H 0 29 2 *"
           logLevel: INFO
           olts: 2
           pons: 16
@@ -91,7 +93,8 @@
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-newoltapp'
           'disable-job': false
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          # time-trigger: "H H/4 * * *"
+          time-trigger: "H 0 29 2 *"
           logLevel: INFO
           olts: 2
           pons: 16
@@ -110,7 +113,7 @@
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -125,7 +128,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -141,7 +144,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
-          'disable-job': false
+          'disable-job': true
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           olts: 2
@@ -218,7 +221,7 @@
       # voltha-2.8 Jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-att-subscribers'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -242,7 +245,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-dt-subscribers'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -267,7 +270,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-tt-subscribers'
-          'disable-job': false
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
