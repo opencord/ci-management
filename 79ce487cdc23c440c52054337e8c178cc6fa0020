@@ -70,6 +70,30 @@
       },
       "revId": "79ce487cdc23c440c52054337e8c178cc6fa0020",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5aab9ab_97645a01",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-10-07T18:13:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "7423dc10_b317e301",
+      "range": {
+        "startLine": 77,
+        "startChar": 33,
+        "endLine": 77,
+        "endChar": 94
+      },
+      "revId": "79ce487cdc23c440c52054337e8c178cc6fa0020",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
