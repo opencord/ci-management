@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8e6bc9eb_b953f357",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 6
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-10-07T18:21:31Z",
+      "side": 1,
+      "message": "This isn\u0027t needed as the wildcard match is removed.",
+      "range": {
+        "startLine": 77,
+        "startChar": 34,
+        "endLine": 77,
+        "endChar": 49
+      },
+      "revId": "75d9c4821ec78e6d2eedbde1305b334b934e1004",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
