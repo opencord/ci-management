@@ -46,6 +46,30 @@
       },
       "revId": "79ce487cdc23c440c52054337e8c178cc6fa0020",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7423dc10_b317e301",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-10-07T18:02:45Z",
+      "side": 1,
+      "message": "If we only have these few repos that need to be watched, maybe we can use an allowlist like what we have for \"version-tag-projects-regexp\"?\n\nSuch as:\n(comac-helm-charts|voltha-helm-charts|cord-platform|helm-charts|seba)",
+      "parentUuid": "f4482112_1cda0ade",
+      "range": {
+        "startLine": 77,
+        "startChar": 33,
+        "endLine": 77,
+        "endChar": 94
+      },
+      "revId": "79ce487cdc23c440c52054337e8c178cc6fa0020",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
