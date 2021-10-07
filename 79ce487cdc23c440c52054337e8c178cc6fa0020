@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fc7d10c_b2a97c12",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000011
+      },
+      "writtenOn": "2021-10-07T17:20:06Z",
+      "side": 1,
+      "message": "Can this regex be changed to only have the CORD repos, not all repos matching *helm-charts ?",
+      "range": {
+        "startLine": 77,
+        "startChar": 33,
+        "endLine": 77,
+        "endChar": 94
+      },
+      "revId": "79ce487cdc23c440c52054337e8c178cc6fa0020",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
