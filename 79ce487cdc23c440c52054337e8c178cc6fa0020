@@ -22,6 +22,30 @@
       },
       "revId": "79ce487cdc23c440c52054337e8c178cc6fa0020",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f4482112_1cda0ade",
+        "filename": "jjb/defaults.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1000382
+      },
+      "writtenOn": "2021-10-07T17:57:48Z",
+      "side": 1,
+      "message": "Here are projects we have in the git log\n\naether-helm-charts (I guess this is old)\ncomac-helm-charts\nvoltha-helm-charts\ncord-platform\nhelm-charts\nseba",
+      "parentUuid": "0fc7d10c_b2a97c12",
+      "range": {
+        "startLine": 77,
+        "startChar": 33,
+        "endLine": 77,
+        "endChar": 94
+      },
+      "revId": "79ce487cdc23c440c52054337e8c178cc6fa0020",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
