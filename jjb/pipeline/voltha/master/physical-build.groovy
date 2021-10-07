@@ -346,17 +346,10 @@ pipeline {
         script {
           //rebooting OLTs
           for(int i=0; i < deployment_config.olts.size(); i++) {
-            if ( params.oltAdapterReleaseName != "open-olt" ) {
-              timeout(15) {
-                sh returnStdout: true, script: """
-                ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
-                sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'rm -f /var/log/openolt.log; rm -f /var/log/dev_mgmt_daemon.log; rm -f /var/log/openolt_process_watchdog.log; reboot > /dev/null &' || true
-                """
-              }
-            } else {
+            timeout(15) {
               sh returnStdout: true, script: """
               ssh-keyscan -H ${deployment_config.olts[i].sship} >> ~/.ssh/known_hosts
-              sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'reboot > /dev/null &' || true
+              sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'rm -f /var/log/openolt.log; rm -f /var/log/dev_mgmt_daemon.log; rm -f /var/log/openolt_process_watchdog.log; reboot > /dev/null &' || true
               """
             }
           }
