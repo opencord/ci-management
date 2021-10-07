@@ -24,7 +24,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -40,6 +40,10 @@
               flags: ""
               teardown: false
             - target: bbsim-errorscenarios
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: onos-ha-test
               workflow: att
               flags: ""
               teardown: false
