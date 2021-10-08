@@ -22,14 +22,10 @@ library identifier: 'cord-jenkins-libraries@master',
 ])
 def test_software_upgrade(name) {
   stage('Deploy Voltha - '+ name) {
+    timeout(10) {
       def extraHelmFlags = extraHelmFlags.trim()
       extraHelmFlags = extraHelmFlags + " --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
-      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade") {
-          extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set onos-classic.image.tag=master "
-      }
-      if ("${name}" == "voltha-component-upgrade") {
-          extraHelmFlags = extraHelmFlags + "--set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master "
-      }
+
       extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
       extraHelmFlags = extraHelmFlags + " --set voltha.onos_classic.replicas=3"
       //ONOS custom image handling
@@ -61,8 +57,10 @@ def test_software_upgrade(name) {
       sh """
       sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord
       """
+    }
   }
   stage('Test - '+ name) {
+    timeout(20) {
       sh """
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name}"
         mkdir -p \$ROBOT_LOGS_DIR
@@ -137,6 +135,7 @@ def test_software_upgrade(name) {
       // collect pod details
       get_pods_info("$WORKSPACE/${name}")
       helmTeardown(['infra', 'voltha'])
+    }
   }
 }
 def get_pods_info(dest) {
