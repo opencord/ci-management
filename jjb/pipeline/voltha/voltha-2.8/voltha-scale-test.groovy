@@ -60,42 +60,53 @@ pipeline {
   stages {
     stage ('Cleanup') {
       steps {
-        timeout(time: 11, unit: 'MINUTES') {
-          sh returnStdout: false, script: '''
-          cd $WORKSPACE
-          rm -rf $WORKSPACE/*
-          '''
-          // removing the voltha-infra chart first
-          // if we don't ONOS might get stuck because of all the events when BBSim goes down
-          sh returnStdout: false, script: '''
-          set +x
-          helm del voltha-infra || true
-          echo -ne "\nWaiting for ONOS to be removed..."
-          onos=$(kubectl get pod -n default -l app=onos-classic --no-headers | wc -l)
-          while [[ $onos != 0 ]]; do
-            onos=$(kubectl get pod -n default -l app=onos-classic --no-headers | wc -l)
-            sleep 5
-            echo -ne "."
-          done
-          '''
-          script {
-            helmTeardown(["default"])
+        script {
+          try {
+            timeout(time: 10, unit: 'MINUTES') {
+              sh returnStdout: false, script: '''
+              cd $WORKSPACE
+              rm -rf $WORKSPACE/*
+              '''
+              // removing the voltha-infra chart first
+              // if we don't ONOS might get stuck because of all the events when BBSim goes down
+              sh returnStdout: false, script: '''
+              set +x
+              helm del voltha-infra || true
+              echo -ne "\nWaiting for ONOS to be removed..."
+              onos=$(kubectl get pod -n default -l app=onos-classic --no-headers | wc -l)
+              while [[ $onos != 0 ]]; do
+                onos=$(kubectl get pod -n default -l app=onos-classic --no-headers | wc -l)
+                sleep 5
+                echo -ne "."
+              done
+              '''
+            }
+          } catch(org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
+            // if we have a timeout in the Cleanup fase most likely ONOS got stuck somewhere, thuse force remove the pods
+            sh '''
+              kubectl get pods | grep Terminating | awk '{print $1}' | xargs kubectl delete pod --force --grace-period=0
+            '''
           }
-          sh returnStdout: false, script: '''
-            helm repo add onf https://charts.opencord.org
-            helm repo update
+          timeout(time: 10, unit: 'MINUTES') {
+            script {
+              helmTeardown(["default"])
+            }
+            sh returnStdout: false, script: '''
+              helm repo add onf https://charts.opencord.org
+              helm repo update
 
-            # remove all persistent volume claims
-            kubectl delete pvc --all-namespaces --all
-            PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
-            while [[ \$PVCS != 0 ]]; do
-              sleep 5
+              # remove all persistent volume claims
+              kubectl delete pvc --all-namespaces --all
               PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
-            done
+              while [[ \$PVCS != 0 ]]; do
+                sleep 5
+                PVCS=\$(kubectl get pvc --all-namespaces --no-headers | wc -l)
+              done
 
-            # remove orphaned port-forward from different namespaces
-            ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
-          '''
+              # remove orphaned port-forward from different namespaces
+              ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
+            '''
+          }
         }
       }
     }
