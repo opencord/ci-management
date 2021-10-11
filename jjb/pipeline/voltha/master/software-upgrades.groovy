@@ -64,7 +64,7 @@ def test_software_upgrade(name) {
     }
   }
   stage('Test - '+ name) {
-    timeout(20) {
+    timeout(40) {
       sh """
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name}"
         mkdir -p \$ROBOT_LOGS_DIR
@@ -164,7 +164,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 60, unit: 'MINUTES')
+    timeout(time: 90, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
