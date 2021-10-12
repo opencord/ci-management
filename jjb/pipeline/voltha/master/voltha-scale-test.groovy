@@ -59,7 +59,7 @@ pipeline {
       steps {
         script {
           try {
-            timeout(time: 10, unit: 'MINUTES') {
+            timeout(time: 5, unit: 'MINUTES') {
               sh returnStdout: false, script: '''
               cd $WORKSPACE
               rm -rf $WORKSPACE/*
