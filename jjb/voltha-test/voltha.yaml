@@ -27,6 +27,7 @@
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
       - 'build_voltha_pod_manual':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           num-of-onos: '3'
@@ -40,6 +41,7 @@
 
       # flex pod1 test job - using voltha branch
       - 'build_voltha_pod_manual_test':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           disable-job: false
@@ -54,6 +56,7 @@
 
       # flex OCP pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           profile: 'Default'
@@ -64,6 +67,7 @@
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -74,6 +78,7 @@
 
       # flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -87,6 +92,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -97,6 +103,7 @@
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -111,6 +118,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -124,6 +132,7 @@
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -139,6 +148,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -152,6 +162,7 @@
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-multi-uni'
           release: 'master'
@@ -169,6 +180,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
+          'disable-job': true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-multi-uni'
           release: 'master'
@@ -524,4 +536,3 @@
           power-switch: True
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
           oltAdapterAppLabel: 'adapter-adtran-olt'
-
