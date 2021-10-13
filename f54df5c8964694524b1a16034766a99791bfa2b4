@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "727cc45e_dbfb5aa8",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-13T15:25:31Z",
+      "side": 1,
+      "message": "Please add a line space here for consistency/better readability.",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 50,
+        "endChar": 31
+      },
+      "revId": "f54df5c8964694524b1a16034766a99791bfa2b4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
