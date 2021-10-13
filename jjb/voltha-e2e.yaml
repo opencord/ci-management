@@ -47,6 +47,32 @@
               workflow: att
               flags: ""
               teardown: false
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-test-bbsim-new-olt-app'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.repository=matteoscandolo/voltha-onos,onos-classic.image.tag=oltapp --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 '
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: functional-single-kind
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: bbsim-alarms-kind
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-failurescenarios
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: bbsim-errorscenarios
+              workflow: att
+              flags: ""
+              teardown: false
+            - target: onos-ha-test
+              workflow: att
+              flags: ""
+              teardown: false
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim'
@@ -207,6 +233,74 @@
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          time-trigger: "H H/12 * * *"
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: 1t4gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: 1t8gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: mib-upload-templating-openonu-go-adapter-test
+              workflow: att
+              flags: "--set pon=2,onu=2,controlledActivation=only-onu"
+              teardown: true
+            - target: reconcile-openonu-go-adapter-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: reconcile-openonu-go-adapter-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: reconcile-openonu-go-adapter-test-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: openonu-go-adapter-omci-hardening-passed-test
+              workflow: att
+              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
+              teardown: true
+            - target: openonu-go-adapter-omci-hardening-failed-test
+              workflow: att
+              flags: "--set omci_response_rate=7"
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+            - target: voltha-onu-flows-check-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-openonu-go-test-bbsim-new-olt-app'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.repository=matteoscandolo/voltha-onos,onos-classic.image.tag=oltapp '
           time-trigger: "H H/12 * * *"
           logLevel: 'DEBUG'
           testTargets: |
