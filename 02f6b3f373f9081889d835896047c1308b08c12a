@@ -1,0 +1,119 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2a8f4ec_cb649744",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-14T17:04:31Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this anymore if we\u0027re capturing the logs in the tests",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9e601cf_58c11496",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-14T17:04:31Z",
+      "side": 1,
+      "message": "what would be the downside of putting the robot and component logs together?",
+      "range": {
+        "startLine": 119,
+        "startChar": 159,
+        "endLine": 119,
+        "endChar": 194
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc0ad011_cedbc942",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-14T17:04:31Z",
+      "side": 1,
+      "message": "same with this",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "708f9685_c708614a",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-14T17:04:31Z",
+      "side": 1,
+      "message": "I don\u0027t think we need this anymore if we\u0027re capturing the logs in the tests",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a2b6b0e9_2398d2cb",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-14T17:04:31Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
