@@ -31,22 +31,27 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-alarms-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-failurescenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-errorscenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: onos-ha-test
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-new-olt-app'
@@ -58,22 +63,27 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-alarms-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-failurescenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-errorscenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: onos-ha-test
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim'
@@ -86,18 +96,22 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-multiolt-failurescenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiolt-errorscenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiolt-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-2.8'
@@ -109,18 +123,22 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-alarms-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-failurescenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-errorscenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.8'
@@ -134,18 +152,22 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-multiolt-failurescenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiolt-errorscenarios
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiolt-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim'
@@ -157,14 +179,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-multiuni-failurescenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiuni-errorscenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim'
@@ -177,14 +202,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-multiuni-multiolt-failurescenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiuni-multiolt-errorscenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
           timeout: 180
 
       - 'voltha-periodic-test':
@@ -198,14 +226,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-multiuni-failurescenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiuni-errorscenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.8'
@@ -219,14 +250,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: bbsim-multiuni-multiolt-failurescenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: bbsim-multiuni-multiolt-errorscenarios-att
               workflow: att
               flags: ""
               teardown: false
+              logging: True
           timeout: 180
 
       # openonu Go periodic tests
@@ -241,62 +275,77 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t4gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t8gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
               flags: "--set pon=2,onu=2,controlledActivation=only-onu"
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-passed-test
               workflow: att
               flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
               flags: "--set omci_response_rate=7"
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-new-olt-app'
@@ -309,62 +358,77 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t4gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t8gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
               flags: "--set pon=2,onu=2,controlledActivation=only-onu"
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-passed-test
               workflow: att
               flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
               flags: "--set omci_response_rate=7"
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
@@ -377,50 +441,62 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t4gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t8gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
               flags: "--set pon=2,onu=2,controlledActivation=only-onu"
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-passed-test
               workflow: att
               flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
               flags: "--set omci_response_rate=7"
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-openonu-go-test-bbsim'
@@ -435,62 +511,77 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t4gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t8gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
               flags: "--set pon=2,onu=2,controlledActivation=only-onu"
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-passed-test
               workflow: att
               flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
               teardown: true
+              logging: True
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
               flags: "--set omci_response_rate=7"
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
@@ -503,50 +594,62 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t4gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t8gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-multiolt-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           time-trigger: "H H/12 * * *"
 
       - 'voltha-periodic-test':
@@ -561,38 +664,47 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t4gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t8gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
@@ -608,50 +720,62 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t4gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: 1t8gem-openonu-go-adapter-multi-olt-test
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-omci-get-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
-             - target: voltha-onu-flows-check-multiolt-kind-att
+              logging: True
+            - target: voltha-onu-flows-check-multiolt-kind-att
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-onu-flows-check-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           olts: 2
 
       - 'voltha-periodic-test':
@@ -665,14 +789,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           timeout: 140
 
       - 'voltha-periodic-test':
@@ -688,14 +815,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           timeout: 140
 
       - 'voltha-periodic-test':
@@ -710,14 +840,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-single-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           timeout: 140
 
       - 'voltha-periodic-test':
@@ -732,14 +865,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
@@ -755,14 +891,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           olts: 2
           timeout: 180
 
@@ -779,14 +918,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-multiolt-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
             - target: voltha-pm-data-multiolt-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: True
           time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
@@ -799,6 +941,7 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI-2.8'
@@ -810,6 +953,7 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test'
@@ -822,6 +966,7 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test-2.8'
@@ -835,6 +980,7 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs'
@@ -846,22 +992,27 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs-2.8'
@@ -873,22 +1024,27 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
             - target: sanity-kind
               workflow: att
               flags: ""
               teardown: false
+              logging: True
 
       - 'voltha-periodic-test':
           name: 'nightly-voltha-DTflow-sanity-test'
@@ -901,6 +1057,7 @@
               workflow: dt
               flags: ""
               teardown: true
+              logging: True
 
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
@@ -1009,6 +1166,7 @@
       #     workflow: att
       #     flags: ""
       #     teardown: true
+      #     logging: True
       - text:
           name: testTargets
           default: '{testTargets}'
@@ -1112,14 +1270,17 @@
         workflow: att
         flags: ""
         teardown: true
+        logging: True
       - target: sanity-kind-dt
         workflow: dt
         flags: ""
         teardown: true
+        logging: True
       - target: sanity-kind-tt
         workflow: tt
         flags: ""
         teardown: true
+        logging: True
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
