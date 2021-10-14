@@ -23,7 +23,7 @@ library identifier: 'cord-jenkins-libraries@master',
 
 def clusterName = "kind-ci"
 
-def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
+def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "") {
   def infraNamespace = "default"
   def volthaNamespace = "voltha"
   def robotLogsDir = "RobotLogs"
@@ -116,7 +116,7 @@ def execute_test(testTarget, workflow, teardown, testSpecificHelmFlags = "") {
     sh """
     mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
     export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
-    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v INFRA_NAMESPACE:${infraNamespace}"
+    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:$WORKSPACE/${testTarget}-components -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
     make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
@@ -251,8 +251,9 @@ pipeline {
               def workflow = test["workflow"]
               def flags = test["flags"]
               def teardown = test["teardown"].toBoolean()
-              println "Executing test ${target} on workflow ${workflow} with extra flags ${flags}"
-              execute_test(target, workflow, teardown, flags)
+              def logging = test["logging"]
+              println "Executing test ${target} on workflow ${workflow} with logging ${logging} and extra flags ${flags}"
+              execute_test(target, workflow, logging, teardown, flags)
             }
           }
         }
