@@ -24,6 +24,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "239ba127_69d6ce51",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-18T05:59:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b2a8f4ec_cb649744",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9e601cf_58c11496",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-14T17:04:31Z",
       "side": 1,
       "message": "what would be the downside of putting the robot and component logs together?",
+      "range": {
+        "startLine": 119,
+        "startChar": 159,
+        "endLine": 119,
+        "endChar": 194
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cfab6a1_e28080bf",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-18T05:59:36Z",
+      "side": 1,
+      "message": "None. Earlier robot logs and component logs were just kept separately. Moved to common place now.",
+      "parentUuid": "b9e601cf_58c11496",
       "range": {
         "startLine": 119,
         "startChar": 159,
@@ -70,6 +118,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "67a8383c_b605f2cc",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-18T05:59:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dc0ad011_cedbc942",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "708f9685_c708614a",
@@ -93,6 +165,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aaba26c6_59c29c3d",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-18T05:59:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "708f9685_c708614a",
+      "range": {
+        "startLine": 111,
+        "startChar": 0,
+        "endLine": 115,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a2b6b0e9_2398d2cb",
@@ -106,6 +202,30 @@
       "writtenOn": "2021-10-14T17:04:31Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 124,
+        "startChar": 0,
+        "endLine": 137,
+        "endChar": 7
+      },
+      "revId": "02f6b3f373f9081889d835896047c1308b08c12a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75114ee8_2a5e37c9",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-18T05:59:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a2b6b0e9_2398d2cb",
       "range": {
         "startLine": 124,
         "startChar": 0,
