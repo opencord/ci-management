@@ -22,6 +22,23 @@
       },
       "revId": "60fc0dad7c3b481bb2e3e6b2b2c5567796937b05",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e55df5a_21f97ac2",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 569,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2021-10-18T07:28:04Z",
+      "side": 1,
+      "message": "I\u0027m wondering if we ought to define this as the default and explicitly have it only when it\u0027s false",
+      "revId": "60fc0dad7c3b481bb2e3e6b2b2c5567796937b05",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
