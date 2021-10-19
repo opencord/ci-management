@@ -232,9 +232,13 @@ pipeline {
               def workflow = test["workflow"]
               def flags = test["flags"]
               def teardown = test["teardown"].toBoolean()
-              def logging = test["logging"]
-              println "Executing test ${target} on workflow ${workflow} with logging ${logging} and extra flags ${flags}"
-              execute_test(target, workflow, logging, teardown, flags)
+              def logging = test["logging"].toBoolean()
+              def testLogging = 'False'
+              if (logging) {
+                  testLogging = 'True'
+              }
+              println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+              execute_test(target, workflow, testLogging, teardown, flags)
             }
           }
         }
