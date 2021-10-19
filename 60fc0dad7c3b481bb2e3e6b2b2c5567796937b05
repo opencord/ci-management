@@ -24,6 +24,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b1b03843_191e9eb7",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/bbsim-tests.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-19T04:52:46Z",
+      "side": 1,
+      "message": "Passed as param to robot args in line 114.",
+      "parentUuid": "e1c9cec6_a7904711",
+      "range": {
+        "startLine": 26,
+        "startChar": 39,
+        "endLine": 26,
+        "endChar": 50
+      },
+      "revId": "60fc0dad7c3b481bb2e3e6b2b2c5567796937b05",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2599f914_aa56b38f",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-10-18T07:23:32Z",
       "side": 1,
       "message": "Just a question: For teardown we use \u0027true\u0027 or \u0027false\u0027. For logging we use \u0027True\u0027. I think it doesn\u0027t matter to use upper or lower letter, but it is confusing me. Could we unify this?",
+      "range": {
+        "startLine": 34,
+        "startChar": 14,
+        "endLine": 34,
+        "endChar": 27
+      },
+      "revId": "60fc0dad7c3b481bb2e3e6b2b2c5567796937b05",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ab9c4e24_18e56f7f",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-10-19T04:52:46Z",
+      "side": 1,
+      "message": "The teardown is used in groovy file for voltha deployment (different from teardown_device used in robot command) whereas logging is passed in robot args.",
+      "parentUuid": "2599f914_aa56b38f",
       "range": {
         "startLine": 34,
         "startChar": 14,
