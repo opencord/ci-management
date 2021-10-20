@@ -1342,6 +1342,7 @@
       #     workflow: att
       #     flags: ""
       #     teardown: true
+      #     logging: true
       - text:
           name: testTargets
           default: '{testTargets}'

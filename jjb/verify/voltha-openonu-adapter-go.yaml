@@ -53,18 +53,22 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: true
             - target: sanity-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: true
             - target: sanity-kind-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: true
             - target: 1t4gem-openonu-go-adapter-test
               workflow: att
               flags: ""
               teardown: true
+              logging: true
 
 - job-group:
     name: 'publish-voltha-openonu-adapter-go-jobs'

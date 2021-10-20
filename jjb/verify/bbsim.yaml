@@ -39,14 +39,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: true
             - target: sanity-bbsim-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: true
             - target: sanity-bbsim-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: true
 
 - job-group:
     name: 'verify-bbsim-jobs-master'
@@ -58,14 +61,17 @@
               workflow: att
               flags: ""
               teardown: true
+              logging: true
             - target: sanity-bbsim-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: true
             - target: sanity-bbsim-tt
               workflow: tt
               flags: ""
               teardown: true
+              logging: true
 
 - job-group:
     name: 'publish-bbsim-jobs'
