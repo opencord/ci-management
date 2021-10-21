@@ -23,7 +23,6 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   def infraNamespace = "infra"
   def volthaNamespace = "voltha"
-  def testLogging = 'False'
   stage('Deploy Voltha - '+ name) {
     timeout(10) {
       // start logging
@@ -129,12 +128,13 @@ def test_software_upgrade(name) {
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
           export TARGET=onu-upgrade-test
         fi
+        testLogging='False'
         if [ ${logging} = true ]; then
-          ${testLogging} = 'True'
+          testLogging='True'
         fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
-        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:$WORKSPACE/RobotLogs/${name} -v logging:${testLogging}"
+        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:$WORKSPACE/RobotLogs/${name} -v logging:\$testLogging"
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
