@@ -75,6 +75,8 @@
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
+    logLevel: 'DEBUG'
+    logging: true
 
     description: |
       <!-- Managed by Jenkins Job Builder -->
@@ -246,6 +248,16 @@
           name: onuImageCrc
           default: '{onu-image-crc}'
           description: 'CRC of ONU Image to Upgrade'
+
+      - string:
+          name: logLevel
+          default: '{logLevel}'
+          description: 'Log level for all the components'
+
+      - bool:
+          name: logging
+          default: '{logging}'
+          description: 'Option to collect voltha components logs per test case'
 
     project-type: pipeline
     concurrent: true

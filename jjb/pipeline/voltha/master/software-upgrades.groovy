@@ -23,10 +23,17 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   def infraNamespace = "infra"
   def volthaNamespace = "voltha"
+  def testLogging = 'False'
   stage('Deploy Voltha - '+ name) {
     timeout(10) {
+      // start logging
+      sh """
+      rm -rf $WORKSPACE/${name} || true
+      mkdir -p $WORKSPACE/${name}
+      _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > $WORKSPACE/${name}/onos-voltha-startup-combined.log &
+      """
       def extraHelmFlags = extraHelmFlags.trim()
-      extraHelmFlags = extraHelmFlags + " --set global.log_level=DEBUG,onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
+      extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
       if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade") {
           extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set onos-classic.image.tag=master "
       }
@@ -46,11 +53,18 @@ def test_software_upgrade(name) {
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
       volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
-      // start logging
+      // stop logging
       sh """
-      rm -rf $WORKSPACE/${name} || true
-      mkdir -p $WORKSPACE/${name}
-      _TAG=kail-${name} kail -n infra -n voltha > $WORKSPACE/${name}/onos-voltha-combined.log &
+        P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
+        if [ -n "\$P_IDS" ]; then
+          echo \$P_IDS
+          for P_ID in \$P_IDS; do
+            kill -9 \$P_ID
+          done
+        fi
+        cd $WORKSPACE/${name}/
+        gzip -k onos-voltha-startup-combined.log
+        rm onos-voltha-startup-combined.log
       """
       // forward ONOS and VOLTHA ports
       sh """
@@ -115,21 +129,14 @@ def test_software_upgrade(name) {
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
           export TARGET=onu-upgrade-test
         fi
+        if [ ${logging} = true ]; then
+          ${testLogging} = 'True'
+        fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
-        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:$WORKSPACE/RobotLogs/${name} -v logging:${testLogging}"
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
-      """
-      // stop logging
-      sh """
-        P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
-        if [ -n "\$P_IDS" ]; then
-          echo \$P_IDS
-          for P_ID in \$P_IDS; do
-            kill -9 \$P_ID
-          done
-        fi
       """
       // remove port-forwarding
       sh """
@@ -212,11 +219,6 @@ pipeline {
       get_pods_info("$WORKSPACE/failed")
     }
     always {
-      sh '''
-      gzip $WORKSPACE/onos-app-upgrade/onos-voltha-combined.log || true
-      gzip $WORKSPACE/voltha-component-upgrade/onos-voltha-combined.log || true
-      gzip $WORKSPACE/onu-software-upgrade/onos-voltha-combined.log || true
-      '''
       step([$class: 'RobotPublisher',
          disableArchiveOutput: false,
          logFileName: 'RobotLogs/*/log*.html',
