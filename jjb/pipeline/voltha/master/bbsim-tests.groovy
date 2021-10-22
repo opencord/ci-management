@@ -26,7 +26,7 @@ def clusterName = "kind-ci"
 def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "") {
   def infraNamespace = "default"
   def volthaNamespace = "voltha"
-  def robotLogsDir = "RobotLogs"
+  def logsDir = "$WORKSPACE/${testTarget}"
   stage('Cleanup') {
     if (teardown) {
       timeout(15) {
@@ -48,8 +48,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         script {
 
           sh """
-          mkdir -p $WORKSPACE/${testTarget}-components
-          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > $WORKSPACE/${testTarget}-components/onos-voltha-startup-combined.log &
+          mkdir -p ${logsDir}
+          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
           """
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
@@ -89,7 +89,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
               kill -9 \$P_ID
             done
           fi
-          cd $WORKSPACE/${testTarget}-components/
+          cd ${logsDir}
           gzip -k onos-voltha-startup-combined.log
           rm onos-voltha-startup-combined.log
         """
@@ -109,14 +109,14 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
     sh """
-    mkdir -p $WORKSPACE/${robotLogsDir}/${testTarget}-robot
-    export ROBOT_MISC_ARGS="-d $WORKSPACE/${robotLogsDir}/${testTarget}-robot "
-    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:$WORKSPACE/${robotLogsDir}/${testTarget}-robot -v logging:${testLogging}"
+    mkdir -p ${logsDir}
+    export ROBOT_MISC_ARGS="-d ${logsDir} "
+    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
     make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
     """
-    getPodsInfo("$WORKSPACE/${testTarget}-components")
+    getPodsInfo("${logsDir}")
   }
 }
 
@@ -134,12 +134,12 @@ def collectArtifacts(exitStatus) {
   '''
   step([$class: 'RobotPublisher',
     disableArchiveOutput: false,
-    logFileName: "RobotLogs/*/log*.html",
+    logFileName: "**/*/log*.html",
     otherFiles: '',
-    outputFileName: "RobotLogs/*/output*.xml",
+    outputFileName: "**/*/output*.xml",
     outputPath: '.',
     passThreshold: 100,
-    reportFileName: "RobotLogs/*/report*.html",
+    reportFileName: "**/*/report*.html",
     unstableThreshold: 0,
     onlyCritical: true]);
 }
