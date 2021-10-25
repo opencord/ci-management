@@ -54,18 +54,7 @@ nodes:
       mv ./kind $WORKSPACE/bin/kind
 
       # install voltctl
-      HOSTOS="\$(uname -s | tr "[:upper:]" "[:lower:"])"
-      HOSTARCH="\$(uname -m | tr "[:upper:]" "[:lower:"])"
-      if [ "\$HOSTARCH" == "x86_64" ]; then
-          HOSTARCH="amd64"
-      fi
-      if [ "${cfg.branch}" == "voltha-2.8" ]; then
-          VC_VERSION="1.6.11"
-      else
-          VC_VERSION="\$(curl --fail -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')"
-      fi
-      curl -Lo $WORKSPACE/bin/voltctl https://github.com/opencord/voltctl/releases/download/v\$VC_VERSION/voltctl-\$VC_VERSION-\$HOSTOS-\$HOSTARCH
-      chmod +x $WORKSPACE/bin/voltctl
+      installVoltctl("${cfg.branch}")
 
       # start the kind cluster
       kind create cluster --name ${cfg.name} --config kind.cfg
