@@ -92,6 +92,7 @@ pipeline {
     stage('Install Voltha')  {
       steps {
         timeout(20) {
+          installVoltctl("${branch}")
           script {
             // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
             def localCharts = false

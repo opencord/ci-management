@@ -99,24 +99,10 @@ pipeline {
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
+        installvoltctl("${branch}")
         sh returnStdout: false, script: """
-        mkdir -p $WORKSPACE/bin
+        # download kail
         bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
-        cd $WORKSPACE
-        if [ "${params.branch}" == "voltha-2.8" ]; then
-           VC_VERSION=1.6.11
-        else
-           VC_VERSION=\$(curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g')
-        fi
-
-        HOSTOS=\$(uname -s | tr "[:upper:]" "[:lower:"])
-        HOSTARCH=\$(uname -m | tr "[:upper:]" "[:lower:"])
-        if [ \$HOSTARCH == "x86_64" ]; then
-            HOSTARCH="amd64"
-        fi
-        curl -o $WORKSPACE/bin/voltctl -sSL https://github.com/opencord/voltctl/releases/download/v\${VC_VERSION}/voltctl-\${VC_VERSION}-\${HOSTOS}-\${HOSTARCH}
-        chmod 755 $WORKSPACE/bin/voltctl
-        voltctl version --clientonly
 
         if [ "${params.branch}" == "master" ]; then
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
