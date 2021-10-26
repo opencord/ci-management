@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "237e6b06_da04b199",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/voltha-tt-physical-functional-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-26T16:51:25Z",
+      "side": 0,
+      "message": "I would probably keep the \"mkdir -p\" as:\n- there\u0027s no harm in running it twice\n- the build will fail if we remove the installVoltcl keyword (I don\u0027t see that happening, but introducing and indirect and unnexplicit dependency between the keyword and the pipeline)",
+      "range": {
+        "startLine": 100,
+        "startChar": 8,
+        "endLine": 100,
+        "endChar": 31
+      },
+      "revId": "3eec18325ff6b51749a62795656088446c7e1eaf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
