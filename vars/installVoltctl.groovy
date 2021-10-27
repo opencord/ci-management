@@ -1,4 +1,4 @@
-# This keyword will install the voltctl based on the branch (e.g.: voltha-2.8 or master)
+// This keyword will install the voltctl based on the branch (e.g.: voltha-2.8 or master)
 def call(String branch) {
   sh returnStdout: false, script: """
     mkdir -p $WORKSPACE/bin
