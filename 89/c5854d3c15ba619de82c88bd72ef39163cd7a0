@@ -1,0 +1,8 @@
+Code-Review+1: Girish Gowdra <girish@opennetworking.org>
+Code-Review+2: Matteo Scandolo <teo@opennetworking.org>
+Verified+1: Matteo Scandolo <teo@opennetworking.org>
+Submitted-by: Matteo Scandolo <teo@opennetworking.org>
+Submitted-at: Wed, 27 Oct 2021 22:52:35 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/28668
+Project: ci-management
+Branch: refs/heads/master
