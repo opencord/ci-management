@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f270448d_124e6577",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2021-10-28T00:04:42Z",
+      "side": 1,
+      "message": "tested here: https://jenkins.opencord.org/job/verify_voltha-openolt-adapter_sanity-test/1567/",
+      "revId": "b47a6fde34c6d1a1d1afdfa2baa1bce36ac74448",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
