@@ -52,10 +52,10 @@ nodes:
       curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.0/kind-linux-amd64
       chmod +x ./kind
       mv ./kind $WORKSPACE/bin/kind
-
-      # install voltctl
-      installVoltctl("${cfg.branch}")
-
+    """
+    // install voltctl
+    installVoltctl("${cfg.branch}")
+    sh """
       # start the kind cluster
       kind create cluster --name ${cfg.name} --config kind.cfg
 
