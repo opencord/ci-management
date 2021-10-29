@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9de37c2_92534604",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 265,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-10-29T22:32:16Z",
+      "side": 1,
+      "message": "need this on 2.8 also or only master ?",
+      "revId": "4f6eda73f184d846ef1b7ed15e1c256fc3c5a555",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657ecb88_e377eb2e",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 280,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-10-29T22:32:16Z",
+      "side": 1,
+      "message": "same here",
+      "revId": "4f6eda73f184d846ef1b7ed15e1c256fc3c5a555",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
