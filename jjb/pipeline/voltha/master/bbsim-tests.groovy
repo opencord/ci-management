@@ -105,6 +105,12 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       done
       ps aux | grep port-forward
       """
+      // setting ONOS log level
+      sh """
+      sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel.toUpperCase()} org.opencord.olt
+      sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel.toUpperCase()} org.opencord.aaa
+      sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel.toUpperCase()} org.opencord.dhcpl2relay
+      """
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
@@ -159,6 +165,7 @@ pipeline {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     ROBOT_MISC_ARGS="-e PowerSwitch ${params.extraRobotArgs}"
     DIAGS_PROFILE="VOLTHA_PROFILE"
+    SSHPASS="karaf"
   }
   stages {
     stage('Download Code') {
