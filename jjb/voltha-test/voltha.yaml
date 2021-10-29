@@ -129,6 +129,7 @@
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
+          timeout: 330
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -170,7 +171,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
-          time: '15'
+          time: '16'
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -278,7 +279,7 @@
       - 'build_voltha_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           bbsimReplicas: 1
           profile: '1T8GEM'
           name-extension: '_DT'
@@ -293,7 +294,7 @@
       - 'build_voltha_pod_manual_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -308,7 +309,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          'disable-job': false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -324,7 +325,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          'disable-job': false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
