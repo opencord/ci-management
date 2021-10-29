@@ -38,7 +38,7 @@ pipeline {
   environment {
     KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
     VOLTCONFIG="$HOME/.volt/config-minimal"
-    PATH="$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   }
 
 
@@ -100,7 +100,7 @@ pipeline {
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
-        installvoltctl("${branch}")
+        installVoltctl("${branch}")
         sh returnStdout: false, script: """
         mkdir -p $WORKSPACE/bin
         # download kail
