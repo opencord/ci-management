@@ -26,7 +26,7 @@ def clusterName = "kind-ci"
 def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "") {
   def infraNamespace = "default"
   def volthaNamespace = "voltha"
-  def robotLogsDir = "RobotLogs"
+  def logsDir = "$WORKSPACE/${testTarget}"
   stage('Cleanup') {
     if (teardown) {
       timeout(15) {
@@ -48,8 +48,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         script {
 
           sh """
-          mkdir -p $WORKSPACE/${testTarget}-components
-          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > $WORKSPACE/${testTarget}-components/onos-voltha-startup-combined.log &
+          mkdir -p ${logsDir}
+          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
           """
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
@@ -89,7 +89,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
               kill -9 \$P_ID
             done
           fi
-          cd $WORKSPACE/${testTarget}-components/
+          cd ${logsDir}
           gzip -k onos-voltha-startup-combined.log
           rm onos-voltha-startup-combined.log
         """
