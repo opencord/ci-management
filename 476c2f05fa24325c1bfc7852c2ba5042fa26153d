@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "193a5498_ae15efe6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-11-01T07:06:01Z",
+      "side": 1,
+      "message": "Verified here : https://jenkins.opencord.org/view/VOLTHA-2.8/job/periodic-voltha-test-bbsim-2.8/115/console",
+      "revId": "476c2f05fa24325c1bfc7852c2ba5042fa26153d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
