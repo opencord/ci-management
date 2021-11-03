@@ -125,7 +125,7 @@ pipeline {
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanity -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         fi
-        ROBOT_MISC_ARGS+=" -X -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
         make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
       }
@@ -145,7 +145,7 @@ pipeline {
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         fi
-        ROBOT_MISC_ARGS+=" -X -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
         make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
       }
@@ -161,7 +161,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplane -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        ROBOT_MISC_ARGS+=" -X -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
         make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
       }
@@ -176,7 +176,7 @@ pipeline {
        sh """
        mkdir -p $ROBOT_LOGS_DIR
        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-       ROBOT_MISC_ARGS+=" -X -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+       ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
        make -C $WORKSPACE/voltha-system-tests voltha-test || true
        """
       }
@@ -192,7 +192,7 @@ pipeline {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        ROBOT_MISC_ARGS+=" -X -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
         make -C $WORKSPACE/voltha-system-tests voltha-test || true
         """
       }
