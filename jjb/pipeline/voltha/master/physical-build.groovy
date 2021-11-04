@@ -264,6 +264,7 @@ pipeline {
               """
             }
             timeout(1) {
+              // setOnosLogLevels()
               waitUntil {
                 sr_active_out = sh returnStatus: true, script: """
                 sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@${deployment_config.nodes[0].ip} "log:set TRACE org.opencord.dhcpl2relay"
