@@ -417,7 +417,7 @@
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          timeout: 300
+          timeout: 360
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
