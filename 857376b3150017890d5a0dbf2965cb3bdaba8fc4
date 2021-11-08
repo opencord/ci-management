@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "05625c7f_86f5b6af",
+        "filename": "vars/setOnosLogLevels.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-11-08T13:17:36Z",
+      "side": 1,
+      "message": "Earlier we were setting different log levels for each app. But only all can be set to only one/same. This is okay for now. But can we make this more flexible.",
+      "range": {
+        "startLine": 6,
+        "startChar": 16,
+        "endLine": 6,
+        "endChar": 23
+      },
+      "revId": "857376b3150017890d5a0dbf2965cb3bdaba8fc4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
