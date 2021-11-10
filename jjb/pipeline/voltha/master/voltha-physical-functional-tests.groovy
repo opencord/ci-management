@@ -57,6 +57,14 @@ pipeline {
             [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
           ],
         ])
+        script {
+          sh(script:"""
+            if [ '${volthaSystemTestsChange}' != '' ] ; then
+              cd $WORKSPACE/voltha-system-tests;
+              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+            fi
+            """)
+        }
       }
     }
     stage('Download All the VOLTHA repos') {

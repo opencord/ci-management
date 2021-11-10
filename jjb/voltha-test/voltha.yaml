@@ -129,7 +129,7 @@
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
-          timeout: 330
+          timeout: 360
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -230,7 +230,7 @@
           VolthaEtcdPort: 9999
           in-band-management: true
           waitTimerForOltUp: 540
-          time: '4'
+          time: '6'
           extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Menlo pod test job - uses tech profile on voltha branch
@@ -260,7 +260,7 @@
           num-of-atomix: '3'
           VolthaEtcdPort: 9999
           in-band-management: true
-          time: '7'
+          time: '11'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
           extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
