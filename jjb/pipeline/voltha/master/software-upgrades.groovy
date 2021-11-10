@@ -77,7 +77,7 @@ def test_software_upgrade(name) {
     }
   }
   stage('Test - '+ name) {
-    timeout(40) {
+    timeout(60) {
       sh """
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name}"
         mkdir -p \$ROBOT_LOGS_DIR
