@@ -123,6 +123,13 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
     """
     getPodsInfo("${logsDir}")
+    sh """
+      set +e
+      # collect logs collected in the Robot Framework StartLogging keyword
+      cd ${logsDir}
+      gzip *-combined.log || true
+      rm *-combined.log || true
+    """
   }
 }
 

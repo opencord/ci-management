@@ -23,13 +23,14 @@ library identifier: 'cord-jenkins-libraries@master',
 def test_software_upgrade(name) {
   def infraNamespace = "infra"
   def volthaNamespace = "voltha"
+  def logsDir = "$WORKSPACE/${name}"
   stage('Deploy Voltha - '+ name) {
     timeout(10) {
       // start logging
       sh """
-      rm -rf $WORKSPACE/${name} || true
-      mkdir -p $WORKSPACE/${name}
-      _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > $WORKSPACE/${name}/onos-voltha-startup-combined.log &
+      rm -rf ${logsDir} || true
+      mkdir -p ${logsDir}
+      _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
       """
       def extraHelmFlags = extraHelmFlags.trim()
       extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
@@ -61,7 +62,7 @@ def test_software_upgrade(name) {
             kill -9 \$P_ID
           done
         fi
-        cd $WORKSPACE/${name}/
+        cd ${logsDir}
         gzip -k onos-voltha-startup-combined.log
         rm onos-voltha-startup-combined.log
       """
@@ -134,7 +135,7 @@ def test_software_upgrade(name) {
         fi
         export VOLTCONFIG=$HOME/.volt/config-minimal
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
-        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:$WORKSPACE/RobotLogs/${name} -v logging:\$testLogging"
+        ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:\$testLogging"
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
@@ -145,6 +146,13 @@ def test_software_upgrade(name) {
       """
       // collect pod details
       get_pods_info("$WORKSPACE/${name}")
+      sh """
+        set +e
+        # collect logs collected in the Robot Framework StartLogging keyword
+        cd ${logsDir}
+        gzip *-combined.log || true
+        rm *-combined.log || true
+      """
       helmTeardown(['infra', 'voltha'])
     }
   }
@@ -171,7 +179,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 90, unit: 'MINUTES')
+    timeout(time: 100, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
