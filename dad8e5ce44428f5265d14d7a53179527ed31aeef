@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a17414b_58292574",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-11-11T05:23:29Z",
+      "side": 1,
+      "message": "Triggerd here: https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/nightly-voltha-DTflow-sanity-test/636/artifact/sanity-kind-dt/ and https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/periodic-software-upgrade-test-bbsim/515/console",
+      "revId": "dad8e5ce44428f5265d14d7a53179527ed31aeef",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
