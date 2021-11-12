@@ -24,6 +24,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "72e7ac76_8b3b5fee",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-11-12T13:50:43Z",
+      "side": 1,
+      "message": "It is only one testcase which will take about 10 minutes.",
+      "parentUuid": "2bb2ed0b_5967c745",
+      "range": {
+        "startLine": 86,
+        "startChar": 12,
+        "endLine": 86,
+        "endChar": 14
+      },
+      "revId": "5aae62f62e81c7f9dea299f7071020400ab61a54",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0ad661ee_90ff47e9",
@@ -37,6 +61,30 @@
       "writtenOn": "2021-11-12T13:44:45Z",
       "side": 1,
       "message": "this needs a considerable increase, 60-90min, depending on the time it will take to run this additional target.",
+      "range": {
+        "startLine": 191,
+        "startChar": 18,
+        "endLine": 191,
+        "endChar": 21
+      },
+      "revId": "5aae62f62e81c7f9dea299f7071020400ab61a54",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "69e45977_295a367c",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2021-11-12T13:50:43Z",
+      "side": 1,
+      "message": "Ok. I will increase to 120.",
+      "parentUuid": "0ad661ee_90ff47e9",
       "range": {
         "startLine": 191,
         "startChar": 18,
