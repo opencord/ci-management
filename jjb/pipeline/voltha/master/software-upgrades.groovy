@@ -33,8 +33,13 @@ def test_software_upgrade(name) {
       _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
       """
       def extraHelmFlags = extraHelmFlags.trim()
-      extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
-      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade") {
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "voltha-component-upgrade") {
+          extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
+      }
+      if ("${name}" == "onu-image-dwl-simultaneously") {
+          extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=2,pon=2 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3,bbsimReplica:2 "
+      }
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-image-dwl-simultaneously") {
           extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set onos-classic.image.tag=master "
       }
       if ("${name}" == "voltha-component-upgrade") {
@@ -129,6 +134,10 @@ def test_software_upgrade(name) {
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
           export TARGET=onu-upgrade-test
         fi
+        if [[ ${name} == 'onu-image-dwl-simultaneously' ]]; then
+          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
+          export TARGET=onu-upgrade-test-multiolt-kind-att
+        fi
         testLogging='False'
         if [ ${logging} = true ]; then
           testLogging='True'
@@ -216,6 +225,7 @@ pipeline {
         test_software_upgrade("onos-app-upgrade")
         test_software_upgrade("voltha-component-upgrade")
         test_software_upgrade("onu-software-upgrade")
+        test_software_upgrade("onu-image-dwl-simultaneously")
       }
     }
   }
