@@ -129,7 +129,7 @@ pipeline {
                 "--set global.log_level=${logLevel} " +
                 "--set radius.enabled=${withEapol} " +
                 "--set onos-classic.onosSshPort=30115 " +
-                "--set onos-classic.onosApiPort=30120 " + 
+                "--set onos-classic.onosApiPort=30120 " +
                 params.extraHelmFlags
 
             volthaInfraDeploy([
@@ -395,6 +395,7 @@ def deploy_voltha_stacks(numberOfStacks) {
           extraHelmFlags: volthaHelmFlags,
           localCharts: localCharts,
           onosReplica: onosReplicas,
+          adaptersToWait: 0 // in 2.8 there's no need to wait for adapters
         ])
       }
     }
