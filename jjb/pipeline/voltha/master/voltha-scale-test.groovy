@@ -317,6 +317,17 @@ pipeline {
     stage('Configuration') {
       steps {
         script {
+          setOnosLogLevels([
+              onosNamespace: "default",
+              apps: [
+                'org.opencord.dhcpl2relay',
+                'org.opencord.olt',
+                'org.opencord.aaa',
+                'org.onosproject.net.flowobjective.impl.FlowObjectiveManager',
+                'org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager'
+              ],
+              logLevel: logLevel
+          ])
           def tech_prof_directory = "XGS-PON"
           sh returnStdout: false, script: """
           #Setting link discovery
@@ -331,16 +342,6 @@ pipeline {
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager accumulatorMaxIdleMillis 500
 
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.opencord.olt.impl.Olt provisionDelay 1000
-
-          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel} org.onosproject
-          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel} org.opencord
-
-          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.opencord.cordmcast
-          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.mcast
-          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.opencord.igmpproxy
-          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.opencord.olt
-          sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.opencord.aaa
-          # sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set DEBUG org.onosproject.net.flowobjective.impl.FlowObjectiveManager
 
           # BBSim logs at debug level don't slow down the system much and are very helpful while troubleshooting
           kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log debug false
@@ -464,7 +465,7 @@ EOF
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
               --noncritical non-critical \
-              -e igmp -e teardown "
+              -e igmp "
 
             if [ ${withEapol} = false ] ; then
               ROBOT_PARAMS+="-e authentication "
