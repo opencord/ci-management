@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4937a724_2fbbad31",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-11-15T11:27:21Z",
+      "side": 1,
+      "message": "This needs a fix. Check https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/periodic-software-upgrade-test-bbsim/523/replay/diff",
+      "range": {
+        "startLine": 40,
+        "startChar": 168,
+        "endLine": 40,
+        "endChar": 182
+      },
+      "revId": "6bd092e3bfc94a942d148c3aaf2a4c87bdfe2f74",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
