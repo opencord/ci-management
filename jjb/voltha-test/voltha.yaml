@@ -414,6 +414,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '16'
+          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -439,6 +440,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '1'
+          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':

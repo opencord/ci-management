@@ -52,7 +52,7 @@
       # new OLT App jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-newoltapp'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           # time-trigger: "H 0 29 2 *"
@@ -91,7 +91,7 @@
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-newoltapp'
-          'disable-job': true
+          'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
           # time-trigger: "H 0 29 2 *"
@@ -224,7 +224,7 @@
       # voltha-2.8 Jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-att-subscribers'
-          'disable-job': true
+          'disable-job': false
           pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -248,7 +248,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-dt-subscribers'
-          'disable-job': true
+          'disable-job': false
           pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -273,7 +273,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-tt-subscribers'
-          'disable-job': true
+          'disable-job': false
           pipeline-script: 'voltha/voltha-2.8/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
