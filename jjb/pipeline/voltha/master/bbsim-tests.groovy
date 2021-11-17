@@ -106,11 +106,19 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       ps aux | grep port-forward
       """
       // setting ONOS log level
-      sh """
-      sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel.toUpperCase()} org.opencord.olt
-      sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel.toUpperCase()} org.opencord.aaa
-      sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 log:set ${logLevel.toUpperCase()} org.opencord.dhcpl2relay
-      """
+      script {
+        setOnosLogLevels([
+          onosNamespace: infraNamespace,
+          apps: [
+            'org.opencord.dhcpl2relay',
+            'org.opencord.olt',
+            'org.opencord.aaa',
+            'org.onosproject.net.flowobjective.impl.FlowObjectiveManager',
+            'org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager'
+          ],
+          logLevel: logLevel
+        ])
+      }
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {

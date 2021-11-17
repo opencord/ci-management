@@ -599,6 +599,7 @@ EOF
         fi
 
         cd voltha-system-tests
+        make vst_venv
         source ./vst_venv/bin/activate || true
         python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
         cat $WORKSPACE/execution-time.txt
@@ -770,6 +771,7 @@ EOF
       sh '''
       if [ ${withMonitoring} = true ] ; then
         cd $WORKSPACE/voltha-system-tests
+        make vst_venv
         source ./vst_venv/bin/activate || true
         sleep 60 # we have to wait for prometheus to collect all the information
         python scripts/sizing.py -o $WORKSPACE/plots || true
