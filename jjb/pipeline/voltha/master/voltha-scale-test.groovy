@@ -465,7 +465,7 @@ EOF
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
               --noncritical non-critical \
-              -e igmp "
+              -e igmp -e teardown"
 
             if [ ${withEapol} = false ] ; then
               ROBOT_PARAMS+="-e authentication "
@@ -550,6 +550,51 @@ EOF
 
           if (caughtException) {
             error caughtException.message
+          }
+        }
+      }
+    }
+    stage("Device removal") {
+      options {
+          timeout(time: 5, unit: 'MINUTES')
+      }
+      steps {
+        sh '''
+          set +e
+          mkdir -p $ROBOT_LOGS_DIR
+          cd $WORKSPACE/voltha-system-tests
+          make vst_venv
+        '''
+        script {
+          Exception caughtException = null
+
+          catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
+            try {
+              sh '''
+                ROBOT_PARAMS="--exitonfailure \
+                  -v olt:${olts} \
+                  -v pon:${pons} \
+                  -v onu:${onus} \
+                  -v ONOS_SSH_PORT:30115 \
+                  -v ONOS_REST_PORT:30120 \
+                  -v workflow:${workflow} \
+                  -v withEapol:${withEapol} \
+                  -v withDhcp:${withDhcp} \
+                  -v withIgmp:${withIgmp} \
+                  --noncritical non-critical \
+                  -i teardown"
+
+                  cd $WORKSPACE/voltha-system-tests
+                  source ./vst_venv/bin/activate
+                  robot -d $WORKSPACE/RobotLogs \
+                  $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+                '''
+            } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
+              // if the error is a timeout don't mark the build as failed
+              println "Cleanup test timed out"
+            } catch (Throwable e) {
+              caughtException = e
+            }
           }
         }
       }
