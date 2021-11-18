@@ -69,6 +69,7 @@
           extraHelmFlags: >
             --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
           onosImg: matteoscandolo/voltha-onos:oltapp
+          withMonitoring: false
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers-newoltapp'
           'disable-job': false
@@ -89,6 +90,7 @@
           extraHelmFlags: >
             -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
+          withMonitoring: false
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-newoltapp'
           'disable-job': false
@@ -109,6 +111,7 @@
           extraHelmFlags: >
             --set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
           onosImg: 'matteoscandolo/voltha-onos:oltapp'
+          withMonitoring: false
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':

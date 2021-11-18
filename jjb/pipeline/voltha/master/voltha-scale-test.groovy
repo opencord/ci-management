@@ -632,16 +632,23 @@ EOF
         ],
         group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Scale Test (OLTs: ${olts}, PONs: ${pons}, ONUs: ${onus})", yaxis: 'Time (s)', useDescr: true
       ])
-      step([$class: 'RobotPublisher',
-        disableArchiveOutput: false,
-        logFileName: '**/log*.html',
-        otherFiles: '',
-        outputFileName: '**/output*.xml',
-        outputPath: 'RobotLogs',
-        passThreshold: 100,
-        reportFileName: '**/report*.html',
-        onlyCritical: true,
-        unstableThreshold: 0]);
+      script {
+        try {
+          step([$class: 'RobotPublisher',
+            disableArchiveOutput: false,
+            logFileName: '**/log*.html',
+            otherFiles: '',
+            outputFileName: '**/output*.xml',
+            outputPath: 'RobotLogs',
+            passThreshold: 100,
+            reportFileName: '**/report*.html',
+            onlyCritical: true,
+            unstableThreshold: 0]);
+        } catch (Exception e) {
+            println "Cannot archive Robot Logs: ${e.toString()}"
+        }
+      }
+
       getPodsInfo("$LOG_FOLDER")
       // get all the logs from kubernetes PODs
       sh returnStdout: false, script: '''
