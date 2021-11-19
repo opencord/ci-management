@@ -205,7 +205,6 @@
           waitTimerForOltUp: 540
           VolthaEtcdPort: 9999
           time: '1'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -231,7 +230,6 @@
           in-band-management: true
           waitTimerForOltUp: 540
           time: '6'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -262,7 +260,6 @@
           in-band-management: true
           time: '11'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -277,7 +274,6 @@
           profile: '1T8GEM'
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
           power-switch: True
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # ONF Menlo Soak POD build job - voltha-master branch
       - 'build_voltha_pod_manual':
@@ -414,7 +410,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '16'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -440,7 +435,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '1'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
