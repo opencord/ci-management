@@ -100,6 +100,23 @@ pipeline {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
         installVoltctl("${branch}")
+        sh """
+        ps -ef | grep port-forward
+        """
+
+        sh returnStdout: false, script: '''
+        # remove orphaned port-forward from different namespaces
+        ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
+        '''
+        sh """
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd ${params.VolthaEtcdPort}:2379; done"&
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
+        ps aux | grep port-forward
+        """
+        sh """
+        ps -ef | grep port-forward
+        """
         sh returnStdout: false, script: """
         mkdir -p $WORKSPACE/bin
         # download kail
@@ -108,7 +125,6 @@ pipeline {
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
-        if [ "${params.branch}" == "master" ]; then
            set +e
 
 
@@ -119,7 +135,6 @@ pipeline {
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
-        fi
         """
       }
     }
@@ -132,6 +147,7 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
@@ -152,6 +168,7 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
@@ -172,6 +189,7 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
@@ -187,6 +205,7 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p $ROBOT_LOGS_DIR
         export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
@@ -203,6 +222,7 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
