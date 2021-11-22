@@ -22,6 +22,7 @@ def call(Map config) {
       println "Setting log levels on ${instance}"
       sh """
       _TAG="onos-pf" bash -c "while true; do kubectl port-forward -n ${cfg.onosNamespace} ${instance} 8101; done"&
+      ps aux | grep port-forward
       """
 
       for (int j = 0; j < cfg.apps.size(); j++) {
@@ -32,6 +33,7 @@ def call(Map config) {
       }
       sh """
         ps e -ww -A | grep _TAG="onos-pf" | grep -v grep | awk '{print \$1}' | xargs --no-run-if-empty kill -9
+        ps aux | grep port-forward
       """
   }
 }
