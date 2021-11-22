@@ -648,8 +648,8 @@
     kafkaReplicas: 3
     etcdReplicas: 3
     extraHelmFlags: ''
-    onosStatInterval: 5
-    onosGroupInterval: 1
+    onosStatInterval: 10
+    onosGroupInterval: 10
     flowObjWorkerThreads: 12
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
@@ -752,8 +752,8 @@
     kafkaReplicas: 1
     etcdReplicas: 1
     extraHelmFlags: ''
-    onosStatInterval: 5
-    onosGroupInterval: 1
+    onosStatInterval: 10
+    onosGroupInterval: 10
     flowObjWorkerThreads: 12
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
