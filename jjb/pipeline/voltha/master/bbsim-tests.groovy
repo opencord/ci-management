@@ -124,7 +124,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
     sh """
     mkdir -p ${logsDir}
-    export ROBOT_MISC_ARGS="-d ${logsDir} "
+    export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
@@ -178,7 +178,6 @@ pipeline {
     KUBECONFIG="$HOME/.kube/kind-${clusterName}"
     VOLTCONFIG="$HOME/.volt/config"
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    ROBOT_MISC_ARGS="-e PowerSwitch ${params.extraRobotArgs}"
     DIAGS_PROFILE="VOLTHA_PROFILE"
     SSHPASS="karaf"
   }

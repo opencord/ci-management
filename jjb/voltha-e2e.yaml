@@ -944,6 +944,29 @@
               teardown: true
               logging: true
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
+          time-trigger: "H H/23 * * *"
+          robot-args: '-v unitag_sub:True'
+          testTargets: |
+            - target: functional-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-failurescenarios-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: functional-single-kind-multiuni-tt
+              workflow: tt
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
+              teardown: true
+              logging: true
+
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
