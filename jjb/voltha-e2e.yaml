@@ -1172,6 +1172,7 @@
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
+    robot-args: ''
     branch-regexp: '{all-branches-regexp}'
     testTargets: |
       - target: sanity-kind-att
@@ -1225,6 +1226,11 @@
           name: extraHelmFlags
           default: '{extraHelmFlags}'
           description: 'Helm flags to pass to every helm command'
+
+      - string:
+          name: extraRobotArgs
+          default: '{robot-args}'
+          description: 'Arguments to pass to robot'
 
       - string:
           name: volthaSystemTestsChange
