@@ -536,6 +536,7 @@
               teardown: true
               logging: true
           time-trigger: "H H/12 * * *"
+          timeout: 160
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.8'
@@ -662,6 +663,7 @@
               teardown: true
               logging: true
           olts: 2
+          timeout: 160
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim'
