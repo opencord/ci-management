@@ -25,7 +25,7 @@
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: >
-            --set global.image_tag=master--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3
+            --set global.image_tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3
             --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
           time-trigger: "H H/23 * * *"
           testTargets: |
