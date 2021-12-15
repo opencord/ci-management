@@ -24,9 +24,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: >
-            --set global.image_tag=master--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -59,9 +57,7 @@
           name: 'periodic-voltha-multiple-olts-test-bbsim'
           code-branch: 'master'
           olts: 2
-          extraHelmFlags: >
-            --set global.image_tag=master --set onu=2,pon=2
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-multi-olt
@@ -144,9 +140,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: >
-            --set global.image_tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind-multiuni-att
@@ -169,9 +163,7 @@
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim'
           code-branch: 'master'
           olts: 2
-          extraHelmFlags: >
-            --set global.image_tag=master --set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-multiuni-multiolt-att
@@ -243,9 +235,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: >
-            --set global.image_tag=master
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           time-trigger: "H H/12 * * *"
           logLevel: 'DEBUG'
           testTargets: |
@@ -481,9 +471,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: >
-            --set global.image_tag=master --set onu=2,pon=2
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           olts: 2
           logLevel: 'DEBUG'
           testTargets: |
@@ -858,9 +846,7 @@
           name: 'periodic-voltha-etcd-test'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
-          extraHelmFlags: >
-            --set global.image_tag=master --set onu=2,pon=2
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           time-trigger: "H H/12 * * *"
           testTargets: |
             - target: sanity-multi-kind
@@ -887,9 +873,7 @@
           name: 'periodic-voltha-sanity-test-multi-runs'
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
-          extraHelmFlags: >
-            --set global.image_tag=master --set onu=2,pon=2
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           testTargets: |
             - target: sanity-kind
               workflow: att
@@ -954,9 +938,7 @@
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
           time-trigger: "@daily"
-          extraHelmFlags: >
-            --set global.image_tag=master
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           testTargets: |
             - target: sanity-kind-dt
               workflow: dt
@@ -967,9 +949,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: >
-            --set global.image_tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           time-trigger: "H H/23 * * *"
           robot-args: '-v unitag_sub:True'
           testTargets: |
@@ -992,9 +972,7 @@
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
-          extraHelmFlags: >
-            --set global.image_tag=master --set global.log_level=debug
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
           workflow: 'att'
           branch-pattern: master
 
@@ -1012,9 +990,7 @@
           name: 'verify_physical_voltha_patchset_manual'
           trigger-string: 'hardware test'
           branch-pattern: master
-          extraHelmFlags: >
-            --set global.image_tag=master --set global.log_level=debug
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
           workflow: 'att'
 
       # ATT Manual Pod builds on Tucson pod (voltha-2.8)
@@ -1033,9 +1009,7 @@
           trigger-string: 'DT hardware test'
           default-test-args: '-i sanityDt -i PowerSwitch -X'
           branch-pattern: master
-          extraHelmFlags: >
-            --set global.image_tag=master --set global.log_level=debug
-            --set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
 
       # DT Manual Pod builds on Tucson pod  (voltha-2.8)
       - 'verify_physical_voltha_patchset_manual':

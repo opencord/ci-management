@@ -64,7 +64,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
-          onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -81,7 +80,6 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
-          onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -104,7 +102,6 @@
             --set global.rpc_timeout=30s,global.adapter_open_onu.timeout=30s,global.adapter_open_olt.timeout=30s,global.adapter_open_olt.rpc_timeout=30s
           onosStatInterval: 30
           onosGroupInterval: 30
-          onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -125,7 +122,6 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
@@ -145,7 +141,6 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
@@ -165,7 +160,6 @@
           withDhcp: true
           withIgmp: true
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          onosImg: 'matteoscandolo/voltha-onos:oltapp'
 
       # voltha-2.8 Jobs
       - 'voltha-scale-measurements':
