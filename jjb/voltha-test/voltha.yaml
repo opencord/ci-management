@@ -64,7 +64,6 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -116,7 +115,6 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -180,7 +178,6 @@
           reinstall-olt: true
           enableMultiUni: true
           uniPortMask: '0x0003'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -208,7 +205,6 @@
           waitTimerForOltUp: 540
           VolthaEtcdPort: 9999
           time: '1'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -234,7 +230,6 @@
           in-band-management: true
           waitTimerForOltUp: 540
           time: '6'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -293,7 +288,6 @@
           num-of-onus: 32
           num-of-ponports: 16
           logLevel: 'WARN'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # ONF Menlo Soak POD test job - voltha-master branch
       # Run tests manually triggering the job
@@ -416,7 +410,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '16'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -442,7 +435,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           time: '1'
-          extraHelmFlags: "--set onos-classic.image.repository=matteoscandolo/voltha-onos --set onos-classic.image.tag=oltapp"
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
