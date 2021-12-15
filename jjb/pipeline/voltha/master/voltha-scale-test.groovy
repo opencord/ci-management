@@ -488,6 +488,9 @@ EOF
             source ./vst_venv/bin/activate
             robot -d $WORKSPACE/RobotLogs \
             $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+
+            python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
+            cat $WORKSPACE/execution-time.txt
           '''
         }
       }
@@ -642,12 +645,6 @@ EOF
             kubectl cp $INSTANCE:out.pcap $LOG_FOLDER/$INSTANCE.pcap || true
           done
         fi
-
-        cd voltha-system-tests
-        make vst_venv
-        source ./vst_venv/bin/activate || true
-        python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
-        cat $WORKSPACE/execution-time.txt
       '''
       sh '''
         if [ ${withProfiling} = true ] ; then
