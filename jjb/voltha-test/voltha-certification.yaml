@@ -40,6 +40,7 @@
 
       # Certification (Radisys 1600G) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 330
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-1600g'
           disable-job: true
@@ -66,6 +67,7 @@
 
       # Certification (Radisys 1600X) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 330
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-1600x'
           disable-job: false
@@ -92,6 +94,7 @@
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 330
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false

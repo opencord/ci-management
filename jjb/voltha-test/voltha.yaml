@@ -233,7 +233,7 @@
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          timeout: 300
+          timeout: 330
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           release: 'master'
@@ -438,6 +438,7 @@
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
+          timeout: 330
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
           name-extension: '_DT'
