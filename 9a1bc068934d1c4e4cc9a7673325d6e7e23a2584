@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c5a27281_49289827",
+        "filename": "jjb/pipeline/voltha/voltha-2.9/voltha-physical-functional-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-12-16T16:52:02Z",
+      "side": 1,
+      "message": "@Teo: Should this be voltha-2.9?",
+      "range": {
+        "startLine": 104,
+        "startChar": 36,
+        "endLine": 104,
+        "endChar": 42
+      },
+      "revId": "9a1bc068934d1c4e4cc9a7673325d6e7e23a2584",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
