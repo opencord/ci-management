@@ -275,6 +275,33 @@
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
           power-switch: True
 
+      # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: '2.9'
+          branch: 'voltha-2.9'
+          profile: '1T4GEM'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          in-band-management: true
+          waitTimerForOltUp: 540
+          VolthaEtcdPort: 9999
+          time: '16'
+          pipeline-script: 'voltha/voltha-2.9/physical-build.groovy'
+
+      # Menlo pod test job - voltha-2.9 test job uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          timeout: 300
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          release: '2.9'
+          branch: 'voltha-2.9'
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM'
+          pipeline-script: 'voltha/voltha-2.9/voltha-physical-functional-tests.groovy'
+          power-switch: True
+
       # ONF Menlo Soak POD build job - voltha-master branch
       - 'build_voltha_pod_manual':
           build-node: 'menlo-soak-pod'
