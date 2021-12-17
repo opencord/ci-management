@@ -409,7 +409,7 @@
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
-          time: '16'
+          time: '1'
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -434,7 +434,7 @@
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
-          time: '1'
+          time: '7'
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -461,7 +461,9 @@
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
-          time: '11'
+          # Update time trigger value while re-enabling the job
+          time: ''
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -475,6 +477,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
+          'disable-job': true
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with olt/onu - voltha-2.8 versions timer based job , two OLTs
@@ -489,7 +492,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          time: '5'
+          time: '13'
 
       # Berlin POD test job - voltha-2.8 versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -522,7 +525,7 @@
           openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.8/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
-          time: '21'
+          time: '19'
 
       # Berlin POD adtran test job - 2.8 versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
