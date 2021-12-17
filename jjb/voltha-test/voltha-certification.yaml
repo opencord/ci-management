@@ -31,7 +31,7 @@
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-1600g'
           disable-job: true
-          reinstall-olt: false
+          reinstall-olt: true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -58,7 +58,7 @@
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-1600x'
           disable-job: false
-          reinstall-olt: false
+          reinstall-olt: true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -85,7 +85,7 @@
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false
-          reinstall-olt: false
+          reinstall-olt: true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -112,7 +112,7 @@
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false
-          reinstall-olt: false
+          reinstall-olt: true
           release: '2.8'
           branch: 'voltha-2.8'
           name-extension: '_DT'
@@ -141,7 +141,7 @@
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-1600g'
           disable-job: false
-          reinstall-olt: false
+          reinstall-olt: true
           release: '2.8'
           branch: 'voltha-2.8'
           name-extension: '_DT'
@@ -170,7 +170,7 @@
           build-node: 'menlo-certification-pod'
           config-pod: 'menlo-certification-pod-radisys-1600x'
           disable-job: false
-          reinstall-olt: false
+          reinstall-olt: true
           release: '2.8'
           branch: 'voltha-2.8'
           name-extension: '_DT'
@@ -199,7 +199,7 @@
             build-node: 'menlo-certification-pod'
             config-pod: 'menlo-certification-pod-radisys-3200g'
             disable-job: true
-            reinstall-olt: false
+            reinstall-olt: true
             work-flow: 'ATT'
             profile: '1T4GEM'
             time: '13'
@@ -222,7 +222,7 @@
             build-node: 'menlo-certification-pod'
             config-pod: 'menlo-certification-pod-radisys-3200g'
             disable-job: true
-            reinstall-olt: false
+            reinstall-olt: true
             work-flow: 'ATT'
             profile: '1T4GEM-unencrypted'
             time: '17'
