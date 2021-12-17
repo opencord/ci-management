@@ -322,10 +322,18 @@ pipeline {
               timeout(5) {
                 waitUntil {
                   olt_sw_present = sh returnStdout: true, script: """
-                  if [ "${deployment_config.olts[i].oltDebVersion}" == *"asfvolt16"* ]; then
+                  if [[ "${deployment_config.olts[i].oltDebVersion}" == *"asfvolt16"* ]]; then
                     sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep asfvolt16 | wc -l'
-                  else
+                  elif [[ "${deployment_config.olts[i].oltDebVersion}" == *"asgvolt64"* ]]; then
                     sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep asgvolt64 | wc -l'
+                  elif [[ "${deployment_config.olts[i].oltDebVersion}" == *"rlt-1600x-w"* ]]; then
+                    sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep rlt-1600x-w | wc -l'
+                  elif [[ "${deployment_config.olts[i].oltDebVersion}" == *"rlt-1600g-w"* ]]; then
+                    sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep rlt-1600g-w | wc -l'
+                  elif [[ "${deployment_config.olts[i].oltDebVersion}" == *"rlt-3200g-w"* ]]; then
+                    sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep rlt-3200g-w | wc -l'
+                  else
+                    echo Unknown Debian package for openolt
                   fi
                   if (${deployment_config.olts[i].fortygig}); then
                     if [[ "${params.inBandManagement}" == "true" ]]; then
