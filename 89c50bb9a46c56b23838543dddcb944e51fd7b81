@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c00075b6_9930ad58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2021-12-17T04:26:08Z",
+      "side": 1,
+      "message": "Do you want to dedicate demo pod to just 2.9 and master? I see 2.8 also running on the demo pod. I say this because the they use different version of BAL and some times I have see the hardware going into error state when switching between different versions of BAL for each test run. Although soft reboot should be enough, sometimes we have power cycle again to fix the issue.",
+      "revId": "89c50bb9a46c56b23838543dddcb944e51fd7b81",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
