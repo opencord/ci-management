@@ -34,6 +34,24 @@
       "parentUuid": "c00075b6_9930ad58",
       "revId": "89c50bb9a46c56b23838543dddcb944e51fd7b81",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f671764_982ffa0c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2021-12-17T04:37:57Z",
+      "side": 1,
+      "message": "May be we can disable the 2.8 for the holiday runs.",
+      "parentUuid": "94c9f537_d2ac4da1",
+      "revId": "89c50bb9a46c56b23838543dddcb944e51fd7b81",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
