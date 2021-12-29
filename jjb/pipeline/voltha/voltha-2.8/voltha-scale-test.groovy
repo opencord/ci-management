@@ -275,7 +275,6 @@ pipeline {
               atomixReplica: atomixReplicas,
               kafkaReplica: kafkaReplicas,
               etcdReplica: etcdReplicas,
-              onosReplica: onosReplicas,
             ])
 
             stackHelmFlags = " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
@@ -291,6 +290,7 @@ pipeline {
               extraHelmFlags: stackHelmFlags,
               localCharts: localCharts,
               adaptersToWait: 0, // no need to wait for adapters, 2.8 is kafka based
+              onosReplica: onosReplicas,
             ])
             sh """
               set +x
