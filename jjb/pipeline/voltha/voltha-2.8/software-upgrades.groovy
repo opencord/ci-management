@@ -33,16 +33,16 @@ def test_software_upgrade(name) {
       _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
       """
       def extraHelmFlags = extraHelmFlags.trim()
-      extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
+      extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
 
-      extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
-      extraHelmFlags = extraHelmFlags + " --set voltha.onos_classic.replicas=3"
+      extraHelmFlags = " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 " + extraHelmFlags
+      extraHelmFlags = " --set voltha.onos_classic.replicas=3 " + extraHelmFlags
       //ONOS custom image handling
       if ( onosImg.trim() != '' ) {
          String[] split;
          onosImg = onosImg.trim()
          split = onosImg.split(':')
-        extraHelmFlags = extraHelmFlags + "--set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
+        extraHelmFlags = extraHelmFlags + " --set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
       }
       def localCharts = false
       if (branch != "master") {
