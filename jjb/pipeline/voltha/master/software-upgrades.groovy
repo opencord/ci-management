@@ -34,16 +34,16 @@ def test_software_upgrade(name) {
       """
       def extraHelmFlags = extraHelmFlags.trim()
       if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "voltha-component-upgrade") {
-          extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
+          extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
       }
       if ("${name}" == "onu-image-dwl-simultaneously") {
-          extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel.toUpperCase()},onu=2,pon=2 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 "
+          extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=2,pon=2 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
       }
       if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-image-dwl-simultaneously") {
-          extraHelmFlags = extraHelmFlags + "--set global.image_tag=master --set onos-classic.image.tag=master "
+          extraHelmFlags = " --set global.image_tag=master --set onos-classic.image.tag=master " + extraHelmFlags
       }
       if ("${name}" == "voltha-component-upgrade") {
-          extraHelmFlags = extraHelmFlags + "--set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master "
+          extraHelmFlags = " --set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master " + extraHelmFlags
       }
       extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
       extraHelmFlags = extraHelmFlags + " --set voltha.onos_classic.replicas=3"
