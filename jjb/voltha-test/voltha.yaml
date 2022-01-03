@@ -433,12 +433,14 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-multi-olt'
+          'disable-job': true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
-          time: '1'
+          # Update time trigger value while re-enabling the job
+          time: ''
 
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -447,6 +449,7 @@
           config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
           branch: 'master'
+          'disable-job': true
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -459,11 +462,13 @@
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
           name-extension: '_DT'
+          'disable-job': true
           work-flow: 'DT'
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
-          time: '7'
+          # Update time trigger value while re-enabling the job
+          time: ''
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -471,6 +476,7 @@
           build-node: 'dt-berlin-community-pod'
           config-pod: 'dt-berlin-pod-gpon'
           name-extension: '_DT'
+          'disable-job': true
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
@@ -490,9 +496,7 @@
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
-          # Update time trigger value while re-enabling the job
-          time: ''
-          'disable-job': true
+          time: '1'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -506,7 +510,6 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: True
-          'disable-job': true
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with olt/onu - voltha-2.8 versions timer based job , two OLTs
@@ -521,7 +524,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          time: '13'
+          time: '8'
 
       # Berlin POD test job - voltha-2.8 versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
