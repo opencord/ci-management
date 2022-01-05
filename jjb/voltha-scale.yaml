@@ -185,7 +185,6 @@
           openonuAdapterGoImg: ''
           onosImg: ''
           extraHelmFlags: "--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          volthaHelmChartsChange: "refs/changes/93/29993/3"
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-dt-subscribers'
@@ -209,9 +208,8 @@
           openoltAdapterImg: ''
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
-          onosImg: ''
+          onosImg: 'voltha/voltha-onos:5.0.4'
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          volthaHelmChartsChange: "refs/changes/93/29993/3"
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-tt-subscribers'
@@ -237,7 +235,6 @@
           openonuAdapterGoImg: ''
           onosImg: ''
           extraHelmFlags: "--set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          volthaHelmChartsChange: "refs/changes/93/29993/3"
 
       # 2.8 multi-stack jobs
       - 'voltha-scale-measurements':
@@ -265,7 +262,7 @@
           openoltAdapterImg: ''
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
-          onosImg: ''
+          onosImg: 'voltha/voltha-onos:5.0.4'
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
 
       - 'voltha-scale-measurements':
