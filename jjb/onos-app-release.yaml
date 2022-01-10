@@ -32,7 +32,7 @@
       - string:
           name: appRepo
           default: ''
-          description: 'Name of the app repository on the OpenCORD Gerrit server.\n e.g. vtn'
+          description: 'Name of the app repository on the OpenCORD Gerrit server.\n e.g. olt'
 
       - string:
           name: appName
@@ -47,7 +47,7 @@
       - string:
           name: nextApiVersion
           default: ''
-          description: 'Version to release.\n e.g. 1.0.0'
+          description: 'Snapshot version to move the code forward to.\n e.g. 1.1.0'
 
       - string:
           name: version

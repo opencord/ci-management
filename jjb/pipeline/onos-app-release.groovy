@@ -83,10 +83,14 @@ node ('ubuntu18.04-basebuild-1c-2g') {
   }
 
   stage ('Move to release version') {
+    sh 'echo app version ' + version
+    sh 'echo api version ' + apiVersion
+
     //Splitting version and apiVersion and check if apiVersion different from empty then update API it.
     //Allows to release apps that dont' have api.version (e.g. bng,pppoe,kafka)
     changeVersion(version)
-    if (apiVersion != "") {
+    if (!params.apiVersion.isEmpty()) {
+       sh 'echo releasing api version' + '"' + apiVersion +'"'
        changeApiVersion(appName, apiVersion)
     }
     sh 'git add -A && git commit -m "Release app version ' + version + ' with API version ' + apiVersion + '"'
@@ -113,8 +117,13 @@ node ('ubuntu18.04-basebuild-1c-2g') {
   stage ('Move to next SNAPSHOT version') {
     def snapshot = nextVersion + '-SNAPSHOT'
     def apiSnapshot = nextApiVersion + '-SNAPSHOT'
+
+    sh 'echo next app version ' + nextVersion
+    sh 'echo next api version ' + nextApiVersion
+
     changeVersion(snapshot)
-    if (apiVersion != "") {
+    if (!params.nextApiVersion.isEmpty()) {
+       sh 'echo moving to next api version' + '"' + nextApiVersion +'"'
        changeApiVersion(appName, apiSnapshot)
     }
     sh 'git add -A && git commit -m "Starting snapshot ' + snapshot + ' with API version ' + apiSnapshot + '"'
