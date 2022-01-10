@@ -28,7 +28,7 @@
 
       # Certification (Radisys 1600G) pod with olt/onu - master versions timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-1'
           config-pod: 'menlo-certification-pod-radisys-1600g'
           disable-job: false
           reinstall-olt: true
@@ -41,7 +41,7 @@
       # Certification (Radisys 1600G) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-1'
           config-pod: 'menlo-certification-pod-radisys-1600g'
           disable-job: false
           release: 'master'
@@ -55,7 +55,7 @@
 
       # Certification (Radisys 1600X) pod with olt/onu - master versions timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
           disable-job: false
           reinstall-olt: true
@@ -68,7 +68,7 @@
       # Certification (Radisys 1600X) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
           disable-job: false
           release: 'master'
@@ -82,7 +82,7 @@
 
       # Certification (Radisys) pod with olt/onu - master versions timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false
           reinstall-olt: true
@@ -95,7 +95,7 @@
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false
           release: 'master'
@@ -109,7 +109,7 @@
 
       # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false
           reinstall-olt: true
@@ -124,7 +124,7 @@
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
           disable-job: false
           release: '2.8'
@@ -138,7 +138,7 @@
 
       # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-1'
           config-pod: 'menlo-certification-pod-radisys-1600g'
           disable-job: false
           reinstall-olt: true
@@ -153,7 +153,7 @@
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-1'
           config-pod: 'menlo-certification-pod-radisys-1600g'
           disable-job: false
           release: '2.8'
@@ -167,7 +167,7 @@
 
       # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
           disable-job: false
           reinstall-olt: true
@@ -182,7 +182,7 @@
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
-          build-node: 'menlo-certification-pod'
+          build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
           disable-job: false
           release: '2.8'
@@ -196,7 +196,7 @@
 
       # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
-            build-node: 'menlo-certification-pod'
+            build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
             disable-job: false
             reinstall-olt: true
@@ -206,7 +206,7 @@
 
       # Certification (Radisys) POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-            build-node: 'menlo-certification-pod'
+            build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
             disable-job: false
             release: 'master'
@@ -219,7 +219,7 @@
 
         # Certification (Radisys) pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
-            build-node: 'menlo-certification-pod'
+            build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
             disable-job: false
             reinstall-olt: true
@@ -229,7 +229,7 @@
 
         # Certification (Radisys) POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-            build-node: 'menlo-certification-pod'
+            build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
             disable-job: false
             release: 'master'
