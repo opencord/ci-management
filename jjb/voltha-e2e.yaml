@@ -469,6 +469,76 @@
               logging: true
 
       - 'voltha-periodic-test':
+          name: 'patchset-voltha-2.8-openonu-go-test-bbsim'
+          trigger-comment: "voltha 2.8 test openonu singleolt"
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: '$GERRIT_BRANCH'
+          gerritProject: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t4gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t8gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: mib-upload-templating-openonu-go-adapter-test
+              workflow: att
+              flags: "--set pon=2,onu=2,controlledActivation=only-onu"
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-test-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: openonu-go-adapter-omci-hardening-passed-test
+              workflow: att
+              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
+              teardown: true
+              logging: true
+            - target: openonu-go-adapter-omci-hardening-failed-test
+              workflow: att
+              flags: "--set omci_response_rate=7"
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
@@ -664,6 +734,63 @@
               logging: true
           olts: 2
           timeout: 160
+
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-2.8-multiple-olts-openonu-go-test-bbsim'
+          trigger-comment: "voltha 2.8 test openonu multiolt"
+          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          code-branch: '$GERRIT_BRANCH'
+          gerritProject: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          extraHelmFlags: '--set onu=2,pon=2'
+          olts: 2
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t4gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t8gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim'
