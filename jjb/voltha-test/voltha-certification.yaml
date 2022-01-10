@@ -13,8 +13,8 @@
     work-flow: 'ATT'
     in-band-management: false
     num-of-openonu: '1'
-    num-of-onos: '3'
-    num-of-atomix: '3'
+    num-of-onos: '1'
+    num-of-atomix: '1'
     reinstall-olt: true
     test-type: ''
     volthaSystemTestsChange: ''
