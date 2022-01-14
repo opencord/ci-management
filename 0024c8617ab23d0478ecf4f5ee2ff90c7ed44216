@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f11d561_a0e7c9e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-01-14T07:41:49Z",
+      "side": 1,
+      "message": "According OpenOnu Adapter meeting notes from 05.01.2022 log level is set to debug for all runs.\nsee: https://docs.google.com/document/d/1Oedzwi0I7778aM6O84jAPP15kVa03N4yfSbeI1t3z6o/edit#",
+      "revId": "0024c8617ab23d0478ecf4f5ee2ff90c7ed44216",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
