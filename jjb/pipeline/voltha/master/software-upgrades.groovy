@@ -183,7 +183,7 @@ def get_pods_info(dest) {
   """
   sh '''
   # copy the ONOS logs directly from the container to avoid the color codes
-  printf '%s\\n' $(kubectl get pods -n infra -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c 'kubectl -n infra cp #:apache-karaf-4.2.9/data/log/karaf.log ''' + dest + '''/#.log' || true
+  printf '%s\\n' $(kubectl get pods -n infra -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c 'kubectl -n infra cp #:apache-karaf-4.2.14/data/log/karaf.log ''' + dest + '''/#.log' || true
   '''
 }
 pipeline {
