@@ -128,14 +128,8 @@ pipeline {
             // adding user specified helm flags at the end so they'll have priority over everything else
             localHelmFlags = localHelmFlags + " ${extraHelmFlags}"
 
-            def numberOfAdaptersToWait = 2
-
-            if(openoltAdapterChart != "onf/voltha-adapter-openolt") {
-              localHelmFlags = localHelmFlags + " --set voltha-adapter-openolt.enabled=false"
-              // We skip waiting for adapters in the volthaDeploy step because it's already waiting for
-              // both of them after the deployment of the custom olt adapter. See line 156.
-              numberOfAdaptersToWait = 0
-            }
+            // in VOLTHA-2.8 there is no need to wait for the adapters
+            def numberOfAdaptersToWait = 0
 
             volthaDeploy([
               workflow: workFlow.toLowerCase(),
@@ -154,7 +148,7 @@ pipeline {
               extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
               deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
               waitForAdapters([
-                adaptersToWait: 2
+                adaptersToWait: 0 // in VOLTHA-2.8 there is no need to wait for the adapters
               ])
             }
           }
