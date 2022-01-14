@@ -86,7 +86,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
-          disable-job: false
+          disable-job: true
           reinstall-olt: true
           name-extension: '_DT'
           work-flow: 'DT'
@@ -99,7 +99,7 @@
           timeout: 330
           build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
-          disable-job: false
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -200,7 +200,7 @@
       - 'build_voltha_pod_release_timer':
             build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
-            disable-job: false
+            disable-job: true
             reinstall-olt: true
             work-flow: 'ATT'
             profile: '1T4GEM'
@@ -210,7 +210,7 @@
       - 'build_voltha_pod_test':
             build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
-            disable-job: false
+            disable-job: true
             release: 'master'
             branch: 'master'
             work-flow: 'ATT'
@@ -223,7 +223,7 @@
       - 'build_voltha_pod_release_timer':
             build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
-            disable-job: false
+            disable-job: true
             reinstall-olt: true
             work-flow: 'ATT'
             profile: '1T4GEM-unencrypted'
@@ -233,7 +233,7 @@
       - 'build_voltha_pod_test':
             build-node: 'menlo-certification-pod-3'
             config-pod: 'menlo-certification-pod-radisys-3200g'
-            disable-job: false
+            disable-job: true
             release: 'master'
             branch: 'master'
             work-flow: 'ATT'
