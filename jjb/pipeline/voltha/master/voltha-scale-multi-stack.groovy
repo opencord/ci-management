@@ -129,7 +129,7 @@ pipeline {
                 "--set global.log_level=${logLevel} " +
                 "--set radius.enabled=${withEapol} " +
                 "--set onos-classic.onosSshPort=30115 " +
-                "--set onos-classic.onosApiPort=30120 " + 
+                "--set onos-classic.onosApiPort=30120 " +
                 params.extraHelmFlags
 
             volthaInfraDeploy([
@@ -413,6 +413,9 @@ def test_voltha_stacks(numberOfStacks) {
 
         # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
         _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
+
+        # wait a bit to make sure the port-forwarding has started
+        sleep 5
 
 
           ROBOT_PARAMS="-v stackId:${i} \
