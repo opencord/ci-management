@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3cd2910a_a9a4b6cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-01-17T10:36:57Z",
+      "side": 1,
+      "message": "wait for voltha-onos patch based on ONOS 2.5.6",
+      "revId": "0839ef2b75f759f8d51668ff0e9d410e88b6892e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
