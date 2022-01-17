@@ -120,6 +120,22 @@
           withIgmp: false
           extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
 
+      - 'voltha-scale-measurements':
+            name: 'voltha-scale-measurements-master-1-64-64-dt-subscribers'
+            'disable-job': false
+            build-node: 'voltha-scale-1'
+            time-trigger: "H H/4 * * *"
+            olts: 1
+            pons: 64
+            onus: 64
+            withFlows: true
+            provisionSubscribers: true
+            workflow: dt
+            withEapol: false
+            withDhcp: false
+            withIgmp: false
+            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+
       # multi-stack jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-att-subscribers'
