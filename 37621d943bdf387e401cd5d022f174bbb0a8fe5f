@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "46c50400_03762f5e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-01-17T10:37:13Z",
+      "side": 1,
+      "message": "wait for voltha-onos with ONOS 2.5.6 for karat update",
+      "revId": "37621d943bdf387e401cd5d022f174bbb0a8fe5f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
