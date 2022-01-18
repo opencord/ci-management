@@ -86,12 +86,11 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
-          disable-job: true
           reinstall-olt: true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
-          time: '5'
+          time: '1'
           extraHelmFlags: "--set onos-classic.image.tag=master --set voltha.global.rw_core.rpc_timeout=30s --set voltha.global.rw_core.internal_timeout=30s"
 
       # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
@@ -99,7 +98,6 @@
           timeout: 330
           build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
-          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
