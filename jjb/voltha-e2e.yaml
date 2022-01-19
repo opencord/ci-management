@@ -271,7 +271,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: openonu-go-adapter-omci-hardening-passed-test
@@ -424,7 +424,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: openonu-go-adapter-omci-hardening-passed-test
@@ -572,7 +572,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: voltha-onu-omci-get-multiolt-kind-att
@@ -699,7 +699,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: voltha-onu-omci-get-multiolt-kind-att
