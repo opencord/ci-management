@@ -271,7 +271,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: openonu-go-adapter-omci-hardening-passed-test
@@ -314,6 +314,7 @@
               flags: ""
               teardown: true
               logging: true
+          timeout: 150
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
@@ -424,7 +425,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: openonu-go-adapter-omci-hardening-passed-test
@@ -467,6 +468,7 @@
               flags: ""
               teardown: true
               logging: true
+          timeout: 150
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.8-openonu-go-test-bbsim'
@@ -572,7 +574,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: voltha-onu-omci-get-multiolt-kind-att
@@ -606,7 +608,7 @@
               teardown: true
               logging: true
           time-trigger: "H H/12 * * *"
-          timeout: 160
+          timeout: 185
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.8'
@@ -699,7 +701,7 @@
               logging: true
             - target: reconcile-openonu-go-adapter-multi-olt-test-tt
               workflow: tt
-              flags: ""
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
               teardown: true
               logging: true
             - target: voltha-onu-omci-get-multiolt-kind-att
@@ -733,7 +735,7 @@
               teardown: true
               logging: true
           olts: 2
-          timeout: 160
+          timeout: 185
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.8-multiple-olts-openonu-go-test-bbsim'
