@@ -46,6 +46,30 @@
       },
       "revId": "2be9c40b47cae00d78cfc092b75fbd3997ae9e21",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2875b810_e3cfa5e3",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-01-19T14:41:12Z",
+      "side": 1,
+      "message": "No problem at all. It also confused myself for sometimes, see number of patchsets:-)",
+      "parentUuid": "1b371953_bf3df341",
+      "range": {
+        "startLine": 272,
+        "startChar": 22,
+        "endLine": 272,
+        "endChar": 58
+      },
+      "revId": "2be9c40b47cae00d78cfc092b75fbd3997ae9e21",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
