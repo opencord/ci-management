@@ -33,7 +33,7 @@ def test_software_upgrade(name) {
       _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
       """
       def extraHelmFlags = extraHelmFlags.trim()
-      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "voltha-component-upgrade") {
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
           extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
       }
       if ("${name}" == "onu-image-dwl-simultaneously") {
@@ -42,7 +42,7 @@ def test_software_upgrade(name) {
       if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-image-dwl-simultaneously") {
           extraHelmFlags = " --set global.image_tag=master --set onos-classic.image.tag=master " + extraHelmFlags
       }
-      if ("${name}" == "voltha-component-upgrade") {
+      if ("${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
           extraHelmFlags = " --set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master " + extraHelmFlags
       }
       extraHelmFlags = extraHelmFlags + " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
@@ -117,7 +117,7 @@ def test_software_upgrade(name) {
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v onos_apps_under_test:\$ONOS_APPS_UNDER_TEST -e PowerSwitch"
           export TARGET=onos-app-upgrade-test
         fi
-        if [[ ${name} == 'voltha-component-upgrade' ]]; then
+        if [ ${name} == 'voltha-component-upgrade' ] || [ ${name} == 'voltha-component-rolling-upgrade' ]; then
           export VOLTHA_COMPS_UNDER_TEST+=''
           if [ ${adapterOpenOltImage.trim()} != '' ]; then
             VOLTHA_COMPS_UNDER_TEST+="adapter-open-olt,adapter-open-olt,${adapterOpenOltImage.trim()}*"
@@ -132,7 +132,12 @@ def test_software_upgrade(name) {
             VOLTHA_COMPS_UNDER_TEST+="ofagent,ofagent,${ofAgentImage.trim()}*"
           fi
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v voltha_comps_under_test:\$VOLTHA_COMPS_UNDER_TEST -e PowerSwitch"
+        fi
+        if [[ ${name} == 'voltha-component-upgrade' ]]; then
           export TARGET=voltha-comp-upgrade-test
+        fi
+        if [[ ${name} == 'voltha-component-rolling-upgrade' ]]; then
+          export TARGET=voltha-comp-rolling-upgrade-test
         fi
         if [[ ${name} == 'onu-software-upgrade' ]]; then
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
@@ -228,6 +233,7 @@ pipeline {
       steps {
         test_software_upgrade("onos-app-upgrade")
         test_software_upgrade("voltha-component-upgrade")
+        test_software_upgrade("voltha-component-rolling-upgrade")
         test_software_upgrade("onu-software-upgrade")
         test_software_upgrade("onu-image-dwl-simultaneously")
       }
