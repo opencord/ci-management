@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1367c551_58302abb",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-01-19T14:31:46Z",
+      "side": 1,
+      "message": "I don\u0027t think same target can be used for both single-uni and multi-uni jobs. Reason being the test input file (I see that you have created new in another voltha-system-tests patch). Or do you want to deploy multi-uni and test only one of them? Can you please clarify the reason for this change?",
+      "range": {
+        "startLine": 272,
+        "startChar": 22,
+        "endLine": 272,
+        "endChar": 58
+      },
+      "revId": "2be9c40b47cae00d78cfc092b75fbd3997ae9e21",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
