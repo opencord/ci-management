@@ -33,6 +33,24 @@
       "message": "Modifications in groovy file looks good, but the example run is failed",
       "revId": "1bb96a363784242c530d22154fc7e6eef7bf3731",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "67e2d9ca_fc700842",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-01-19T12:47:42Z",
+      "side": 1,
+      "message": "Yes, that failure is expected.",
+      "parentUuid": "cce53237_4c45ddf7",
+      "revId": "1bb96a363784242c530d22154fc7e6eef7bf3731",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
