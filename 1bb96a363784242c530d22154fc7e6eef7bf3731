@@ -16,6 +16,23 @@
       "message": "Tried it here: https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/periodic-software-upgrade-test-bbsim/630/replay/diff",
       "revId": "1bb96a363784242c530d22154fc7e6eef7bf3731",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cce53237_4c45ddf7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-01-19T10:17:21Z",
+      "side": 1,
+      "message": "Modifications in groovy file looks good, but the example run is failed",
+      "revId": "1bb96a363784242c530d22154fc7e6eef7bf3731",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
