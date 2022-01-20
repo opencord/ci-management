@@ -134,7 +134,7 @@
             withEapol: false
             withDhcp: false
             withIgmp: false
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
