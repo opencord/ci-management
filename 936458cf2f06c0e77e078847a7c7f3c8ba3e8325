@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ea2fd32a_69147aa1",
+        "filename": "jjb/verify/up4.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000381
+      },
+      "writtenOn": "2022-01-24T19:02:01Z",
+      "side": 1,
+      "message": "Should we call it up4-devel-nightly for consistency with up4 envs?",
+      "revId": "936458cf2f06c0e77e078847a7c7f3c8ba3e8325",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
