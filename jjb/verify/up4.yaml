@@ -20,6 +20,7 @@
     jobs:
       - "up4-pr-verify"
       - "up4-postmerge"
+      - "up4-devel-nightly"
 
 - job-template:
     id: "up4-pr-verify"
@@ -122,6 +123,63 @@
     triggers:
       - cord-infra-github-pr-trigger-merge:
           project: '{project}'
+      - timed: "@midnight"
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: "{build-timeout}"
+          jenkins-ssh-credential: "{jenkins-ssh-credential}"
+      - credentials-binding:
+          - text:
+              credential-id: codecov-up4
+              variable: CODECOV_TOKEN
+
+- job-template:
+    id: "up4-devel-nightly"
+    name: "up4-devel-nightly"
+    description: |
+      Created by {id} job-template from ci-management/up4.yaml<br/>
+
+    project-type: pipeline
+    concurrent: true
+
+    properties:
+      # Visibility restricted to Aether members only.
+      - cord-infra-aether-private:
+      - cord-infra-properties:
+          build-days-to-keep: "15"
+          artifact-num-to-keep: "-1"
+      - github:
+          url: "https://github.com/{github-organization}/{project}"
+
+    parameters:
+      - string:
+          name: buildNode
+          default: "{build-node}"
+          description: "Name of the Jenkins executor node to run the job on."
+      - string:
+          name: commitHash
+          default: 'origin/{stream}'
+          description: 'SHA string of the merged commit to build. Populated by Generic Webhook Trigger.'
+      - string:
+          name: up4Env
+          default: 'devel'
+          description: 'UP4 STC scenarios environment (stable or devel)'
+
+    pipeline-scm:
+      script-path: ".jenkins/Jenkinsfile"
+      scm:
+        - git:
+            url: "git@github.com:{github-organization}/{project}.git"
+            credentials-id: "github-onf-bot-ssh-key"
+            refspec: "+refs/heads/*:refs/remotes/origin/*"
+            branches:
+              - "$commitHash"
+            submodule:
+              disable: true
+            shallow-clone: true
+
+    triggers:
       - timed: "@midnight"
 
     wrappers:
