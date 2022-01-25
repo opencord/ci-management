@@ -118,6 +118,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
+          onosImg: matteoscandolo/voltha-onos:oltapp
           extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
@@ -134,6 +135,7 @@
             withEapol: false
             withDhcp: false
             withIgmp: false
+            onosImg: matteoscandolo/voltha-onos:oltapp
             extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
 
       # multi-stack jobs
