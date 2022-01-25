@@ -22,6 +22,30 @@
       },
       "revId": "60f2da43057dd646468425637c57a47058f9f752",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "427e1bb9_df1273fa",
+        "filename": "jjb/pipeline/voltha/master/physical-build.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-01-25T10:50:29Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "ee9ad2dd_d1d67c7c",
+      "range": {
+        "startLine": 185,
+        "startChar": 22,
+        "endLine": 188,
+        "endChar": 200
+      },
+      "revId": "60f2da43057dd646468425637c57a47058f9f752",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
