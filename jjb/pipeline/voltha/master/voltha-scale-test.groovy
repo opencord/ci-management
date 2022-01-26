@@ -698,13 +698,13 @@ EOF
         printf '%s\n' $(kubectl get pods -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c "kubectl cp #:${karafHome}/data/log/karaf.log $LOG_FOLDER/#.log" || true
 
         # get ONOS cfg from the 3 nodes
-        # kubectl exec -t voltha-infra-onos-classic-0 -- sh /root/onos/apache-karaf-4.2.9/bin/client cfg get > ~/voltha-infra-onos-classic-0-cfg.txt || true
-        # kubectl exec -t voltha-infra-onos-classic-1 -- sh /root/onos/apache-karaf-4.2.9/bin/client cfg get > ~/voltha-infra-onos-classic-1-cfg.txt || true
-        # kubectl exec -t voltha-infra-onos-classic-2 -- sh /root/onos/apache-karaf-4.2.9/bin/client cfg get > ~/voltha-infra-onos-classic-2-cfg.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-0 -- sh /root/onos/${karafHome}/bin/client cfg get > ~/voltha-infra-onos-classic-0-cfg.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-1 -- sh /root/onos/${karafHome}/bin/client cfg get > ~/voltha-infra-onos-classic-1-cfg.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-2 -- sh /root/onos/${karafHome}/bin/client cfg get > ~/voltha-infra-onos-classic-2-cfg.txt || true
 
-        # kubectl exec -t voltha-infra-onos-classic-0 -- sh /root/onos/apache-karaf-4.2.9/bin/client obj-next-ids > ~/voltha-infra-onos-classic-0-next-objs.txt || true
-        # kubectl exec -t voltha-infra-onos-classic-1 -- sh /root/onos/apache-karaf-4.2.9/bin/client obj-next-ids > ~/voltha-infra-onos-classic-1-next-objs.txt || true
-        # kubectl exec -t voltha-infra-onos-classic-2 -- sh /root/onos/apache-karaf-4.2.9/bin/client obj-next-ids > ~/voltha-infra-onos-classic-2-next-objs.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-0 -- sh /root/onos/${karafHome}/bin/client obj-next-ids > ~/voltha-infra-onos-classic-0-next-objs.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-1 -- sh /root/onos/${karafHome}/bin/client obj-next-ids > ~/voltha-infra-onos-classic-1-next-objs.txt || true
+        # kubectl exec -t voltha-infra-onos-classic-2 -- sh /root/onos/${karafHome}/bin/client obj-next-ids > ~/voltha-infra-onos-classic-2-next-objs.txt || true
 
         # get radius logs out of the container
         kubectl cp $(kubectl get pods -l app=radius --no-headers  | awk '{print $1}'):/var/log/freeradius/radius.log $LOG_FOLDER/radius.log || true

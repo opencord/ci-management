@@ -224,6 +224,7 @@
           withDhcp: true
           withIgmp: false
           release: voltha-2.8
+          karaf-home: 'apache-karaf-4.2.9'
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -249,6 +250,7 @@
           withDhcp: false
           withIgmp: false
           release: voltha-2.8
+          karaf-home: 'apache-karaf-4.2.9'
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -274,6 +276,7 @@
           withDhcp: true
           withIgmp: true
           release: voltha-2.8
+          karaf-home: 'apache-karaf-4.2.9'
           bbsimImg: ''
           rwCoreImg: ''
           ofAgentImg: ''
@@ -303,6 +306,7 @@
           withFlows: true
           provisionSubscribers: true
           release: voltha-2.8
+          karaf-home: 'apache-karaf-4.2.9'
           workflow: att
           withEapol: true
           withDhcp: true
@@ -335,6 +339,7 @@
           withFlows: true
           provisionSubscribers: true
           release: voltha-2.8
+          karaf-home: 'apache-karaf-4.2.9'
           workflow: dt
           withEapol: false
           withDhcp: false
@@ -367,6 +372,7 @@
           withFlows: true
           provisionSubscribers: true
           release: voltha-2.8
+          karaf-home: 'apache-karaf-4.2.9'
           workflow: tt
           withEapol: false
           withDhcp: true
@@ -714,7 +720,7 @@
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
-    karafHome: 'apache-karaf-4.2.9'
+    karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
     dockerRegistry: 10.90.0.101:30500
     trigger-comment: vv7CBoQQYYonvaN8xcru
@@ -818,7 +824,7 @@
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
-    karafHome: 'apache-karaf-4.2.9'
+    karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
     dockerRegistry: 10.90.0.69:30500
 
