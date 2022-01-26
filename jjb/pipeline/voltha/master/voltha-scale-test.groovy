@@ -153,6 +153,7 @@ pipeline {
               appsToLog: [
                 'app.kubernetes.io/name=etcd',
                 'app.kubernetes.io/name=kafka',
+                'app=voltha-infra-atomix',
                 'app=onos-classic',
                 'app=adapter-open-onu',
                 'app=adapter-open-olt',
@@ -403,8 +404,8 @@ pipeline {
       steps {
         sh """
         # load MIB template
-        wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-00000000000001-v1.json
-        cat BBSM-12345123451234512345-00000000000001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/00000000000001
+        wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json
+        cat BBSM-12345123451234512345-BBSM_IMG_00001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/BBSM_IMG_00001
         """
       }
     }
