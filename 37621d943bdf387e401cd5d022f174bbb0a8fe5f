@@ -43,6 +43,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5c7b0da1_6c9485ae",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 186,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-01-26T16:53:47Z",
+      "side": 1,
+      "message": "yes, but I\u0027d defer that for another story",
+      "parentUuid": "363a1438_a3d8302a",
+      "range": {
+        "startLine": 186,
+        "startChar": 177,
+        "endLine": 186,
+        "endChar": 189
+      },
+      "revId": "37621d943bdf387e401cd5d022f174bbb0a8fe5f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "6c3fa0db_3c782da8",
         "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
         "patchSetId": 1
@@ -54,6 +78,30 @@
       "writtenOn": "2022-01-26T16:43:33Z",
       "side": 1,
       "message": "In the scale job definition we have a parameter for that:\nhttps://github.com/opencord/ci-management/blob/master/jjb/voltha-scale.yaml#L635-L638\n\n\nhttps://github.com/opencord/ci-management/blob/master/jjb/pipeline/voltha/master/voltha-scale-test.groovy#L698",
+      "range": {
+        "startLine": 701,
+        "startChar": 72,
+        "endLine": 701,
+        "endChar": 90
+      },
+      "revId": "37621d943bdf387e401cd5d022f174bbb0a8fe5f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25a9f9b9_381420f9",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 701,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-01-26T16:53:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6c3fa0db_3c782da8",
       "range": {
         "startLine": 701,
         "startChar": 72,
