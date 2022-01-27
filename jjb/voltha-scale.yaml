@@ -118,7 +118,8 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          onosImg: matteoscandolo/voltha-onos:oltapp
+          onosImg: andreacampanella/voltha-onos:4k-dev
+          withMibTemplate: false
           extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':

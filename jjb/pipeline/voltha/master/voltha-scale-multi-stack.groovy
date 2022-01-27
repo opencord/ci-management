@@ -333,17 +333,17 @@ pipeline {
             # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
             _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
 
-            voltctl -m 8MB device list -o json > $LOG_FOLDER/${stack_ns}/device-list.json || true
+            voltctl -m 32MB device list -o json > $LOG_FOLDER/${stack_ns}/device-list.json || true
             python -m json.tool $LOG_FOLDER/${stack_ns}/device-list.json > $LOG_FOLDER/${stack_ns}/voltha-devices-list.json || true
             rm $LOG_FOLDER/${stack_ns}/device-list.json || true
-            voltctl -m 8MB device list > $LOG_FOLDER/${stack_ns}/voltha-devices-list.txt || true
+            voltctl -m 32MB device list > $LOG_FOLDER/${stack_ns}/voltha-devices-list.txt || true
 
             DEVICE_LIST=
-            printf '%s\n' \$(voltctl -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device flows # > $LOG_FOLDER/${stack_ns}/voltha-device-flows-#.txt" || true
-            printf '%s\n' \$(voltctl -m 8MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/${stack_ns}/voltha-device-ports-#.txt" || true
+            printf '%s\n' \$(voltctl -m 32MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB device flows # > $LOG_FOLDER/${stack_ns}/voltha-device-flows-#.txt" || true
+            printf '%s\n' \$(voltctl -m 32MB device list | grep olt | awk '{print \$1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/${stack_ns}/voltha-device-ports-#.txt" || true
 
-            printf '%s\n' \$(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice flows # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-flows-#.txt" || true
-            printf '%s\n' \$(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice port list # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-ports-#.txt" || true
+            printf '%s\n' \$(voltctl -m 32MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB logicaldevice flows # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-flows-#.txt" || true
+            printf '%s\n' \$(voltctl -m 32MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB logicaldevice port list # > $LOG_FOLDER/${stack_ns}/voltha-logicaldevice-ports-#.txt" || true
 
             # remove VOLTHA port-forward
             ps aux | grep port-forw | grep voltha-api | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true

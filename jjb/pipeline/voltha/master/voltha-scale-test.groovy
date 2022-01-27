@@ -801,16 +801,16 @@ EOF
       script {
         try {
           sh '''
-          voltctl -m 8MB device list -o json > $LOG_FOLDER/device-list.json || true
+          voltctl -m 32MB device list -o json > $LOG_FOLDER/device-list.json || true
           python -m json.tool $LOG_FOLDER/device-list.json > $LOG_FOLDER/voltha-devices-list.json || true
           rm $LOG_FOLDER/device-list.json || true
-          voltctl -m 8MB device list > $LOG_FOLDER/voltha-devices-list.txt || true
+          voltctl -m 32MB device list > $LOG_FOLDER/voltha-devices-list.txt || true
 
-          printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
-              printf '%s\n' $(voltctl -m 8MB device list | grep olt | awk '{print $1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
+          printf '%s\n' $(voltctl -m 32MB device list | grep olt | awk '{print $1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB device flows # > $LOG_FOLDER/voltha-device-flows-#.txt" || true
+              printf '%s\n' $(voltctl -m 32MB device list | grep olt | awk '{print $1}') | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB device port list --format 'table{{.PortNo}}\t{{.Label}}\t{{.Type}}\t{{.AdminState}}\t{{.OperStatus}}' # > $LOG_FOLDER/voltha-device-ports-#.txt" || true
 
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
-          printf '%s\n' $(voltctl -m 8MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 8MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
+          printf '%s\n' $(voltctl -m 32MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB logicaldevice flows # > $LOG_FOLDER/voltha-logicaldevice-flows-#.txt" || true
+          printf '%s\n' $(voltctl -m 32MB logicaldevice list -q) | xargs --no-run-if-empty -I# bash -c "voltctl -m 32MB logicaldevice port list # > $LOG_FOLDER/voltha-logicaldevice-ports-#.txt" || true
           '''
         } catch(e) {
           sh '''
