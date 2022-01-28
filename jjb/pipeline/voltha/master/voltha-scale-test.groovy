@@ -466,7 +466,7 @@ EOF
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
               --noncritical non-critical \
-              -e igmp -e teardown "
+              -e onu-upgrade -e igmp -e teardown "
 
             if [ ${withEapol} = false ] ; then
               ROBOT_PARAMS+="-e authentication "
@@ -485,6 +485,10 @@ EOF
               ROBOT_PARAMS+="-i setup -i activation "
             fi
 
+            if [ ${withOnuUpgrade} = true ] ; then
+              ROBOT_PARAMS+="-e flow-before "
+            fi
+
             cd $WORKSPACE/voltha-system-tests
             source ./vst_venv/bin/activate
             robot -d $WORKSPACE/RobotLogs \
@@ -493,6 +497,71 @@ EOF
             python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
             cat $WORKSPACE/execution-time.txt
           '''
+        }
+      }
+    }
+    stage('Run ONU Upgrade Tests') {
+      environment {
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/OnuUpgradeTests"
+      }
+      when {
+        expression {
+          return params.withOnuUpgrade
+        }
+      }
+      options {
+          timeout(time: 20, unit: 'MINUTES')
+      }
+      steps {
+        sh '''
+          set +e
+          mkdir -p $ROBOT_LOGS_DIR
+          cd $WORKSPACE/voltha-system-tests
+          make vst_venv
+        '''
+        script {
+          Exception caughtException = null
+
+          catchError(buildResult: 'SUCCESS', stageResult: 'ABORTED') {
+            try {
+              sh '''
+                ROBOT_PARAMS="--exitonfailure \
+                  -v olt:${olts} \
+                  -v pon:${pons} \
+                  -v onu:${onus} \
+                  -v workflow:${workflow} \
+                  -v withEapol:${withEapol} \
+                  -v withDhcp:${withDhcp} \
+                  -v withIgmp:${withIgmp} \
+                  -v image_version:BBSM_IMG_00002 \
+                  -v image_url:http://bbsim0:50074/images/software-image.img \
+                  -v image_vendor:BBSM \
+                  -v image_activate_on_success:false \
+                  -v image_commit_on_success:false \
+                  -v image_crc:0 \
+                  -v ONOS_SSH_PORT:30115 \
+                  -v ONOS_REST_PORT:30120 \
+                  --noncritical non-critical \
+                  -i onu-upgrade \
+                  -e setup -e activation -e flow-before \
+                  -e authentication -e provision -e flow-after \
+                  -e dhcp -e igmp -e teardown "
+                cd $WORKSPACE/voltha-system-tests
+                source ./vst_venv/bin/activate
+                robot -d $ROBOT_LOGS_DIR \
+                $ROBOT_PARAMS tests/scale/Voltha_Scale_Tests.robot
+              '''
+            } catch (org.jenkinsci.plugins.workflow.steps.FlowInterruptedException e) {
+              // if the error is a timeout don't mark the build as failed
+              println "ONU Upgrade test timed out"
+            } catch (Throwable e) {
+              caughtException = e
+            }
+          }
+
+          if (caughtException) {
+            error caughtException.message
+          }
         }
       }
     }
@@ -538,7 +607,7 @@ EOF
                   -i igmp \
                   -e setup -e activation -e flow-before \
                   -e authentication -e provision -e flow-after \
-                  -e dhcp -e teardown "
+                  -e dhcp -e onu-upgrade -e teardown "
                 cd $WORKSPACE/voltha-system-tests
                 source ./vst_venv/bin/activate
                 robot -d $ROBOT_LOGS_DIR \
