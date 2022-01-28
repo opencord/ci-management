@@ -66,6 +66,22 @@
           extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-onu-upgrade-2-16-32-att-subscribers'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
+          time-trigger: "H H/12 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withOnuUpgrade: true
+          withFlows: true
+          provisionSubscribers: false
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+
+      - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
           'disable-job': false
           build-node: 'voltha-scale-1'
@@ -495,34 +511,39 @@
           description: 'Which workflow are we testing (att, dt, tt)'
 
       - bool:
+          name: withOnuUpgrade
+          default: '{withOnuUpgrade}'
+          description: 'Whether to run the ONU Upgrade test'
+
+      - bool:
           name: withFlows
           default: '{withFlows}'
-          description: 'Wheter to push flows from ONOS'
+          description: 'Whether to push flows from ONOS'
 
       - bool:
           name: provisionSubscribers
           default: '{provisionSubscribers}'
-          description: 'Wheter to provision subscribers durint the tests'
+          description: 'Whether to provision subscribers during the tests'
 
       - bool:
           name: withEapol
           default: '{withEapol}'
-          description: 'Wheter EAPOL is enabled for the test'
+          description: 'Whether EAPOL is enabled for the test'
 
       - bool:
           name: withDhcp
           default: '{withDhcp}'
-          description: 'Wheter DHCP is enabled for the test'
+          description: 'Whether DHCP is enabled for the test'
 
       - bool:
           name: withIgmp
           default: '{withIgmp}'
-          description: 'Wheter IGMP is enabled for the test'
+          description: 'Whether IGMP is enabled for the test'
 
       - bool:
           name: withLLDP
           default: '{withLLDP}'
-          description: 'Wheter Link Discovery is enabled for the test'
+          description: 'Whether Link Discovery is enabled for the test'
 
       - bool:
           name: withMonitoring
@@ -698,6 +719,7 @@
     pons: 2
     onus: 2
     workflow: att
+    withOnuUpgrade: false
     withFlows: false
     provisionSubscribers: false
     withEapol: true
@@ -803,6 +825,7 @@
     pons: 2
     onus: 2
     workflow: att
+    withOnuUpgrade: false
     withFlows: true
     provisionSubscribers: true
     withEapol: true
