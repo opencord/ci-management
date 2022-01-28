@@ -651,7 +651,7 @@
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
       - bool:
           name: withMibTemplate
-          default: true
+          default: '{withMibTemplate}'
 
 - job-template:
     id: 'voltha-scale-measurements'
@@ -721,6 +721,7 @@
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
+    withMibTemplate: true
     karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
     dockerRegistry: 10.90.0.101:30500
@@ -825,6 +826,7 @@
     volthaHelmChartsChange: ''
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
+    withMibTemplate: true
     karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
     dockerRegistry: 10.90.0.69:30500
