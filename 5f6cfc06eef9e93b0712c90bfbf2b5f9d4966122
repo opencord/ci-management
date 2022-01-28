@@ -22,6 +22,30 @@
       },
       "revId": "5f6cfc06eef9e93b0712c90bfbf2b5f9d4966122",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d9ad24af_f49e8446",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 513,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-01-28T11:58:48Z",
+      "side": 1,
+      "message": "Around 15min (5 each for download, activate and commit step)",
+      "parentUuid": "22701733_f1ac01a1",
+      "range": {
+        "startLine": 513,
+        "startChar": 24,
+        "endLine": 513,
+        "endChar": 26
+      },
+      "revId": "5f6cfc06eef9e93b0712c90bfbf2b5f9d4966122",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
