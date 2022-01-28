@@ -41,6 +41,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f91ebde3_b974b9ee",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-01-28T11:08:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "e8d67289_de5dce55",
+      "range": {
+        "startLine": 611,
+        "startChar": 19,
+        "endLine": 611,
+        "endChar": 22
+      },
+      "revId": "c87dbce169b71f68ce3b4171f43a5339ec23ea2b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a3f5ee23_a1f471d6",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-01-28T10:22:15Z",
       "side": 1,
       "message": "same",
+      "range": {
+        "startLine": 738,
+        "startChar": 19,
+        "endLine": 738,
+        "endChar": 22
+      },
+      "revId": "c87dbce169b71f68ce3b4171f43a5339ec23ea2b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebc72ca2_8dd5f206",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 738,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-01-28T11:08:18Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "a3f5ee23_a1f471d6",
       "range": {
         "startLine": 738,
         "startChar": 19,
