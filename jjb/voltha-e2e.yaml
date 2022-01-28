@@ -181,7 +181,7 @@
               flags: ""
               teardown: false
               logging: true
-          timeout: 180
+          timeout: 210
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.8'
@@ -314,6 +314,7 @@
               flags: ""
               teardown: true
               logging: true
+          timeout: 160
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
@@ -467,6 +468,7 @@
               flags: ""
               teardown: true
               logging: true
+          timeout: 160
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.8-openonu-go-test-bbsim'
@@ -606,7 +608,7 @@
               teardown: true
               logging: true
           time-trigger: "H H/12 * * *"
-          timeout: 160
+          timeout: 190
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.8'
@@ -733,7 +735,7 @@
               teardown: true
               logging: true
           olts: 2
-          timeout: 160
+          timeout: 190
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.8-multiple-olts-openonu-go-test-bbsim'
