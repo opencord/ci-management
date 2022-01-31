@@ -181,7 +181,7 @@
               flags: ""
               teardown: false
               logging: true
-          timeout: 210
+          timeout: 360
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.8'
