@@ -8,6 +8,12 @@
     github_pr_auth_id: "64fe2b1a-b33a-4f13-8442-ad8360434003"
     github_pr_org_list:
       - "omec-project"
+
+    # Matrix
+    up4Ctrl:
+        - pfcp
+        - p4rt
+
     jobs:
       - "up4-jobs":
           stream: "master"
@@ -18,13 +24,13 @@
 - job-group:
     name: "up4-jobs"
     jobs:
-      - "up4-pr-verify"
-      - "up4-postmerge"
-      - "up4-devel-nightly"
+      - "up4-pr-verify-{up4Ctrl}"
+      - "up4-postmerge-{up4Ctrl}"
+      - "up4-devel-nightly-{up4Ctrl}"
 
 - job-template:
-    id: "up4-pr-verify"
-    name: "up4-pr-verify"
+    id: "up4-pr-verify-{up4Ctrl}"
+    name: "up4-pr-verify-{up4Ctrl}"
     description: |
       Created by {id} job-template from ci-management/up4.yaml<br/>
 
@@ -49,6 +55,13 @@
           name: sha1
           default: "origin/{stream}"
           description: "SHA string of the pull request commit to build. Populated by GitHUb Pull Request Builder."
+      - choice:
+          name: up4Ctrl
+          choices:
+            - pfcp
+            - p4rt
+          default: "{up4Ctrl}"
+          description: "Run p4rt or pfpc -based STC scenarios"
 
     # Run pipeline that is checked-in in the same PR we want to verify.
     pipeline-scm:
@@ -80,8 +93,8 @@
               variable: CODECOV_TOKEN
 
 - job-template:
-    id: "up4-postmerge"
-    name: "up4-postmerge"
+    id: "up4-postmerge-{up4Ctrl}"
+    name: "up4-postmerge-{up4Ctrl}"
     description: |
       Created by {id} job-template from ci-management/up4.yaml<br/>
 
@@ -106,6 +119,13 @@
           name: commitHash
           default: 'origin/{stream}'
           description: 'SHA string of the merged commit to build. Populated by Generic Webhook Trigger.'
+      - choice:
+          name: up4Ctrl
+          choices:
+            - pfcp
+            - p4rt
+          default: "{up4Ctrl}"
+          description: "Run p4rt or pfpc -based STC scenarios"
 
     pipeline-scm:
       script-path: ".jenkins/Jenkinsfile"
@@ -135,8 +155,8 @@
               variable: CODECOV_TOKEN
 
 - job-template:
-    id: "up4-devel-nightly"
-    name: "up4-devel-nightly"
+    id: "up4-devel-nightly-{up4Ctrl}"
+    name: "up4-devel-nightly-{up4Ctrl}"
     description: |
       Created by {id} job-template from ci-management/up4.yaml<br/>
 
@@ -165,6 +185,13 @@
           name: up4Env
           default: 'devel'
           description: 'UP4 STC scenarios environment (stable or devel)'
+      - choice:
+          name: up4Ctrl
+          choices:
+            - pfcp
+            - p4rt
+          default: "{up4Ctrl}"
+          description: "Run p4rt or pfpc -based STC scenarios"
 
     pipeline-scm:
       script-path: ".jenkins/Jenkinsfile"
