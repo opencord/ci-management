@@ -426,6 +426,7 @@ def test_voltha_stacks(numberOfStacks) {
             -v withIgmp:${withIgmp} \
             --noncritical non-critical \
             -e igmp \
+            -e onu-upgrade \
             -e teardown "
 
           if [ ${withEapol} = false ] ; then
