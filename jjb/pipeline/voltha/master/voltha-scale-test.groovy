@@ -510,7 +510,7 @@ EOF
         }
       }
       options {
-          timeout(time: 20, unit: 'MINUTES')
+          timeout(time: 11, unit: 'MINUTES')
       }
       steps {
         sh '''
