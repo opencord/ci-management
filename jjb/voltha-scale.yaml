@@ -140,7 +140,7 @@
 
       - 'voltha-scale-measurements':
             name: 'voltha-scale-measurements-master-1-64-63-dt-subscribers'
-            'disable-job': true
+            'disable-job': false
             build-node: 'voltha-scale-1'
             time-trigger: "H H/4 * * *"
             olts: 1
