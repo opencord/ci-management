@@ -81,7 +81,7 @@
       - cord-infra-github-pr-trigger:
           github_pr_org_list: "{obj:github_pr_org_list}"
           github_pr_auth_id: "{github_pr_auth_id}"
-          status_context: "up4-pr-verify"
+          status_context: "up4-pr-verify-{up4Ctrl}"
 
     wrappers:
       - lf-infra-wrappers:
