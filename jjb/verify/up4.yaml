@@ -55,13 +55,10 @@
           name: sha1
           default: "origin/{stream}"
           description: "SHA string of the pull request commit to build. Populated by GitHUb Pull Request Builder."
-      - choice:
+      - string:
           name: up4Ctrl
-          choices:
-            - pfcp
-            - p4rt
           default: "{up4Ctrl}"
-          description: "Run p4rt or pfpc -based STC scenarios"
+          description: "Run p4rt or pfpc -based STC scenarios: [p4rt, pfcp]"
 
     # Run pipeline that is checked-in in the same PR we want to verify.
     pipeline-scm:
@@ -119,13 +116,10 @@
           name: commitHash
           default: 'origin/{stream}'
           description: 'SHA string of the merged commit to build. Populated by Generic Webhook Trigger.'
-      - choice:
+      - string:
           name: up4Ctrl
-          choices:
-            - pfcp
-            - p4rt
           default: "{up4Ctrl}"
-          description: "Run p4rt or pfpc -based STC scenarios"
+          description: "Run p4rt or pfpc -based STC scenarios: [p4rt, pfcp]"
 
     pipeline-scm:
       script-path: ".jenkins/Jenkinsfile"
@@ -185,13 +179,10 @@
           name: up4Env
           default: 'devel'
           description: 'UP4 STC scenarios environment (stable or devel)'
-      - choice:
+      - string:
           name: up4Ctrl
-          choices:
-            - pfcp
-            - p4rt
           default: "{up4Ctrl}"
-          description: "Run p4rt or pfpc -based STC scenarios"
+          description: "Run p4rt or pfpc -based STC scenarios: [p4rt, pfcp]"
 
     pipeline-scm:
       script-path: ".jenkins/Jenkinsfile"
