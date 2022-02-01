@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8e32ba6c_e4796d27",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-01T17:55:10Z",
+      "side": 1,
+      "message": "Triggered here: https://jenkins.opencord.org/view/voltha-scale-measurements/job/voltha-scale-measurements-master-onu-upgrade-2-16-32-att-onus/8/ ",
+      "revId": "ddaf7beca9911746e90ca801d62f5870a8b47054",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
