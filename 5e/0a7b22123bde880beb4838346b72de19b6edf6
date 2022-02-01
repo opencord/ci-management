@@ -1,0 +1,9 @@
+Verified+1: Jenkins Technical User <do-not-reply@opennetworking.org>
+Code-Review+1: Carmelo Cascone <carmelo@opennetworking.org>
+Code-Review+1: Emanuele Gallone <emanuele@opennetworking.org>
+Code-Review+2: Daniele Moro <daniele@opennetworking.org>
+Submitted-by: Daniele Moro <daniele@opennetworking.org>
+Submitted-at: Tue, 01 Feb 2022 11:06:30 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/30601
+Project: ci-management
+Branch: refs/heads/master
