@@ -119,6 +119,26 @@
           onosStatInterval: 30
           onosGroupInterval: 30
 
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-maclearner'
+          'disable-job': false
+          build-node: 'voltha-scale-1'
+          time-trigger: "H H/4 * * *"
+          olts: 2
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: true
+          withDhcp: true
+          withIgmp: false
+          onosReplicas: 3
+          atomixReplicas: 3
+          extraHelmFlags: >
+           --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
+           --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=maclearner
+
+
       # 4k ONTs jobs
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-64-32-dt-subscribers'
