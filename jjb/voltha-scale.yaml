@@ -120,7 +120,7 @@
           onosGroupInterval: 30
 
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-master-2-16-32-att-subscribers-maclearner'
+          name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-maclearner'
           'disable-job': false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
@@ -129,14 +129,16 @@
           onus: 32
           withFlows: true
           provisionSubscribers: true
-          withEapol: true
+          workflow: tt
+          withEapol: false
           withDhcp: true
-          withIgmp: false
+          withIgmp: true
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: >
-           --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
+           --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values-tt.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
            --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=maclearner
+           --set bbsim-sadis-server.images.bbsim_sadis_server.tag=master
 
 
       # 4k ONTs jobs
@@ -172,7 +174,8 @@
             withEapol: false
             withDhcp: false
             withIgmp: false
-            onosImg: matteoscandolo/voltha-onos:oltapp
+            onosImg: andreacampanella/voltha-onos:4k-dev
+            withMibTemplate: false
             extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
 
       # multi-stack jobs
