@@ -28,7 +28,7 @@ def call(Map config) {
       for (int j = 0; j < cfg.apps.size(); j++) {
         def app = cfg.apps[j]
         sh """
-        sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost log:set ${cfg.logLevel} ${app}
+        sshpass -p karaf ssh -q -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@localhost log:set ${cfg.logLevel} ${app} || true
         """
       }
       sh """
