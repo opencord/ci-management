@@ -133,6 +133,7 @@
           withEapol: false
           withDhcp: true
           withIgmp: true
+          withMaclearning: true
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: >
@@ -564,6 +565,11 @@
           description: 'Whether IGMP is enabled for the test'
 
       - bool:
+          name: withMaclearning
+          default: '{withMaclearning}'
+          description: 'Whether mac learning is enabled for the test'
+
+      - bool:
           name: withLLDP
           default: '{withLLDP}'
           description: 'Whether Link Discovery is enabled for the test'
@@ -748,6 +754,7 @@
     withEapol: true
     withDhcp: true
     withIgmp: false
+    withMaclearning: false
     withLLDP: false
     withMonitoring: true
     withProfiling: false
@@ -854,6 +861,7 @@
     withEapol: true
     withDhcp: true
     withIgmp: false
+    withMaclearning: false
     withLLDP: false
     withMonitoring: false
     withProfiling: false

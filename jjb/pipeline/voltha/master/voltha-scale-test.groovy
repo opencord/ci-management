@@ -465,6 +465,7 @@ EOF
               -v withEapol:${withEapol} \
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
+              -v withMaclearning: ${withMaclearning} \
               --noncritical non-critical \
               -e onu-upgrade -e igmp -e teardown "
 
@@ -533,6 +534,7 @@ EOF
                   -v withEapol:${withEapol} \
                   -v withDhcp:${withDhcp} \
                   -v withIgmp:${withIgmp} \
+                  -v withMaclearning:${withMaclearning}
                   -v image_version:BBSM_IMG_00002 \
                   -v image_url:http://bbsim0:50074/images/software-image.img \
                   -v image_vendor:BBSM \
@@ -601,6 +603,7 @@ EOF
                   -v withEapol:${withEapol} \
                   -v withDhcp:${withDhcp} \
                   -v withIgmp:${withIgmp} \
+                  -v withMaclearning:${withMaclearning}
                   -v ONOS_SSH_PORT:30115 \
                   -v ONOS_REST_PORT:30120 \
                   --noncritical non-critical \
@@ -654,6 +657,7 @@ EOF
                   -v withEapol:${withEapol} \
                   -v withDhcp:${withDhcp} \
                   -v withIgmp:${withIgmp} \
+                  -v withMaclearning:${withMaclearning} \
                   --noncritical non-critical \
                   -i teardown"
 
@@ -847,6 +851,10 @@ EOF
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 mcast-host-routes > $LOG_FOLDER/onos-mcast-host-routes.txt
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 mcast-host-show > $LOG_FOLDER/onos-mcast-host-show.txt
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 groups > $LOG_FOLDER/onos-groups.txt
+        fi
+
+        if [ ${withMaclearning} = true ] ; then
+           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 mac-learner-get-mapping > $LOG_FOLDER/onos-maclearning-host-mappings.txt
         fi
       '''
       // collect etcd metrics
