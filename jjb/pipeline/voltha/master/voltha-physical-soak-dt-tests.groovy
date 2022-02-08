@@ -121,6 +121,11 @@ pipeline {
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         fi
         """
+        sh """
+        mkdir -p $WORKSPACE/voltha-system-tests/scripts/voltha-pods-mem-consumption
+        # Collect initial memory consumption
+        python scripts/mem_consumption.py -o $WORKSPACE/voltha-system-tests/scripts/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+        """
       }
     }
 
@@ -232,8 +237,10 @@ pipeline {
       source ./vst_venv/bin/activate || true
       sleep 60 # we have to wait for prometheus to collect all the information
       python scripts/sizing.py -o $WORKSPACE/plots -a 0.0.0.0:31301 -n ${volthaNamespace} -s 3600 || true
+      # Collect memory consumption of voltha pods once all the tests are complete
+      python scripts/mem_consumption.py -o $WORKSPACE/voltha-system-tests/scripts/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n ${volthaNamespace} || true
       """
-      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt,plots/*'
+      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt,plots/*,voltha-pods-mem-consumption/*'
     }
   }
 }
