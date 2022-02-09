@@ -3,6 +3,166 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "65ada5a6_11054c2e",
+        "filename": "jjb/pipeline/voltha/master/dmi-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "maybe rename to just deploy_custom_chart",
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "738ebdea_fd571d6d",
+        "filename": "jjb/pipeline/voltha/master/dmi-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "I\u0027d sa make this a parameter. thus if in the future the are other DMIs we can differentiate them",
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c3f0b4e0_75a35ab2",
+        "filename": "jjb/pipeline/voltha/master/dmi-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "reuse parameter",
+      "range": {
+        "startLine": 174,
+        "startChar": 65,
+        "endLine": 174,
+        "endChar": 90
+      },
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "385696b9_310cd009",
+        "filename": "jjb/pipeline/voltha/master/dmi-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 177,
+        "startChar": 67,
+        "endLine": 177,
+        "endChar": 92
+      },
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d5d05c8_f4d78fac",
+        "filename": "jjb/pipeline/voltha/master/dmi-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 181,
+        "startChar": 143,
+        "endLine": 181,
+        "endChar": 168
+      },
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aeddd31b_05bca0f8",
+        "filename": "jjb/pipeline/voltha/master/dmi-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 206,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "remove",
+      "range": {
+        "startLine": 206,
+        "startChar": 0,
+        "endLine": 206,
+        "endChar": 109
+      },
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6f74851_696889de",
+        "filename": "jjb/pipeline/voltha/master/dmi-build-and-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 249,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "parametrize this",
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6615faa6_224971fe",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 682,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "update",
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7172eab7_d106f69c",
         "filename": "jjb/voltha-test/voltha.yaml",
         "patchSetId": 1
@@ -14,6 +174,30 @@
       "writtenOn": "2022-02-09T10:16:45Z",
       "side": 1,
       "message": "@Andrea: for DT master deployment, what should be the value here?",
+      "range": {
+        "startLine": 591,
+        "startChar": 31,
+        "endLine": 591,
+        "endChar": 97
+      },
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2e381aa_79a6b44d",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-09T10:20:36Z",
+      "side": 1,
+      "message": "let me check with the adtran folks.",
+      "parentUuid": "7172eab7_d106f69c",
       "range": {
         "startLine": 591,
         "startChar": 31,
