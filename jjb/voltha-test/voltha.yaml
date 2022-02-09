@@ -573,3 +573,22 @@
           power-switch: True
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
           oltAdapterAppLabel: 'adapter-adtran-olt'
+
+      # Berlin pod with adtran gpon olt/onu - 2.8 1T8GEM tech profile and timer based job
+      - 'verify_voltha_pod_dmi_test':
+          build-node: 'dt-berlin-community-pod'
+          config-pod: 'dt-berlin-pod-gpon-adtran-dmi'
+          work-flow: 'DT'
+          release: 'master'
+          branch: 'master'
+          profile: 'Default'
+          reinstall-olt: false
+          extraHelmFlags: " -f /home/community/SDX_Device_Manager_21.4/helm/values-onf.yaml "
+          dmiChart: '/home/community/SDX_Device_Manager_21.4/helm/adtran-olt-device-manager'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          VolthaEtcdPort: 9999
+          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.8/voltha-adapter-adtran-olt'
+          oltAdapterReleaseName: 'adtran-olt'
+          waitTimerForOltUp: 420
+          time: '19'
