@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1889c7fa_e0aec9c7",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2022-02-09T17:15:42Z",
+      "side": 1,
+      "message": "Can\u0027t we use \"oltha-build-job-parameters\" here?\neg: \"\u003c\u003c: *voltha-build-job-parameters\"\n\n(haven\u0027t checked how different they are)",
+      "revId": "36d5bdb3394fa330acfbf5ec7493e4168ad67c88",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
