@@ -453,7 +453,7 @@ EOF
             _TAG=$_TAG bash $WORKSPACE/pprof.sh &
           fi
         '''
-        timeout(time: 15, unit: 'MINUTES') {
+        timeout(time: "${testTimeout.toInteger() + 5}", unit: 'MINUTES') {
           sh '''
             ROBOT_PARAMS="--exitonfailure \
               -v olt:${olts} \
@@ -465,6 +465,7 @@ EOF
               -v withEapol:${withEapol} \
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
+              -v timeout:${testTimeout}m \
               -v withMaclearning:${withMaclearning} \
               --noncritical non-critical \
               -e onu-upgrade -e igmp -e teardown "
@@ -511,7 +512,7 @@ EOF
         }
       }
       options {
-          timeout(time: 11, unit: 'MINUTES')
+          timeout(time: "${testTimeout.toInteger() + 1}", unit: 'MINUTES')
       }
       steps {
         sh '''
@@ -534,6 +535,7 @@ EOF
                   -v withEapol:${withEapol} \
                   -v withDhcp:${withDhcp} \
                   -v withIgmp:${withIgmp} \
+                  -v timeout:${testTimeout}m \
                   -v withMaclearning:${withMaclearning}
                   -v image_version:BBSM_IMG_00002 \
                   -v image_url:http://bbsim0:50074/images/software-image.img \
@@ -577,7 +579,7 @@ EOF
         }
       }
       options {
-          timeout(time: 11, unit: 'MINUTES')
+          timeout(time: "${testTimeout.toInteger() + 1}", unit: 'MINUTES')
       }
       steps {
         sh returnStdout: false, script: """
@@ -603,6 +605,7 @@ EOF
                   -v withEapol:${withEapol} \
                   -v withDhcp:${withDhcp} \
                   -v withIgmp:${withIgmp} \
+                  -v timeout:${testTimeout}m \
                   -v withMaclearning:${withMaclearning}
                   -v ONOS_SSH_PORT:30115 \
                   -v ONOS_REST_PORT:30120 \
@@ -632,7 +635,7 @@ EOF
     }
     stage("Device removal") {
       options {
-          timeout(time: 15, unit: 'MINUTES')
+          timeout(time: "${testTimeout.toInteger() + 5}", unit: 'MINUTES')
       }
       steps {
         sh '''
@@ -657,6 +660,7 @@ EOF
                   -v withEapol:${withEapol} \
                   -v withDhcp:${withDhcp} \
                   -v withIgmp:${withIgmp} \
+                  -v timeout:${testTimeout}m \
                   -v withMaclearning:${withMaclearning} \
                   --noncritical non-critical \
                   -i teardown"
