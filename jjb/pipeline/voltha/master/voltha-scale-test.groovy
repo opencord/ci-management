@@ -465,7 +465,7 @@ EOF
               -v withEapol:${withEapol} \
               -v withDhcp:${withDhcp} \
               -v withIgmp:${withIgmp} \
-              -v withMaclearning: ${withMaclearning} \
+              -v withMaclearning:${withMaclearning} \
               --noncritical non-critical \
               -e onu-upgrade -e igmp -e teardown "
 
