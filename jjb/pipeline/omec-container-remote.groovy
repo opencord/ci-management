@@ -22,7 +22,7 @@ pipeline {
       steps {
         withCredentials([string(credentialsId: 'aether-jenkins-remote-trigger-token-omec', variable: 'token')]) {
           script {
-            def handle = triggerRemoteJob job: "${params.project}_premerge_${params.pod}_4g_bess",
+            def handle = triggerRemoteJob job: "${params.project}_premerge_${params.pod}_4g_bess_${params.ghprbTargetBranch}",
                          parameters: """
                                      ghprbTargetBranch=${params.ghprbTargetBranch}
                                      ghprbPullId=${params.ghprbPullId}
