@@ -134,6 +134,7 @@
           withDhcp: true
           withIgmp: true
           withMaclearning: true
+          testTimeout: 20
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: >
@@ -712,6 +713,11 @@
           default: '{karafHome}'
           description: 'Karaf home'
 
+      - string:
+          name: testTimeout
+          default: '{testTimeout}'
+          description: 'How long the scale test can run for in minutes, e.g 10, 15'
+
       # remove once voltha-2.6 is deprecated
       - string:
           name: kindVolthaChange
@@ -794,6 +800,7 @@
     withMibTemplate: true
     karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
+    testTimeout: 10
     dockerRegistry: 10.90.0.101:30500
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
@@ -901,6 +908,7 @@
     withMibTemplate: true
     karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
+    testTimeout: 10
     dockerRegistry: 10.90.0.69:30500
 
     <<: *voltha-scale-job-parameters
