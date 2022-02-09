@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7172eab7_d106f69c",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 591,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-09T10:16:45Z",
+      "side": 1,
+      "message": "@Andrea: for DT master deployment, what should be the value here?",
+      "range": {
+        "startLine": 591,
+        "startChar": 31,
+        "endLine": 591,
+        "endChar": 97
+      },
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4f55a0b8_dc57cbe7",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 594,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-09T10:16:45Z",
+      "side": 1,
+      "message": "update this.",
+      "range": {
+        "startLine": 594,
+        "startChar": 16,
+        "endLine": 594,
+        "endChar": 20
+      },
+      "revId": "a87c20da4e44f36f92fc202ffee1c6a9ad117ff1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
