@@ -24,6 +24,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f853031_ff3c0921",
+        "filename": "jjb/pipeline/voltha/voltha-2.9/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-10T08:10:07Z",
+      "side": 1,
+      "message": "We are running this file only as part 2.9 jobs (as it is in voltha-2.9 folder), so the branch check is not required imo. Or am I missing something here?",
+      "parentUuid": "20dd36c2_d1f46cce",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 86
+      },
+      "revId": "d422ed33a210ad05cad428fe419954fb74a9c9ff",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "966e6386_bc241b03",
@@ -37,6 +61,30 @@
       "writtenOn": "2022-02-10T07:59:02Z",
       "side": 1,
       "message": "Not sure, but I think regarding to congestion of environment we only establish the multi OLT pipeline as periodic one.",
+      "range": {
+        "startLine": 320,
+        "startChar": 10,
+        "endLine": 320,
+        "endChar": 59
+      },
+      "revId": "d422ed33a210ad05cad428fe419954fb74a9c9ff",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f99ceba_37dbc762",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-10T08:10:07Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "966e6386_bc241b03",
       "range": {
         "startLine": 320,
         "startChar": 10,
