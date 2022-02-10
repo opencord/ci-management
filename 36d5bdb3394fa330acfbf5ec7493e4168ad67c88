@@ -16,6 +16,24 @@
       "message": "Can\u0027t we use \"oltha-build-job-parameters\" here?\neg: \"\u003c\u003c: *voltha-build-job-parameters\"\n\n(haven\u0027t checked how different they are)",
       "revId": "36d5bdb3394fa330acfbf5ec7493e4168ad67c88",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "873b52f6_21ee70e8",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 723,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-10T05:05:14Z",
+      "side": 1,
+      "message": "I have removed couple of fields and added a few new ones specific to this pipeline.",
+      "parentUuid": "1889c7fa_e0aec9c7",
+      "revId": "36d5bdb3394fa330acfbf5ec7493e4168ad67c88",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
