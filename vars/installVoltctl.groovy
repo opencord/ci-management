@@ -4,6 +4,8 @@ def call(String branch) {
   def voltctlVersion = ""
   if (branch == "voltha-2.8") {
     voltctlVersion = "1.6.11"
+  } else if (branch == "voltha-2.9") {
+    voltctlVersion = "1.7.4"
   } else {
     voltctlVersion = sh (
       script: "curl -sSL https://api.github.com/repos/opencord/voltctl/releases/latest | jq -r .tag_name | sed -e 's/^v//g'",
