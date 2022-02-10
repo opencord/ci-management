@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f4d1a8a_059f49e9",
+        "filename": "jjb/verify/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-02-10T07:59:02Z",
+      "side": 0,
+      "message": "I thought we need both, 2.8 and 2.9. Or I\u0027m wrong?",
+      "range": {
+        "startLine": 28,
+        "startChar": 4,
+        "endLine": 28,
+        "endChar": 53
+      },
+      "revId": "1de9830df052c7c1c8a518c6f53aa9f9bad3d844",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e67ba0e3_63bb7071",
+        "filename": "jjb/verify/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-02-10T07:59:02Z",
+      "side": 0,
+      "message": "same",
+      "range": {
+        "startLine": 31,
+        "startChar": 10,
+        "endLine": 31,
+        "endChar": 65
+      },
+      "revId": "1de9830df052c7c1c8a518c6f53aa9f9bad3d844",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}

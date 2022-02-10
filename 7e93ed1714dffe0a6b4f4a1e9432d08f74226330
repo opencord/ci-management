@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "720bced4_788f8acd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-02-10T07:59:02Z",
+      "side": 1,
+      "message": "Great Job Hardik, only some small comments (questions)",
+      "revId": "7e93ed1714dffe0a6b4f4a1e9432d08f74226330",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "20dd36c2_d1f46cce",
+        "filename": "jjb/pipeline/voltha/voltha-2.9/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-02-10T07:59:02Z",
+      "side": 1,
+      "message": "Not sure, but should it be similar:\nif (branch !\u003d \"master\" || gerritProject \u003d\u003d \"voltha-helm-charts\")",
+      "range": {
+        "startLine": 57,
+        "startChar": 9,
+        "endLine": 57,
+        "endChar": 86
+      },
+      "revId": "d422ed33a210ad05cad428fe419954fb74a9c9ff",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "966e6386_bc241b03",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 320,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-02-10T07:59:02Z",
+      "side": 1,
+      "message": "Not sure, but I think regarding to congestion of environment we only establish the multi OLT pipeline as periodic one.",
+      "range": {
+        "startLine": 320,
+        "startChar": 10,
+        "endLine": 320,
+        "endChar": 59
+      },
+      "revId": "d422ed33a210ad05cad428fe419954fb74a9c9ff",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
