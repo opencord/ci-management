@@ -93,6 +93,11 @@ pipeline {
       }
     }
     stage('Install Voltha')  {
+      when {
+        expression {
+          return installVoltha.toBoolean()
+        }
+      }
       steps {
         timeout(20) {
           installVoltctl("${branch}")
@@ -186,7 +191,7 @@ pipeline {
             done
         """
         sh """
-          JENKINS_NODE_COOKIE="dontKillMe" _TAG="${params.OltDevMgr}" bash -c "while true; do kubectl port-forward --address 0.0.0.0 svc/${params.OltDevMgr} 50051:10000; done"&
+          JENKINS_NODE_COOKIE="dontKillMe" _TAG="${params.OltDevMgr}" bash -c "while true; do kubectl port-forward --address 0.0.0.0 svc/${params.OltDevMgr} 50051; done"&
           ps aux | grep port-forward
         """
       }
@@ -308,6 +313,7 @@ pipeline {
 
   post {
     always {
+      getPodsInfo("$WORKSPACE")
       sh '''
       # stop the kail processes
       list=($APPS_TO_LOG)

@@ -694,6 +694,7 @@
     <<: *voltha-pipe-job-boiler-plate
     # default values
     pipeline-script: 'voltha/master/dmi-build-and-test.groovy'
+    installVoltha: true
     VolthaEtcdPort: 2379
     num-of-openonu: 1
     num-of-onos: 3
@@ -784,6 +785,11 @@
           name: workFlow
           default: '{work-flow}'
           description: 'Installs and uses the specified work flow on the POD'
+
+      - bool:
+          name: installVoltha
+          default: '{installVoltha}'
+          description: "Whether to install VOLTHA"
 
       - string:
           name: extraHelmFlags
