@@ -198,6 +198,13 @@ pipeline {
     }
     stage('Start logging') {
       steps {
+        // check if kail is installed and if not installs it
+        sh """
+        if ! command -v kail &> /dev/null
+        then
+            bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+        fi
+        """
         sh returnStdout: false, script: '''
           # start logging with kail
           cd $WORKSPACE
