@@ -191,8 +191,8 @@
             provisionSubscribers: true
             workflow: tt
             withEapol: false
-            withDhcp: false
-            withIgmp: false
+            withDhcp: true
+            withIgmp: true
             onosImg: andreacampanella/voltha-onos:4k-dev
             withMibTemplate: false
             extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
