@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8ff69a8_fabf9902",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-17T10:58:09Z",
+      "side": 1,
+      "message": "LGTM. One cosmetic comment.",
+      "revId": "d03aadc82b09ffab55004a04a7e6af42291c7bea",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "07554c12_671b8b02",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-17T10:58:09Z",
+      "side": 1,
+      "message": "Please fix the indentation at all the places.",
+      "range": {
+        "startLine": 317,
+        "startChar": 12,
+        "endLine": 317,
+        "endChar": 22
+      },
+      "revId": "d03aadc82b09ffab55004a04a7e6af42291c7bea",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
