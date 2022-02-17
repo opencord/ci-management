@@ -314,6 +314,21 @@
               flags: ""
               teardown: true
               logging: true
+            - target: onu-mib-audit-test-single-kind-att
+              workflow: att
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-dt
+              workflow: dt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-tt
+              workflow: tt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
           timeout: 180
 
       - 'voltha-periodic-test':
@@ -466,6 +481,21 @@
             - target: voltha-onu-flows-check-single-kind-tt
               workflow: tt
               flags: ""
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-att
+              workflow: att
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-dt
+              workflow: dt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-tt
+              workflow: tt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
               teardown: true
               logging: true
           timeout: 180
