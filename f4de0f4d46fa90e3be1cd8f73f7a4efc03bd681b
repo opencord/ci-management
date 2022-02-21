@@ -16,6 +16,23 @@
       "message": "Triggered here: https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/periodic-software-upgrade-test-bbsim/687/replay/diff",
       "revId": "f4de0f4d46fa90e3be1cd8f73f7a4efc03bd681b",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8aa71093_6f43271c",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1000116
+      },
+      "writtenOn": "2022-02-21T16:16:49Z",
+      "side": 1,
+      "message": "NIT: might want a space before and after the variable definitions",
+      "revId": "f4de0f4d46fa90e3be1cd8f73f7a4efc03bd681b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
