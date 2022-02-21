@@ -20,6 +20,37 @@ library identifier: 'cord-jenkins-libraries@master',
       $class: 'GitSCMSource',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
+def openolt_adapter_deploy_tag = ""
+def openolt_adapter_test_tag = ""
+def openonu_adapter_deploy_tag = ""
+def openonu_adapter_test_tag = ""
+def rw_core_deploy_tag = ""
+def rw_core_test_tag = ""
+def ofagent_deploy_tag = ""
+def ofagent_test_tag = ""
+
+// fetches the versions/tags of the voltha component
+// returns the deployment version which is one less than the latest available tag of the repo, first voltha stack gets deployed using this;
+// returns the test version which is the latest tag of the repo, the component upgrade gets tested on this.
+// Note: if there is a major version change between deployment and test tags, then deployment tag will be same as test tag, i.e. both as latest.
+def get_voltha_comp_versions(component) {
+    def comp_test_tag = sh (
+      script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
+      returnStdout: true
+    ).trim()
+    def comp_deploy_tag = sh (
+      script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
+      returnStdout: true
+    ).trim()
+    def comp_deploy_major = comp_deploy_tag.substring(0, comp_deploy_tag.indexOf('.'))
+    def comp_test_major = comp_test_tag.substring(0, comp_test_tag.indexOf('.'))
+    if ( "${comp_deploy_major.trim()}" != "${comp_test_major.trim()}") {
+      comp_deploy_tag = comp_test_tag
+    }
+    println "${component}: deploy_tag: ${comp_deploy_tag}, test_tag: ${comp_test_tag}"
+    return [comp_deploy_tag, comp_test_tag]
+}
+
 def test_software_upgrade(name) {
   def infraNamespace = "infra"
   def volthaNamespace = "voltha"
@@ -57,6 +88,17 @@ def test_software_upgrade(name) {
       def olts = 1
       if ("${name}" == "onu-image-dwl-simultaneously") {
           olts = 2
+      }
+      if ("${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
+        // fetch voltha components versions/tags
+        (openolt_adapter_deploy_tag, openolt_adapter_test_tag) = get_voltha_comp_versions("voltha-openolt-adapter")
+        extraHelmFlags = extraHelmFlags + " --set voltha-adapter-openolt.images.adapter_open_olt.tag=${openolt_adapter_deploy_tag} "
+        (openonu_adapter_deploy_tag, openonu_adapter_test_tag) = get_voltha_comp_versions("voltha-openonu-adapter-go")
+        extraHelmFlags = extraHelmFlags + " --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=${openonu_adapter_deploy_tag} "
+        (rw_core_deploy_tag, rw_core_test_tag) = get_voltha_comp_versions("voltha-go")
+        extraHelmFlags = extraHelmFlags + " --set voltha.images.rw_core.tag=${rw_core_deploy_tag} "
+        (ofagent_deploy_tag, ofagent_test_tag) = get_voltha_comp_versions("ofagent-go")
+        extraHelmFlags = extraHelmFlags + " --set voltha.images.ofagent.tag=${ofagent_deploy_tag} "
       }
       def localCharts = false
       // Currently only testing with ATT workflow
@@ -119,18 +161,10 @@ def test_software_upgrade(name) {
         fi
         if [ ${name} == 'voltha-component-upgrade' ] || [ ${name} == 'voltha-component-rolling-upgrade' ]; then
           export VOLTHA_COMPS_UNDER_TEST+=''
-          if [ ${adapterOpenOltImage.trim()} != '' ]; then
-            VOLTHA_COMPS_UNDER_TEST+="adapter-open-olt,adapter-open-olt,${adapterOpenOltImage.trim()}*"
-          fi
-          if [ ${adapterOpenOnuImage.trim()} != '' ]; then
-            VOLTHA_COMPS_UNDER_TEST+="adapter-open-onu,adapter-open-onu,${adapterOpenOnuImage.trim()}*"
-          fi
-          if [ ${rwCoreImage.trim()} != '' ]; then
-            VOLTHA_COMPS_UNDER_TEST+="rw-core,voltha,${rwCoreImage.trim()}*"
-          fi
-          if [ ${ofAgentImage.trim()} != '' ]; then
-            VOLTHA_COMPS_UNDER_TEST+="ofagent,ofagent,${ofAgentImage.trim()}*"
-          fi
+          VOLTHA_COMPS_UNDER_TEST+="adapter-open-olt,adapter-open-olt,voltha/voltha-openolt-adapter:${openolt_adapter_test_tag}*"
+          VOLTHA_COMPS_UNDER_TEST+="adapter-open-onu,adapter-open-onu,voltha/voltha-openonu-adapter-go:${openonu_adapter_test_tag}*"
+          VOLTHA_COMPS_UNDER_TEST+="rw-core,voltha,voltha/voltha-rw-core:${rw_core_test_tag}*"
+          VOLTHA_COMPS_UNDER_TEST+="ofagent,ofagent,voltha/voltha-ofagent-go:${ofagent_test_tag}*"
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v voltha_comps_under_test:\$VOLTHA_COMPS_UNDER_TEST -e PowerSwitch"
         fi
         if [[ ${name} == 'voltha-component-upgrade' ]]; then
