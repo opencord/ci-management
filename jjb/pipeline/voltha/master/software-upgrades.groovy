@@ -20,14 +20,6 @@ library identifier: 'cord-jenkins-libraries@master',
       $class: 'GitSCMSource',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
-def openolt_adapter_deploy_tag = ""
-def openolt_adapter_test_tag = ""
-def openonu_adapter_deploy_tag = ""
-def openonu_adapter_test_tag = ""
-def rw_core_deploy_tag = ""
-def rw_core_test_tag = ""
-def ofagent_deploy_tag = ""
-def ofagent_test_tag = ""
 
 // fetches the versions/tags of the voltha component
 // returns the deployment version which is one less than the latest available tag of the repo, first voltha stack gets deployed using this;
@@ -54,6 +46,14 @@ def get_voltha_comp_versions(component) {
 def test_software_upgrade(name) {
   def infraNamespace = "infra"
   def volthaNamespace = "voltha"
+  def openolt_adapter_deploy_tag = ""
+  def openolt_adapter_test_tag = ""
+  def openonu_adapter_deploy_tag = ""
+  def openonu_adapter_test_tag = ""
+  def rw_core_deploy_tag = ""
+  def rw_core_test_tag = ""
+  def ofagent_deploy_tag = ""
+  def ofagent_test_tag = ""
   def logsDir = "$WORKSPACE/${name}"
   stage('Deploy Voltha - '+ name) {
     timeout(10) {
