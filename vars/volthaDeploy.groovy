@@ -14,6 +14,7 @@ def call(Map config) {
       stackName: "voltha",
       stackId: 1,
       workflow: "att",
+      withMacLearning: false,
       extraHelmFlags: "",
       localCharts: false, // wether to use locally cloned charts or upstream one (for local we assume they are stored in $WORKSPACE/voltha-helm-charts)
       dockerRegistry: "", // use a different docker registry for all images, eg: "mirror.registry.opennetworking.org"

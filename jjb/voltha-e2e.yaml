@@ -1314,6 +1314,20 @@
               teardown: true
               logging: true
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-tt-maclearner-sanity-test-bbsim'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
+          time-trigger: "H H/23 * * *"
+          logLevel: 'DEBUG'
+          enableMacLearning: true
+          testTargets: |
+            - target: sanity-kind-tt-maclearning
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
@@ -1382,6 +1396,7 @@
     olts: 1
     timeout: 130
     logLevel: 'INFO'
+    enableMacLearning: false
 
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
@@ -1441,6 +1456,12 @@
           name: gerritRefspec
           default: '{gerritRefspec}'
           description: 'PatchSet REFSPEC in Gerrit, example value: "refs/changes/79/18779/13"'
+
+      # applicable for voltha-2.9 (excluding) onwards
+      - bool:
+          name: enableMacLearning
+          default: '{enableMacLearning}'
+          description: "Deploy and test with ONOS Mac-Learning app"
 
       - string:
           name: extraRobotArgs
@@ -1519,6 +1540,7 @@
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
+    enableMacLearning: false
     robot-args: ''
     branch-regexp: '{all-branches-regexp}'
     testTargets: |
@@ -1573,6 +1595,12 @@
           name: extraHelmFlags
           default: '{extraHelmFlags}'
           description: 'Helm flags to pass to every helm command'
+
+      # applicable for voltha-2.9 (excluding) onwards
+      - bool:
+          name: enableMacLearning
+          default: '{enableMacLearning}'
+          description: "Deploy and test with ONOS Mac-Learning app"
 
       - string:
           name: extraRobotArgs

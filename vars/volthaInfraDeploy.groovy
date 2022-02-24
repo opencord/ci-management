@@ -18,6 +18,7 @@ def call(Map config) {
       etcdReplica: 1,
       infraNamespace: "infra",
       workflow: "att",
+      withMacLearning: false,
       extraHelmFlags: "",
       localCharts: false,
       kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
@@ -53,6 +54,11 @@ def call(Map config) {
     kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_config=${kubeconfig}"  || true
     """
 
+    def serviceConfigFile = cfg.workflow
+    if (cfg.withMacLearning && cfg.workflow == 'tt') {
+      serviceConfigFile = "tt-maclearner"
+    }
+
     // bitnamic/etch has change the replica format between the currently used 5.4.2 and the latest 6.2.5
     // for now put both values in the extra helm chart flags
     sh """
@@ -61,6 +67,6 @@ def call(Map config) {
           --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
           --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
           --set etcd.replicaCount=${cfg.etcdReplica} \
-          -f $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml ${cfg.extraHelmFlags}
+          -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
     """
 }

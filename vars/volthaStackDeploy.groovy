@@ -53,7 +53,11 @@ def call(Map config) {
         """
         if (cfg.workflow == "att" || cfg.workflow == "tt") {
           def startingStag = 900
-          def bbsimCfg = readYaml file: "$WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml"
+          def serviceConfigFile = cfg.workflow
+          if (cfg.withMacLearning && cfg.workflow == 'tt') {
+            serviceConfigFile = "tt-maclearner"
+          }
+          def bbsimCfg = readYaml file: "$WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml"
           // NOTE we assume that the only service that needs a different s_tag is the first one in the list
           bbsimCfg["servicesConfig"]["services"][0]["s_tag"] = startingStag + i
           println "Using BBSim Service config ${bbsimCfg['servicesConfig']}"
