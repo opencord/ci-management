@@ -73,6 +73,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
             infraNamespace: infraNamespace,
             volthaNamespace: volthaNamespace,
             workflow: workflow.toLowerCase(),
+            withMacLearning: enableMacLearning,
             extraHelmFlags: localHelmFlags,
             localCharts: localCharts,
             bbsimReplica: olts.toInteger(),
