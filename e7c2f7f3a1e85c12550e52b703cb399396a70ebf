@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d611c6d4_addee4c4",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:34:19Z",
+      "side": 1,
+      "message": "Missed this one",
+      "range": {
+        "startLine": 911,
+        "startChar": 19,
+        "endLine": 911,
+        "endChar": 20
+      },
+      "revId": "e7c2f7f3a1e85c12550e52b703cb399396a70ebf",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
