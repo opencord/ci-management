@@ -1,0 +1,165 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8466459c_20aad01c",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 515,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:18:11Z",
+      "side": 1,
+      "message": "Not sure, if we need to update this as well.",
+      "range": {
+        "startLine": 515,
+        "startChar": 24,
+        "endLine": 515,
+        "endChar": 26
+      },
+      "revId": "0f0c95167b11a5e71efda0584074b101bd8e0414",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6e299e1_b8ede580",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 582,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:18:11Z",
+      "side": 1,
+      "message": "same as above",
+      "range": {
+        "startLine": 582,
+        "startChar": 24,
+        "endLine": 582,
+        "endChar": 26
+      },
+      "revId": "0f0c95167b11a5e71efda0584074b101bd8e0414",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0899be55_bd220af3",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 638,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:18:11Z",
+      "side": 1,
+      "message": "Same as above",
+      "range": {
+        "startLine": 638,
+        "startChar": 24,
+        "endLine": 638,
+        "endChar": 26
+      },
+      "revId": "0f0c95167b11a5e71efda0584074b101bd8e0414",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f116bf9c_9fba093f",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:18:11Z",
+      "side": 1,
+      "message": "remove `m`",
+      "range": {
+        "startLine": 137,
+        "startChar": 25,
+        "endLine": 137,
+        "endChar": 26
+      },
+      "revId": "0f0c95167b11a5e71efda0584074b101bd8e0414",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c12afd2_cb51c4ea",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 719,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:18:11Z",
+      "side": 1,
+      "message": "Please remove, as this could be confusing, whether to provide value with `m`.",
+      "range": {
+        "startLine": 719,
+        "startChar": 70,
+        "endLine": 719,
+        "endChar": 84
+      },
+      "revId": "0f0c95167b11a5e71efda0584074b101bd8e0414",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "71421dc7_b2ae5148",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 803,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:18:11Z",
+      "side": 1,
+      "message": "remove `m`",
+      "range": {
+        "startLine": 803,
+        "startChar": 19,
+        "endLine": 803,
+        "endChar": 20
+      },
+      "revId": "0f0c95167b11a5e71efda0584074b101bd8e0414",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ab45007_cff90e6c",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 911,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T09:18:11Z",
+      "side": 1,
+      "message": "remove `m`",
+      "range": {
+        "startLine": 911,
+        "startChar": 19,
+        "endLine": 911,
+        "endChar": 20
+      },
+      "revId": "0f0c95167b11a5e71efda0584074b101bd8e0414",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
