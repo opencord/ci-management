@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c72a7913_14c98a9e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-02-24T15:16:18Z",
+      "side": 1,
+      "message": "Tested here: https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/nightly-voltha-DTflow-sanity-test/749/replay/diff",
+      "revId": "810b6cf1ce4506d997ead1b1c3ce501dea988ed3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
