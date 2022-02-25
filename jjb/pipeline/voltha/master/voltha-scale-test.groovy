@@ -212,7 +212,7 @@ pipeline {
               fi
 
               # set BBSim parameters
-              EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus} '
+              EXTRA_HELM_FLAGS+='--set enablePerf=true,pon=${pons},onu=${onus},uni=${unis} '
 
               # disable the securityContext, this is a development cluster
               EXTRA_HELM_FLAGS+='--set securityContext.enabled=false '
@@ -280,7 +280,7 @@ pipeline {
               etcdReplica: etcdReplicas,
             ])
 
-            stackHelmFlags = " --set onu=${onus},pon=${pons} --set global.log_level=${logLevel.toLowerCase()} "
+            stackHelmFlags = " --set onu=${onus},pon=${pons},uni=${unis} --set global.log_level=${logLevel.toLowerCase()} "
             stackHelmFlags += " --set voltha.ingress.enabled=true --set voltha.ingress.enableVirtualHosts=true --set voltha.fullHostnameOverride=voltha.scale1.dev "
             stackHelmFlags += extraHelmFlags + " " + params.extraHelmFlags
 
@@ -404,8 +404,8 @@ pipeline {
       steps {
         sh """
         # load MIB template
-        wget https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json
-        cat BBSM-12345123451234512345-BBSM_IMG_00001-v1.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/BBSM_IMG_00001
+        wget ${mibTemplateUrl} -O mibTemplate.json
+        cat mibTemplate.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/12345123451234512345/BBSM_IMG_00001
         """
       }
     }
@@ -750,7 +750,7 @@ EOF
           [file: 'plots/plot-onos-flows-after.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
           [file: 'plots/plot-onos-dhcp.txt', displayTableFlag: false, exclusionValues: '', inclusionFlag: 'OFF', url: ''],
         ],
-        group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Scale Test (OLTs: ${olts}, PONs: ${pons}, ONUs: ${onus})", yaxis: 'Time (s)', useDescr: true
+        group: 'Voltha-Scale-Numbers', numBuilds: '20', style: 'line', title: "Scale Test (OLTs: ${olts}, PONs: ${pons}, ONUs: ${onus}, UNIs: ${unis})", yaxis: 'Time (s)', useDescr: true
       ])
       script {
         try {
