@@ -8,6 +8,7 @@ def call(Map config) {
       stackName: "voltha",
       stackId: 1, // NOTE this is used to differentiate between BBSims across multiple stacks
       workflow: "att",
+      withMacLearning: false,
       extraHelmFlags: "",
       localCharts: false,
       onosReplica: 1,
