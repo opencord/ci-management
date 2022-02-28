@@ -1,0 +1,57 @@
+---
+# verification jobs for 'bbsim' repo
+
+- project:
+    name: voltha-northbound-bbf-adapter
+    project: '{name}'
+
+    jobs:
+      - 'voltha-northbound-bbf-adapter':
+          branch-regexp: '{all-branches-regexp}'
+      # - 'voltha-northbound-bbf-adapter-master':
+      #     branch-regexp: '^master$'
+      - 'publish-bbsim-jobs':
+          branch-regexp: '{all-branches-regexp}'
+
+- job-group:
+    name: 'voltha-northbound-bbf-adapter'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-northbound-bbf-adapter_licensed'
+      - 'make-unit-test':
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint sca test'
+          unit-test-keep-going: 'true'
+
+# NOTE add once we have sanity jobs for voltha-northbound-bbf-adapter
+# - job-group:
+#     name: 'voltha-northbound-bbf-adapter-master'
+#     jobs:
+#       - 'voltha-patch-test':
+#           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+#           testTargets: |
+#             - target: sanity-bbsim-att
+#               workflow: att
+#               flags: ""
+#               teardown: true
+#               logging: true
+#             - target: sanity-bbsim-dt
+#               workflow: dt
+#               flags: ""
+#               teardown: true
+#               logging: true
+#             - target: sanity-bbsim-tt
+#               workflow: tt
+#               flags: ""
+#               teardown: true
+#               logging: true
+
+- job-group:
+    name: 'publish-voltha-northbound-bbf-adapter-jobs'
+    jobs:
+      - 'docker-publish':
+          maintainers: "teo@opennetworking.org"
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag'
