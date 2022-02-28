@@ -55,7 +55,7 @@ def call(Map config) {
     """
 
     def serviceConfigFile = cfg.workflow
-    if (cfg.withMacLearning && cfg.workflow == 'tt') {
+    if (cfg.withMacLearning == true && cfg.workflow == "tt") {
       serviceConfigFile = "tt-maclearner"
     }
 

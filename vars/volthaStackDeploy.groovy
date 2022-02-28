@@ -8,6 +8,7 @@ def call(Map config) {
       stackName: "voltha",
       stackId: 1, // NOTE this is used to differentiate between BBSims across multiple stacks
       workflow: "att",
+      withMacLearning: false,
       extraHelmFlags: "",
       localCharts: false,
       onosReplica: 1,
@@ -54,7 +55,7 @@ def call(Map config) {
         if (cfg.workflow == "att" || cfg.workflow == "tt") {
           def startingStag = 900
           def serviceConfigFile = cfg.workflow
-          if (cfg.withMacLearning && cfg.workflow == 'tt') {
+          if (cfg.withMacLearning == true && cfg.workflow == "tt") {
             serviceConfigFile = "tt-maclearner"
           }
           def bbsimCfg = readYaml file: "$WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml"
