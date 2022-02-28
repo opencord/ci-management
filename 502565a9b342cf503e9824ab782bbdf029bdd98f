@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60ef4dea_c47c9633",
+        "filename": "jjb/verify/voltha-northbound-bbf-adapter.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1000894
+      },
+      "writtenOn": "2022-02-28T18:36:37Z",
+      "side": 1,
+      "message": "voltha-northbound-bbf-adapter ?",
+      "range": {
+        "startLine": 2,
+        "startChar": 25,
+        "endLine": 2,
+        "endChar": 30
+      },
+      "revId": "502565a9b342cf503e9824ab782bbdf029bdd98f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ec0da7e_1fdca5a9",
+        "filename": "jjb/verify/voltha-northbound-bbf-adapter.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000894
+      },
+      "writtenOn": "2022-02-28T18:36:37Z",
+      "side": 1,
+      "message": "voltha-northbound-bbf-adapter ?",
+      "range": {
+        "startLine": 13,
+        "startChar": 17,
+        "endLine": 13,
+        "endChar": 22
+      },
+      "revId": "502565a9b342cf503e9824ab782bbdf029bdd98f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
