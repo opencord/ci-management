@@ -281,7 +281,7 @@
               logging: true
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
-              flags: "--set omci_response_rate=7"
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,omci_response_rate=7"
               teardown: true
               logging: true
             - target: voltha-onu-omci-get-single-kind-att
@@ -450,7 +450,7 @@
               logging: true
             - target: openonu-go-adapter-omci-hardening-failed-test
               workflow: att
-              flags: "--set omci_response_rate=7"
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,omci_response_rate=7"
               teardown: true
               logging: true
             - target: voltha-onu-omci-get-single-kind-att
