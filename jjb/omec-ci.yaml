@@ -259,9 +259,9 @@
           pipeline-file: 'omec-reuse-scan.groovy'
           build-node: 'ubuntu18.04-basebuild-1c-2g'
 
-# for upf-epc
+# for upf
 - project:
-    name: upf-epc
+    name: upf
     project: '{name}'
 
     github-organization: 'omec-project'
@@ -275,19 +275,6 @@
       - 'omec-fossa':
           pipeline-file: 'omec-fossa-scan.groovy'
           build-node: 'ubuntu18.04-basebuild-1c-2g'
-      - 'omec-reuse':
-          pipeline-file: 'omec-reuse-scan.groovy'
-          build-node: 'ubuntu18.04-basebuild-1c-2g'
-      - 'docker-publish-github':
-          build-timeout: 30
-          docker-repo: 'omecproject'
-          build-node: 'ubuntu18.04-basebuild-2c-4g'
-          extraEnvironmentVars: CPU=haswell
-      - 'omec-container'
-      - 'omec-container-remote':
-          pod: 'ci-4g'
-          remote-jenkins-name: 'Aether Jenkins'
-          pipeline-file: 'omec-container-remote.groovy'
 
 # Combined pipeline
 - job-template:
