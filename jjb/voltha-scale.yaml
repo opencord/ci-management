@@ -152,6 +152,7 @@
           olts: 2
           pons: 64
           onus: 32
+          unis: 1
           withFlows: true
           provisionSubscribers: true
           workflow: dt
@@ -160,7 +161,8 @@
           withIgmp: false
           onosImg: andreacampanella/voltha-onos:4k-dev
           withMibTemplate: false
-          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1-1UNI.json'
+          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
             name: 'voltha-scale-measurements-master-1-64-63-dt-subscribers'
@@ -170,6 +172,7 @@
             olts: 1
             pons: 64
             onus: 63
+            unis: 1
             withFlows: true
             provisionSubscribers: true
             workflow: dt
@@ -178,7 +181,8 @@
             withIgmp: false
             onosImg: andreacampanella/voltha-onos:4k-dev
             withMibTemplate: false
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
+            mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1-1UNI.json'
+            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
 
       - 'voltha-scale-measurements':
             name: 'voltha-scale-measurements-master-1-64-63-tt-subscribers'
@@ -188,6 +192,7 @@
             olts: 1
             pons: 64
             onus: 63
+            unis: 1
             withFlows: true
             provisionSubscribers: true
             workflow: tt
@@ -196,7 +201,8 @@
             withIgmp: true
             onosImg: andreacampanella/voltha-onos:4k-dev
             withMibTemplate: false
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set uni=1 --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
+            mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1-1UNI.json'
+            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -534,6 +540,11 @@
           description: 'Number of VOLTHA Stacks to deploy'
 
       - string:
+          name: unis
+          default: '{unis}'
+          description: 'Number of UNIs to provision'
+
+      - string:
           name: onus
           default: '{onus}'
           description: 'Number of ONUs to provision'
@@ -727,6 +738,11 @@
           name: withMibTemplate
           default: '{withMibTemplate}'
 
+      - string:
+          name: mibTemplateUrl
+          default: '{mibTemplateUrl}'
+          description: 'URL of the MIB template file to use, if "withMibTemplate" is selected'
+
 - job-template:
     id: 'voltha-scale-measurements'
     name: '{name}'
@@ -771,6 +787,7 @@
     olts: 2
     pons: 2
     onus: 2
+    unis: 4
     workflow: att
     withOnuUpgrade: false
     withFlows: false
@@ -798,6 +815,7 @@
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
     withMibTemplate: true
+    mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
     karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
     testTimeout: 10
@@ -879,6 +897,7 @@
     olts: 2
     pons: 2
     onus: 2
+    unis: 4
     workflow: att
     withOnuUpgrade: false
     withFlows: true
@@ -906,6 +925,7 @@
     kindVolthaChange: ''
     inMemoryEtcdStorage: true
     withMibTemplate: true
+    mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
     karafHome: 'apache-karaf-4.2.14'
     logLevel: 'INFO'
     testTimeout: 10
