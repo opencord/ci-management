@@ -33,7 +33,18 @@ def test_software_upgrade(name) {
       _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
       """
       def extraHelmFlags = extraHelmFlags.trim()
-      extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
+          extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
+      }
+      if ("${name}" == "onu-image-dwl-simultaneously") {
+          extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=2,pon=2 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
+      }
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-image-dwl-simultaneously") {
+          extraHelmFlags = " --set global.image_tag=master --set onos-classic.image.tag=master " + extraHelmFlags
+      }
+      if ("${name}" == "voltha-component-upgrade") {
+          extraHelmFlags = " --set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master " + extraHelmFlags
+      }
 
       extraHelmFlags = " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 " + extraHelmFlags
       extraHelmFlags = " --set voltha.onos_classic.replicas=3 " + extraHelmFlags
@@ -44,13 +55,17 @@ def test_software_upgrade(name) {
          split = onosImg.split(':')
         extraHelmFlags = extraHelmFlags + " --set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
       }
+      def olts = 1
+      if ("${name}" == "onu-image-dwl-simultaneously") {
+          olts = 2
+      }
       def localCharts = false
       if (branch != "master") {
          localCharts = true
       }
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
-      volthaDeploy([workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
+      volthaDeploy([bbsimReplica: olts.toInteger(), workflow: "att", extraHelmFlags: extraHelmFlags, localCharts: localCharts])
       // stop logging
       sh """
         P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
@@ -76,7 +91,7 @@ def test_software_upgrade(name) {
     }
   }
   stage('Test - '+ name) {
-    timeout(20) {
+    timeout(75) {
       sh """
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name}"
         mkdir -p \$ROBOT_LOGS_DIR
@@ -126,6 +141,10 @@ def test_software_upgrade(name) {
         if [[ ${name} == 'onu-software-upgrade' ]]; then
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
           export TARGET=onu-upgrade-test
+        fi
+        if [[ ${name} == 'onu-image-dwl-simultaneously' ]]; then
+          export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
+          export TARGET=onu-upgrade-test-multiolt-kind-att
         fi
         testLogging='False'
         if [ ${logging} = true ]; then
@@ -177,7 +196,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 60, unit: 'MINUTES')
+    timeout(time: 150, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
@@ -214,6 +233,7 @@ pipeline {
         test_software_upgrade("onos-app-upgrade")
         test_software_upgrade("voltha-component-upgrade")
         test_software_upgrade("onu-software-upgrade")
+        test_software_upgrade("onu-image-dwl-simultaneously")
       }
     }
   }
