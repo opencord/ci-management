@@ -55,6 +55,7 @@ pipeline {
     LOG_FOLDER="$WORKSPACE/logs"
 
     GERRIT_PROJECT="${GERRIT_PROJECT}"
+    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
   }
 
   stages {
@@ -151,6 +152,7 @@ pipeline {
     stage('Deploy Voltha') {
       steps {
         timeout(time: 10, unit: 'MINUTES') {
+          installVoltctl("${release}")
           script {
             sh returnStdout: false, script: '''
             # start logging with kail

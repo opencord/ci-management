@@ -148,6 +148,7 @@ pipeline {
     }
     stage('Deploy Voltha') {
       steps {
+        installVoltctl("${release}")
         deploy_voltha_stacks(params.volthaStacks)
       }
     }
