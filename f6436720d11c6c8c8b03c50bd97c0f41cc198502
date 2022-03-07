@@ -22,6 +22,30 @@
       },
       "revId": "f6436720d11c6c8c8b03c50bd97c0f41cc198502",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f4336ae_0d985d68",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/software-upgrades.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-03-07T09:36:00Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e4ebd720_a229ceb2",
+      "range": {
+        "startLine": 42,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 7
+      },
+      "revId": "f6436720d11c6c8c8b03c50bd97c0f41cc198502",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
