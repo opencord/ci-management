@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c8321233_326342dc",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-03-08T04:33:35Z",
+      "side": 1,
+      "message": "60 should be enough here.",
+      "range": {
+        "startLine": 88,
+        "startChar": 12,
+        "endLine": 88,
+        "endChar": 14
+      },
+      "revId": "a7ed374c3862a82d6206e412e3f09719eb9a41ff",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e823b83b_2be97f94",
+        "filename": "jjb/pipeline/voltha/voltha-2.8/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 193,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-03-08T04:33:35Z",
+      "side": 1,
+      "message": "120 should be enough here.",
+      "range": {
+        "startLine": 193,
+        "startChar": 18,
+        "endLine": 193,
+        "endChar": 21
+      },
+      "revId": "a7ed374c3862a82d6206e412e3f09719eb9a41ff",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
