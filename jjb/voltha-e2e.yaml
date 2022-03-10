@@ -1278,16 +1278,21 @@
               logging: true
 
       - 'voltha-periodic-test':
-          name: 'nightly-voltha-DTflow-sanity-test'
+          name: 'periodic-voltha-dt-test-bbsim'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
           time-trigger: "@daily"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           testTargets: |
-            - target: sanity-kind-dt
+            - target: functional-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
+              logging: true
+            - target: bbsim-failurescenarios-dt
+              workflow: dt
+              flags: ""
+              teardown: false
               logging: true
 
       - 'voltha-periodic-test':
