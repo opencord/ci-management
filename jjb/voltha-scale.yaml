@@ -202,7 +202,7 @@
             onosImg: andreacampanella/voltha-onos:4k-dev
             withMibTemplate: false
             mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1-1UNI.json'
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
+            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/tt-custom-values.yaml'
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
