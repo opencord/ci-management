@@ -114,6 +114,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
             'org.opencord.dhcpl2relay',
             'org.opencord.olt',
             'org.opencord.aaa',
+            'org.opencord.maclearner',
             'org.onosproject.net.flowobjective.impl.FlowObjectiveManager',
             'org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager'
           ],
