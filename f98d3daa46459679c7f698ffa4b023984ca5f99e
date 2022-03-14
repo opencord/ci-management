@@ -16,6 +16,29 @@
       "message": "approach LGTM",
       "revId": "f98d3daa46459679c7f698ffa4b023984ca5f99e",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09130408_0edd80d1",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2022-03-14T21:35:39Z",
+      "side": 1,
+      "message": "this has to be 80 as that\u0027s the port that the container exposes, 31301 is the NodePort which is already exposed.\n\nNote that this port-forward will fail if run on a physical cluster, but it\u0027s not an issue as in that case port 31301 is reachable at \u003ccluster-ip\u003e:31301",
+      "range": {
+        "startLine": 118,
+        "startChar": 196,
+        "endLine": 118,
+        "endChar": 201
+      },
+      "revId": "f98d3daa46459679c7f698ffa4b023984ca5f99e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
