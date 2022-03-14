@@ -42,6 +42,17 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       }
     }
   }
+  stage('Deploy common infrastructure') {
+    sh '''
+    helm repo add onf https://charts.opencord.org
+    helm repo update
+    if [ ${withMonitoring} = true ] ; then
+      helm install nem-monitoring onf/nem-monitoring \
+      --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
+      --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+    fi
+    '''
+  }
   stage('Deploy Voltha') {
     if (teardown) {
       timeout(10) {
@@ -104,6 +115,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         JENKINS_NODE_COOKIE="dontKillMe" _TAG="bbsim\${i}" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/bbsim\${i} \${bbsimDmiPortFwd}:50075; done"&
         ((bbsimDmiPortFwd++))
       done
+      JENKINS_NODE_COOKIE="dontKillMe" _TAG="nem-monitoring-prometheus-server" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n default svc/nem-monitoring-prometheus-server 31301:31301; done"&
       ps aux | grep port-forward
       """
       // setting ONOS log level
@@ -124,6 +136,14 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     }
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
+    sh """
+    mkdir -p $WORKSPACE/voltha-pods-mem-consumption
+    cd $WORKSPACE/voltha-system-tests
+    make vst_venv
+    source ./vst_venv/bin/activate || true
+    # Collect initial memory consumption
+    python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+    """
     sh """
     mkdir -p ${logsDir}
     export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
@@ -148,7 +168,13 @@ def collectArtifacts(exitStatus) {
   sh """
   kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log || true
   """
-  archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html'
+  sh """
+  cd $WORKSPACE/voltha-system-tests
+  source ./vst_venv/bin/activate || true
+  # Collect memory consumption of voltha pods once all the tests are complete
+  python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n voltha || true
+  """
+  archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,voltha-pods-mem-consumption/*'
   sh '''
     sync
     pkill kail || true

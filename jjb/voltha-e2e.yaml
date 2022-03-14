@@ -1333,6 +1333,30 @@
               teardown: true
               logging: true
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-memory-leak-test-bbsim'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          code-branch: 'master'
+          time-trigger: "H H/23 * * *"
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          withMonitoring: true
+          testTargets: |
+            - target: memory-leak-test-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: memory-leak-test-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: memory-leak-test-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
@@ -1402,6 +1426,7 @@
     timeout: 130
     logLevel: 'INFO'
     enableMacLearning: false
+    withMonitoring: false
 
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
@@ -1497,6 +1522,11 @@
           name: logLevel
           default: '{logLevel}'
           description: 'Log level for all the components'
+
+      - bool:
+          name: withMonitoring
+          default: '{withMonitoring}'
+          description: 'Option to install Prometheus'
 
       - string:
           name: timeout
