@@ -256,7 +256,7 @@
               logging: true
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
-              flags: "--set pon=2,onu=2,controlledActivation=only-onu"
+              flags: "--set pon=2,onu=2,controlledActivation=only-onu,injectOmciUnknownAttributes=true,injectOmciUnknownMe=true"
               teardown: true
               logging: true
             - target: reconcile-openonu-go-adapter-test-att
@@ -425,7 +425,7 @@
               logging: true
             - target: mib-upload-templating-openonu-go-adapter-test
               workflow: att
-              flags: "--set pon=2,onu=2,controlledActivation=only-onu"
+              flags: "--set pon=2,onu=2,controlledActivation=only-onu,injectOmciUnknownAttributes=true,injectOmciUnknownMe=true"
               teardown: true
               logging: true
             - target: reconcile-openonu-go-adapter-test-att
