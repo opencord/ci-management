@@ -137,12 +137,14 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
   }
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
     sh """
-    mkdir -p $WORKSPACE/voltha-pods-mem-consumption
-    cd $WORKSPACE/voltha-system-tests
-    make vst_venv
-    source ./vst_venv/bin/activate || true
-    # Collect initial memory consumption
-    python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+    if [ ${withMonitoring} = true ] ; then
+      mkdir -p $WORKSPACE/voltha-pods-mem-consumption-${workflow}
+      cd $WORKSPACE/voltha-system-tests
+      make vst_venv
+      source ./vst_venv/bin/activate || true
+      # Collect initial memory consumption
+      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+    fi
     """
     sh """
     mkdir -p ${logsDir}
@@ -160,6 +162,14 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       gzip *-combined.log || true
       rm *-combined.log || true
     """
+    sh """
+    if [ ${withMonitoring} = true ] ; then
+      cd $WORKSPACE/voltha-system-tests
+      source ./vst_venv/bin/activate || true
+      # Collect memory consumption of voltha pods once all the tests are complete
+      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+    fi
+    """
   }
 }
 
@@ -168,13 +178,7 @@ def collectArtifacts(exitStatus) {
   sh """
   kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log || true
   """
-  sh """
-  cd $WORKSPACE/voltha-system-tests
-  source ./vst_venv/bin/activate || true
-  # Collect memory consumption of voltha pods once all the tests are complete
-  python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n voltha || true
-  """
-  archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption/*'
+  archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
   sh '''
     sync
     pkill kail || true
