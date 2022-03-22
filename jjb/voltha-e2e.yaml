@@ -1577,6 +1577,7 @@
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
     enableMacLearning: false
+    withMonitoring: false
     robot-args: ''
     branch-regexp: '{all-branches-regexp}'
     testTargets: |
@@ -1687,6 +1688,11 @@
           name: registry
           default: '{registry}'
           description: 'Which registry to use (amazon vs menlo)'
+
+      - bool:
+          name: withMonitoring
+          default: '{withMonitoring}'
+          description: 'Option to install Prometheus'
 
       - string:
           name: logLevel
