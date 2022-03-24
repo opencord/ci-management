@@ -16,6 +16,23 @@
       "message": "DO-NOT-MERGE (work around fttb functionality still in-progress)",
       "revId": "ccdb1f73bf9581ddf41e26a46549a4eb5a3d80a1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec670e74_90c8725a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-03-24T08:48:51Z",
+      "side": 1,
+      "message": "LGTM, but new workflow \u0027DT-FTTB\u0027 is no-where used/checked.\nWill be tested a hybrid workflow in future? Similar this:\nONU1 \u003d DPU (DT-FTTB)\nONU2 \u003d common ONU (DT)",
+      "revId": "ccdb1f73bf9581ddf41e26a46549a4eb5a3d80a1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
