@@ -1358,6 +1358,19 @@
               logging: true
           timeout: 360
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-dt-fttb-test-bbsim'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          code-branch: 'master'
+          time-trigger: "H H/23 * * *"
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF --set onu=2'
+          testTargets: |
+            - target: sanity-kind-dt-fttb
+              workflow: dt-fttb
+              flags: ""
+              teardown: true
+              logging: true
+
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
