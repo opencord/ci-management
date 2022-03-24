@@ -1340,6 +1340,7 @@
           time-trigger: "H H/23 * * *"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           withMonitoring: true
+          logLevel: 'DEBUG'
           testTargets: |
             - target: memory-leak-test-single-kind-att
               workflow: att
