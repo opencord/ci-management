@@ -33,6 +33,24 @@
       "message": "LGTM, but new workflow \u0027DT-FTTB\u0027 is no-where used/checked.\nWill be tested a hybrid workflow in future? Similar this:\nONU1 \u003d DPU (DT-FTTB)\nONU2 \u003d common ONU (DT)",
       "revId": "ccdb1f73bf9581ddf41e26a46549a4eb5a3d80a1",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dd0c797_9a7455e6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-03-24T08:51:20Z",
+      "side": 1,
+      "message": "dt-fftb will be used in the pipeline to read this file https://gerrit.opencord.org/c/voltha-helm-charts/+/31791/4/examples/dt-fttb-values.yaml",
+      "parentUuid": "ec670e74_90c8725a",
+      "revId": "ccdb1f73bf9581ddf41e26a46549a4eb5a3d80a1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
