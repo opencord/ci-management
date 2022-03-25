@@ -25,7 +25,7 @@ library identifier: 'cord-jenkins-libraries@master',
 // returns the deployment version which is one less than the latest available tag of the repo, first voltha stack gets deployed using this;
 // returns the test version which is the latest tag of the repo, the component upgrade gets tested on this.
 // Note: if there is a major version change between deployment and test tags, then deployment tag will be same as test tag, i.e. both as latest.
-def get_voltha_comp_versions(component) {
+def get_voltha_comp_versions(component, base_deploy_tag) {
     def comp_test_tag = sh (
       script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
       returnStdout: true
@@ -38,6 +38,10 @@ def get_voltha_comp_versions(component) {
     def comp_test_major = comp_test_tag.substring(0, comp_test_tag.indexOf('.'))
     if ( "${comp_deploy_major.trim()}" != "${comp_test_major.trim()}") {
       comp_deploy_tag = comp_test_tag
+    }
+    if ( "${comp_test_tag.trim()}" == "${base_deploy_tag.trim()}") {
+      comp_deploy_tag = comp_test_tag
+      comp_test_tag = "master"
     }
     println "${component}: deploy_tag: ${comp_deploy_tag}, test_tag: ${comp_test_tag}"
     return [comp_deploy_tag, comp_test_tag]
@@ -91,13 +95,13 @@ def test_software_upgrade(name) {
       }
       if ("${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
         // fetch voltha components versions/tags
-        (openolt_adapter_deploy_tag, openolt_adapter_test_tag) = get_voltha_comp_versions("voltha-openolt-adapter")
+        (openolt_adapter_deploy_tag, openolt_adapter_test_tag) = get_voltha_comp_versions("voltha-openolt-adapter", openoltAdapterDeployBaseTag.trim())
         extraHelmFlags = extraHelmFlags + " --set voltha-adapter-openolt.images.adapter_open_olt.tag=${openolt_adapter_deploy_tag} "
-        (openonu_adapter_deploy_tag, openonu_adapter_test_tag) = get_voltha_comp_versions("voltha-openonu-adapter-go")
+        (openonu_adapter_deploy_tag, openonu_adapter_test_tag) = get_voltha_comp_versions("voltha-openonu-adapter-go", openonuAdapterDeployBaseTag.trim())
         extraHelmFlags = extraHelmFlags + " --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=${openonu_adapter_deploy_tag} "
-        (rw_core_deploy_tag, rw_core_test_tag) = get_voltha_comp_versions("voltha-go")
+        (rw_core_deploy_tag, rw_core_test_tag) = get_voltha_comp_versions("voltha-go", rwCoreDeployBaseTag.trim())
         extraHelmFlags = extraHelmFlags + " --set voltha.images.rw_core.tag=${rw_core_deploy_tag} "
-        (ofagent_deploy_tag, ofagent_test_tag) = get_voltha_comp_versions("ofagent-go")
+        (ofagent_deploy_tag, ofagent_test_tag) = get_voltha_comp_versions("ofagent-go", ofagentDeployBaseTag.trim())
         extraHelmFlags = extraHelmFlags + " --set voltha.images.ofagent.tag=${ofagent_deploy_tag} "
       }
       def localCharts = false

@@ -25,6 +25,10 @@
           mcast-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/mcast-app/2.6.0-SNAPSHOT/mcast-app-2.6.0-20211227.170629-1.oar'
           kafka-version: '2.9.0.SNAPSHOT'
           kafka-oar-url: 'https://oss.sonatype.org/content/groups/public/org/opencord/kafka/2.9.0-SNAPSHOT/kafka-2.9.0-20211228.090937-1.oar'
+          openolt-adapter-deploy-base-tag: '4.2.2'
+          openonu-adapter-deploy-base-tag: '2.2.2'
+          rw-core-deploy-base-tag: '3.1.0'
+          ofagent-deploy-base-tag: '2.1.1'
           onu-image-version: 'BBSM_IMG_00002'
           onu-image-url: 'http://bbsim0:50074/images/software-image.img'
           onu-image-vendor: 'BBSM'
@@ -189,6 +193,26 @@
           name: kafkaOarUrl
           default: '{kafka-oar-url}'
           description: 'ONOS Kafka App OAR File Url'
+
+      - string:
+          name: openoltAdapterDeployBaseTag
+          default: '{openolt-adapter-deploy-base-tag}'
+          description: 'Minimum Version of OpenOLT Adapter to be used for Deployment'
+
+      - string:
+          name: openonuAdapterDeployBaseTag
+          default: '{openonu-adapter-deploy-base-tag}'
+          description: 'Minimum Version of OpenONU Adapter to be used for Deployment'
+
+      - string:
+          name: rwCoreDeployBaseTag
+          default: '{rw-core-deploy-base-tag}'
+          description: 'Minimum Version of RW Core to be used for Deployment'
+
+      - string:
+          name: ofagentDeployBaseTag
+          default: '{ofagent-deploy-base-tag}'
+          description: 'Minimum Version of Ofagent to be used for Deployment'
 
       - string:
           name: onuImageVersion
