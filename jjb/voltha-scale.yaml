@@ -502,6 +502,26 @@
           name: 'voltha-scale-measurements-master-dev'
           build-node: 'voltha-scale'
 
+      # LWC pipeline
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-lwc'
+          pipeline-script: 'voltha/master/voltha-scale-lwc-test.groovy'
+          build-node: 'voltha-scale-1'
+          'disable-job': false
+          # trigger on Feb 29th (a.k.a only trigger it manually)
+          time-trigger: "H 0 29 2 *"
+          withMonitoring: true
+          olts: 1
+          pons: 16
+          onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false'
+          workflow: dt
+
 
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
