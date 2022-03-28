@@ -87,7 +87,7 @@ pipeline {
           }
           timeout(time: 10, unit: 'MINUTES') {
             script {
-              helmTeardown(["default"])
+              helmTeardown(["default", "voltha1", "infra"])
             }
             sh returnStdout: false, script: '''
               helm repo add onf https://charts.opencord.org
