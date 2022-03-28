@@ -54,7 +54,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
           def localCharts = false
-          if (volthaHelmChartsChange != "" || gerritProject == "voltha-helm-charts") {
+          if (volthaHelmChartsChange != "" || gerritProject == "voltha-helm-charts" || branch != "master") {
             localCharts = true
           }
 
