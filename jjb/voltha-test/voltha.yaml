@@ -514,8 +514,8 @@
 
       # Berlin pod with olt/onu - voltha-2.8 versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
-          build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod-multi-olt'
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-multi-olt'
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.8'
@@ -528,8 +528,8 @@
 
       # Berlin POD test job - voltha-2.8 versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          build-node: 'dt-berlin-community-pod'
-          config-pod: 'dt-berlin-pod-multi-olt'
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-multi-olt'
           release: '2.8'
           branch: 'voltha-2.8'
           name-extension: '_DT'
