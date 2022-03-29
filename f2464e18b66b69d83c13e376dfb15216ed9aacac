@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ee5ea61e_b23dcfc0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-03-29T04:13:23Z",
+      "side": 1,
+      "message": "Thanks for the fix @Teo.\nTriggered it here: https://jenkins.opencord.org/view/VOLTHA-2.X-Tests/job/periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.9/48/replay/diff",
+      "revId": "f2464e18b66b69d83c13e376dfb15216ed9aacac",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
