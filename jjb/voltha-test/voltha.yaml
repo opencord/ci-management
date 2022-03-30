@@ -431,7 +431,7 @@
 
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-multi-olt'
           'disable-job': true
           name-extension: '_DT'
@@ -445,7 +445,7 @@
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 360
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-multi-olt'
           release: 'master'
           branch: 'master'
@@ -459,7 +459,7 @@
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-gpon'
           name-extension: '_DT'
           'disable-job': true
@@ -473,7 +473,7 @@
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-gpon'
           name-extension: '_DT'
           'disable-job': true
@@ -487,7 +487,7 @@
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-gpon'
           release: '2.8'
           branch: 'voltha-2.8'
@@ -501,7 +501,7 @@
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-gpon'
           name-extension: '_DT'
           work-flow: 'DT'
@@ -541,7 +541,7 @@
 
       # Berlin pod with adtran gpon olt/onu - 2.8 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-gpon-adtran'
           name-extension: '_DT'
           work-flow: 'DT'
@@ -562,7 +562,7 @@
       # Berlin POD adtran test job - 2.8 versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 390
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-gpon-adtran'
           release: '2.8'
           branch: 'voltha-2.8'
@@ -576,7 +576,7 @@
 
       # Berlin pod with adtran gpon olt/onu - 2.8 1T8GEM tech profile and timer based job
       - 'verify_voltha_pod_dmi_test':
-          build-node: 'dt-berlin-community-pod'
+          build-node: 'berlin-community-pod-1'
           config-pod: 'dt-berlin-pod-gpon-adtran'
           name-extension: '_DT'
           work-flow: 'DT'
