@@ -308,7 +308,7 @@
       - 'build_voltha_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: false
+          disable-job: true
           bbsimReplicas: 1
           profile: '1T8GEM'
           name-extension: '_DT'
@@ -323,7 +323,7 @@
       - 'build_voltha_pod_manual_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: false
+          disable-job: true
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -338,7 +338,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': false
+          'disable-job': true
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -354,7 +354,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': false
+          'disable-job': true
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
