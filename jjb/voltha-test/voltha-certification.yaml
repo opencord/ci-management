@@ -10,6 +10,7 @@
 
     with-kind: false
     power-switch: False
+    power-cycle-olt: False
     work-flow: 'ATT'
     in-band-management: false
     num-of-openonu: 1
