@@ -10,6 +10,7 @@
 
     with-kind: false
     power-switch: False
+    power-cycle-olt: False
     work-flow: 'ATT'
     in-band-management: false
     num-of-openonu: '1'
@@ -73,6 +74,7 @@
           release: 'master'
           branch: 'master'
           power-switch: True
+          power-cycle-olt: True
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
@@ -126,6 +128,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
+          power-cycle-olt: True
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
@@ -189,6 +192,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: True
+          power-cycle-olt: True
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
@@ -216,6 +220,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
           power-switch: True
+          power-cycle-olt: True
 
       # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -244,6 +249,7 @@
           profile: '1T8GEM'
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
           power-switch: True
+          power-cycle-olt: True
 
       # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
