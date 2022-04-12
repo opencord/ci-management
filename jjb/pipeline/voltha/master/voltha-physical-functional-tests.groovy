@@ -130,6 +130,9 @@ pipeline {
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanity -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+             if ( ${powerCycleOlt} ); then
+                  ROBOT_MISC_ARGS+=" -v power_cycle_olt:True"
+             fi
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanity -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         fi
