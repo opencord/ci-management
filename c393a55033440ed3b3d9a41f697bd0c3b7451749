@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa414437_268bb241",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-04-27T13:13:48Z",
+      "side": 1,
+      "message": "We can remove this.",
+      "range": {
+        "startLine": 27,
+        "startChar": 57,
+        "endLine": 27,
+        "endChar": 92
+      },
+      "revId": "c393a55033440ed3b3d9a41f697bd0c3b7451749",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3f3a0a34_1d36b5fd",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1285,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-04-27T13:13:48Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 1285,
+        "startChar": 57,
+        "endLine": 1285,
+        "endChar": 92
+      },
+      "revId": "c393a55033440ed3b3d9a41f697bd0c3b7451749",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ba09885a_2d335bca",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1301,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-04-27T13:13:48Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 1301,
+        "startChar": 57,
+        "endLine": 1301,
+        "endChar": 92
+      },
+      "revId": "c393a55033440ed3b3d9a41f697bd0c3b7451749",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
