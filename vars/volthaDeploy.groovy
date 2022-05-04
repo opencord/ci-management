@@ -19,6 +19,8 @@ def call(Map config) {
       localCharts: false, // wether to use locally cloned charts or upstream one (for local we assume they are stored in $WORKSPACE/voltha-helm-charts)
       dockerRegistry: "", // use a different docker registry for all images, eg: "mirror.registry.opennetworking.org"
       kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
+      withVolthaInfra: true,
+      withVolthaStack: true,
     ]
 
     if (!config) {
@@ -50,7 +52,11 @@ def call(Map config) {
 
     println "Deploying VOLTHA with the following parameters: ${cfg}."
 
-    volthaInfraDeploy(cfg)
+    if (cfg.withVolthaInfra) {
+      volthaInfraDeploy(cfg)
+    }
 
-    volthaStackDeploy(cfg)
+    if (cfg.withVolthaStack) {
+      volthaStackDeploy(cfg)
+    }
 }

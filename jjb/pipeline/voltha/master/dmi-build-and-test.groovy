@@ -93,11 +93,6 @@ pipeline {
       }
     }
     stage('Install Voltha')  {
-      when {
-        expression {
-          return installVoltha.toBoolean()
-        }
-      }
       steps {
         timeout(20) {
           installVoltctl("${branch}")
@@ -156,14 +151,18 @@ pipeline {
               etcdReplica: params.NumOfEtcd,
               bbsimReplica: bbsimReplicas.toInteger(),
               adaptersToWait: numberOfAdaptersToWait,
+              withVolthaInfra: installVolthaInfra.toBoolean(),
+              withVolthaStack: installVolthaStack.toBoolean(),
               ])
 
-            if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
-              extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
-              deploy_custom_chart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
-              waitForAdapters([
-                adaptersToWait: 2
-              ])
+            if(installVolthaStack.toBoolean()) {
+              if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
+                extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
+                deploy_custom_chart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
+                waitForAdapters([
+                  adaptersToWait: 2
+                ])
+              }
             }
           }
           sh """

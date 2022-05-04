@@ -589,7 +589,8 @@
           release: 'master'
           branch: 'master'
           profile: 'Default'
-          installVoltha: false
+          installVolthaInfra: true
+          installVolthaStack: false
           reinstall-olt: false
           restart-olt: false
           extraHelmFlags: " -f /home/community/SDX_Device_Manager_21.4/helm/values-onf.yaml "
