@@ -24,7 +24,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=port-state '
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -1282,7 +1282,7 @@
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
           time-trigger: "@daily"
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=port-state '
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master '
           testTargets: |
             - target: functional-single-kind-dt
               workflow: dt
@@ -1298,7 +1298,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=port-state '
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
           robot-args: '-v unitag_sub:True'
