@@ -202,6 +202,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           profile: '1T4GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -215,6 +216,7 @@
           timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
@@ -226,6 +228,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -241,6 +244,7 @@
           timeout: 330
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -287,6 +291,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           release: '2.9'
           branch: 'voltha-2.9'
           profile: '1T4GEM'
@@ -303,6 +308,7 @@
           timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          'disable-job': true
           release: '2.9'
           branch: 'voltha-2.9'
           test-repo: 'voltha-system-tests'
