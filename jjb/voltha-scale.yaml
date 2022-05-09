@@ -504,7 +504,7 @@
 
       # LWC pipeline
       - 'voltha-scale-measurements':
-          name: 'voltha-scale-measurements-lwc'
+          name: 'voltha-scale-measurements-lwc-dt-512'
           pipeline-script: 'voltha/master/voltha-scale-lwc-test.groovy'
           build-node: 'berlin-community-pod-2'
           time-trigger: "H H * * *"
@@ -513,6 +513,25 @@
           olts: 1
           pons: 16
           onus: 32
+          withFlows: true
+          provisionSubscribers: true
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false'
+          workflow: dt
+          volthaSystemTestsChange: refs/changes/10/31810/6
+
+      - 'voltha-scale-measurements':
+          name: 'voltha-scale-measurements-lwc-dt-256'
+          pipeline-script: 'voltha/master/voltha-scale-lwc-test.groovy'
+          build-node: 'berlin-community-pod-2'
+          time-trigger: "H H * * *"
+          disable-job: false
+          withMonitoring: true
+          olts: 1
+          pons: 16
+          onus: 16
           withFlows: true
           provisionSubscribers: true
           withEapol: false
