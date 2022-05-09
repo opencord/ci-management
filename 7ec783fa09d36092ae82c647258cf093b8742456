@@ -18,6 +18,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a53a75e2_75442572",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2022-05-09T22:15:52Z",
+      "side": 1,
+      "message": "this is a manual trigger job, doesn\u0027t really matter",
+      "parentUuid": "4e8f4105_96dc3d59",
+      "revId": "7ec783fa09d36092ae82c647258cf093b8742456",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cedf5944_5058c0e0",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-05-09T22:14:17Z",
       "side": 1,
       "message": "Should this be true? Is voltha-scale-2 available now?",
+      "revId": "7ec783fa09d36092ae82c647258cf093b8742456",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "51d64743_363050ac",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2022-05-09T22:15:52Z",
+      "side": 1,
+      "message": "same as above",
+      "parentUuid": "cedf5944_5058c0e0",
       "revId": "7ec783fa09d36092ae82c647258cf093b8742456",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
