@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e8f4105_96dc3d59",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2022-05-09T22:14:17Z",
+      "side": 1,
+      "message": "Should this be true? Is voltha-scale-1 available now?",
+      "revId": "7ec783fa09d36092ae82c647258cf093b8742456",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cedf5944_5058c0e0",
+        "filename": "jjb/voltha-scale.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2022-05-09T22:14:17Z",
+      "side": 1,
+      "message": "Should this be true? Is voltha-scale-2 available now?",
+      "revId": "7ec783fa09d36092ae82c647258cf093b8742456",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
