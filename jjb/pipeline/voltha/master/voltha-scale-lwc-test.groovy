@@ -172,6 +172,7 @@ pipeline {
           make vst_venv
 
           daemonize -E JENKINS_NODE_COOKIE="dontKillMe" /usr/local/bin/kubectl port-forward -n infra svc/lwc 8182:8181 --address 0.0.0.0
+          daemonize -E JENKINS_NODE_COOKIE="dontKillMe" /usr/local/bin/kubectl port-forward -n voltha1 svc/voltha1-voltha-api 55555 --address 0.0.0.0
 
           source ./vst_venv/bin/activate
           robot -d $WORKSPACE/RobotLogs \
