@@ -22,8 +22,6 @@ library identifier: 'cord-jenkins-libraries@master',
 
 def lwc_helm_chart_path="/home/jenkins/Radisys_LWC_helm_charts"
 def value_file="/home/jenkins/lwc-values.yaml"
-def pon_count=16
-def onu_count=32
 def workflow="dt"
 
 pipeline {
@@ -145,7 +143,7 @@ pipeline {
           --set voltha.ingress.enabled=true --set voltha.ingress.enableVirtualHosts=true --set voltha.fullHostnameOverride=voltha.scale1.dev \
           -f ${value_file} --wait
 
-          helm upgrade --install -n voltha1 bbsim0 onf/bbsim --set olt_id=10 -f examples/${workflow}-values.yaml --set pon=${pon_count},onu=${onu_count} --version 4.6.0 --set oltRebootDelay=5 --wait
+          helm upgrade --install -n voltha1 bbsim0 onf/bbsim --set olt_id=10 -f examples/${workflow}-values.yaml --set pon=${pons},onu=${onus} --version 4.6.0 --set oltRebootDelay=5 --wait
           """
         }
       }
@@ -177,7 +175,7 @@ pipeline {
           source ./vst_venv/bin/activate
           robot -d $WORKSPACE/RobotLogs \
           --exitonfailure \
-          -v pon:${pon_count} -v onu:${onu_count} \
+          -v pon:${pons} -v onu:${onus} \
           tests/scale/Voltha_Scale_Tests_lwc.robot
 
           python tests/scale/collect-result.py -r $WORKSPACE/RobotLogs/output.xml -p $WORKSPACE/plots > $WORKSPACE/execution-time.txt || true
