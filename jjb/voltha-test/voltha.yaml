@@ -551,6 +551,39 @@
           power-switch: True
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
+        # Berlin pod with zyxel gpon olt/onu - master 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'berlin-community-pod-2'
+          config-pod: 'berlin-community-pod-2-gpon-zyxel'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          release: 'master'
+          branch: 'master'
+          profile: '1T8GEM'
+          reinstall-olt: true
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          pipeline-script: 'voltha/master/physical-build.groovy'
+          VolthaEtcdPort: 9999
+          waitTimerForOltUp: 360
+          time: '1'
+
+        # Berlin pod with zyxel xgspon olt/onu - master 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'berlin-community-pod-2'
+          config-pod: 'berlin-community-pod-2-xgspon-zyxel'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          release: 'master'
+          branch: 'master'
+          reinstall-olt: true
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          pipeline-script: 'voltha/master/physical-build.groovy'
+          VolthaEtcdPort: 9999
+          waitTimerForOltUp: 360
+          time: '5'
+
       # Berlin pod with adtran gpon olt/onu - 2.8 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
