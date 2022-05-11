@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "605d53d5_62c2f98c",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 572,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-05-11T12:56:00Z",
+      "side": 1,
+      "message": "Only build jobs? We need to add test (build_voltha_pod_test) as well",
+      "range": {
+        "startLine": 572,
+        "startChar": 8,
+        "endLine": 572,
+        "endChar": 39
+      },
+      "revId": "6bbe0eb8563242948a60057b003e5db543c35116",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
