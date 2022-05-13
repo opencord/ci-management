@@ -147,6 +147,7 @@ pipeline {
               kafkaReplica: params.NumOfKafka,
               etcdReplica: params.NumOfEtcd,
               bbsimReplica: bbsimReplicas.toInteger(),
+              withFttb: withFttb.toBoolean(),
               adaptersToWait: numberOfAdaptersToWait,
               ])
 
@@ -259,7 +260,7 @@ pipeline {
               curl -sSL --user karaf:karaf -X POST http://${deployment_config.nodes[0].ip}:30120/onos/v1/applications/org.onosproject.segmentrouting/active
               """
             }
-            timeout(1) {
+            timeout(3) {
               setOnosLogLevels([
                   onosNamespace: infraNamespace,
                   apps: [
@@ -281,7 +282,7 @@ pipeline {
                 return sr_active_out == 0
               }
             }
-            timeout(5) {
+            timeout(8) {
               for(int i=0; i < deployment_config.hosts.src.size(); i++) {
                 for(int j=0; j < deployment_config.olts.size(); j++) {
                   def aggPort = -1

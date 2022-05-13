@@ -19,6 +19,7 @@ def call(Map config) {
       infraNamespace: "infra",
       workflow: "att",
       withMacLearning: false,
+      withFttb: false,
       extraHelmFlags: "",
       localCharts: false,
       kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
@@ -57,6 +58,8 @@ def call(Map config) {
     def serviceConfigFile = cfg.workflow
     if (cfg.withMacLearning && cfg.workflow == 'tt') {
       serviceConfigFile = "tt-maclearner"
+    } else if (cfg.withFttb && cfg.workflow == 'dt') {
+      serviceConfigFile = "dt-fttb"
     }
 
     // bitnamic/etch has change the replica format between the currently used 5.4.2 and the latest 6.2.5

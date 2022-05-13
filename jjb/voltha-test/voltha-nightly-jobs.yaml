@@ -97,6 +97,11 @@
           default: '{enableMultiUni}'
           description: "Enables the Multi UNI feature"
 
+      - bool:
+          name: withFttb
+          default: '{withFttb}'
+          description: "Deploy with FTTB"
+
       - string:
           name: uniPortMask
           default: '{uniPortMask}'
@@ -227,6 +232,7 @@
     profile: 'Default'
     logLevel: 'DEBUG'
     enableMultiUni: false
+    withFttb: false
     uniPortMask: '0x0001'
     bbsimReplicas: 0
     num-of-onus: 0
@@ -268,6 +274,7 @@
     profile: 'Default'
     logLevel: 'DEBUG'
     enableMultiUni: false
+    withFttb: false
     uniPortMask: '0x0001'
     bbsimReplicas: 0
     num-of-onus: 0
@@ -304,6 +311,7 @@
 
     oltAdapterAppLabel: 'adapter-open-olt'
     enableMultiUni: false
+    withFttb: false
     timeout: 300
 
     parameters:
@@ -381,6 +389,11 @@
           name: enableMultiUni
           default: '{enableMultiUni}'
           description: "Enables the Multi UNI feature"
+
+      - bool:
+          name: withFttb
+          default: '{withFttb}'
+          description: "Test with FTTB enabled"
 
       - bool:
           name: powerSwitch
