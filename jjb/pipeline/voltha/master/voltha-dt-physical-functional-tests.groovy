@@ -174,7 +174,7 @@ pipeline {
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
-        if [ ${params.withFttb} = false ]; then
+        if [ ${params.withFttb} = true ]; then
           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i sanityDtFttb -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v has_dataplane:False"
           make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
