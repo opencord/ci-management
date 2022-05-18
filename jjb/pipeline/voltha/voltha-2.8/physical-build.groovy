@@ -323,6 +323,8 @@ pipeline {
                     sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep rlt-1600g-w | wc -l'
                   elif [[ "${deployment_config.olts[i].oltDebVersion}" == *"rlt-3200g-w"* ]]; then
                     sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep rlt-3200g-w | wc -l'
+                  elif [[ "${deployment_config.olts[i].oltDebVersion}" == *"sda3016ss"* ]]; then
+                    sshpass -p ${deployment_config.olts[i].pass} ssh -l ${deployment_config.olts[i].user} ${deployment_config.olts[i].sship} 'dpkg --list | grep sda3016ss | wc -l'
                   else
                     echo Unknown Debian package for openolt
                   fi
