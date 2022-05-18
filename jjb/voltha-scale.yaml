@@ -508,7 +508,7 @@
           pipeline-script: 'voltha/master/voltha-scale-lwc-test.groovy'
           build-node: 'berlin-community-pod-2'
           time-trigger: "H H * * *"
-          disable-job: false
+          disable-job: true
           withMonitoring: true
           olts: 1
           pons: 16
@@ -527,7 +527,7 @@
           pipeline-script: 'voltha/master/voltha-scale-lwc-test.groovy'
           build-node: 'berlin-community-pod-2'
           time-trigger: "H H * * *"
-          disable-job: false
+          disable-job: true
           withMonitoring: true
           olts: 1
           pons: 16
