@@ -26,7 +26,7 @@
     jobs:
       - "up4-pr-verify-{up4Ctrl}"
       - "up4-postmerge-{up4Ctrl}"
-      - "up4-devel-nightly-{up4Ctrl}"
+      - "up4-latest-nightly-{up4Ctrl}"
 
 - job-template:
     id: "up4-pr-verify-{up4Ctrl}"
@@ -145,8 +145,8 @@
               variable: CODECOV_TOKEN
 
 - job-template:
-    id: "up4-devel-nightly-{up4Ctrl}"
-    name: "up4-devel-nightly-{up4Ctrl}"
+    id: "up4-latest-nightly-{up4Ctrl}"
+    name: "up4-latest-nightly-{up4Ctrl}"
     description: |
       Created by {id} job-template from ci-management/up4.yaml<br/>
 
@@ -171,8 +171,8 @@
           description: 'SHA string of the merged commit to build. Populated by Generic Webhook Trigger.'
       - string:
           name: up4Env
-          default: 'devel'
-          description: 'UP4 STC scenarios environment (stable or devel)'
+          default: 'latest'
+          description: 'UP4 STC scenarios environment (stable or latest)'
       - string:
           name: up4Ctrl
           default: "{up4Ctrl}"
