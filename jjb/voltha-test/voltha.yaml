@@ -626,6 +626,7 @@
           pipeline-script: 'voltha/master/physical-build.groovy'
           VolthaEtcdPort: 9999
           waitTimerForOltUp: 360
+          profile: '1T8GEM'
           time: '5'
 
         # Berlin POD test job - zyxel xgsgpon master versions: uses tech profile on voltha branch
