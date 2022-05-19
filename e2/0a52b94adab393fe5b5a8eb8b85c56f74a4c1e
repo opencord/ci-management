@@ -1,0 +1,7 @@
+Code-Review+2: Matteo Scandolo <matteo.scandolo@intel.com>
+Verified+1: Jenkins Technical User <do-not-reply@opennetworking.org>
+Submitted-by: Girish Gowdra <girish.gowdra@intel.com>
+Submitted-at: Thu, 19 May 2022 19:05:02 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/32589
+Project: ci-management
+Branch: refs/heads/master
