@@ -558,7 +558,7 @@
           name-extension: '_DT'
           'disable-job': false
           work-flow: 'DT'
-          profile: '1T8GEM'
+          profile: '1T4GEM-FTTB'
           num-of-onos: '3'
           num-of-atomix: '3'
           extraHelmFlags: " --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=configured-mac-fttb "
@@ -576,7 +576,7 @@
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
-          profile: '1T8GEM'
+          profile: '1T4GEM-FTTB'
           power-switch: True
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
