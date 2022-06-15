@@ -1372,6 +1372,19 @@
               teardown: true
               logging: true
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-tim-multiple-olts-test-bbsim'
+          code-branch: 'master'
+          olts: 2
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          time-trigger: "H H/23 * * *"
+          testTargets: |
+            - target: sanity-kind-tim-multi-olt-multi-pon-multi-onu
+              workflow: tim
+              flags: ""
+              teardown: true
+              logging: true
+
       # ATT Per-patchset Pod builds on Tucson pod (master)
       - 'verify_physical_voltha_patchset_auto':
           name: 'verify_physical_voltha_patchset_auto'
