@@ -199,10 +199,8 @@
 
       # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          'disable-job': false
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
           profile: '1T4GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -214,10 +212,8 @@
       # Menlo pod test job - master test job uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 300
-          'disable-job': false
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
@@ -227,10 +223,8 @@
 
       # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          'disable-job': false
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -244,10 +238,8 @@
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
-          'disable-job': false
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
