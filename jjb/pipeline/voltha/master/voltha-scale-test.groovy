@@ -408,7 +408,7 @@ pipeline {
         sh """
         # load MIB template
         wget ${mibTemplateUrl} -O mibTemplate.json
-        cat mibTemplate.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha1/omci_mibs/go_templates/BBSM/v0.0.1/BBSM_IMG_00001
+        cat mibTemplate.json | kubectl exec -it \$(kubectl get pods |grep etcd-0 | awk 'NR==1{print \$1}') -- etcdctl put service/voltha/omci_mibs/go_templates/BBSM/v0.0.1/BBSM_IMG_00001
         """
       }
     }
