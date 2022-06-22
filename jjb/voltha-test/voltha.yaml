@@ -557,7 +557,6 @@
           profile: '1T4GEM-FTTB'
           num-of-onos: '3'
           num-of-atomix: '3'
-          extraHelmFlags: " --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=configured-mac-fttb "
           time: '13'
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
