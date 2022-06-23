@@ -54,6 +54,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
+          disable-job: false
           olts: 2
           pons: 16
           onus: 32
@@ -66,6 +67,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-onu-upgrade-2-16-32-att-onus'
+          disable-job: false
           build-node: 'voltha-scale-1'
           time-trigger: "H H/12 * * *"
           olts: 2
@@ -290,7 +292,6 @@
           openonuAdapterGoImg: ''
           onosImg: ''
           extraHelmFlags: "--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-dt-subscribers'
@@ -316,7 +317,6 @@
           openonuAdapterGoImg: ''
           onosImg: 'voltha/voltha-onos:5.0.4'
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-tt-subscribers'
@@ -342,7 +342,6 @@
           openonuAdapterGoImg: ''
           onosImg: ''
           extraHelmFlags: "--set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
-          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
 
       # 2.8 multi-stack jobs
       - 'voltha-scale-measurements':
@@ -377,7 +376,6 @@
           openonuAdapterGoImg: ''
           onosImg: 'voltha/voltha-onos:5.0.4'
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
-          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2.8-10-stacks-2-16-32-dt-subscribers'
@@ -411,7 +409,6 @@
           openonuAdapterGoImg: ''
           onosImg: ''
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
-          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-2.8-10-stacks-2-16-32-tt-subscribers'
@@ -445,7 +442,6 @@
           openonuAdapterGoImg: ''
           onosImg: ''
           extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml "
-          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-12345123451234512345-BBSM_IMG_00001-v1.json'
 
       # per patchset job
       - 'voltha-scale-measurements':
@@ -851,6 +847,7 @@
     dockerRegistry: 10.90.0.101:30500
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
+    disable-job: true
 
     <<: *voltha-scale-job-parameters
 
