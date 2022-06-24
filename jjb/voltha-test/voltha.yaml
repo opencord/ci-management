@@ -28,7 +28,7 @@
     jobs:
       # flex OCP pod with olt/onu - manual test job, voltha master build job
       - 'build_voltha_pod_manual':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           num-of-onos: '3'
@@ -42,7 +42,7 @@
 
       # flex pod1 test job - using voltha branch
       - 'build_voltha_pod_manual_test':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           profile: 'TP'
@@ -56,7 +56,7 @@
 
       # flex OCP pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           profile: 'Default'
@@ -67,7 +67,7 @@
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -79,7 +79,7 @@
 
       # flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -93,7 +93,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -104,7 +104,7 @@
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -119,7 +119,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: 'master'
@@ -135,7 +135,7 @@
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -151,7 +151,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.8'
@@ -165,7 +165,7 @@
 
     # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-multi-uni'
           release: 'master'
@@ -183,7 +183,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          'disable-job': false
+          disable-job: false
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-multi-uni'
           release: 'master'
@@ -201,6 +201,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          disable-job: true
           profile: '1T4GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -214,6 +215,7 @@
           timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          disable-job: true
           release: 'master'
           branch: 'master'
           test-repo: 'voltha-system-tests'
@@ -225,6 +227,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -240,6 +243,7 @@
           timeout: 330
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -254,7 +258,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
+          disable-job: true
           release: '2.8'
           branch: 'voltha-2.8'
           name-extension: '_DT'
@@ -272,7 +276,7 @@
           timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
+          disable-job: true
           release: '2.8'
           branch: 'voltha-2.8'
           name-extension: '_DT'
@@ -286,7 +290,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
+          disable-job: true
           release: '2.9'
           branch: 'voltha-2.9'
           profile: '1T4GEM'
@@ -303,7 +307,7 @@
           timeout: 300
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          'disable-job': true
+          disable-job: true
           release: '2.9'
           branch: 'voltha-2.9'
           test-repo: 'voltha-system-tests'
@@ -315,7 +319,7 @@
       - 'build_voltha_pod_manual':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           bbsimReplicas: 1
           profile: '1T8GEM'
           name-extension: '_DT'
@@ -330,7 +334,7 @@
       - 'build_voltha_pod_manual_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -345,7 +349,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          disable-job: false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -361,7 +365,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          disable-job: false
           profile: '1T8GEM'
           branch: 'master'
           release: 'master'
@@ -409,7 +413,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          disable-job: true
           profile: '1T8GEM'
           branch: 'voltha-2.8'
           release: '2.8'
@@ -425,7 +429,7 @@
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          'disable-job': true
+          disable-job: true
           profile: '1T8GEM'
           branch: 'voltha-2.8'
           release: '2.8'
@@ -440,7 +444,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-multi-olt'
-          'disable-job': true
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -456,7 +460,7 @@
           config-pod: 'berlin-community-pod-1-multi-olt'
           release: 'master'
           branch: 'master'
-          'disable-job': true
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -469,7 +473,7 @@
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
           name-extension: '_DT'
-          'disable-job': true
+          disable-job: true
           work-flow: 'DT'
           profile: '1T8GEM'
           num-of-onos: '3'
@@ -483,7 +487,7 @@
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
           name-extension: '_DT'
-          'disable-job': true
+          disable-job: true
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
@@ -552,7 +556,7 @@
           config-pod: 'berlin-community-pod-1-gpon-fttb'
           withFttb: true
           name-extension: '_DT'
-          'disable-job': false
+          disable-job: false
           work-flow: 'DT'
           profile: '1T4GEM-FTTB'
           num-of-onos: '3'
@@ -566,7 +570,7 @@
           config-pod: 'berlin-community-pod-1-gpon-fttb'
           withFttb: true
           name-extension: '_DT'
-          'disable-job': false
+          disable-job: false
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
