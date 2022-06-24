@@ -1,0 +1,16 @@
+---
+# DEPRECATED
+# Note - transitioning to ONOS/Aether style one file and individual version
+# jobs per repo, instead of the massive regex to match all repos
+#
+# This file exists only to handle the repos that haven't transitioned yet and
+# are still in the regex
+
+- project:
+    name: versioning-jobs
+
+    project: 'wildcard'
+    project-regexp: '{version-tag-projects-regexp}'
+
+    jobs:
+      - 'version-tag'

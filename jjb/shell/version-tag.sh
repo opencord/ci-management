@@ -1,20 +1,10 @@
 #!/usr/bin/env bash
 
-# Copyright 2018-present Open Networking Foundation
+# Copyright 2018-2022 Networking Foundation
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-License-Identifier: Apache-2.0
 
-# versiontag.sh
+# version-tag.sh
 # Tags a git commit with the SemVer version discovered within the commit,
 # if the tag doesn't already exist. Ignore non-SemVer commits.
 
@@ -25,6 +15,7 @@ NEW_VERSION="" # version number found in $VERSIONFILE
 TAG_VERSION="" # version file that might have a leading v to work around go mod funkyness
 
 SEMVER_STRICT=${SEMVER_STRICT:-0} # require semver versions
+DOCKERPARENT_STRICT=${DOCKERPARENT_STRICT:-1} # require semver versions on parent images in dockerfiles
 
 releaseversion=0
 fail_validation=0
@@ -96,68 +87,72 @@ function is_git_tag_duplicated {
 
 # check if Dockerfiles have a released version as their parent
 function dockerfile_parentcheck {
-  while IFS= read -r -d '' dockerfile
-  do
-    echo "Checking dockerfile: '$dockerfile'"
-
-    # split on newlines
-    IFS=$'\n'
-    df_parents=($(grep "^FROM" "$dockerfile"))
-
-    # check all parents in the Dockerfile
-    for df_parent in "${df_parents[@]}"
+  if [ "$DOCKERPARENT_STRICT" -eq "0" ];
+  then
+    echo "DOCKERPARENT_STRICT is disabled - skipping parent checks"
+  else
+    while IFS= read -r -d '' dockerfile
     do
+      echo "Checking dockerfile: '$dockerfile'"
 
-      df_pattern="[FfRrOoMm] +(--platform=[^ ]+ +)?([^@: ]+)(:([^: ]+)|@sha[^ ]+)?"
-      if [[ "$df_parent" =~ $df_pattern ]]
-      then
+      # split on newlines
+      IFS=$'\n'
+      df_parents=($(grep "^FROM" "$dockerfile"))
 
-        p_image="${BASH_REMATCH[2]}"
-        p_sha=${BASH_REMATCH[3]}
-        p_version="${BASH_REMATCH[4]}"
+      # check all parents in the Dockerfile
+      for df_parent in "${df_parents[@]}"
+      do
 
-        echo "IMAGE: '${p_image}'"
-        echo "VERSION: '$p_version'"
-        echo "SHA: '$p_sha'"
+        df_pattern="[FfRrOoMm] +(--platform=[^ ]+ +)?([^@: ]+)(:([^: ]+)|@sha[^ ]+)?"
+        if [[ "$df_parent" =~ $df_pattern ]]
+        then
 
-        if [[ "${p_image}" == "scratch" ]]
-        then
-          echo "  OK: Using the versionless 'scratch' parent: '$df_parent'"
-        elif [[ "${p_image}:${p_version}" == "gcr.io/distroless/static:nonroot" ]]
-        then
-          echo "  OK: Using static distroless image with nonroot: '${p_image}:${p_version}'"
-        elif [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
-        then
-          echo "  OK: Parent '$p_image:$p_version' is a released SemVer version"
-        elif [[ "${p_sha}" =~ ^@sha256:[0-9a-f]{64}.*$ ]]
-        then
-          # allow sha256 hashes to be used as version specifiers
-          echo "  OK: Parent '$p_image$p_sha' is using a specific sha256 hash as a version"
-        elif [[ "${p_version}" =~ ^.*([0-9]+)\.([0-9]+).*$ ]]
-        then
-          # handle non-SemVer versions that have a Major.Minor version specifier in the name
-          #  'ubuntu:16.04'
-          #  'postgres:10.3-alpine'
-          #  'openjdk:8-jre-alpine3.8'
-          echo "  OK: Parent '$p_image:$p_version' is using a non-SemVer, but sufficient, version"
-        elif [[ -z "${p_version}" ]]
-        then
-          echo "  ERROR: Parent '$p_image' is NOT using a specific version"
-          fail_validation=1
+          p_image="${BASH_REMATCH[2]}"
+          p_sha=${BASH_REMATCH[3]}
+          p_version="${BASH_REMATCH[4]}"
+
+          echo "IMAGE: '${p_image}'"
+          echo "VERSION: '$p_version'"
+          echo "SHA: '$p_sha'"
+
+          if [[ "${p_image}" == "scratch" ]]
+          then
+            echo "  OK: Using the versionless 'scratch' parent: '$df_parent'"
+          elif [[ "${p_image}:${p_version}" == "gcr.io/distroless/static:nonroot" ]]
+          then
+            echo "  OK: Using static distroless image with nonroot: '${p_image}:${p_version}'"
+          elif [[ "${p_version}" =~ ^([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
+          then
+            echo "  OK: Parent '$p_image:$p_version' is a released SemVer version"
+          elif [[ "${p_sha}" =~ ^@sha256:[0-9a-f]{64}.*$ ]]
+          then
+            # allow sha256 hashes to be used as version specifiers
+            echo "  OK: Parent '$p_image$p_sha' is using a specific sha256 hash as a version"
+          elif [[ "${p_version}" =~ ^.*([0-9]+)\.([0-9]+).*$ ]]
+          then
+            # handle non-SemVer versions that have a Major.Minor version specifier in the name
+            #  'ubuntu:16.04'
+            #  'postgres:10.3-alpine'
+            #  'openjdk:8-jre-alpine3.8'
+            echo "  OK: Parent '$p_image:$p_version' is using a non-SemVer, but sufficient, version"
+          elif [[ -z "${p_version}" ]]
+          then
+            echo "  ERROR: Parent '$p_image' is NOT using a specific version"
+            fail_validation=1
+          else
+            echo "  ERROR: Parent '$p_image:$p_version' is NOT using a specific version"
+            fail_validation=1
+          fi
+
         else
-          echo "  ERROR: Parent '$p_image:$p_version' is NOT using a specific version"
-          fail_validation=1
+          echo "  ERROR: Couldn't find a parent image in $df_parent"
         fi
 
-      else
-        echo "  ERROR: Couldn't find a parent image in $df_parent"
-      fi
+      done
 
-    done
-
-  done  < <( find "${WORKSPACE}" -name 'Dockerfile*' ! -path "*/vendor/*" ! -name "*dockerignore" -print0 )
+    done  < <( find "${WORKSPACE}" -name 'Dockerfile*' ! -path "*/vendor/*" ! -name "*dockerignore" -print0 )
+  fi
 }
-
 
 # create a git tag
 function create_git_tag {

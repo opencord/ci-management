@@ -1,0 +1,177 @@
+---
+# SPDX-FileCopyrightText: 2018-2022 Open Networking Foundation <info@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+# versioning jobs for tagging/releasing software
+
+# Versioning conventions:
+#
+# 1. There is a 1:1 relationship between SemVer _release_ versions described
+#    in the commit and the git tag applied to that commit by Jenkins.
+#
+# 2. Non-release versions (ex: 1.0.1-dev3, etc.) can exist in multiple
+#    commits, and don't trigger creation of git tags.
+#
+# 3. Git history is public, and therefore shouldn't be rewritten to abandon
+#    already merged commits
+#
+# 4. Reverting a commit leaves it in history, so if a broken version is
+#    released, the correct action is to make a new fixed version, not try to
+#    fix the released version
+#
+# For reference: https://jira.opencord.org/browse/CORD-3117
+
+- job-template:
+    id: tag-check
+    name: "tag-check_{project}"
+    description: |
+      Created by {id} job-template from aether-ci-management/jjb/templates/versioning.yaml
+      Checks for changes to version files, and that they don't duplicate tags
+      already in the git repo.
+    disabled: '{disable-job}'
+
+    triggers:
+      - onf-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project-regexp}'
+          branch-regexp: '{branch-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - onf-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+
+    scm:
+      - onf-infra-gerrit-scm:
+          git-url: '{gerrit-server-ssh-url}/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-disable: '{submodule-disable}'
+          submodule-recursive: '{submodule-recursive}'
+          submodule-timeout: '{submodule-timeout}'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+          basedir: '$GERRIT_PROJECT'
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - inject:
+          properties-content: |
+            SEMVER_STRICT={semver-strict}
+            BASEDIR=$GERRIT_PROJECT
+      - shell: !include-raw-escape: jjb/shell/tag-check.sh
+
+- job-template:
+    id: version-tag
+    name: "version-tag_{project}"
+    disabled: '{disable-job}'
+    description: |
+      Created by {id} job-template from aether-ci-management/jjb/templates/versioning.yaml
+      When a patch is merged, check if it contains a SemVer released version
+      file and if so tags thxe commit in git with that same version.
+
+    triggers:
+      - onf-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project-regexp}'
+          branch-regexp: '{all-branches-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: '{dependency-jobs}'
+
+    properties:
+      - onf-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    scm:
+      - onf-infra-gerrit-scm:
+          git-url: '{gerrit-server-ssh-url}/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-disable: '{submodule-disable}'
+          submodule-recursive: 'false'
+          submodule-timeout: '{submodule-timeout}'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: ''
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - inject:
+          properties-content: |
+            SEMVER_STRICT={semver-strict}
+            BASEDIR=$GERRIT_PROJECT
+      - shell: !include-raw-escape: jjb/shell/version-tag.sh
+
+- job-template:
+    id: version-tag-github
+    name: "version-tag_{project}"
+    disabled: '{disable-job}'
+    description: |
+      Created by {id} job-template from aether-ci-management/jjb/templates/versioning.yaml
+      When a patch is merged, check if it contains a SemVer released version
+      file and if so tags thxe commit in git with that same version.
+
+    properties:
+      - onf-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+      - github:
+          url: 'https://github.com/{github-organization}/{project}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+
+    parameters:
+      - onf-infra-github-pr-merge-parameters:
+          repo-name: '{project}'
+          repo-url: '{github-ssh-url}{github-organization}/{project}.git'
+          branch: '{branch}'
+          commitHash: '{branch}'
+
+    triggers:
+      - onf-infra-github-pr-trigger:
+          github-token: '{github-token}'
+          status-context: 'Aether Jenkins - Makefile test'
+          trigger-phrase: '.*test\W+(make|makefile|version|versioning).*|{trigger-phrase}'
+          white-list-target-branches: '{white-list-target-branches}'
+          github_pr_org_list: '{obj:github_pr_org_list}'
+
+    scm:
+      - onf-infra-github-scm:
+          url: '{github-ssh-url}{github-organization}/{project}'
+          refspec: "{github-refspec-branch}"
+          branch: "$commitHash"
+          submodule-disable: "{submodule-disable}"
+          submodule-recursive: "{submodule-recursive}"
+          submodule-timeout: "{submodule-timeout}"
+          choosing-strategy: default
+          jenkins-ssh-credential: "{github-ssh-credential}"
+          basedir: ''
+
+    node: '{build-node}'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: jjb/shell/version-tag.sh

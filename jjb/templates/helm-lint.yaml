@@ -1,0 +1,54 @@
+---
+# SPDX-FileCopyrightText: 2020-2022 Open Networking Foundation <info@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+# check helm charts with `helm lint --strict` and that charts version is
+# updated when the contents of a chart is modified.
+
+- job-template:
+    id: helm-lint
+    name: 'helm-lint_{project}'
+    description: |
+      Created by helm-lint job-template from ci-management/jjb/templates/helm-lint.yaml
+
+    triggers:
+      - onf-infra-gerrit-trigger-patchset:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project}'
+          branch-regexp: '{all-branches-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: ''
+
+    properties:
+      - onf-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - lf-infra-wrappers:
+          build-timeout: '{build-timeout}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+      - credentials-binding:
+          - username-password-separated:
+              credential-id: charts.aetherproject.org
+              username: charts_aetherproject_org_user
+              password: charts_aetherproject_org_pass
+
+    scm:
+      - onf-infra-gerrit-scm:
+          git-url: '{gerrit-server-ssh-url}/$GERRIT_PROJECT'
+          refspec: '$GERRIT_REFSPEC'
+          branch: '$GERRIT_BRANCH'
+          submodule-disable: '{submodule-disable}'
+          submodule-recursive: 'false'
+          submodule-timeout: '{submodule-timeout}'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: ''
+
+    node: 'ubuntu18.04-basebuild-2c-4g'
+    project-type: freestyle
+    concurrent: true
+
+    builders:
+      - shell: !include-raw-escape: jjb/shell/helm-lint.sh

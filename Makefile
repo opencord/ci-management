@@ -8,7 +8,7 @@ JOBCONFIG_DIR ?= job-configs
 
 $(VENV_DIR):
 	@echo "Setting up virtualenv for JJB testing"
-	virtualenv -p python3 $@
+	python3 -m venv $@
 	$@/bin/pip install jenkins-job-builder==$(JJB_VERSION) pipdeptree
 
 $(JOBCONFIG_DIR):
