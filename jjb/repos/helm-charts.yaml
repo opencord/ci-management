@@ -1,0 +1,19 @@
+---
+# SPDX-FileCopyrightText: 2022 Open Networking Foundation <info@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
+# These are the CORD specific helm charts
+
+- project:
+    name: helm-charts
+    project: '{name}'
+    project-regexp: '^{name}$'
+    branch-regexp: '{modern-branches-regexp}'
+
+    jobs:
+      - 'verify-licensed'
+      - 'tag-check'
+      - 'helm-lint':
+          branch-regexp: '{modern-branches-regexp}'
+      - 'version-tag'
+      - 'publish-helm-repo'

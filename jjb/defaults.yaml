@@ -11,8 +11,11 @@
     # lftools
     lftools-version: '~=0.26.2'
 
-    # LF templates require these to be set in later versions of global-jjb
-    submodule-disable: 'false'
+    # git module config
+    # LF templates require these to be set in later versions of global-jjb for git module
+    choosing_strategy: 'default'
+    submodule-disable: false
+    submodule-recursive: false
     submodule-timeout: 10
 
     # name of the SSH key to use in most cases
@@ -63,6 +66,7 @@
 
     # URL for Gerrit server, for use with `repo`
     gerrit-server-url: 'https://gerrit.opencord.org'
+    gerrit-server-ssh-url: 'ssh://jenkins@gerrit.opencord.org:29418'
 
     # name of the manifest git repos used with the `repo` cli tool
     cord-repo-manifest: manifest.git
@@ -72,9 +76,6 @@
 
     # default email address to send job failure messages
     failure-email-address: 'cord-dev@opencord.org'
-
-    # Projects containing helm-charts
-    helm-charts-projects-regexp: '(comac-helm-charts|voltha-helm-charts|helm-charts|cord-platform|seba)$'
 
     # regexp for gerrit triggers
     # list of supported branches, for branch-regexp
@@ -93,7 +94,7 @@
     semver-strict: 0
 
     # matching repos that should be version tagged by the version-tag job
-    version-tag-projects-regexp: '^(?!aether)(xos.*|comac-helm-charts|voltha-helm-charts|helm-charts|automation-tools|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric.*|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|.*-workflow-driver|ves-agent|voltha-bbsim|openolt|sadis-server|kafka-topic-exporter|pyvoltha||plyxproto|voltha-protos|alpine-grpc-base|cordctl|voltha-go|voltha-onos|device-management|cord-workflow.*|voltha-system-tests|openairinterface|omec-.*|bbsim|omci-sim|ponsim|pppoe.*|voltha-api-server|aaa|config|dhcpl2relay|igmp|igmpproxy|kafka-onos|mcast|olt|sadis|vtn|voltha-.*-adapter.*|voltha-lib-go|voltha-python-base|voltha-docker-tools|mn-stratum-siab|ofagent.*|bng|voltctl|openolt-scale-tester|nem-ondemand-proxy|multifabric|openolt-test|omci-lib-go|kind-voltha|voltha-docs|mac-learning|goloxi|device-management-interface|bbsim-sadis-server|olttopology|opendm-agent|opendevice-manager|.*-robot)$'
+    version-tag-projects-regexp: '^(?!aether)(xos.*|comac-helm-charts|automation-tools|cord-tester|chameleon|rcord|mcord|ecord|acordion|addressmanager|epc-service|exampleservice|fabric.*|globalxos|hippie-oss|hss_db|hypercache|internetemulator|kubernetes-service|monitoring|olt-service|onos-service|openstack|progran|sdn-controller|simpleexampleservice|templateservice|vEE|vEG|vBBU|venb|vHSS|vMME|vnaas|vPGWC|vPGWU|vrouter|vsg|vsg-hw|vSGW|vSM|vspgwc|vspgwu|vtn-service|vtr|.*-workflow-driver|ves-agent|voltha-bbsim|openolt|sadis-server|kafka-topic-exporter|pyvoltha||plyxproto|voltha-protos|alpine-grpc-base|cordctl|voltha-go|voltha-onos|device-management|cord-workflow.*|voltha-system-tests|openairinterface|omec-.*|bbsim|omci-sim|ponsim|pppoe.*|voltha-api-server|aaa|config|dhcpl2relay|igmp|igmpproxy|kafka-onos|mcast|olt|sadis|vtn|voltha-.*-adapter.*|voltha-lib-go|voltha-python-base|voltha-docker-tools|mn-stratum-siab|ofagent.*|bng|voltctl|openolt-scale-tester|nem-ondemand-proxy|multifabric|openolt-test|omci-lib-go|kind-voltha|mac-learning|goloxi|device-management-interface|bbsim-sadis-server|olttopology|opendm-agent|opendevice-manager|.*-robot)$'
 
     # List of all repos that contribute to the CORD guide
     cord-guide-projects-regexp: '^(att-workflow-driver|cord-tester|cordctl|exampleservice|fabric|fabric-crossconnect|hippie-oss|kubernetes-service|olt-service|onos-service|openolt|openstack|rcord|simpleexampleservice|vrouter|vtn-service|xos|xos-gui|xos-tosca)$'
@@ -135,10 +136,6 @@
     code-files-regexp: '^(?!docs|VERSION|\/COMMIT_MSG).*$'
     api-test-files-regexp: '^(?!docs|VERSION|\/COMMIT_MSG|Jenkinsfile-*).*$'
 
-    # Jenkins SSH host doc publisher
-    docs-ssh-host: 'guide.opencord.org'
-    docs-ssh-host-key: 'guide.opencord.org,52.9.82.207 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBFHwOY3/8GucdKzBngH/FC08nHac/RJ/OheZp2+5EpOPXZG9zQW2YUbXH5A9pO76lI5CG3z3+huG62xEGo99UQU='
-
     # siab helm-charts
     siab-projects-regexp: '^(xos-core/.*|xos-profiles/seba-services/.*|xos-profiles/base-kubernetes/.*|xos-profiles/ponsim-pod/.*|workflows/att-workflow/.*|voltha/.*|onos/.*|mininet/.*|configs/seba-ponsim.yaml)$'
 
@@ -170,7 +167,7 @@
     # github organization
     # Specifies the github organization to operate on.  Default is blank which
     # may either be invalid, or specify that gerrit should be used instead.
-    # Currently used with: synopsys detect, github-release
+    # Currently used with: github-release
     github-organization: ''
 
     # release targets
@@ -196,7 +193,7 @@
 
     # maintainers
     # Used to notify users in supported tests
-    maintainers: 'zdw@opennetworking.org'
+    maintainers: ''
 
     # karaf-home
     # Use to grab the logs or onos-diagnostics

@@ -4,6 +4,7 @@
 - project:
     name: voltha-docs
     project: '{name}'
+    project-regexp: '^{name}$'
 
     jobs:
       - 'verify-voltha-docs-jobs':
@@ -15,7 +16,7 @@
     name: 'verify-voltha-docs-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
+      - 'tag-check'
       - 'make-unit-test':
           unit-test-targets: 'test'
           junit-allow-empty-results: true
@@ -23,9 +24,11 @@
 - job-group:
     name: 'post-submit-voltha-docs-jobs'
     jobs:
+      - 'version-tag'
       - 'sync-dir':
+          dependency-jobs: 'version-tag_voltha-docs'
           build-command: 'make multiversion'
           build-output-path: '_build/multiversion/'
-          sync-target-server: 'guide.opencord.org'
-          sync-target-path: '/var/www/voltha-docs/'
+          sync-target-server: 'static.opennetworking.org'
+          sync-target-path: '/srv/sites/docs.voltha.org/'
           build-timeout: 60

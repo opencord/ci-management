@@ -1,0 +1,49 @@
+---
+# SPDX-FileCopyrightText: 2020 Open Networking Foundation <info@opennetworking.org>
+# SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
+
+- job-template:
+    id: publish-helm-repo
+    name: 'publish-helm-repo_{project}'
+    description: |
+      Created by publish-helm-repo job-template from
+      ci-management/jjb/templates/publish-helm-repo.yaml
+    disabled: '{disable-job}'
+
+    triggers:
+      - onf-infra-gerrit-trigger-merge:
+          gerrit-server-name: '{gerrit-server-name}'
+          project-regexp: '{project}'
+          branch-regexp: '{all-branches-regexp}'
+          file-include-regexp: '{all-files-regexp}'
+          dependency-jobs: ''
+
+    properties:
+      - onf-infra-properties:
+          build-days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+    wrappers:
+      - onf-infra-rsync-wrappers:
+          build-timeout: '{build-timeout}'
+          ssh_credential_list:
+            - 'new-cord-jenkins-ssh'
+
+    scm:
+      - onf-infra-gerrit-scm:
+          git-url: '{gerrit-server-ssh-url}/$GERRIT_PROJECT'
+          refspec: ''
+          branch: '$GERRIT_BRANCH'
+          submodule-disable: '{submodule-disable}'
+          submodule-recursive: 'false'
+          submodule-timeout: '{submodule-timeout}'
+          choosing-strategy: gerrit
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: ''
+
+    node: 'ubuntu18.04-basebuild-2c-4g'
+    project-type: freestyle
+    concurrent: false
+
+    builders:
+      - shell: !include-raw-escape: jjb/shell/publish-helm-repo.sh
