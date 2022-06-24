@@ -61,11 +61,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: |
-            --set authRetry=false,dhcpRetry=false
-            -f /home/jenkins/voltha-scale/voltha-values.yaml
-            --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn
-            --set global.rpc_timeout=30s
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn --set global.rpc_timeout=30s'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-onu-upgrade-2-16-32-att-onus'
