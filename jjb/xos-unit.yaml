@@ -37,8 +37,8 @@
     concurrent: true
 
     builders:
-      - cord-infra-gerrit-repo-patch:
-          destination-dir: 'cord'
+      - onf-infra-gerrit-repo-patch:
+          basedir: 'cord'
           project: '$GERRIT_PROJECT'
           change-number: '$GERRIT_CHANGE_NUMBER'
           patchset-number: '$GERRIT_PATCHSET_NUMBER'

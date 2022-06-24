@@ -1,4 +1,7 @@
 ---
+# SPDX-FileCopyrightText: 2020 Open Networking Foundation <info@opennetworking.org>
+# SPDX-License-Identifier: Apache-2.0
+
 # sync built directory to a remote server
 
 - job-template:
@@ -17,7 +20,8 @@
       - string:
           name: BUILD_OUTPUT_PATH
           default: '{build-output-path}'
-          description: 'Path of files where build output is created by build command, relative to code checkout location'
+          description: >-
+            Path of files where build output is created by build command, relative to code checkout location
 
       - string:
           name: SYNC_TARGET_SERVER
@@ -30,7 +34,7 @@
           description: 'Directory path on target server where the files will be synced'
 
     triggers:
-      - cord-infra-gerrit-trigger-merge:
+      - onf-infra-gerrit-trigger-merge:
           gerrit-server-name: '{gerrit-server-name}'
           project-regexp: '^{project}$'
           branch-regexp: '{branch-regexp}'
@@ -38,30 +42,32 @@
           dependency-jobs: '{dependency-jobs}'
 
     properties:
-      - cord-infra-properties:
+      - onf-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
     wrappers:
       - onf-infra-rsync-wrappers:
           build-timeout: '{build-timeout}'
-          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+          ssh_credential_list:
+            - 'new-cord-jenkins-ssh'
 
     scm:
-      - lf-infra-gerrit-scm:
-          git-url: '$GIT_URL/$GERRIT_PROJECT'
+      - onf-infra-gerrit-scm:
+          git-url: '{gerrit-server-ssh-url}/$GERRIT_PROJECT'
           refspec: '$GERRIT_REFSPEC'
           branch: '$GERRIT_BRANCH'
           submodule-disable: '{submodule-disable}'
           submodule-recursive: 'false'
           submodule-timeout: '{submodule-timeout}'
           choosing-strategy: gerrit
-          jenkins-ssh-credential: '{gerrit-ssh-credential}'
+          jenkins-ssh-credential: '{jenkins-ssh-credential}'
+          basedir: ''
 
     node: '{build-node}'
     project-type: freestyle
     concurrent: true
 
     builders:
-      - shell: !include-raw-escape: ../shell/sync-dir.sh
+      - shell: !include-raw-escape: jjb/shell/sync-dir.sh
 

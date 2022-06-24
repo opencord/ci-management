@@ -43,19 +43,6 @@
           choosing-strategy: '{choosing-strategy}'
           basedir: '{basedir}'
 
-# download a specific patchset after checking out entire source tree with repo
-# docs: https://docs.openstack.org/infra/jenkins-job-builder/builders.html#builders.inject
-- builder:
-    name: cord-infra-gerrit-repo-patch
-    builders:
-      - inject:
-          properties-content: |
-            DESTINATION_DIR={destination-dir}
-            GERRIT_PROJECT={project}
-            GERRIT_CHANGE_NUMBER={change-number}
-            GERRIT_PATCHSET_NUMBER={patchset-number}
-      - shell: !include-raw-escape: shell/repopatch.sh
-
 # trigger on gerrit patchsets and actions
 # docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.gerrit
 - trigger:
@@ -173,25 +160,6 @@
             - file-id: pipconf
               target: '$HOME/.config/pip/pip.conf'
 
-# wrapper to provide SSH key and fill in ~/.ssh/known_hosts file for use with rsync
-# Name matches macro in ONOS JJB, for future unification
-- wrapper:
-    name: onf-infra-rsync-wrappers
-    wrappers:
-      - mask-passwords
-      - timeout:
-          type: absolute
-          timeout: '{build-timeout}'
-          timeout-var: 'BUILD_TIMEOUT'
-          fail: true
-      - timestamps
-      - ssh-agent-credentials:
-          users:
-            - '{jenkins-ssh-credential}'
-      - config-file-provider:
-          files:
-            - file-id: known_hosts
-              target: '$HOME/.ssh/known_hosts'
 
 # Sets permissions for job to be visible to AetherAccess only
 # (for Aether member-only repos).
@@ -226,3 +194,144 @@
                 <permission>hudson.model.Item.Read:ONFStaff</permission>
                 <permission>hudson.model.Item.ViewStatus:anonymous</permission>
               </hudson.security.AuthorizationMatrixProperty>
+
+################## NEW and CONVERGED MACROS ###################
+# Name matches macro in ONOS/Aether JJB, for future unification
+
+# control how long builds and artifact are retained
+# differs from lf-infra-properties as it retains artifacts
+- property:
+    name: onf-infra-properties
+    properties:
+      - build-discarder:
+          days-to-keep: '{build-days-to-keep}'
+          artifact-num-to-keep: '{artifact-num-to-keep}'
+
+# wrapper to provide SSH key and fill in ~/.ssh/known_hosts file for use with rsync
+- wrapper:
+    name: onf-infra-rsync-wrappers
+    wrappers:
+      - mask-passwords
+      - timeout:
+          type: absolute
+          timeout: '{build-timeout}'
+          timeout-var: 'BUILD_TIMEOUT'
+          fail: true
+      - timestamps
+      - ssh-agent-credentials:
+          users: '{obj:ssh_credential_list}'
+      - config-file-provider:
+          files:
+            - file-id: known_hosts
+              target: '$HOME/.ssh/known_hosts'
+
+# trigger on gerrit patchsets and actions
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/triggers.html#triggers.gerrit
+# Uses a regex based project match
+- trigger:
+    name: onf-infra-gerrit-trigger-patchset
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: true
+          trigger-on:
+            - patchset-created-event:
+                exclude-drafts: true
+                exclude-trivial-rebase: false
+                exclude-no-code-change: false
+            - draft-published-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*recheck$'
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '{project-regexp}'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{branch-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '{file-include-regexp}'
+
+# trigger for gerrit patch submission
+- trigger:
+    name: onf-infra-gerrit-trigger-merge
+    triggers:
+      - gerrit:
+          server-name: '{gerrit-server-name}'
+          dependency-jobs: '{dependency-jobs}'
+          silent-start: true
+          trigger-on:
+            - change-merged-event
+          projects:
+            - project-compare-type: REG_EXP
+              project-pattern: '{project-regexp}'
+              branches:
+                - branch-compare-type: REG_EXP
+                  branch-pattern: '{branch-regexp}'
+              file-paths:
+                - compare-type: REG_EXP
+                  pattern: '{file-include-regexp}'
+
+# same as lf-infra-*-scm, but allows checkouts to a subdir of $WORKSPACE
+# with the `basedir` option
+#
+# `basedir` is used as `destination-dir` for the repo scm macros for
+# consistency
+
+- scm:
+    name: onf-infra-gerrit-scm
+    scm:
+      - git:
+          credentials-id: '{jenkins-ssh-credential}'
+          url: '{git-url}'
+          refspec: '{refspec}'
+          branches:
+            - 'refs/heads/{branch}'
+          wipe-workspace: true
+          submodule:
+            disable: '{submodule-disable}'
+            recursive: '{submodule-recursive}'
+            timeout: '{submodule-timeout}'
+          choosing-strategy: '{choosing-strategy}'
+          basedir: '{basedir}'
+
+- scm:
+    name: onf-infra-gerrit-repo-scm
+    scm:
+      - repo:
+          manifest-url: '{manifest-url}'
+          manifest-branch: '{branch}'
+          destination-dir: '{basedir}'
+          jobs: 4
+          reset-first: true
+          depth: 1
+
+# download a specific patchset after checking out entire source tree with repo
+# docs: https://docs.openstack.org/infra/jenkins-job-builder/builders.html#builders.inject
+- builder:
+    name: onf-infra-gerrit-repo-patch
+    builders:
+      - inject:
+          properties-content: |
+            BASEDIR={basedir}
+            GERRIT_PROJECT={project}
+            GERRIT_CHANGE_NUMBER={change-number}
+            GERRIT_PATCHSET_NUMBER={patchset-number}
+      - shell: !include-raw-escape: shell/repo-patch.sh
+
+# publisher to clean up the workspace after the build whatever the result
+- publisher:
+    name: onf-infra-wscleanup-publisher
+    publishers:
+      - workspace-cleanup:
+          clean-if:
+            - success: true
+            - unstable: true
+            - failure: true
+            - aborted: true
+            - not-built: true
+          dirmatch: false
+          fail-build: true
+          clean-parent: false
+          disable-deferred-wipeout: false
