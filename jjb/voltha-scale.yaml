@@ -47,7 +47,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          # extraHelmFlags: " -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn "
+          # extraHelmFlags: " -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn "
 
       # jobs for 1024 ONUs with openonu-go and clustered ONOS (2 OLTs)
       - 'voltha-scale-measurements':
@@ -63,7 +63,7 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-onu-upgrade-2-16-32-att-onus'
@@ -79,7 +79,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=3s'
+          extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=3s'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
@@ -94,7 +94,7 @@
           withEapol: false
           withDhcp: false
           withIgmp: false
-          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -112,7 +112,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: >
-            --set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
+            --set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn
             --set global.rpc_timeout=30s,global.adapter_open_onu.timeout=30s,global.adapter_open_olt.timeout=30s,global.adapter_open_olt.rpc_timeout=30s
           onosStatInterval: 30
           onosGroupInterval: 30
@@ -135,7 +135,7 @@
           onosReplicas: 3
           atomixReplicas: 3
           extraHelmFlags: >
-           --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values-tt.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn
+           --set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values-tt.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn
            --set onos-classic.image.repository=andreacampanella/voltha-onos --set onos-classic.image.tag=maclearner
            --set bbsim-sadis-server.images.bbsim_sadis_server.tag=master
 
@@ -158,7 +158,7 @@
           onosImg: andreacampanella/voltha-onos:4k-dev
           withMibTemplate: false
           mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-v0.0.1-BBSM_IMG_00001-v1-1UNI.json'
-          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn'
+          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
             name: 'voltha-scale-measurements-master-1-64-63-dt-subscribers'
@@ -177,7 +177,7 @@
             onosImg: andreacampanella/voltha-onos:4k-dev
             withMibTemplate: false
             mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-v0.0.1-BBSM_IMG_00001-v1-1UNI.json'
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
+            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
 
       - 'voltha-scale-measurements':
             name: 'voltha-scale-measurements-master-1-64-63-tt-subscribers'
@@ -196,7 +196,7 @@
             onosImg: andreacampanella/voltha-onos:4k-dev
             withMibTemplate: false
             mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-v0.0.1-BBSM_IMG_00001-v1-1UNI.json'
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn -f /home/cord/tt-custom-values.yaml'
+            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn -f /home/cord/tt-custom-values.yaml'
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -291,7 +291,7 @@
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
           onosImg: ''
-          extraHelmFlags: "--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
+          extraHelmFlags: "--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn"
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-dt-subscribers'
@@ -316,7 +316,7 @@
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
           onosImg: 'voltha/voltha-onos:5.0.4'
-          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
+          extraHelmFlags: "-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn"
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-voltha-2.8-2-16-32-tt-subscribers'
@@ -341,7 +341,7 @@
           openonuAdapterImg: ''
           openonuAdapterGoImg: ''
           onosImg: ''
-          extraHelmFlags: "--set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=true,etcd.persistence.storageClass=longhorn"
+          extraHelmFlags: "--set dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn"
 
       # 2.8 multi-stack jobs
       - 'voltha-scale-measurements':
@@ -847,7 +847,7 @@
     dockerRegistry: 10.90.0.101:30500
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
-    disable-job: true
+    disable-job: false
 
     <<: *voltha-scale-job-parameters
 
