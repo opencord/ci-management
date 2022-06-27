@@ -382,7 +382,6 @@ pipeline {
             export OF_AGENT=\$(kubectl get pods -l app=ofagent -o name)
             kubectl exec \$OF_AGENT -- apk update
             kubectl exec \$OF_AGENT -- apk add tcpdump
-            kubectl exec \$OF_AGENT -- mv /usr/sbin/tcpdump /usr/bin/tcpdump
             _TAG=ofagent-tcpdump kubectl exec \$OF_AGENT -- tcpdump -nei eth0 -w out.pcap&
 
             # Start the tcp-dump in radius
