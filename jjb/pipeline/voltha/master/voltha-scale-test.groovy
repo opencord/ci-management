@@ -348,7 +348,13 @@ pipeline {
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.opencord.olt.impl.Olt provisionDelay 1000
 
           # BBSim logs at debug level don't slow down the system much and are very helpful while troubleshooting
-          kubectl exec \$(kubectl get pods | grep -E "bbsim[0-9]" | awk 'NR==1{print \$1}') -- bbsimctl log debug false
+          BBSIM_IDS=$(kubectl get pods | grep bbsim | grep -v server | awk '{print $1}')
+          IDS=($BBSIM_IDS)
+
+          for bbsim in "${IDS[@]}"
+          do
+            kubectl exec -t $bbsim -- bbsimctl log debug false
+          done
 
           # Set Flows/Ports/Meters/Groups poll frequency
           sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 30115 karaf@127.0.0.1 cfg set org.onosproject.provider.of.flow.impl.OpenFlowRuleProvider flowPollFrequency ${onosStatInterval}
