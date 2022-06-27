@@ -106,6 +106,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
+          disable-job: false
           olts: 2
           pons: 16
           onus: 32
