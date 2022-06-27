@@ -16,6 +16,24 @@
       "message": "log debug is set to false. But commit message says set log to debug.\nIs the log set to debug or not?",
       "revId": "fc648f9eeb969b1dfee4c9bdca8ded2bbd693ad2",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90b0a7cd_c726cad0",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000007
+      },
+      "writtenOn": "2022-06-27T19:23:16Z",
+      "side": 1,
+      "message": "yeah it\u0027s setting the logs at DEBUG level, the command is little confusing as the log command takes two commands (https://github.com/opencord/bbsim/blob/84425a0a7b68dc304aa8444635dbb1f94e9e493e/internal/bbsimctl/commands/logging.go#L30-L35) one to set the log level and one to print the filename and line number (that\u0027s the FALSE in this invocation)",
+      "parentUuid": "1c77554d_1b50f7dd",
+      "revId": "fc648f9eeb969b1dfee4c9bdca8ded2bbd693ad2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
