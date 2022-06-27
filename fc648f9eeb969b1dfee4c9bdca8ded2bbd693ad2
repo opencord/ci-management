@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c77554d_1b50f7dd",
+        "filename": "jjb/pipeline/voltha/master/voltha-scale-test.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 356,
+      "author": {
+        "id": 1000127
+      },
+      "writtenOn": "2022-06-27T19:00:41Z",
+      "side": 1,
+      "message": "log debug is set to false. But commit message says set log to debug.\nIs the log set to debug or not?",
+      "revId": "fc648f9eeb969b1dfee4c9bdca8ded2bbd693ad2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
