@@ -62,6 +62,9 @@
           withDhcp: true
           withIgmp: false
           extraHelmFlags: '--set authRetry=false,dhcpRetry=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn --set global.rpc_timeout=30s --set voltha.ofagent.log_level=DEBUG'
+          onosReplicas: 1
+          atomixReplicas: 1
+          onosImg: andreacampanella/voltha-onos:extend-timeout
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-onu-upgrade-2-16-32-att-onus'
@@ -82,6 +85,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
+          disable-job: false
           olts: 2
           pons: 16
           onus: 32
@@ -92,6 +96,9 @@
           withDhcp: false
           withIgmp: false
           extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn'
+          onosReplicas: 1
+          atomixReplicas: 1
+          onosImg: andreacampanella/voltha-onos:extend-timeout
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
