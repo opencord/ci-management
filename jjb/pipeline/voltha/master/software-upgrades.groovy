@@ -89,7 +89,7 @@ def test_software_upgrade(name) {
          split = onosImg.split(':')
         extraHelmFlags = extraHelmFlags + " --set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
       }
-      def olts = 1
+      Integer olts = 1
       if ("${name}" == "onu-image-dwl-simultaneously") {
           olts = 2
       }
