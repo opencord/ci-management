@@ -4,6 +4,7 @@
 - job-template:
     id: maven-test
     name: 'verify_{project}_maven-test{name-extension}'
+    sandbox: true
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml
@@ -78,6 +79,7 @@
 - job-template:
     id: maven-publish
     name: 'maven-publish{name-extension}_{project}'
+    sandbox: true
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/maven.yaml

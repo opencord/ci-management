@@ -13,6 +13,7 @@
 - job-template:
     id: onos-app-release
     name: 'onos-app-release'
+    sandbox: true
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/onos-app-release.yaml
@@ -74,4 +75,3 @@
     concurrent: true
 
     dsl: !include-raw-escape: pipeline/onos-app-release.groovy
-
