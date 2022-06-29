@@ -1386,56 +1386,74 @@
               logging: true
 
       # ATT Per-patchset Pod builds on Tucson pod (master)
-      - 'verify_physical_voltha_patchset_auto':
-          name: 'verify_physical_voltha_patchset_auto'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
-          workflow: 'att'
-          branch-pattern: master
+      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
+      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
+      # the job when the OLT is replaced and everything works fine.
+      #- 'verify_physical_voltha_patchset_auto':
+      #    name: 'verify_physical_voltha_patchset_auto'
+      #    extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
+      #    workflow: 'att'
+      #    branch-pattern: master
 
 
       # ATT Per-patchset Pod builds on Tucson pod (voltha-2.8)
-      - 'verify_physical_voltha_patchset_auto':
-          name: 'verify_physical_voltha_patchset_auto-2.8'
-          pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
-          extraHelmFlags: '--set global.log_level=debug'
-          workflow: 'att'
-          branch-pattern: voltha-2.8
+      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
+      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
+      # the job when the OLT is replaced and everything works fine.
+      #- 'verify_physical_voltha_patchset_auto':
+      #    name: 'verify_physical_voltha_patchset_auto-2.8'
+      #    pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
+      #    extraHelmFlags: '--set global.log_level=debug'
+      #    workflow: 'att'
+      #    branch-pattern: voltha-2.8
 
       # ATT Manual Pod builds on Tucson pod (master)
-      - 'verify_physical_voltha_patchset_manual':
-          name: 'verify_physical_voltha_patchset_manual'
-          trigger-string: 'hardware test'
-          branch-pattern: master
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
-          workflow: 'att'
+      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
+      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
+      # the job when the OLT is replaced and everything works fine.
+      #- 'verify_physical_voltha_patchset_manual':
+      #    name: 'verify_physical_voltha_patchset_manual'
+      #    trigger-string: 'hardware test'
+      #    branch-pattern: master
+      #    extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
+      #    workflow: 'att'
 
       # ATT Manual Pod builds on Tucson pod (voltha-2.8)
-      - 'verify_physical_voltha_patchset_manual':
-          name: 'verify_physical_voltha_patchset_manual-2.8'
-          pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
-          trigger-string: 'hardware test'
-          branch-pattern: voltha-2.8
-          extraHelmFlags: '--set global.log_level=debug'
-          workflow: 'att'
+      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
+      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
+      # the job when the OLT is replaced and everything works fine.
+      #- 'verify_physical_voltha_patchset_manual':
+      #    name: 'verify_physical_voltha_patchset_manual-2.8'
+      #    pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
+      #    trigger-string: 'hardware test'
+      #    branch-pattern: voltha-2.8
+      #    extraHelmFlags: '--set global.log_level=debug'
+      #    workflow: 'att'
 
       # DT Manual Pod builds on Tucson pod  (master)
-      - 'verify_physical_voltha_patchset_manual':
-          name: 'verify_physical_voltha_patchset_manual_DT'
-          workflow: 'dt'
-          trigger-string: 'DT hardware test'
-          default-test-args: '-i sanityDt -i PowerSwitch -X'
-          branch-pattern: master
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
+      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
+      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
+      # the job when the OLT is replaced and everything works fine.
+      #- 'verify_physical_voltha_patchset_manual':
+      #    name: 'verify_physical_voltha_patchset_manual_DT'
+      #    workflow: 'dt'
+      #    trigger-string: 'DT hardware test'
+      #    default-test-args: '-i sanityDt -i PowerSwitch -X'
+      #    branch-pattern: master
+      #    extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
 
       # DT Manual Pod builds on Tucson pod  (voltha-2.8)
-      - 'verify_physical_voltha_patchset_manual':
-          name: 'verify_physical_voltha_patchset_manual_DT-2.8'
-          pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
-          workflow: 'dt'
-          trigger-string: 'DT hardware test'
-          default-test-args: '-i sanityDt -i PowerSwitch -X'
-          branch-pattern: voltha-2.8
-          extraHelmFlags: '--set global.log_level=debug'
+      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
+      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
+      # the job when the OLT is replaced and everything works fine.
+      #- 'verify_physical_voltha_patchset_manual':
+      #    name: 'verify_physical_voltha_patchset_manual_DT-2.8'
+      #    pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
+      #    workflow: 'dt'
+      #    trigger-string: 'DT hardware test'
+      #    default-test-args: '-i sanityDt -i PowerSwitch -X'
+      #    branch-pattern: voltha-2.8
+      #    extraHelmFlags: '--set global.log_level=debug'
 
 - job-template:
     id: 'voltha-periodic-test'
@@ -1919,7 +1937,7 @@
     build-node: 'tucson-pod'
     config-pod: 'tucson-pod'
     profile: 'Default'
-    oltDebVersionMaster: 'openolt_asfvolt16-3.6.2-602bf0a2b75e27e241cb73d7daf1e2c883539102-40G-NNI.deb'
+    oltDebVersionMaster: 'openolt_asfvolt16-3.7.4-3b190f027136e845c5850a5b1a97897ce2b74ebf-40G-NNI.deb'
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.4.9-e2a9597f3d690fe3a0ea0df244571dfc9e8c2833-40G-NNI.deb'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
@@ -1968,7 +1986,7 @@
     sandbox: true
     build-node: 'tucson-pod'
     config-pod: 'tucson-pod'
-    oltDebVersionMaster: 'openolt_asfvolt16-3.6.2-602bf0a2b75e27e241cb73d7daf1e2c883539102-40G-NNI.deb'
+    oltDebVersionMaster: 'openolt_asfvolt16-3.7.4-3b190f027136e845c5850a5b1a97897ce2b74ebf-40G-NNI.deb'
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.4.9-e2a9597f3d690fe3a0ea0df244571dfc9e8c2833-40G-NNI.deb'
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
     trigger-string: 'hardware test'
