@@ -18,6 +18,10 @@
           name-extension: '-voltha-2.9'
           override-branch: 'voltha-2.9'
           branch-regexp: '^voltha-2.9$'
+      - 'verify-voltha-helm-charts-jobs-voltha-2.10':
+          name-extension: '-voltha-2.10'
+          override-branch: 'voltha-2.10'
+          branch-regexp: '^voltha-2.10$'
       - 'verify-voltha-helm-charts-jobs-master':
           branch-regexp: '^master$'
 
@@ -41,6 +45,12 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.9/bbsim-tests.groovy'
+
+- job-group:
+    name: 'verify-voltha-helm-charts-jobs-voltha-2.10'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/voltha-2.10/bbsim-tests.groovy'
 
 - job-group:
     name: 'verify-voltha-helm-charts-jobs-master'

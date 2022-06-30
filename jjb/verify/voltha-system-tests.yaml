@@ -19,6 +19,11 @@
           name-extension: '-voltha-2.9'
           override-branch: 'voltha-2.9'
           branch-regexp: '^voltha-2.9$'
+      - 'verify-voltha-system-tests-jobs-voltha-2.10':
+          build-node:  'ubuntu18.04-basebuild-4c-8g'
+          name-extension: '-voltha-2.10'
+          override-branch: 'voltha-2.10'
+          branch-regexp: '^voltha-2.10$'
       - 'verify-voltha-system-tests-jobs-master':
           build-node:  'ubuntu18.04-basebuild-4c-8g'
           branch-regexp: '^master$'
@@ -45,6 +50,12 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.9/bbsim-tests.groovy'
+
+- job-group:
+    name: 'verify-voltha-system-tests-jobs-voltha-2.10'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/voltha-2.10/bbsim-tests.groovy'
 
 - job-group:
     name: 'verify-voltha-system-tests-jobs-master'
