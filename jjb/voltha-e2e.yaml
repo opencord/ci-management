@@ -712,6 +712,62 @@
           timeout: 235
 
       - 'voltha-periodic-test':
+          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.10'
+          pipeline-script: 'voltha/voltha-2.10/bbsim-tests.groovy'
+          code-branch: 'voltha-2.10'
+          extraHelmFlags: '--set onu=2,pon=2'
+          olts: 2
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t4gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t8gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+          time-trigger: "H H/23 * * *"
+          timeout: 235
+
+      - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.9'
           pipeline-script: 'voltha/voltha-2.9/bbsim-tests.groovy'
           code-branch: 'voltha-2.9'
