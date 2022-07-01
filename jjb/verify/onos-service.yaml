@@ -26,4 +26,4 @@
     jobs:
       - 'docker-publish':
           docker-repo: 'xosproject'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'

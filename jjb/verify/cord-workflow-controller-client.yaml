@@ -28,4 +28,4 @@
     jobs:
       - 'pypi-publish':
           project-regexp: '^{name}$'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'

@@ -32,6 +32,6 @@
     jobs:
       - 'github-release':
           build-node: 'ubuntu18.04-basebuild-2c-4g'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'
           github-organization: 'opencord'
           artifact-glob: 'release/*'
