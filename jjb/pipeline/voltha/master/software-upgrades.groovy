@@ -68,13 +68,19 @@ def test_software_upgrade(name) {
       _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
       """
       def extraHelmFlags = extraHelmFlags.trim()
-      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg" || "${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
           extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
+      }
+      if ("${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg") {
+          extraHelmFlags = " --set global.extended_omci_support.enabled=true " + extraHelmFlags
+      }
+      if ("${name}" == "onu-software-upgrade-omci-extended-msg") {
+          extraHelmFlags = " --set omccVersion=180 " + extraHelmFlags
       }
       if ("${name}" == "onu-image-dwl-simultaneously") {
           extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=2,pon=2 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
       }
-      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-image-dwl-simultaneously") {
+      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg" || "${name}" == "onu-image-dwl-simultaneously") {
           extraHelmFlags = " --set global.image_tag=master --set onos-classic.image.tag=master " + extraHelmFlags
       }
       if ("${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
@@ -177,7 +183,7 @@ def test_software_upgrade(name) {
         if [[ ${name} == 'voltha-component-rolling-upgrade' ]]; then
           export TARGET=voltha-comp-rolling-upgrade-test
         fi
-        if [[ ${name} == 'onu-software-upgrade' ]]; then
+        if [ ${name} == 'onu-software-upgrade' ] || [ ${name} == 'onu-software-upgrade-omci-extended-msg' ]; then
           export ROBOT_MISC_ARGS="-d \$ROBOT_LOGS_DIR -v image_version:${onuImageVersion.trim()} -v image_url:${onuImageUrl.trim()} -v image_vendor:${onuImageVendor.trim()} -v image_activate_on_success:${onuImageActivateOnSuccess.trim()} -v image_commit_on_success:${onuImageCommitOnSuccess.trim()} -v image_crc:${onuImageCrc.trim()} -e PowerSwitch"
           export TARGET=onu-upgrade-test
         fi
@@ -235,7 +241,7 @@ pipeline {
     label "${params.buildNode}"
   }
   options {
-    timeout(time: 150, unit: 'MINUTES')
+    timeout(time: 220, unit: 'MINUTES')
   }
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
@@ -273,6 +279,7 @@ pipeline {
         test_software_upgrade("voltha-component-upgrade")
         test_software_upgrade("voltha-component-rolling-upgrade")
         test_software_upgrade("onu-software-upgrade")
+        test_software_upgrade("onu-software-upgrade-omci-extended-msg")
         test_software_upgrade("onu-image-dwl-simultaneously")
       }
     }
