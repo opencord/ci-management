@@ -16,6 +16,46 @@
       "message": "recheck\n",
       "revId": "6092257aff4d6496c7b4cb1647e24dfd4f88462a",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b569729c_9c5e6083",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-07-06T12:16:14Z",
+      "side": 1,
+      "message": "LGTM. Just one suggestion, if possible run this manually once before submission by using Replay option in Jenkins.",
+      "revId": "6092257aff4d6496c7b4cb1647e24dfd4f88462a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8906ae31_9f4b2721",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000741
+      },
+      "writtenOn": "2022-07-06T12:16:14Z",
+      "side": 1,
+      "message": "Indentation needs a fix.",
+      "range": {
+        "startLine": 77,
+        "startChar": 0,
+        "endLine": 79,
+        "endChar": 4
+      },
+      "revId": "6092257aff4d6496c7b4cb1647e24dfd4f88462a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
