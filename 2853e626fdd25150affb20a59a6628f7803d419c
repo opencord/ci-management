@@ -16,6 +16,24 @@
       "message": "Are the tests taking so much more time now?",
       "revId": "2853e626fdd25150affb20a59a6628f7803d419c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6d565c78_cd44be47",
+        "filename": "jjb/pipeline/voltha/master/software-upgrades.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 244,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2022-07-07T10:11:32Z",
+      "side": 1,
+      "message": "I increase from 150 minutes to 220 because the whole ONU Upgrade test suite will run now twice, one for OMCC Version (OMCI messages) baseline and one for OMCC Version extended. Each run takes about 60 minutes. The additional deploy voltha adds some minutes too. So I think with an increase by 70 minutes we are save.",
+      "parentUuid": "d6ce255a_30cb7c5e",
+      "revId": "2853e626fdd25150affb20a59a6628f7803d419c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
