@@ -66,5 +66,5 @@
       - 'docker-publish':
           build-timeout: 30
           docker-repo: 'voltha'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'
           extraEnvironmentVars: BUILD_PROFILED=true

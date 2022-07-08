@@ -26,4 +26,4 @@
       - 'docker-publish':
           build-timeout: 60
           docker-repo: 'omecproject'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'

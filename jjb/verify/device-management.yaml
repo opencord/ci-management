@@ -29,4 +29,4 @@
       - 'docker-publish':
           maintainers: "scottb@opennetworking.org"
           docker-repo: 'opencord'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'

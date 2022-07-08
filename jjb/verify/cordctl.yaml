@@ -28,6 +28,6 @@
     name: 'post-submit-cordctl-jobs'
     jobs:
       - 'github-release':
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'
           github-organization: 'opencord'
           artifact-glob: 'release/*'

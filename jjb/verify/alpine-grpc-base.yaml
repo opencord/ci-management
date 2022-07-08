@@ -23,4 +23,4 @@
       - 'docker-publish':
           build-timeout: 30
           docker-repo: 'xosproject'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'

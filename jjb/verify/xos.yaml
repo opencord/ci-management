@@ -42,9 +42,9 @@
           pypi-module-dirs: 'lib/xos-config|lib/xos-genx|lib/xos-util|lib/xos-api|lib/xos-migrate|lib/xos-synchronizer|lib/xos-kafka'
           project-regexp: '^{name}$'
           pypi-index: 'pypi'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'
       - 'docker-publish':
           maintainers: "teo@opennetworking.org, andy@opennetworking.org, scottb@opennetworking.org"
           build-timeout: 30
           docker-repo: 'xosproject'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'

@@ -27,4 +27,4 @@
     jobs:
       - 'docker-publish':
           docker-repo: 'voltha'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'

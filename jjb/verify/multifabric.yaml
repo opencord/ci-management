@@ -27,4 +27,4 @@
       - 'docker-publish':
           maintainers: "hyunsun@opennetworking.org"
           docker-repo: 'xosproject'
-          dependency-jobs: 'version-tag'
+          dependency-jobs: 'version-tag_wildcard'
