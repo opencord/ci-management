@@ -329,7 +329,7 @@
               flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
               teardown: true
               logging: true
-          timeout: 180
+          timeout: 210
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
@@ -498,7 +498,7 @@
               flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
               teardown: true
               logging: true
-          timeout: 180
+          timeout: 210
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.9-openonu-go-test-bbsim'
