@@ -18,6 +18,7 @@
 
     properties:
       - cord-infra-properties:
+          authorization: '{onf-infra-volthadevs-permissions}'
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
 
