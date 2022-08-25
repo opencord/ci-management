@@ -1539,6 +1539,7 @@
       E2E Validation for Voltha 2.X
 
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{big-build-days-to-keep}'
           artifact-num-to-keep: '{big-artifact-num-to-keep}'
@@ -1704,6 +1705,7 @@
       E2E Validation for Voltha 2.X
 
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
@@ -2000,6 +2002,7 @@
     extraHelmFlags: ''
 
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
@@ -2053,6 +2056,7 @@
     extraHelmFlags: ''
 
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'

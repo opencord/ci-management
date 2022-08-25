@@ -17,6 +17,7 @@
           dependency-jobs: '{dependency-jobs}'
 
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'

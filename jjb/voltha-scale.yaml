@@ -797,6 +797,7 @@
       Scale measurements for VOLTHA 2.x
 
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{big-build-days-to-keep}'
           artifact-num-to-keep: '{big-artifact-num-to-keep}'
