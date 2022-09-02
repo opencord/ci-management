@@ -84,6 +84,7 @@
       Created by {id} job-template from ci-management/jjb/software-upgrades.yaml  <br /><br />
       E2E Validation for Voltha 2.X
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
@@ -280,6 +281,7 @@
       Created by {id} job-template from ci-management/jjb/software-upgrades.yaml  <br /><br />
       E2E Validation for Voltha 2.X
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'

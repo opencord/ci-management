@@ -15,6 +15,7 @@
       Validation for device-management using mock redfish servers
 
     properties:
+      - onf-infra-volthadevs-permissions
       - cord-infra-properties:
           build-days-to-keep: '{build-days-to-keep}'
           artifact-num-to-keep: '{artifact-num-to-keep}'
