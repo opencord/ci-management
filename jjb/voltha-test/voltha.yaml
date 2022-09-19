@@ -641,6 +641,37 @@
           power-switch: True
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
+    # TT workflow on Zyxel XGSPON OLT at Berlin pod - build job
+      - 'build_voltha_pod_release_timer':
+          disable-job: false
+          build-node: 'berlin-community-pod-2'
+          config-pod: 'berlin-community-pod-2-xgspon-zyxel'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          profile: 'TP'
+          time: '10'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
+
+    # TT workflow on Zyxel XGSPON OLT at Berlin pod - test job
+      - 'build_voltha_pod_test':
+          disable-job: false
+          build-node: 'berlin-community-pod-2'
+          config-pod: 'berlin-community-pod-2-xgspon-zyxel'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: True
+          power-cycle-olt: True
+          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
+          timeout: 360
+
       # Berlin pod with adtran gpon olt/onu - 2.8 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
