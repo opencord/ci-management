@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15e28c6d_93b1802c",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 670,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-09-20T10:27:37Z",
+      "side": 1,
+      "message": "At some point we probably should figure out how to derive paths in the *.yaml files so branch\u003d\u0027master\u0027 will only need to be specified once per device config.",
+      "revId": "7bd05cce5284c61bfcaf20bb8425459588615d38",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
