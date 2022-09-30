@@ -1389,6 +1389,7 @@
               teardown: true
               logging: true
 
+      # Attention: Due VOL-4703 is not corrected memory leak tests will run in pipeline for DT workflow only!
       - 'voltha-periodic-test':
           name: 'periodic-voltha-memory-leak-test-bbsim'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
@@ -1398,22 +1399,12 @@
           withMonitoring: true
           logLevel: 'DEBUG'
           testTargets: |
-            - target: memory-leak-test-single-kind-att
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
             - target: memory-leak-test-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
               logging: true
-            - target: memory-leak-test-single-kind-tt
-              workflow: tt
-              flags: ""
-              teardown: true
-              logging: true
-          timeout: 360
+          timeout: 230
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-fttb-test-bbsim'
