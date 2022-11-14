@@ -160,12 +160,12 @@
       - string:
           name: volthaSystemTestsChange
           default: '{volthaSystemTestsChange}'
-          description: 'Download a change for gerrit in the voltha-system-tests repo, example value: "refs/changes/79/18779/13"'
+          description: 'Download delta from gerrit:voltha-system-tests, example value: "refs/changes/79/18779/13"'
 
       - string:
           name: volthaHelmChartsChange
           default: '{volthaHelmChartsChange}'
-          description: 'Download a change for gerrit in the voltha-helm-charts repo, example value: "refs/changes/32/19132/1"'
+          description: 'Download delta from gerrit:voltha-helm-charts, example value: "refs/changes/32/19132/1"'
 
       # NOTE is this needed/used?
       - string:
@@ -212,8 +212,8 @@
     description: |
                   Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
-                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright (c) 2018 Open Networking Foundation (ONF)
+                  Created by QA (Suchitra Vemuri) <br />
+                  Copyright 2018-2022 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     # default values
@@ -254,8 +254,8 @@
     description: |
                   Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
-                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright (c) 2018 Open Networking Foundation (ONF)
+                  Created by QA (Suchitra Vemuri) <br />
+                  Copyright 2018-2022 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     # default values
@@ -302,8 +302,8 @@
     description: |
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {pipeline-script}<br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
-                  Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Created by (Suchitra Vemuri) <br />
+                  Copyright 2017-2022 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
@@ -446,8 +446,8 @@
     description: |
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {pipeline-script}<br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
-                  Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Created by (Suchitra Vemuri) <br />
+                  Copyright 2017-2022 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
@@ -582,8 +582,9 @@
     description: |
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {pipeline-script}<br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
-                  Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Created by (Suchitra Vemuri) <br />
+                  Copyright 2017-2022 Open Networking Foundation (ONF) and the ONF Contributors
+
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
@@ -717,8 +718,8 @@
     description: |
                   Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
-                  Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright (c) 2018 Open Networking Foundation (ONF)
+                  Created by QA (Suchitra Vemuri) <br />
+                  Copyright 2018-2022 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     # default values
