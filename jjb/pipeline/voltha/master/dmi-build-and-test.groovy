@@ -1,4 +1,4 @@
-// Copyright 2022-present Open Networking Foundation
+// Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 // NOTE we are importing the library even if it's global so that it's
 // easier to change the keywords during a replay
+
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',

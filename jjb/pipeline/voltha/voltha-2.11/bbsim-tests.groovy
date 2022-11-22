@@ -1,4 +1,6 @@
-// Copyright 2021-2022 Open Networking Foundation (ONF) and the ONF Contributors//
+// -*- groovy -*-
+// Copyright 2021-2022 Open Networking Foundation (ONF) and the ONF Contributors
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,31 +29,15 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
   def volthaNamespace = "voltha"
   def logsDir = "$WORKSPACE/${testTarget}"
 
-    stage('IAM')
+  stage('IAM')
     {
-	script
-	{
-	    String iam = [
-		'ci-management',
-		'jjb',
-		'pipeline',
-		'voltha',
-		'voltha-2.10',
-		'bbsim-tests.groovy'
-	    ].join('/')
-            println("** ${iam}: ENTER")
+	print('''
+jjb/pipeline/voltha/voltha-2.11
+-----------------------------------------------------------------------
+''')
+  }
 
-	    String cmd = "which pkill"
-	    def stream = sh(
-		returnStatus:false,
-		returnStdout: true,
-		script: cmd)
-	    println(" ** ${cmd}:\n${stream}")
-            println("** ${iam}: LEAVE")
-	}
-    }
-
-    stage('Cleanup') {
+  stage('Cleanup') {
     if (teardown) {
       timeout(15) {
         script {
@@ -335,5 +321,3 @@ pipeline {
     }
   }
 }
-
-// EOF
