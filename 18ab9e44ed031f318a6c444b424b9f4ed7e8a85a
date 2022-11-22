@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fcbb1226_b1ab688a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000947
+      },
+      "writtenOn": "2022-11-22T23:40:21Z",
+      "side": 1,
+      "message": "Like the freeze, and explicit requirements.  Kudos on the confirmation that intended-release and actual released are identical.",
+      "revId": "18ab9e44ed031f318a6c444b424b9f4ed7e8a85a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
