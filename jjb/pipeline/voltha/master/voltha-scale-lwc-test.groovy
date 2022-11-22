@@ -1,4 +1,4 @@
-// Copyright 2019-present Open Networking Foundation
+// Copyright 2019-2022 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
+// [TODO] fix path, achilles heel for testing.
 def lwc_helm_chart_path="/home/jenkins/Radisys_LWC_helm_charts"
 def value_file="/home/jenkins/lwc-values.yaml"
 def workflow="dt"

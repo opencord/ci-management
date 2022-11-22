@@ -1,3 +1,5 @@
+# -*- makefile -*-
+
 # Makefile for testing JJB jobs in a virtualenv
 .PHONY: test clean
 
@@ -23,4 +25,6 @@ test: $(VENV_DIR) $(JOBCONFIG_DIR)
 	jenkins-jobs -l DEBUG test --recursive --config-xml -o $(JOBCONFIG_DIR) jjb/ ;
 
 clean:
-	rm -rf $(VENV_DIR) $(JOBCONFIG_DIR)
+	$(RM) -r $(VENV_DIR) $(JOBCONFIG_DIR)
+
+# [EOF]

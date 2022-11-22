@@ -16,6 +16,14 @@
           name-extension: '-voltha-2.9'
           override-branch: 'voltha-2.9'
           branch-regexp: '^voltha-2.9$'
+      - 'verify-bbsim-jobs-voltha-2.10':
+          name-extension: '-voltha-2.10'
+          override-branch: 'voltha-2.10'
+          branch-regexp: '^voltha-2.10$'
+      - 'verify-bbsim-jobs-voltha-2.11':
+          name-extension: '-voltha-2.11'
+          override-branch: 'voltha-2.11'
+          branch-regexp: '^voltha-2.11$'
       - 'verify-bbsim-jobs-master':
           branch-regexp: '^master$'
       - 'publish-bbsim-jobs':
@@ -60,6 +68,50 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.9/bbsim-tests.groovy'
+          testTargets: |
+            - target: sanity-bbsim-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: sanity-bbsim-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: sanity-bbsim-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+
+- job-group:
+    name: 'verify-bbsim-jobs-voltha-2.10'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/voltha-2.10/bbsim-tests.groovy'
+          testTargets: |
+            - target: sanity-bbsim-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: sanity-bbsim-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: sanity-bbsim-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+
+- job-group:
+    name: 'verify-bbsim-jobs-voltha-2.11'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           testTargets: |
             - target: sanity-bbsim-att
               workflow: att
