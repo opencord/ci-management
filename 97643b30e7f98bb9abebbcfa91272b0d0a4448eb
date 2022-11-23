@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "86091d4f_65a91564",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-11-23T21:17:10Z",
+      "side": 1,
+      "message": "Strange repo:ci-management did not trigger any tests, including the addition of voltha job testing directives.  This repository may be missing a hook, generally triggering project testing from the infra repository could be automatic but we should always be able to enable testing on-demand.",
+      "revId": "97643b30e7f98bb9abebbcfa91272b0d0a4448eb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
