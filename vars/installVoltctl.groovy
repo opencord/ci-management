@@ -85,7 +85,7 @@ def call(String branch) {
     download_url="https://github.com/opencord/voltctl/releases/download"
     vol_ver="v${voltctlVersion}"
     vol_name="voltctl-${voltctlVersion}-\${HOSTOS}-\${HOSTARCH}"
-    curl -o "\$bin_voltctl" -sSL "${download_url}/${vol_ver}/${vol_name}"
+    curl -o "\$bin_voltctl" -sSL "\${download_url}/\${vol_ver}/\${vol_name}"
 
     chmod u=rwx,go=rx "\$bin_voltctl"
     chmod 755 "\$bin_voltctl"
