@@ -85,14 +85,14 @@ def call(String branch) {
     download_url="https://github.com/opencord/voltctl/releases/download"
     vol_ver="v${voltctlVersion}"
     vol_name="voltctl-${voltctlVersion}-\${HOSTOS}-\${HOSTARCH}"
-    curl -o "$bin_voltctl" -sSL "${download_url}/${vol_ver}/${vol_name}"
+    curl -o "\$bin_voltctl" -sSL "${download_url}/${vol_ver}/${vol_name}"
 
-    chmod u=rwx,go=rx "$bin_voltctl"
-    chmod 755 "$bin_voltctl"
-    /bin/ls -l "$bin_voltctl"
+    chmod u=rwx,go=rx "\$bin_voltctl"
+    chmod 755 "\$bin_voltctl"
+    /bin/ls -l "\$bin_voltctl"
 
     ## Verify these are the same binary
-    "${bin_voltctl}" version --clientonly
+    "\${bin_voltctl}" version --clientonly
     voltctl version --clientonly
 
     # Should use diff or md5sum here
