@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5f61000_9d4be73e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-11-24T13:59:00Z",
+      "side": 1,
+      "message": "Rename var to resolve a dup name conflict.",
+      "revId": "21998a4fdee3dfff3ecb5b20f52b810ba70fd509",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
