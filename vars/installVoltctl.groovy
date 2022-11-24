@@ -2,6 +2,9 @@
 
 def call(String branch) {
 
+    String iam = 'vars/installVoltha.groovy'
+    println("** ${iam}: ENTER")
+
     // This logic seems odd given we branch & tag repositories
     // for release so hilight non-frozen until we know for sure.
     def released=[
@@ -98,6 +101,8 @@ def call(String branch) {
     # Should use diff or md5sum here
     /bin/ls -l \$(which voltha)
   """
+
+    println("** ${iam}: LEAVE")
 }
 
 // [EOF]
