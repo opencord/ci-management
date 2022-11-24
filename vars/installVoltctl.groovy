@@ -54,7 +54,7 @@ def call(String branch) {
 	
 	print(" ** RUNNING: ${get_version}")
 	released[branch] = sh (
-	    script: get_version
+	    script: get_version,
 	    returnStdout: true
 	).trim()
     }
