@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a22a4800_195e09e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-11-24T13:04:39Z",
+      "side": 1,
+      "message": "Hotfix: also escape dollar so shell var can be evaluated.",
+      "revId": "a935e71077cac5f5b56de398f8d6bc43f41be9f0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
