@@ -27,7 +27,7 @@ def call(String branch) {
     // ---------------------------------------------
     if (is_release && ! released.containsKey(branch)) {
 	// Fingers crossed: jenkins may rewrite the callstack.
-	def iam = this.class.getName()
+	def myname = this.class.getName()
 
 	String url = [
 	    'https://docs.voltha.org/master',
@@ -35,7 +35,7 @@ def call(String branch) {
 	].join('/')
 
 	String error = [
-	    iam, "ERROR:",
+	    myname, "ERROR:",
 	    "Detected release version=[$branch]",
 	    "but voltctl is not frozen.",
 	    '',
