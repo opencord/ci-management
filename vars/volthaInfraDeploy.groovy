@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 // usage
 //
 // stage('test stage') {
@@ -8,8 +10,11 @@
 //   }
 // }
 
-
 def call(Map config) {
+
+    String iam = 'vars/volthaInfraDeploy.groovy'
+    println("** ${iam}: ENTER")
+    
     // NOTE use params or directule extraHelmFlags??
     def defaultConfig = [
       onosReplica: 1,
@@ -50,6 +55,13 @@ def call(Map config) {
       kubeconfig = env.KUBECONFIG
     }
 
+    /*
+     [joey] - should pre-existing hint the env is tainted (?)
+     05:24:57  + kubectl create namespace infra
+     05:24:57  Error from server (AlreadyExists): namespaces "infra" already exists
+     05:24:57  error: failed to create configmap: configmaps "kube-config" already exists
+     */
+
     sh """
     kubectl create namespace ${cfg.infraNamespace} || true
     kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_config=${kubeconfig}"  || true
@@ -72,4 +84,6 @@ def call(Map config) {
           --set etcd.replicaCount=${cfg.etcdReplica} \
           -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
     """
+
+    println("** ${iam}: LEAVE")    
 }

@@ -1,4 +1,9 @@
+#!/usr/bin/env groovy
+
 def call(Map config) {
+
+    String iam = 'vars/waitForAdapters.groovy'
+    println("** ${iam}: ENTER")
 
     def defaultConfig = [
         volthaNamespace: "voltha",
@@ -74,6 +79,10 @@ def call(Map config) {
 
     sh """
       set +x
+      pgrep --list-all port-forw
+
       ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
     """
+
+    println("** ${iam}: LEAVE")
 }

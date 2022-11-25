@@ -2,7 +2,7 @@
 
 def call(String branch) {
 
-    String iam = 'vars/installVoltha.groovy'
+    String iam = 'vars/installVoltctl.groovy'
     println("** ${iam}: ENTER")
 
     // This logic seems odd given we branch & tag repositories
@@ -19,8 +19,10 @@ def call(String branch) {
     boolean has_binding = binding.hasVariable('WORKSPACE')
 
     // WIP: Probe to find out what is available
-    print(" ** have_released: ${have_released}")
-    print(" ** has_binding: ${has_binding}")
+    print("""
+** have_released: ${have_released}
+**   has_binding: ${has_binding}
+""")
 
     // ---------------------------------------------
     // Sanity check: released version must be frozen
@@ -99,7 +101,7 @@ def call(String branch) {
     voltctl version --clientonly
 
     # Should use diff or md5sum here
-    /bin/ls -l \$(which voltha)
+    /bin/ls -l \$(which voltctl)
   """
 
     println("** ${iam}: LEAVE")

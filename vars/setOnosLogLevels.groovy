@@ -1,4 +1,9 @@
+#!/usr/bin/env groovy
+
 def call(Map config) {
+
+    String iam = 'vars/setOnosLogLevels.groovy'
+    println("** ${iam}: ENTER")
 
   def defaultConfig = [
       onosNamespace: "infra",
@@ -32,8 +37,12 @@ def call(Map config) {
         """
       }
       sh """
+        pgrep --list-all port-forw
+
         ps e -ww -A | grep _TAG="onos-pf" | grep -v grep | awk '{print \$1}' | xargs --no-run-if-empty kill -9
         ps aux | grep port-forward
       """
   }
+
+    println("** ${iam}: LEAVE")
 }

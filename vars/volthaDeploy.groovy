@@ -1,8 +1,15 @@
+#!/usr/bin/env groovy
+
 // this keyword is dedicated to deploy a single VOLTHA stack with infra
 // If you need to deploy different configurations you can use the volthaInfraDeploy and volthaStackDeploy keywords
 
 def call(Map config) {
+
+    String iam = 'vars/volthaDeploy.groovy'
+    println("** ${iam}: ENTER")
+
     // note that I can't define this outside the function as there's no global scope in Groovy
+    // [joey] A class method or library call can be used in place of globals, fqdn needed.
     def defaultConfig = [
       onosReplica: 1,
       atomixReplica: 1,
@@ -60,4 +67,6 @@ def call(Map config) {
     if (cfg.withVolthaStack) {
       volthaStackDeploy(cfg)
     }
+
+    println("** ${iam}: LEAVE")
 }

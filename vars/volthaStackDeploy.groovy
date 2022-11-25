@@ -1,5 +1,10 @@
+#!/usr/bin/env groovy
 
 def call(Map config) {
+
+    String iam = 'vars/volthaStackDeploy.groovy'
+    println("** ${iam}: ENTER")
+
     // note that I can't define this outside the function as there's no global scope in Groovy
     def defaultConfig = [
       bbsimReplica: 1,
@@ -84,6 +89,10 @@ def call(Map config) {
 
     sh """
         set +x
+
+        # [joey]: debug
+        kubectl get pods -n ${cfg.volthaNamespace} -l app.kubernetes.io/part-of=voltha --no-headers
+
         voltha=\$(kubectl get pods -n ${cfg.volthaNamespace} -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
         while [[ \$voltha != 0 ]]; do
           sleep 5
@@ -116,4 +125,6 @@ def call(Map config) {
           config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running | grep "0/" | wc -l)
         done
     """
+
+    println("** ${iam}: LEAVE")
 }
