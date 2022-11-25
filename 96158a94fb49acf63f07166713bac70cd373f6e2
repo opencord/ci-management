@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9aebc208_b148e5f5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-11-25T15:44:41Z",
+      "side": 1,
+      "message": "Inline more debug printfs in repo:ci-management/vars/*.groovy to to help identify the timeout source for kube init \u003d\u003e\n\nhttps://jenkins.opencord.org/job/build_menlo-certification-pod-radisys-1600x_1T8GEM_DT_voltha_master/435/console",
+      "revId": "96158a94fb49acf63f07166713bac70cd373f6e2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
