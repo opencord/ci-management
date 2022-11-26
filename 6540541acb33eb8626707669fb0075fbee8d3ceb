@@ -16,6 +16,23 @@
       "message": "Redo patch - 33424 contains a merged/closed patch so cannot be pushed w/o a new change-id or gerrit repo config alteration.\n\nhttps://gerrit.opencord.org/c/ci-management/+/33424",
       "revId": "6540541acb33eb8626707669fb0075fbee8d3ceb",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef5acec1_721abb54",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-11-26T03:14:15Z",
+      "side": 1,
+      "message": "Cosmetic edits: copyright updates, added missing 2.10 tests and a stub for upcoming voltha-2.11 release.",
+      "revId": "6540541acb33eb8626707669fb0075fbee8d3ceb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
