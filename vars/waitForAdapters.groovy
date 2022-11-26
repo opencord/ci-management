@@ -79,7 +79,7 @@ def call(Map config) {
 
     sh """
       set +x
-      pgrep --list-all port-forw
+      pgrep --list-full port-forw
 
       ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
     """
