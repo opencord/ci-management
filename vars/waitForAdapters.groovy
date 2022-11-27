@@ -1,8 +1,50 @@
 #!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 
-def call(Map config) {
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    String src = 'vars/waitForAdapters.groovy'
+    String iam = [src, func].join('::')
+    return
+}
 
-    String iam = 'vars/waitForAdapters.groovy'
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getAdapters()
+{
+    String iam = getIam('getAdapters')
+
+    def adapters = ""
+    try
+    {
+        adapters = sh (
+            script: 'voltctl adapter list --format "{{gosince .LastCommunication}}"',
+            returnStdout: true,
+        ).trim()
+    }
+    catch (err)
+    {
+        // in some older versions of voltctl the command results in
+        // ERROR: Unexpected error while attempting to format results
+        // as table : template: output:1: function "gosince" not defined
+        // if that's the case we won't be able to check the timestamp so
+        // it's useless to wait
+        println("voltctl can't parse LastCommunication, skip waiting")
+	adapters = 'SKIP'
+    }
+
+    print("** ${iam}: returned $adapters")
+    return adapters
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def process(Map config)
+{
+    String iam = getIam('process')
     println("** ${iam}: ENTER")
 
     def defaultConfig = [
@@ -10,10 +52,6 @@ def call(Map config) {
         stackName: "voltha",
         adaptersToWait: 2,
     ]
-
-    if (!config) {
-        config = [:]
-    }
 
     def cfg = defaultConfig + config
 
@@ -23,7 +61,7 @@ def call(Map config) {
        return
     }
 
-    println "Wait for adapters to be registered"
+    println("** ${iam}: Wait for adapters to be registered")
 
     // guarantee that at least the specified number of adapters are registered with VOLTHA before proceeding
      sh """
@@ -43,46 +81,72 @@ def call(Map config) {
     // NOTE that we need to wait for LastCommunication to be equal or shorter that 5s
     // as that means the core can talk to the adapters
     // if voltctl can't read LastCommunication we skip this check
+
+    println("** ${iam}: Wait for adapter LastCommunication")
     def done = false;
+    while (!done)
+    {
+	sleep 1
+	def adapters = getAdapters()
+	if (adapters == 'SKIP') { break }
 
-    while (!done) {
-      sleep 1
-      def adapters = ""
-      try {
-        adapters = sh (
-          script: 'voltctl adapter list --format "{{gosince .LastCommunication}}"',
-          returnStdout: true,
-        ).trim()
-      } catch (err) {
-        // in some older versions of voltctl the command results in
-        // ERROR: Unexpected error while attempting to format results as table : template: output:1: function "gosince" not defined
-        // if that's the case we won't be able to check the timestamp so it's useless to wait
-        println("voltctl can't parse LastCommunication, skip waiting")
-        done = true
-        break
-      }
+	def waitingOn = adapters.split( '\n' ).find{since ->
+            since = since.replaceAll('s','') //remove seconds from the string
 
-      def waitingOn = adapters.split( '\n' ).find{since ->
-        since = since.replaceAll('s','') //remove seconds from the string
+            // it has to be a single digit
+            if (since.length() > 1) {
+		return true
+            }
+            if ((since as Integer) > 5) {
+		return true
+            }
+            return false
+	}
 
-        // it has to be a single digit
-        if (since.length() > 1) {
-            return true
-        }
-        if ((since as Integer) > 5) {
-            return true
-        }
-        return false
-      }
-      done = (waitingOn == null || waitingOn.length() == 0)
+	done = (waitingOn == null || waitingOn.length() == 0)
     }
 
-    sh """
+    println("** ${iam}: Wait for adapter LastCommunication")
+    sh("""
       set +x
       pgrep --list-full port-forw
 
-      ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
-    """
+      ps aux \
+          | grep port-forw \
+          | grep -v grep \
+          | awk '{print \$2}' \
+          | xargs --no-run-if-empty kill -9 || true
+    """)
 
     println("** ${iam}: LEAVE")
+    return
 }
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def call(Map config)
+{
+    String iam = getIam('process')
+    println("** ${iam}: ENTER")
+
+    if (!config) {
+        config = [:]
+    }
+
+    try
+    {
+	process(config)
+    }
+    catch (Exception err)
+    {
+	println("** ${iam}: EXCEPTION ${err}")
+	throw err
+    }
+    finally
+    {
+	println("** ${iam}: LEAVE")
+    }
+    return
+}
+
+// EOF
