@@ -90,17 +90,18 @@ def process(Map config)
 	def adapters = getAdapters()
 	if (adapters == 'SKIP') { break }
 
-	def waitingOn = adapters.split( '\n' ).find{since ->
-            since = since.replaceAll('s','') //remove seconds from the string
+	def waitingOn = adapters.split( '\n' ).find{elapsed ->
+            elapsed = elapsed.replaceAll('s','') // remove seconds
+            print("** ${iam}: waitingOn elapsed=[${elapsed}]")
 
             // it has to be a single digit
-            if (since.length() > 1) {
+            if (elapsed.length() > 1) { // 463765h58m52s
 		return true
             }
-            if ((since as Integer) > 5) {
-		return true
-            }
-            return false
+
+	    Boolean is_valid = (5 >= (elapsed as Integer))
+	    print("** ${iam}: waitingOn: is_valid=[$is_valid]")
+	    return is_valid
 	}
 
 	done = (waitingOn == null || waitingOn.length() == 0)
