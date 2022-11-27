@@ -27,7 +27,33 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
   def infraNamespace = "default"
   def volthaNamespace = "voltha"
   def logsDir = "$WORKSPACE/${testTarget}"
-  stage('Cleanup') {
+
+    stage('IAM')
+    {
+	script
+	{
+	    String iam = [
+		'ci-management',
+		'jjb',
+		'pipeline',
+		'voltha',
+		'master',
+		'bbsim-tests.groovy'
+	    ].join('/')
+            println("** ${iam}: ENTER")
+
+	    String cmd = "which pkill"
+	    def stream = sh(
+		returnStatus:false,
+		returnStdout: true,
+		script: cmd)
+	    println(" ** ${cmd}:\n${stream}")
+	    
+            println("** ${iam}: LEAVE")
+	}
+    }
+
+    stage('Cleanup') {
     if (teardown) {
       timeout(15) {
         script {

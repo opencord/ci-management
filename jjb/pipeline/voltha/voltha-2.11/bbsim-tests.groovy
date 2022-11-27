@@ -25,17 +25,26 @@ library identifier: 'cord-jenkins-libraries@master',
 def clusterName = "kind-ci"
 
 def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "") {
-  def infraNamespace = "default"
-  def volthaNamespace = "voltha"
-  def logsDir = "$WORKSPACE/${testTarget}"
+    def infraNamespace = "default"
+    def volthaNamespace = "voltha"
+    def logsDir = "$WORKSPACE/${testTarget}"
 
-  stage('IAM')
+    stage('IAM')
     {
-	print('''
-jjb/pipeline/voltha/voltha-2.11
------------------------------------------------------------------------
-''')
-  }
+	script
+	{
+	    String iam = [
+		'ci-management',
+		'jjb',
+		'pipeline',
+		'voltha',
+		'voltha-11',
+		'bbsim-tests.groovy'
+	    ].join('/')
+            println("** ${iam}: ENTER")
+            println("** ${iam}: LEAVE")
+	}
+    }
 
   stage('Cleanup') {
     if (teardown) {

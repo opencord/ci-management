@@ -40,13 +40,6 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 		'bbsim-tests.groovy'
 	    ].join('/')
             println("** ${iam}: ENTER")
-
-	    String cmd = "which pkill"
-	    def stream = sh(
-		returnStatus:false,
-		returnStdout: true,
-		script: cmd)
-	    println(" ** ${cmd}:\n${stream}")
             println("** ${iam}: LEAVE")
 	}
     }
