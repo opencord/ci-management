@@ -8,7 +8,7 @@ def getIam(String func)
 {
     String src = 'vars/waitForAdapters.groovy'
     String iam = [src, func].join('::')
-    return
+    return iam
 }
 
 // -----------------------------------------------------------------------
@@ -196,10 +196,10 @@ def process(Map config)
 	    throw new Exception("ERROR: Timed out waiting on adapter startup")
     }
 
-    println("** ${iam}: Wait for adapter LastCommunication")
+    println("** ${iam}: Tearing down port forwarding")
     sh("""
       set +x
-      pgrep --list-full port-forw
+      pgrep --list-full 'port\-forw' || true
 
       ps aux \
           | grep port-forw \
