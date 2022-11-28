@@ -67,7 +67,7 @@ def getAdaptersState(String adapters0)
     def found = []
     for(i=0; i<adapters.size(); i++)
     {
-	String elapsed = args[i]
+	String elapsed = adapters[i]
 	if (debug)
 	    println("** ${iam} Checking elapsed[$i]: $elapsed")
 
@@ -126,7 +126,8 @@ def getAdaptersState(String adapters0)
             : 'CONTINUE'
     }
 
-    println("** ${iam} return: [$ans]")
+    if (debug)
+	println("** ${iam} return: [$ans]")
     return ans
 } // getAdaptersState
 
