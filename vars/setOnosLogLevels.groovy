@@ -37,8 +37,6 @@ def call(Map config) {
         """
       }
       sh """
-        pgrep --list-full port-forw
-
         ps e -ww -A | grep _TAG="onos-pf" | grep -v grep | awk '{print \$1}' | xargs --no-run-if-empty kill -9
         ps aux | grep port-forward
       """
