@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b56e782b_23189384",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-11-28T17:57:58Z",
+      "side": 1,
+      "message": "(sigh) no unit tests trigger by repo:ci-management\n\n\nUpdated logic so it is easier to follow.\nPerform more data checks on incoming elapsed adapter startup time.\nReturn false detection ASAP when the first adapter has yet to startup.\nAdded silly infinite loop detection.\n\ngetAdapters() - exception is now noisy in the logs but I am really, REALLY wondering why unknown adapter state is considered a free pass for jumping into testing.  We should retry or fail outright IMHO.",
+      "revId": "14a67a1299e8cb0c6ca585de5a6640725ecddef7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
