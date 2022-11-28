@@ -198,9 +198,6 @@ def process(Map config)
 
     println("** ${iam}: Tearing down port forwarding")
     sh("""
-      set +x
-      pgrep --list-full 'port\-forw' || true
-
       ps aux \
           | grep port-forw \
           | grep -v grep \
