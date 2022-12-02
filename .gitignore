@@ -33,3 +33,9 @@ __pycache__/
 venv-jjb
 job-configs
 
+# npm-groovy-lint
+node_modules/
+package-lock.json
+package.json
+
+# [EOF]

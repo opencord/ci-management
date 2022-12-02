@@ -213,7 +213,7 @@ def process(Map config)
 // -----------------------------------------------------------------------
 def call(Map config)
 {
-    String iam = getIam('process')
+    String iam = getIam('main')
     println("** ${iam}: ENTER")
 
     if (!config) {
