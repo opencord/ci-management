@@ -190,7 +190,14 @@
           default: '{waitTimerForOltUp}'
           description: 'Wait timer for the OLT to come up after reboot'
 
-# defualt properties for the VOLTHA scale jobs
+      - bool:
+          name: DebugMode
+          default: false
+          description: "Enable script debugging (unused)"
+
+# -----------------------------------------------------------------------
+# default properties for the VOLTHA scale jobs
+# -----------------------------------------------------------------------
 - voltha-pipe-job-boiler-plate: &voltha-pipe-job-boiler-plate
     name: voltha-pipe-job-boiler-plate
 
@@ -204,7 +211,9 @@
           build-days-to-keep: '{big-build-days-to-keep}'
           artifact-num-to-keep: '{big-artifact-num-to-keep}'
 
+# -----------------------------------------------------------------------
 # VOLTHA Build Jobs
+# -----------------------------------------------------------------------
 - job-template:
     name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}_manual'
     id: build_voltha_pod_manual
@@ -246,7 +255,9 @@
     project-type: pipeline
     dsl: !include-raw-escape: ../pipeline/{pipeline-script}
 
+# -----------------------------------------------------------------------
 # VOLTHA Build Jobs
+# -----------------------------------------------------------------------
 - job-template:
     name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}'
     id: build_voltha_pod_release_timer
@@ -293,8 +304,10 @@
                  TZ=America/Los_Angeles
                  H {time} * * *
 
+# -----------------------------------------------------------------------
 # VOLTHA Test Job
 # This job is automatically triggered after a build job has successfully completed
+# -----------------------------------------------------------------------
 - job-template:
     name: 'build_{config-pod}_{profile}_voltha{name-extension}_{release}_test'
     id: build_voltha_pod_test
@@ -436,9 +449,10 @@
           jobs: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}'
           result: 'success'
 
-
+# -----------------------------------------------------------------------
 # VOLTHA Soak Test Job
 # This job is triggered by a timer defined in the job
+# -----------------------------------------------------------------------
 - job-template:
     name: 'build_{config-pod}_{profile}_voltha{name-extension}_{release}_test'
     id: build_voltha_pod_soak_test
@@ -562,6 +576,7 @@
           name: cordTesterChange
           default: '{cordTesterChange}'
           description: 'Download a change for gerrit in the kind-voltha repo, example value: "refs/changes/32/19132/1"'
+
     concurrent: true
 
     project-type: pipeline
@@ -572,9 +587,10 @@
                  TZ=America/Los_Angeles
                  {time-trigger}
 
-
+# -----------------------------------------------------------------------
 # VOLTHA Manual Test Job
 # This job is triggered manually
+# -----------------------------------------------------------------------
 - job-template:
     name: 'build_{config-pod}_{profile}{name-extension}_voltha_{release}_manual_test'
     id: build_voltha_pod_manual_test
@@ -709,8 +725,10 @@
     project-type: pipeline
     dsl: !include-raw-escape: ../pipeline/{pipeline-script}
 
+# -----------------------------------------------------------------------
 # VOLTHA DMI Test Job
 # This job is triggered by a timer defined in the job
+# -----------------------------------------------------------------------
 - job-template:
     name: 'verify_{config-pod}_{profile}{name-extension}_voltha_{release}_dmi'
     id: verify_voltha_pod_dmi_test
@@ -953,3 +971,5 @@
       - timed: |
                  TZ=America/Los_Angeles
                  H {time} * * *
+
+# [EOF]
