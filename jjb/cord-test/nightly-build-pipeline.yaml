@@ -21,7 +21,7 @@
                   Manual Build on POD {config-pod} using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright (c) 2018 Open Networking Foundation (ONF)
+                  Copyright 2018-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     openoltAdapterChart: onf/voltha-adapter-openolt
 
@@ -172,8 +172,7 @@
     description: |
                   Nightly Kubernetes tests on {config-pod} using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml<br />
-                  Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Created by Suchitra Vemuri, suchitra@opennetworking.org <br />                  Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
     disabled: '{disable-job}'
 
     <<: *test-pipe-job-boiler-plate
@@ -302,8 +301,7 @@
     description: |
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
-                  Created by Kailash Khalasi - kailash@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Created by Kailash Khalasi - kailash@opennetworking.org <br />                  Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -374,7 +372,7 @@
                   Manual Build on POD {config-pod}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright (c) 2018 Open Networking Foundation (ONF)
+                  Copyright 2018-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -465,7 +463,7 @@
                   Manual Build on POD {config-pod}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright (c) 2018 Open Networking Foundation (ONF)
+                  Copyright 2018-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -566,7 +564,7 @@
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -638,7 +636,7 @@
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -710,7 +708,7 @@
                   Manual Build on POD {config-pod}, using {Jenkinsfile} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Kailash Khalasi - kailash@opennetworking.org ) <br />
-                  Copyright (c) 2019 Open Networking Foundation (ONF)
+                  Copyright 2019-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     <<: *test-pipe-job-boiler-plate
 

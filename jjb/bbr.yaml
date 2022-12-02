@@ -22,7 +22,7 @@
                   Interval scale tests for BBSim using BBR <br />
                   Created from job-template bbsim_scale_test from ci-management/jjb/bbr.yaml <br />
                   Created by Matteo Scandolo, teo@opennetworking.org <br />
-                  Copyright (c) 2017 Open Networking Foundation (ONF)
+                  Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 
     project-type: pipeline
     sandbox: true
