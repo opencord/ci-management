@@ -6,6 +6,7 @@
 // -----------------------------------------------------------------------
 def getIam(String func)
 {
+    // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/waitForAdapters.groovy'
     String iam = [src, func].join('::')
     return iam
@@ -69,7 +70,9 @@ def getAdaptersState(String adapters0)
     {
 	String elapsed = adapters[i]
 	if (debug)
+	{
 	    println("** ${iam} Checking elapsed[$i]: $elapsed")
+	}
 
 	if (! elapsed) // empty string or null
 	{
@@ -127,7 +130,9 @@ def getAdaptersState(String adapters0)
     }
 
     if (debug)
+    {
 	println("** ${iam} return: [$ans]")
+    }
     return ans
 } // getAdaptersState
 
@@ -193,7 +198,9 @@ def process(Map config)
 	// ----------------------------------------------------------
 	countdown -= 1
 	if (1 > countdown)
+	{
 	    throw new Exception("ERROR: Timed out waiting on adapter startup")
+	}
     }
 
     println("** ${iam}: Tearing down port forwarding")
@@ -213,7 +220,7 @@ def process(Map config)
 // -----------------------------------------------------------------------
 def call(Map config)
 {
-    String iam = getIam('process')
+    String iam = getIam('main')
     println("** ${iam}: ENTER")
 
     if (!config) {

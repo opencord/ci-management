@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-
+// -----------------------------------------------------------------------
 // usage
 //
 // stage('test stage') {
@@ -9,12 +9,66 @@
 //     ])
 //   }
 // }
+// -----------------------------------------------------------------------
 
-def call(Map config) {
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = 'vars/volthaInfraDeploy.groovy'
+    String iam = [src, func].join('::')
+    return iam
+}
 
-    String iam = 'vars/volthaInfraDeploy.groovy'
+// -----------------------------------------------------------------------
+// Intent: Display and interact with kubernetes namespaces.
+// -----------------------------------------------------------------------
+def doKubeNamespaces()
+{
+    String iam = getIam('doKubeNamespaces')
     println("** ${iam}: ENTER")
-    
+
+    /*
+     [joey] - should pre-existing hint the env is tainted (?)
+     05:24:57  + kubectl create namespace infra
+     05:24:57  Error from server (AlreadyExists): namespaces "infra" already exists
+     05:24:57  error: failed to create configmap: configmaps "kube-config" already exists
+
+     [joey] Thinking we should:
+            o A special case exists  (create namespace)
+            o helm upgrade --install (inital update)
+     */
+
+    namespaces = sh(
+	script: 'kubectl get namespaces',
+	returnStdout: true
+    ).trim()
+    print(namespaces)
+
+    // Document prior to removal
+    namespaces.each{namespace ->
+	namespaces = sh("kubectl describe namespaces ${namespace}")
+    }
+
+    /*
+     // [TODO] Remove if safe op: clean state and avoids a special case.
+    namespaces.each{namespace ->
+	namespaces = sh("kubectl delete namespaces ${namespace}")
+    }
+     */
+
+    println("** ${iam}: LEAVE")    
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def process(Map config)
+{
+    String iam = getIam('process')
+    println("** ${iam}: ENTER")
+
     // NOTE use params or directule extraHelmFlags??
     def defaultConfig = [
       onosReplica: 1,
@@ -29,10 +83,6 @@ def call(Map config) {
       localCharts: false,
       kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
     ]
-
-    if (!config) {
-        config = [:]
-    }
 
     def cfg = defaultConfig + config
 
@@ -55,12 +105,7 @@ def call(Map config) {
       kubeconfig = env.KUBECONFIG
     }
 
-    /*
-     [joey] - should pre-existing hint the env is tainted (?)
-     05:24:57  + kubectl create namespace infra
-     05:24:57  Error from server (AlreadyExists): namespaces "infra" already exists
-     05:24:57  error: failed to create configmap: configmaps "kube-config" already exists
-     */
+    doKubeNamespaces() // WIP: joey
 
     sh """
     kubectl create namespace ${cfg.infraNamespace} || true
@@ -85,5 +130,34 @@ def call(Map config) {
           -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
     """
 
-    println("** ${iam}: LEAVE")    
+    return
 }
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def call(Map config)
+{
+    String iam = getIam('main')
+    println("** ${iam}: ENTER")
+
+    if (!config) {
+        config = [:]
+    }
+
+    try
+    {
+	process(config)
+    }
+    catch (Exception err)
+    {
+	println("** ${iam}: EXCEPTION ${err}")
+	throw err
+    }
+    finally
+    {
+	println("** ${iam}: LEAVE")
+    }
+    return
+}
+
+// [EOF]

@@ -1,10 +1,18 @@
 #!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = 'vars/volthaStackDeploy.groovy'
+    String iam = [src, func].join('::')
+    return iam
+}
 
-def call(Map config) {
-
-    String iam = 'vars/volthaStackDeploy.groovy'
-    println("** ${iam}: ENTER")
-
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def process(Map config)
+{
     // note that I can't define this outside the function as there's no global scope in Groovy
     def defaultConfig = [
       bbsimReplica: 1,
@@ -20,10 +28,6 @@ def call(Map config) {
       onosReplica: 1,
       adaptersToWait: 2,
     ]
-
-    if (!config) {
-        config = [:]
-    }
 
     def cfg = defaultConfig + config
 
@@ -126,5 +130,34 @@ def call(Map config) {
         done
     """
 
-    println("** ${iam}: LEAVE")
+    return
 }
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def call(Map config)
+{
+    String iam = getIam('main')
+    println("** ${iam}: ENTER")
+
+    if (!config) {
+        config = [:]
+    }
+
+    try
+    {
+	process(config)
+    }
+    catch (Exception err)
+    {
+	println("** ${iam}: EXCEPTION ${err}")
+	throw err
+    }
+    finally
+    {
+	println("** ${iam}: LEAVE")
+    }
+    return
+}
+
+// [EOF]
