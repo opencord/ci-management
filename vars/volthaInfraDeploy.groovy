@@ -44,7 +44,6 @@ def doKubeNamespaces()
 	script: 'kubectl get namespaces || true',
 	returnStdout: true
     ).trim()
-    print(namespaces)
 
     // Document prior to removal
     namespaces.each{namespace ->
