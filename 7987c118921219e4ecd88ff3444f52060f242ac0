@@ -16,6 +16,23 @@
       "message": "Debugging berlin community pod problem.",
       "revId": "7987c118921219e4ecd88ff3444f52060f242ac0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ff9afb80_b1ebc0c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000947
+      },
+      "writtenOn": "2022-12-05T18:27:11Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "7987c118921219e4ecd88ff3444f52060f242ac0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
