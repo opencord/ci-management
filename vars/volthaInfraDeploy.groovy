@@ -41,14 +41,14 @@ def doKubeNamespaces()
      */
 
     namespaces = sh(
-	script: 'kubectl get namespaces',
+	script: 'kubectl get namespaces || true',
 	returnStdout: true
     ).trim()
     print(namespaces)
 
     // Document prior to removal
     namespaces.each{namespace ->
-	namespaces = sh("kubectl describe namespaces ${namespace}")
+	namespaces = sh("kubectl describe namespaces ${namespace} || true")
     }
 
     /*
