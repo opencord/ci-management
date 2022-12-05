@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "348f8660_1c943ebf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-12-05T19:18:34Z",
+      "side": 1,
+      "message": "silly shell failure, pass || true until the source from kubectl namespace can be tracked down.",
+      "revId": "c4b5fd2c816d96c07b1252227f14bbe83d36f195",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
