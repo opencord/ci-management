@@ -151,7 +151,8 @@ def call(Map config)
     catch (Exception err)
     {
 	println("** ${iam}: EXCEPTION ${err}")
-	throw err
+	// Cannot re-throw ATM: too many potential shell errors.
+	// throw err
     }
     finally
     {
