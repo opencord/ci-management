@@ -40,23 +40,7 @@ def doKubeNamespaces()
             o helm upgrade --install (inital update)
      */
 
-    namespaces = sh(
-	script: 'kubectl get namespaces || true',
-	returnStdout: true
-    ).trim()
-    print(namespaces)
-
-    // Document prior to removal
-    namespaces.each{namespace ->
-	namespaces = sh("kubectl describe namespaces ${namespace} || true")
-    }
-
-    /*
-     // [TODO] Remove if safe op: clean state and avoids a special case.
-    namespaces.each{namespace ->
-	namespaces = sh("kubectl delete namespaces ${namespace}")
-    }
-     */
+    sh('kubectl get namespaces || true')
 
     println("** ${iam}: LEAVE")    
     return
