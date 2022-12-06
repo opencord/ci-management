@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6eb2c12a_93ffff50",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-12-06T14:52:36Z",
+      "side": 1,
+      "message": "remove println(array) that somehow found its way back in.\njenkins requires serialization for reboots and dynamic ArrayList created by namespaces \u003d sh() failed the check.",
+      "revId": "1cf2530730cdfe51a69d736eaa70973721135491",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
