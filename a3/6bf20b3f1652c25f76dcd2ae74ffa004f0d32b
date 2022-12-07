@@ -1,0 +1,9 @@
+Verified+1: Jenkins Technical User <do-not-reply@opennetworking.org>
+Code-Review+1: Mahir Gunyel <mahir.gunyel@netsia.com>
+Code-Review+2: Joey Armstrong <joey@opennetworking.org>
+Code-Review+1: Amit Ghosh <amit.ghosh@radisys.com>
+Submitted-by: Torsten Thieme <torsten.thieme@adtran.com>
+Submitted-at: Wed, 07 Dec 2022 10:21:26 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/33381
+Project: ci-management
+Branch: refs/heads/master
