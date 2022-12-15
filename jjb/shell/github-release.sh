@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2018-present Open Networking Foundation
+# Copyright 2018-2022 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -19,6 +19,41 @@
 # given a tag also create checksums files and release notes from the commit
 # message
 
+## -----------------------------------------------------------------------
+## Intent:
+##   Display available commands and paths for golang.
+##   A github release job is failing due to a command being mia.
+##
+## Note: This function is being used for side effects, when commands
+## are unavailable to query for version info, fail the job.
+## -----------------------------------------------------------------------
+## 05:02:50 bash: go: command not found
+## 05:03:00 Unable to find image 'voltha/voltha-ci-tools:2.4.0-golang' locally
+## -----------------------------------------------------------------------
+function displayCommands()
+{
+    echo
+    echo "Installed /usr/lib/go"
+    echo "-----------------------------------------------------------------------"
+    find /usr/lib -mindepth 1 -maxdepth 1 -name 'go-*' -print || /bin/true
+
+    echo
+    echo "Go commands in \$PATH"
+    echo "-----------------------------------------------------------------------"
+    which -a go || /bin/true
+
+    echo
+    echo "VERSIONS:"
+    echo "-----------------------------------------------------------------------"
+    git --version
+    go version
+
+    return
+}
+
+##----------------##
+##---]  MAIN  [---##
+##----------------##
 set -eu -o pipefail
 
 # when not running under Jenkins, use current dir as workspace and a blank
@@ -60,6 +95,8 @@ popd
 export GOPATH=${GOPATH:-$WORKSPACE/go}
 export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
 
+displayCommands
+
 # To support golang projects that require GOPATH to be set and code checked out there
 # If $DEST_GOPATH is not an empty string:
 # - create GOPATH within WORKSPACE, and destination directory within
@@ -80,18 +117,20 @@ if [ ! -f "$release_path/Makefile" ]; then
   echo "Makefile not found at $release_path!"
   exit 1
 else
+
   pushd "$release_path"
+  set -x
 
   # Release description is sanitized version of the log message
-  RELEASE_DESCRIPTION=$(git log -1 --pretty=%B | tr -dc "[:alnum:]\n\r\.\[\]\:\-\\\/\`\' ")
+  RELEASE_DESCRIPTION="$(git log -1 --pretty=%B | tr -dc "[:alnum:]\n\r\.\[\]\:\-\\\/\`\' ")"
 
   # build the release, can be multiple space separated targets
   # shellcheck disable=SC2086
-  make $RELEASE_TARGETS
+  make "$RELEASE_TARGETS"
 
   # Copy artifacts into the release temp dir
   # shellcheck disable=SC2086
-  cp $ARTIFACT_GLOB "$RELEASE_TEMP"
+  cp "$ARTIFACT_GLOB" "$RELEASE_TEMP"
 
   # create release
   echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
@@ -123,6 +162,7 @@ else
         --name "$rel_file" \
         --file "$rel_file"
     done
+    set +x
   popd
 
   popd
