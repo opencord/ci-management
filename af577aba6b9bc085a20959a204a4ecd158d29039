@@ -16,6 +16,23 @@
       "message": "WIP: Debugging a job failure.",
       "revId": "af577aba6b9bc085a20959a204a4ecd158d29039",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fca7e1d6_a932f646",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000946
+      },
+      "writtenOn": "2022-12-15T20:07:45Z",
+      "side": 1,
+      "message": "Looks good to me ",
+      "revId": "af577aba6b9bc085a20959a204a4ecd158d29039",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
