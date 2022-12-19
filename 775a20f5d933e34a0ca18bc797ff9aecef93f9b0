@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d012c98_1621b0cc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-12-19T22:01:15Z",
+      "side": 1,
+      "message": "Jenkins job ran and tests passed when extra sources were included.\nMerge so changes can be tested for real by other repo jobs.",
+      "revId": "775a20f5d933e34a0ca18bc797ff9aecef93f9b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
