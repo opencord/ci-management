@@ -69,7 +69,7 @@ def wrapped(Map config)
 
 	checkout([
 	    $class: 'GitSCM',
-	    userRemoteConfigs: [[ url:repo_url ]],
+	    userRemoteConfigs: [[ url:repo_vst ]],
 	    branches: [[ name: "${cfg.branch}", ]],
 	    extensions: [
 		[$class: 'WipeWorkspace'],
