@@ -37,7 +37,17 @@ def wrapped(Map config)
 
 	// We are always downloading those repos, if the patch under test is in one of those
 	// just checkout the patch, no need to clone it again
-	if ( !(cfg.gerritProject in frequent_repos))
+	if (cfg.gerritProject == '')
+	{
+	    // Revisit:
+	    // gerritProject should be defined.  Ignore when empty was likely
+	    // added to support manually re-running a job when repo values
+	    // may not be defined.
+	    // Unfortunately the conditional can also inadvertently bypass
+	    // checkout during an error condition.
+	    // Case: when cfg= is invalid due to a jenkins hiccup.
+	}
+	elseif (!(cfg.gerritProject in frequent_repos))
 	{
 	    repo_project = "https://gerrit.opencord.org/${cfg.gerritProject}"
 		
