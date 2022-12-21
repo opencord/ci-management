@@ -47,7 +47,7 @@ def wrapped(Map config)
 	    // checkout during an error condition.
 	    // Case: when cfg= is invalid due to a jenkins hiccup.
 	}
-	elseif (!(cfg.gerritProject in frequent_repos))
+	else if (!(cfg.gerritProject in frequent_repos))
 	{
 	    repo_project = "https://gerrit.opencord.org/${cfg.gerritProject}"
 		
