@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3efddd3_97517754",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2022-12-21T11:46:27Z",
+      "side": 1,
+      "message": "Restored a legacy conditional.\nDeploying to get the pipeline fix out.",
+      "revId": "acb444286fb1c498d2b6e5120728d41038316005",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
