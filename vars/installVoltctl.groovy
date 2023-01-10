@@ -1,6 +1,21 @@
 #!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// Install the voltctl command by branch name "voltha-xx"
+// -----------------------------------------------------------------------
 
-def call(String branch) {
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = 'vars/installVoltctl.groovy'
+    String iam = [src, func].join('::')
+    return iam
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def process(String branch) {
 
     String iam = 'vars/installVoltctl.groovy'
     println("** ${iam}: ENTER")
@@ -8,6 +23,9 @@ def call(String branch) {
     // This logic seems odd given we branch & tag repositories
     // for release so hilight non-frozen until we know for sure.
     def released=[
+	// https://github.com/opencord/voltctl/releases/tag/v1.8.1
+	// 'voltha-2.11' : '1.8.1',
+	// https://github.com/opencord/voltctl/releases/tag/v1.7.6
 	'voltha-2.10' : '1.7.6',
 	'voltha-2.9'  : '1.7.4',
 	'voltha-2.8'  : '1.6.11',
@@ -93,18 +111,55 @@ def call(String branch) {
     curl -o "\$bin_voltctl" -sSL "\${download_url}/\${vol_ver}/\${vol_name}"
 
     chmod u=rwx,go=rx "\$bin_voltctl"
-    chmod 755 "\$bin_voltctl"
-    /bin/ls -l "\$bin_voltctl"
 
-    ## Verify these are the same binary
+    # ---------------------------------------------------------
+    # /usr/local/bin/voltctl --version != bin/voltctl --version
+    # Problem when default searchpath has not been modified.
+    # ---------------------------------------------------------
     "\${bin_voltctl}" version --clientonly
     voltctl version --clientonly
-
-    # Should use diff or md5sum here
-    /bin/ls -l \$(which voltctl)
   """
 
     println("** ${iam}: LEAVE")
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def call(String branch)
+{
+    String iam = getIam('main')
+    println("** ${iam}: ENTER")
+
+	/* - unused, string passed as argument
+    if (!config) {
+        config = [:]
+    }
+	 */
+
+    try
+    {
+	def config = [:]
+	showCommands(config)
+    }
+    catch (Exception err)
+    {
+	println("** ${iam}: WARNING ${err}")
+    }
+
+    try
+    {
+	process(branch)
+    }
+    catch (Exception err)
+    {
+	println("** ${iam}: EXCEPTION ${err}")
+	throw err
+    }
+    finally
+    {
+	println("** ${iam}: LEAVE")
+    }
+    return
 }
 
 // [EOF]
