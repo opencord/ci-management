@@ -323,7 +323,7 @@ EOF
     # dep for go package dependencies w/versioning, version 0.5.2, adapted from:
     #  https://golang.github.io/dep/docs/installation.html#install-from-source
     go get -d -u github.com/golang/dep
-    pushd $(go env GOPATH)/src/github.com/golang/dep
+    pushd "$(go env GOPATH)/src/github.com/golang/dep"
       git checkout "0.5.2"
       go install -ldflags="-X main.version=0.5.2" ./cmd/dep
     popd
@@ -335,7 +335,7 @@ EOF
     # protoc-gen-go - Golang protbuf compiler extension for protoc (installed
     # below)
     go get -d -u github.com/golang/protobuf/protoc-gen-go
-    pushd $(go env GOPATH)/src/github.com/golang/protobuf
+    pushd "$(go env GOPATH)/src/github.com/golang/protobuf"
       git checkout "v1.3.1"
       go install ./protoc-gen-go
     popd
@@ -458,3 +458,5 @@ esac
 
 # execute steps for all systems
 all_systems
+
+# [EOF]

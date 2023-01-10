@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-
-# Copyright 2018-2022 Open Networking Foundation (ONF) and the ONF Contributors
+# -----------------------------------------------------------------------
+# Copyright 2018-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,11 +13,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
 # github-release.sh
 # builds (with make) and uploads release artifacts (binaries, etc.) to github
 # given a tag also create checksums files and release notes from the commit
 # message
+# -----------------------------------------------------------------------
 
 ## -----------------------------------------------------------------------
 ## Intent:
@@ -32,6 +33,8 @@
 ## -----------------------------------------------------------------------
 function displayCommands()
 {
+    set +euo pipefail
+
     echo
     echo "Installed /usr/lib/go"
     echo "-----------------------------------------------------------------------"
@@ -48,6 +51,7 @@ function displayCommands()
     git --version
     go version
 
+    set -euo pipefail
     return
 }
 
@@ -105,7 +109,7 @@ displayCommands
 # - start release process within that directory
 
 DEST_GOPATH=${DEST_GOPATH:-}
-if [ ! -z "$DEST_GOPATH" ]; then
+if [ -n "$DEST_GOPATH" ]; then
   mkdir -p "$GOPATH/src/$DEST_GOPATH"
   release_path="$GOPATH/src/$DEST_GOPATH/$GERRIT_PROJECT"
   mv "$WORKSPACE/$GERRIT_PROJECT" "$release_path"
@@ -167,3 +171,10 @@ else
 
   popd
 fi
+
+# [SEE ALSO]
+# -----------------------------------------------------------------------
+# https://www.shellcheck.net/wiki/SC2236
+# -----------------------------------------------------------------------
+
+# [EOF]

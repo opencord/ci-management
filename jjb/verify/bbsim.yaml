@@ -12,10 +12,6 @@
           name-extension: '-voltha-2.8'
           override-branch: 'voltha-2.8'
           branch-regexp: '^voltha-2.8$'
-      - 'verify-bbsim-jobs-voltha-2.9':
-          name-extension: '-voltha-2.9'
-          override-branch: 'voltha-2.9'
-          branch-regexp: '^voltha-2.9$'
       - 'verify-bbsim-jobs-voltha-2.10':
           name-extension: '-voltha-2.10'
           override-branch: 'voltha-2.10'
