@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "400e8633_dc5acc0f",
+        "filename": "vars/installKail.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-11T14:47:14Z",
+      "side": 1,
+      "message": "define a debug \u003d True flag for the method and wrap the ENTER/LEAVE printlns with a conditional so they can easily be enabled/disabled.\n\nNot available yet but eventually debugging will be available on a per-job basis and the call() block/script can dynamically enable debugging when requested.",
+      "revId": "c3ff6c523c3ab379a2bd5507762b98dbd496547b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dcc2f70e_f214d821",
+        "filename": "vars/installKail.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-11T14:47:14Z",
+      "side": 1,
+      "message": "Helpful to display command output like this (or make conditional).\nIf the retrieval or install fail we have context for the failure.\n\nIf the intent was to keep logs small and clean save command output in an array/list variable and display only when the command fails.",
+      "revId": "c3ff6c523c3ab379a2bd5507762b98dbd496547b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2fbb312d_f85e3291",
+        "filename": "vars/installKail.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-11T14:47:14Z",
+      "side": 1,
+      "message": "pushd \u0026 popd can be used here to simplify path handling and avoid a spawning a subshell (tar).\n\npushd \"$tmpdir\" \u003e/dev/null\ntar zxvf \"\\${kail_name}\"\ninstall ./kail \"\\${bin_dir}\"\npopd            \u003e/de/vnull",
+      "revId": "c3ff6c523c3ab379a2bd5507762b98dbd496547b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "35199da0_bee426b9",
+        "filename": "vars/installKail.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-11T14:47:14Z",
+      "side": 1,
+      "message": "argv parameters passed from jenkins into the call method are retrieved from [:].  If values will need to be passed into the process method (say config[\u0027debug\u0027]) the block-local-var may need to be declared outside try/catch.",
+      "revId": "c3ff6c523c3ab379a2bd5507762b98dbd496547b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
