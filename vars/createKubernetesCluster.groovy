@@ -69,8 +69,6 @@ nodes:
 
       mkdir -p $HOME/.kube
       kind get kubeconfig --name ${cfg.name} > $HOME/.kube/config
-
-      # download kail
-      bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
-  """
+    """
+    installKail
 }
