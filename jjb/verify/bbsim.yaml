@@ -151,7 +151,7 @@
     name: 'publish-bbsim-jobs'
     jobs:
       - 'docker-publish':
-          maintainers: "teo@opennetworking.org"
+          maintainers: "onf-bat-admin@opennetworking.org"
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag_wildcard'
       - 'github-release':
