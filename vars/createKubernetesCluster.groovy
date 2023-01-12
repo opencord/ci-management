@@ -1,6 +1,25 @@
+#!/usr/bin/env groovy
+// -----------------------------------------------------------------------
 // sets up a kubernetes cluster (using kind)
+// -----------------------------------------------------------------------
 
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = 'vars/createKubernetesCluster.groovy'
+    String iam = [src, func].join('::')
+    return iam
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 def call(Map config) {
+
+    String iam = getIam('main')
+    println("** ${iam}: ENTER")
+
     // note that I can't define this outside the function as there's no global scope in Groovy
     def defaultConfig = [
       branch: "master",
@@ -46,15 +65,17 @@ nodes:
 
     // TODO skip cluster creation if cluster is already there
     sh """
-      mkdir -p $WORKSPACE/bin
+      mkdir -p "$WORKSPACE/bin"
 
       # download kind (should we add it to the base image?)
       curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.0/kind-linux-amd64
       chmod +x ./kind
       mv ./kind $WORKSPACE/bin/kind
     """
+
     // install voltctl
     installVoltctl("${cfg.branch}")
+
     sh """
       # start the kind cluster
       kind create cluster --name ${cfg.name} --config kind.cfg
@@ -70,7 +91,12 @@ nodes:
       mkdir -p $HOME/.kube
       kind get kubeconfig --name ${cfg.name} > $HOME/.kube/config
 
+      make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail || true
+
       # download kail
       bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
   """
+
+    println("** ${iam}: LEAVE")
+    return
 }
