@@ -1,4 +1,6 @@
-// Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+#!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,11 +13,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-// used to deploy VOLTHA and configure ONOS physical PODs
-
+// -----------------------------------------------------------------------
+// Intent: used to deploy VOLTHA and configure ONOS physical PODs
+//
 // NOTE we are importing the library even if it's global so that it's
 // easier to change the keywords during a replay
+// -----------------------------------------------------------------------
 
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
@@ -196,16 +199,14 @@ pipeline {
         """
       }
     }
-    stage('Start logging') {
-      steps {
-        // check if kail is installed and if not installs it
-        sh """
-        if ! command -v kail &> /dev/null
-        then
-            bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
-        fi
-        """
-        sh returnStdout: false, script: '''
+	stage('Start logging')
+	{
+	    steps
+	    {
+		// Install kail
+		sh("""make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail""")
+
+		sh returnStdout: false, script: '''
           # start logging with kail
           cd $WORKSPACE
           mkdir -p $LOG_FOLDER
@@ -216,9 +217,10 @@ pipeline {
             _TAG=kail-$app kail -l app.kubernetes.io/name=$app --since 1h > $LOG_FOLDER/$app.log&
           done
         '''
-      }
-    }
-    stage('Reinstall OLT software') {
+	    }
+	}
+
+	stage('Reinstall OLT software') {
       steps {
         script {
           if ( params.reinstallOlt ) {

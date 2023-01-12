@@ -1,4 +1,6 @@
-// Copyright 2017-2022 Open Networking Foundation (ONF) and the ONF Contributors
+#!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// -----------------------------------------------------------------------
 
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
@@ -101,10 +104,13 @@ pipeline {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
         installVoltctl("${branch}")
-        sh returnStdout: false, script: """
-        mkdir -p $WORKSPACE/bin
-        # download kail
-        bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+
+	sh(returnStdout: false, script: """
+
+        mkdir -p "$WORKSPACE/bin"
+
+        # install kail
+        make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
 
         if [ "${params.branch}" == "master" ]; then
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
@@ -120,15 +126,16 @@ pipeline {
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         fi
-        """
-        sh """
+        """)
+
+        sh("""
         mkdir -p $WORKSPACE/voltha-pods-mem-consumption
         cd $WORKSPACE/voltha-system-tests
         make vst_venv
         source ./vst_venv/bin/activate || true
         # Collect initial memory consumption
         python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n ${volthaNamespace} || true
-        """
+        """)
       }
     }
 
@@ -247,3 +254,5 @@ pipeline {
     }
   }
 }
+
+// [EOF]

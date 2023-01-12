@@ -1,4 +1,6 @@
-// Copyright 2017-2022 Open Networking Foundation (ONF) and the ONF Contributors
+#!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// -----------------------------------------------------------------------
 
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
@@ -114,19 +117,19 @@ pipeline {
         JENKINS_NODE_COOKIE="dontKillMe" _TAG="kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
         ps aux | grep port-forward
         """
-        sh """
-        ps -ef | grep port-forward
-        """
-        sh returnStdout: false, script: """
-        mkdir -p $WORKSPACE/bin
-        # download kail
-        bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+
+        sh("""ps -ef | grep port-forward""")
+
+        sh(returnStdout: false, script: """
+        mkdir -p "$WORKSPACE/bin"
+
+        # install kail
+        make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
 
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
            set +e
-
 
         # Remove noise from voltha-core logs
            voltctl log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
@@ -135,7 +138,7 @@ pipeline {
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
-        """
+        """)
       }
     }
 

@@ -1,4 +1,6 @@
-// Copyright 2017-present Open Networking Foundation
+#!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// Copyright 2021-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// -----------------------------------------------------------------------
 
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
@@ -101,16 +104,16 @@ pipeline {
         }
         installVoltctl("${branch}")
         sh returnStdout: false, script: """
-        mkdir -p $WORKSPACE/bin
-        # download kail
-        bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+        mkdir -p "$WORKSPACE/bin"
+
+        # install kail
+        make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
 
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
         if [ "${params.branch}" == "master" ]; then
            set +e
-
 
         # Remove noise from voltha-core logs
            voltctl log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
@@ -132,7 +135,7 @@ pipeline {
       }
       steps {
         sh """
-        mkdir -p $ROBOT_LOGS_DIR
+        mkdir -p "$ROBOT_LOGS_DIR"
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -i functionalTT -i PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         else
