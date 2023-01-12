@@ -1,4 +1,4 @@
-// Copyright 2021-2022 Open Networking Foundation (ONF) and the ONF Contributors
+// Copyright 2021-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,9 +24,9 @@ library identifier: 'cord-jenkins-libraries@master',
 def clusterName = "kind-ci"
 
 def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "") {
-  def infraNamespace = "default"
-  def volthaNamespace = "voltha"
-  def logsDir = "$WORKSPACE/${testTarget}"
+    def infraNamespace = "default"
+    def volthaNamespace = "voltha"
+    def logsDir = "$WORKSPACE/${testTarget}"
 
     stage('IAM')
     {
@@ -54,22 +54,36 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     }
 
     stage('Cleanup') {
-    if (teardown) {
-      timeout(15) {
-        script {
-          helmTeardown(["default", infraNamespace, volthaNamespace])
-        }
-        timeout(1) {
-          sh returnStdout: false, script: '''
+	if (teardown) {
+	    timeout(15) {
+		script {
+		    helmTeardown(["default", infraNamespace, volthaNamespace])
+		}
+	    timeout(1) {
+		    sh returnStdout: false, script: '''
           # remove orphaned port-forward from different namespaces
           ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
           '''
-        }
-      }
+		}
+	    }
+	}
     }
-  }
-  stage('Deploy common infrastructure') {
-    sh '''
+
+    stage ('Initialize')
+    {
+	// VOL-4926 - Is voltha-system-tests available ?
+	String cmd = [
+	    'make',
+	    '-C', "$WORKSPACE/voltha-system-tests",
+	    "KAIL_PATH=\"$WORKSPACE/bin\"",
+	    'kail',
+	].join('/')
+	println(" ** Running: ${cmd}:\n")
+        sh("${cmd} || true")
+    }
+
+    stage('Deploy common infrastructure') {
+	sh '''
     helm repo add onf https://charts.opencord.org
     helm repo update
     if [ ${withMonitoring} = true ] ; then
@@ -78,8 +92,9 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
     fi
     '''
-  }
-  stage('Deploy Voltha') {
+    }
+
+    stage('Deploy Voltha') {
     if (teardown) {
       timeout(10) {
         script {
@@ -163,11 +178,12 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       }
     }
   }
+
   stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
     sh """
     if [ ${withMonitoring} = true ] ; then
-      mkdir -p $WORKSPACE/voltha-pods-mem-consumption-${workflow}
-      cd $WORKSPACE/voltha-system-tests
+      mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
+      cd "$WORKSPACE/voltha-system-tests"
       make vst_venv
       source ./vst_venv/bin/activate || true
       # Collect initial memory consumption
@@ -180,7 +196,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
-    make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
+    make -C "$WORKSPACE/voltha-system-tests" ${testTarget} || true
     """
     getPodsInfo("${logsDir}")
     sh """
@@ -192,7 +208,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     """
     sh """
     if [ ${withMonitoring} = true ] ; then
-      cd $WORKSPACE/voltha-system-tests
+      cd "$WORKSPACE/voltha-system-tests"
       source ./vst_venv/bin/activate || true
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
