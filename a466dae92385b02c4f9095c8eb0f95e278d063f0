@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78c07332_3ed907cf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000947
+      },
+      "writtenOn": "2023-01-12T23:50:26Z",
+      "side": 1,
+      "message": "Teo\u0027s changes look fine to onf-bat-admin -- Question, should Andy and Scott\u0027s emails use their new ones or have they committed to monitoring the opennetworking.org ones?",
+      "revId": "a466dae92385b02c4f9095c8eb0f95e278d063f0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
