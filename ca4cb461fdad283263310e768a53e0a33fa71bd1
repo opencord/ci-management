@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c80dd9d6_c5e24858",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000947
+      },
+      "writtenOn": "2023-01-12T23:48:24Z",
+      "side": 1,
+      "message": "looks good.  Particularly like the consistent whitespacing format.    Pure curiousity -- did the \u0027yes \u003d\u003e True change get flagged by Lint or tripped by sneaky bug?",
+      "revId": "ca4cb461fdad283263310e768a53e0a33fa71bd1",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
