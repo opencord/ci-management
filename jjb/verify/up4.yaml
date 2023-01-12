@@ -11,8 +11,8 @@
 
     # Matrix
     up4Ctrl:
-        - pfcp
-        - p4rt
+      - pfcp
+      - p4rt
 
     jobs:
       - "up4-jobs":

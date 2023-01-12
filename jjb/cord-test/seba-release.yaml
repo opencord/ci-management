@@ -55,7 +55,7 @@
           Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
           oltDebVersion: 'openolt-master.deb'
 
-     # Flex POD build 2.0
+          # Flex POD build 2.0
       - 'build_pod_manual_release':
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'

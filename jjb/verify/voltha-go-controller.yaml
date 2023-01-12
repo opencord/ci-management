@@ -8,16 +8,6 @@
     jobs:
       - 'verify-voltha-go-controller-jobs':
           branch-regexp: '{all-branches-regexp}'
-      # NOTE no releases yet, will be enabled once 2.10 or 2.11 is out
-      # - 'verify-voltha-go-controller-jobs-voltha-2.9':
-      #     name-extension: '-voltha-2.9'
-      #     branch-regexp: '^voltha-2.9$'
-      # NOTE will be enabled once we have a pipeline that supports this controller
-      # - 'verify-voltha-go-controller-jobs-master':
-      #     branch-regexp: '^master$'
-      # NOTE will be enabled once we have artifacts to build
-      # - 'publish-voltha-go-controller-jobs':
-      #     branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-go-controller-jobs'

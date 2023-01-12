@@ -202,7 +202,7 @@ pipeline {
             reportFileName: 'RobotLogs/report*.html',
             unstableThreshold: 0]);
          archiveArtifacts artifacts: '*.log'
-         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, teo@opennetworking.org", sendToIndividuals: false])
+         step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "kailash@opennetworking.org, onf-bat-admin@opennetworking.org", sendToIndividuals: false])
 
     }
   }

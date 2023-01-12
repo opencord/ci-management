@@ -61,13 +61,17 @@
           withEapol: true
           withDhcp: true
           withIgmp: false
-          extraHelmFlags: '--set authRetry=true,dhcpRetry=true --set voltha.securityContext.enabled=false -f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn --set global.rpc_timeout=30s --set voltha.ofagent.log_level=DEBUG'
+          extraHelmFlags: >-
+            --set authRetry=true,dhcpRetry=true
+            --set voltha.securityContext.enabled=false -f /home/jenkins/voltha-scale/voltha-values.yaml
+            --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn
+            --set global.rpc_timeout=30s --set voltha.ofagent.log_level=DEBUG'
           onosReplicas: 1
           atomixReplicas: 1
           onosImg: andreacampanella/voltha-onos:extend-timeout
           ofAgentImg: matteoscandolo/voltha-ofagent-go:scale-debug
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:indications
-          volthaHelmChartsChange:  refs/changes/54/32954/1
+          volthaHelmChartsChange: refs/changes/54/32954/1
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-onu-upgrade-2-16-32-att-onus'
@@ -104,7 +108,7 @@
           onosImg: andreacampanella/voltha-onos:extend-timeout
           ofAgentImg: matteoscandolo/voltha-ofagent-go:scale-debug
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:indications
-          volthaHelmChartsChange:  refs/changes/54/32954/1
+          volthaHelmChartsChange: refs/changes/54/32954/1
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
@@ -131,7 +135,7 @@
           onosImg: andreacampanella/voltha-onos:extend-timeout
           ofAgentImg: matteoscandolo/voltha-ofagent-go:scale-debug
           openoltAdapterImg: matteoscandolo/voltha-openolt-adapter:indications
-          volthaHelmChartsChange:  refs/changes/54/32954/1
+          volthaHelmChartsChange: refs/changes/54/32954/1
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-maclearner'
@@ -177,42 +181,42 @@
           extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn'
 
       - 'voltha-scale-measurements':
-            name: 'voltha-scale-measurements-master-1-64-63-dt-subscribers'
-            build-node: 'voltha-scale-1'
-            time-trigger: "H H/4 * * *"
-            olts: 1
-            pons: 64
-            onus: 63
-            unis: 1
-            withFlows: true
-            provisionSubscribers: true
-            workflow: dt
-            withEapol: false
-            withDhcp: false
-            withIgmp: false
-            onosImg: andreacampanella/voltha-onos:4k-dev
-            withMibTemplate: false
-            mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-v0.0.1-BBSM_IMG_00001-v1-1UNI.json'
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
+          name: 'voltha-scale-measurements-master-1-64-63-dt-subscribers'
+          build-node: 'voltha-scale-1'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 64
+          onus: 63
+          unis: 1
+          withFlows: true
+          provisionSubscribers: true
+          workflow: dt
+          withEapol: false
+          withDhcp: false
+          withIgmp: false
+          onosImg: andreacampanella/voltha-onos:4k-dev
+          withMibTemplate: false
+          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-v0.0.1-BBSM_IMG_00001-v1-1UNI.json'
+          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn -f /home/cord/dt-custom-values.yaml'
 
       - 'voltha-scale-measurements':
-            name: 'voltha-scale-measurements-master-1-64-63-tt-subscribers'
-            build-node: 'voltha-scale-1'
-            time-trigger: "H H/4 * * *"
-            olts: 1
-            pons: 64
-            onus: 63
-            unis: 1
-            withFlows: true
-            provisionSubscribers: true
-            workflow: tt
-            withEapol: false
-            withDhcp: true
-            withIgmp: true
-            onosImg: andreacampanella/voltha-onos:4k-dev
-            withMibTemplate: false
-            mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-v0.0.1-BBSM_IMG_00001-v1-1UNI.json'
-            extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn -f /home/cord/tt-custom-values.yaml'
+          name: 'voltha-scale-measurements-master-1-64-63-tt-subscribers'
+          build-node: 'voltha-scale-1'
+          time-trigger: "H H/4 * * *"
+          olts: 1
+          pons: 64
+          onus: 63
+          unis: 1
+          withFlows: true
+          provisionSubscribers: true
+          workflow: tt
+          withEapol: false
+          withDhcp: true
+          withIgmp: true
+          onosImg: andreacampanella/voltha-onos:4k-dev
+          withMibTemplate: false
+          mibTemplateUrl: 'https://raw.githubusercontent.com/opencord/voltha-openonu-adapter-go/master/templates/BBSM-v0.0.1-BBSM_IMG_00001-v1-1UNI.json'
+          extraHelmFlags: '-f /home/jenkins/voltha-scale/voltha-values.yaml --set etcd.persistence.enabled=false,etcd.persistence.storageClass=longhorn -f /home/cord/tt-custom-values.yaml'
 
       # multi-stack jobs
       - 'voltha-scale-measurements':
@@ -814,7 +818,7 @@
     bbsimImg: voltha/bbsim:master
     rwCoreImg: voltha/voltha-rw-core:master
     ofAgentImg: voltha/voltha-ofagent-go:master
-    openoltAdapterImg:  voltha/voltha-openolt-adapter:master
+    openoltAdapterImg: voltha/voltha-openolt-adapter:master
     openonuAdapterImg: voltha/voltha-openonu-adapter:master
     openonuAdapterGoImg: voltha/voltha-openonu-adapter-go:master
     onosImg: voltha/voltha-onos:master
@@ -843,7 +847,7 @@
     withMonitoring: true
     withProfiling: false
     withPcap: false
-    withRadius: yes
+    withRadius: true
     openonuAdapterReplicas: 1
     onosReplicas: 3
     atomixReplicas: 3

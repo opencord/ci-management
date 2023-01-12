@@ -9,8 +9,8 @@
     build-timeout: '300'
 
     with-kind: false
-    power-switch: False
-    power-cycle-olt: False
+    power-switch: false
+    power-cycle-olt: false
     work-flow: 'ATT'
     in-band-management: false
     num-of-openonu: 1
@@ -53,7 +53,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: True
+          power-switch: true
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
       # Certification (Radisys 1600X) pod with olt/onu - master versions timer based job
@@ -80,7 +80,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: True
+          power-switch: true
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
       # Certification (Radisys) pod with olt/onu - master versions timer based job
@@ -105,7 +105,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: True
+          power-switch: true
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
       # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
@@ -134,7 +134,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: True
+          power-switch: true
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
       # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
@@ -163,7 +163,7 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: True
+          power-switch: true
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
       # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
@@ -192,5 +192,5 @@
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: True
+          power-switch: true
           pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'

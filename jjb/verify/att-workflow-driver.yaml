@@ -25,6 +25,6 @@
     name: 'publish-att-workflow-driver-jobs'
     jobs:
       - 'docker-publish':
-          maintainers: "teo@opennetworking.org, andy@opennetworking.org"
+          maintainers: "onf-bat-admin@opennetworking.org, andy@opennetworking.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag_wildcard'
