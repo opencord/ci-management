@@ -28,7 +28,9 @@ LINT_ARGS ?= --verbose --configure LineTooLong:130 -e LineTooLong \
 
 .PHONY: lint-robot
 
-lint : lint-robot
+ifndef NO-LINT-ROBOT
+  lint : lint-robot
+endif
 
 lint-robot: vst_venv
 	source ./$</bin/activate \

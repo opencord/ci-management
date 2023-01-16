@@ -15,19 +15,50 @@
 # limitations under the License.
 ## -----------------------------------------------------------------------
 
-## usage:   {target} : venv-req
-# venv : .venv/bin/activate requirements.txt
-venv-dep : .venv/bin/activate
-venv-req : .venv/bin/activate requirements.txt
+$(if $(DEBUG),$(warning ENTER))
 
-.venv/bin/activate:
-	virtualenv -p python3 $@
-	source ./$@/bin/activate \
-	   pip install --upgrade pip \
-	source ./$@/bin/activate \
-	   pip install --upgrade setuptools \
-	[[ -r requirements.txt ]]       \
-	    && source ./$@/bin/activate \
-	    && python -m pip install -r requirements.txt
+venv-name            ?= .venv
+venv-abs-path        := $(PWD)/$(venv-name)
+
+venv-activate-script := $(venv-name)/bin/activate#        # dependency
+activate             ?= source $(venv-activate-script)#   # cmd invocation
+
+## -----------------------------------------------------------------------
+## Intent: Activate script path dependency
+## Usage:
+##    o place on the right side of colon as a target dependency
+##    o When the script does not exist install the virtual env and display.
+## -----------------------------------------------------------------------
+$(venv-activate-script):
+	virtualenv -p python3 $(venv-name)\
+  && source $(venv-name)/bin/activate\
+  && python -m pip install --upgrade pip\
+  && pip install --upgrade setuptools\
+  && { [[ -r requirements.txt ]] && python -m pip install -r requirements.txt; }\
+  && python --version
+
+## -----------------------------------------------------------------------
+## Intent: Explicit named installer target w/o dependencies.
+##         Makefile targets should depend on venv-activate-script.
+## -----------------------------------------------------------------------
+venv: $(venv-activate-script)
+
+## -----------------------------------------------------------------------
+## Intent: Revert installation to a clean checkout
+## -----------------------------------------------------------------------
+sterile :: clean
+	$(RM) -r "$(venv-abs-path)"
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help ::
+	@echo
+	@echo '[VIRTUAL ENV]'
+	@echo '  venv-name=          Subdir name for virtualenv install'
+	@echo '  venv-activate-script: make macro name'
+	@echo '      $$(target) dependency    : install python virtualenv'
+	@echo '      source $$(macro) && cmd  : configure env and run cmd'
+
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

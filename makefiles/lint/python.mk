@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2017-2023 Open Networking Foundation
+# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,20 +15,37 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-PYTHON_FILES ?= $(error PYTHON_FILES= is required)
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
 
-.PHONY: lint-python
+# Gather sources to check
+# TODO: implement deps, only check modified files
+python-check-find := find . -name '*venv*' -prune\
+  -o \( -name '*.py' \)\
+  -type f -print0
 
-lint : lint-python
+# python-check    := $(env-clean) pylint
+python-check    := pylint
 
-# check deps for format and python3 cleanliness
-lint-python: vst_venv
-	source ./$</bin/activate \
-	    ; set -u \
-	    ; pylint --py3k $(PYTHON_FILES) \
-	    ; flake8 --max-line-length=99 --count $(PYTHON_FILES)
+# python-check-args += --dry-run
 
-help::
-	@echo "  lint-python          Syntax check using pylint and flake8"
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+ifndef NO-LINT-PYTHON
+  lint : lint-python
+endif
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+lint-python:
+	$(HIDE)$(env-clean) $(python-check-find) \
+	    | $(xargs-n1) $(python-check) $(python-check-args)
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help ::
+	@echo '  lint-python                   Syntax check python sources'
 
 # [EOF]

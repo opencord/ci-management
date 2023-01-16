@@ -1,5 +1,6 @@
+# -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2021-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,25 +13,20 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 ---
-- project:
-    archive-artifacts: '**/*.log'
-    branch: 'master'
-    build-timeout: '60'
-    build-node: 'ubuntu18.04-basebuild-1c-1g'
+# yamllint.conf
 
-    jobs:
-      - '{project-name}-packer-jobs':
-          platforms:
-            - 'ubuntu-18.04'
-          templates:
-            - basebuild_1804
+extends: default
 
-    name: packer-jobs
-    project: 'ci-management'
-    project-name: 'ci-management-ami'
-
-    jjb-version: 3.2.0
-    packer-version: 1.6.5
-    packer-builder: aws
+rules:
+  empty-lines:
+    max-end: 1
+  line-length:
+    max: 120
+  braces:
+    min-spaces-inside: 0
+    max-spaces-inside: 1

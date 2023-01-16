@@ -20,25 +20,37 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
-null        :=#
-space       := $(null) $(null)
-dot         ?= .
+yamllint      := $(env-clean) yamllint
 
-HIDE        ?= @
+## -------------------------------
+## Add requirement(s) for checking
+## -------------------------------
+# yamllint-cfg := .yamllint
+yamllint-cfg := yamllint.helm
+yamllint-conf = $(wildcard $(yamllint-cfg) $(MAKEDIR)/lint/yaml/$(yamllint-cfg))
+yamllint-args += $(addprefix --config-file$(space),$(yamllint-conf))
 
-env-clean   = /usr/bin/env --ignore-environment
-xargs-n1    := xargs -0 -t -n1 --no-run-if-empty
+# yamllint-args := --no-warnings
+# yamllint-args := --strict
+
+yamllint-find := find .
+yamllint-find += -name 'vendor' -prune
+yamllint-find += -o -name '*.yaml'
+yamllint-find += ! -name '\.\#*.yaml'
+yamllint-find += -type f
+yamllint-find += -print0
 
 ## -----------------------------------------------------------------------
-## Not recommended but support (-u)ndef-less shell for pyenv activate
-## TODO: declare a pyenv shell
 ## -----------------------------------------------------------------------
-have-shell-bash := $(filter bash,$(subst /,$(space),$(SHELL)))
-$(if $(have-shell-bash),$(null),\
-  $(eval export SHELL := /bin/bash -euo pipefail))
+lint lint-yaml:
+	$(HIDE)$(env-clean) $(yamllint-find) \
+	    | xargs -0 --no-run-if-empty -t -n1 $(yamllint) $(yamllint-args)
 
-shell-pyenv := bash -eo pipefail
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help::
+	@echo "  lint-yaml                     Syntax check yaml sources"
 
-$(if $(DEBUG),$(warning LEAVE))
+$(if $(DEBUG),$(warning ENTER))
 
 # [EOF]

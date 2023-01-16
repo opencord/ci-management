@@ -12,4 +12,4 @@
       - equivs
       - gdebi
     state: latest
-  become: yes
+  become: true

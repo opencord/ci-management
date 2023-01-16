@@ -19,7 +19,7 @@
           Defaults:jenkins !requiretty
           jenkins ALL = NOPASSWD: /usr/sbin/update-alternatives, /usr/sbin/update-java-alternatives
         validate: /usr/sbin/visudo -cf %s
-      become: yes
+      become: true
 
   roles:
     - lfit.lf-recommended-tools
@@ -39,8 +39,8 @@
         path: /etc/nsswitch.conf
         regexp: '^hosts:(\s+.*)?$'
         replace: 'hosts:\1 myhostname'
-        backup: yes
-      become: yes
+        backup: true
+      become: true
 
     - name: Disable periodic updates
       block:
@@ -59,7 +59,7 @@
             path: /etc/apt/apt.conf.d/10periodic
             regexp: "^APT::Periodic::Unattended-Upgrade"
             line: 'APT::Periodic::Unattended-Upgrade "0";'
-            create: yes
+            create: true
         - name: Uninstall unattended upgrades
           apt:
             name: unattended-upgrades
@@ -71,8 +71,8 @@
         - name: Disable apt-daily.* systemd services
           systemd:
             name: "{{service}}"
-            enabled: no
-            masked: yes
+            enabled: false
+            masked: true
           with_items:
             - apt-daily.service
             - apt-daily.timer
@@ -81,7 +81,7 @@
           loop_control:
             loop_var: service
       when: ansible_distribution == 'Ubuntu'
-      become: yes
+      become: true
 
     - name: System Reseal
       script: system-reseal.sh
