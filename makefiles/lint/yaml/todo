@@ -6,34 +6,34 @@
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
+env-clean = /usr/bin/env --ignore-environment
+xargs-n1      := xargs -0 -t -n1 --no-run-if-empty
 
-# Gather sources to check
-# TODO: implement deps, only check modified files
-python-check-find := find . -name '*venv*' -prune\
-  -o \( -name '*.py' \)\
-  -type f -print0
-
-# python-check    := $(env-clean) pylint
-python-check    := pylint
-
-# python-check-args += --dry-run
+yamllint      := $(env-clean) $(YAMLLINT)
+yamllint-args := -c .yamllint
 
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
-ifndef NO-LINT-PYTHON
-  lint : lint-python
-endif
+lint : lint-yaml
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
-lint-python:
-	$(HIDE)$(env-clean) $(python-check-find) \
-	    | $(xargs-n1) $(python-check) $(python-check-args)
+lint-yaml:
+	$(HIDE)$(env-clean) find . -name '*.yaml' -type f -print0 \
+	    | $(xargs-n1) $(yamllint) $(yamllint-args)
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
-help ::
-	@echo '  lint-python                   Syntax check python sources'
-
+help:
+	@echo
+	@echo "USAGE: $(MAKE)"
+	@echo "  lint        perform syntax checks on source"
+	@echo "  test        perform syntax checks on source"
+	@echo "  pre-check   Verify tools and deps are available for testing"
+	@echo
+	@echo "[LINT]"
+	@echo "  lint-json   Syntax check .json sources"
+	@echo "  lint-yaml   Syntax check .yaml sources"
+	@echo
 # [EOF]

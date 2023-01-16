@@ -1282,7 +1282,7 @@
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
-    registry:  mirror.registry.opennetworking.org
+    registry: mirror.registry.opennetworking.org
     sandbox: true
     olts: 1
     timeout: 130

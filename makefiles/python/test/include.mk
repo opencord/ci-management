@@ -18,27 +18,20 @@
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-$(if $(DEBUG),$(warning ENTER))
-
-null        :=#
-space       := $(null) $(null)
-dot         ?= .
-
-HIDE        ?= @
-
-env-clean   = /usr/bin/env --ignore-environment
-xargs-n1    := xargs -0 -t -n1 --no-run-if-empty
+.PHONY: test-python
+# test :: test-python
+test-targets += test-python
 
 ## -----------------------------------------------------------------------
-## Not recommended but support (-u)ndef-less shell for pyenv activate
-## TODO: declare a pyenv shell
+## Intent: Gather and invoke available unit tests
 ## -----------------------------------------------------------------------
-have-shell-bash := $(filter bash,$(subst /,$(space),$(SHELL)))
-$(if $(have-shell-bash),$(null),\
-  $(eval export SHELL := /bin/bash -euo pipefail))
+test-python-args += -m unittest
+test-python:
+	$(PYTHON) $(test-python-args) discover -v
 
-shell-pyenv := bash -eo pipefail
-
-$(if $(DEBUG),$(warning LEAVE))
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help::
+	@echo "  test-python                   Invoke python unit tests"
 
 # [EOF]

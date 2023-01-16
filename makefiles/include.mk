@@ -20,24 +20,18 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
-null        :=#
-space       := $(null) $(null)
-dot         ?= .
-
-HIDE        ?= @
-
-env-clean   = /usr/bin/env --ignore-environment
-xargs-n1    := xargs -0 -t -n1 --no-run-if-empty
+ONF_MAKE ?= $(MAKEDIR)# fix this -- two distinct makefile imports needed
+ONF_MAKE ?= $(error ONF_MAKE= is required)
 
 ## -----------------------------------------------------------------------
-## Not recommended but support (-u)ndef-less shell for pyenv activate
-## TODO: declare a pyenv shell
 ## -----------------------------------------------------------------------
-have-shell-bash := $(filter bash,$(subst /,$(space),$(SHELL)))
-$(if $(have-shell-bash),$(null),\
-  $(eval export SHELL := /bin/bash -euo pipefail))
+help::
+	@echo "Usage: make [options] [target] ..."
 
-shell-pyenv := bash -eo pipefail
+include $(ONF_MAKE)/consts.mk
+include $(ONF_MAKE)/lint/include.mk
+include $(ONF_MAKE)/virtualenv.mk
+include $(ONF_MAKE)/help/variables.mk
 
 $(if $(DEBUG),$(warning LEAVE))
 

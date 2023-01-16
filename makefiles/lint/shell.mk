@@ -1,33 +1,43 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
 # -----------------------------------------------------------------------
 
-JSON_FILES ?= $(error JSON_FILES= is required)
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
 
-.PHONY: lint-shell
+# Gather sources to check
+# TODO: implement deps, only check modified files
+shell-check-find := find .
+# vendor scripts but they really should be lintable
+shell-check-find += -name 'vendor' -prune
+shell-check-find += -o \( -name '*.sh' \)
+shell-check-find += -type f -print0
 
-lint : lint-shell
+# shell-check    := $(env-clean) pylint
+shell-check      := shellcheck
 
+shell-check-args += -a
+
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+ifndef NO-LINT-SHELL
+  lint : lint-shell
+endif
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
 lint-shell:
-	shellcheck --version
-	find . \( -name 'staging' -o -name 'vst_venv' \) -prune \
-	    -o -name '*.sh' ! -name 'activate.sh' -print0 \
-	| xargs -0 -n1 shellcheck
+	$(shell-check) -V
+	@echo
+	$(HIDE)$(env-clean) $(shell-check-find) \
+	    | $(xargs-n1) $(shell-check) $(shell-check-args)
 
-help::
-	@echo "  lint-shell           Syntax check bash,bourne,etc sources"
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help ::
+	@echo '  lint-shell                    Syntax check shell sources'
 
 # [EOF]

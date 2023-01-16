@@ -1,5 +1,6 @@
+# -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2021-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,25 +13,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
----
-- project:
-    archive-artifacts: '**/*.log'
-    branch: 'master'
-    build-timeout: '60'
-    build-node: 'ubuntu18.04-basebuild-1c-1g'
 
-    jobs:
-      - '{project-name}-packer-jobs':
-          platforms:
-            - 'ubuntu-18.04'
-          templates:
-            - basebuild_1804
+YAML_FILES ?= $(error YAML_FILES= is required)
 
-    name: packer-jobs
-    project: 'ci-management'
-    project-name: 'ci-management-ami'
+lint-yaml-dep = $(addsuffix ^lint-yaml,$(YAML_FILES))
+lint-yaml-src = $(firstword $(subst ^,$(space),$(1)))
 
-    jjb-version: 3.2.0
-    packer-version: 1.6.5
-    packer-builder: aws
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+.PHONY : lint-yaml
+lint   : lint-yaml
+
+lint-yaml: $(venv-activate)
+lint-yaml: $(lint-yaml-dep)
+
+$(lint-yaml-dep):
+	$(vst-env) && yamllint -s $(call lint-yaml-src,$@)
+
+help::
+	@echo "  lint-yaml            Syntax check yaml sources"
+
+# [EOF]
