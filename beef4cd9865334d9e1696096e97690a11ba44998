@@ -16,6 +16,23 @@
       "message": "Copyright updates.\nUpdate one lingering pipeline script to install kail with \"make kail\" -vs- \"curl godownloader.sh\"\n",
       "revId": "beef4cd9865334d9e1696096e97690a11ba44998",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "26020140_653cf003",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000947
+      },
+      "writtenOn": "2023-01-18T23:05:32Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "beef4cd9865334d9e1696096e97690a11ba44998",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
