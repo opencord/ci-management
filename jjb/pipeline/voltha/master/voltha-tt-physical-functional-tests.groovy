@@ -1,4 +1,6 @@
-// Copyright 2017-2022 Open Networking Foundation (ONF) and the ONF Contributors
+// -*- groovy -*-
+// -----------------------------------------------------------------------
+// Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +13,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+// -----------------------------------------------------------------------
 
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
@@ -93,17 +96,23 @@ pipeline {
          )
       }
     }
-    stage ('Initialize') {
-      steps {
-        sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
-        script {
-           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
-        }
+    stage ('Initialize')
+    {
+        steps
+	{
+	    sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
+	    script
+	    {
+		deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+	    }
+		
         installVoltctl("${branch}")
+
         sh returnStdout: false, script: """
-        mkdir -p $WORKSPACE/bin
-        # download kail
-        bash <( curl -sfL https://raw.githubusercontent.com/boz/kail/master/godownloader.sh) -b "$WORKSPACE/bin"
+        mkdir -p "$WORKSPACE/bin"
+
+        # install kail
+        make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
 
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.

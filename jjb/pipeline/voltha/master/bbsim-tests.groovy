@@ -77,9 +77,9 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 	    '-C', "$WORKSPACE/voltha-system-tests",
 	    "KAIL_PATH=\"$WORKSPACE/bin\"",
 	    'kail',
-	].join('/')
+	].join(' ')
 	println(" ** Running: ${cmd}:\n")
-        sh("${cmd} || true")
+        sh("${cmd}")
     }
 
     stage('Deploy common infrastructure') {
