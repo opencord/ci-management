@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "76237bd8_84b4fbc8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-18T16:34:37Z",
+      "side": 1,
+      "message": "Publish yaml cleanups and recent makefile additions in the repository.",
+      "revId": "3f575f7f612c7f12d4c0ddde22bda33a2209c01e",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
