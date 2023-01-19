@@ -240,7 +240,13 @@ pipeline {
   agent {
     label "${params.buildNode}"
   }
+
   options {
+    // -----------------------------------------------------------------------
+    // Revisit: understand why testing requires 2+ hours ! (v2.8 => 120 min)
+    // Refactor: split test suites into more jenkins friendly time slices
+    // Cost to spin up a cluster or configure devices will be a gating factor
+    // -----------------------------------------------------------------------
     timeout(time: 220, unit: 'MINUTES')
   }
   environment {
@@ -268,11 +274,18 @@ pipeline {
         helmTeardown(['infra', 'voltha'])
       }
     }
-    stage('Create K8s Cluster') {
-      steps {
-        createKubernetesCluster([nodes: 3])
-      }
+
+    stage('Create K8s Cluster')
+    {
+        steps
+	{
+	    // [TODO] Remove special case, always pass branch.
+	    // [TODO] cKC should be smart enough to omit master branch
+	    // createKubernetesCluster([branch: "${branch}", nodes: 3])
+	    createKubernetesCluster([nodes: 3])
+        }
     }
+
     stage('Run Test') {
       steps {
         test_software_upgrade("onos-app-upgrade")

@@ -43,13 +43,7 @@ pipeline {
     VOLTCONFIG="$HOME/.volt/config-minimal"
     PATH="$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   }
-
   stages {
-    // -----------------------------------------------------------------------
-    // Why are we supporting conditional v-s-t checkout (?)
-    // Conditional "bridge" logic can be built into master with visible version control.
-    // Helps avoid a special case with bug potential (ie: incorrect test suite usage for release)
-    // -----------------------------------------------------------------------
     stage('Clone voltha-system-tests') {
       steps {
         step([$class: 'WsCleanup'])
@@ -67,8 +61,7 @@ pipeline {
           ],
         ])
 	script {
-            // roll the dice when we land here
-            sh(script:"""
+          sh(script:"""
             if [ '${volthaSystemTestsChange}' != '' ] ; then
               cd $WORKSPACE/voltha-system-tests;
               git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
@@ -106,7 +99,7 @@ pipeline {
           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
         }
 	installVoltctl("${branch}")
-	
+
 	sh(returnStdout: false, script: """
 
         mkdir -p "$WORKSPACE/bin"
@@ -274,3 +267,5 @@ pipeline {
     }
   }
 }
+
+// [EOF]

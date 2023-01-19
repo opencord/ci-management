@@ -132,7 +132,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
-    make -C $WORKSPACE/voltha-system-tests ${testTarget} || true
+    make -C "$WORKSPACE/voltha-system-tests" ${testTarget} || true
     """
     getPodsInfo("${logsDir}")
     sh """
