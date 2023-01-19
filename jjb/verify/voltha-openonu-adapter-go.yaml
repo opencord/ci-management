@@ -8,6 +8,10 @@
     jobs:
       - 'verify-voltha-openonu-adapter-go-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'verify-voltha-openonu-adapter-go-jobs-voltha-2.11':
+          name-extension: '-voltha-2.11'
+          override-branch: 'voltha-2.11'
+          branch-regexp: '^voltha-2.11$'
       - 'verify-voltha-openonu-adapter-go-jobs-voltha-2.8':
           name-extension: '-voltha-2.8'
           override-branch: 'voltha-2.8'
@@ -36,6 +40,12 @@
           unit-test-keep-going: 'true'
           junit-allow-empty-results: true
           build-node: 'ubuntu18.04-basebuild-2c-4g'
+
+- job-group:
+    name: 'verify-voltha-openonu-adapter-go-jobs-voltha-2.11'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
 
 - job-group:
     name: 'verify-voltha-openonu-adapter-go-jobs-voltha-2.8'

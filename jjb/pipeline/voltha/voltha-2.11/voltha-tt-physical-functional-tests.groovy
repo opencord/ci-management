@@ -26,8 +26,8 @@ node {
   deployment_config = null
 }
 
-def volthaNamespace = "voltha"
 def infraNamespace = "infra"
+def volthaNamespace = "voltha"
 
 pipeline {
   /* no label, executor is determined by JJB */
@@ -96,13 +96,18 @@ pipeline {
          )
       }
     }
-    stage ('Initialize') {
-      steps {
-        sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
-        script {
-           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
-        }
-        installVoltctl("${branch}")
+    stage ('Initialize')
+    {
+        steps
+	{
+	    sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
+	    script
+	    {
+		deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+	    }
+
+	installVoltctl("${branch}")
+
         sh returnStdout: false, script: """
         mkdir -p "$WORKSPACE/bin"
 
@@ -138,6 +143,9 @@ pipeline {
         mkdir -p "$ROBOT_LOGS_DIR"
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -i functionalTT -i PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+             if ( ${powerCycleOlt} ); then
+                  ROBOT_MISC_ARGS+=" -v power_cycle_olt:True"
+             fi
         else
              export ROBOT_MISC_ARGS="--removekeywords wuks -i functionalTT -e PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         fi
@@ -181,9 +189,32 @@ pipeline {
         mkdir -p $ROBOT_LOGS_DIR
         if [ ${params.enableMultiUni} = false ]; then
           if ( ${powerSwitch} ); then
-            export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
+            export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
           else
-            export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
+            export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
+          fi
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+          make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
+        fi
+        """
+      }
+    }
+
+    stage('Multicast Tests') {
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+        ROBOT_FILE="Voltha_TT_MulticastTests.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/MulticastTests"
+        ROBOT_TEST_INPUT_FILE="$WORKSPACE/voltha-system-tests/tests/data/${configFileName}-TT-multicast-tests-input.yaml"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        if [ ${params.enableMultiUni} = true ]; then
+          if ( ${powerSwitch} ); then
+             export ROBOT_MISC_ARGS="--removekeywords wuks -i multicastTT -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
+          else
+             export ROBOT_MISC_ARGS="--removekeywords wuks -i multicastTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
           fi
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
           make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
@@ -209,8 +240,8 @@ pipeline {
           if (olt.type == null || olt.type == "" || olt.type == "openolt") {
              sh returnStdout: false, script: """
              sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/openolt.log $WORKSPACE/openolt-${olt.sship}.log || true
-             sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.sship}.log  # Remove escape sequences
              sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/dev_mgmt_daemon.log $WORKSPACE/dev_mgmt_daemon-${olt.sship}.log || true
+             sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.sship}.log  # Remove escape sequences
              sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/dev_mgmt_daemon-${olt.sship}.log  # Remove escape sequences
              """
           }

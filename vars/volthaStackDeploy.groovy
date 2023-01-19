@@ -111,6 +111,7 @@ def process(Map config)
     println "Wait for ONOS Config loader to complete"
 
     // NOTE that this is only required for VOLTHA-2.8,
+    // [TODO]: Release cleanup
     sh """
         set +x
         config=\$(kubectl get jobs.batch -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
@@ -119,6 +120,7 @@ def process(Map config)
           config=\$(kubectl get jobs.batch -n ${cfg.infraNamespace} --no-headers | grep "0/" | wc -l)
         done
     """
+
     // NOTE that this is only required for VOLTHA-2.9 onwards, to wait until the pod completed,
     // meaning ONOS fully deployed
     sh """

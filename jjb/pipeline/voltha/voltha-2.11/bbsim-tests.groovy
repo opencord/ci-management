@@ -37,19 +37,17 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 		'jjb',
 		'pipeline',
 		'voltha',
-		'master',
-		// 'voltha-2.11', // release
+		'voltha-2.11', // release
 		'bbsim-tests.groovy'
 	    ].join('/')
-            println("** ${iam}: ENTER")
 
+            println("** ${iam}: ENTER")
 	    String cmd = "which pkill"
 	    def stream = sh(
 		returnStatus:false,
 		returnStdout: true,
 		script: cmd)
 	    println(" ** ${cmd}:\n${stream}")
-	    
             println("** ${iam}: LEAVE")
 	}
     }
@@ -107,10 +105,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
           def localCharts = false
-          if (volthaHelmChartsChange != ""
-	      || gerritProject == "voltha-helm-charts"
-	      || branch != "master" // release
-             ) {
+          if (volthaHelmChartsChange != "" || gerritProject == "voltha-helm-charts" || branch != "master") { // release
             localCharts = true
           }
 
@@ -293,8 +288,8 @@ pipeline {
           kind get clusters | grep ${clusterName} | wc -l
           """
           if (clusterExists.trim() == "0") {
-            createKubernetesCluster([nodes: 3, name: clusterName])
-            // createKubernetesCluster([branch: "${branch}", nodes: 3, name: clusterName]) // release
+            createKubernetesCluster([branch: "${branch}", nodes: 3, name: clusterName]) // release
+	    // createKubernetesCluster([nodes: 3, name: clusterName])
           }
         }
       }

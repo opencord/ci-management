@@ -106,8 +106,6 @@ pipeline {
 
 	sh(returnStdout: false, script: """
 
-        mkdir -p "$WORKSPACE/bin"
-
         # install kail
         make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
 
@@ -128,8 +126,8 @@ pipeline {
         """)
 
         sh("""
-        mkdir -p $WORKSPACE/voltha-pods-mem-consumption
-        cd $WORKSPACE/voltha-system-tests
+
+        cd "$WORKSPACE/voltha-system-tests"
         make vst_venv
         source ./vst_venv/bin/activate || true
         # Collect initial memory consumption
@@ -238,13 +236,9 @@ pipeline {
         reportFileName: '**/report*.html',
         unstableThreshold: 0,
         onlyCritical: true
-            ]);
+        ]);
 
-      // -----------------------------------------------------------------------
       // get cpu usage by container
-      // -----------------------------------------------------------------------
-      // TODO: Remove all the '|| true' suffixes, they only serve to mask errors	    
-      // -----------------------------------------------------------------------
       sh """
       mkdir -p $WORKSPACE/plots || true
       cd $WORKSPACE/voltha-system-tests
@@ -253,7 +247,7 @@ pipeline {
       python scripts/sizing.py -o $WORKSPACE/plots -a 0.0.0.0:31301 -n ${volthaNamespace} -s 3600 || true
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption -a 0.0.0.0:31301 -n ${volthaNamespace} || true
-      """
+
       archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt,plots/*,voltha-pods-mem-consumption/*'
     }
   }

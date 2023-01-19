@@ -22,7 +22,9 @@ help ::
 	@echo
 	@echo '[Virtual Env]'
 	@echo '  venv           Create a python virtual environment'
-	@echo "  $(VENV_NAME)"
+ifdef VENV_NAME
+	@echo "    VENV_NAME=$(VENV_NAME)"
+endif
 	@echo
 	@echo '[CLEAN]'
 	@echo '  clean          Remove generated targets'

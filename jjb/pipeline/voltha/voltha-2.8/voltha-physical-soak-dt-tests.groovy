@@ -44,7 +44,6 @@ pipeline {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
   }
 
-
   stages {
     stage('Clone voltha-system-tests') {
       steps {
@@ -128,7 +127,6 @@ pipeline {
         """)
       }
     }
-
     stage('Functional Tests') {
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
@@ -239,7 +237,6 @@ pipeline {
       python scripts/sizing.py -o $WORKSPACE/plots -a 0.0.0.0:31301 -n ${volthaNamespace} -s 3600 || true
       """
       archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt,plots/*'
-    }
   }
 }
 

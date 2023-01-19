@@ -71,6 +71,31 @@ pipeline {
         }
       }
     }
+    // This checkout allows us to show changes in Jenkins
+    // we only do this on master as we don't branch all the repos for all the releases
+    // (we should compute the difference by tracking the container version, not the code)
+    stage('Download All the VOLTHA repos') {
+      when {
+        expression {
+          return "${branch}" == 'master';
+        }
+      }
+      steps {
+       checkout(changelog: true,
+         poll: false,
+         scm: [$class: 'RepoScm',
+           manifestRepositoryUrl: "${params.manifestUrl}",
+           manifestBranch: "${params.branch}",
+           currentBranch: true,
+           destinationDir: 'voltha',
+           forceSync: true,
+           resetFirst: true,
+           quiet: true,
+           jobs: 4,
+           showAllChanges: true]
+         )
+      }
+    }
     stage ('Initialize') {
       steps {
         sh returnStdout: false, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
@@ -79,7 +104,28 @@ pipeline {
         }
         installVoltctl("${branch}")
 
-	sh(returnStdout: false, script: """
+	// Will croak in a cryptic way here when forwarding process not running.
+	// TODO: setup a library script to test existence and cleanup when needed.
+	// Best answer: pkill port-forward	
+	sh """
+        ps -ef | grep port-forward
+        """
+
+        sh returnStdout: false, script: '''
+        # remove orphaned port-forward from different namespaces
+        ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
+        '''
+        sh """
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd ${params.VolthaEtcdPort}:2379; done"&
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
+        ps aux | grep port-forward
+        """
+
+        sh("""ps -ef | grep port-forward""")
+
+	// [TODO] lint/shellcheck all this
+        sh(returnStdout: false, script: """
         mkdir -p "$WORKSPACE/bin"
 
         # install kail
@@ -88,7 +134,6 @@ pipeline {
         # Default kind-voltha config doesn't work on ONF demo pod for accessing kvstore.
         # The issue is that the mgmt node is also one of the k8s nodes and so port forwarding doesn't work.
         # We should change this. In the meantime here is a workaround.
-        if [ "${params.branch}" == "master" ]; then
            set +e
 
         # Remove noise from voltha-core logs
@@ -98,7 +143,6 @@ pipeline {
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/db
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/probe
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
-        fi
         """)
       }
     }
@@ -111,14 +155,38 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p "$ROBOT_LOGS_DIR"
-        if ( ${powerSwitch} ); then
-             export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        else
-             export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+        if [ ${params.withFttb} = false ]; then
+          if ( ${powerSwitch} ); then
+               export ROBOT_MISC_ARGS="--removekeywords wuks -i PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+               if ( ${powerCycleOlt} ); then
+                    ROBOT_MISC_ARGS+=" -v power_cycle_olt:True"
+               fi
+          else
+               export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          fi
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
-        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-        make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+        """
+      }
+    }
+
+    stage('FTTB Functional Tests') {
+      environment {
+        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+        ROBOT_FILE="Voltha_DT_FTTB_Tests.robot"
+        ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/dt-workflow/FunctionalTests"
+      }
+      steps {
+        sh """
+        mkdir -p $ROBOT_LOGS_DIR
+        if [ ${params.withFttb} = true ]; then
+          export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i sanityDtFttb -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v has_dataplane:False"
+          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+        fi
         """
       }
     }
@@ -131,14 +199,17 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p "$ROBOT_LOGS_DIR"
-        if ( ${powerSwitch} ); then
-             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        else
-             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+        if [ ${params.withFttb} = false ]; then
+          if ( ${powerSwitch} ); then
+               export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          else
+               export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          fi
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
-        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-        make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
       }
     }
@@ -151,13 +222,17 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p "$ROBOT_LOGS_DIR"
-        export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-        make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+        if [ ${params.withFttb} = false ]; then
+          export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+        fi
         """
       }
     }
+
     stage('HA Tests') {
        environment {
        ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
@@ -166,10 +241,13 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p "$ROBOT_LOGS_DIR"
-        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-        make -C $WORKSPACE/voltha-system-tests voltha-test || true
+        if [ ${params.withFttb} = false ]; then
+          export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+          make -C $WORKSPACE/voltha-system-tests voltha-test || true
+        fi
         """
       }
     }
@@ -182,14 +260,17 @@ pipeline {
       }
       steps {
         sh """
+        ps -ef | grep port-forward
         mkdir -p "$ROBOT_LOGS_DIR"
-        if ( ${powerSwitch} ); then
-             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        else
-             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+        if [ ${params.withFttb} = false ]; then
+          if ( ${powerSwitch} ); then
+               export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -i PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          else
+               export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          fi
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         fi
-        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-        make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
         """
       }
     }
@@ -203,9 +284,11 @@ pipeline {
       steps {
         sh """
         mkdir -p $ROBOT_LOGS_DIR
-        export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
-        ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-        make -C $WORKSPACE/voltha-system-tests voltha-test || true
+        if [ ${params.withFttb} = false ]; then
+          export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
+          ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
+          make -C $WORKSPACE/voltha-system-tests voltha-test || true
+        fi
         """
       }
     }
@@ -213,21 +296,14 @@ pipeline {
 
   post {
     always {
+      getPodsInfo("$WORKSPACE/pods")
       sh returnStdout: false, script: '''
       set +e
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq
-      kubectl get nodes -o wide
-      kubectl get pods -n voltha -o wide
-      kubectl get pods -o wide
 
-      # store information on running charts
-      helm ls > $WORKSPACE/helm-list.txt || true
-
-      # store information on the running pods
-      kubectl get pods --all-namespaces -o wide > $WORKSPACE/pods.txt || true
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-images.txt || true
-      kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.imageID}{'\\n'}" | sort | uniq | tee $WORKSPACE/pod-imagesId.txt || true
+      # collect logs collected in the Robot Framework StartLogging keyword
+      cd "$WORKSPACE"
+      gzip *-combined.log || true
+      rm *-combined.log || true
       '''
       script {
         deployment_config.olts.each { olt ->
@@ -256,7 +332,7 @@ pipeline {
         unstableThreshold: 0,
         onlyCritical: true
         ]);
-      archiveArtifacts artifacts: '**/*.log,**/*.tgz,*.txt'
+      archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt'
     }
   }
 }
