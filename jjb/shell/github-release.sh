@@ -132,10 +132,19 @@ else
   # shellcheck disable=SC2086
   make "$RELEASE_TARGETS"
 
+  echo
+  echo "** PWD: $(/bin/pwd)"
+  echo "** make-pre: $(/bin/ls -l)"
+  echo
+
   # Copy artifacts into the release temp dir
   # shellcheck disable=SC2086
   cp "$ARTIFACT_GLOB" "$RELEASE_TEMP"
 
+  echo
+  echo "** make-post: $(/bin/ls -l)"
+  echo
+  
   # create release
   echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
   github-release release \
