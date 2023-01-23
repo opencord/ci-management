@@ -143,6 +143,10 @@ else
 
   echo
   echo "** make-post: $(/bin/ls -l)"
+  case "$ARTIFACT_GLOB" in
+      release/*) find 'release/.' -ls ;;
+  esac
+  
   echo
   
   # create release
