@@ -19,25 +19,10 @@
 # message will be prefixed by a usage statement.
 help ::
 	@echo "Usage: $(MAKE) [options] [target] ..."
-	@echo
-	@echo '[Virtual Env]'
-	@echo '  venv           Create a python virtual environment'
-	@echo "  $(VENV_NAME)"
-	@echo
-	@echo '[CLEAN]'
-	@echo '  clean          Remove generated targets'
-	@echo '  sterile        clean + remove virtual env interpreter install'
-	@echo
-	@echo '[VIEW]'
-	@echo '  reload         Setup to auto-reload sphinx doc changes in browser'
-	@echo '  view-html      View generated documentation'
+	@echo '  jjb-deps       Checkout git submodules for repo:ci-management'
 	@echo
 	@echo '[TEST]'
 	@echo '  test           make lint linkcheck'
 	@echo '  test-all       make all-generation-targets'
-	@echo
-	@echo '[HELP]'
-	@echo '  help           Display program help'
-	@echo '  help-verbose   Display additional targets and help'
 
 # [EOF]

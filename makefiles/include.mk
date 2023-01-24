@@ -29,9 +29,9 @@ help::
 	@echo "Usage: make [options] [target] ..."
 
 include $(ONF_MAKE)/consts.mk
+include $(ONF_MAKE)/help/include.mk
 include $(ONF_MAKE)/lint/include.mk
 include $(ONF_MAKE)/virtualenv.mk
-include $(ONF_MAKE)/help/variables.mk
 
 $(if $(DEBUG),$(warning LEAVE))
 

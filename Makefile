@@ -42,12 +42,25 @@ $(JOBCONFIG_DIR):
 	mkdir $@
 
 ## -----------------------------------------------------------------------
+## Intent: test target will lint jjb configs
 ## -----------------------------------------------------------------------
+test-args += -l DEBUG#    # default: INFO
+
 .PHONY: test
 test: $(venv-activate-script) $(JOBCONFIG_DIR)
 	$(activate) \
 	&& pipdeptree \
-	&& jenkins-jobs -l DEBUG test --recursive --config-xml -o "$(JOBCONFIG_DIR)" jjb/ ;
+	&& jenkins-jobs $(test-args) test --recursive --config-xml -o "$(JOBCONFIG_DIR)" jjb/ ;
+
+## -----------------------------------------------------------------------
+## NOTE: This repo uses git submodules, see README.md
+## -----------------------------------------------------------------------
+jjb-deps += jjb/global-jjb
+jjb-deps += lf-ansible
+jjb-deps += packer/common-packer
+
+.PHONY: jjb-deps $(jjb-deps)
+jjb-deps: $(jjb-deps)
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------

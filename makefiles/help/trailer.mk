@@ -15,7 +15,22 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-# include this makefile late so text will be displayed at the end6
+# include this makefile late so text will be displayed at the end
+
+help::
+	@echo
+	@echo '[CLEAN]'
+	@echo '  clean                         Remove generated targets'
+	@echo '  sterile                       Clean + remove virtual env interpreter install'
+
+help::
+	@echo
+	@echo '[HELP]'
+	@echo '  help                          Display program help'
+	@echo '  help-variables                Display make variables that augment target behavior'
+	@echo '  help-verbose                  Display additional targets and help'
+
+include $(ONF_MAKE)/help/variables.mk
 
 help ::
 	@echo
