@@ -21,37 +21,35 @@
 # -----------------------------------------------------------------------
 
 ## -----------------------------------------------------------------------
-## Intent:
-##   Display available commands and paths for golang.
-##   A github release job is failing due to a command being mia.
-##
-## Note: This function is being used for side effects, when commands
-## are unavailable to query for version info, fail the job.
 ## -----------------------------------------------------------------------
-## 05:02:50 bash: go: command not found
-## 05:03:00 Unable to find image 'voltha/voltha-ci-tools:2.4.0-golang' locally
-## -----------------------------------------------------------------------
-function displayCommands()
+function doDebug()
 {
-    set +euo pipefail
+    echo "** ${FUNCNAME[0]}: ENTER"
 
     echo
-    echo "Installed /usr/lib/go"
-    echo "-----------------------------------------------------------------------"
-    find /usr/lib -mindepth 1 -maxdepth 1 -name 'go-*' -print || /bin/true
+    echo "** PWD: $(/bin/pwd)"
+    echo "** make-pre: $(/bin/ls -l)"
+    echo
+
+    declare -p ARTIFACT_GLOB
+    declare -p RELEASE_TEMP
 
     echo
-    echo "Go commands in \$PATH"
-    echo "-----------------------------------------------------------------------"
-    which -a go || /bin/true
+    echo "** ${FUNCNAME[0]}: ARTIFACT_GLOB=${ARTIFACT_GLOB}"
+    local artifact_glob="${ARTIFACT_GLOB%/*}"
+    declare -p artifact_glob
+    find "$artifact_glob" -print || /bin/true
 
+    # Copy artifacts into the release temp dir
+    # shellcheck disable=SC2086
+    cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
+    
     echo
-    echo "VERSIONS:"
-    echo "-----------------------------------------------------------------------"
-    git --version
-    go version
+    echo "** ${FUNCNAME[0]}: RELEASE_TEMP=${RELEASE_TEMP}"
+    find "$RELEASE_TEMP" -print || /bin/true
 
-    set -euo pipefail
+    echo "** ${FUNCNAME[0]}: LEAVE"
+    echo
     return
 }
 
@@ -123,7 +121,7 @@ if [ ! -f "$release_path/Makefile" ]; then
 else
 
   pushd "$release_path"
-  set -x
+#  set -x
 
   # Release description is sanitized version of the log message
   RELEASE_DESCRIPTION="$(git log -1 --pretty=%B | tr -dc "[:alnum:]\n\r\.\[\]\:\-\\\/\`\' ")"
@@ -132,22 +130,8 @@ else
   # shellcheck disable=SC2086
   make "$RELEASE_TARGETS"
 
-  echo
-  echo "** PWD: $(/bin/pwd)"
-  echo "** make-pre: $(/bin/ls -l)"
-  echo
-
-  # Copy artifacts into the release temp dir
-  # shellcheck disable=SC2086
-  cp "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-
-  echo
-  echo "** make-post: $(/bin/ls -l)"
-  case "$ARTIFACT_GLOB" in
-      release/*) find 'release/.' -ls ;;
-  esac
-  
-  echo
+  doDebug # deterine why ARTIFACT_GLOB is empty
+  # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
   
   # create release
   echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
