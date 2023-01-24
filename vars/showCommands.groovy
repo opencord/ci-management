@@ -16,7 +16,7 @@ def getIam(String func)
 // -----------------------------------------------------------------------
 def process(Map config)
 {
-    // String iam = getIam('process')
+    String iam = getIam('process')
 
     // list.each{ } could be used here but simple for now.
     println("** ${iam}: voltctl command attributes")

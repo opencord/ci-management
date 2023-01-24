@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,21 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
 $(if $(DEBUG),$(warning ENTER))
 
-ONF_MAKE ?= $(MAKEDIR)# fix this -- two distinct makefile imports needed
-ONF_MAKE ?= $(error ONF_MAKE= is required)
+todo ::
+	@echo '[TODO]'
+	@echo '  o volthaStackDeploy.groovy - post v2.11 release cleanup for 2.8'
 
-include $(ONF_MAKE)/consts.mk
-include $(ONF_MAKE)/help/include.mk
-include $(ONF_MAKE)/lint/include.mk
-include $(ONF_MAKE)/virtualenv.mk
-include $(ONF_MAKE)/todo.mk
-include $(ONF_MAKE)/help/variables.mk
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help ::
+	@echo '  todo                          Display future enhancement list.'
 
 $(if $(DEBUG),$(warning LEAVE))
 

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+declare -a cmds=()
+# cmds=('diff')
+# cmds=('rsync' '-rv' '--checksum')
+
+
+cp ../ciy/./vars/showCommands.groovy ./vars/showCommands.groovy
+cp ../ciy/./vars/volthaStackDeploy.groovy ./vars/volthaStackDeploy.groovy
