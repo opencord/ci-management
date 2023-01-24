@@ -21,6 +21,20 @@
 # -----------------------------------------------------------------------
 
 ## -----------------------------------------------------------------------
+## Intent:
+##   Display available command versions
+##   A github release job is failing due to a command being mia.
+## -----------------------------------------------------------------------
+function displayCommands()
+{
+    # which git || /bin/true
+    # git --version || /bin/true
+    # go version    || /bin/true
+    # helm version  || /bin/true
+    return
+}
+
+## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
 function doDebug()
 {
@@ -68,7 +82,8 @@ GERRIT_PROJECT=${GERRIT_PROJECT:-}
 GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION:-}
 
 # glob pattern relative to project dir matching release artifacts
-ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/*"}
+# ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/*"}
+ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/."}
 
 # Temporary staging directory to copy artifacts to
 RELEASE_TEMP="$WORKSPACE/release"
@@ -119,7 +134,6 @@ if [ ! -f "$release_path/Makefile" ]; then
 else
 
   pushd "$release_path"
-#  set -x
 
   # Release description is sanitized version of the log message
   RELEASE_DESCRIPTION="$(git log -1 --pretty=%B | tr -dc "[:alnum:]\n\r\.\[\]\:\-\\\/\`\' ")"
@@ -129,8 +143,16 @@ else
   make "$RELEASE_TARGETS"
 
   doDebug # deterine why ARTIFACT_GLOB is empty
+
+  # Are we failing on a literal string "release/*" ?
   # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-  
+  echo "rsync -rv --checksum \"$ARTIFACT_GLOB\" \"$RELEASE_TEMP/.\""
+  rsync -rv --checksum "$ARTIFACT_GLOB" "$RELEASE_TEMP/."
+
+  echo
+  echo "RELEASE_TEMP(${RELEASE_TMP}) contains:"
+  find "$RELEASE_TEMP" -ls
+
   # create release
   echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
   github-release release \
