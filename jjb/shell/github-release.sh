@@ -97,8 +97,6 @@ popd
 export GOPATH=${GOPATH:-$WORKSPACE/go}
 export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
 
-displayCommands
-
 # To support golang projects that require GOPATH to be set and code checked out there
 # If $DEST_GOPATH is not an empty string:
 # - create GOPATH within WORKSPACE, and destination directory within
