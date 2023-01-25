@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ include $(ONF_MAKE)/consts.mk
 include $(ONF_MAKE)/help/include.mk
 include $(ONF_MAKE)/lint/include.mk
 include $(ONF_MAKE)/virtualenv.mk
+include $(ONF_MAKE)/git-submodules.mk
 include $(ONF_MAKE)/todo.mk
 include $(ONF_MAKE)/help/variables.mk
 

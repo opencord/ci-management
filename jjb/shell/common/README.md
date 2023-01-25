@@ -5,14 +5,20 @@ handling and displaying a stack trace.
 
 ## Hierarchy may appear strange (common/common) but setup is intentional:
 
-common/
-├── common
-│   └── sh
-│       ├── stacktrace.sh
-│       ├── tempdir.sh
-│       └── traputils.sh
-├── common.sh
-└── preserve_argv.sh
+% tree --charset=ascii common
+
+common
+|-- common
+|   `-- sh
+|       |-- stacktrace.sh
+|       |-- tempdir.sh
+|       `-- traputils.sh
+|-- common.sh
+|-- example.sh
+|-- preserve_argv.sh
+`-- README.md
+
+2 directories, 7 files
 
 ### Usage: Source individual libraries by path
 

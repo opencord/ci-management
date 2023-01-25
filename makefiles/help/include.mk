@@ -20,16 +20,6 @@
 help ::
 	@echo "Usage: $(MAKE) [options] [target] ..."
 	@echo
-	@echo '[Virtual Env]'
-	@echo '  venv           Create a python virtual environment'
-ifdef VENV_NAME
-	@echo "    VENV_NAME=$(VENV_NAME)"
-endif
-	@echo
-	@echo '[CLEAN]'
-	@echo '  clean          Remove generated targets'
-	@echo '  sterile        clean + remove virtual env interpreter install'
-	@echo
 	@echo '[VIEW]'
 	@echo '  reload         Setup to auto-reload sphinx doc changes in browser'
 	@echo '  view-html      View generated documentation'
@@ -37,9 +27,5 @@ endif
 	@echo '[TEST]'
 	@echo '  test           make lint linkcheck'
 	@echo '  test-all       make all-generation-targets'
-	@echo
-	@echo '[HELP]'
-	@echo '  help           Display program help'
-	@echo '  help-verbose   Display additional targets and help'
 
 # [EOF]
