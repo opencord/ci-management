@@ -31,6 +31,9 @@ declare -g ARGV="$*"            # archive for display
 ##---]  INCLUDES  [---##
 ##--------------------##
 declare -g pgmdir="${0%/*}" # dirname($script)
+echo "** ${0}: PWD=$(/bin/pwd)"
+find . -maxdepth 1 -ls
+
 declare -a common_args=()
 common_args+=('--common-args-begin--')
 common_args+=('--traputils')
@@ -100,13 +103,15 @@ function doDebug()
     echo "** ${FUNCNAME[0]}: ARTIFACT_GLOB=${ARTIFACT_GLOB}"
     local artifact_glob="${ARTIFACT_GLOB%/*}"
     declare -p artifact_glob
+
+    echo "** ${FUNCNAME[0]}: PWD=$(/bin/pwd)"
     find "$artifact_glob" -print || /bin/true
 
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
     # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-    echo "rsync -rv --checksum \"$ARTIFACT_GLOB\" \"$RELEASE_TEMP/.\""
-    rsync -rv --checksum "$ARTIFACT_GLOB" "$RELEASE_TEMP/."
+    echo "rsync -rv --checksum \"$artifact_glob\" \"$RELEASE_TEMP/.\""
+    rsync -rv --checksum "$artifact_glob" "$RELEASE_TEMP/."
     
     echo
     echo "** ${FUNCNAME[0]}: RELEASE_TEMP=${RELEASE_TEMP}"
