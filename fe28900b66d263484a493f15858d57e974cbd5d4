@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "148c2920_9d96db9a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-25T19:29:21Z",
+      "side": 1,
+      "message": "Typo fix, alternate rsync path lost and original ARTIFACT_GLOB value restored when debugging statements were moved around.",
+      "revId": "fe28900b66d263484a493f15858d57e974cbd5d4",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
