@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "500080ff_bf179d44",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-25T17:24:09Z",
+      "side": 1,
+      "message": "python library problem manifests into a t2 api (EC2) pricing problem.\nYes the interpreter is a problem but this is not relevant to the script edits.",
+      "revId": "7f382efe43b6e873858b9afc3fca08606cfd4125",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
