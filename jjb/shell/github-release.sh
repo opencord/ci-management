@@ -20,6 +20,52 @@
 # message
 # -----------------------------------------------------------------------
 
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
+declare -g SCRIPT_VERSION='1.0' # git changeset needed
+declare -g TRACE=1              # uncomment to set -x
+declare -g ARGV="$@"            # archive for display
+
+##--------------------##
+##---]  INCLUDES  [---##
+##--------------------##
+declare -g pgmdir="${0%/*}" # dirname($script)
+declare -a common_args=()
+common_args+=('--common-args-begin--')
+common_args+=('--traputils')
+common_args+=('--stacktrace')
+# common_args+=('--tempdir')
+source "${pgmdir}/common/common.sh" "${common_args[@]}"
+
+## -----------------------------------------------------------------------
+## Intent: Output a log banner to identify the running script/version.
+## -----------------------------------------------------------------------
+## TODO:
+##   o SCRIPT_VERSION => git changeset for repo:ci-managment
+##   o echo "library version: ${env."library.libName.version"}"
+# -----------------------------------------------------------------------
+# 14:18:38   > git fetch --no-tags --progress -- https://gerrit.opencord.org/ci-management.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+# 14:18:39  Checking out Revision 50f6e0b97f449b32d32ec0e02d59642000351847 (master)
+# -----------------------------------------------------------------------
+function banner()
+{
+    local iam="${0##*/}"
+
+cat <<EOH
+
+** -----------------------------------------------------------------------
+** IAM: ${iam} :: ${FUNCNAME[0]}
+** ARGV: ${ARGV}
+** PWD: $(/bin/pwd)
+** NOW: $(date '+%Y/%m/%d %H:%M:%S')
+** VER: ${SCRIPT_VERSION:-'unknown'}
+** -----------------------------------------------------------------------
+EOH
+
+    return
+}
+
 ## -----------------------------------------------------------------------
 ## Intent:
 ##   Display available command versions
@@ -72,6 +118,8 @@ function doDebug()
 ##----------------##
 set -eu -o pipefail
 
+banner
+
 # when not running under Jenkins, use current dir as workspace and a blank
 # project name
 WORKSPACE=${WORKSPACE:-.}
@@ -82,7 +130,7 @@ GERRIT_PROJECT=${GERRIT_PROJECT:-}
 GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION:-}
 
 # glob pattern relative to project dir matching release artifacts
-# ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/*"}
+# ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/*"} # stat -- release/* not found, literal string (?)
 ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/."}
 
 # Temporary staging directory to copy artifacts to
@@ -132,6 +180,10 @@ if [ ! -f "$release_path/Makefile" ]; then
   echo "Makefile not found at $release_path!"
   exit 1
 else
+
+  declare -p release_path
+
+  [[ -v TRACE ]] && { set -x; } || { set +x; }
 
   pushd "$release_path"
 
