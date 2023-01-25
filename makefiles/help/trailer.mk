@@ -19,6 +19,18 @@
 
 help ::
 	@echo
+	@echo '[CLEAN]'
+	@echo '  clean          Remove generated targets'
+	@echo '  sterile        clean + remove virtual env interpreter install'
+
+help ::
+	@echo
+	@echo '[HELP]'
+	@echo '  help           Display program help'
+	@echo '  help-verbose   Display additional targets and help'
+
+help ::
+	@echo
 	@echo '[NOTE: python 3.10+]'
 	@echo '  The interpreter is not yet fully supported across foreign repositories.'
 	@echo '  While working locally, if make fails to build a target try:'

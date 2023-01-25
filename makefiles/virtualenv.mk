@@ -54,10 +54,11 @@ sterile :: clean
 help ::
 	@echo
 	@echo '[VIRTUAL ENV]'
-	@echo '  venv-name=          Subdir name for virtualenv install'
-	@echo '  venv-activate-script: make macro name'
-	@echo '      $$(target) dependency    : install python virtualenv'
-	@echo '      source $$(macro) && cmd  : configure env and run cmd'
+	@echo '  venv                         Create a python virtual environment'
+	@echo '    venv-name=                 Subdir name for virtualenv install'
+	@echo '  venv-activate-script         make macro name'
+	@echo '      $$(target) dependency    install python virtualenv'
+	@echo '      source $$(macro) && cmd  configure env and run cmd'
 
 $(if $(DEBUG),$(warning LEAVE))
 

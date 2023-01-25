@@ -13,8 +13,32 @@
       - 'publish-voltha-api-server-jobs':
           branch-regexp: '{all-branches-regexp}'
 
+# -----------------------------------------------------------------------
+# verify-voltha-api-server-jobs
+#   o explicitly dependent on v2.8
+#   o copied to job verify-voltha-api-server-jobs-voltha-2.8
+#   o updated verify-voltha-api-server-jobs to depend on v2.11
+#   o is this another element that should be deleted with v2.11 ?
+#   o if not deprecated rename job to contain *-voltha-x.y to be clear
+#     the job is not intended for master branch.
+# -----------------------------------------------------------------------
 - job-group:
     name: 'verify-voltha-api-server-jobs'
+    jobs:
+      - 'verify-licensed'
+      - 'tag-collision-reject':
+          dependency-jobs: 'verify_voltha-api-server_licensed'
+      - 'make-unit-test':
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint sca test'
+          unit-test-keep-going: 'true'
+          junit-allow-empty-results: true
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+
+- job-group:
+    name: 'verify-voltha-api-server-jobs-voltha-2.8'
     jobs:
       - 'verify-licensed'
       - 'tag-collision-reject':
