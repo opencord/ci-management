@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d157910_afb25df3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-26T00:03:20Z",
+      "side": 1,
+      "message": "pip module version conflict strikes again.\npython upgrade needed",
+      "revId": "d8b6f337320842d7476a4ab207dc37c4834e7e69",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
