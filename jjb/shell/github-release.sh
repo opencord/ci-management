@@ -27,6 +27,8 @@ declare -g SCRIPT_VERSION='1.0' # git changeset needed
 declare -g TRACE=1              # uncomment to set -x
 declare -g ARGV="$*"            # archive for display
 
+declare -g RELEASE_TEMP
+
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
@@ -133,6 +135,87 @@ function doDebug()
     return
 }
 
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+function copyToRelease()
+{
+    local iam="${FUNCNAME[0]}"
+    echo "** ${iam}: ENTER"
+ 
+    local artifact_glob="${ARTIFACT_GLOB%/*}"
+    echo "** ${iam}: $(declare -p ARTIFACT_GLOB) $(declare -p artifact_glob)"
+    find "$artifact_glob" -print
+
+    # Copy artifacts into the release temp dir
+    # shellcheck disable=SC2086
+    # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
+    echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
+    rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
+    
+    echo "** ${iam}: RELEASE_TEMP=${RELEASE_TEMP}"
+    find "$RELEASE_TEMP" -print
+
+    echo "** ${iam}: LEAVE"
+    echo
+    return
+}
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+function showGithubRelease()
+{
+    local iam="${FUNCNAME[0]}"
+    echo "** ${iam}: ENTER"
+
+    echo "** ${iam}: which github-release: $(which -a github-release)"
+    local switch
+    for switch in '--version' '--help';
+    do
+	echo "** ${iam}: github-release ${switch}: $(github-release ${switch})"
+    done
+    echo "** ${iam}: LEAVE"
+    echo
+    return
+}
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+function showReleaseInfo()
+{
+    local user="$1" ; shift
+    local repo="$1" ; shift
+    local tag=''
+    if [ $# -gt 0 ]; then
+	tag="$1"  ; shift
+    fi
+
+    local iam="${FUNCNAME[0]}"
+    echo "** ${iam}: ENTER"
+
+    cat <<EOM
+
+** -------------------------------------------------------------------
+** ${iam}
+** -------------------------------------------------------------------
+EOM
+
+    declare -a args=()
+    args+=('--user' "$user")
+    args+=('--repo' "$repo")
+    if [ ${#tag} -gt 0 ]; then
+	args+=('--tag'  "$tag")
+    fi
+    
+    echo "${iam}: github-relase info"
+    github-release\
+	--verbose\
+	info\
+	"${args[@]}"
+    
+    echo "** ${iam}: LEAVE"
+    return
+}
+
 ##----------------##
 ##---]  MAIN  [---##
 ##----------------##
@@ -215,25 +298,40 @@ else
   # shellcheck disable=SC2086
   make "$RELEASE_TARGETS"
 
-  doDebug # deterine why ARTIFACT_GLOB is empty
+  # doDebug # deterine why ARTIFACT_GLOB is empty
+  copyToRelease
 
   # Are we failing on a literal string "release/*" ?
   # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
   # echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
   # rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
 
-  echo
-  echo "RELEASE_TEMP(${RELEASE_TEMP}) contains:"
-  find "$RELEASE_TEMP" -ls
+  echo "PRE-RELEASE INFO"
+  showReleaseInfo \
+      "$GITHUB_ORGANIZATION"\
+      "$GERRIT_PROJECT"
 
+  showGithubRelease
+
+  cat <<EOM
+Create the release in three steps:
+  1) Create initial github release with download area.
+  2) Generate checksum.SHA256 for all released files.
+  3) Upload files to complete the release.
+  4) Display released info from github.
+EOM
+
+  # Usage: github-release [global options] <verb> [verb options]
   # create release
   echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
-  github-release release \
-    --user "$GITHUB_ORGANIZATION" \
-    --repo "$GERRIT_PROJECT" \
-    --tag  "$GIT_VERSION" \
-    --name "$GERRIT_PROJECT - $GIT_VERSION" \
-    --description "$RELEASE_DESCRIPTION"
+  github-release \
+      --verbose \
+      release \
+      --user "$GITHUB_ORGANIZATION" \
+      --repo "$GERRIT_PROJECT" \
+      --tag  "$GIT_VERSION" \
+      --name "$GERRIT_PROJECT - $GIT_VERSION" \
+      --description "$RELEASE_DESCRIPTION"
 
   # handle release files
   pushd "$RELEASE_TEMP"
@@ -245,28 +343,36 @@ else
     sha256sum -- * > checksum.SHA256
     sha256sum -c < checksum.SHA256
 
-    echo "Checksums:"
+    echo "Checksums(checksum.SHA256):"
     cat checksum.SHA256
 
     # upload all files to the release
     for rel_file in *
     do
       echo "Uploading file: $rel_file"
-      github-release upload \
-        --user "$GITHUB_ORGANIZATION" \
-        --repo "$GERRIT_PROJECT" \
-        --tag  "$GIT_VERSION" \
-        --name "$rel_file" \
-        --file "$rel_file"
+      github-release \
+	  --verbose \
+	  upload \
+          --user "$GITHUB_ORGANIZATION" \
+          --repo "$GERRIT_PROJECT" \
+          --tag  "$GIT_VERSION" \
+          --name "$rel_file" \
+          --file "$rel_file"
     done
   popd
 
   popd
+
+  showReleaseInfo \
+      "$GITHUB_ORGANIZATION"\
+      "$GERRIT_PROJECT"\
+      "$GIT_VERSION"
 fi
 
 # [SEE ALSO]
 # -----------------------------------------------------------------------
 # https://www.shellcheck.net/wiki/SC2236
+# https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#create-a-release
 # -----------------------------------------------------------------------
 
 # [EOF]
