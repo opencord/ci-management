@@ -40,6 +40,17 @@ common_args+=('--traputils')
 common_args+=('--stacktrace')
 # common_args+=('--tempdir')
 
+# -----------------------------------------------------------------------
+# Jenkins must have checked out/copied the script -vs- repository
+# -----------------------------------------------------------------------
+# 17:56:27 [github-release_voltctl] $ /usr/bin/env bash /tmp/jenkins1043949650153731384.sh
+# 17:56:27 ** /tmp/jenkins1043949650153731384.sh: PWD=/w/workspace/github-release_voltctl
+# 17:56:27   5120009      4 drwxrwxr-x   4 jenkins  jenkins      4096 Jan 25 22:56 .
+# 17:56:27   5120010      4 drwxrwxr-x   9 jenkins  jenkins      4096 Jan 25 22:56 ./voltctl
+# 17:56:27   5120036      4 drwxrwxr-x   2 jenkins  jenkins      4096 Jan 25 22:56 ./voltctl@tmp
+# 17:56:27 /tmp/jenkins1043949650153731384.sh: line 44: /tmp/common/common.sh: No such file or directory
+# -----------------------------------------------------------------------
+
 # shellcheck disable=SC1091
 source "${pgmdir}/common/common.sh" "${common_args[@]}"
 
@@ -110,8 +121,8 @@ function doDebug()
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
     # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-    echo "rsync -rv --checksum \"$artifact_glob\" \"$RELEASE_TEMP/.\""
-    rsync -rv --checksum "$artifact_glob" "$RELEASE_TEMP/."
+    echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
+    rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
     
     echo
     echo "** ${FUNCNAME[0]}: RELEASE_TEMP=${RELEASE_TEMP}"
@@ -208,8 +219,8 @@ else
 
   # Are we failing on a literal string "release/*" ?
   # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-  # echo "rsync -rv --checksum \"$ARTIFACT_GLOB\" \"$RELEASE_TEMP/.\""
-  # rsync -rv --checksum "$ARTIFACT_GLOB" "$RELEASE_TEMP/."
+  # echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
+  # rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
 
   echo
   echo "RELEASE_TEMP(${RELEASE_TEMP}) contains:"
@@ -226,6 +237,9 @@ else
 
   # handle release files
   pushd "$RELEASE_TEMP"
+
+    ## [TODO] Add a content check, err when only source tarballs exist
+    find . -mindepth 1 -maxdepth 1 ! -type d -ls
 
     # Generate and check checksums
     sha256sum -- * > checksum.SHA256
@@ -245,7 +259,6 @@ else
         --name "$rel_file" \
         --file "$rel_file"
     done
-    set +x
   popd
 
   popd
