@@ -1,5 +1,8 @@
 ---
 # POD Build Pipeline Jobs for Seba Releases
+# -----------------------------------------------------------------------
+# Disabled offline -- build-node: 'qa-testvm-pod'
+# -----------------------------------------------------------------------
 
 - project:
     name: seba-release-jobs
@@ -55,14 +58,14 @@
           Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
           oltDebVersion: 'openolt-master.deb'
 
-          # Flex POD build 2.0
-      - 'build_pod_manual_release':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.0'
-          branch: 'master'
-          Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
-          oltDebVersion: 'openolt-master.deb'
+      # Flex POD build 2.0
+      # - 'build_pod_manual_release':
+      #    build-node: 'qa-testvm-pod'
+      #    config-pod: 'flex-ocp-cord'
+      #    release: '2.0'
+      #    branch: 'master'
+      #    Jenkinsfile: 'Jenkinsfile-attworkflow-build-released-ver'
+      #    oltDebVersion: 'openolt-master.deb'
 
           # # flex OCP pod with olt/onu - release 2.0 build job
           # - 'build_pod_release':

@@ -1,5 +1,8 @@
 ---
 # POD Build Pipeline Jobs for ATT-WorkflowDriver
+# -----------------------------------------------------------------------
+# Disabled offline -- build-node: 'qa-testvm-pod'
+# -----------------------------------------------------------------------
 
 - project:
     name: attworkflowdriver-build-job
@@ -85,19 +88,19 @@
       #   time: '3'
 
       # flex OCP test job - using voltha-master branch
-      - 'build_pod_test':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord-voltha-master'
-          profile: 'att-workflow'
-          branch: 'master'
-          test-repo: 'cord-tester'
-          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+      # - 'build_pod_test':
+      #    build-node: 'qa-testvm-pod'
+      #    config-pod: 'flex-ocp-cord-voltha-master'
+      #    profile: 'att-workflow'
+      #    branch: 'master'
+      #    test-repo: 'cord-tester'
+      #    Jenkinsfile: 'Jenkinsfile-attworkflow-test'
 
       # flex ocp pod test job - seba-1.0/cord-6.1 release
-      - 'build_pod_test':
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord-voltha16'
-          profile: 'att-workflow'
-          branch: 'cord-6.1'
-          test-repo: 'cord-tester'
-          Jenkinsfile: 'Jenkinsfile-attworkflow-test'
+      # - 'build_pod_test':
+      #    build-node: 'qa-testvm-pod'
+      #    config-pod: 'flex-ocp-cord-voltha16'
+      #    profile: 'att-workflow'
+      #    branch: 'cord-6.1'
+      #    test-repo: 'cord-tester'
+      #    Jenkinsfile: 'Jenkinsfile-attworkflow-test'
