@@ -4,6 +4,7 @@
 - project:
     name: bbsim
     project: '{name}'
+    dest-gopath: "github.com/opencord"
 
     jobs:
       - 'verify-bbsim-jobs':
