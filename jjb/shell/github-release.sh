@@ -23,24 +23,18 @@
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
-declare -g SCRIPT_VERSION='1.0' # git changeset needed
-declare -g TRACE=1              # uncomment to set -x
 declare -g ARGV="$*"            # archive for display
+declare -g SCRIPT_VERSION='1.0' # git changeset needed
+declare -g TRACE=0              # uncomment to set -x
+declare -g VERBOSE=0            # trace github-release calls
 
 declare -g RELEASE_TEMP
 
 ##--------------------##
 ##---]  INCLUDES  [---##
-##--------------------##
-declare -g pgmdir="${0%/*}" # dirname($script)
+##--------------------#
+# declare -g pgmdir="${0%/*}" # dirname($script)
 echo "** ${0}: PWD=$(/bin/pwd)"
-find . -maxdepth 1 -ls
-
-declare -a common_args=()
-common_args+=('--common-args-begin--')
-common_args+=('--traputils')
-common_args+=('--stacktrace')
-# common_args+=('--tempdir')
 
 # -----------------------------------------------------------------------
 # Jenkins must have checked out/copied the script -vs- repository
@@ -53,8 +47,14 @@ common_args+=('--stacktrace')
 # 17:56:27 /tmp/jenkins1043949650153731384.sh: line 44: /tmp/common/common.sh: No such file or directory
 # -----------------------------------------------------------------------
 
+# declare -a common_args=()
+# common_args+=('--common-args-begin--')
+# common_args+=('--traputils')
+# common_args+=('--stacktrace')
+# common_args+=('--tempdir')
+
 # shellcheck disable=SC1091
-source "${pgmdir}/common/common.sh" "${common_args[@]}"
+# source "${pgmdir}/common/common.sh" "${common_args[@]}"
 
 ## -----------------------------------------------------------------------
 ## Intent: Output a log banner to identify the running script/version.
@@ -99,6 +99,27 @@ function displayCommands()
 }
 
 ## -----------------------------------------------------------------------
+## Intent: Display filesystem with a banner for logging
+## -----------------------------------------------------------------------
+function displayPwd()
+{
+    local iam="${0##*/}"
+    echo "** ${iam}: ENTER"
+
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** IAM: $iam :: ${FUNCNAME[0]}
+** PWD: $(/bin/pwd)
+** -----------------------------------------------------------------------
+EOM
+    find . -maxdepth 1 -ls
+    echo "** ${iam}: LEAVE"
+    return
+}
+
+## -----------------------------------------------------------------------
+## Intent:
 ## -----------------------------------------------------------------------
 function doDebug()
 {
@@ -120,22 +141,21 @@ function doDebug()
     echo "** ${FUNCNAME[0]}: PWD=$(/bin/pwd)"
     find "$artifact_glob" -print || /bin/true
 
+    copyToRelease
+
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
     # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-    echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
-    rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
+    # echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
+    # rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
     
-    echo
-    echo "** ${FUNCNAME[0]}: RELEASE_TEMP=${RELEASE_TEMP}"
-    find "$RELEASE_TEMP" -print || /bin/true
-
     echo "** ${FUNCNAME[0]}: LEAVE"
     echo
     return
 }
 
 ## -----------------------------------------------------------------------
+## Intent:
 ## -----------------------------------------------------------------------
 function copyToRelease()
 {
@@ -144,14 +164,13 @@ function copyToRelease()
  
     local artifact_glob="${ARTIFACT_GLOB%/*}"
     echo "** ${iam}: $(declare -p ARTIFACT_GLOB) $(declare -p artifact_glob)"
-    find "$artifact_glob" -print
 
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
     # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
     echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
     rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
-    
+
     echo "** ${iam}: RELEASE_TEMP=${RELEASE_TEMP}"
     find "$RELEASE_TEMP" -print
 
@@ -161,8 +180,9 @@ function copyToRelease()
 }
 
 ## -----------------------------------------------------------------------
+## Intent:
 ## -----------------------------------------------------------------------
-function showGithubRelease()
+function showGithubTool()
 {
     local iam="${FUNCNAME[0]}"
     echo "** ${iam}: ENTER"
@@ -179,6 +199,7 @@ function showGithubRelease()
 }
 
 ## -----------------------------------------------------------------------
+## Intent: Display info about a release stored on github.
 ## -----------------------------------------------------------------------
 function showReleaseInfo()
 {
@@ -200,6 +221,8 @@ function showReleaseInfo()
 EOM
 
     declare -a args=()
+    [[ $VERBOSE -eq  1 ]] && args+=('--verbose')
+    args+=('info')
     args+=('--user' "$user")
     args+=('--repo' "$repo")
     if [ ${#tag} -gt 0 ]; then
@@ -207,10 +230,7 @@ EOM
     fi
     
     echo "${iam}: github-relase info"
-    github-release\
-	--verbose\
-	info\
-	"${args[@]}"
+    github-release "${args[@]}"
     
     echo "** ${iam}: LEAVE"
     return
@@ -220,6 +240,8 @@ EOM
 ##---]  MAIN  [---##
 ##----------------##
 set -eu -o pipefail
+
+iam="${0##*/}"
 
 banner
 
@@ -306,7 +328,6 @@ else
   # echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
   # rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
 
-  echo "PRE-RELEASE INFO"
   showReleaseInfo \
       "$GITHUB_ORGANIZATION"\
       "$GERRIT_PROJECT"
@@ -314,18 +335,20 @@ else
   showGithubRelease
 
   cat <<EOM
-Create the release in three steps:
-  1) Create initial github release with download area.
-  2) Generate checksum.SHA256 for all released files.
-  3) Upload files to complete the release.
-  4) Display released info from github.
+
+** -----------------------------------------------------------------------
+** Create the release:
+**  1) Create initial github release with download area.
+**  2) Generate checksum.SHA256 for all released files.
+**  3) Upload files to complete the release.
+**  4) Display released info from github.
+** -----------------------------------------------------------------------
 EOM
 
   # Usage: github-release [global options] <verb> [verb options]
   # create release
-  echo "Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
+  echo "** ${iam} Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
   github-release \
-      --verbose \
       release \
       --user "$GITHUB_ORGANIZATION" \
       --repo "$GERRIT_PROJECT" \
@@ -333,25 +356,26 @@ EOM
       --name "$GERRIT_PROJECT - $GIT_VERSION" \
       --description "$RELEASE_DESCRIPTION"
 
-  # handle release files
+  echo "** ${iam} Packaging release files"
   pushd "$RELEASE_TEMP"
 
-    ## [TODO] Add a content check, err when only source tarballs exist
+    ## [TODO] Add a filecount check, detect failed source copy
     find . -mindepth 1 -maxdepth 1 ! -type d -ls
 
     # Generate and check checksums
     sha256sum -- * > checksum.SHA256
     sha256sum -c < checksum.SHA256
 
-    echo "Checksums(checksum.SHA256):"
+    echo
+    echo "** ${iam} Checksums(checksum.SHA256):"
     cat checksum.SHA256
+    echo
 
     # upload all files to the release
     for rel_file in *
     do
-      echo "Uploading file: $rel_file"
+      echo "** ${iam} Uploading file: $rel_file"
       github-release \
-	  --verbose \
 	  upload \
           --user "$GITHUB_ORGANIZATION" \
           --repo "$GERRIT_PROJECT" \
@@ -359,10 +383,11 @@ EOM
           --name "$rel_file" \
           --file "$rel_file"
     done
-  popd
 
   popd
+  popd
 
+  echo "** ${iam} Display released info"
   showReleaseInfo \
       "$GITHUB_ORGANIZATION"\
       "$GERRIT_PROJECT"\
