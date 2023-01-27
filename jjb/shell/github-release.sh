@@ -332,7 +332,7 @@ else
       "$GITHUB_ORGANIZATION"\
       "$GERRIT_PROJECT"
 
-  showGithubRelease
+  showGithubTool
 
   cat <<EOM
 
@@ -349,6 +349,7 @@ EOM
   # create release
   echo "** ${iam} Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
   github-release \
+      --verbose \
       release \
       --user "$GITHUB_ORGANIZATION" \
       --repo "$GERRIT_PROJECT" \
