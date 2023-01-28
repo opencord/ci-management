@@ -19,6 +19,12 @@
 # given a tag also create checksums files and release notes from the commit
 # message
 # -----------------------------------------------------------------------
+# 1) Staging to replace command github-release with gh.
+# 2) gh auth / GIT_TOKEN handling may be needed
+# -----------------------------------------------------------------------
+# gh release create abc/1.2.3-rc2 --discussion-category "Announcements" --generate-notes hello.txt
+# https://github.com/cli/cli/issues/4993
+# -----------------------------------------------------------------------
 
 ##-------------------##
 ##---]  GLOBALS  [---##
@@ -180,19 +186,127 @@ function copyToRelease()
 }
 
 ## -----------------------------------------------------------------------
+## Intent: 
+## -----------------------------------------------------------------------
+function github_release_pre()
+{
+    local what="$1"    ; shift
+    local user="$1"    ; shift
+    local repo="$1"    ; shift
+    local tag="$1"     ; shift
+    local name="$1"    ; shift
+    local descr="$1"   ; shift
+
+    local iam="${FUNCNAME[0]}"
+    echo "** ${iam}: ENTER"
+
+    case "$what" in
+	gh)
+	    declare -a cmd=()
+
+	    cmd+=('gh')
+	    # cmd+=('--verbose')
+	    cmd+=('release')	
+	    cmd+=('create')
+	    cmd+=('--user' "$user")
+	    cmd+=('--repo' "$repo")
+	    cmd+=('--title'  "$name")
+	    cmd+=('--descripton'  "$descr")
+	    cmd+=('--discussion-category' "Announcements")
+	    # cmd+=('--latest') - auto based on date & ver
+	    cmd+=('--verify-tag')
+
+	    # --branch exists, omit switch for tag
+	    cmd+=("$tag")
+
+	    echo "** ${iam}: RUNNING " "${cmd[@]}"
+	    "${cmd[@]}"
+	    ;;
+
+	*)
+	    declare -a cmd=()
+
+	    cmd+=('github-release')
+	    # cmd+=('--verbose')
+	    cmd+=('release')
+	    cmd+=('--user' "$user")
+	    cmd+=('--repo' "$repo")
+	    cmd+=('--tag'  "$tag")
+	    cmd+=('--name'  "$name")
+	    cmd+=('--descripton'  "$descr")
+
+	    echo "** ${iam}: RUNNING " "${cmd[@]}"
+	    "${cmd[@]}"
+	    ;;
+    esac
+    set +x
+
+    echo "** ${iam}: ENTER"
+    return
+}
+
+## -----------------------------------------------------------------------
+## Intent: 
+## -----------------------------------------------------------------------
+function github_release_view()
+{
+    local what="$1"    ; shift
+    local user="$1"    ; shift
+    local repo="$1"    ; shift
+    local tag="$1"     ; shift
+    local name="$1"    ; shift
+    local descr="$1"   ; shift
+
+    local iam="${FUNCNAME[0]}"
+    echo "** ${iam}: ENTER"
+
+    case "$what" in
+	gh)
+	    declare -a cmd=()
+	    cmd+=('gh')
+	    cmd+=('relase')
+	    cmd+=('view')
+	    cmd+=("$tag")
+
+	    echo "** ${iam}: RUNNING " "${cmd[@]}"
+	    "${cmd[@]}"
+	    ;;
+
+	*)
+	    showReleaseInfo \
+		"$user"\
+		"$repo"\
+		"$tag"
+	    ;;
+    esac
+
+    echo "** ${iam}: LEAVE"
+    
+    return
+}
+
+## -----------------------------------------------------------------------
 ## Intent:
 ## -----------------------------------------------------------------------
-function showGithubTool()
+function showCommands()
 {
     local iam="${FUNCNAME[0]}"
     echo "** ${iam}: ENTER"
 
-    echo "** ${iam}: which github-release: $(which -a github-release)"
-    local switch
-    for switch in '--version' '--help';
+    declare -a cmds=()
+    cmds+=('github-release')
+    cmds+=('gh')
+
+    local cmd
+    for cmd in "${cmds[@]}";
     do
-	echo "** ${iam}: github-release ${switch}: $(github-release ${switch})"
+	echo
+	echo "Checking Command: $cmd"
+	echo "==========================================================================="
+	which -a "$cmd"
+	"$cmd" --version
     done
+
     echo "** ${iam}: LEAVE"
     echo
     return
@@ -306,8 +420,6 @@ if [ ! -f "$release_path/Makefile" ]; then
   exit 1
 else
 
-  declare -p release_path
-
   # shellcheck disable=SC2015
   [[ -v TRACE ]] && { set -x; } || { set +x; } # SC2015 (shellcheck -x)
 
@@ -332,7 +444,7 @@ else
       "$GITHUB_ORGANIZATION"\
       "$GERRIT_PROJECT"
 
-  showGithubTool
+  showCommands
 
   cat <<EOM
 
@@ -345,23 +457,25 @@ else
 ** -----------------------------------------------------------------------
 EOM
 
+#   git auth login 
+#   git auth logout
+  
   # Usage: github-release [global options] <verb> [verb options]
   # create release
   echo "** ${iam} Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
-  github-release \
-      --verbose \
-      release \
-      --user "$GITHUB_ORGANIZATION" \
-      --repo "$GERRIT_PROJECT" \
-      --tag  "$GIT_VERSION" \
-      --name "$GERRIT_PROJECT - $GIT_VERSION" \
-      --description "$RELEASE_DESCRIPTION"
+  github_release_pre 'gh'\
+		     "$GITHUB_ORGANIZATION"\
+		     "$GERRIT_PROJECT"\
+		     "$GIT_VERSION"\
+		     "$GERRIT_PROJECT - $GIT_VERSION"\
+		     "$RELEASE_DESCRIPTION"
 
   echo "** ${iam} Packaging release files"
   pushd "$RELEASE_TEMP"
 
-    ## [TODO] Add a filecount check, detect failed source copy
-    find . -mindepth 1 -maxdepth 1 ! -type d -ls
+    echo "** ${iam}: Files to release:"
+    readarray -t to_release < <(find . -mindepth 1 -maxdepth 1 -type f -print)
+    declare -p to_release
 
     # Generate and check checksums
     sha256sum -- * > checksum.SHA256
@@ -372,33 +486,49 @@ EOM
     cat checksum.SHA256
     echo
 
-    # upload all files to the release
-    for rel_file in *
-    do
-      echo "** ${iam} Uploading file: $rel_file"
-      github-release \
-	  upload \
-          --user "$GITHUB_ORGANIZATION" \
-          --repo "$GERRIT_PROJECT" \
-          --tag  "$GIT_VERSION" \
-          --name "$rel_file" \
-          --file "$rel_file"
-    done
+    echo "** ${iam} Upload files being released"
+    what='gh'
+    case "$what" in
+	gh)
+	    gh release upload "$GIT_VERSION" "${to_release[@]}"
+	    ;;
+
+	*)
+
+	    # upload all files to the release
+	    for rel_file in *
+	    do
+		echo "** ${iam} Uploading file: $rel_file"
+		github-release \
+		    upload \
+		    --user "$GITHUB_ORGANIZATION" \
+		    --repo "$GERRIT_PROJECT" \
+		    --tag  "$GIT_VERSION" \
+		    --name "$rel_file" \
+		    --file "$rel_file"
+	    done
+	    ;;
+    esac
 
   popd
   popd
 
   echo "** ${iam} Display released info"
-  showReleaseInfo \
-      "$GITHUB_ORGANIZATION"\
-      "$GERRIT_PROJECT"\
-      "$GIT_VERSION"
+  github_release_view 'gh'\
+		      "$GITHUB_ORGANIZATION"\
+		      "$GERRIT_PROJECT"\
+		      "$GIT_VERSION"\
+		      "$GERRIT_PROJECT - $GIT_VERSION"\
+		      "$RELEASE_DESCRIPTION"
 fi
 
 # [SEE ALSO]
 # -----------------------------------------------------------------------
 # https://www.shellcheck.net/wiki/SC2236
 # https://docs.github.com/en/rest/releases/releases?apiVersion=2022-11-28#create-a-release
+# -----------------------------------------------------------------------
+# https://cli.github.com/manual/gh_help_reference
+# https://cli.github.com/manual/gh_release
 # -----------------------------------------------------------------------
 
 # [EOF]
