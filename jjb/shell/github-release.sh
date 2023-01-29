@@ -29,38 +29,58 @@
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
+set -euo pipefail
+
+declare -g scratch              # temp workspace for downloads
+declare -g gh_cmd               # path to gh command
+
 declare -g ARGV="$*"            # archive for display
 declare -g SCRIPT_VERSION='1.0' # git changeset needed
 declare -g TRACE=0              # uncomment to set -x
-declare -g VERBOSE=0            # trace github-release calls
 
 declare -g RELEASE_TEMP
 
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------#
-# declare -g pgmdir="${0%/*}" # dirname($script)
-echo "** ${0}: PWD=$(/bin/pwd)"
-
-# -----------------------------------------------------------------------
-# Jenkins must have checked out/copied the script -vs- repository
-# -----------------------------------------------------------------------
-# 17:56:27 [github-release_voltctl] $ /usr/bin/env bash /tmp/jenkins1043949650153731384.sh
-# 17:56:27 ** /tmp/jenkins1043949650153731384.sh: PWD=/w/workspace/github-release_voltctl
-# 17:56:27   5120009      4 drwxrwxr-x   4 jenkins  jenkins      4096 Jan 25 22:56 .
-# 17:56:27   5120010      4 drwxrwxr-x   9 jenkins  jenkins      4096 Jan 25 22:56 ./voltctl
-# 17:56:27   5120036      4 drwxrwxr-x   2 jenkins  jenkins      4096 Jan 25 22:56 ./voltctl@tmp
-# 17:56:27 /tmp/jenkins1043949650153731384.sh: line 44: /tmp/common/common.sh: No such file or directory
-# -----------------------------------------------------------------------
-
-# declare -a common_args=()
-# common_args+=('--common-args-begin--')
-# common_args+=('--traputils')
-# common_args+=('--stacktrace')
-# common_args+=('--tempdir')
-
 # shellcheck disable=SC1091
 # source "${pgmdir}/common/common.sh" "${common_args[@]}"
+
+## -----------------------------------------------------------------------
+## Intent: Cleanup scratch area on exit
+## -----------------------------------------------------------------------
+function sigtrap()
+{
+    ## Prevent mishaps
+    local is_read_only
+    is_read_only="$(declare -p scratch)"
+    if [[ $is_read_only != *"declare -r scratch="* ]]; then
+	echo "ERROR: variable scratch is not read-only, cleanup skipped"
+	exit 1
+    fi
+
+    if [ -d "$scratch" ]; then
+	/bin/rm -fr "$scratch"
+    fi
+
+    return
+}
+trap sigtrap EXIT
+
+## -----------------------------------------------------------------------
+## Intent: Create a scratch area for downloads and transient tools
+## -----------------------------------------------------------------------
+function init()
+{
+    declare -g scratch
+
+    local pkgbase="${0##*/}" # basename
+    local pkgname="${pkgbase%.*}"
+
+    scratch="$(mktemp -d -t "${pkgname}.XXXXXXXXXX")"
+    readonly scratch 
+   return
+}
 
 ## -----------------------------------------------------------------------
 ## Intent: Output a log banner to identify the running script/version.
@@ -125,43 +145,7 @@ EOM
 }
 
 ## -----------------------------------------------------------------------
-## Intent:
-## -----------------------------------------------------------------------
-function doDebug()
-{
-    echo "** ${FUNCNAME[0]}: ENTER"
-
-    echo
-    echo "** PWD: $(/bin/pwd)"
-    echo "** make-pre: $(/bin/ls -l)"
-    echo
-
-    declare -p ARTIFACT_GLOB
-    declare -p RELEASE_TEMP
-
-    echo
-    echo "** ${FUNCNAME[0]}: ARTIFACT_GLOB=${ARTIFACT_GLOB}"
-    local artifact_glob="${ARTIFACT_GLOB%/*}"
-    declare -p artifact_glob
-
-    echo "** ${FUNCNAME[0]}: PWD=$(/bin/pwd)"
-    find "$artifact_glob" -print || /bin/true
-
-    copyToRelease
-
-    # Copy artifacts into the release temp dir
-    # shellcheck disable=SC2086
-    # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-    # echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
-    # rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
-    
-    echo "** ${FUNCNAME[0]}: LEAVE"
-    echo
-    return
-}
-
-## -----------------------------------------------------------------------
-## Intent:
+## Intent: Copy files from the build directory into the release staging directory.
 ## -----------------------------------------------------------------------
 function copyToRelease()
 {
@@ -204,7 +188,7 @@ function github_release_pre()
 	gh)
 	    declare -a cmd=()
 
-	    cmd+=('gh')
+	    cmd+=("$gh_cmd")
 	    # cmd+=('--verbose')
 	    cmd+=('release')	
 	    cmd+=('create')
@@ -239,125 +223,56 @@ function github_release_pre()
 	    "${cmd[@]}"
 	    ;;
     esac
-    set +x
 
     echo "** ${iam}: ENTER"
-    return
-}
-
-## -----------------------------------------------------------------------
-## Intent: 
-## -----------------------------------------------------------------------
-function github_release_view()
-{
-    local what="$1"    ; shift
-    local user="$1"    ; shift
-    local repo="$1"    ; shift
-    local tag="$1"     ; shift
-    local name="$1"    ; shift
-    local descr="$1"   ; shift
-
-    local iam="${FUNCNAME[0]}"
-    echo "** ${iam}: ENTER"
-
-    case "$what" in
-	gh)
-	    declare -a cmd=()
-	    cmd+=('gh')
-	    cmd+=('relase')
-	    cmd+=('view')
-	    cmd+=("$tag")
-
-	    echo "** ${iam}: RUNNING " "${cmd[@]}"
-	    "${cmd[@]}"
-	    ;;
-
-	*)
-	    showReleaseInfo \
-		"$user"\
-		"$repo"\
-		"$tag"
-	    ;;
-    esac
-
-    echo "** ${iam}: LEAVE"
-    
     return
 }
 
 ## -----------------------------------------------------------------------
 ## Intent:
 ## -----------------------------------------------------------------------
-function showCommands()
+function install_gh_binary()
 {
     local iam="${FUNCNAME[0]}"
-    echo "** ${iam}: ENTER"
+    echo "** $iam: ENTER"
 
-    declare -a cmds=()
-    cmds+=('github-release')
-    cmds+=('gh')
+    pushd "$scratch"
+    echo -e "\n** ${iam}: Retrieve latest gh download URLs"
 
-    local cmd
-    for cmd in "${cmds[@]}";
-    do
-	echo
-	echo "Checking Command: $cmd"
-	echo "==========================================================================="
-	which -a "$cmd"
-	"$cmd" --version
-    done
-
-    echo "** ${iam}: LEAVE"
-    echo
-    return
-}
-
-## -----------------------------------------------------------------------
-## Intent: Display info about a release stored on github.
-## -----------------------------------------------------------------------
-function showReleaseInfo()
-{
-    local user="$1" ; shift
-    local repo="$1" ; shift
-    local tag=''
-    if [ $# -gt 0 ]; then
-	tag="$1"  ; shift
-    fi
-
-    local iam="${FUNCNAME[0]}"
-    echo "** ${iam}: ENTER"
-
-    cat <<EOM
-
-** -------------------------------------------------------------------
-** ${iam}
-** -------------------------------------------------------------------
-EOM
-
-    declare -a args=()
-    [[ $VERBOSE -eq  1 ]] && args+=('--verbose')
-    args+=('info')
-    args+=('--user' "$user")
-    args+=('--repo' "$repo")
-    if [ ${#tag} -gt 0 ]; then
-	args+=('--tag'  "$tag")
-    fi
+    local latest="https://github.com/cli/cli/releases/latest"
+    local tarball="gh.tar.tgz" 
+   
+    local VER
+    VER=$(curl --silent -qI "$latest" \
+	      | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+    # echo "VER=[$VER]"
+ 
+    echo "** ${iam}: Download latest gh binary"
+    local url="https://github.com/cli/cli/releases/download/${VER}/gh_${VER#v}_linux_amd64.tar.gz"
+    wget --quiet --output-document="$tarball" "$url"
     
-    echo "${iam}: github-relase info"
-    github-release "${args[@]}"
-    
-    echo "** ${iam}: LEAVE"
+    echo "** ${iam}: Unpack tarball"
+    tar zxf "$tarball"
+
+    gh_cmd="$(find "${scratch}" -name 'gh' -print)"
+    readonly gh_cmd
+
+    echo "** ${iam} Command: ${gh_cmd}"
+    echo "** ${iam} Version: $("$gh_cmd" --version)"
+    popd
+
+    echo "** $iam: LEAVE"
     return
 }
 
 ##----------------##
 ##---]  MAIN  [---##
 ##----------------##
-set -eu -o pipefail
-
 iam="${0##*/}"
 
 banner
+init
+install_gh_binary
 
 # when not running under Jenkins, use current dir as workspace and a blank
 # project name
@@ -435,17 +350,6 @@ else
   # doDebug # deterine why ARTIFACT_GLOB is empty
   copyToRelease
 
-  # Are we failing on a literal string "release/*" ?
-  # cp -v "$ARTIFACT_GLOB" "$RELEASE_TEMP"
-  # echo "rsync -rv --checksum \"$artifact_glob/.\" \"$RELEASE_TEMP/.\""
-  # rsync -rv --checksum "$artifact_glob/." "$RELEASE_TEMP/."
-
-  showReleaseInfo \
-      "$GITHUB_ORGANIZATION"\
-      "$GERRIT_PROJECT"
-
-  showCommands
-
   cat <<EOM
 
 ** -----------------------------------------------------------------------
@@ -487,10 +391,11 @@ EOM
     echo
 
     echo "** ${iam} Upload files being released"
-    what='gh'
-    case "$what" in
+
+    # shellcheck disable=SC2194
+    case 'gh' in
 	gh)
-	    gh release upload "$GIT_VERSION" "${to_release[@]}"
+	    "$gh_cmd" release upload "$GIT_VERSION" "${to_release[@]}"
 	    ;;
 
 	*)
@@ -512,14 +417,6 @@ EOM
 
   popd
   popd
-
-  echo "** ${iam} Display released info"
-  github_release_view 'gh'\
-		      "$GITHUB_ORGANIZATION"\
-		      "$GERRIT_PROJECT"\
-		      "$GIT_VERSION"\
-		      "$GERRIT_PROJECT - $GIT_VERSION"\
-		      "$RELEASE_DESCRIPTION"
 fi
 
 # [SEE ALSO]
