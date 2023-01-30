@@ -26,6 +26,12 @@
 # https://github.com/cli/cli/issues/4993
 # -----------------------------------------------------------------------
 
+# declare -g TRACE=0  # uncomment to set -x
+
+# shellcheck disable=SC2015
+[[ -v TRACE ]] && { set -x; } || { set +x; } # SC2015 (shellcheck -x)
+
+
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
@@ -36,7 +42,6 @@ declare -g gh_cmd               # path to gh command
 
 declare -g ARGV="$*"            # archive for display
 declare -g SCRIPT_VERSION='1.0' # git changeset needed
-declare -g TRACE=0              # uncomment to set -x
 
 declare -g RELEASE_TEMP
 
@@ -205,6 +210,8 @@ function github_release_pre()
 	    cmd+=('--discussion-category' "Announcements")
 	    # cmd+=('--verify-tag')   # fatal
 
+	    declare -p cmd
+
 	    # gh release create [<tag>] [<files>...]
 	    echo "** ${iam}: RUNNING " "${cmd[@]}"
 	    "${cmd[@]}"
@@ -277,11 +284,6 @@ banner
 init
 install_gh_binary
 
-echo "==========================================================================="
-set
-echo "==========================================================================="
-
-
 # when not running under Jenkins, use current dir as workspace and a blank
 # project name
 WORKSPACE=${WORKSPACE:-.}
@@ -342,9 +344,6 @@ if [ ! -f "$release_path/Makefile" ]; then
   echo "Makefile not found at $release_path!"
   exit 1
 else
-
-  # shellcheck disable=SC2015
-  [[ -v TRACE ]] && { set -x; } || { set +x; } # SC2015 (shellcheck -x)
 
   pushd "$release_path"
 
@@ -409,6 +408,8 @@ EOM
 	    cmd+=("$GIT_VERSION")
 	    cmd+=('--repo' "opencord/${GERRIT_PROJECT}")
 	    cmd+=("${to_release[@]}")
+
+	    declare -p cmd
 
 	    # gh release upload <tag> <files>... [flags]
 	    "${cmd[@]}"
