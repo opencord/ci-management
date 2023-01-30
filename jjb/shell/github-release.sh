@@ -277,6 +277,11 @@ banner
 init
 install_gh_binary
 
+echo "==========================================================================="
+set
+echo "==========================================================================="
+
+
 # when not running under Jenkins, use current dir as workspace and a blank
 # project name
 WORKSPACE=${WORKSPACE:-.}
