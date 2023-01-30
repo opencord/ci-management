@@ -188,14 +188,17 @@ function github_release_pre()
 	gh)
 	    declare -a cmd=()
 
+	    ## [TODO] Refactor into a function accepting:
+	    ##   --create
+	    ##   --info
+	    ##   --upload
 	    cmd+=("$gh_cmd")
 	    # cmd+=('--verbose')
-	    cmd+=('release')	
-	    cmd+=('create')
-	    cmd+=('--user' "$user")
+	    cmd+=('release' 'create')	
+	    # cmd+=('--latest')
 	    cmd+=('--repo' "$repo")
 	    cmd+=('--title'  "$name")
-	    cmd+=('--descripton'  "$descr")
+	    # cmd+=('--descripton'  "$descr") # not supported
 	    cmd+=('--discussion-category' "Announcements")
 	    # cmd+=('--latest') - auto based on date & ver
 	    cmd+=('--verify-tag')
@@ -395,7 +398,12 @@ EOM
     # shellcheck disable=SC2194
     case 'gh' in
 	gh)
-	    "$gh_cmd" release upload "$GIT_VERSION" "${to_release[@]}"
+	    declare -a cmd=()
+	    cmd+=("$gh_cmd")
+	    cmd+=('release' 'upload')
+	    cmd+=('--repo' "$GERRIT_PROJECT")
+	    cmd+=("${to_release[@]}")
+	    "${cmd[@]}"
 	    ;;
 
 	*)
