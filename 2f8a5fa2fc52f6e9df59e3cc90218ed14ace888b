@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f492c5a_4bad44c5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-01-30T16:46:21Z",
+      "side": 1,
+      "message": "pesky python/pip v3.{6,7} module dependency install failure.\npython 3.10+ / 3.11 has been released, really need to upgrade.\nWorkaround the problem with a +2 for now.",
+      "revId": "2f8a5fa2fc52f6e9df59e3cc90218ed14ace888b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
