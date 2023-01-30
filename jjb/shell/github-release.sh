@@ -196,7 +196,7 @@ function github_release_pre()
 	    # cmd+=('--verbose')
 	    cmd+=('release' 'create')	
 	    # cmd+=('--latest')
-	    cmd+=('--repo' "$repo")
+	    cmd+=('--repo' "opencord/$repo")
 	    cmd+=('--title'  "$name")
 	    # cmd+=('--descripton'  "$descr") # not supported
 	    cmd+=('--discussion-category' "Announcements")
@@ -406,7 +406,7 @@ EOM
 	    declare -a cmd=()
 	    cmd+=("$gh_cmd")
 	    cmd+=('release' 'upload')
-	    cmd+=('--repo' "$GERRIT_PROJECT")
+	    cmd+=('--repo' "opencord/${GERRIT_PROJECT}")
 	    cmd+=("${to_release[@]}")
 	    "${cmd[@]}"
 	    ;;
