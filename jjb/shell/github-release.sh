@@ -194,18 +194,18 @@ function github_release_pre()
 	    ##   --upload
 	    cmd+=("$gh_cmd")
 	    # cmd+=('--verbose')
-	    cmd+=('release' 'create')	
-	    # cmd+=('--latest')
+	    cmd+=('release' 'create')
+	    cmd+=("$tag")                    # no switch for tag, pass inline.
+	    # cmd+=('--latest')              # auto tag based on origin/master
+	    # cmd+=('--target')              # Use when a branch based release is needed.
+	    
 	    cmd+=('--repo' "opencord/$repo")
 	    cmd+=('--title'  "$name")
 	    # cmd+=('--descripton'  "$descr") # not supported
 	    cmd+=('--discussion-category' "Announcements")
-	    # cmd+=('--latest') - auto based on date & ver
-	    cmd+=('--verify-tag')
+	    # cmd+=('--verify-tag')   # fatal
 
-	    # --branch exists, omit switch for tag
-	    cmd+=("$tag")
-
+	    # gh release create [<tag>] [<files>...]
 	    echo "** ${iam}: RUNNING " "${cmd[@]}"
 	    "${cmd[@]}"
 	    ;;
@@ -406,8 +406,11 @@ EOM
 	    declare -a cmd=()
 	    cmd+=("$gh_cmd")
 	    cmd+=('release' 'upload')
+	    cmd+=("$GIT_VERSION")
 	    cmd+=('--repo' "opencord/${GERRIT_PROJECT}")
 	    cmd+=("${to_release[@]}")
+
+	    # gh release upload <tag> <files>... [flags]
 	    "${cmd[@]}"
 	    ;;
 
