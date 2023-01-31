@@ -31,3 +31,5 @@
           dependency-jobs: 'version-tag_wildcard'
           github-organization: 'opencord'
           artifact-glob: 'release/*'
+
+# [EOF]

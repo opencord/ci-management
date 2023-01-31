@@ -66,3 +66,5 @@
     concurrent: true
 
     dsl: !include-raw-escape: pipeline/{pipeline-script}
+
+# [EOF]

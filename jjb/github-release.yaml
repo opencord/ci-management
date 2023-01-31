@@ -53,3 +53,5 @@
             GITHUB_ORGANIZATION={github-organization}
 
       - shell: !include-raw-escape: shell/github-release.sh
+
+# [EOF]

@@ -28,3 +28,5 @@
           maintainers: "carmelo@opennetworking.org, daniele@opennetworking.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag_wildcard'
+
+# [EOF]

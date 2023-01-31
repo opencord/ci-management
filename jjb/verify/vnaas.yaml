@@ -18,3 +18,5 @@
       - 'xos-unit-test':
           dependency-jobs: 'verify_vnaas_tag-collision'
 #
+
+# [EOF]

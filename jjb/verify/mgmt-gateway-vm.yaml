@@ -13,3 +13,5 @@
     name: 'verify-mgmt-gateway-vm-jobs'
     jobs:
       - 'verify-licensed'
+
+# [EOF]

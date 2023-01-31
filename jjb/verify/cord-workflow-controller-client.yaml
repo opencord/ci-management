@@ -29,3 +29,5 @@
       - 'pypi-publish':
           project-regexp: '^{name}$'
           dependency-jobs: 'version-tag_wildcard'
+
+# [EOF]

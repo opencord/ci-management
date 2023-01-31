@@ -17,3 +17,5 @@
           dependency-jobs: 'verify_openstack_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_openstack_tag-collision'
+
+# [EOF]

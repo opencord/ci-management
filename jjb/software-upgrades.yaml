@@ -500,3 +500,5 @@
       - timed: |
                  TZ=America/Los_Angeles
                  {time-trigger}
+
+# [EOF]

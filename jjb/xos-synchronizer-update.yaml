@@ -60,3 +60,5 @@
     concurrent: true
 
     dsl: !include-raw-escape: pipeline/xos-synchronizer-update.groovy
+
+# [EOF]

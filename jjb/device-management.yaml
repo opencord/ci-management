@@ -93,3 +93,5 @@
             failed: '{skip-vote}'
             unstable: '{skip-vote}'
             notbuilt: '{skip-vote}'
+
+# [EOF]

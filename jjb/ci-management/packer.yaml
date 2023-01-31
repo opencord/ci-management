@@ -34,3 +34,5 @@
     jjb-version: 3.2.0
     packer-version: 1.6.5
     packer-builder: aws
+
+# [EOF]

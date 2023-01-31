@@ -202,3 +202,5 @@
     # maven version
     # Have to setup JAVA_HOME correctly if we upgrade to mvn36
     maven-version: mvn33
+
+# [EOF]

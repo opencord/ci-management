@@ -17,3 +17,5 @@
       - 'make-unit-test':
           unit-test-targets: 'test'
           junit-allow-empty-results: true
+
+# [EOF]

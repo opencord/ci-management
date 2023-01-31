@@ -17,3 +17,5 @@
           dependency-jobs: 'verify_mcord_licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_mcord_ansible-lint'
+
+# [EOF]

@@ -32,3 +32,5 @@
           sync-target-server: 'static.opennetworking.org'
           sync-target-path: '/srv/sites/docs.voltha.org/'
           build-timeout: 60
+
+# [EOF]

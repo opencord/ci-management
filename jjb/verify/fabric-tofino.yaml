@@ -24,3 +24,5 @@
     jobs:
       - 'maven-test'
       - 'maven-publish'
+
+# [EOF]

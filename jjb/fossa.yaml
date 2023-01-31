@@ -71,3 +71,5 @@
     concurrent: true
 
     dsl: !include-raw-escape: pipeline/fossa-verify.groovy
+
+# [EOF]

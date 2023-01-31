@@ -51,3 +51,5 @@
     jobs:
       - 'voltha-patch-test':
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+
+# [EOF]

@@ -15,3 +15,5 @@
       - 'verify-licensed'
       - 'tag-collision-reject':
           dependency-jobs: 'verify_progran_licensed'
+
+# [EOF]

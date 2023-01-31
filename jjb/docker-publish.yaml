@@ -82,3 +82,5 @@
     extraEnvironmentVars: ""
 
     dsl: !include-raw-escape: pipeline/docker-publish.groovy
+
+# [EOF]

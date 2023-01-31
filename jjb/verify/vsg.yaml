@@ -17,3 +17,5 @@
           dependency-jobs: 'verify_vsg_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_vsg_tag-collision'
+
+# [EOF]

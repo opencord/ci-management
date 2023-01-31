@@ -18,3 +18,5 @@
       - 'verify-helm-lint':
           dependency-jobs: 'verify_comac-helm-charts_tag-collision'
 
+
+# [EOF]

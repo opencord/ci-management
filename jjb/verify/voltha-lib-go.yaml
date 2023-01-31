@@ -21,3 +21,5 @@
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'true'
+
+# [EOF]

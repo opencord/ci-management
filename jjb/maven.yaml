@@ -119,7 +119,7 @@
 
     wrappers:
       - credentials-binding:
-        - file:
+          - file:
             credential-id: 'gpg-creds-maven'
             variable: 'GNUPG'
 

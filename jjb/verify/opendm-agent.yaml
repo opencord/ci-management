@@ -20,3 +20,5 @@
           # opendm-agent uses gtest which outputs in xunit format
           junit-allow-empty-results: true
           xunit-skip-if-no-test-files: false
+
+# [EOF]

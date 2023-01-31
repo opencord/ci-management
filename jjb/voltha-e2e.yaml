@@ -1848,3 +1848,5 @@
               branches:
                 - branch-compare-type: REG_EXP
                   branch-pattern: '{branch-pattern}'
+
+# [EOF]

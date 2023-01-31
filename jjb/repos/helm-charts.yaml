@@ -17,3 +17,5 @@
           branch-regexp: '{modern-branches-regexp}'
       - 'version-tag'
       - 'publish-helm-repo'
+
+# [EOF]

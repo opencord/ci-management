@@ -17,3 +17,5 @@
           dependency-jobs: 'verify_kafkaloghandler_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_kafkaloghandler_tag-collision'
+
+# [EOF]

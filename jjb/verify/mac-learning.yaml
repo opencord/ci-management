@@ -16,3 +16,5 @@
       - 'tag-collision-reject'
       - 'maven-test'
       - 'maven-publish'
+
+# [EOF]

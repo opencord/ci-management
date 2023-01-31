@@ -47,3 +47,5 @@
 
     builders:
       - shell: !include-raw-escape: jjb/shell/publish-helm-repo.sh
+
+# [EOF]

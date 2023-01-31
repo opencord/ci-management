@@ -1271,3 +1271,5 @@
 
     project-type: pipeline
     dsl: !include-raw-escape: pipeline/{pipeline-file}
+
+# [EOF]

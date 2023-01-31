@@ -47,3 +47,5 @@
           set -eu -o pipefail
           ./validate_manifest.sh
 
+
+# [EOF]

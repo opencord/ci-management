@@ -68,3 +68,5 @@
       - timed: |
                  TZ=America/Los_Angeles
                  H 10 31/3 * *
+
+# [EOF]

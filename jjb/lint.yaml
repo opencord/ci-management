@@ -135,3 +135,5 @@
 
     builders:
       - shell: !include-raw-escape: shell/shcheck.sh
+
+# [EOF]

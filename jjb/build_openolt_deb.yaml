@@ -42,3 +42,5 @@
             url: '{gerrit-server-url}/openolt'
             branches:
               - 'master'
+
+# [EOF]

@@ -15,3 +15,5 @@
       - 'verify-licensed'
       - 'verify-shellcheck':
           dependency-jobs: 'verify_helm-repo-tools_licensed'
+
+# [EOF]

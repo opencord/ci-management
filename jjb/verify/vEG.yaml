@@ -17,3 +17,5 @@
           dependency-jobs: 'verify_vEG_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_vEG_tag-collision'
+
+# [EOF]

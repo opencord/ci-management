@@ -41,7 +41,7 @@ declare -g scratch              # temp workspace for downloads
 declare -g gh_cmd               # path to gh command
 
 declare -g ARGV="$*"            # archive for display
-declare -g SCRIPT_VERSION='1.0' # git changeset needed
+declare -g SCRIPT_VERSION='1.1' # git changeset needed
 
 declare -g RELEASE_TEMP
 
@@ -189,6 +189,12 @@ function github_release_pre()
     local iam="${FUNCNAME[0]}"
     echo "** ${iam}: ENTER"
 
+    declare -p user
+    declare -p repo
+    declare -p tag
+    declare -p name
+    declare -p descr
+    
     case "$what" in
 	gh)
 	    declare -a cmd=()

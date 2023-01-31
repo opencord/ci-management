@@ -56,3 +56,5 @@
             choosing-strategy: 'gerrit'
             jenkins-ssh-credential: '{jenkins-ssh-credential}'
             basedir: ''
+
+# [EOF]

@@ -202,3 +202,5 @@
           - text:
               credential-id: codecov-up4
               variable: CODECOV_TOKEN
+
+# [EOF]

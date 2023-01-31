@@ -27,3 +27,5 @@
           build-timeout: 60
           docker-repo: 'omecproject'
           dependency-jobs: 'version-tag_wildcard'
+
+# [EOF]

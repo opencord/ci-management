@@ -17,3 +17,5 @@
           dependency-jobs: 'verify_k8sepcservice_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_k8sepcservice_tag-collision'
+
+# [EOF]
