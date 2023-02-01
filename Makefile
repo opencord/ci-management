@@ -16,15 +16,15 @@
 # -----------------------------------------------------------------------
 
 # Makefile for testing JJB jobs in a virtualenv
-.PHONY: all clean help test
-.DEFAULT_GOAL := all
+.PHONY: help clean help test
+.DEFAULT_GOAL := help
 
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
 TOP          ?= .
 MAKEDIR      ?= $(TOP)/makefiles
-export SHELL := bash -e -o pipefail
+export SHELL := bash -e -o pipefail#    # [TODO] remove once set -u cleaned up
 
 NO-LINT-MAKE  := true
 NO-LINT-SHELL := true
@@ -35,13 +35,15 @@ NO-LINT-SHELL := true
 include $(MAKEDIR)/include.mk
 
 VENV_DIR      ?= venv-jjb
-# JJB_VERSION   ?= 4.1.0
+JJB_VERSION   ?= 2.8.0#               # TODO: 4.1.0
 JOBCONFIG_DIR ?= job-configs
 
 $(JOBCONFIG_DIR):
 	mkdir $@
 
 ## -----------------------------------------------------------------------
+## Intent: Sanity check incoming JJB config changes.
+##   Todo: Depend on makefiles/lint/jjb.mk :: lint-jjb
 ## -----------------------------------------------------------------------
 .PHONY: test
 test: $(venv-activate-script) $(JOBCONFIG_DIR)
@@ -55,6 +57,7 @@ test: $(venv-activate-script) $(JOBCONFIG_DIR)
 clean:
 	$(RM) -r $(JOBCONFIG_DIR)
 
+## Display make help late
 include $(ONF_MAKE)/help/trailer.mk
 
 # [EOF]

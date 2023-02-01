@@ -15,17 +15,73 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-# Parent makefile should include this early so help
-# message will be prefixed by a usage statement.
-help ::
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
+.PHONY: help help-summary help-simple help-verbose
+
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+
+## -----------------------------------------------------------------------
+## Intent: Render topic/tool based makefile help
+## -----------------------------------------------------------------------
+## Three targets are used to render conditional makefile help
+##    help-summary      A one-line target summary for the topic
+##    help-simple       Common targets for the topic (lint-helm, build, test)
+##    help-verbose      Exhaustive display of supported targets
+## -----------------------------------------------------------------------
+## [COOKBOOK]
+##   help colon-colon   All 'help' targets are evaluated for 'make help'
+##   help-banner        Display a usage banner for help
+##   help-summary       Display all one-line topic summary help
+##     [conditonal]
+##   help-simple        Display all common topic makefile targets.
+##   help-verbose       Exhaustive display of makefile target help.
+##     VERBOSE=
+## -----------------------------------------------------------------------
+## [See Also] makefiles/gerrit/{include.mk, help.mk}
+##   help-gerrit        Summary targets can always be used to display topic help
+##   help-verbose       Exhaustive gerrit target display.
+## -----------------------------------------------------------------------
+help :: help-banner help-summary
+
+## -----------------------------------------------------------------------
+## Intent: Display a usage banner for help.  Target will be evaluated
+##         before all other help display.
+## -----------------------------------------------------------------------
+help-banner:
 	@echo "Usage: $(MAKE) [options] [target] ..."
+
+## -----------------------------------------------------------------------
+## Intent: Display extended help.
+## -----------------------------------------------------------------------
+## Question:
+##   o Help display can be long based on volume of targets.
+##   o Should a 3rd case be added to display:
+##      - help-simple (one-liner help) by default
+##      - conditional display of extended help:
+##          - help-simple or help-verbose
+##   o Current logic displays extended help by default.
+## -----------------------------------------------------------------------
+ifdef VERBOSE
+  help :: help-verbose
+else
+  help :: help-simple
+endif
+
+## -----------------------------------------------------------------------
+## Intent: Display simple extended target help
+## -----------------------------------------------------------------------
+help-simple ::
 	@echo
 	@echo '[VIEW]'
-	@echo '  reload         Setup to auto-reload sphinx doc changes in browser'
-	@echo '  view-html      View generated documentation'
+	@echo '  reload              Setup to auto-reload sphinx doc changes in browser'
+	@echo '  view-html           View generated documentation'
 	@echo
 	@echo '[TEST]'
-	@echo '  test           make lint linkcheck'
-	@echo '  test-all       make all-generation-targets'
+	@echo "  test                $(MAKE) lint linkcheck"
+	@echo "  test-all            $(MAKE) all-generation-targets"
 
 # [EOF]

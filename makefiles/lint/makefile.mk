@@ -1,6 +1,18 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 # -----------------------------------------------------------------------
 
 ##-------------------##
@@ -32,14 +44,16 @@ ifndef NO-LINT-MAKEFILE
 endif
 
 ## -----------------------------------------------------------------------
+## Intent: Perform a lint check on makefile sources
 ## -----------------------------------------------------------------------
 lint-make:
 	$(HIDE)$(env-clean) $(make-check-find) \
 	    | $(xargs-n1-local) $(make-check) $(make-check-args)
 
 ## -----------------------------------------------------------------------
+## Intent: Display command help
 ## -----------------------------------------------------------------------
-help ::
-	@echo '  lint-make                     Syntax check [Mm]akefile and *.mk'
+help-summary ::
+	@echo '  lint-make           Syntax check [Mm]akefile and *.mk'
 
 # [EOF]

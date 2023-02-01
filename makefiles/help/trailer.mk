@@ -20,14 +20,14 @@
 help ::
 	@echo
 	@echo '[CLEAN]'
-	@echo '  clean          Remove generated targets'
-	@echo '  sterile        clean + remove virtual env interpreter install'
+	@echo '  clean               Remove generated targets'
+	@echo '  sterile             clean + remove virtual env interpreter install'
 
 help ::
 	@echo
 	@echo '[HELP]'
-	@echo '  help           Display program help'
-	@echo '  help-verbose   Display additional targets and help'
+	@echo '  help                Display program help'
+	@echo '  help-verbose        Display additional targets and help'
 
 help ::
 	@echo
