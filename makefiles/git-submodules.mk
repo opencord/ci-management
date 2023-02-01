@@ -60,11 +60,12 @@ sterile ::
 help ::
 	@echo
 	@echo '[GIT-SUBMODULES]'
-	@echo '  submodules     Checkout dependent git submodules'
+	@echo '  reload              Setup to auto-reload sphinx doc changes in browser'
+	@echo '  submodules          Checkout dependent git submodules'
   ifdef VERBOSE
-	@echo '  global-jjb     Checkout ci-management submodule global-jjb'
-	@echo '  lf-ansible     Checkout ci-management submodule lf-ansible'
-	@echo '  packer         Checkout ci-management submodule packer'
+	@echo '  global-jjb          Checkout ci-management submodule global-jjb'
+	@echo '  lf-ansible          Checkout ci-management submodule lf-ansible'
+	@echo '  packer              Checkout ci-management submodule packer'
   endif
 
 ## -----------------------------------------------------------------------

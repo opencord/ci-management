@@ -13,6 +13,7 @@ include $(ONF_MAKE)/lint/jjb.mk
 include $(ONF_MAKE)/lint/makefile.mk
 include $(ONF_MAKE)/lint/python.mk
 include $(ONF_MAKE)/lint/shell.mk
+include $(ONF_MAKE)/lint/help.mk
 
 ifdef YAML_FILES
   include $(ONF_MAKE)/lint/yaml/python.mk

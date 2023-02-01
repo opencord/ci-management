@@ -16,16 +16,15 @@
 # -----------------------------------------------------------------------
 
 # Makefile for testing JJB jobs in a virtualenv
-.PHONY: all clean help test
-.DEFAULT_GOAL := all
-# .DEFAULT_GOAL := lint-jjb
+.PHONY: help clean help test
+.DEFAULT_GOAL := help
 
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
 TOP          ?= .
 MAKEDIR      ?= $(TOP)/makefiles
-export SHELL := bash -e -o pipefail
+export SHELL := bash -e -o pipefail#    # [TODO] remove once set -u cleaned up
 
 ##--------------------##
 ##---]  INCLUDES  [---##
@@ -42,6 +41,8 @@ $(JOBCONFIG_DIR):
 	mkdir $@
 
 ## -----------------------------------------------------------------------
+## Intent: Sanity check incoming JJB config changes.
+##   Todo: Depend on makefiles/lint/jjb.mk :: lint-jjb
 ## -----------------------------------------------------------------------
 # lint : lint-jjb
 lint-tox:
@@ -61,6 +62,7 @@ test: $(venv-activate-script) $(JOBCONFIG_DIR)
 clean:
 	$(RM) -r $(JOBCONFIG_DIR)
 
+## Display make help late
 include $(ONF_MAKE)/help/trailer.mk
 
 # [EOF]

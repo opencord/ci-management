@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -38,14 +38,16 @@ ifndef NO-LINT-PYTHON
 endif
 
 ## -----------------------------------------------------------------------
+## Intent: Perform a lint check on makefile sources
 ## -----------------------------------------------------------------------
 lint-python:
 	$(HIDE)$(env-clean) $(python-check-find) \
 	    | $(xargs-n1) $(python-check) $(python-check-args)
 
 ## -----------------------------------------------------------------------
+## Intent: Display command help
 ## -----------------------------------------------------------------------
-help ::
-	@echo '  lint-python                   Syntax check python sources'
+help-summary ::
+	@echo '  lint-python         Syntax check python sources (*.py)'
 
 # [EOF]
