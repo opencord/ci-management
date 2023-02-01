@@ -39,6 +39,8 @@ $(if $(have-shell-bash),$(null),\
 
 shell-pyenv := bash -eo pipefail
 
+export SHELL ?= bash -euo pipefail
+
 $(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]
