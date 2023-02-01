@@ -20,14 +20,15 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
-null        :=#
-space       := $(null) $(null)
-dot         ?= .
+null           :=#
+space          := $(null) $(null)
+dot            ?= .
 
-HIDE        ?= @
+HIDE           ?= @
 
-env-clean   = /usr/bin/env --ignore-environment
-xargs-n1    := xargs -0 -t -n1 --no-run-if-empty
+env-clean      ?= /usr/bin/env --ignore-environment
+xargs-n1       := xargs -0 -t -n1 --no-run-if-empty
+xargs-n1-clean := $(env-clean) $(xargs-n1)
 
 ## -----------------------------------------------------------------------
 ## Not recommended but support (-u)ndef-less shell for pyenv activate
@@ -38,6 +39,8 @@ $(if $(have-shell-bash),$(null),\
   $(eval export SHELL := /bin/bash -euo pipefail))
 
 shell-pyenv := bash -eo pipefail
+
+export SHELL ?= bash -euo pipefail
 
 $(if $(DEBUG),$(warning LEAVE))
 

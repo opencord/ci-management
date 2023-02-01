@@ -16,15 +16,15 @@
 # -----------------------------------------------------------------------
 
 # Makefile for testing JJB jobs in a virtualenv
-.PHONY: all clean help test
-.DEFAULT_GOAL := all
+.PHONY: help clean help test
+.DEFAULT_GOAL := help
 
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
 TOP          ?= .
 MAKEDIR      ?= $(TOP)/makefiles
-export SHELL := bash -e -o pipefail
+export SHELL := bash -e -o pipefail#    # [TODO] remove once set -u cleaned up
 
 NO-LINT-MAKE  := true
 NO-LINT-SHELL := true
