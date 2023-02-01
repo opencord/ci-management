@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5c48c90_f1e33cda",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-02-01T17:19:15Z",
+      "side": 1,
+      "message": "python v3.6 strikes again, pip module install dependency problem.",
+      "revId": "35a8f8ff07a440808dcdab0b9e71ae7730912828",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
