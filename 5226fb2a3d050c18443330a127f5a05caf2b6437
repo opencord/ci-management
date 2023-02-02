@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc239b92_eaa9db2a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000947
+      },
+      "writtenOn": "2023-02-02T23:26:00Z",
+      "side": 1,
+      "message": "LGTM.  --- Let the RED lights shine!!!!",
+      "revId": "5226fb2a3d050c18443330a127f5a05caf2b6437",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
