@@ -21,7 +21,7 @@
           dependency-jobs: 'verify_cordctl_licensed'
       - 'make-unit-test':
           unit-test-targets: 'lint test'
-          unit-test-keep-going: 'true'
+          unit-test-keep-going: 'false'
           dependency-jobs: 'verify_cordctl_tag-collision'
 
 - job-group:

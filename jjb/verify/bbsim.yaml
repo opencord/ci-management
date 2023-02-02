@@ -32,7 +32,7 @@
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
-          unit-test-keep-going: 'true'
+          unit-test-keep-going: 'false'
 
 - job-group:
     name: 'verify-bbsim-jobs-voltha-2.8'

@@ -22,7 +22,7 @@
           build-node: 'ubuntu18.04-basebuild-2c-4g'
           build-timeout: 20
           unit-test-targets: 'test'
-          unit-test-keep-going: 'true'
+          unit-test-keep-going: 'false'
 
 - job-group:
     name: 'post-merge-voltha-protos-jobs'

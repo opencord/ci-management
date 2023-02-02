@@ -19,7 +19,7 @@
           dependency-jobs: 'verify_voltha-epononu-adapter_licensed'
       - 'make-unit-test':
           unit-test-targets: 'test'
-          unit-test-keep-going: 'true'
+          unit-test-keep-going: 'false'
 
 - job-group:
     name: 'publish-voltha-epononu-adapter-jobs'

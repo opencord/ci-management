@@ -30,14 +30,14 @@
           dest-gopath: "github.com/opencord"
           name-extension: "-lint"
           unit-test-targets: 'lint sca'
-          unit-test-keep-going: 'true'
+          unit-test-keep-going: 'false'
           junit-allow-empty-results: true
           build-node: 'ubuntu18.04-basebuild-4c-8g'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-tests"
           unit-test-targets: 'test'
-          unit-test-keep-going: 'true'
+          unit-test-keep-going: 'false'
           junit-allow-empty-results: true
           build-node: 'ubuntu18.04-basebuild-2c-4g'
 
