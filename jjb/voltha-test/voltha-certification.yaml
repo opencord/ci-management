@@ -60,7 +60,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
-          disable-job: false
+          disable-job: true
           reinstall-olt: true
           name-extension: '_DT'
           work-flow: 'DT'
@@ -73,7 +73,7 @@
           timeout: 330
           build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
-          disable-job: false
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -228,7 +228,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
-          disable-job: false
+          disable-job: true
           reinstall-olt: true
           release: '2.11'
           branch: 'voltha-2.11'
@@ -243,7 +243,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
-          disable-job: false
+          disable-job: true
           reinstall-olt: true
           release: '2.8'
           branch: 'voltha-2.8'
@@ -258,7 +258,7 @@
       - 'build_voltha_pod_test':
           build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
-          disable-job: false
+          disable-job: true
           release: '2.11'
           branch: 'voltha-2.11'
           name-extension: '_DT'
@@ -272,7 +272,7 @@
       - 'build_voltha_pod_test':
           build-node: 'menlo-certification-pod-2'
           config-pod: 'menlo-certification-pod-radisys-1600x'
-          disable-job: false
+          disable-job: true
           release: '2.8'
           branch: 'voltha-2.8'
           name-extension: '_DT'
