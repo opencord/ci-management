@@ -16,6 +16,23 @@
       "message": "LGTM.  --- Let the RED lights shine!!!!",
       "revId": "5226fb2a3d050c18443330a127f5a05caf2b6437",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c6b01cb_06bf65c7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-02-02T23:31:07Z",
+      "side": 1,
+      "message": "Job failure is known, good old python v3.6 and a package version problems.\n\n18:23:22 ERROR: pip\u0027s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n18:23:22 virtualenv 20.17.1 requires importlib-resources\u003e\u003d5.4; python_version \u003c \"3.7\", but you have importlib-resources 5.1.3 which is incompatible.",
+      "revId": "5226fb2a3d050c18443330a127f5a05caf2b6437",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
