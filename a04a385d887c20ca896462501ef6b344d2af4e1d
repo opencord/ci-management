@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95d4277a_2b65f7aa",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-02-03T03:15:54Z",
+      "side": 1,
+      "message": "need to fix the python v3.6 installation for repo:ci-management\n\n18:31:40 lf-activate-venv(): INFO: Creating python3 venv at /tmp/venv-De2x\n18:31:46 lf-activate-venv(): INFO: Installing: zipp\u003d\u003d1.1.0 python-openstackclient \n18:31:59 ERROR: pip\u0027s dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.\n18:31:59 virtualenv 20.17.1 requires importlib-resources\u003e\u003d5.4; python_version \u003c \"3.7\", but you have importlib-resources 5.1.3 which is incompatible.",
+      "revId": "a04a385d887c20ca896462501ef6b344d2af4e1d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
