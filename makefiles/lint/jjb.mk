@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,51 +15,42 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-# Makefile for testing JJB jobs in a virtualenv
-.PHONY: all clean help test
-.DEFAULT_GOAL := all
-# .DEFAULT_GOAL := lint-jjb
-
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
-TOP          ?= .
-MAKEDIR      ?= $(TOP)/makefiles
-export SHELL := bash -e -o pipefail
 
-##--------------------##
-##---]  INCLUDES  [---##
-##--------------------##
--include config.mk
-include $(MAKEDIR)/include.mk
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+ifndef NO-LINT-JJB
+  lint : lint-jjb
+endif
 
-VENV_DIR      ?= venv-jjb
-# JJB_VERSION   ?= 4.1.0
-JOBCONFIG_DIR ?= job-configs
+## -----------------------------------------------------------------------
+## Intent: Construct command line for linting jenkins-job-builder config
+## -----------------------------------------------------------------------
 
-$(JOBCONFIG_DIR):
-	mkdir $@
+ifdef DEBUG
+  lint-jjb-args += --log_level DEBUG#         # verbosity: high
+else
+  lint-jjb-args += --log_level INFO#          # verbosity: default
+endif
+lint-jjb-args += --ignore-cache
+lint-jjb-args += test#                        # command action
+lint-jjb-args += -o archives/job-configs#     # Generated jobs written here
+lint-jjb-args += --recursive
+lint-jjb-args += --config-xml#                # JJB v3.0 write to OUTPUT/jobname/config.xml
+lint-jjb-args += jjb/#                        # JJB config sources (input)
+
+lint-jjb:
+	jenkins-jobs $(lint-jjb-args)
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
-# lint : lint-jjb
-lint-tox:
-	tox -e py310
-
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-.PHONY: test
-test: $(venv-activate-script) $(JOBCONFIG_DIR)
-	$(activate) \
-	&& pipdeptree \
-	&& jenkins-jobs -l DEBUG test --recursive --config-xml -o "$(JOBCONFIG_DIR)" jjb/ ;
-
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-.PHONY: clean
-clean:
-	$(RM) -r $(JOBCONFIG_DIR)
-
-include $(ONF_MAKE)/help/trailer.mk
+help ::
+	@echo '  lint-jjb               Validate jjb job generation'
+ifdef VERBOSE
+	@echo '1    DEBUG=1                lint-jjb --log_level=DEBUG'
+endif
 
 # [EOF]

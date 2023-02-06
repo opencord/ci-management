@@ -65,6 +65,6 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    dsl: !include-raw: pipeline/{pipeline-script}
 
 # [EOF]

@@ -9,6 +9,7 @@ help ::
 	@echo
 	@echo "[LINT]"
 
+include $(ONF_MAKE)/lint/jjb.mk
 include $(ONF_MAKE)/lint/makefile.mk
 include $(ONF_MAKE)/lint/python.mk
 include $(ONF_MAKE)/lint/shell.mk

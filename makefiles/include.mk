@@ -20,11 +20,16 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
-ONF_MAKE ?= $(MAKEDIR)# fix this -- two distinct makefile imports needed
+# OPT_ROOT    ?= /opt/trainlab/current
+# OPT_MAKEDIR := $(OPT_ROOT)/makefiles
+# MAKEDIR     ?= $(OPT_MAKEDIR)
+
+ONF_MAKE ?= $(MAKEDIR)# fix this -- two distinct makefiles/ directories are needed
 ONF_MAKE ?= $(error ONF_MAKE= is required)
 
 include $(ONF_MAKE)/consts.mk
 include $(ONF_MAKE)/help/include.mk
+
 include $(ONF_MAKE)/lint/include.mk
 include $(ONF_MAKE)/virtualenv.mk
 include $(ONF_MAKE)/git-submodules.mk

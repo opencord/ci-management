@@ -20,24 +20,35 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
+GIT ?= git
+
 ## -----------------------------------------------------------------------
 ## Intent: Checkout submodules required by ci-management
 ## -----------------------------------------------------------------------
+submodule-repo := $(null)
+submodule-repo += global-jjb
+submodule-repo += lf-ansible
+submodule-repo += packer
+
 submodule-deps := $(null)
 submodule-deps += submodules#     # named pseudo target
-submodule-deps += global-jjb
-submodule-deps += lf-ansible
-submodule-deps += packer
+submodule-deps += $(submodule-repos)
 
 .PHONY: $(submodule-deps)
 $(submodule-deps):
-	git submodule init
-	git submodule update
+	$(GIT) submodule init
+	$(GIT) submodule update
 
 ## -----------------------------------------------------------------------
+## Intent: Revert sandbox to a pristine state.
 ## -----------------------------------------------------------------------
 sterile ::
-	$(RM) -r $(submodule-deps)
+	$(RM) -r $(submodule-repos)
+
+        # FIXME:
+        #   o restore hierarchy to avoid git status 'deleted:'
+        #   o remove: externals should not be under revision control
+	$(GIT) co $(submodule-repos)
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------

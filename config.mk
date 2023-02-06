@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,17 +15,11 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-# Parent makefile should include this early so help
-# message will be prefixed by a usage statement.
-help ::
-	@echo "Usage: $(MAKE) [options] [target] ..."
-	@echo
-	@echo '[VIEW]'
-	@echo '  reload                 Setup to auto-reload sphinx doc changes in browser'
-	@echo '  view-html              View generated documentation'
-	@echo
-	@echo '[TEST]'
-	@echo '  test                   make lint linkcheck'
-	@echo '  test-all               make all-generation-targets'
+##--------------------------------##
+##---]  Disable lint targets  [---##
+##--------------------------------##
+# NO-LINT-JJB   := false
+NO-LINT-MAKE  := true
+NO-LINT-SHELL := true
 
 # [EOF]
