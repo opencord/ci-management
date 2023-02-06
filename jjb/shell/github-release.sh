@@ -177,6 +177,34 @@ function copyToRelease()
 ## -----------------------------------------------------------------------
 ## Intent: 
 ## -----------------------------------------------------------------------
+function github_release_list()
+{
+    local what="$1"    ; shift
+    local user="$1"    ; shift
+    local repo="$1"    ; shift
+
+    local iam="${FUNCNAME[0]}"
+    echo "** ${iam}: ENTER"
+
+    declare -a cmd=()
+    
+    cmd+=("$gh_cmd")
+    cmd+=('--verbose')
+    cmd+=('--limit' '10')
+    cmd+=('release' 'list')
+    cmd+=('--repo' "opencord/$repo")
+    
+    # gh release create [<tag>] [<files>...]
+    echo "** ${iam}: RUNNING " "${cmd[@]}"
+    "${cmd[@]}"
+
+    echo "** ${iam}: ENTER"
+    return
+}
+
+## -----------------------------------------------------------------------
+## Intent: 
+## -----------------------------------------------------------------------
 function github_release_pre()
 {
     local what="$1"    ; shift
@@ -376,7 +404,13 @@ EOM
 
 #   git auth login 
 #   git auth logout
-  
+
+  gh release list [flags]
+  echo "** ${iam} List releases"
+  github_release_list \
+      "$GITHUB_ORGANIZATION"\
+      "$GERRIT_PROJECT"
+
   # Usage: github-release [global options] <verb> [verb options]
   # create release
   echo "** ${iam} Creating Release: $GERRIT_PROJECT - $GIT_VERSION"
