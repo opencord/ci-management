@@ -30,8 +30,8 @@ ONF_MAKE ?= $(error ONF_MAKE= is required)
 include $(ONF_MAKE)/consts.mk
 include $(ONF_MAKE)/help/include.mk
 
+include $(ONF_MAKE)/virtualenv.mk#        # lint-{jjb,python} depends on venv
 include $(ONF_MAKE)/lint/include.mk
-include $(ONF_MAKE)/virtualenv.mk
 include $(ONF_MAKE)/git-submodules.mk
 include $(ONF_MAKE)/todo.mk
 include $(ONF_MAKE)/help/variables.mk

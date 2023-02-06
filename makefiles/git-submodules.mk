@@ -25,10 +25,10 @@ GIT ?= git
 ## -----------------------------------------------------------------------
 ## Intent: Checkout submodules required by ci-management
 ## -----------------------------------------------------------------------
-submodule-repo := $(null)
-submodule-repo += global-jjb
-submodule-repo += lf-ansible
-submodule-repo += packer
+submodule-repos := $(null)
+submodule-repos += global-jjb
+submodule-repos += lf-ansible
+submodule-repos += packer
 
 submodule-deps := $(null)
 submodule-deps += submodules#     # named pseudo target
@@ -36,8 +36,13 @@ submodule-deps += $(submodule-repos)
 
 .PHONY: $(submodule-deps)
 $(submodule-deps):
+	@echo
+	@echo "Checkout dependent submodules"
 	$(GIT) submodule init
 	$(GIT) submodule update
+
+# Abstraction: named target for submodule checkout
+checkout-ci-management-sub-modules: $(submodule-repos)
 
 ## -----------------------------------------------------------------------
 ## Intent: Revert sandbox to a pristine state.

@@ -17,6 +17,14 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
+.PHONY: venv
+
+##------------------##
+##---]  LOCALS  [---##
+##------------------##
 venv-name            ?= .venv
 venv-abs-path        := $(PWD)/$(venv-name)
 
