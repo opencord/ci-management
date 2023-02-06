@@ -120,8 +120,8 @@
     wrappers:
       - credentials-binding:
           - file:
-            credential-id: 'gpg-creds-maven'
-            variable: 'GNUPG'
+              credential-id: 'gpg-creds-maven'
+              variable: 'GNUPG'
 
     builders:
       # Set JDK version
