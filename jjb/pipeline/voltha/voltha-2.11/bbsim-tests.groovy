@@ -37,7 +37,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 		'jjb',
 		'pipeline',
 		'voltha',
-		'voltha-2.11', # release-delta
+		'voltha-2.11',              // release-delta
 		'bbsim-tests.groovy'
 	    ].join('/')
             println("** ${iam}: ENTER")
