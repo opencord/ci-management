@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90cb3733_0040a70e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-02-07T07:31:43Z",
+      "side": 1,
+      "message": "Another yaml lint failure manifested in this job.\nmakfile edits are unrelated so push through.",
+      "revId": "068d64584d3334d8bfe564e4e844a65721f7f8e2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
