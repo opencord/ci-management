@@ -27,7 +27,7 @@ todo ::
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
 help ::
-	@echo '  todo                          Display future enhancement list.'
+	@echo '  todo                Display future enhancement list.'
 
 $(if $(DEBUG),$(warning LEAVE))
 

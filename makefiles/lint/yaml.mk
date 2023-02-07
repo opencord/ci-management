@@ -27,6 +27,6 @@ lint-yaml: vst_venv
 	    ; yamllint -s $(YAML_FILES)
 
 help::
-	@echo "  lint-yaml            Syntax check yaml source using yamllint"
+	@echo "  lint-yaml           Syntax check yaml source using yamllint"
 
 # [EOF]

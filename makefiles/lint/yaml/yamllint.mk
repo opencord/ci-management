@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
@@ -41,15 +41,18 @@ yamllint-find += -type f
 yamllint-find += -print0
 
 ## -----------------------------------------------------------------------
+## Intent: Perform a lint check on yaml sources
 ## -----------------------------------------------------------------------
 lint lint-yaml:
 	$(HIDE)$(env-clean) $(yamllint-find) \
-	    | xargs -0 --no-run-if-empty -t -n1 $(yamllint) $(yamllint-args)
+	    | $(xargs-n1-clean) -t $(yamllint) $(yamllint-args)
+#	    | xargs -0 --no-run-if-empty -t -n1 $(yamllint) $(yamllint-args)
 
 ## -----------------------------------------------------------------------
+## Intent: Display command help
 ## -----------------------------------------------------------------------
 help::
-	@echo "  lint-yaml                     Syntax check yaml sources"
+	@echo "  lint-yaml           Syntax check yaml sources (yamllint)"
 
 $(if $(DEBUG),$(warning ENTER))
 

@@ -30,8 +30,9 @@ export quote-double := $(null)'$(null)#'
 # [DEBUG] make {target} HIDE=
 HIDE        ?= @
 
-env-clean   = /usr/bin/env --ignore-environment
-xargs-n1    := xargs -0 -t -n1 --no-run-if-empty
+env-clean      ?= /usr/bin/env --ignore-environment
+xargs-n1       := xargs -0 -t -n1 --no-run-if-empty
+xargs-n1-clean := $(env-clean) $(xargs-n1)
 
 ## -----------------------------------------------------------------------
 ## Default shell:
@@ -43,6 +44,8 @@ SHELL ?= /bin/bash
 have-shell-bash := $(filter bash,$(subst /,$(space),$(SHELL)))
 $(if $(have-shell-bash),$(null),\
   $(eval export SHELL := bash -euo pipefail))
+
+export SHELL ?= bash -euo pipefail
 
 $(if $(DEBUG),$(warning LEAVE))
 
