@@ -309,8 +309,11 @@ pipeline {
       steps{
         sh """
         # [TODO] - why is this platform specific (?)
+        # [TODO] - revisit, command alteration has masked an error (see: voltha-2.11).
+        #          find will fail when no filsystem matches are found.
+        #          mv(ls) succeded simply by accident/invoked at a different time.
         # find "$WORKSPACE/voltctl/release" -name 'voltctl-*-linux-amd*' \
-        #     -exec mv {} $WORKSPACE/bin/voltctl \;
+        #     -exec mv {} $WORKSPACE/bin/voltctl ;
         mv `ls $WORKSPACE/voltctl/release/voltctl-*-linux-amd*` $WORKSPACE/bin/voltctl
         chmod +x $WORKSPACE/bin/voltctl
         """
