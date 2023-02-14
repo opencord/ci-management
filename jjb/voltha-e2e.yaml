@@ -1627,11 +1627,11 @@
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,controlledActivation=only-onu'
           withMonitoring: true
           logLevel: 'DEBUG'
           testTargets: |
-            - target: memory-leak-test-single-kind-dt
+            - target: memory-leak-test-single-pon-multi-onu-dt
               workflow: dt
               flags: ""
               teardown: true
