@@ -732,7 +732,7 @@
           power-switch: true
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
 
-      # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
+      # Berlin pod with gpon olt/onu - master 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
@@ -745,7 +745,7 @@
           num-of-atomix: '3'
           time: '13'
 
-      # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      # Berlin POD test job - master versions: uses 1T4GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
           build-node: 'berlin-community-pod-1'
@@ -760,6 +760,38 @@
           profile: '1T4GEM-FTTB'
           power-switch: true
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+
+      # Berlin pod with gpon olt/onu - 2.11 1T4GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon-fttb'
+          withFttb: true
+          name-extension: '_DT'
+          disable-job: false
+          work-flow: 'DT'
+          release: '2.11'
+          branch: 'voltha-2.11'
+          profile: '1T4GEM-FTTB'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          time: '13'
+          pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
+
+      # Berlin POD test job - 2.11 versions: uses 1T4GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          timeout: 330
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon-fttb'
+          withFttb: true
+          name-extension: '_DT'
+          disable-job: false
+          work-flow: 'DT'
+          release: '2.11'
+          branch: 'voltha-2.11'
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM-FTTB'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
 
           # Berlin pod with zyxel gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -926,15 +958,15 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
           oltAdapterAppLabel: 'adapter-adtran-olt'
 
-      # Berlin pod with adtran gpon olt/onu - 2.8 1T8GEM tech profile and timer based job
+      # Berlin pod with adtran gpon olt/onu - 1T8GEM tech profile and timer based job
       - 'verify_voltha_pod_dmi_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           name-extension: '_DT'
           disable-job: true
           work-flow: 'DT'
-          release: '2.8'
-          branch: 'voltha-2.8'
+          release: 'master'
+          branch: 'master'
           profile: 'Default'
           installVolthaInfra: true
           installVolthaStack: false
@@ -946,8 +978,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           VolthaEtcdPort: 9999
-          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.8/voltha-adapter-adtran-olt'
-          oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
           time: '16'
 
@@ -970,8 +1000,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           VolthaEtcdPort: 9999
-          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.11/voltha-adapter-adtran-olt'
-          oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
           time: '16'
 
