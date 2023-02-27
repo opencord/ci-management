@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8a8b7fd_2b01ddf4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2023-02-27T13:04:25Z",
+      "side": 1,
+      "message": "There are still some missing test jobs for LTS 2.11. Step by step they should be established. This is a first step. Further steps/tests will follow...",
+      "revId": "e73f43912861c892a38f29e45ab0cd4694fc50f9",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
