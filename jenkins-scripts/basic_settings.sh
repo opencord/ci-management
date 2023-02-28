@@ -10,11 +10,11 @@
 ##############################################################################
 
 # set hostname
-IPADDR=$(facter ipaddress)
-HOSTNAME=$(facter hostname)
-FQDN=$(facter fqdn)
+#IPADDR=$(facter ipaddress)
+#HOSTNAME=$(facter hostname)
+#FQDN=$(facter fqdn)
 
-echo "${IPADDR} ${HOSTNAME} ${FQDN}" >> /etc/hosts
+#echo "${IPADDR} ${HOSTNAME} ${FQDN}" >> /etc/hosts
 
 # Increase limits
 cat <<EOF > /etc/security/limits.d/jenkins.conf
