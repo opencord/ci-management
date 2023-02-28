@@ -46,9 +46,15 @@ endif
 ## -----------------------------------------------------------------------
 ## Intent: Perform a lint check on makefile sources
 ## -----------------------------------------------------------------------
+lint-make-ignore += JSON_FILES=
+lint-make-ignore += YAML_FILES=
 lint-make:
+	@echo
+	@echo "** -----------------------------------------------------------------------"
+	@echo "** Makefile syntax checking"
+	@echo "** -----------------------------------------------------------------------"
 	$(HIDE)$(env-clean) $(make-check-find) \
-	    | $(xargs-n1-local) $(make-check) $(make-check-args)
+	    | $(xargs-n1-local) $(make-check) $(make-check-args) $(lint-make-ignore)
 
 ## -----------------------------------------------------------------------
 ## Intent: Display command help
