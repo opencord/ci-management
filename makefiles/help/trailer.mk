@@ -29,11 +29,14 @@ help ::
 	@echo '  help                Display program help'
 	@echo '  help-verbose        Display additional targets and help'
 
-help ::
-	@echo
-	@echo '[NOTE: python 3.10+]'
-	@echo '  The interpreter is not yet fully supported across foreign repositories.'
-	@echo '  While working locally, if make fails to build a target try:'
-	@echo '      $(MAKE) $${target} NO_OTHER_REPO_DOCS=1'
+## -----------------------------------------------------------------------
+# repo::voltha-docs -- patch logic not deployed everywhere.
+## -----------------------------------------------------------------------
+# help ::
+#	@echo
+#	@echo '[NOTE: python 3.10+]'
+#	@echo '  The interpreter is not yet fully supported across foreign repositories.'
+#	@echo '  While working locally, if make fails to build a target try:'
+#	@echo '      $(MAKE) $${target} NO_OTHER_REPO_DOCS=1'
 
 # [EOF]

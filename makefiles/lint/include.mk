@@ -9,17 +9,15 @@ help ::
 	@echo
 	@echo "[LINT]"
 
+include $(ONF_MAKE)/lint/groovy.mk
 include $(ONF_MAKE)/lint/jjb.mk
+include $(ONF_MAKE)/lint/json.mk
 include $(ONF_MAKE)/lint/makefile.mk
 include $(ONF_MAKE)/lint/python.mk
 include $(ONF_MAKE)/lint/shell.mk
-include $(ONF_MAKE)/lint/help.mk
+include $(ONF_MAKE)/lint/yaml.mk
 
-ifdef YAML_FILES
-  include $(ONF_MAKE)/lint/yaml/python.mk
-else
-  include $(ONF_MAKE)/lint/yaml/yamllint.mk
-endif
+include $(ONF_MAKE)/lint/help.mk
 
 $(if $(DEBUG),$(warning LEAVE))
 
