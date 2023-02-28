@@ -1,6 +1,6 @@
 # -*- makefile -*-
 ## -----------------------------------------------------------------------
-# Copyright 2017-2023 Open Networking Foundation
+# Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -25,11 +25,14 @@ $(if $(DEBUG),$(warning ENTER))
 ##------------------##
 ##---]  LOCALS  [---##
 ##------------------##
-venv-name            ?= .venv
+venv-name            ?= .venv#                            # default install directory
 venv-abs-path        := $(PWD)/$(venv-name)
 
 venv-activate-script := $(venv-name)/bin/activate#        # dependency
-activate             ?= source $(venv-activate-script)#   # cmd invocation
+
+# Intent: activate= is a macro for accessing the virtualenv activation script#
+#  Usage: $(activate) && python
+activate             ?= set +u && source $(venv-activate-script) && set -u
 
 ## -----------------------------------------------------------------------
 ## Intent: Activate script path dependency
@@ -38,12 +41,15 @@ activate             ?= source $(venv-activate-script)#   # cmd invocation
 ##    o When the script does not exist install the virtual env and display.
 ## -----------------------------------------------------------------------
 $(venv-activate-script):
-	virtualenv -p python3 $(venv-name)\
-  && source $(venv-name)/bin/activate\
-  && python -m pip install --upgrade pip\
-  && pip install --upgrade setuptools\
-  && { [[ -r requirements.txt ]] && python -m pip install -r requirements.txt; }\
-  && python --version
+	@echo
+	@echo "============================="
+	@echo "Installing python virtual env"
+	@echo "============================="
+	virtualenv -p python3 $(venv-name)
+	$(activate) && python -m pip install --upgrade pip
+	$(activate) && pip install --upgrade setuptools
+	$(activate) && { [[ -r requirements.txt ]] && python -m pip install -r requirements.txt; }
+	$(activate) && python --version
 
 ## -----------------------------------------------------------------------
 ## Intent: Explicit named installer target w/o dependencies.

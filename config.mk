@@ -18,8 +18,14 @@
 ##--------------------------------##
 ##---]  Disable lint targets  [---##
 ##--------------------------------##
-# NO-LINT-JJB   := false
-NO-LINT-MAKE  := true
-NO-LINT-SHELL := true
+NO-LINT-GROOVY  := true#               # Note[1]
+# NO-LINT-JJB    := false
+# NO-LINT-JSON    := true#               # Note[1]
+# NO-LINT-MAKE   := false
+NO-LINT-PYTHON  := true#               # Note[1]
+NO-LINT-SHELL   := true#               # Note[1]
+NO-LINT-YAML    := true#               # Note[1]
+
+# Note[1] - Plenty of source to cleanup
 
 # [EOF]

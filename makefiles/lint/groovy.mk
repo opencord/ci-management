@@ -13,35 +13,39 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
-# SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-YAML_FILES ?= $(error YAML_FILES= is required)
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
 
-lint-yaml-dep = $(addsuffix ^lint-yaml,$(YAML_FILES))
-lint-yaml-src = $(firstword $(subst ^,$(space),$(1)))
+groovy-check      := npm-groovy-lint
+
+groovy-check-args := $(null)
+# groovy-check-args += --loglevel info
+# groovy-check-args += --ignorepattern
+# groovy-check-args += --verbose
 
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
-.PHONY : lint-yaml
-lint   : lint-yaml
-
-lint-yaml: $(venv-activate)
-lint-yaml: $(lint-yaml-dep)
+ifndef NO-LINT-GROOVY
+  lint : lint-groovy
+endif
 
 ## -----------------------------------------------------------------------
-## Intent: Perform a lint check on yaml sources
+## Intent: Perform a lint check on command line script sources
 ## -----------------------------------------------------------------------
-$(lint-yaml-dep):
-	$(vst-env) && yamllint -s $(call lint-yaml-src,$@)
+lint-groovy:
+	$(groovy-check) --version
+	@echo
+	$(HIDE)$(env-clean) find . -iname '*.groovy' -print0 \
+  | $(xargs-n1) $(groovy-check) $(groovy-check-args)
 
 ## -----------------------------------------------------------------------
 ## Intent: Display command help
 ## -----------------------------------------------------------------------
 help-summary ::
-	@echo '  lint-yaml           Syntax check yaml sources (python -M yaml)'
+	@echo '  lint-groovy          Syntax check groovy sources'
 
 # [EOF]

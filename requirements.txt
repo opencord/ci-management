@@ -1,2 +1,2 @@
-jenkins-job-builder==4.1.0
+# jenkins-job-builder==4.1.0
 pipdeptree

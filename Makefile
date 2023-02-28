@@ -29,7 +29,7 @@ export SHELL := bash -e -o pipefail#    # [TODO] remove once set -u cleaned up
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
--include config.mk
+include config.mk
 include $(MAKEDIR)/include.mk
 
 VENV_DIR      ?= venv-jjb

@@ -59,8 +59,10 @@ sterile ::
 ## -----------------------------------------------------------------------
 help ::
 	@echo
-	@echo '[GIT-SUBMODULES]'
+	@echo '[GIT-SUBMODULES: docs]'
 	@echo '  reload              Setup to auto-reload sphinx doc changes in browser'
+	@echo
+	@echo '[GIT-SUBMODULES: deps]'
 	@echo '  submodules          Checkout dependent git submodules'
   ifdef VERBOSE
 	@echo '  global-jjb          Checkout ci-management submodule global-jjb'
