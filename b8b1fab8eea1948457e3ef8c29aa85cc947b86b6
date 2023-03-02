@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8ec55d6e_0e5ac0fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2023-03-02T15:37:24Z",
+      "side": 1,
+      "message": "Patch is running here: https://jenkins.opencord.org/view/VOLTHA-2.11/job/periodic-voltha-memory-leak-test-bbsim-2.11/2/",
+      "revId": "b8b1fab8eea1948457e3ef8c29aa85cc947b86b6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
