@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "917ee81e_8e9d3f9b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-03-02T23:37:27Z",
+      "side": 1,
+      "message": "Playground script edits, not used by live jobs.",
+      "revId": "0691c35520564967c612cb7e5fd45d8ff5cb305d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
