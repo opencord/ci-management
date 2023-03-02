@@ -222,7 +222,7 @@
 
       # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          disable-job: false
+          disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-multi-uni'
           release: 'master'
@@ -240,7 +240,7 @@
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          disable-job: false
+          disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord-multi-uni'
           release: 'master'
