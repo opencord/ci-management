@@ -71,7 +71,7 @@ pipeline
 	// -----------------------------------------------------------------------
 	stage('IAM')
 	{
-	    String iam = get_iam('main')
+	    String iam = getIam('main')
             println("** ${iam}: ENTER")
             println("** ${iam}: LEAVE")
 	}
