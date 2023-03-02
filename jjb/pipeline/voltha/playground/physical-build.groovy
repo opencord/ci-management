@@ -1,3 +1,4 @@
+// -*- groovy -*-
 // Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -11,8 +12,9 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
-// used to deploy VOLTHA and configure ONOS physical PODs
+// -----------------------------------------------------------------------
+// Intent: used to deploy VOLTHA and configure ONOS physical PODs
+// -----------------------------------------------------------------------
 
 // NOTE we are importing the library even if it's global so that it's
 // easier to change the keywords during a replay
@@ -25,43 +27,88 @@ library identifier: 'cord-jenkins-libraries@master',
 def infraNamespace = "infra"
 def volthaNamespace = "voltha"
 
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = [
+	'jjb',
+	'pipeline',
+	'voltha',
+	'playground',
+	'voltha-tt-physical-functional-tests.groovy'
+    ].join('/')
+    String iam = [src, func].join('::')
+    return iam
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 def deploy_custom_oltAdapterChart(namespace, name, chart, extraHelmFlags) {
   sh """
     helm install --create-namespace --set defaults.image_pullPolicy=Always --namespace ${namespace} ${extraHelmFlags} ${name} ${chart}
    """
 }
 
-pipeline {
-
-  /* no label, executor is determined by JJB */
-  agent {
-    label "${params.buildNode}"
-  }
-  options {
-    timeout(time: 35, unit: 'MINUTES')
-  }
-  environment {
-    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-    KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
-  }
-
-  stages{
-    stage('Download Code') {
-      steps {
-        getVolthaCode([
-          branch: "${branch}",
-          volthaSystemTestsChange: "${volthaSystemTestsChange}",
-          volthaHelmChartsChange: "${volthaHelmChartsChange}",
-        ])
-      }
+pipeline
+{
+    /* no label, executor is determined by JJB */
+    agent
+    {
+	label "${params.buildNode}"
     }
-    stage ("Parse deployment configuration file") {
-      steps {
-        sh returnStdout: true, script: "rm -rf ${configBaseDir}"
-        sh returnStdout: true, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
-        script {
-          if ( params.workFlow == "DT" ) {
-            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
+
+    options
+    {
+	timeout(time: 35, unit: 'MINUTES')
+    }
+
+    environment
+    {
+	PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+	KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
+    }
+
+    stages
+    {
+	stage('IAM')
+	{
+	    String iam = get_iam('main')
+            println("** ${iam}: ENTER")
+            println("** ${iam}: LEAVE")
+	}
+
+	stage('Download Code')
+	{
+	    steps {
+		getVolthaCode([
+		    branch: "${branch}",
+		    volthaSystemTestsChange: "${volthaSystemTestsChange}",
+		    volthaHelmChartsChange: "${volthaHelmChartsChange}",
+		])
+	    }
+	}
+
+	stage ("Parse deployment configuration file") {
+	    steps {
+		sh returnStdout: true, script: "rm -rf ${configBaseDir}"
+		sh returnStdout: true, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
+		script {
+		    String conf = "${configBaseDir}/${configDeploymentDir}/${configFileName}"
+		    String flow = params.workFlow
+
+		    conf += (flow == 'DT') ? '-DT.yaml'
+		        : (flow == 'TT') ? '-TT.yaml'
+		        : '.yaml'
+
+		    deployment_config = readYaml file: conf
+		    
+		    /*
+		    if ( params.workFlow == "DT" )
+		    {
+			conf += '-DT.yaml'
+//            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
           }
           else if ( params.workFlow == "TT" )
           {
@@ -71,9 +118,11 @@ pipeline {
           {
             deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
           }
+		     */
         }
       }
     }
+
     stage('Clean up') {
       steps {
         timeout(15) {

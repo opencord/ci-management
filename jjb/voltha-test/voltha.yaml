@@ -911,8 +911,39 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: true
-          power-cycle-olt: true
+          power-cycle-olt: false
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
+          timeout: 360
+
+      # [CORD-3256] TT workflow on XGSPON OLT at Berlin pod - build job
+      - 'build_voltha_pod_release_timer':
+          disable-job: false
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon'
+          release: 'voltha-2.11'
+          branch: 'voltha-2.11'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          profile: 'TP'
+          time: '10'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
+
+      # [CORD-3256] TT workflow on GPON OLT at Berlin pod - test job
+      - 'build_voltha_pod_test':
+          disable-job: false
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon'
+          release: 'voltha-2.11'
+          branch: 'voltha-2.11'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: true
+          power-cycle-olt: false
+          pipeline-script: 'voltha/voltha-2.11/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
           timeout: 360
@@ -922,7 +953,7 @@
           disable-job: false
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
-          release: 'master3'
+          release: 'master'
           branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
@@ -942,7 +973,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: true
-          power-cycle-olt: true
+          power-cycle-olt: false
           pipeline-script: 'voltha/playground/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
