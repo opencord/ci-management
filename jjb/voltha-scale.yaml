@@ -52,7 +52,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
-          disable-job: false
+          disable-job: true
           olts: 2
           pons: 16
           onus: 32
@@ -92,7 +92,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
-          disable-job: false
+          disable-job: true
           olts: 2
           pons: 16
           onus: 32
@@ -114,7 +114,7 @@
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
-          disable-job: false
+          disable-job: true
           olts: 2
           pons: 16
           onus: 32
