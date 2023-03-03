@@ -1056,7 +1056,7 @@
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           name-extension: '_DT'
-          disable-job: true
+          disable-job: false
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
@@ -1079,6 +1079,7 @@
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           name-extension: '_DT'
+          disable-job: false
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
