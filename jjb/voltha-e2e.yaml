@@ -1791,11 +1791,10 @@
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           time-trigger: "H H/23 * * *"
-          extraHelmFlags: '--set onu=2,controlledActivation=only-onu'
           withMonitoring: true
           logLevel: 'DEBUG'
           testTargets: |
-            - target: memory-leak-test-single-pon-multi-onu-dt
+            - target: memory-leak-test-single-kind-dt
               workflow: dt
               flags: ""
               teardown: true
