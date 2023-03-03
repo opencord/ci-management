@@ -32,13 +32,15 @@ def getIam(String func)
 {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = [
-	'jjb',
-	'pipeline',
-	'voltha',
-	'playground',
-	'voltha-tt-physical-functional-tests.groovy'
+        'jjb',
+        'pipeline',
+        'voltha',
+        'playground',
+        'voltha-tt-physical-functional-tests.groovy'
     ].join('/')
+
     String iam = [src, func].join('::')
+    iam += sprintf('[ver:1.0]')
     return iam
 }
 
@@ -50,52 +52,56 @@ pipeline
     /* no label, executor is determined by JJB */
     agent
     {
-	label "${params.buildNode}"
+        label "${params.buildNode}"
     }
 
     options
     {
-	timeout(time: "${timeout}", unit: 'MINUTES')
+        timeout(time: "${timeout}", unit: 'MINUTES')
     }
 
     environment
     {
-	KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
-	VOLTCONFIG="$HOME/.volt/config-minimal"
-	PATH="$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
+        VOLTCONFIG="$HOME/.volt/config-minimal"
+        PATH="$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
     }
 
     stages {
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Clone voltha-system-tests')
-	{
-	    steps
-	    {
-		iam(this) { enter = true }
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Clone voltha-system-tests')
+        {
+            steps
+            {
+                iam(this)
+                {
+                    enter = true
+                    label = getIam()
+                }
 
-		step([$class: 'WsCleanup'])
-		checkout([
-		    $class: 'GitSCM',
-		    userRemoteConfigs: [[
-			url: "https://gerrit.opencord.org/voltha-system-tests",
-			refspec: "${volthaSystemTestsChange}"
-		    ]],
-		    branches: [[ name: "${branch}" ]],
-		    extensions: [
-			[$class: 'WipeWorkspace'],
-			[$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
-			[$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
-		    ],
-		]) // checkout
+                step([$class: 'WsCleanup'])
+                checkout([
+                    $class: 'GitSCM',
+                    userRemoteConfigs: [[
+                        url: "https://gerrit.opencord.org/voltha-system-tests",
+                        refspec: "${volthaSystemTestsChange}"
+                    ]],
+                    branches: [[ name: "${branch}" ]],
+                    extensions: [
+                        [$class: 'WipeWorkspace'],
+                        [$class: 'RelativeTargetDirectory', relativeTargetDir: "voltha-system-tests"],
+                        [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+                    ],
+                ]) // checkout
 
-		script
-		{
-		    sh(
-			returnStatus: true,
-			// returnStdout: true,
-			script: """
+                script
+                {
+                    sh(
+                        returnStatus: true,
+                        // returnStdout: true,
+                        script: """
             if [ '${volthaSystemTestsChange}' != '' ] ; then
               cd "$WORKSPACE/voltha-system-tests"
               git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange}
@@ -104,61 +110,65 @@ pipeline
             fi
             """)
 
-		iam(this) { leave = true }
-		} // step
-	    } // steps
-	} // stage
+                iam(this)
+                {
+                    leave = true
+                    label = getIam()
+                }
+                } // step
+            } // steps
+        } // stage
 
-	// -----------------------------------------------------------------------
-	// This checkout allows us to show changes in Jenkins
-	// we only do this on master as we don't branch all the repos for all the releases
-	// (we should compute the difference by tracking the container version, not the code)
-	// -----------------------------------------------------------------------
-	stage('Download All the VOLTHA repos')
-	{
-	    when {
-		expression { return "${branch}" == 'master'; }
+        // -----------------------------------------------------------------------
+        // This checkout allows us to show changes in Jenkins
+        // we only do this on master as we don't branch all the repos for all the releases
+        // (we should compute the difference by tracking the container version, not the code)
+        // -----------------------------------------------------------------------
+        stage('Download All the VOLTHA repos')
+        {
+            when {
+                expression { return "${branch}" == 'master'; }
             }
 
-	    steps {
-		checkout(changelog: true,
-			 poll: false,
-			 scm: [$class: 'RepoScm',
-			       manifestRepositoryUrl: "${params.manifestUrl}",
-			       manifestBranch: "${params.branch}",
-			       currentBranch: true,
-			       destinationDir: 'voltha',
-			       forceSync: true,
-			       resetFirst: true,
-			       quiet: true,
-			       jobs: 4,
-			       showAllChanges: true]
-		)
-	    }
-	}
+            steps {
+                checkout(changelog: true,
+                         poll: false,
+                         scm: [$class: 'RepoScm',
+                               manifestRepositoryUrl: "${params.manifestUrl}",
+                               manifestBranch: "${params.branch}",
+                               currentBranch: true,
+                               destinationDir: 'voltha',
+                               forceSync: true,
+                               resetFirst: true,
+                               quiet: true,
+                               jobs: 4,
+                               showAllChanges: true]
+                )
+            }
+        }
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage ('Initialize')
-	{
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage ('Initialize')
+        {
             steps
-	    {
-		sh(
-		    returnStatus: true,
-		    returnStdout: false,
-		    script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
-		)
-		script
-		{
-		    deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
-		}
+            {
+                sh(
+                    returnStatus: true,
+                    returnStdout: false,
+                    script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
+                )
+                script
+                {
+                    deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+                }
 
-		installVoltctl("${branch}")
+                installVoltctl("${branch}")
 
-		sh(
-		    returnStatus: true,
-		    returnStdout: false,
-		    script: """
+                sh(
+                    returnStatus: true,
+                    returnStdout: false,
+                    script: """
         mkdir -p "$WORKSPACE/bin"
 
         # install kail
@@ -179,22 +189,22 @@ pipeline
            voltctl log level set WARN adapter-open-olt#github.com/opencord/voltha-lib-go/v3/pkg/kafka
         fi
         """)
-	    } // step
-	} // stage
+            } // step
+        } // stage
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Functional Tests')
-	{
-	    environment
-	    {
-		ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
-		ROBOT_FILE="Voltha_TT_PODTests.robot"
-		ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/FunctionalTests"
-	    }
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Functional Tests')
+        {
+            environment
+            {
+                ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+                ROBOT_FILE="Voltha_TT_PODTests.robot"
+                ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/FunctionalTests"
+            }
 
-	    steps {
-		sh("""
+            steps {
+                sh("""
         mkdir -p $ROBOT_LOGS_DIR
         if ( ${powerSwitch} ); then
              export ROBOT_MISC_ARGS="--removekeywords wuks -i functionalTT -i PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
@@ -208,22 +218,22 @@ pipeline
         make -C $WORKSPACE/voltha-system-tests voltha-tt-test
         """)
       }
-	} // stage
+        } // stage
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Failure/Recovery Tests')
-	{
-	    environment
-	    {
-		ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
-		ROBOT_FILE="Voltha_TT_FailureScenarios.robot"
-		ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/FailureScenarios"
-	    }
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Failure/Recovery Tests')
+        {
+            environment
+            {
+                ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+                ROBOT_FILE="Voltha_TT_FailureScenarios.robot"
+                ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/FailureScenarios"
+            }
 
-	    steps
-	    {
-		sh("""
+            steps
+            {
+                sh("""
         mkdir -p $ROBOT_LOGS_DIR
         if [ ${params.enableMultiUni} = false ]; then
           if ( ${powerSwitch} ); then
@@ -235,24 +245,24 @@ pipeline
           make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """)
-	    }
-	} // stage
+            }
+        } // stage
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Multi-Tcont Tests')
-	{
-	    environment
-	    {
-		ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
-		ROBOT_FILE="Voltha_TT_MultiTcontTests.robot"
-		ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/MultiTcontScenarios"
-		ROBOT_TEST_INPUT_FILE="$WORKSPACE/voltha-system-tests/tests/data/${configFileName}-TT-multi-tcont-tests-input.yaml"
-	    }
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Multi-Tcont Tests')
+        {
+            environment
+            {
+                ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+                ROBOT_FILE="Voltha_TT_MultiTcontTests.robot"
+                ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/MultiTcontScenarios"
+                ROBOT_TEST_INPUT_FILE="$WORKSPACE/voltha-system-tests/tests/data/${configFileName}-TT-multi-tcont-tests-input.yaml"
+            }
 
-	    steps
-	    {
-		sh("""
+            steps
+            {
+                sh("""
         mkdir -p $ROBOT_LOGS_DIR
         if [ ${params.enableMultiUni} = false ]; then
           if ( ${powerSwitch} ); then
@@ -264,24 +274,24 @@ pipeline
           make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """)
-	    }
-	}
-	
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Multicast Tests')
-	{
-	    environment
-	    {
-		ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
-		ROBOT_FILE="Voltha_TT_MulticastTests.robot"
-		ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/MulticastTests"
-		ROBOT_TEST_INPUT_FILE="$WORKSPACE/voltha-system-tests/tests/data/${configFileName}-TT-multicast-tests-input.yaml"
-	    }
+            }
+        }
 
-	    steps
-	    {
-		sh("""
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Multicast Tests')
+        {
+            environment
+            {
+                ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
+                ROBOT_FILE="Voltha_TT_MulticastTests.robot"
+                ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/tt-workflow/MulticastTests"
+                ROBOT_TEST_INPUT_FILE="$WORKSPACE/voltha-system-tests/tests/data/${configFileName}-TT-multicast-tests-input.yaml"
+            }
+
+            steps
+            {
+                sh("""
         mkdir -p $ROBOT_LOGS_DIR
         if [ ${params.enableMultiUni} = true ]; then
           if ( ${powerSwitch} ); then
@@ -293,16 +303,16 @@ pipeline
           make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """)
-	    }
-	}
+            }
+        }
     }
 
     post
     {
-	always
-	{
-	    getPodsInfo("$WORKSPACE/pods")
-	    sh(returnStdout: false, script: '''
+        always
+        {
+            getPodsInfo("$WORKSPACE/pods")
+            sh(returnStdout: false, script: '''
       set +e
 
       # collect logs collected in the Robot Framework StartLogging keyword
@@ -311,33 +321,33 @@ pipeline
       rm *-combined.log || true
       ''')
 
-	    script {
+            script {
         deployment_config.olts.each { olt ->
-	if (olt.type == null || olt.type == "" || olt.type == "openolt")
-	{
-		sh(returnStdout: false, script: """
+        if (olt.type == null || olt.type == "" || olt.type == "openolt")
+        {
+                sh(returnStdout: false, script: """
              sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/openolt.log $WORKSPACE/openolt-${olt.sship}.log || true
              sshpass -p ${olt.pass} scp ${olt.user}@${olt.sship}:/var/log/dev_mgmt_daemon.log $WORKSPACE/dev_mgmt_daemon-${olt.sship}.log || true
              sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/openolt-${olt.sship}.log  # Remove escape sequences
              sed -i 's/\\x1b\\[[0-9;]*[a-zA-Z]//g' $WORKSPACE/dev_mgmt_daemon-${olt.sship}.log  # Remove escape sequences
              """)
-		    }
-		}
-	    }
+                    }
+                }
+            }
 
-	    step([$class: 'RobotPublisher',
-		  disableArchiveOutput: false,
-		  logFileName: '**/log*.html',
-		  otherFiles: '',
-		  outputFileName: '**/output*.xml',
-		  outputPath: 'RobotLogs',
-		  passThreshold: 100,
-		  reportFileName: '**/report*.html',
-		  unstableThreshold: 0,
-		  onlyCritical: true
+            step([$class: 'RobotPublisher',
+                  disableArchiveOutput: false,
+                  logFileName: '**/log*.html',
+                  otherFiles: '',
+                  outputFileName: '**/output*.xml',
+                  outputPath: 'RobotLogs',
+                  passThreshold: 100,
+                  reportFileName: '**/report*.html',
+                  unstableThreshold: 0,
+                  onlyCritical: true
             ]);
-	    archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt'
-	} // always
+            archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.tgz,*.txt,pods/*.txt'
+        } // always
     } // post
 } // pipeline
 

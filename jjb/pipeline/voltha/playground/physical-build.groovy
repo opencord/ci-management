@@ -1,4 +1,5 @@
 // -*- groovy -*-
+// -----------------------------------------------------------------------
 // Copyright 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,18 +29,21 @@ def infraNamespace = "infra"
 def volthaNamespace = "voltha"
 
 // -----------------------------------------------------------------------
+// Intent: Visible in jenkins UI, job configure screen
 // -----------------------------------------------------------------------
 def getIam(String func)
 {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = [
-	'jjb',
-	'pipeline',
-	'voltha',
-	'playground',
-	'voltha-tt-physical-functional-tests.groovy'
+        'jjb',
+        'pipeline',
+        'voltha',
+        'playground',
+        'voltha-tt-physical-functional-tests.groovy'
     ].join('/')
+
     String iam = [src, func].join('::')
+    iam += sprintf('[ver:1.0]')
     return iam
 }
 
@@ -56,58 +60,63 @@ pipeline
     /* no label, executor is determined by JJB */
     agent
     {
-	label "${params.buildNode}"
+        label "${params.buildNode}"
     }
 
     options
     {
-	timeout(time: 35, unit: 'MINUTES')
+        timeout(time: 35, unit: 'MINUTES')
     }
 
     environment
     {
-	PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-	KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
+        PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+        KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
     }
 
     stages
     {
-	stage('IAM')
-	{
-	    String iam = getIam('main')
-            println("** ${iam}: ENTER")
-            println("** ${iam}: LEAVE")
-	}
+        stage('Download Code')
+        {
+            iam(this)
+            {
+                enter = true
+                label = getIam()
+            }
 
-	stage('Download Code')
-	{
-	    steps {
-		getVolthaCode([
-		    branch: "${branch}",
-		    volthaSystemTestsChange: "${volthaSystemTestsChange}",
-		    volthaHelmChartsChange: "${volthaHelmChartsChange}",
-		])
-	    }
-	}
+            steps {
+                getVolthaCode([
+                    branch: "${branch}",
+                    volthaSystemTestsChange: "${volthaSystemTestsChange}",
+                    volthaHelmChartsChange: "${volthaHelmChartsChange}",
+                ])
+            }
 
-	stage ("Parse deployment configuration file") {
-	    steps {
-		sh returnStdout: true, script: "rm -rf ${configBaseDir}"
-		sh returnStdout: true, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
-		script {
-		    String conf = "${configBaseDir}/${configDeploymentDir}/${configFileName}"
-		    String flow = params.workFlow
+            iam(this)
+            {
+                leave = true
+                label = getIam()
+            }
+        }
 
-		    conf += (flow == 'DT') ? '-DT.yaml'
-		        : (flow == 'TT') ? '-TT.yaml'
-		        : '.yaml'
+        stage ("Parse deployment configuration file") {
+            steps {
+                sh returnStdout: true, script: "rm -rf ${configBaseDir}"
+                sh returnStdout: true, script: "git clone -b ${branch} ${cordRepoUrl}/${configBaseDir}"
+                script {
+                    String conf = "${configBaseDir}/${configDeploymentDir}/${configFileName}"
+                    String flow = params.workFlow
 
-		    deployment_config = readYaml file: conf
-		    
-		    /*
-		    if ( params.workFlow == "DT" )
-		    {
-			conf += '-DT.yaml'
+                    conf += (flow == 'DT') ? '-DT.yaml'
+                        : (flow == 'TT') ? '-TT.yaml'
+                        : '.yaml'
+
+                    deployment_config = readYaml file: conf
+
+                    /*
+                    if ( params.workFlow == "DT" )
+                    {
+                        conf += '-DT.yaml'
 //            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
           }
           else if ( params.workFlow == "TT" )
@@ -118,7 +127,7 @@ pipeline
           {
             deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
           }
-		     */
+                     */
         }
       }
     }

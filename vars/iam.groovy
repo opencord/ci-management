@@ -19,26 +19,30 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-String getIam(String func)
+String getIam(Map argv, String func)
 {
-    // Cannot rely on a stack trace due to jenkins manipulation
-    // Report who and where caller came from.
-    String src = [
-        'repo:ci-management',
-        'vars',
-        'iam',
-    ].join('/')
+    String src = argv.containsKey('label')
+        ?  argv.label
+        : [ // Cannot lookup, jenkins alters stack for serialization
+            'repo:ci-management',
+            'vars',
+            'iam',
+          ].join('/')
 
     String iam = [src, func].join('::')
+    if (argv.containsKey('version'))
+    {
+        iam += sprintf("[%s]", argv.version)
+    }
     return(iam)
 }
 
 // -----------------------------------------------------------------------
 // Intent: Display future enhancement list.
 // -----------------------------------------------------------------------
-void todo()
+void todo(Map argv)
 {
-    String iam = getIam('todo')
+    String iam = getIam(argv, 'todo')
 
     println("""
 [TODO: $iam]
@@ -54,9 +58,9 @@ void todo()
 // -----------------------------------------------------------------------
 // Intent: Placeholder in case future enhancements are needed
 // -----------------------------------------------------------------------
-Boolean process(Map config)
+Boolean process(Map argv)
 {
-    String iam = getIam('process')
+    String iam = getIam(argv, 'process')
 
     Boolean leave = false
 
@@ -65,13 +69,13 @@ Boolean process(Map config)
         println("** ${iam}: ENTER")
     }
     else if (config.containsKey('leave')) {
-	leave = true
+        leave = true
     }
     else
     {
         println("** ${iam}: HELLO")
     }
- 
+
     // Display future enhancement list
     if (config.containsKey('todo')) {
         todo()
@@ -82,7 +86,7 @@ Boolean process(Map config)
     {
         println("** ${iam}: LEAVE")
     }
-    
+
     return(true)
 }
 
@@ -95,6 +99,8 @@ Boolean process(Map config)
 //     enter    Display "** {iam} ENTER"
 //     leave    Display "** {iam} LEAVE"
 //     todo     Display future enhancement list
+//     label    path/to/src[ver:1.0]
+//     version  specify version and label separately
 // -----------------------------------------------------------------------
 // Usage:
 //   o called from a jenkins {pipeline,stage,script} block.
@@ -104,11 +110,11 @@ Boolean process(Map config)
 //         tans = fans
 //     }
 // -----------------------------------------------------------------------
-Boolean call(def self, Map config)
+Boolean call(def self, Map argv)
 {
-    String iam = getIam('main')
-
     argv = argv ?: [:] // {ternary,elvis} operator
+    String iam = getIam(argv, 'main')
+
     println("** ${iam}: argv=${argv}")
 
     Boolean ranToCompletion = false
