@@ -69,19 +69,12 @@ pipeline
 
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------
-	stage('IAM')
-	{
-	    String iam = getIam('main')
-            println("** ${iam}: ENTER")
-            println("** ${iam}: LEAVE")
-	}
-
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
 	stage('Clone voltha-system-tests')
 	{
 	    steps
 	    {
+		iam(this) { enter = true }
+
 		step([$class: 'WsCleanup'])
 		checkout([
 		    $class: 'GitSCM',
@@ -110,6 +103,8 @@ pipeline
               exit 1  # verify fail
             fi
             """)
+
+		iam(this) { leave = true }
 		} // step
 	    } // steps
 	} // stage
