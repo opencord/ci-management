@@ -79,9 +79,9 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
-      # flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
+      # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          disable-job: false
+          disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.11'
@@ -93,7 +93,7 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
-      # flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
+      # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           disable-job: true
           build-node: 'qa-testvm-pod'
@@ -118,9 +118,9 @@
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
 
-      # flex pod1 test job - released versions: uses tech profile on voltha branch
+      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          disable-job: false
+          disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.11'
@@ -176,9 +176,9 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
-      # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
+      # [VOL-4939] - flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          disable-job: false
+          disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.11'
@@ -206,9 +206,9 @@
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
-      # flex pod1 test job - released versions: uses tech profile on voltha branch
+      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          disable-job: false
+          disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.11'
