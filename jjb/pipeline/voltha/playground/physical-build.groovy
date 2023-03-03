@@ -33,13 +33,32 @@ def volthaNamespace = "voltha"
 // -----------------------------------------------------------------------
 def getIam(String func)
 {
+    /*
+     [TODO]
+     -----------------------------------------------------------------------
+     java stack trace is hosed due to jenkins internal meddeling to support
+     serializable.  Lets see if groovy Throwable wrapper can produce a
+     better answer.
+     -----------------------------------------------------------------------
+
+    try
+    {
+        throw new Exception('Generating a stacktrace')
+    }
+    catch (Throwable err)
+    {
+        // https://docs.groovy-lang.org/2.4.7/html/api/org/codehaus/groovy/GroovyException.html
+        err.printStackTrace()
+        stack = err.getStackTrace()
+    }
+
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = [
         'jjb',
         'pipeline',
         'voltha',
         'playground',
-        'voltha-tt-physical-functional-tests.groovy'
+        'physical-build.groovy'
     ].join('/')
 
     String iam = [src, func].join('::')
@@ -78,24 +97,25 @@ pipeline
     {
         stage('Download Code')
         {
-            iam(this)
+            steps
             {
-                enter = true
-                label = getIam()
-            }
+                iam(this)
+                {
+                    enter = true
+                    label = getIam()
+                }
 
-            steps {
                 getVolthaCode([
                     branch: "${branch}",
                     volthaSystemTestsChange: "${volthaSystemTestsChange}",
                     volthaHelmChartsChange: "${volthaHelmChartsChange}",
                 ])
-            }
 
-            iam(this)
-            {
-                leave = true
-                label = getIam()
+                iam(this)
+                {
+                    leave = true
+                    label = getIam()
+                }
             }
         }
 

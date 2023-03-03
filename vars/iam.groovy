@@ -110,9 +110,18 @@ Boolean process(Map argv)
 //         tans = fans
 //     }
 // -----------------------------------------------------------------------
-Boolean call(def self, Map argv)
+Boolean call\
+    (
+    def body,  // jenkins closure attached to the call iam() {closure}
+    def self,  // jenkins env object for access to primitives like echo()
+    )
 {
-    argv = argv ?: [:] // {ternary,elvis} operator
+    // evaluate the body block and collect configuration into the object
+    Map argv = [:] // {ternary,elvis} operator
+    body.resolveStrategy = Closure.DELEGATE_FIRST
+    body.delegate = config
+    body()
+
     String iam = getIam(argv, 'main')
 
     println("** ${iam}: argv=${argv}")
@@ -123,6 +132,7 @@ Boolean call(def self, Map argv)
         // [WIP] type(self) needed to quiet lint complaint.
         // npm-groovy-lint:  def for method parameter type should not be used  NoDef
         print(" ** $iam: Type of self variable is =" + self.getClass())
+        print(" ** $iam: Type of body variable is =" + body.getClass())
         // if (! self instanceof jenkins_object) { throw }
 
         if (process(argv))
@@ -150,5 +160,11 @@ Boolean call(def self, Map argv)
     return(true)
 }
 
-// [EOF]
+/*
+ * -----------------------------------------------------------------------
+[SEE ALSO]
+  o https://rtyler.github.io/jenkins.io/doc/book/pipeline/shared-libraries/#defining-a-more-structured-dsl
+ * -----------------------------------------------------------------------
+ */
 
+// [EOF]
