@@ -295,6 +295,7 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
+          disable-job: true
           olts: 2
           pons: 16
           onus: 32
@@ -319,6 +320,7 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
+          disable-job: true
           olts: 2
           pons: 16
           onus: 32
@@ -344,6 +346,7 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-scale-test.groovy'
           build-node: 'voltha-scale-1'
           time-trigger: "H H/4 * * *"
+          disable-job: true
           olts: 2
           pons: 16
           onus: 32
