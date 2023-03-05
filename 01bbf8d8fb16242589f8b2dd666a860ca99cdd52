@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "47b64fdf_c639ca09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-03-05T14:28:54Z",
+      "side": 1,
+      "message": "Also refactor makefile target logic into makefiles/target/{clean,check,test}.mk",
+      "revId": "01bbf8d8fb16242589f8b2dd666a860ca99cdd52",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
