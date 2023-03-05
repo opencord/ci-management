@@ -65,16 +65,43 @@ help-banner:
 ##          - help-simple or help-verbose
 ##   o Current logic displays extended help by default.
 ## -----------------------------------------------------------------------
+## Usage: see makefiles/targets/test.mk
+##    test-verbose += help-check#      # append help target to help-verbose
+## -----------------------------------------------------------------------
 ifdef VERBOSE
-  help :: help-verbose
+  help-verbose += help-verbose
+  help :: $(help-verbose)
 else
   help :: help-simple
 endif
 
 ## -----------------------------------------------------------------------
+## Intent: Display context specific help for named targets.
+## -----------------------------------------------------------------------
+## [TODO] Display a list of help-* tokens for target specific content:
+##    % make help-check
+##    % make help-test
+## -----------------------------------------------------------------------
+## [TODO] Define LEVEL= or helper targets (help-lint-{level})
+##        for extended help w/o information overload
+##    [0] help               # make help
+##    [1] help-lint          # make help-verbose or (VERBOSE=1)
+##    [2] help-lint-shell    # make help-lint VERBOSE=1  (??)
+##    [2] help-lint-yaml
+## -----------------------------------------------------------------------
+help-index ::
+	@echo
+	@echo '[HELP] - An index of help context for common targets'
+	@echo '  help-index          This message'
+	$(HIDE)\
+  for name in $(sort $(help-verbose)); do\
+    echo "  $$name";\
+  done
+
+## -----------------------------------------------------------------------
 ## Intent: Display simple extended target help
 ## -----------------------------------------------------------------------
-help-simple ::
+help-simple :: help-index
 	@echo
 	@echo '[VIEW]'
 	@echo '  reload              Setup to auto-reload sphinx doc changes in browser'

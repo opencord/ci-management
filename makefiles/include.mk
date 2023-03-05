@@ -34,9 +34,26 @@ include $(ONF_MAKE)/virtualenv.mk#        # lint-{jjb,python} depends on venv
 include $(ONF_MAKE)/lint/include.mk
 include $(ONF_MAKE)/git-submodules.mk
 include $(ONF_MAKE)/gerrit/include.mk
+
 include $(ONF_MAKE)/todo.mk
 include $(ONF_MAKE)/help/variables.mk
 
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+include $(ONF_MAKE)/targets/clean.mk
+# include $(ONF_MAKE)/targets/check.mk
+include $(ONF_MAKE)/targets/sterile.mk
+# include $(ONF_MAKE)/targets/test.mk
+
 $(if $(DEBUG),$(warning LEAVE))
+
+## --------------------------------------------------------------------------
+## structure to support pre/post target handling w/o inlining in Makefile (?)
+## --------------------------------------------------------------------------
+##   include makefiles/include.mk
+##     include makefiles/main/enter.mk
+##     [... include *.mk ...]
+##     include makefiles/main/leave.mk
 
 # [EOF]

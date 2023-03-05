@@ -33,9 +33,11 @@ YAML_FILES      ?= $(error YAML_FILES= is required)
 ##   % make lint UNSTABLE=1
 ##   % make lint-yaml-all
 ## -----------------------------------------------------------------------
+lint-yaml-mode := $(if $(have-yaml-files),modified,all)
+lint-yaml : lint-yaml-$(lint-yaml-mode)
+
 ifndef NO-LINT-YAML
-  lint-yaml-mode := $(if $(have-yaml-files),modified,all)
-  lint : lint-yaml-$(lint-yaml-mode)
+  lint : lint-yaml#     # Enable as a default lint target
 endif# NO-LINT-YAML
 
 ## -----------------------------------------------------------------------
@@ -74,7 +76,7 @@ help::
 	@echo '  lint-yaml          Syntax check python using the yaml command'
   ifdef VERBOSE
 	@echo '  lint-yaml-all       yaml checking: exhaustive'
-	@echo '  lint-yaml-modified  yaml checking: only modified'
+	@echo '  lint-yaml-modified  yaml checking: only locally modified'
   endif
 
 $(if $(DEBUG),$(warning LEAVE))

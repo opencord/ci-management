@@ -37,30 +37,21 @@ JJB_VERSION   ?= 2.8.0
 # JJB_VERSION   ?= 4.1.0
 JOBCONFIG_DIR ?= job-configs
 
+# -----------------------------------------------------------------------
+# horrible dep: (ie -- .PHONY: $(JOBCONFIG_DIR))
+#   o Directory inode always changing due to (time-last-accessed++).
+#   o Dependent Targets always re-made due to setale dependency.
+#   o Use file inside directory as dep rather than a directory.
+# -----------------------------------------------------------------------
 $(JOBCONFIG_DIR):
 	mkdir $@
 
-## -----------------------------------------------------------------------
-## Intent: Sanity check incoming JJB config changes.
-##   Todo: Depend on makefiles/lint/jjb.mk :: lint-jjb
-## -----------------------------------------------------------------------
-# lint : lint-jjb
-lint-tox:
-	tox -e py310
-
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-.PHONY: test
-test: $(venv-activate-script) $(JOBCONFIG_DIR)
-	$(activate) \
-	&& pipdeptree \
-	&& jenkins-jobs -l DEBUG test --recursive --config-xml -o "$(JOBCONFIG_DIR)" jjb/ ;
-
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-.PHONY: clean
-clean:
-	$(RM) -r $(JOBCONFIG_DIR)
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+include $(MAKEDIR)/targets/check.mk
+include $(MAKEDIR)/targets/tox.mk#             # python unit testing
+include $(MAKEDIR)/targets/test.mk
 
 ## Display make help late
 include $(ONF_MAKE)/help/trailer.mk
