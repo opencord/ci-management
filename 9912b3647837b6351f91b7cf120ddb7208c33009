@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c4de1f07_dcbddc66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000643
+      },
+      "writtenOn": "2023-03-06T11:57:13Z",
+      "side": 1,
+      "message": "This patch is a suggestion for a workaround to install the correct version of voltctl for voltha release 2.11 and master until corresponding release(s) of voltctl are realized.",
+      "revId": "9912b3647837b6351f91b7cf120ddb7208c33009",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
