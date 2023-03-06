@@ -37,8 +37,10 @@ def process(String branch) {
     // This logic seems odd given we branch & tag repositories
     // for release so hilight non-frozen until we know for sure.
     def released=[
-	// https://github.com/opencord/voltctl/releases/tag/v1.8.1
-	// 'voltha-2.11' : '1.8.4',
+    // the following line is a workaround till the corresponding master version of voltctl is released
+	'master' : '1.8.13',
+    // https://github.com/opencord/voltctl/releases/tag/v1.8.1
+	'voltha-2.11' : '1.8.4',
 	// https://github.com/opencord/voltctl/releases/tag/v1.7.6
 	'voltha-2.10' : '1.7.6',
 	'voltha-2.9'  : '1.7.4',
