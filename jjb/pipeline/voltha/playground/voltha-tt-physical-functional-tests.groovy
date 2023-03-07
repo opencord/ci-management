@@ -73,14 +73,14 @@ pipeline
         // -----------------------------------------------------------------------
         stage('Clone voltha-system-tests')
         {
-            iam(this)
-            {
-                enter = true
-                label = getIam()
-            }
-
             steps
             {
+		iam(this)
+		{
+                    enter = true
+                    label = getIam()
+		}
+
                 step([$class: 'WsCleanup'])
                 checkout([
                     $class: 'GitSCM',
