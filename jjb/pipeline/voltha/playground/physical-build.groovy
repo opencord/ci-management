@@ -100,7 +100,7 @@ pipeline
         {
             steps
             {
-                iam(this)
+                iam
                 {
                     enter = true
                     label = getIam()
@@ -112,7 +112,7 @@ pipeline
                     volthaHelmChartsChange: "${volthaHelmChartsChange}",
                 ])
 
-                iam(this)
+                iam
                 {
                     leave = true
                     label = getIam()

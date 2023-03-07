@@ -112,14 +112,14 @@ Boolean process(Map argv)
 // -----------------------------------------------------------------------
 Boolean call\
     (
-    def body,  // jenkins closure attached to the call iam() {closure}
-    def self,  // jenkins env object for access to primitives like echo()
+    Closure body, // jenkins closure attached to the call iam() {closure}
+    // def self,  // jenkins env object for access to primitives like echo()
     )
 {
     // evaluate the body block and collect configuration into the object
     Map argv = [:] // {ternary,elvis} operator
     body.resolveStrategy = Closure.DELEGATE_FIRST
-    body.delegate = config
+    body.delegate        = argv
     body()
 
     String iam = getIam(argv, 'main')
