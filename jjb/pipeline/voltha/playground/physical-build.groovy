@@ -40,6 +40,7 @@ def getIam(String func)
      serializable.  Lets see if groovy Throwable wrapper can produce a
      better answer.
      -----------------------------------------------------------------------
+     */
 
     try
     {
