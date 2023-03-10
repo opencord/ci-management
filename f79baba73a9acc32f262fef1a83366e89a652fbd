@@ -16,6 +16,23 @@
       "message": "recheck",
       "revId": "f79baba73a9acc32f262fef1a83366e89a652fbd",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ac8ef5d_495a0749",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-03-10T20:09:02Z",
+      "side": 1,
+      "message": "We can try the patch and see.  I want to say the release vesrion master/voltha-2.11 in this context references the github releases area VS a source code branch.  If that is true the target expected would be a zipfile with binaries.",
+      "revId": "f79baba73a9acc32f262fef1a83366e89a652fbd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
