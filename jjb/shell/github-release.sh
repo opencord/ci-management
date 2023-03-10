@@ -405,11 +405,13 @@ EOM
 #   git auth login 
 #   git auth logout
 
-  gh release list [flags]
-  echo "** ${iam} List releases"
-  github_release_list \
-      "$GITHUB_ORGANIZATION"\
-      "$GERRIT_PROJECT"
+  if false; then
+      echo "** ${iam} List releases"
+      # "gh_cmd" release list [flags]
+      github_release_list \
+	  "$GITHUB_ORGANIZATION"\
+	  "$GERRIT_PROJECT"
+  fi
 
   # Usage: github-release [global options] <verb> [verb options]
   # create release
