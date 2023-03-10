@@ -224,6 +224,15 @@ function github_release_pre()
     declare -p descr
     
     case "$what" in
+	# -----------------------------------------------------------------------
+        # % gh_2.22.1_linux_amd64/bin/gh
+	#    release
+	#    create
+	#    v1.8.23
+	#    --repo opencord/voltctl
+	#    --title voltctl - v1.8.23
+	#    --discussion-category Announcements
+	# -----------------------------------------------------------------------
 	gh)
 	    declare -a cmd=()
 
@@ -234,21 +243,23 @@ function github_release_pre()
 	    cmd+=("$gh_cmd")
 	    # cmd+=('--verbose')
 	    cmd+=('release' 'create')
-	    cmd+=("$tag")                    # no switch for tag, pass inline.
+	    cmd+=("\"$tag\"")                # no switch for tag, pass inline.
 	    # cmd+=('--latest')              # auto tag based on origin/master
 	    # cmd+=('--target')              # Use when a branch based release is needed.
 	    
-	    cmd+=('--repo' "opencord/$repo")
-	    cmd+=('--title'  "$name")
+	    cmd+=('--repo' "\"opencord/$repo\"")
+	    cmd+=('--title'  "\"$name\"")
 	    # cmd+=('--descripton'  "$descr") # not supported
-	    cmd+=('--discussion-category' "Announcements")
+	    cmd+=('--discussion-category' "\"Announcements\"")
 	    # cmd+=('--verify-tag')   # fatal
 
 	    declare -p cmd
 
 	    # gh release create [<tag>] [<files>...]
 	    echo "** ${iam}: RUNNING " "${cmd[@]}"
+	    set -x
 	    "${cmd[@]}"
+	    set +x
 	    ;;
 
 	*)
@@ -405,8 +416,8 @@ EOM
 #   git auth login 
 #   git auth logout
 
-  gh release list [flags]
   echo "** ${iam} List releases"
+  gh release list [flags]
   github_release_list \
       "$GITHUB_ORGANIZATION"\
       "$GERRIT_PROJECT"
@@ -423,7 +434,7 @@ EOM
 
   echo "** ${iam} Packaging release files"
   pushd "$RELEASE_TEMP"
-
+  
     echo "** ${iam}: Files to release:"
     readarray -t to_release < <(find . -mindepth 1 -maxdepth 1 -type f -print)
     declare -p to_release
