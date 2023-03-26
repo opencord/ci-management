@@ -30,7 +30,7 @@
 - job-group:
     name: 'post-submit-voltctl-jobs'
     jobs:
-      - 'github-release':
+      - 'github-release-voltha':
           build-node: 'ubuntu18.04-basebuild-2c-4g'
           dependency-jobs: 'version-tag_wildcard'
           github-organization: 'opencord'

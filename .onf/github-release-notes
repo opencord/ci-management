@@ -1,0 +1,18 @@
+[Prototyping Edits]
+
+Sun Mar 26 09:36:24 AM EDT 2023
+-------------------------------
+
+Copy jjb/github-release.yaml into jjb/github-release/voltha.yaml:
+  o credential-id
+    - old: github-release-token
+    - new: onf-bot-voltha (todo: github-release-voltha)
+  o Change id template:
+    - old: github-release
+    - new: github-release-voltha
+
+jjb/verify/voltctl.yaml
+  o Change job template from github-release to github-release-voltha.
+
+jjb/shell/github-release.sh
+   o Replace legacy github-release command with newer github gh cli.
