@@ -125,7 +125,7 @@ function get_version()
     declare -a rev=()
     rev+=("$(( RANDOM % 10 + 1 ))")
     rev+=("$(( RANDOM % 256 + 1 ))")
-    rev+=("$(( 6RANDOM % 10000 + 1 ))")
+    rev+=("$(( RANDOM % 10000 + 1 ))")
     ver="v${rev[0]}.${rev[1]}.${rev[2]}"
 
     func_echo "version: $ver"
@@ -533,7 +533,8 @@ function copyToRelease()
     # cp $(which ls) "$work"
     # readarray -t arts < <(find "$artifact_glob" -type f)
     readarray -t arts < <(find "$work" -type f)
-    [[ ${#arts[@]} -eq 0 ]] && error "Artifact dir is empty, check for build failures: $artifact_glob"
+    declare -p args
+    # [[ ${#arts[@]} -eq 0 ]] && error "Artifact dir is empty, check for build failures in $artifact_glob"
     
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
@@ -1024,6 +1025,15 @@ pushd "$release_path" || error "pushd failed: dir is [$release_path]"
     getGitVersion GIT_VERSION
     getReleaseDescription RELEASE_DESCRIPTION
 
+    cat <<EOM
+
+** -----------------------------------------------------------------------
+**         GIT VERSION: $(declare -p GIT_VERSION)
+** RELEASE_DESCRIPTION: $(declare -p RELEASE_DESCRIPTION)
+**     RELEASE_TARGETS: $(declare -p RELEASE_TARGETS)
+** make release
+** -----------------------------------------------------------------------
+EOM
     # build the release, can be multiple space separated targets
     # -----------------------------------------------------------------------
     # % go build command-line-arguments:
@@ -1032,8 +1042,7 @@ pushd "$release_path" || error "pushd failed: dir is [$release_path]"
     #   missing: docker run mkdir
     # -----------------------------------------------------------------------
     # shellcheck disable=SC2086
-    make "$RELEASE_TARGETS" || tyue
-
+    make "$RELEASE_TARGETS"
     copyToRelease
 
   cat <<EOM
