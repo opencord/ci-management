@@ -530,10 +530,11 @@ function copyToRelease()
     get_release_dir work
 
     ## Flatten filesystem, should we recurse here to release subdirs ?
-    # cp $(which ls) "$work"
+    #cp $(which ls) "$work"
     # readarray -t arts < <(find "$artifact_glob" -type f)
-    readarray -t arts < <(find "$work" -type f)
-    declare -p args
+    readarray -t artifacts < <(find "$work" -type f)
+    func_echo "$(declare -p artifacts)"
+
     # [[ ${#arts[@]} -eq 0 ]] && error "Artifact dir is empty, check for build failures in $artifact_glob"
     
     # Copy artifacts into the release temp dir
