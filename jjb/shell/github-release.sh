@@ -599,9 +599,19 @@ function do_login()
     declare -a login_args=()
     [[ $# -gt 0 ]] && login_args+=("$@")
 
+    func_echo "$(declare -p WORKSPACE)"
+
     # https://github.com/cli/cli/issues/2922#issuecomment-775027762
     # (sigh) why not quietly return VS forcing a special case
-    [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]] && return
+    # [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]] && return
+
+# 12:58:36 ** -----------------------------------------------------------------------
+# 12:58:36 ** jenkins582353203049151829.sh::do_login: --hostname github.com
+# 12:58:36 ** --------------------------------------------------------------------# ---
+# 12:58:36 ** jenkins582353203049151829.sh :: do_login: Detected ENV{GITHUB_TOKEN}=
+# 12:58:36 The value of the GITHUB_TOKEN environment variable is being used for authentication.
+# 12:58:36 To have GitHub CLI store credentials instead, first clear the value from the environment.
+    return
     
     # bridge to my_gh()
     get_gh_hostname login_args
