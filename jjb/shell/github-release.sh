@@ -114,7 +114,8 @@ function sigtrap()
 trap sigtrap EXIT
 
 ## -----------------------------------------------------------------------
-## Intent: Return a release version for queries (interactive debugging)
+## Intent: Return a release version for queries
+##   Note: Do not use in production, function is intended for interactive use
 ## -----------------------------------------------------------------------
 function get_version()
 {
@@ -144,8 +145,8 @@ function initEnvVars()
     
     # Github organization (or user) this project is published on.  Project name should
     # be the same on both Gerrit and GitHub
-    declare -g GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION:-}
-    
+    declare -g GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION:-} 
+   
     # glob pattern relative to project dir matching release artifacts
     # ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/*"} # stat -- release/* not found, literal string (?)
     declare -g ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/."}
@@ -168,7 +169,7 @@ function init()
     local pkgbase="${0##*/}" # basename
     local pkgname="${pkgbase%.*}"
 
-    initEnvVars
+    # initEnvVars # moved to full_banner()
 
     ## Create a temp directory for auto-cleanup
     declare -g scratch
@@ -209,7 +210,9 @@ EOB
 # -----------------------------------------------------------------------
 function full_banner()
 {
-    local iam="${0##*/}"#
+    local iam="${0##*/}"
+
+    initEnvVars   # set defaults
 
 cat <<EOH
 
@@ -219,6 +222,13 @@ cat <<EOH
 ** PWD: $(/bin/pwd)
 ** NOW: $(date '+%Y/%m/%d %H:%M:%S')
 ** VER: ${SCRIPT_VERSION:-'unknown'}
+** -----------------------------------------------------------------------
+**      GERRIT_PROJECT: $(declare -p GERRIT_PROJECT)
+** GITHUB_ORGANIZATION: $(declare -p GITHUB_ORGANIZATION)
+**     RELEASE_TARGETS: $(declare -p RELEASE_TARGETS)
+**              GOPATH: $(declare -p GOPATH)
+** -----------------------------------------------------------------------
+** PATH += /usr/lib/go-1.12/bin:/usr/local/go/bin:GOPATH/bin
 ** -----------------------------------------------------------------------
 EOH
 
@@ -496,7 +506,10 @@ cat <<EOT
   o get_release_path()
       - refactor redundant paths into local vars.
       - see comments, do we have a one-off failure condition ?
-
+  o PATH += golang appended 3 times, release needs a single, reliable answer.
+  o do_login, do_logout and api calls do not use the my_gh wrapper:
+      - Add a lookup function to cache and retrieve path to downloaded gh command.
+    
 EOT
 
     return
@@ -568,7 +581,7 @@ function gh_release_create()
 
     # pushd "$work" >/dev/null
     readarray -t payload < <(find "$work" ! -type d -print)
-    func_echo "gh release create ${version} ${args[@]}" "${payload[@]}"
+    func_echo "$gh_cmd release create ${version} ${args[@]}" "${payload[@]}"
     my_gh 'release' 'create' "'$version'" "${args[@]}" "${payload[@]}"
     # popd >/dev/null
 
@@ -595,14 +608,14 @@ function do_login()
     if [[ -v pac ]] && [[ ${#pac} -gt 0 ]]; then  # interactive/debugging
 	[ ! -f "$pac" ] && error "PAC token file $pac does not exist"
 	# func_echo "--token file is $pac"
-        gh auth login  "${in_args[@]}" --with-token < "$pac"
+        "$gh_cmd" auth login  "${in_args[@]}" --with-token < "$pac"
 
     elif [[ ! -v GITHUB_TOKEN ]]; then
         error "--token [t] or GITHUB_TOKEN= are required"
 
     else # jenkins
 	func_echo 'Detected ENV{GITHUB_TOKEN}='
-	gh auth login  "${in_args[@]}"
+	"$gh_cmd" auth login  "${in_args[@]}"
     fi
 
     declare -i -g active_login=1 # signal logout
@@ -628,7 +641,7 @@ function do_logout()
     get_gh_hostname in_args
 
     banner "${out_args[@]}"
-    gh auth logout "${out_args[@]}" <<< 'Y'
+    "$gh_cmd" auth logout "${out_args[@]}" <<< 'Y'
 
     unset active_login
     return
@@ -651,7 +664,7 @@ function get_releases()
     declare -p releases_uri
     
     ref=()
-    gh api "$releases_uri" "${common[@]}" | jq . > 'release.raw'
+    "$gh_cmd" api "$releases_uri" "${common[@]}" | jq . > 'release.raw'
     readarray -t __tmp < <(jq '.[] | "\(.tag_name)"' 'release.raw')
 
     local release
