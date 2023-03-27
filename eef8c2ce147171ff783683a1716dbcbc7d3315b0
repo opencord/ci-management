@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6bf45413_5b377993",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-03-27T21:31:56Z",
+      "side": 1,
+      "message": "Disable artifact count\u003e0 check for now.\nAdded banner to highlight make targets call",
+      "revId": "eef8c2ce147171ff783683a1716dbcbc7d3315b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
