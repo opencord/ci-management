@@ -264,11 +264,12 @@ function getGitVersion()
     local ver
 
     banner
+
+    ## [TODO] move to get_version()
     ver="$(git tag -l --points-at HEAD)"
     declare -p ver
-
-    get_version 'ver'
-    declare -p ver
+    # get_version 'ver'
+    # declare -p ver
     
     # ------------------------------------------------------
     # match bare versions or v-prefixed golang style version
@@ -365,10 +366,10 @@ function get_gh_repo_name()
     local name
     if [[ -v __repo_name ]]; then
 	name="$__repo_name"
-    elif [[ ! -v GITHUB_PROJECT ]]; then
-	error "--repo-name or GITHUB_PROJECT= are required"
+    elif [[ ! -v GERRIT_PROJECT ]]; then
+	error "--repo-name or GERRIT_PROJECT= are required"
     else
-	name="${GITHUB_PROJECT}"
+	name="${GERRIT_PROJECT}"
     fi
 
     varname="$name"
@@ -531,11 +532,10 @@ function copyToRelease()
 
     ## Flatten filesystem, should we recurse here to release subdirs ?
     #cp $(which ls) "$work"
-    # readarray -t arts < <(find "$artifact_glob" -type f)
     readarray -t artifacts < <(find "$work" -type f)
     func_echo "$(declare -p artifacts)"
 
-    # [[ ${#arts[@]} -eq 0 ]] && error "Artifact dir is empty, check for build failures in $artifact_glob"
+    [[ ${#artifacts[@]} -eq 0 ]] && error "Artifact dir is empty, check for build failures in $artifact_glob"
     
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
