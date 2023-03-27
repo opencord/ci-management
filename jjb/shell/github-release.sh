@@ -596,26 +596,30 @@ function gh_release_create()
 function do_login()
 {
     declare -g pac
-    declare -a in_args=()
-    [[ $# -gt 0 ]] && in_args+=("$@")
+    declare -a login_args=()
+    [[ $# -gt 0 ]] && login_args+=("$@")
 
+    # https://github.com/cli/cli/issues/2922#issuecomment-775027762
+    # (sigh) why not quietly return VS forcing a special case
+    [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]] && return
+    
     # bridge to my_gh()
-    get_gh_hostname in_args
+    get_gh_hostname login_args
 
-    banner "${in_args[@]}"
+    banner "${login_args[@]}"
 
     ## Read from disk is safer than export GITHUB_TOKEN=
     if [[ -v pac ]] && [[ ${#pac} -gt 0 ]]; then  # interactive/debugging
 	[ ! -f "$pac" ] && error "PAC token file $pac does not exist"
 	# func_echo "--token file is $pac"
-        "$gh_cmd" auth login  "${in_args[@]}" --with-token < "$pac"
+        "$gh_cmd" auth login  "${login_args[@]}" --with-token < "$pac"
 
     elif [[ ! -v GITHUB_TOKEN ]]; then
         error "--token [t] or GITHUB_TOKEN= are required"
 
     else # jenkins
 	func_echo 'Detected ENV{GITHUB_TOKEN}='
-	"$gh_cmd" auth login  "${in_args[@]}"
+	"$gh_cmd" auth login  "${login_args[@]}"
     fi
 
     declare -i -g active_login=1 # signal logout
