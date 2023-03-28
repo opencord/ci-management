@@ -604,7 +604,7 @@ function do_login()
     func_echo "$(declare -p WORKSPACE)"
 
     # https://github.com/cli/cli/issues/2922#issuecomment-775027762
-    # (sigh) why not quietly return VS forcing a special case
+    # (sigh) why not quietly return VS forcing a special logic path
     # [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]] && return
 
 # 12:58:36 ** -----------------------------------------------------------------------
@@ -1053,7 +1053,7 @@ EOM
 **  1) Create initial github release with download area.
 **  2) Generate checksum.SHA256 for all released files.
 **  3) Upload files to complete the release.
-**  4) Display released info from github.
+**  4) Display released info from github
 ** -----------------------------------------------------------------------
 EOM
 
