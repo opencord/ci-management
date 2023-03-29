@@ -17,6 +17,8 @@
 # SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
+# ONF.makefile.version = 1.0
+# -----------------------------------------------------------------------
 
 $(if $(DEBUG),$(warning ENTER))
 

@@ -32,7 +32,7 @@ declare -g __githost='github.com'
 ## -----------------------------------------------------------------------
 ## Uncomment to activate
 ## -----------------------------------------------------------------------
-declare -i -g draft_release=1 
+declare -i -g draft_release=1
 # declare -g TRACE=0  # uncomment to set -x
 
 # shellcheck disable=SC2015
@@ -142,18 +142,18 @@ function initEnvVars()
     # project name
     declare -g WORKSPACE=${WORKSPACE:-.}
     declare -g GERRIT_PROJECT=${GERRIT_PROJECT:-}
-    
+
     # Github organization (or user) this project is published on.  Project name should
     # be the same on both Gerrit and GitHub
-    declare -g GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION:-} 
-   
+    declare -g GITHUB_ORGANIZATION=${GITHUB_ORGANIZATION:-}
+
     # glob pattern relative to project dir matching release artifacts
     # ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/*"} # stat -- release/* not found, literal string (?)
     declare -g ARTIFACT_GLOB=${ARTIFACT_GLOB:-"release/."}
-    
+
     # Use "release" as the default makefile target, can be a space separated list
     declare -g RELEASE_TARGETS=${RELEASE_TARGETS:-release}
-    
+
     # Set and handle GOPATH and PATH
     export GOPATH=${GOPATH:-$WORKSPACE/go}
     export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
@@ -270,7 +270,7 @@ function getGitVersion()
     declare -p ver
     # get_version 'ver'
     # declare -p ver
-    
+
     # ------------------------------------------------------
     # match bare versions or v-prefixed golang style version
     # Critical failure for new/yet-to-be-released repo ?
@@ -340,7 +340,7 @@ function get_gh_repo_org()
 {
     declare -n varname=$1; shift
     declare -g __repo_org
-    
+
     local org
     if [[ -v __repo_org ]]; then
 	org="$__repo_org"
@@ -362,7 +362,7 @@ function get_gh_repo_name()
 {
     declare -n varname=$1; shift
     declare -g __repo_name
-    
+
     local name
     if [[ -v __repo_name ]]; then
 	name="$__repo_name"
@@ -403,10 +403,10 @@ function get_argv_repo()
 
     local repo_org
     get_gh_repo_org repo_org
-    
+
     local repo_name
-    get_gh_repo_name repo_name    
-    
+    get_gh_repo_name repo_name
+
     varname="${repo_org}/${repo_name}"
     func_echo "VARNAME=$varname"
     return
@@ -463,7 +463,7 @@ function get_release_path()
 
     DEST_GOPATH=${DEST_GOPATH:-}
     if [ -n "$DEST_GOPATH" ]; then
-    # if [[ -v DEST_GOPATH ]] && [[ -n DEST_GOPATH ]]; then	
+    # if [[ -v DEST_GOPATH ]] && [[ -n DEST_GOPATH ]]; then
 	## [jenkins] Suspect this will taint the golang installation.
 	## [jenkins] Install succeeds, release fails, next job affected due to corruption.
 	## [jenkins] Copy golang to temp then augment ?
@@ -510,9 +510,43 @@ cat <<EOT
   o PATH += golang appended 3 times, release needs a single, reliable answer.
   o do_login, do_logout and api calls do not use the my_gh wrapper:
       - Add a lookup function to cache and retrieve path to downloaded gh command.
-    
+
 EOT
 
+    return
+}
+
+## -----------------------------------------------------------------------
+## Intent: Verify a directory contains content for release.
+## -----------------------------------------------------------------------
+## Given:
+##   scalar   Path to release/ directory
+##   ref      Results returned through this indirect var.
+## -----------------------------------------------------------------------
+## Usage:
+##   declare -a artifacts=()
+##   get_artifacts '/foo/bar/tans' artifacts
+##   declare -p artifacts
+## -----------------------------------------------------------------------
+function get_artifacts()
+{
+    local dir="$1"    ; shift
+    declare -n ref=$1 ; shift
+
+    # Glob available files
+    readarray -t __artifacts < <(find "$dir" -mindepth 1 ! -type d)
+    func_echo "$(declare -p __artifacts)"
+
+    # -----------------------------------------------------------------------
+    # Verify count>0 to inhibit source-only release
+    # Problem children:
+    #   o build or make release failures.
+    #   o docker container filesystem mount problem (~volume)
+    # -----------------------------------------------------------------------
+    [[ ${#__artifacts[@]} -eq 0 ]] \
+  	&& error "Artifact dir is empty: $(declare -p dir)"
+
+    ref=("${__artifacts[@]}")
     return
 }
 
@@ -522,27 +556,23 @@ EOT
 ## -----------------------------------------------------------------------
 function copyToRelease()
 {
-    func_echo "ENTER"
+    banner ''
 
     local artifact_glob="${ARTIFACT_GLOB%/*}"
     func_echo "$(declare -p artifact_glob)"
 
     local work
     get_release_dir work
+    func_echo "Artifact dir: $(declare -p work)"
 
-    ## Flatten filesystem, should we recurse here to release subdirs ?
-    #cp $(which ls) "$work"
-    readarray -t artifacts < <(find "$work" -type f)
-    func_echo "$(declare -p artifacts)"
+    ## Verify release content is available
+    declare -a artifacts=()
+    get_artifacts "$work" artifacts
 
-    [[ ${#artifacts[@]} -eq 0 ]] && error "Artifact dir is empty, check for build failures in $artifact_glob"
-    
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
     echo "rsync -rv --checksum \"$artifact_glob/.\" \"$work/.\""
     rsync -rv --checksum "$artifact_glob/." "$work/."
-
-    func_echo "LEAVE"
 
     return
 }
@@ -581,11 +611,12 @@ function gh_release_create()
     local work
     get_release_dir work
 
-    # pushd "$work" >/dev/null
-    readarray -t payload < <(find "$work" ! -type d -print)
+    pushd "$work" >/dev/null
+    readarray -t payload < <(find '.' ! -type d -print)
+
     func_echo "$gh_cmd release create ${version} ${args[@]}" "${payload[@]}"
     my_gh 'release' 'create' "'$version'" "${args[@]}" "${payload[@]}"
-    # popd >/dev/null
+    popd >/dev/null
 
     return
 }
@@ -614,7 +645,7 @@ function do_login()
 # 12:58:36 The value of the GITHUB_TOKEN environment variable is being used for authentication.
 # 12:58:36 To have GitHub CLI store credentials instead, first clear the value from the environment.
     return
-    
+
     # bridge to my_gh()
     get_gh_hostname login_args
 
@@ -673,12 +704,12 @@ function get_releases()
 
     banner ""
     pushd "$scratch" >/dev/null
-    
+
     # gh api repos/{owner}/{repo}/releases
     local releases_uri
     get_gh_releases releases_uri
     declare -p releases_uri
-    
+
     ref=()
     "$gh_cmd" api "$releases_uri" "${common[@]}" | jq . > 'release.raw'
     readarray -t __tmp < <(jq '.[] | "\(.tag_name)"' 'release.raw')
@@ -724,13 +755,14 @@ function install_gh_binary()
     local latest="https://github.com/cli/cli/releases/latest"
     local tarball="gh.tar.tgz"
 
-    readarray -t latest < <(curl --silent -qI "$latest" \
-				| awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+    readarray -t latest < <(\
+        curl --silent -qI "$latest" \
+	| awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
     declare -p latest
     if [ ${#latest[@]} -ne 1 ]; then
 	error "Unable to determine latest gh package version"
     fi
-       
+
     local VER="${latest[0]}"
 
     func_echo "Download latest gh binary"
@@ -756,7 +788,7 @@ function install_gh_binary()
 function releaseDelete()
 {
     local version="$1"; shift
-    
+
     banner "${in_args[@]}"
     declare -a args=()
     args+=('--host-repo')
@@ -788,10 +820,14 @@ function release_staging()
 
     banner ''
     func_echo "Packaging release files"
-    #  pushd "$RELEASE_TEMP"
-    pushd "$release_temp" >/dev/null || error "pushd failed: dir is [$release_temp]"
 
-    readarray -t to_release < <(find . -mindepth 1 -maxdepth 1 -type f -print)
+    pushd "$release_temp" >/dev/null \
+	|| error "pushd failed: dir is [$release_temp]"
+
+    declare -a to_release=()
+    get_artifacts '.' to_release
+
+#    readarray -t to_release < <(find . -mindepth 1 -maxdepth 1 -type f -print)
     func_echo "Files to release: $(declare -p to_release)"
 
     # Generate and check checksums
@@ -802,8 +838,7 @@ function release_staging()
     func_echo "Checksums(checksum.SHA256):"
     cat checksum.SHA256
 
-    ## ARGS NEEDED
-    gh_release_create
+    gh_release_create # publish
 
     popd  >/dev/null || error "pushd failed: dir is [$release_temp]"
 
@@ -898,11 +933,11 @@ function my_gh()
 	    --host-repo)
 		local val
 		get_argv_repo val
-		
+
 		# --repo <[HOST/]OWNER/REPO>
 		args+=('--repo' "'${__githost}/${val}'")
 		;;
-	    
+
 	    --repo)
 		local val
 		get_argv_repo val
@@ -920,13 +955,15 @@ function my_gh()
 		get_argv_name val
 		args+=('--title' "'$val'")
 		;;
-	    
+
+	    --draft) declare -i -g draft_release=1 ;;
+
 	    # --draft
 	    # --latest
             *) args+=("$arg") ;;
         esac
     done
-    
+
     cmd+=("${args[@]}")
     echo "** Running: ${cmd[*]}"
     "${cmd[@]}"
@@ -942,7 +979,7 @@ function my_gh()
 function usage()
 {
     cat <<EOH
-    
+
 Usage: $0
 Usage: make [options] [target] ...
   --help                      This mesage
@@ -961,12 +998,8 @@ EOH
 ## ---------------------------------------------------------------------------
 function parse_args()
 {
-    # declare -n ref="$1"; shift
-
     [[ -v DEBUG ]] && func_echo "ENTER"
 
-#    ref="repos/${__repo_user}/${__repo_name}/releases"
-    
     while [ $# -gt 0 ]; do
 	local arg="$1"; shift
 	case "$arg" in
