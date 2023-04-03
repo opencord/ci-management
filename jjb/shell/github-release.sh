@@ -28,11 +28,14 @@ set -euo pipefail
 declare -g WORKSPACE
 declare -g GERRIT_PROJECT
 declare -g __githost='github.com'
+# export DEBUG=1
 
 ## -----------------------------------------------------------------------
 ## Uncomment to activate
 ## -----------------------------------------------------------------------
+# declare -i -g gen_version=1
 declare -i -g draft_release=1
+
 # declare -g TRACE=0  # uncomment to set -x
 
 # shellcheck disable=SC2015
@@ -42,7 +45,6 @@ declare -a -g ARGV=()           # Capture args to minimize globals and arg passi
 [[ $# -gt 0 ]] && ARGV=("$@")
 
 declare -g scratch              # temp workspace for downloads
-declare -g gh_cmd               # path to gh command
 
 declare -g SCRIPT_VERSION='1.2' # git changeset needed
 
@@ -70,11 +72,11 @@ function errexit()
     # Print out the stack trace described by $function_stack
     if [ ${#FUNCNAME[@]} -gt 2 ]
     then
-	    echo "Call tree:"
-	    for ((i=1;i<${#FUNCNAME[@]}-1;i++))
-	    do
-	        echo " $i: ${BASH_SOURCE[$i+1]}:${BASH_LINENO[$i]} ${FUNCNAME[$i]}(...)"
-	    done
+            echo "Call tree:"
+            for ((i=1;i<${#FUNCNAME[@]}-1;i++))
+            do
+                echo " $i: ${BASH_SOURCE[$i+1]}:${BASH_LINENO[$i]} ${FUNCNAME[$i]}(...)"
+            done
     fi
 
     echo "Exiting with status ${code}"
@@ -121,14 +123,13 @@ function get_version()
 {
     declare -n ref="$1"
 
-    banner
     declare -a rev=()
     rev+=("$(( RANDOM % 10 + 1 ))")
     rev+=("$(( RANDOM % 256 + 1 ))")
     rev+=("$(( RANDOM % 10000 + 1 ))")
     ver="v${rev[0]}.${rev[1]}.${rev[2]}"
 
-    func_echo "version: $ver"
+    func_echo "VERSION: $ver"
     ref="$ver"
     return
 }
@@ -177,10 +178,13 @@ function init()
     readonly scratch
     declare -p scratch
 
-    ## prime the stream
+    ## prime the stream: cache answers
     local work
     get_release_dir work
     declare -p work
+
+    local filler
+    getGitVersion filler
     return
 }
 
@@ -261,30 +265,52 @@ function error()
 function getGitVersion()
 {
     declare -n varname="$1"; shift
-    local ver
 
-    banner
+    local __ver # use prefix('__') to protect callers variable name
+    if [[ -v cached_getGitVersion ]]; then
+        __ver="$cached_getGitVersion"
+        varname="$__ver"
+        return
 
-    ## [TODO] move to get_version()
-    ver="$(git tag -l --points-at HEAD)"
-    declare -p ver
-    # get_version 'ver'
-    # declare -p ver
+    elif [[ -v argv_gen_version ]]; then
+        get_version __ver
+
+    elif [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]]; then # i_am_jenkins
+        __ver="$(git tag -l --points-at HEAD)"
+
+    elif [[ -v argv_version_file ]]; then # local debug
+        [[ ! -f VERSION ]] && error "./VERSION file not found"
+        readarray -t tmp < <(sed -e 's/[[:blank:]]//g' 'VERSION')
+        __ver="v${tmp[0]}"
+
+    else
+        __ver="$(git tag -l --points-at HEAD)"
+    fi
 
     # ------------------------------------------------------
     # match bare versions or v-prefixed golang style version
     # Critical failure for new/yet-to-be-released repo ?
     # ------------------------------------------------------
-    if [[ "$ver" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]
-    then
-	echo "git has a SemVer released version tag: '$ver'"
-	echo "Building artifacts for GitHub release."
+    if [[ "$__ver" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+        echo "git has a SemVer released version tag: '$ver'"
+        echo "Building artifacts for GitHub release."
+
+    elif [[ "$__ver" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)-dev([0-9]+)$ ]]; then
+        declare -i -g draft_release=1
+        echo "Detected --draft SemVer release version tag [$__ver]"
+        echo "Building artifacts for GitHub release."
+
     else
-	error "No SemVer released version tag found, exiting..."
+        error "No SemVer released version tag found, exiting..."
     fi
 
-    varname="$ver"
-    func_echo "GIT_VERSION is [$GIT_VERSION] from $(/bin/pwd)"
+    ## Cache value for subsequent calls.
+    ## readonly is a guarantee assignment happens once.
+    declare -g cached_getGitVersion="$__ver"
+    readonly cached_getGitVersion;
+
+    varname="$__ver"
+    func_echo "Version is [$__ver] from $(/bin/pwd)"
     return
 }
 
@@ -312,7 +338,6 @@ function getReleaseDescription()
 ## -----------------------------------------------------------------------
 ## Note: Limit use of globals so logic can be isolated in function calls.
 ## -----------------------------------------------------------------------
-# declare -g RELEASE_TEMP
 function get_release_dir()
 {
     declare -n varname=$1; shift
@@ -343,11 +368,11 @@ function get_gh_repo_org()
 
     local org
     if [[ -v __repo_org ]]; then
-	org="$__repo_org"
+        org="$__repo_org"
     elif [[ ! -v GITHUB_ORGANIZATION ]]; then
-	error "--repo-org or GITHUB_ORGANIZATION= are required"
+        error "--repo-org or GITHUB_ORGANIZATION= are required"
     else
-	org="${GITHUB_ORGANIZATION}"
+        org="${GITHUB_ORGANIZATION}"
     fi
 
     # shellcheck disable=SC2178
@@ -365,11 +390,11 @@ function get_gh_repo_name()
 
     local name
     if [[ -v __repo_name ]]; then
-	name="$__repo_name"
+        name="$__repo_name"
     elif [[ ! -v GERRIT_PROJECT ]]; then
-	error "--repo-name or GERRIT_PROJECT= are required"
+        error "--repo-name or GERRIT_PROJECT= are required"
     else
-	name="${GERRIT_PROJECT}"
+        name="${GERRIT_PROJECT}"
     fi
 
     varname="$name"
@@ -408,7 +433,7 @@ function get_argv_repo()
     get_gh_repo_name repo_name
 
     varname="${repo_org}/${repo_name}"
-    func_echo "VARNAME=$varname"
+    # func_echo "VARNAME=$varname"
     return
 }
 
@@ -421,7 +446,12 @@ function get_argv_name()
 
     local repo_name
     get_gh_repo_name repo_name
-    varname="${repo_name} - $GIT_VERSION"
+
+    local repo_ver
+    getGitVersion repo_ver
+
+    # varname="${repo_name} - $GIT_VERSION"
+    varname="${repo_name} - ${repo_ver}"
     func_echo "varname=$varname"
     return
 }
@@ -435,10 +465,10 @@ function get_argv_tag()
 
     # cached_argv_tag='v3.41.3204'
     if [[ ! -v cached_argv_tag ]]; then
-	declare -g cached_argv_tag
-	if [[ -v GIT_VERSION ]]; then # hello jenkins
-	    cached_argv_tag="$GIT_VERSION"
-	fi
+        declare -g cached_argv_tag
+        if [[ -v GIT_VERSION ]]; then # hello jenkins
+            cached_argv_tag="$GIT_VERSION"
+        fi
     fi
 
     [[ ${#cached_argv_tag} -eq 0 ]] && error "Unable to determine GIT_VERSION="
@@ -463,31 +493,24 @@ function get_release_path()
 
     DEST_GOPATH=${DEST_GOPATH:-}
     if [ -n "$DEST_GOPATH" ]; then
-    # if [[ -v DEST_GOPATH ]] && [[ -n DEST_GOPATH ]]; then
-	## [jenkins] Suspect this will taint the golang installation.
-	## [jenkins] Install succeeds, release fails, next job affected due to corruption.
-	## [jenkins] Copy golang to temp then augment ?
-	## [jenkins] Worst case (problematic) backup then restore
-	mkdir -p "$GOPATH/src/$DEST_GOPATH"
-	varname="$GOPATH/src/$DEST_GOPATH/$GERRIT_PROJECT"
-	mv "$WORKSPACE/$GERRIT_PROJECT" "$varname"
-
-    ## [TODO] - support local dev use
-    # elif [[ ! -v WORKSPACE ]] && [[ -d '.git' ]]; then
-	# project=$(git remote -v show | awk -F' ' '{print $2}' | xargs basename)
-	# project=voltctl.git
-
+        mkdir -p "$GOPATH/src/$DEST_GOPATH"
+        varname="$GOPATH/src/$DEST_GOPATH/$GERRIT_PROJECT"
+        mv "$WORKSPACE/$GERRIT_PROJECT" "$varname"
     else
-	varname="$WORKSPACE/$GERRIT_PROJECT"
+        varname="$WORKSPACE/$GERRIT_PROJECT"
     fi
 
-    if [ ! -f "$varname/Makefile" ]; then
-	:
-    elif [ ! -f "$varname/makefile" ]; then
-	:
-    else
-	error "Makefile not found at $varname!"
-    fi
+    ## Verify pwd is OK
+    for path in \
+        "$varname/Makefile"\
+        "$varname/makefile"\
+        "__ERROR__"\
+    ; do
+        case "$path" in
+            __ERROR__) error "Makefile not found at $varname!" ;;
+            *) [[ -f "$path" ]] && break ;;
+        esac
+    done
 
     return
 }
@@ -544,7 +567,7 @@ function get_artifacts()
     #   o docker container filesystem mount problem (~volume)
     # -----------------------------------------------------------------------
     [[ ${#__artifacts[@]} -eq 0 ]] \
-  	&& error "Artifact dir is empty: $(declare -p dir)"
+          && error "Artifact dir is empty: $(declare -p dir)"
 
     ref=("${__artifacts[@]}")
     return
@@ -567,12 +590,17 @@ function copyToRelease()
 
     ## Verify release content is available
     declare -a artifacts=()
-    get_artifacts "$work" artifacts
+    # get_artifacts "$work" artifacts
+    get_artifacts "$artifact_glob" artifacts
+    func_echo "Artifacts in copy_from: $(declare -p artifacts)"
 
     # Copy artifacts into the release temp dir
     # shellcheck disable=SC2086
     echo "rsync -rv --checksum \"$artifact_glob/.\" \"$work/.\""
     rsync -rv --checksum "$artifact_glob/." "$work/."
+
+    get_artifacts "$work" artifacts
+    func_echo "Artifacts in copy_to: $(declare -p artifacts)"
 
     return
 }
@@ -594,28 +622,35 @@ function gh_release_create()
 {
     banner ''
 
-    local version="$GIT_VERSION"
-#    get_version 'version'
-#    create_release_by_version "$version"
-
-    declare -a args=()
-    args+=('--host-repo')
-    args+=('--notes' "'Testing release create -- ignore'")
-    args+=('--title')
-    if [[ -v draft_release ]]; then
-	args+=('--draft')
-    else
-	args+=('--discussion-category' 'Announcements')
-    fi
+    local version
+    getGitVersion version
 
     local work
     get_release_dir work
 
+    declare -a args=()
+    args+=('--host-repo')
+    args+=('--title')
+    if [[ -v draft_release ]]; then
+        args+=('--draft')
+    else
+        args+=('--discussion-category' 'Announcements')
+    fi
+
+    # args+=('--notes' "'Testing release create -- ignore'")
+
     pushd "$work" >/dev/null
-    readarray -t payload < <(find '.' ! -type d -print)
+    readarray -t payload < <(find '.' -maxdepth 4 ! -type d -print)
 
     func_echo "$gh_cmd release create ${version} ${args[@]}" "${payload[@]}"
-    my_gh 'release' 'create' "'$version'" "${args[@]}" "${payload[@]}"
+
+    if [[ -v dry_run ]]; then
+        echo "[SKIP] dry run"
+    else
+        banner "my_gh release create '$version' ${args[@]} ${payload[@]}"
+        my_gh 'release' 'create' "'$version'" "${args[@]}" "${payload[@]}"
+        set +x
+    fi
     popd >/dev/null
 
     return
@@ -644,28 +679,27 @@ function do_login()
 # 12:58:36 ** jenkins582353203049151829.sh :: do_login: Detected ENV{GITHUB_TOKEN}=
 # 12:58:36 The value of the GITHUB_TOKEN environment variable is being used for authentication.
 # 12:58:36 To have GitHub CLI store credentials instead, first clear the value from the environment.
-    return
+# -----------------------------------------------------------------------
 
-    # bridge to my_gh()
     get_gh_hostname login_args
 
     banner "${login_args[@]}"
 
     ## Read from disk is safer than export GITHUB_TOKEN=
     if [[ -v pac ]] && [[ ${#pac} -gt 0 ]]; then  # interactive/debugging
-	[ ! -f "$pac" ] && error "PAC token file $pac does not exist"
-	# func_echo "--token file is $pac"
+        [ ! -f "$pac" ] && error "PAC token file $pac does not exist"
+        func_echo "--token file is $pac"
         "$gh_cmd" auth login  "${login_args[@]}" --with-token < "$pac"
 
     elif [[ ! -v GITHUB_TOKEN ]]; then
         error "--token [t] or GITHUB_TOKEN= are required"
 
     else # jenkins
-	func_echo 'Detected ENV{GITHUB_TOKEN}='
-	"$gh_cmd" auth login  "${login_args[@]}"
+        func_echo 'Detected ENV{GITHUB_TOKEN}='
+        "$gh_cmd" auth login  "${login_args[@]}"
     fi
 
-    declare -i -g active_login=1 # signal logout
+    declare -i -g active_login=1 # signal logout needed
 
     return
 }
@@ -684,7 +718,6 @@ function do_logout()
     [[ $# -gt 0 ]] && out_args+=("$@")
 
     # bridge to my_gh()
-
     get_gh_hostname in_args
 
     banner "${out_args[@]}"
@@ -717,8 +750,8 @@ function get_releases()
     local release
     for release in "${__tmp[@]}";
     do
-	release="${release//\"/}"
-	ref+=("$release")
+        release="${release//\"/}"
+        ref+=("$release")
     done
 
     popd >/dev/null
@@ -731,13 +764,17 @@ function get_releases()
 ## -----------------------------------------------------------------------
 function showReleases()
 {
-    declare -a releases=()
-    get_releases releases
+    declare -a raw=()
+    get_releases raw
+
+    ## Sort for display, we may need to prune volume later on
+    IFS=$'\n' releases=($(sort -nr <<<"${raw[*]}"))
+    unset IFS
 
     local release
     for release in "${releases[@]}";
     do
-	func_echo "$release"
+        func_echo "$release"
     done
     return
 }
@@ -757,22 +794,24 @@ function install_gh_binary()
 
     readarray -t latest < <(\
         curl --silent -qI "$latest" \
-	| awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+        | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
     declare -p latest
     if [ ${#latest[@]} -ne 1 ]; then
-	error "Unable to determine latest gh package version"
+        error "Unable to determine latest gh package version"
     fi
 
     local VER="${latest[0]}"
 
     func_echo "Download latest gh binary"
     local url="https://github.com/cli/cli/releases/download/${VER}/gh_${VER#v}_linux_amd64.tar.gz"
+    func_echo "wget --quiet --output-document='$tarball' '$url'"
     wget --quiet --output-document="$tarball" "$url"
 
     func_echo "Unpack tarball"
     tar zxf "$tarball"
 
-    gh_cmd="$(find "${scratch}" -name 'gh' -print)"
+    # gh_cmd="$(find "${scratch}" -name 'gh' -print)"
+    declare -g gh_cmd='/usr/bin/gh'
     readonly gh_cmd
 
     func_echo "Command: ${gh_cmd}"
@@ -822,12 +861,11 @@ function release_staging()
     func_echo "Packaging release files"
 
     pushd "$release_temp" >/dev/null \
-	|| error "pushd failed: dir is [$release_temp]"
+        || error "pushd failed: dir is [$release_temp]"
 
     declare -a to_release=()
     get_artifacts '.' to_release
 
-#    readarray -t to_release < <(find . -mindepth 1 -maxdepth 1 -type f -print)
     func_echo "Files to release: $(declare -p to_release)"
 
     # Generate and check checksums
@@ -837,6 +875,13 @@ function release_staging()
     echo
     func_echo "Checksums(checksum.SHA256):"
     cat checksum.SHA256
+
+    if false; then
+	# Careful with credentials display
+        get_gh_hostname login_args
+        banner "gh auth status ${login_args[@]}"
+        gh auth status "${login_args[@]}"
+    fi
 
     gh_release_create # publish
 
@@ -874,7 +919,7 @@ EOH
 }
 
 ## -----------------------------------------------------------------------
-## Intent: Provide common arguments and access to the gh command.
+## Intent: Normalize common arguments and access to the gh command.
 ##   o Cache path to the gh command
 ##   o Construct a gh command line from given args
 ##   o Command wrapper can provide defaults (--hostname github.com)
@@ -894,19 +939,6 @@ EOH
 ## -----------------------------------------------------------------------
 function my_gh()
 {
-    ## ------------------------
-    ## Cache path to gh command
-    ## ------------------------
-    if [[ ! -v gh_cmd ]]; then
-        readarray -t cmds < <(which -a gh)
-        declare -p cmds
-        if [ ${#cmds} -eq 0 ]; then
-            error "Unable to locate the gh command"
-        fi
-        gh_cmd="${cmds[0]}"
-        readonly gh_cmd
-    fi
-
     declare -a cmd=()
     cmd+=("$gh_cmd")
 
@@ -921,45 +953,40 @@ function my_gh()
         local arg="$1"; shift
         case "$arg" in
 
-	    # Modes
+            # Modes
             -*debug)   declare -i -g debug=1 ;;
-  	    -*help)    show_help             ;;
             -*verbose) args+=('--verbose')   ;;
 
-	    -*hostname)
-		get_gh_hostname in_args
+            -*hostname)
+                get_gh_hostname in_args
                 ;;
 
-	    --host-repo)
-		local val
-		get_argv_repo val
+            --host-repo)
+                local val
+                get_argv_repo val
 
-		# --repo <[HOST/]OWNER/REPO>
-		args+=('--repo' "'${__githost}/${val}'")
-		;;
+                # --repo <[HOST/]OWNER/REPO>
+                args+=('--repo' "'${__githost}/${val}'")
+                ;;
 
-	    --repo)
-		local val
-		get_argv_repo val
-		args+=('--repo' "$val")
-		;;
+            --repo)
+                local val
+                get_argv_repo val
+                args+=('--repo' "$val")
+                ;;
 
-	    --tag)
-		local val
-       		get_argv_tag val
-		args+=("'$val'")       # No switch, pass inline
-		;;
+            --tag)
+                local val
+                       get_argv_tag val
+                args+=("'$val'")       # No switch, pass inline
+                ;;
 
-	    --title)
-		local val
-		get_argv_name val
-		args+=('--title' "'$val'")
-		;;
+            --title)
+                local val
+                get_argv_name val
+                args+=('--title' "'$val'")
+                ;;
 
-	    --draft) declare -i -g draft_release=1 ;;
-
-	    # --draft
-	    # --latest
             *) args+=("$arg") ;;
         esac
     done
@@ -988,6 +1015,9 @@ Usage: make [options] [target] ...
 [DEBUG]
   --gen-version               Generate a random release version string.
   --git-hostname              Git server hostname (default=github.com)
+  --version-file              Read version string from local version file
+
+  --dry-run                   Simulation mode
 
 EOH
     return
@@ -1000,38 +1030,58 @@ function parse_args()
 {
     [[ -v DEBUG ]] && func_echo "ENTER"
 
+    ## ** Running: /usr/bin/gh release create 'v1.8.36-dev1' --repo 'github.com/opencord/voltctl' --title 'voltctl - v1.8.36-dev1' --draft ./checksum.SHA256 ./voltctl-1.8.36_dev1-linux-arm64 ./voltctl-1.8.36_dev1-darwin-amd64 ./voltctl-1.8.36_dev1-windows-amd64 ./voltctl-1.8.36_dev1-linux-amd64
+    # error connecting to 'github.com
+    # check your internet connection or https://githubstatus.com
+
+    ## Defaults
+    set -- "$@" '--draft' # draft mode until connection error straightened out
+
     while [ $# -gt 0 ]; do
-	local arg="$1"; shift
-	case "$arg" in
-	    -*gen-version)
-		get_version GIT_VERSION
-		;;
+        local arg="$1"; shift
+        func_echo "ARGV: $arg"
+        case "$arg" in
 
-	    -*git-hostname)
-		__githost="$1"; shift
-		;;
+            -*debug)   declare -i -g debug=1         ;;
+            --draft)   declare -i -g draft_release=1 ;;
+            --dry-run) declare -i -g dry_run=1       ;;
 
-	    -*repo-name)
-		__repo_name="$1"; shift
-		;;
+            --version-file)
+                declare -i -g argv_version_file=1
+                ;;
 
-	    -*repo-org)
-		__repo_org="$1"; shift
-		;;
+            -*gen-version)
+                declare -g -i argv_gen_version=1
+                ;;
 
-	    -*pac)
-		declare -g pac="$1"; shift
-		readonly pac
-		[[ ! -f "$pac" ]] && error "--token= does not exist ($pac)"
-		: # nop/true
-		;;
+            -*git-hostname)
+                __githost="$1"; shift
+                ;;
 
-	    -*help)
-		usage
-		exit 0
-		;;
-	    *) error "Detected unknown argument $arg" ;;
-	esac
+            -*repo-name)
+                __repo_name="$1"; shift
+                ;;
+
+            -*repo-org)
+                __repo_org="$1"; shift
+                ;;
+
+            -*pac)
+                declare -g pac="$1"; shift
+                readonly pac
+                [[ ! -f "$pac" ]] && error "--token= does not exist ($pac)"
+                : # nop/true
+                ;;
+
+            -*todo) todo ;;
+
+            -*help)
+                usage
+                exit 0
+                ;;
+
+            *) error "Detected unknown argument $arg" ;;
+        esac
     done
 
     return
@@ -1065,7 +1115,8 @@ pushd "$release_path" || error "pushd failed: dir is [$release_path]"
 **         GIT VERSION: $(declare -p GIT_VERSION)
 ** RELEASE_DESCRIPTION: $(declare -p RELEASE_DESCRIPTION)
 **     RELEASE_TARGETS: $(declare -p RELEASE_TARGETS)
-** make release
+** -----------------------------------------------------------------------
+** Running: make ${RELEASE_TARGETS}
 ** -----------------------------------------------------------------------
 EOM
     # build the release, can be multiple space separated targets
@@ -1091,10 +1142,9 @@ EOM
 EOM
 
   showReleases
-  # releaseDelete 'v4.175.710'
   release_staging
   popd  || error "pushd failed: dir is [$release_path]"
-fi
+# fi
 
 do_logout
 
