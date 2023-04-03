@@ -127,7 +127,7 @@ function get_version()
     rev+=("$(( RANDOM % 10 + 1 ))")
     rev+=("$(( RANDOM % 256 + 1 ))")
     rev+=("$(( RANDOM % 10000 + 1 ))")
-    ver="v${rev[0]}.${rev[1]}.${rev[2]}"
+    local ver="v${rev[0]}.${rev[1]}.${rev[2]}"
 
     func_echo "VERSION: $ver"
     ref="$ver"
@@ -298,7 +298,7 @@ function getGitVersion()
     # Critical failure for new/yet-to-be-released repo ?
     # ------------------------------------------------------
     if [[ "$__ver" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
-        echo "git has a SemVer released version tag: '$ver'"
+        echo "git has a SemVer released version tag: '$__ver'"
         echo "Building artifacts for GitHub release."
 
     elif [[ "$__ver" =~ ^v?([0-9]+)\.([0-9]+)\.([0-9]+)-dev([0-9]+)$ ]]; then
