@@ -276,7 +276,10 @@ function getGitVersion()
         get_version __ver
 
     elif [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]]; then # i_am_jenkins
+	declare -p GERRIT_PROJECT
+	pushd "$GERRIT_PROJECT" || error "pushd GERRIT_PROJECT= failed"
         __ver="$(git tag -l --points-at HEAD)"
+	popd "$GERRIT_PROJECT" || error "popd GERRIT_PROJECT= failed"
 
     elif [[ -v argv_version_file ]]; then # local debug
         [[ ! -f VERSION ]] && error "./VERSION file not found"
@@ -284,7 +287,10 @@ function getGitVersion()
         __ver="v${tmp[0]}"
 
     else
+	declare -p GERRIT_PROJECT
+	pushd "$GERRIT_PROJECT" || error "pushd GERRIT_PROJECT= failed"
         __ver="$(git tag -l --points-at HEAD)"
+	popd "$GERRIT_PROJECT" || error "popd GERRIT_PROJECT= failed"
     fi
 
     # ------------------------------------------------------
