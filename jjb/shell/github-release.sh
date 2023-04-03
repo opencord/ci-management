@@ -27,14 +27,14 @@ set -euo pipefail
 ##-------------------##
 declare -g WORKSPACE
 declare -g GERRIT_PROJECT
-declare -g __githost='github.com'
+declare -g __githost=github.com
 # export DEBUG=1
 
 ## -----------------------------------------------------------------------
 ## Uncomment to activate
 ## -----------------------------------------------------------------------
 # declare -i -g gen_version=1
-declare -i -g draft_release=1
+# declare -i -g draft_release=1
 
 # declare -g TRACE=0  # uncomment to set -x
 
@@ -46,7 +46,7 @@ declare -a -g ARGV=()           # Capture args to minimize globals and arg passi
 
 declare -g scratch              # temp workspace for downloads
 
-declare -g SCRIPT_VERSION='1.2' # git changeset needed
+declare -g SCRIPT_VERSION='1.3' # git changeset needed
 
 ##--------------------##
 ##---]  INCLUDES  [---##
@@ -639,15 +639,17 @@ function gh_release_create()
 
     # args+=('--notes' "'Testing release create -- ignore'")
 
-    pushd "$work" >/dev/null
-    readarray -t payload < <(find '.' -maxdepth 4 ! -type d -print)
+    pushd "$work/.." >/dev/null
+    func_echo "WORK=$work"
+    # readarray -t payload < <(find '.' -maxdepth 4 ! -type d -print)
+    readarray -t payload < <(find 'release' -maxdepth 4 ! -type d -print)
 
     func_echo "$gh_cmd release create ${version} ${args[@]}" "${payload[@]}"
 
     if [[ -v dry_run ]]; then
         echo "[SKIP] dry run"
     else
-        banner "my_gh release create '$version' ${args[@]} ${payload[@]}"
+        func_echo "my_gh release create '$version' ${args[@]} ${payload[@]}"
         my_gh 'release' 'create' "'$version'" "${args[@]}" "${payload[@]}"
         set +x
     fi
@@ -667,8 +669,6 @@ function do_login()
     declare -a login_args=()
     [[ $# -gt 0 ]] && login_args+=("$@")
 
-    func_echo "$(declare -p WORKSPACE)"
-
     # https://github.com/cli/cli/issues/2922#issuecomment-775027762
     # (sigh) why not quietly return VS forcing a special logic path
     # [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]] && return
@@ -684,18 +684,19 @@ function do_login()
     get_gh_hostname login_args
 
     banner "${login_args[@]}"
+    func_echo "$(declare -p WORKSPACE)"
 
     ## Read from disk is safer than export GITHUB_TOKEN=
     if [[ -v pac ]] && [[ ${#pac} -gt 0 ]]; then  # interactive/debugging
         [ ! -f "$pac" ] && error "PAC token file $pac does not exist"
-        func_echo "--token file is $pac"
+        func_echo "$gh_cmd auth login ${login_args[@]} --with-token < $pac"
         "$gh_cmd" auth login  "${login_args[@]}" --with-token < "$pac"
 
     elif [[ ! -v GITHUB_TOKEN ]]; then
         error "--token [t] or GITHUB_TOKEN= are required"
 
     else # jenkins
-        func_echo 'Detected ENV{GITHUB_TOKEN}='
+        func_echo "$gh_cmd auth login ${login_args[@]} (ie: jenkins)"
         "$gh_cmd" auth login  "${login_args[@]}"
     fi
 
@@ -714,14 +715,14 @@ function do_logout()
     declare -i -g active_login
     [[ ! -v active_login ]] && return
 
-    declare -a out_args=()
-    [[ $# -gt 0 ]] && out_args+=("$@")
+    declare -a logout_args=()
+    [[ $# -gt 0 ]] && logout_args+=("$@")
 
-    # bridge to my_gh()
-    get_gh_hostname in_args
+    get_gh_hostname logout_args
 
-    banner "${out_args[@]}"
-    "$gh_cmd" auth logout "${out_args[@]}" <<< 'Y'
+    banner "${logout_args[@]}"
+    func_echo "$gh_cmd auth logout ${logout_args[@]} <<< 'Y'"
+    "$gh_cmd" auth logout "${logout_args[@]}" <<< 'Y'
 
     unset active_login
     return
@@ -810,8 +811,9 @@ function install_gh_binary()
     func_echo "Unpack tarball"
     tar zxf "$tarball"
 
-    # gh_cmd="$(find "${scratch}" -name 'gh' -print)"
-    declare -g gh_cmd='/usr/bin/gh'
+    declare -g gh_cmd
+    gh_cmd="$(find "${scratch}" -name 'gh' -print)"
+    #declare -g gh_cmd='/usr/bin/gh'
     readonly gh_cmd
 
     func_echo "Command: ${gh_cmd}"
@@ -877,7 +879,7 @@ function release_staging()
     cat checksum.SHA256
 
     if false; then
-	# Careful with credentials display
+        # Careful with credentials display
         get_gh_hostname login_args
         banner "gh auth status ${login_args[@]}"
         gh auth status "${login_args[@]}"
@@ -966,7 +968,7 @@ function my_gh()
                 get_argv_repo val
 
                 # --repo <[HOST/]OWNER/REPO>
-                args+=('--repo' "'${__githost}/${val}'")
+                args+=('--repo' "${__githost}/${val}")
                 ;;
 
             --repo)
@@ -1029,13 +1031,6 @@ EOH
 function parse_args()
 {
     [[ -v DEBUG ]] && func_echo "ENTER"
-
-    ## ** Running: /usr/bin/gh release create 'v1.8.36-dev1' --repo 'github.com/opencord/voltctl' --title 'voltctl - v1.8.36-dev1' --draft ./checksum.SHA256 ./voltctl-1.8.36_dev1-linux-arm64 ./voltctl-1.8.36_dev1-darwin-amd64 ./voltctl-1.8.36_dev1-windows-amd64 ./voltctl-1.8.36_dev1-linux-amd64
-    # error connecting to 'github.com
-    # check your internet connection or https://githubstatus.com
-
-    ## Defaults
-    set -- "$@" '--draft' # draft mode until connection error straightened out
 
     while [ $# -gt 0 ]; do
         local arg="$1"; shift
