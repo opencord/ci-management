@@ -656,7 +656,7 @@ function gh_release_create()
         echo "[SKIP] dry run"
     else
         func_echo "my_gh release create '$version' ${args[@]} ${payload[@]}"
-        my_gh 'release' 'create' "'$version'" "${args[@]}" "${payload[@]}"
+        my_gh 'release' 'create' "$version" "${args[@]}" "${payload[@]}"
         set +x
     fi
     popd >/dev/null
@@ -989,13 +989,13 @@ function my_gh()
             --tag)
                 local val
                        get_argv_tag val
-                args+=("'$val'")       # No switch, pass inline
+                args+=("$val")       # No switch, pass inline
                 ;;
 
             --title)
                 local val
                 get_argv_name val
-                args+=('--title' "'$val'")
+                args+=('--title' "$val")
                 ;;
 
             *) args+=("$arg") ;;
