@@ -703,7 +703,10 @@ function do_login()
 
     else # jenkins
         func_echo "$gh_cmd auth login ${login_args[@]} (ie: jenkins)"
-        "$gh_cmd" auth login  "${login_args[@]}"
+
+	# https://github.com/cli/cli/issues/2922#issuecomment-775027762
+	# When using GITHUB_TOKEN, there is no need to even run gh auth logi
+        # "$gh_cmd" auth login  "${login_args[@]}"
     fi
 
     declare -i -g active_login=1 # signal logout needed
