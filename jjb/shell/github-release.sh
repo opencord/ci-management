@@ -33,8 +33,8 @@ declare -g __githost=github.com
 ## -----------------------------------------------------------------------
 ## Uncomment to activate
 ## -----------------------------------------------------------------------
-# declare -i -g gen_version=1
-# declare -i -g draft_release=1
+declare -i -g gen_version=1
+declare -i -g draft_release=1
 
 # declare -g TRACE=0  # uncomment to set -x
 
@@ -562,8 +562,9 @@ function get_artifacts()
     local dir="$1"    ; shift
     declare -n ref=$1 ; shift
 
-    # Glob available files
-    readarray -t __artifacts < <(find "$dir" -mindepth 1 ! -type d)
+    # Glob available files, exclude checksums
+    readarray -t __artifacts < <(find "$dir" -mindepth 1 ! -type d \
+				| grep -iv -e 'sum256' -e 'checksum')
     func_echo "$(declare -p __artifacts)"
 
     # -----------------------------------------------------------------------
@@ -643,11 +644,12 @@ function gh_release_create()
         args+=('--discussion-category' 'Announcements')
     fi
 
-    # args+=('--notes' "'Testing release create -- ignore'")
+    if [[ -v release_notes ]]; then
+	args+=('--notes-file' "$release_notes")
+    fi
 
     pushd "$work/.." >/dev/null
     func_echo "WORK=$work"
-    # readarray -t payload < <(find '.' -maxdepth 4 ! -type d -print)
     readarray -t payload < <(find 'release' -maxdepth 4 ! -type d -print)
 
     func_echo "$gh_cmd release create ${version} ${args[@]}" "${payload[@]}"
@@ -705,7 +707,7 @@ function do_login()
         func_echo "$gh_cmd auth login ${login_args[@]} (ie: jenkins)"
 
 	# https://github.com/cli/cli/issues/2922#issuecomment-775027762
-	# When using GITHUB_TOKEN, there is no need to even run gh auth logi
+	# When using GITHUB_TOKEN, there is no need to even run gh auth login
         # "$gh_cmd" auth login  "${login_args[@]}"
     fi
 
@@ -845,11 +847,6 @@ function releaseDelete()
     args+=('--yes')
     # args+=('--cleanup-tag')
 
-#   ** github-release.sh :: get_argv_repo: VARNAME=opencord/voltctl
-#* Running: /tmp/github-release.R7geZo7Ywo/gh_2.25.1_linux_amd64/bin/gh release delete v4.175.710 --repo 'github.com/opencord/voltctl' --yes --cleanup-tag
-#rror connecting to 'github.com
-#heck your internet connection or https://githubstatus.com
-
     echo
     echo "==========================================================================="
     my_gh 'release' 'delete' "$version" "${args[@]}"
@@ -877,10 +874,16 @@ function release_staging()
     declare -a to_release=()
     get_artifacts '.' to_release
 
-    func_echo "Files to release: $(declare -p to_release)"
+    if false; then
+	for fyl in "${to_release[@]}";
+	do
+	    func_echo "sha256sum $fyl > ${fyl}.sha256"
+	    sha256sum "$fyl" > "${fyl}.sha256"
+	done
+    fi
 
     # Generate and check checksums
-    sha256sum -- * > checksum.SHA256
+    sha256sum -- * | grep -iv -e 'checksum' -e 'sha256' > checksum.SHA256
     sha256sum -c < checksum.SHA256
 
     echo
@@ -918,6 +921,7 @@ Usage: github-release.sh [options] [target] ...
 
 [Options]
   --token               Login debugging, alternative to env var use.
+  --release-notes [f]   Release notes are passed in this file.
 
 [Modes]
   --debug               Enable script debug mode
@@ -1021,15 +1025,22 @@ function usage()
 Usage: $0
 Usage: make [options] [target] ...
   --help                      This mesage
-  --pac                       Personal Access Token (file)
+  --pac                       Personal Access Token (path to containing file or a string)
+  --repo-name                 ex: voltctl
+  --repo-org                  ex: opencord
 
 [DEBUG]
   --gen-version               Generate a random release version string.
   --git-hostname              Git server hostname (default=github.com)
-  --version-file              Read version string from local version file
-
+  --version-file              Read version string from local version file (vs env var)
+ 
+[MODES] 
+  --debug                     Enable script debug mode
+  --draft                     Create a draft release (vs published)
   --dry-run                   Simulation mode
+  --todo                      Display future enhancement list
 
+Usage: $0 --draft --repo-org opencord --repo-name voltctl --git-hostname github.com --pac ~/access.pac
 EOH
     return
 }
@@ -1061,6 +1072,13 @@ function parse_args()
             -*git-hostname)
                 __githost="$1"; shift
                 ;;
+
+            -*release-notes)
+		if [ -f "$1" ]; then
+		    declare -g release_notes="$1";
+		    shift
+		fi
+		;;
 
             -*repo-name)
                 __repo_name="$1"; shift
@@ -1112,6 +1130,10 @@ pushd "$release_path" || error "pushd failed: dir is [$release_path]"
     # legacy: getGitVersion "$GERRIT_PROJECT" GIT_VERSION
     getGitVersion GIT_VERSION
     getReleaseDescription RELEASE_DESCRIPTION
+    if [[ ! -v release_notes ]]; then
+	declare -g release_notes="$scratch/release.notes"
+	echo "$RELEASE_DESCRIPTION" > "$release_notes"
+    fi
 
     cat <<EOM
 
