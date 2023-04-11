@@ -282,18 +282,39 @@ pipeline {
         buildVolthaComponent("${gerritProject}")
       }
     }
-    stage('Create K8s Cluster') {
-      steps {
-        script {
-          def clusterExists = sh returnStdout: true, script: """
+
+    stage('Create K8s Cluster')
+    {
+        steps
+	{
+	    script
+	    {
+		// non-fatal prototyping
+                try
+		{
+		    installKind(self) { debug:true }
+		}
+		catch (Exception err)
+		{
+		    println("** ${iam}: EXCEPTION ${err}")
+		    throw err
+		}
+		finally
+		{
+		    println("** ${iam}: LEAVE")
+		}
+
+		def clusterExists = sh returnStdout: true, script: """
           kind get clusters | grep ${clusterName} | wc -l
           """
-          if (clusterExists.trim() == "0") {
-            createKubernetesCluster([nodes: 3, name: clusterName])
-          }
+		if (clusterExists.trim() == "0")
+                {
+		    createKubernetesCluster([nodes: 3, name: clusterName])
+		}
+            }
         }
-      }
     }
+	
     stage('Replace voltctl') {
       // if the project is voltctl override the downloaded one with the built one
       when {
@@ -357,3 +378,5 @@ pipeline {
     }
   }
 }
+
+// EOF
