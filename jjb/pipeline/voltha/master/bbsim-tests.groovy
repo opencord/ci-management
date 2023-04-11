@@ -30,60 +30,60 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
     stage('IAM')
     {
-	script
-	{
-	    String iam = [
-		'ci-management',
-		'jjb',
-		'pipeline',
-		'voltha',
-		'master',
-		'bbsim-tests.groovy'
-	    ].join('/')
+        script
+        {
+            String iam = [
+                'ci-management',
+                'jjb',
+                'pipeline',
+                'voltha',
+                'master',
+                'bbsim-tests.groovy'
+            ].join('/')
             println("** ${iam}: ENTER")
 
-	    String cmd = "which pkill"
-	    def stream = sh(
-		returnStatus:false,
-		returnStdout: true,
-		script: cmd)
-	    println(" ** ${cmd}:\n${stream}")
-	    
+            String cmd = "which pkill"
+            def stream = sh(
+                returnStatus:false,
+                returnStdout: true,
+                script: cmd)
+            println(" ** ${cmd}:\n${stream}")
+
             println("** ${iam}: LEAVE")
-	}
+        }
     }
 
     stage('Cleanup') {
-	if (teardown) {
-	    timeout(15) {
-		script {
-		    helmTeardown(["default", infraNamespace, volthaNamespace])
-		}
-	    timeout(1) {
-		    sh returnStdout: false, script: '''
+        if (teardown) {
+            timeout(15) {
+                script {
+                    helmTeardown(["default", infraNamespace, volthaNamespace])
+                }
+            timeout(1) {
+                    sh returnStdout: false, script: '''
           # remove orphaned port-forward from different namespaces
           ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
           '''
-		}
-	    }
-	}
+                }
+            }
+        }
     }
 
     stage ('Initialize')
     {
-	// VOL-4926 - Is voltha-system-tests available ?
-	String cmd = [
-	    'make',
-	    '-C', "$WORKSPACE/voltha-system-tests",
-	    "KAIL_PATH=\"$WORKSPACE/bin\"",
-	    'kail',
-	].join(' ')
-	println(" ** Running: ${cmd}:\n")
+        // VOL-4926 - Is voltha-system-tests available ?
+        String cmd = [
+            'make',
+            '-C', "$WORKSPACE/voltha-system-tests",
+            "KAIL_PATH=\"$WORKSPACE/bin\"",
+            'kail',
+        ].join(' ')
+        println(" ** Running: ${cmd}:\n")
         sh("${cmd}")
     }
 
     stage('Deploy common infrastructure') {
-	sh '''
+        sh '''
     helm repo add onf https://charts.opencord.org
     helm repo update
     if [ ${withMonitoring} = true ] ; then
@@ -269,13 +269,17 @@ pipeline {
         ])
       }
     }
-    stage('Build patch') {
-      // build the patch only if gerritProject is specified
-      when {
-        expression {
-          return !gerritProject.isEmpty()
+
+    stage('Build patch v1.1')
+    {
+        // build the patch only if gerritProject is specified
+        when
+        {
+            expression
+            {
+                return !gerritProject.isEmpty()
+            }
         }
-      }
       steps {
         // NOTE that the correct patch has already been checked out
         // during the getVolthaCode step
@@ -286,6 +290,7 @@ pipeline {
     stage('Create K8s Cluster')
     {
         steps
+<<<<<<< HEAD
 	{
 	    script
 	    {
@@ -315,6 +320,38 @@ pipeline {
         }
     }
 	
+=======
+        {
+            script
+            {
+                println(' ** Calling installKind.groovy')
+                // non-fatal prototyping
+                try
+                {
+                    installKind(self) { debug:true }
+                }
+                catch (Exception err)
+                {
+                    println("** ${iam}: EXCEPTION ${err}")
+                    throw err
+                }
+                finally
+                {
+                    println("** ${iam}: LEAVE")
+                }
+
+                def clusterExists = sh returnStdout: true, script: """
+          kind get clusters | grep ${clusterName} | wc -l
+          """
+                if (clusterExists.trim() == "0")
+                {
+                    createKubernetesCluster([nodes: 3, name: clusterName])
+                }
+            }
+        }
+    }
+
+>>>>>>> beed33a9 (Added script installKind to fix the chicken-n-egg problem around cluster detection.  Wrap call in a try/catch block until build system behavior is known)
     stage('Replace voltctl') {
       // if the project is voltctl override the downloaded one with the built one
       when {
@@ -366,15 +403,13 @@ pipeline {
         }
     }
   }
-  post {
-    aborted {
-      collectArtifacts("aborted")
-    }
-    failure {
-      collectArtifacts("failed")
-    }
-    always {
-      collectArtifacts("always")
+
+    post
+    {
+        aborted { collectArtifacts('aborted') }
+        failure { collectArtifacts('failed')  }
+    } always {
+        collectArtifacts('always')
     }
   }
 }
