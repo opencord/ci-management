@@ -57,7 +57,6 @@ fi
 
 return
 """)
-
     println("** ${iam}: LEAVE")
 }
 
@@ -66,7 +65,7 @@ return
 Boolean call\
     (
     def self,  // jenkins env object for access to primitives like echo()
-    Closure body, // jenkins closure attached to the call iam() {closure}
+    Closure body // jenkins closure attached to the call iam() {closure}
     )
 {
     Map config           = [:]    // propogate block parameters
