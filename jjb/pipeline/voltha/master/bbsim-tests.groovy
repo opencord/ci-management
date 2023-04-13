@@ -23,7 +23,8 @@ library identifier: 'cord-jenkins-libraries@master',
 
 def clusterName = "kind-ci"
 
-def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "") {
+def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "")
+{
     def infraNamespace = "default"
     def volthaNamespace = "voltha"
     def logsDir = "$WORKSPACE/${testTarget}"
@@ -147,7 +148,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
           rm onos-voltha-startup-combined.log
         """
       }
-      sh """
+
+            sh """
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
@@ -161,26 +163,29 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       fi
       ps aux | grep port-forward
       """
-      // setting ONOS log level
-      script {
-        setOnosLogLevels([
-          onosNamespace: infraNamespace,
-          apps: [
-            'org.opencord.dhcpl2relay',
-            'org.opencord.olt',
-            'org.opencord.aaa',
-            'org.opencord.maclearner',
-            'org.onosproject.net.flowobjective.impl.FlowObjectiveManager',
-            'org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager'
-          ],
-          logLevel: logLevel
-        ])
-      }
-    }
-  }
 
-  stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow') {
-    sh """
+            // setting ONOS log level
+            script
+            {
+                setOnosLogLevels([
+                    onosNamespace: infraNamespace,
+                    apps: [
+                        'org.opencord.dhcpl2relay',
+                        'org.opencord.olt',
+                        'org.opencord.aaa',
+                        'org.opencord.maclearner',
+                        'org.onosproject.net.flowobjective.impl.FlowObjectiveManager',
+                        'org.onosproject.net.flowobjective.impl.InOrderFlowObjectiveManager'
+                    ],
+                    logLevel: logLevel
+                ])
+            } // script
+        } // if (teardown)
+    } // stage('Deploy Voltha')
+
+    stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow')
+    {
+        sh """
     if [ ${withMonitoring} = true ] ; then
       mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
       cd "$WORKSPACE/voltha-system-tests"
@@ -190,7 +195,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
     fi
     """
-    sh """
+
+        sh """
     mkdir -p ${logsDir}
     export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
@@ -198,14 +204,17 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
     make -C "$WORKSPACE/voltha-system-tests" ${testTarget} || true
     """
-    getPodsInfo("${logsDir}")
-    sh """
+
+        getPodsInfo("${logsDir}")
+
+        sh """
       set +e
       # collect logs collected in the Robot Framework StartLogging keyword
       cd ${logsDir}
       gzip *-combined.log || true
       rm *-combined.log || true
     """
+
     sh """
     if [ ${withMonitoring} = true ] ; then
       cd "$WORKSPACE/voltha-system-tests"
@@ -214,10 +223,13 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
     fi
     """
-  }
-}
+    } // stage
+} // execute_test()
 
-def collectArtifacts(exitStatus) {
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def collectArtifacts(exitStatus)
+{
   getPodsInfo("$WORKSPACE/${exitStatus}")
   sh """
   kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log || true
@@ -290,44 +302,18 @@ pipeline {
     stage('Create K8s Cluster')
     {
         steps
-<<<<<<< HEAD
-	{
-	    script
-	    {
-		// non-fatal prototyping
-                try
-		{
-		    installKind(self) { debug:true }
-		}
-		catch (Exception err)
-		{
-		    println("** ${iam}: EXCEPTION ${err}")
-		    throw err
-		}
-		finally
-		{
-		    println("** ${iam}: LEAVE")
-		}
-
-		def clusterExists = sh returnStdout: true, script: """
-          kind get clusters | grep ${clusterName} | wc -l
-          """
-		if (clusterExists.trim() == "0")
-                {
-		    createKubernetesCluster([nodes: 3, name: clusterName])
-		}
-            }
-        }
-    }
-	
-=======
         {
             script
             {
+                // Explicit signpost for times when I/O goes silent.
+                // ie: At times groovy must be passed jenkinsfile.self to access *.echo()
                 println(' ** Calling installKind.groovy')
+
                 // non-fatal prototyping
                 try
                 {
+                    // chicken-n-egg problem, kind command needed
+                    // to determine if kubernetes cluster is active
                     installKind(self) { debug:true }
                 }
                 catch (Exception err)
@@ -347,20 +333,22 @@ pipeline {
                 {
                     createKubernetesCluster([nodes: 3, name: clusterName])
                 }
-            }
-        }
-    }
+            } // script
+        } // steps
+    } // stage('Create K8s Cluster')
 
->>>>>>> beed33a9 (Added script installKind to fix the chicken-n-egg problem around cluster detection.  Wrap call in a try/catch block until build system behavior is known)
-    stage('Replace voltctl') {
-      // if the project is voltctl override the downloaded one with the built one
-      when {
-        expression {
-          return gerritProject == "voltctl"
-        }
-      }
-      steps{
-        sh """
+        stage('Replace voltctl')
+        {
+            // if the project is voltctl override the downloaded one with the built one
+            when {
+                expression {
+                    return gerritProject == "voltctl"
+                }
+            }
+
+            steps
+            {
+                sh """
         # [TODO] - why is this platform specific (?)
         # [TODO] - revisit, command alteration has masked an error (see: voltha-2.11).
         #          find will fail when no filsystem matches are found.
@@ -368,50 +356,55 @@ pipeline {
         mv `ls $WORKSPACE/voltctl/release/voltctl-*-linux-amd*` $WORKSPACE/bin/voltctl
         chmod +x $WORKSPACE/bin/voltctl
         """
-      }
-    }
-    stage('Load image in kind nodes') {
-      when {
-        expression {
-          return !gerritProject.isEmpty()
-        }
-      }
-      steps {
-        loadToKind()
-      }
-    }
-    stage('Parse and execute tests') {
-        steps {
-          script {
-            def tests = readYaml text: testTargets
+            } // steps
+        } // stage
 
-            for(int i = 0;i<tests.size();i++) {
-              def test = tests[i]
-              def target = test["target"]
-              def workflow = test["workflow"]
-              def flags = test["flags"]
-              def teardown = test["teardown"].toBoolean()
-              def logging = test["logging"].toBoolean()
-              def testLogging = 'False'
-              if (logging) {
-                  testLogging = 'True'
-              }
-              println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
-              execute_test(target, workflow, testLogging, teardown, flags)
+        stage('Load image in kind nodes')
+        {
+            when {
+                expression {
+                    return !gerritProject.isEmpty()
+                }
             }
-          }
+            steps {
+                loadToKind()
+            }
         }
-    }
-  }
+
+        stage('Parse and execute tests')
+        {
+            steps {
+                script {
+                    def tests = readYaml text: testTargets
+
+                    for(int i = 0;i<tests.size();i++) {
+                        def test = tests[i]
+                        def target = test["target"]
+                        def workflow = test["workflow"]
+                        def flags = test["flags"]
+                        def teardown = test["teardown"].toBoolean()
+                        def logging = test["logging"].toBoolean()
+                        def testLogging = 'False'
+                        if (logging) {
+                            testLogging = 'True'
+                        }
+                        println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+                        execute_test(target, workflow, testLogging, teardown, flags)
+                    }
+                }
+            }
+        } // stage
+    } // stages
 
     post
     {
         aborted { collectArtifacts('aborted') }
         failure { collectArtifacts('failed')  }
-    } always {
+    }
+    always
+    {
         collectArtifacts('always')
     }
-  }
-}
+} // pipeline
 
 // EOF
