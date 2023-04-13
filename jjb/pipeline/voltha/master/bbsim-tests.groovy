@@ -299,43 +299,31 @@ pipeline {
       }
     }
 
-    stage('Create K8s Cluster')
-    {
-        steps
+        stage('Create K8s Cluster')
         {
-            script
+            steps
             {
-                // Explicit signpost for times when I/O goes silent.
-                // ie: At times groovy must be passed jenkinsfile.self to access *.echo()
-                println(' ** Calling installKind.groovy')
-
-                // non-fatal prototyping
-                try
+                script
                 {
+                    // Explicit signpost for times when I/O goes silent.
+                    // ie: At times groovy must be passed jenkinsfile.self to access *.echo()
+                    println(' ** Calling installKind.groovy: ENTER')
                     // chicken-n-egg problem, kind command needed
                     // to determine if kubernetes cluster is active
                     installKind(self) { debug:true }
-                }
-                catch (Exception err)
-                {
-                    println("** ${iam}: EXCEPTION ${err}")
-                    throw err
-                }
-                finally
-                {
-                    println("** ${iam}: LEAVE")
-                }
+                    println(' ** Calling installKind.groovy: LEAVE')
 
-                def clusterExists = sh returnStdout: true, script: """
-          kind get clusters | grep ${clusterName} | wc -l
-          """
-                if (clusterExists.trim() == "0")
-                {
-                    createKubernetesCluster([nodes: 3, name: clusterName])
-                }
-            } // script
-        } // steps
-    } // stage('Create K8s Cluster')
+                    def clusterExists = sh(
+                        returnStdout: true,
+                        script: """kind get clusters | grep ${clusterName} | wc -l""")
+
+                    if (clusterExists.trim() == "0")
+                    {
+                        createKubernetesCluster([nodes: 3, name: clusterName])
+                    }
+                } // script
+            } // steps
+        } // stage('Create K8s Cluster')
 
         stage('Replace voltctl')
         {
@@ -400,7 +388,7 @@ pipeline {
     {
         aborted { collectArtifacts('aborted') }
         failure { collectArtifacts('failed')  }
-	always  { collectArtifacts('always')  }
+        always  { collectArtifacts('always')  }
     }
 } // pipeline
 
