@@ -400,10 +400,7 @@ pipeline {
     {
         aborted { collectArtifacts('aborted') }
         failure { collectArtifacts('failed')  }
-    }
-    always
-    {
-        collectArtifacts('always')
+	always  { collectArtifacts('always')  }
     }
 } // pipeline
 
