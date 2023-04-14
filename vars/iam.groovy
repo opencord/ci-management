@@ -32,7 +32,7 @@ String getIam(Map argv, String func)
     String iam = [src, func].join('::')
     if (argv.containsKey('version'))
     {
-        iam += sprintf("[%s]", argv.version)
+        iam += sprintf('[%s]', argv.version)
     }
     return(iam)
 }
@@ -112,7 +112,7 @@ Boolean process(Map argv)
 // -----------------------------------------------------------------------
 Boolean call\
     (
-    Closure body, // jenkins closure attached to the call iam() {closure}
+    Closure body  // jenkins closure attached to the call iam() {closure}
     // def self,  // jenkins env object for access to primitives like echo()
     )
 {
@@ -140,9 +140,7 @@ Boolean call\
             ranToCompletion = true
         }
     }
-    /* groovylint-disable*/ /* yuck! */
     catch (Exception err)
-    /* groovylint-enable */
     {
         println("** ${iam}: EXCEPTION ${err}")
         throw err

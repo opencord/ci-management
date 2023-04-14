@@ -310,7 +310,7 @@ pipeline {
                     println(' ** Calling installKind.groovy: ENTER')
                     // chicken-n-egg problem, kind command needed
                     // to determine if kubernetes cluster is active
-                    installKind(self) { debug:true }
+                    installKind() { debug:true }
                     println(' ** Calling installKind.groovy: LEAVE')
 
                     def clusterExists = sh(
