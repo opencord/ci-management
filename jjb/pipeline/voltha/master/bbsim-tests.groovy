@@ -305,13 +305,13 @@ pipeline {
             {
                 script
                 {
-                    // Explicit signpost for times when I/O goes silent.
-                    // ie: At times groovy must be passed jenkinsfile.self to access *.echo()
+		    /*
                     println(' ** Calling installKind.groovy: ENTER')
                     // chicken-n-egg problem, kind command needed
                     // to determine if kubernetes cluster is active
                     installKind() { debug:true }
                     println(' ** Calling installKind.groovy: LEAVE')
+		     */
 
                     def clusterExists = sh(
                         returnStdout: true,
