@@ -659,9 +659,7 @@ function gh_release_create()
         echo "[SKIP] dry run"
     else
         func_echo "my_gh release create '$version' ${args[@]} ${payload[@]}"
-        exit 1
         my_gh 'release' 'create' "$version" "${args[@]}" "${payload[@]}"
-        set +x
     fi
     popd >/dev/null
 
