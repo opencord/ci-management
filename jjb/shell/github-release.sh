@@ -276,10 +276,10 @@ function getGitVersion()
         get_version __ver
 
     elif [[ -v WORKSPACE ]] && [[ -v GITHUB_TOKEN ]]; then # i_am_jenkins
-	local path="$GERRIT_PROJECT"
-	pushd "$path" || error "pushd GERRIT_PROJECT= failed $(declare -p path)"
+        local path="$GERRIT_PROJECT"
+        pushd "$path" || error "pushd GERRIT_PROJECT= failed $(declare -p path)"
         __ver="$(git tag -l --points-at HEAD)"
-	popd || error "popd GERRIT_PROJECT= failed"
+        popd || error "popd GERRIT_PROJECT= failed"
 
     elif [[ -v argv_version_file ]]; then # local debug
         [[ ! -f VERSION ]] && error "./VERSION file not found"
@@ -287,10 +287,11 @@ function getGitVersion()
         __ver="v${tmp[0]}"
 
     else
-	local path="$GERRIT_PROJECT"
-	pushd "$path" || error "pushd GERRIT_PROJECT= failed $(declare -p path)"
+        cd ..
+        local path="$GERRIT_PROJECT"
+        pushd "$path" || error "pushd GERRIT_PROJECT= failed $(declare -p path)"
         __ver="$(git tag -l --points-at HEAD)"
-	popd || error "popd GERRIT_PROJECT= failed"
+        popd || error "popd GERRIT_PROJECT= failed"
     fi
 
     # ------------------------------------------------------
@@ -564,8 +565,8 @@ function get_artifacts()
 
     # Glob available files, exclude checksums
     readarray -t __artifacts < <(find "$dir" -mindepth 1 ! -type d \
-				| grep -iv -e 'sum256' -e 'checksum')
-    func_echo "$(declare -p __artifacts)"
+                                | grep -iv -e 'sum256' -e 'checksum')
+    # func_echo "$(declare -p __artifacts)"
 
     # -----------------------------------------------------------------------
     # Verify count>0 to inhibit source-only release
@@ -645,11 +646,11 @@ function gh_release_create()
     fi
 
     if [[ -v release_notes ]]; then
-	args+=('--notes-file' "$release_notes")
+        args+=('--notes-file' "$release_notes")
     fi
 
     pushd "$work/.." >/dev/null
-    func_echo "WORK=$work"
+    # func_echo "WORK=$work"
     readarray -t payload < <(find 'release' -maxdepth 4 ! -type d -print)
 
     func_echo "$gh_cmd release create ${version} ${args[@]}" "${payload[@]}"
@@ -658,6 +659,7 @@ function gh_release_create()
         echo "[SKIP] dry run"
     else
         func_echo "my_gh release create '$version' ${args[@]} ${payload[@]}"
+        exit 1
         my_gh 'release' 'create' "$version" "${args[@]}" "${payload[@]}"
         set +x
     fi
@@ -706,8 +708,8 @@ function do_login()
     else # jenkins
         func_echo "$gh_cmd auth login ${login_args[@]} (ie: jenkins)"
 
-	# https://github.com/cli/cli/issues/2922#issuecomment-775027762
-	# When using GITHUB_TOKEN, there is no need to even run gh auth login
+        # https://github.com/cli/cli/issues/2922#issuecomment-775027762
+        # When using GITHUB_TOKEN, there is no need to even run gh auth login
         # "$gh_cmd" auth login  "${login_args[@]}"
     fi
 
@@ -753,7 +755,7 @@ function get_releases()
     # gh api repos/{owner}/{repo}/releases
     local releases_uri
     get_gh_releases releases_uri
-    declare -p releases_uri
+    # declare -p releases_uri
 
     ref=()
     "$gh_cmd" api "$releases_uri" "${common[@]}" | jq . > 'release.raw'
@@ -875,11 +877,11 @@ function release_staging()
     get_artifacts '.' to_release
 
     if false; then
-	for fyl in "${to_release[@]}";
-	do
-	    func_echo "sha256sum $fyl > ${fyl}.sha256"
-	    sha256sum "$fyl" > "${fyl}.sha256"
-	done
+        for fyl in "${to_release[@]}";
+        do
+            func_echo "sha256sum $fyl > ${fyl}.sha256"
+            sha256sum "$fyl" > "${fyl}.sha256"
+        done
     fi
 
     # Generate and check checksums
@@ -984,6 +986,8 @@ function my_gh()
                 args+=('--repo' "${__githost}/${val}")
                 ;;
 
+# args+=('--repo' 'github.com/opencord/bbsim')
+
             --repo)
                 local val
                 get_argv_repo val
@@ -999,7 +1003,7 @@ function my_gh()
             --title)
                 local val
                 get_argv_name val
-                args+=('--title' "$val")
+                args+=('--title' "'$val'")
                 ;;
 
             *) args+=("$arg") ;;
@@ -1033,8 +1037,8 @@ Usage: make [options] [target] ...
   --gen-version               Generate a random release version string.
   --git-hostname              Git server hostname (default=github.com)
   --version-file              Read version string from local version file (vs env var)
- 
-[MODES] 
+
+[MODES]
   --debug                     Enable script debug mode
   --draft                     Create a draft release (vs published)
   --dry-run                   Simulation mode
@@ -1074,11 +1078,11 @@ function parse_args()
                 ;;
 
             -*release-notes)
-		if [ -f "$1" ]; then
-		    declare -g release_notes="$1";
-		    shift
-		fi
-		;;
+                if [ -f "$1" ]; then
+                    declare -g release_notes="$1";
+                    shift
+                fi
+                ;;
 
             -*repo-name)
                 __repo_name="$1"; shift
@@ -1131,8 +1135,8 @@ pushd "$release_path" || error "pushd failed: dir is [$release_path]"
     getGitVersion GIT_VERSION
     getReleaseDescription RELEASE_DESCRIPTION
     if [[ ! -v release_notes ]]; then
-	declare -g release_notes="$scratch/release.notes"
-	echo "$RELEASE_DESCRIPTION" > "$release_notes"
+        declare -g release_notes="$scratch/release.notes"
+        echo "$RELEASE_DESCRIPTION" > "$release_notes"
     fi
 
     cat <<EOM
