@@ -954,6 +954,9 @@ EOH
 ## -----------------------------------------------------------------------
 function my_gh()
 {
+    func_echo "ENTER"    
+    set -x
+ 
     declare -a cmd=()
     cmd+=("$gh_cmd")
 
@@ -966,6 +969,7 @@ function my_gh()
 
     while [ $# -gt 0 ]; do
         local arg="$1"; shift
+	func_echo "function arg is [$arg]"
         case "$arg" in
 
             # Modes
@@ -1009,9 +1013,17 @@ function my_gh()
     done
 
     cmd+=("${args[@]}")
+
+    echo
+    declare -p cmd
+
+    echo
     echo "** Running: ${cmd[*]}"
     "${cmd[@]}"
     local status=$?
+
+    set +x
+    func_echo "LEAVE"
 
     [[ $status -eq 0 ]] && { true; } || { false; }
     return
