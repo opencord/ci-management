@@ -33,7 +33,7 @@ declare -g __githost=github.com
 ## -----------------------------------------------------------------------
 ## Uncomment to activate
 ## -----------------------------------------------------------------------
-declare -i -g gen_version=1
+declare -i -g argv_gen_version=1
 declare -i -g draft_release=1
 
 # declare -g TRACE=0  # uncomment to set -x
