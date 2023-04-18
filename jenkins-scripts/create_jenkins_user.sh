@@ -35,7 +35,7 @@ fi
 
 # create SSH config
 mkdir /home/jenkins/.ssh
-cp -r /home/ec2-user/.ssh/authorized_keys /home/jenkins/.ssh/authorized_keys
+cp -r ~/.ssh/authorized_keys /home/jenkins/.ssh/authorized_keys
 
 # Generate ssh key for use by Robot jobs
 echo -e 'y\n' | ssh-keygen -N "" -f /home/jenkins/.ssh/id_rsa -t rsa
