@@ -13,7 +13,7 @@
 # Create Jenkins User #
 #######################
 
-OS=$(facter operatingsystem | tr '[:upper:]' '[:lower:]')
+#OS=$(facter operatingsystem | tr '[:upper:]' '[:lower:]')
 
 useradd -m -s /bin/bash jenkins
 
@@ -34,8 +34,11 @@ then
 fi
 
 # create SSH config
+# Take advantage of running this init script at EC2 creation time, which uses default user
 mkdir /home/jenkins/.ssh
-cp -r /home/${OS}/.ssh/authorized_keys /home/jenkins/.ssh/authorized_keys
+echo "~ is: "
+echo ~
+cp -r /home/ubuntu/.ssh/authorized_keys /home/jenkins/.ssh/authorized_keys
 
 # Generate ssh key for use by Robot jobs
 echo -e 'y\n' | ssh-keygen -N "" -f /home/jenkins/.ssh/id_rsa -t rsa
