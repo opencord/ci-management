@@ -10,9 +10,9 @@
 ##############################################################################
 
 # set hostname
-IPADDR=$(facter ipaddress)
-HOSTNAME=$(facter hostname)
-FQDN=$(facter fqdn)
+IPADDR=$(hostname -i)
+HOSTNAME=$(hostname -s)
+FQDN=$(hostname -f)
 
 echo "${IPADDR} ${HOSTNAME} ${FQDN}" >> /etc/hosts
 
