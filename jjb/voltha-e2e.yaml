@@ -21,6 +21,42 @@
     make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
 
     jobs:
+      # VGC periodic tests
+      # ToDo: flags should be removed after voltha-go-controller is in github available!!!
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-go-controller-test-bbsim'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set voltha-go-controller.enabled=true --set onos-classic.enabled=false --set redis.enabled=true'
+          time-trigger: "H H/12 * * *"
+          logLevel: 'DEBUG'
+          withVGC: true
+          testTargets: |
+            - target: sanity-kind-dt-vgc
+              workflow: dt
+              flags: "--set voltha-go-controller.images.voltha_go_controller.repository=aksoni1408/aksoni-1.0.0,voltha-go-controller.images.voltha_go_controller.tag=latest,voltha-go-controller.images.voltha_go_controller.pullPolicy='IfNotPresent' "
+              teardown: true
+              logging: true
+          timeout: 20
+
+      # VGC patch tests
+      # ToDo: flags should be removed after voltha-go-controller is in github available!!!
+      - 'voltha-periodic-test':
+          name: 'patchset-voltha-go-controller-test-bbsim'
+          trigger-comment: "voltha test vgc singleolt"
+          code-branch: '$GERRIT_BRANCH'
+          extraHelmFlags: '--set global.image_tag=master --set voltha-go-controller.enabled=true --set onos-classic.enabled=false --set redis.enabled=true'
+          gerritProject: '$GERRIT_PROJECT'
+          gerritRefspec: '$GERRIT_REFSPEC'
+          logLevel: 'DEBUG'
+          withVGC: true
+          testTargets: |
+            - target: sanity-kind-dt-vgc
+              workflow: dt
+              flags: "--set voltha-go-controller.images.voltha_go_controller.repository=aksoni1408/aksoni-1.0.0,voltha-go-controller.images.voltha_go_controller.tag=latest,voltha-go-controller.images.voltha_go_controller.pullPolicy='IfNotPresent' "
+              teardown: true
+              logging: true
+          timeout: 20
+
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
@@ -1951,6 +1987,7 @@
     logLevel: 'INFO'
     enableMacLearning: false
     withMonitoring: false
+    withVGC: false
 
     trigger-comment: vv7CBoQQYYonvaN8xcru
     time-trigger: 0 0 29 2 *
@@ -2053,6 +2090,11 @@
           default: '{withMonitoring}'
           description: 'Option to install Prometheus'
 
+      - bool:
+          name: withVGC
+          default: '{withVGC}'
+          description: 'Option to use VGC instead ONOS'
+
       - string:
           name: timeout
           default: '{timeout}'
@@ -2102,6 +2144,7 @@
     extraHelmFlags: ''
     enableMacLearning: false
     withMonitoring: false
+    withVGC: false
     robot-args: ''
     branch-regexp: '{all-branches-regexp}'
     testTargets: |
@@ -2218,6 +2261,11 @@
           name: withMonitoring
           default: '{withMonitoring}'
           description: 'Option to install Prometheus'
+
+      - bool:
+          name: withVGC
+          default: '{withVGC}'
+          description: 'Option to insall use VGC instead ONOS'
 
       - string:
           name: logLevel
