@@ -150,6 +150,9 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       }
 
             sh """
+      if [ ${withVGC} = true ] ; then
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-go-controller-8181" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-go-controller 8181:8181; done"&
+      fi
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
@@ -199,7 +202,12 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         sh """
     mkdir -p ${logsDir}
     export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
-    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
+    if [ ${withVGC} = true ] ; then
+      ROBOT_MISC_ARGS+="-v VGC_SSH_PORT:8101 -v VGC_REST_PORT:8181 "
+    else
+      ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 "
+    fi
+    ROBOT_MISC_ARGS+="-v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
     make -C "$WORKSPACE/voltha-system-tests" ${testTarget} || true
