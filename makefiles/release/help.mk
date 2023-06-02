@@ -13,23 +13,21 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
-# SPDX-License-Identifier: Apache-2.0
+# -----------------------------------------------------------------------
+# Intent: Helper makefile target used to setup for a release
 # -----------------------------------------------------------------------
 
-$(if $(DEBUG),$(warning ENTER))
-
-todo ::
+## ---------------------------------------------------------------------------
+## Intent: Display supported targets
+## ---------------------------------------------------------------------------
+help-voltha-release :
 	@echo
-	@echo '[TODO]'
-	@echo '  o volthaStackDeploy.groovy - post v2.11 release cleanup for 2.8'
+	@echo '[RELEASE] - Create branch driven testing pipelines'
+	@echo '  create-jobs-release'
+	@echo '  create-jobs-release-nightly Nightly testing'
+	@echo '  create-jobs-release-units   Unit testing'
 
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
 help ::
-	@echo '  todo                Display future enhancement list.'
-
-$(if $(DEBUG),$(warning LEAVE))
+	@echo '  help-voltha-release Display voltha release targets'
 
 # [EOF]
