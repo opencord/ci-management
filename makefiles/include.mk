@@ -35,6 +35,8 @@ include $(ONF_MAKE)/lint/include.mk
 include $(ONF_MAKE)/git-submodules.mk
 include $(ONF_MAKE)/gerrit/include.mk
 
+include $(ONF_MAKE)/release/include.mk
+
 include $(ONF_MAKE)/todo.mk
 include $(ONF_MAKE)/help/variables.mk
 

@@ -24,7 +24,6 @@
 ##-------------------##
 TOP          ?= .
 MAKEDIR      ?= $(TOP)/makefiles
-export SHELL := bash -e -o pipefail#    # [TODO] remove once set -u cleaned up
 
 ##--------------------##
 ##---]  INCLUDES  [---##
