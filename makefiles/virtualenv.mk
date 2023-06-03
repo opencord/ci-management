@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 ## -----------------------------------------------------------------------
+# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# ONF.makefile.version = 1.0
+# -----------------------------------------------------------------------
 
 $(if $(DEBUG),$(warning ENTER))
 

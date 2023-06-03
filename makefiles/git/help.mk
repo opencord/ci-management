@@ -14,23 +14,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -----------------------------------------------------------------------
-# Intent: Conditionally load when named targets are requested.
-#   var ?= $(error ...) definitions are fatal to "make help" and others
+# Intent: Helper makefile target used to setup for a release
 # -----------------------------------------------------------------------
 
-voltha-release-mk-targets := $(NULL)
-voltha-release-mk-targets += create-jobs-release
-voltha-release-mk-targets += create-jobs-release-certification
-voltha-release-mk-targets += create-jobs-release-nightly
-voltha-release-mk-targets += create-jobs-release-units
-voltha-release-mk-targets += sterile-create-jobs-release
+## ---------------------------------------------------------------------------
+## Intent: Display supported targets
+## ---------------------------------------------------------------------------
+help-onf-git :
+	@echo
+	@echo '[GIT]'
+	@echo '  show-submodules     Display a list of repository submodules and versions'
 
-# -----------------------------------------------------------------------
-# Define a flag to only load release targets when mentioned by name
-# Makefile can also explicitly define the flag to force always loading.
-# -----------------------------------------------------------------------
-$(foreach tgt,$(voltha-release-mk-targets),\
-  $(if $(findstring $(tgt),$(MAKECMDGOALS)),$(eval USE_VOLTHA_RELEASE_MK := true))\
-)
+help ::
+	@echo '  help-onf-git        Display git makefile targets'
 
 # [EOF]

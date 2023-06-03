@@ -30,6 +30,7 @@ __pycache__/
 *.pyc
 
 # jjb local testing
+.venv
 venv-jjb
 job-configs
 
@@ -37,5 +38,8 @@ job-configs
 node_modules/
 package-lock.json
 package.json
+
+# Generated pipeline jobs
+build/
 
 # [EOF]
