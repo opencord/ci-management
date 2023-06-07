@@ -1292,8 +1292,9 @@
               logging: true
           timeout: 270
 
+          # Migrating to voltha-e2e/master.yaml
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-pm-data-test-bbsim'
+          name: 'periodic-voltha-pm-data-test-bbsim-master'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           time-trigger: "H H/23 * * *"
@@ -1344,6 +1345,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim-2.8'
+          disable-job: true
           pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
           code-branch: 'voltha-2.8'
           extraHelmFlags: '--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'

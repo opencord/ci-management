@@ -28,7 +28,7 @@ include $(MAKEDIR)/release/required.mk
 
 ifdef USE_VOLTHA_RELEASE_MK
   # Dynamic loading when targets are requested by name
-  include $(ONF_MAKE)/release/targets.mk
+  include $(MAKEDIR)/release/targets.mk
 endif
 
 # [EOF]

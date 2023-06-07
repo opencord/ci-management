@@ -17,21 +17,28 @@
 # Intent: Helper makefile target used to setup for a release
 # -----------------------------------------------------------------------
 
-## ---------------------------------------------------------------------------
-## Intent: Display supported targets
-## ---------------------------------------------------------------------------
-help-voltha-release :
-	@echo
-	@echo '[RELEASE] - Create branch driven testing pipelines'
-	@echo '  create-jobs-release'
-	@echo '  create-jobs-release-e2e            End-to-End testing'
-	@echo '  create-jobs-release-certification  Certification testing'
-	@echo '  create-jobs-release-nightly        Nightly testing'
-	@echo '  create-jobs-release-units          Unit testing'
+$(if $(DEBUG),$(warning ENTER))
 
-	@echo '  sterile-create-jobs-release        Purge pipeline job content'
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
+voltha-versions += master
+voltha-versions += voltha-2.12
+voltha-versions += voltha-2.11
+voltha-versions += voltha-2.8
+voltha-versions += playground
 
-help ::
-	@echo '  help-voltha-release Display voltha release targets'
+# VOLTHA: release
+#   active : $(words 0,$(voltha-versions))
+#     next : $(words 1,$(voltha-versions))
+#     last : $(words 2,$(voltha-versions))
+
+# fatal to make help (param is null)
+voltha-version ?= $(error $(MAKE) voltha-verison=voltha-x.yy is required)\
+
+voltha-release-this := $(word 1,$(voltha-versions)) 
+voltha-release-last := $(word 2,$(voltha-versions))
+
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]
