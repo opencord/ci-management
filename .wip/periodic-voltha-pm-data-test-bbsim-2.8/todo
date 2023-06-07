@@ -1,0 +1,13 @@
+# TODO:
+#   o Verify periodic job has been disabled
+#   o Delete job defined in voltha-e2e.yaml
+#   o rename bbsim-2.8-playground to bbsim-2.8
+
+https://jenkins.opencord.org/job/periodic-voltha-pm-data-test-bbsim-2.8/
+  Verify periodic job has been disabled.
+
+ci-management/jjb/voltha-e2e.yam
+  name: 'periodic-voltha-pm-data-test-bbsim-2.8'
+
+ci-management/jjb/voltha-e2e/voltha-2.8.yaml
+  name: 'periodic-voltha-pm-data-test-bbsim-2.8-playground'

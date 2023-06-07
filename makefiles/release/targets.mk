@@ -29,17 +29,17 @@ release-mk-top := $(subst /makefiles/release/targets.mk,$(null),$(release-mk-top
 
 GIT	?= /usr/bin/env git
 
-# fatal to make help
-voltha-version ?= $(error $(MAKE) voltha-verison=voltha-x.yy is required)\
+##--------------------##
+##---]  INCLUDES  [---##
+##--------------------##
+include $(MAKEDIR)/release/voltha-versions.mk
+include $(MAKEDIR)/release/targets/voltha-certification.mk
+include $(MAKEDIR)/release/targets/voltha-e2e.mk
+include $(MAKEDIR)/release/targets/voltha-nightly-jobs.mk
 
-last-release  := voltha-2.11
+# last-release  := voltha-2.11
+last-release := $(voltha-release-last)
 
-## Known releases
-versions += master
-versions += voltha-2.12
-versions += voltha-2.11
-versions += voltha-2.8
-versions += playground
 
 ##-------------------##
 ##---]  TARGETS  [---##
@@ -47,12 +47,12 @@ versions += playground
 all: help
 
 ## ---------------------------------------------------------------------------
-## Intent: Create branch driven pipeline test jobs.
+## Intent: Build these deps to create a new branch/release area
 ## ---------------------------------------------------------------------------
-## Build these deps to create a new release area
 create-jobs-release += create-jobs-release-certification
 create-jobs-release += create-jobs-release-nightly
 create-jobs-release += create-jobs-release-units
+create-jobs-release += create-jobs-release-e2e
 
 create-jobs-release : $(create-jobs-release)
 
@@ -75,63 +75,9 @@ $(units-yaml):
 
 ## ---------------------------------------------------------------------------
 ## Intent: Create branch driven nightly test jobs.
-##   o Clone config for the last nightly release
-##   o In-place edit to the latest version.
 ## ---------------------------------------------------------------------------
-## NOTE: WIP - nightly jobs have not yet migrated from the mega job config file
-## ---------------------------------------------------------------------------
-nightly-dir  := $(release-mk-top)/jjb/voltha-test/voltha-nightly-jobs
-nightly-yaml := $(nightly-dir)/$(voltha-version).yaml
-nightly-tmpl := $(nightly-dir)/$(last-release).yaml
-
-create-jobs-release-nightly : $(nightly-yaml)
-$(nightly-yaml) : $(nightly-tmpl)
-
-	@echo
-	@echo "** Create branch driven pipeline: nightly tests"
-	sed -e 's/$(last-release)/$(voltha-version)/g' $< > $@
-	$(HIDE)/bin/ls -l $(dir $@)
-
-## ---------------------------------------------------------------------------
-## Intent: Create branch driven nightly test jobs.
-## ---------------------------------------------------------------------------
-$(nightly-tmpl):
-	@echo "ERROR: Yaml template branch does not exist: $@"
-	@echo 1
-
-## ---------------------------------------------------------------------------
-## Intent: Create branch driven nightly test jobs.
-##   o Clone config for the last nightly release
-##   o In-place edit to the latest version.
-## ---------------------------------------------------------------------------
-## NOTE: WIP - nightly jobs have not yet migrated from the mega job config file
-## ---------------------------------------------------------------------------
-certification-dir  := $(release-mk-top)/jjb/voltha-test/voltha-certification
-certification-yaml := $(certification-dir)/$(voltha-version).yaml
-certification-tmpl := $(certification-dir)/$(last-release).yaml
-
-create-jobs-release-certification : $(certification-yaml)
-$(certification-yaml) : $(certification-tmpl)
-
-	@echo
-	@echo "** Create branch driven pipeline: nightly tests"
-	sed -e 's/$(last-release)/$(voltha-version)/g' $< > $@
-	$(HIDE)/bin/ls -l $(dir $@)
-
-## ---------------------------------------------------------------------------
-## Intent: Create branch driven nightly test jobs.
-## ---------------------------------------------------------------------------
-$(certification-tmpl):
-	@echo "ERROR: Yaml template branch does not exist: $@"
-	@echo 1
-
-
-## ---------------------------------------------------------------------------
-## Intent: Create branch driven nightly test jobs.
-## ---------------------------------------------------------------------------
-sterile-create-jobs-release :
-	$(RM) $(certification-yaml)
-	$(RM) $(nightly-yaml)
+sterile-create-jobs-release := $(addprefix sterile-,$(create-jobs-release))
+sterile-create-jobs-release : $(sterile-create-jobs-release)
 	$(RM) -r $(units-yaml)
 
 $(if $(DEBUG),$(warning LEAVE))
