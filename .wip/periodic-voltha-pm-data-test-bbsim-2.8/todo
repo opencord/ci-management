@@ -1,7 +1,21 @@
 # TODO:
 #   o Verify periodic job has been disabled
-#   o Delete job defined in voltha-e2e.yaml
+
+#   o [x] Delete job defined in voltha-e2e.yaml (master)
+#     - Deleted, verify voltha-e2e/master.yaml launched as job
+#     - Delete intermediate job periodic-voltha-pm-data-test-bbsim-master
+
+#   o Create voltha-e2e/voltha-2.12.yaml
+
+#   o Delete job defined in voltha-e2e.yaml (v2.11)
+#     - Deleted, verify voltha-e2e/master.yaml launched as job
+#     - Delete intermediate job periodic-voltha-pm-data-test-bbsim-master
+
 #   o rename bbsim-2.8-playground to bbsim-2.8
+# [Intermediate Jobs]
+#   o Delete pipeline job periodic-voltha-pm-data-test-bbsim-2.8-playground
+
+#   o Once all jobs verified delete commented entries from voltha-e2e.yaml
 
 https://jenkins.opencord.org/job/periodic-voltha-pm-data-test-bbsim-2.8/
   Verify periodic job has been disabled.
@@ -11,3 +25,4 @@ ci-management/jjb/voltha-e2e.yam
 
 ci-management/jjb/voltha-e2e/voltha-2.8.yaml
   name: 'periodic-voltha-pm-data-test-bbsim-2.8-playground'
+
