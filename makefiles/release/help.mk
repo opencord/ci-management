@@ -24,6 +24,7 @@ help-voltha-release :
 	@echo
 	@echo '[RELEASE] - Create branch driven testing pipelines'
 	@echo '  create-jobs-release'
+	@echo '  create-jobs-release-bat            Build and test jobs'
 	@echo '  create-jobs-release-e2e            End-to-End testing'
 	@echo '  create-jobs-release-certification  Certification testing'
 	@echo '  create-jobs-release-nightly        Nightly testing'

@@ -28,6 +28,19 @@
     num-of-ponports: ''
 
     jobs:
+      # flex OCP pod with olt/onu - Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          disable-job: false
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          profile: 'Default'
+          time: '5'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
+
       # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           disable-job: true

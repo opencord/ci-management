@@ -49,6 +49,7 @@ all: help
 ## ---------------------------------------------------------------------------
 ## Intent: Build these deps to create a new branch/release area
 ## ---------------------------------------------------------------------------
+create-jobs-release += create-jobs-release-bat
 create-jobs-release += create-jobs-release-certification
 create-jobs-release += create-jobs-release-nightly
 create-jobs-release += create-jobs-release-units
