@@ -1,0 +1,7 @@
+This directory is used for refactoring and breakup of the kitchen sink
+JJB job yaml template that contains all versioned VOLTHA test stuies.
+
+git branches are not used, all jobs are visible.
+To support modular branch based testing naming conventions that include
+some form of voltha-X.YY will be used within configs and templates to
+support separation of jobs by release branch.
