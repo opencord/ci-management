@@ -33,6 +33,7 @@ GIT	?= /usr/bin/env git
 ##---]  INCLUDES  [---##
 ##--------------------##
 include $(MAKEDIR)/release/voltha-versions.mk
+include $(MAKEDIR)/release/targets/voltha-bat.mk
 include $(MAKEDIR)/release/targets/voltha-certification.mk
 include $(MAKEDIR)/release/targets/voltha-e2e.mk
 include $(MAKEDIR)/release/targets/voltha-nightly-jobs.mk
@@ -49,6 +50,7 @@ all: help
 ## ---------------------------------------------------------------------------
 ## Intent: Build these deps to create a new branch/release area
 ## ---------------------------------------------------------------------------
+create-jobs-release += create-jobs-release-bat
 create-jobs-release += create-jobs-release-certification
 create-jobs-release += create-jobs-release-nightly
 create-jobs-release += create-jobs-release-units

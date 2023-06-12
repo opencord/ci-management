@@ -57,15 +57,15 @@
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
 
       # flex OCP pod with olt/onu - Default tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          disable-job: false
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          profile: 'Default'
-          time: '5'
-          VolthaEtcdPort: 9999
-          num-of-onos: '3'
-          num-of-atomix: '3'
+#      - 'build_voltha_pod_release_timer':
+#          disable-job: false
+#          build-node: 'qa-testvm-pod'
+#          config-pod: 'flex-ocp-cord'
+#          profile: 'Default'
+#          time: '5'
+#          VolthaEtcdPort: 9999
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
 
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':

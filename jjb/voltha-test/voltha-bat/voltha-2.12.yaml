@@ -1,0 +1,42 @@
+---
+# POD Build Pipeline Jobs for Voltha Releases
+# -----------------------------------------------------------------------
+# Disabled, offline -- 'qa-testvm-pod'
+# -----------------------------------------------------------------------
+- project:
+    name: voltha-release-jobs-voltha-2.12
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    with-kind: false
+    power-switch: false
+    power-cycle-olt: false
+    work-flow: 'ATT'
+    in-band-management: false
+    num-of-openonu: '1'
+    num-of-onos: '1'
+    num-of-atomix: '0'
+    reinstall-olt: true
+    test-type: ''
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
+    cordTesterChange: ''
+    oltAdapterAppLabel: 'adapter-open-olt'
+    num-of-onus: ''
+    num-of-ponports: ''
+
+      # flex OCP pod with olt/onu - Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          disable-job: false
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          profile: 'Default'
+          time: '5'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
+
