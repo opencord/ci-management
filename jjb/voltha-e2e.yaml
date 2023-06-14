@@ -22,38 +22,6 @@
 
     jobs:
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-test-bbsim'
-          code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
-          time-trigger: "H H/23 * * *"
-          testTargets: |
-            - target: functional-single-kind
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
-            - target: bbsim-alarms-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: bbsim-failurescenarios
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: bbsim-errorscenarios
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: onos-ha-test
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-
-      - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim'
           code-branch: 'master'
           olts: 2
@@ -76,60 +44,6 @@
               teardown: false
               logging: true
             - target: bbsim-multiolt-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-test-bbsim-2.8'
-          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-          code-branch: 'voltha-2.8'
-          time-trigger: "H H/23 * * *"
-          testTargets: |
-            - target: functional-single-kind
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
-            - target: bbsim-alarms-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: bbsim-failurescenarios
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: bbsim-errorscenarios
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-test-bbsim-2.11'
-          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
-          code-branch: 'voltha-2.11'
-          time-trigger: "H H/23 * * *"
-          testTargets: |
-            - target: functional-single-kind
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
-            - target: bbsim-alarms-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: bbsim-failurescenarios
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: bbsim-errorscenarios
               workflow: att
               flags: ""
               teardown: false
@@ -1426,101 +1340,101 @@
               teardown: true
               logging: true
 
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-sanity-test-multi-runs'
-          code-branch: 'master'
-          time-trigger: "H H/23 * * *"
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
-          testTargets: |
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
+#      - 'voltha-periodic-test':
+#          name: 'periodic-voltha-sanity-test-multi-runs'
+#          code-branch: 'master'
+#          time-trigger: "H H/23 * * *"
+#          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+#          testTargets: |
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: true
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
 
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-sanity-test-multi-runs-2.8'
-          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-          code-branch: 'voltha-2.8'
-          time-trigger: "H H/23 * * *"
-          testTargets: |
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
+#      - 'voltha-periodic-test':
+#          name: 'periodic-voltha-sanity-test-multi-runs-2.8'
+#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+#          code-branch: 'voltha-2.8'
+#          time-trigger: "H H/23 * * *"
+#          testTargets: |
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: true
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
 
-      - 'voltha-periodic-test':
-          name: 'periodic-voltha-sanity-test-multi-runs-2.11'
-          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
-          code-branch: 'voltha-2.11'
-          time-trigger: "H H/23 * * *"
-          testTargets: |
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
-            - target: sanity-kind
-              workflow: att
-              flags: ""
-              teardown: false
-              logging: true
+#      - 'voltha-periodic-test':
+#          name: 'periodic-voltha-sanity-test-multi-runs-2.11'
+#          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+#          code-branch: 'voltha-2.11'
+#          time-trigger: "H H/23 * * *"
+#          testTargets: |
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: true
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
+#            - target: sanity-kind
+#              workflow: att
+#              flags: ""
+#              teardown: false
+#              logging: true
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-test-bbsim'
