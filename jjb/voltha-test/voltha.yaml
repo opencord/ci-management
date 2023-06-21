@@ -41,7 +41,7 @@
           profile: 'TP'
           name-extension: '_TT'
           work-flow: 'TT'
-
+# ZZ
       # flex pod1 test job - using voltha branch
       - 'build_voltha_pod_manual_test':
           disable-job: false
@@ -66,7 +66,7 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
-
+# ZZ
       # flex pod1 test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           disable-job: false
@@ -80,32 +80,33 @@
           profile: 'Default'
 
       # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.11'
-          branch: 'voltha-2.11'
-          profile: '1T4GEM'
-          time: '1'
-          VolthaEtcdPort: 9999
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
+#      - 'build_voltha_pod_release_timer':
+#          disable-job: true
+#          build-node: 'qa-testvm-pod'
+#          config-pod: 'flex-ocp-cord'
+#          release: '2.11'
+#          branch: 'voltha-2.11'
+#          profile: '1T4GEM'
+#          time: '1'
+#          VolthaEtcdPort: 9999
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
+#          pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
+    ## ZZ
       # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.8'
-          branch: 'voltha-2.8'
-          profile: '1T4GEM'
-          time: '1'
-          VolthaEtcdPort: 9999
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+#      - 'build_voltha_pod_release_timer':
+#          disable-job: true
+#          build-node: 'qa-testvm-pod'
+#          config-pod: 'flex-ocp-cord'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          profile: '1T4GEM'
+#          time: '1'
+#          VolthaEtcdPort: 9999
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
+#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
