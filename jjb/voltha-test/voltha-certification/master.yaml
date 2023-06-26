@@ -1,0 +1,59 @@
+---
+# POD Build Pipeline Jobs for Voltha Releases
+
+# - project:
+#     name: voltha-certification-jobs-master
+# 
+#     project-name: '{name}'
+# 
+#     build-timeout: '300'
+# 
+#     with-kind: false
+#     power-switch: false
+#     power-cycle-olt: false
+#     work-flow: 'ATT'
+#     in-band-management: false
+#     num-of-openonu: 1
+#     num-of-onos: 1
+#     num-of-atomix: 1
+#     num-of-kafka: 1
+#     num-of-etcd: 1
+#     reinstall-olt: true
+#     test-type: ''
+#     volthaSystemTestsChange: ''
+#     kindVolthaChange: ''
+#     cordTesterChange: ''
+#     oltAdapterAppLabel: 'adapter-open-olt'
+#     num-of-onus: ''
+#     num-of-ponports: ''
+# 
+#     jobs:
+# 
+#       # -----------------------------------------------------------------------
+#       # VOL-5059
+#       # -----------------------------------------------------------------------
+#       #   o v2.8 and v2.11 release jobs exist.
+#       #   o Job does not exist on branch=master ?!?
+#       #   o Create a certification master job just in case, far easier to
+#       #     than recreate from scratch depending on need later on.
+#       #
+#       #  Duplicate job detected somewhere, likely drived
+# INFO:jenkins_jobs.local_yaml:Lazy loading of file template 'ScalarNode(tag='!include-raw:', value='{docker-get-container-tag-script}')' enabled
+# ERROR:jenkins_jobs.parser:Duplicate definitions for job 'build_menlo-certification-pod-radisys-3200g_1T8GEM_DT_voltha_master' specified
+#       # -----------------------------------------------------------------------
+#       # Certification (Radisys) pod with olt/onu - branch=master timer based job
+#       - 'build_voltha_pod_release_timer':
+#           build-node: 'menlo-certification-pod-3'
+#           config-pod: 'menlo-certification-pod-radisys-3200g'
+#           disable-job: false
+#           reinstall-olt: true
+#           release: 'master'
+#           branch: 'master'
+#           name-extension: '_DT'
+#           work-flow: 'DT'
+#           profile: '1T8GEM'
+#           time: '9'
+#           pipeline-script: 'voltha/master/physical-build.groovy'
+#           extraHelmFlags: "--set onos-classic.image.tag=master"
+ 
+# [EOF]
