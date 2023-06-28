@@ -25,54 +25,31 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = 'jjb/pipeline/playground/physical-build.groovy'
+    String iam = [src, func].join('::')
+    return iam
+}
+
 def infraNamespace = "infra"
 def volthaNamespace = "voltha"
 
 // -----------------------------------------------------------------------
-// Intent: Visible in jenkins UI, job configure screen
-// -----------------------------------------------------------------------
-def getIam(String func)
-{
-    /*
-     [TODO]
-     -----------------------------------------------------------------------
-     java stack trace is hosed due to jenkins internal meddeling to support
-     serializable.  Lets see if groovy Throwable wrapper can produce a
-     better answer.
-     -----------------------------------------------------------------------
-     */
-
-    try
-    {
-        throw new Exception('Generating a stacktrace')
-    }
-    catch (Throwable err)
-    {
-        // https://docs.groovy-lang.org/2.4.7/html/api/org/codehaus/groovy/GroovyException.html
-        err.printStackTrace()
-        stack = err.getStackTrace()
-    }
-
-    // Cannot rely on a stack trace due to jenkins manipulation
-    String src = [
-        'jjb',
-        'pipeline',
-        'voltha',
-        'playground',
-        'physical-build.groovy'
-    ].join('/')
-
-    String iam = [src, func].join('::')
-    iam += sprintf('[ver:1.0]')
-    return iam
-}
-
-// -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 def deploy_custom_oltAdapterChart(namespace, name, chart, extraHelmFlags) {
-  sh """
+    String iam = getIam('deploy_custom_oltAdapterChart')
+    println("** ${iam}: ENTER")
+
+    sh """
     helm install --create-namespace --set defaults.image_pullPolicy=Always --namespace ${namespace} ${extraHelmFlags} ${name} ${chart}
    """
+
+    println("** ${iam}: LEAVE")
+    return
 }
 
 pipeline

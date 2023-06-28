@@ -22,13 +22,31 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = 'jjb/pipeline/voltha-2.8/physical-build.groovy'
+    String iam = [src, func].join('::')
+    return iam
+}
+
 def infraNamespace = "infra"
 def volthaNamespace = "voltha"
 
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 def deploy_custom_oltAdapterChart(namespace, name, chart, extraHelmFlags) {
-  sh """
+    String iam = getIam('deploy_custom_oltAdapterChart')
+    println("** ${iam}: ENTER")
+
+    sh """
     helm install --create-namespace --set defaults.image_pullPolicy=Always --namespace ${namespace} ${extraHelmFlags} ${name} ${chart}
    """
+
+    println("** ${iam}: LEAVE")
+    return
 }
 
 pipeline {
