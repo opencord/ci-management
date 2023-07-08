@@ -14,28 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
+# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# ONF.makefile.version = 1.0
+# -----------------------------------------------------------------------
+
+ifndef mk-include--onf-commands
 
 $(if $(DEBUG),$(warning ENTER))
 
-## -----------------------------------------------------------------------
-## Intent: Sanity check incoming JJB config changes.
-##   Todo: Depend on makefiles/lint/jjb.mk :: lint-jjb
-## -----------------------------------------------------------------------
-# lint : lint-jjb
-lint-tox: lint-jjb
-	tox -e py310
-
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-help-verbose += help-tox
-help-tox ::
-	@echo
-	@echo '[MAKE: tox]'
-	@echo '  lint-tox            Python unit testing, sanity check incoming JJB changes.'
+include $(ONF_MAKEDIR)/commands/kail.mk
 
 $(if $(DEBUG),$(warning LEAVE))
+
+mk-include--onf-commands := true
+
+endif # mk-include--onf-make
 
 # [EOF]

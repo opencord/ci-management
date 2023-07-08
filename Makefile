@@ -15,26 +15,18 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-# Makefile for testing JJB jobs in a virtualenv
 .PHONY: help clean help test
 .DEFAULT_GOAL := help
 
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
-TOP          ?= .
-MAKEDIR      ?= $(TOP)/makefiles
 
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include config.mk
-include $(MAKEDIR)/include.mk
-
-VENV_DIR      ?= venv-jjb
-JJB_VERSION   ?= 2.8.0
-# JJB_VERSION   ?= 4.1.0
-JOBCONFIG_DIR ?= job-configs
+include config.mk#                # configure
+include makefiles/include.mk      # load library makefiles
 
 # -----------------------------------------------------------------------
 # horrible dep: (ie -- .PHONY: $(JOBCONFIG_DIR))
@@ -45,14 +37,7 @@ JOBCONFIG_DIR ?= job-configs
 $(JOBCONFIG_DIR):
 	mkdir $@
 
-##-------------------##
-##---]  TARGETS  [---##
-##-------------------##
-include $(MAKEDIR)/targets/check.mk
-include $(MAKEDIR)/targets/tox.mk#             # python unit testing
-include $(MAKEDIR)/targets/test.mk
-
-## Display make help late
-include $(ONF_MAKE)/help/trailer.mk
+# [SEE ALSO]
+#    % make [help|lint|tox|test]
 
 # [EOF]

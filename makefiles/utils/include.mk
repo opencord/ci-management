@@ -18,20 +18,12 @@
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-.PHONY: test-python
-# test :: test-python
-test-targets += test-python
+$(if $(DEBUG),$(warning ENTER))
 
-## -----------------------------------------------------------------------
-## Intent: Gather and invoke available unit tests
-## -----------------------------------------------------------------------
-test-python-args += -m unittest
-test-python:
-	$(PYTHON) $(test-python-args) discover -v
+# usage: $(call if-not,false,5)
+if-not = $(info 1=$(1), 2=$(2), 3=$(3))\
+  $(if $(1),$(null),$(2))
 
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-help::
-	@echo "  test-python                   Invoke python unit tests"
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

@@ -14,27 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
+# -----------------------------------------------------------------------
+# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# ONF.makefile.version = 1.0
 # -----------------------------------------------------------------------
 
 $(if $(DEBUG),$(warning ENTER))
 
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-.PHONY: test
-test: $(venv-activate-script) $(JOBCONFIG_DIR)
-	$(activate) \
-	&& pipdeptree \
-	&& jenkins-jobs -l DEBUG test --recursive --config-xml -o "$(JOBCONFIG_DIR)" jjb/ ;
-
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-help-verbose += help-test
-help-test ::
-	@echo
-	@echo '[MAKE: test]'
-	@echo '  test                Perform testing that a jenkins job pull request will invoke'
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+include $(ONF_MAKEDIR)/targets/clean.mk
+include $(ONF_MAKEDIR)/targets/check.mk
+include $(ONF_MAKEDIR)/targets/sterile.mk
+include $(ONF_MAKEDIR)/targets/test/include.mk
 
 $(if $(DEBUG),$(warning LEAVE))
 

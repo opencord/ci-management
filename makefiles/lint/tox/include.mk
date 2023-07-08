@@ -18,20 +18,10 @@
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-.PHONY: test-python
-# test :: test-python
-test-targets += test-python
+$(if $(DEBUG),$(warning ENTER))
 
-## -----------------------------------------------------------------------
-## Intent: Gather and invoke available unit tests
-## -----------------------------------------------------------------------
-test-python-args += -m unittest
-test-python:
-	$(PYTHON) $(test-python-args) discover -v
+include $(ONF_MAKEDIR)/lint/tox/tox.mk
 
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-help::
-	@echo "  test-python                   Invoke python unit tests"
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

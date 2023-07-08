@@ -23,14 +23,15 @@ $(if $(DEBUG),$(warning ENTER))
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include $(MAKEDIR)/git/help.mk
-include $(MAKEDIR)/git/required.mk
+include $(ONF_MAKEDIR)/git/help.mk
+include $(ONF_MAKEDIR)/git/required.mk
 
-ifdef USE_ONF_GIT_MK
+## Special snowflakes: per-repository logic
+-include $(ONF_MAKEDIR)/git/$(--repo-name--).mk
+
+ifdef USE-ONF-GIT-MK
   # Dynamic loading when targets are requested by name
-  include $(ONF_MAKE)/git/submodules.mk
+  include $(ONF_MAKEDIR)/git/submodules.mk
 endif
 
 # [EOF]
-
-

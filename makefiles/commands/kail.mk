@@ -13,25 +13,34 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
-# SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-.PHONY: test-python
-# test :: test-python
-test-targets += test-python
-
-## -----------------------------------------------------------------------
-## Intent: Gather and invoke available unit tests
-## -----------------------------------------------------------------------
-test-python-args += -m unittest
-test-python:
-	$(PYTHON) $(test-python-args) discover -v
+MAKEDIR ?= $(error MAKEDIR= is required)
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
 help::
-	@echo "  test-python                   Invoke python unit tests"
+	@echo "  kail            Install the kail command"
+ifdef VERBOSE
+	@echo "                  make kail KAIL_PATH="
+endif
+
+# -----------------------------------------------------------------------
+# Install the 'kail' tool if needed: https://github.com/boz/kail
+#   o WORKSPACE - jenkins aware
+#   o Default to /usr/local/bin/kail
+#       + revisit this, system directories should not be a default path.
+#       + requires sudo and potential exists for overwrite conflict.
+# -----------------------------------------------------------------------
+KAIL_PATH ?= $(if $(WORKSPACE),$(WORKSPACE)/bin,/usr/local/bin)
+kail-cmd  ?= $(KAIL_PATH)/kail
+$(kail-cmd):
+	etc/godownloader.sh -b .
+	rsync -v --checksum kail "$@"
+	$@ version
+	$(RM) kail
+
+.PHONY: kail
+kail : $(kail-cmd)
 
 # [EOF]

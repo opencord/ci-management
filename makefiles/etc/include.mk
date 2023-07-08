@@ -1,6 +1,6 @@
 # -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2017-2023 Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,24 +14,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2017-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
+# Usage:
+#
+# mytarget:
+#     $(call banner-enter,target $@)
+#     @echo "Hello World"
+#     $(call banner-leave,target $@)
+# -----------------------------------------------------------------------
 
-.PHONY: test-python
-# test :: test-python
-test-targets += test-python
+$(if $(DEBUG),$(warning ENTER))
+
+target-banner = ** ---------------------------------------------------------------------------
 
 ## -----------------------------------------------------------------------
-## Intent: Gather and invoke available unit tests
+## Intent: Return a command line able to display a banner hilighting
+##         make target processing within a logfile.
 ## -----------------------------------------------------------------------
-test-python-args += -m unittest
-test-python:
-	$(PYTHON) $(test-python-args) discover -v
+banner-enter=\
+    @echo -e \
+    "\n"\
+    "$(target-banner)\n"\
+    "** $(MAKE) ENTER: $(1)\n"\
+    "$(target-banner)"\
 
-## -----------------------------------------------------------------------
-## -----------------------------------------------------------------------
-help::
-	@echo "  test-python                   Invoke python unit tests"
+banner-leave=\
+    @echo -e "** $(MAKE) LEAVE: $(1)"
+
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]

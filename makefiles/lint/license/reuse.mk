@@ -13,25 +13,29 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#
-# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
-# SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-.PHONY: test-python
-# test :: test-python
-test-targets += test-python
+##-------------------##
+##---]  GLOBALS  [---##
+##-------------------##
+
+##-------------------##
+##---]  TARGETS  [---##
+##-------------------##
+ifndef NO-LINT-REUSE
+  lint : lint-license
+endif
 
 ## -----------------------------------------------------------------------
-## Intent: Gather and invoke available unit tests
+## Intent: Perform a lint check on makefile sources
 ## -----------------------------------------------------------------------
-test-python-args += -m unittest
-test-python:
-	$(PYTHON) $(test-python-args) discover -v
+lint-license:
+	reuse --root . lint
 
 ## -----------------------------------------------------------------------
+## Intent: Display command help
 ## -----------------------------------------------------------------------
-help::
-	@echo "  test-python                   Invoke python unit tests"
+help-summary ::
+	@echo '  lint-reuse              License syntax checking"
 
 # [EOF]

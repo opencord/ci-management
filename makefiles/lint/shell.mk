@@ -14,6 +14,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -----------------------------------------------------------------------
+# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# ONF.makefile.version = 1.0
+# -----------------------------------------------------------------------
 
 ##-------------------##
 ##---]  GLOBALS  [---##
@@ -27,10 +30,11 @@ shell-check-find += -name 'vendor' -prune
 shell-check-find += -o \( -name '*.sh' \)
 shell-check-find += -type f -print0
 
-# shell-check    := $(env-clean) pylint
-shell-check      := shellcheck
+shell-check    := $(env-clean) shellcheck
+# shell-check      := shellcheck
 
-shell-check-args += -a
+shell-check-args += --check-sourced
+shell-check-args += --external-sources
 
 ##-------------------##
 ##---]  TARGETS  [---##
@@ -53,5 +57,9 @@ lint-shell:
 ## -----------------------------------------------------------------------
 help-summary ::
 	@echo '  lint-shell          Syntax check shell sources'
+
+# [SEE ALSO]
+# -----------------------------------------------------------------------
+#   o https://www.shellcheck.net/wiki/Directive
 
 # [EOF]

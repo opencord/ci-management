@@ -19,35 +19,23 @@
 ##---]  GLOBALS  [---##
 ##-------------------##
 
-# Gather sources to check
-# TODO: implement deps, only check modified files
-python-check-find := find . -name '*venv*' -prune\
-  -o \( -name '*.py' \)\
-  -type f -print0
-
-# python-check    := $(env-clean) pylint
-python-check    := pylint
-
-# python-check-args += --dry-run
-
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
-ifndef NO-LINT-PYTHON
-  lint : lint-python
+ifndef NO-LINT-REUSE
+  lint : lint-license
 endif
 
 ## -----------------------------------------------------------------------
 ## Intent: Perform a lint check on makefile sources
 ## -----------------------------------------------------------------------
-lint-python:
-	$(HIDE)$(env-clean) $(python-check-find) \
-	    | $(xargs-n1) $(python-check) $(python-check-args)
+lint-license:
+	reuse --root . lint
 
 ## -----------------------------------------------------------------------
 ## Intent: Display command help
 ## -----------------------------------------------------------------------
 help-summary ::
-	@echo '  lint-python         Syntax check python sources (*.py)'
+	@echo '  lint-reuse              License syntax checking'
 
 # [EOF]

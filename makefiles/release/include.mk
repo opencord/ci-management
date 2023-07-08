@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
@@ -23,12 +23,12 @@ $(if $(DEBUG),$(warning ENTER))
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include $(MAKEDIR)/release/help.mk
-include $(MAKEDIR)/release/required.mk
+include $(ONF_MAKEDIR)/release/help.mk
+include $(ONF_MAKEDIR)/release/required.mk
 
 ifdef USE_VOLTHA_RELEASE_MK
   # Dynamic loading when targets are requested by name
-  include $(MAKEDIR)/release/targets.mk
+  include $(ONF_MAKEDIR)/release/targets.mk
 endif
 
 # [EOF]

@@ -26,7 +26,7 @@ git-mk-targets := show-submodules
 # Makefile can also explicitly define the flag to force always loading.
 # -----------------------------------------------------------------------
 $(foreach tgt,$(git-mk-targets),\
-  $(if $(findstring $(tgt),$(MAKECMDGOALS)),$(eval USE_ONF_GIT_MK := true))\
+  $(if $(findstring $(tgt),$(MAKECMDGOALS)),$(eval USE-ONF-GIT-MK := true))\
 )
 
 # [EOF]

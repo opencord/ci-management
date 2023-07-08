@@ -18,20 +18,24 @@
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
 
-.PHONY: test-python
-# test :: test-python
-test-targets += test-python
-
-## -----------------------------------------------------------------------
-## Intent: Gather and invoke available unit tests
-## -----------------------------------------------------------------------
-test-python-args += -m unittest
-test-python:
-	$(PYTHON) $(test-python-args) discover -v
+$(if $(DEBUG),$(warning ENTER))
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
-help::
-	@echo "  test-python                   Invoke python unit tests"
+.PHONY: test
+test: $(venv-activate-script) $(JOBCONFIG_DIR)
+	$(activate) \
+	&& pipdeptree \
+	&& jenkins-jobs -l DEBUG test --recursive --config-xml -o "$(JOBCONFIG_DIR)" jjb/ ;
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help-verbose += help-test
+help-test ::
+	@echo
+	@echo '[MAKE: test]'
+	@echo '  test                Perform testing that a jenkins job pull request will invoke'
+
+$(if $(DEBUG),$(warning LEAVE))
 
 # [EOF]
