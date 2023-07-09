@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bc4e3029_5ff6e382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-07-09T22:33:59Z",
+      "side": 1,
+      "message": "Another patch not triggering a jenkins job.\nLet(s) see if the merge job will run.",
+      "revId": "dd3344995b6b70bcaf6cd6ff60c20f9253eb4b47",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
