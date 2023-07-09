@@ -20,17 +20,24 @@
 
 $(if $(DEBUG),$(warning ENTER))
 
+ifdef USE-ONF-GIT-MK
+  mk-include--onf-git := seen
+endif
+
+ifndef mk-include--onf-git
+
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include $(MAKEDIR)/git/help.mk
-include $(MAKEDIR)/git/required.mk
+include $(ONF_MAKEDIR)/git/help.mk
+include $(ONF_MAKEDIR)/git/required.mk
 
-ifdef USE_ONF_GIT_MK
-  # Dynamic loading when targets are requested by name
-  include $(ONF_MAKE)/git/submodules.mk
-endif
+## Special snowflake: per-repository logic loader
+-include $(ONF_MAKEDIR)/git/byrepo/$(--repo-name--).mk
+
+# Dynamic loading when targets are requested by name
+include $(ONF_MAKEDIR)/git/submodules.mk
+
+endif # mk-include--onf-git
 
 # [EOF]
-
-

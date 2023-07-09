@@ -1,2 +1,13 @@
-# jenkins-job-builder==4.1.0
+# -*- makefile -*-
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+
+jenkins-job-builder==4.1.0
 pipdeptree
+jenkins-jobs
+
+# Installed on-demand by makefiles/lint/python/{flake8,pylint,tox}.mk
+# pylint
+# tox
+
+# [EOF]

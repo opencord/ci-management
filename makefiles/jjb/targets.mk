@@ -36,13 +36,12 @@ all: help
 
 jjb-gen-log := $(jjb-gen-dir)/jjb-gen.log
 jjb-gen:
+	$(call banner-enter,Target $@)
 	@mkdir -p $(jjb-gen-dir)
-
-	@echo
-	@echo "** Generating pipelines (target: $@)"
 	@touch "$(jjb-gen-dir)/.sentinel"
-	( jenkins-jobs test $(PWD)/jjb -o $(jjb-gen-dir) 3>&1 2>&1 )\
-	   > "$(jjb-gen-log)"
+	( $(activate) \
+	   && jenkins-jobs test $(PWD)/jjb -o $(jjb-gen-dir) 3>&1 2>&1 \
+	) | tee "$(jjb-gen-log)"
 
   ifdef LOGS
 	-@less "$(jjb-gen-log)"
@@ -53,6 +52,8 @@ jjb-gen:
 	@echo "** Display generated pipelines"
 	find "$(jjb-gen-dir)" -newer "$(jjb-gen-dir)/.sentinel" -ls
   endif
+
+	$(call banner-leave,Target $@)
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------

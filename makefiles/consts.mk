@@ -34,8 +34,11 @@ export quote-double := $(null)"$(null)#"
 HIDE           ?= @
 
 env-clean      ?= /usr/bin/env --ignore-environment
-xargs-n1       := xargs -0 -t -n1 --no-run-if-empty
-xargs-n1-clean := $(env-clean) $(xargs-n1)
+
+xargs-cmd       := xargs -0 -t --no-run-if-empty
+xargs-n1        := $(xargs-cmd) -n1
+xargs-n1-clean  := $(env-clean) $(xargs-n1)
+xargs-cmd-clean := $(env-clean) $(xargs-cmd)
 
 ## -----------------------------------------------------------------------
 ## Intent: NOP command for targets whose dependencies do all heavy lifting

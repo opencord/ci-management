@@ -1,6 +1,25 @@
 # -*- makefile -*-
+# -*- makefile -*-
 # -----------------------------------------------------------------------
-# Copyright 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-License-Identifier: Apache-2.0
+# -----------------------------------------------------------------------
+# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# ONF.makefile.version = 1.2
 # -----------------------------------------------------------------------
 
 $(if $(DEBUG),$(warning ENTER))
@@ -9,15 +28,15 @@ help ::
 	@echo
 	@echo "[LINT]"
 
-include $(ONF_MAKE)/lint/groovy.mk
-include $(ONF_MAKE)/lint/jjb.mk
-include $(ONF_MAKE)/lint/json.mk
-include $(ONF_MAKE)/lint/makefile.mk
-include $(ONF_MAKE)/lint/python.mk
-include $(ONF_MAKE)/lint/shell.mk
-include $(ONF_MAKE)/lint/yaml.mk
-
-include $(ONF_MAKE)/lint/help.mk
+include $(ONF_MAKEDIR)/lint/groovy.mk
+include $(ONF_MAKEDIR)/lint/jjb.mk
+include $(ONF_MAKEDIR)/lint/json.mk
+include $(ONF_MAKEDIR)/lint/license/include.mk
+include $(ONF_MAKEDIR)/lint/makefile.mk
+include $(ONF_MAKEDIR)/lint/python/include.mk
+include $(ONF_MAKEDIR)/lint/shell.mk
+include $(ONF_MAKEDIR)/lint/tox/include.mk
+include $(ONF_MAKEDIR)/lint/yaml/include.mk
 
 $(if $(DEBUG),$(warning LEAVE))
 

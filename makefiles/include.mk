@@ -14,51 +14,61 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# SPDX-FileCopyrightText: 2022 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
+# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# ONF.makefiles.include.version = 1.1
+# -----------------------------------------------------------------------
+
+ifndef mk-include--onf-make # single-include guard macro
 
 $(if $(DEBUG),$(warning ENTER))
 
-# OPT_ROOT    ?= /opt/trainlab/current
-# OPT_MAKEDIR := $(OPT_ROOT)/makefiles
-# MAKEDIR     ?= $(OPT_MAKEDIR)
+## -----------------------------------------------------------------------
+## Define vars based on relative import (normalize symlinks)
+## Usage: include makefiles/onf/include.mk
+## -----------------------------------------------------------------------
+onf-mk-abs    ?= $(abspath $(lastword $(MAKEFILE_LIST)))
+onf-mk-top    := $(subst /include.mk,$(null),$(onf-mk-abs))
+ONF_MAKEDIR   := $(onf-mk-top)
 
-ONF_MAKE ?= $(MAKEDIR)# fix this -- two distinct makefiles/ directories are needed
-ONF_MAKE ?= $(error ONF_MAKE= is required)
+TOP ?= $(patsubst %/makefiles/include.mk,%,$(onf-mk-abs))
 
-include $(ONF_MAKE)/consts.mk
-include $(ONF_MAKE)/help/include.mk
+include $(ONF_MAKEDIR)/consts.mk
+include $(ONF_MAKEDIR)/help/include.mk       # render target help
+include $(ONF_MAKEDIR)/utils/include.mk      # dependency-less helper macros
+include $(ONF_MAKEDIR)/etc/include.mk        # banner macros
+include $(ONF_MAKEDIR)/commands/include.mk   # Tools and local installers
 
-include $(ONF_MAKE)/virtualenv.mk#        # lint-{jjb,python} depends on venv
-include $(ONF_MAKE)/lint/include.mk
-include $(ONF_MAKE)/git-submodules.mk
-include $(ONF_MAKE)/gerrit/include.mk
+include $(ONF_MAKEDIR)/virtualenv.mk#        # lint-{jjb,python} depends on venv
+include $(ONF_MAKEDIR)/lint/include.mk
 
-include $(ONF_MAKE)/git/include.mk
-include $(ONF_MAKE)/jjb/include.mk
+include $(ONF_MAKEDIR)/gerrit/include.mk
+include $(ONF_MAKEDIR)/git/include.mk
+include $(ONF_MAKEDIR)/jjb/include.mk
 
-include $(ONF_MAKE)/release/include.mk
+$(if $(USE-VOLTHA-RELEASE-MK),\
+  $(eval include $(ONF_MAKEDIR)/release/include.mk))
 
-include $(ONF_MAKE)/todo.mk
-include $(ONF_MAKE)/help/variables.mk
+include $(ONF_MAKEDIR)/todo.mk
+include $(ONF_MAKEDIR)/help/variables.mk
+
+##---------------------##
+##---]  ON_DEMAND  [---##
+##---------------------##
+$(if $(USE-ONF-GERRIT-MK),$(eval include $(ONF_MAKEDIR)/gerrit/include.mk))
+$(if $(USE-ONF-DOCKER-MK),$(eval include $(ONF_MAKEDIR)/docker/include.mk))
 
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
-include $(ONF_MAKE)/targets/clean.mk
-# include $(ONF_MAKE)/targets/check.mk
-include $(ONF_MAKE)/targets/sterile.mk
-# include $(ONF_MAKE)/targets/test.mk
+include $(ONF_MAKEDIR)/targets/include.mk # clean, sterile
 
 $(if $(DEBUG),$(warning LEAVE))
 
-## --------------------------------------------------------------------------
-## structure to support pre/post target handling w/o inlining in Makefile (?)
-## --------------------------------------------------------------------------
-##   include makefiles/include.mk
-##     include makefiles/main/enter.mk
-##     [... include *.mk ...]
-##     include makefiles/main/leave.mk
+mk-include--onf-make := true
+
+endif # mk-include--onf-make
 
 # [EOF]

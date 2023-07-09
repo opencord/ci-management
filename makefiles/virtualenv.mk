@@ -13,7 +13,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-## -----------------------------------------------------------------------
+# -----------------------------------------------------------------------
 # https://gerrit.opencord.org/plugins/gitiles/onf-make
 # ONF.makefile.version = 1.0
 # -----------------------------------------------------------------------
@@ -30,8 +30,8 @@ $(if $(DEBUG),$(warning ENTER))
 ##------------------##
 venv-name            ?= .venv#                            # default install directory
 venv-abs-path        := $(PWD)/$(venv-name)
-
-venv-activate-script := $(venv-name)/bin/activate#        # dependency
+venv-activate-bin    := $(venv-name)/bin
+venv-activate-script := $(venv-activate-bin)/activate#    # dependency
 
 # Intent: activate= is a macro for accessing the virtualenv activation script#
 #  Usage: $(activate) && python

@@ -23,12 +23,12 @@ $(if $(DEBUG),$(warning ENTER))
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include $(MAKEDIR)/jjb/help.mk
-include $(MAKEDIR)/jjb/required.mk
+include $(ONF_MAKEDIR)/jjb/help.mk
+include $(ONF_MAKEDIR)/jjb/required.mk
 
 ifdef USE-ONF-JJB-MK
   # Dynamic loading when targets are requested by name
-  include $(ONF_MAKE)/jjb/targets.mk
+  include $(ONF_MAKEDIR)/jjb/targets.mk
 endif
 
 # [EOF]

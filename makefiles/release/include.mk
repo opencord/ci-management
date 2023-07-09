@@ -23,12 +23,12 @@ $(if $(DEBUG),$(warning ENTER))
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include $(MAKEDIR)/release/help.mk
-include $(MAKEDIR)/release/required.mk
+include $(ONF_MAKEDIR)/release/help.mk
+include $(ONF_MAKEDIR)/release/required.mk
 
 ifdef USE_VOLTHA_RELEASE_MK
   # Dynamic loading when targets are requested by name
-  include $(MAKEDIR)/release/targets.mk
+  include $(ONF_MAKEDIR)/release/targets.mk
 endif
 
 # [EOF]

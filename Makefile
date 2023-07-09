@@ -15,23 +15,21 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 
-# Makefile for testing JJB jobs in a virtualenv
 .PHONY: help clean help test
 .DEFAULT_GOAL := help
 
 ##-------------------##
 ##---]  GLOBALS  [---##
 ##-------------------##
-TOP          ?= .
-MAKEDIR      ?= $(TOP)/makefiles
 
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
 include config.mk
-include $(MAKEDIR)/include.mk
+include makefiles/include.mk
+ONF_MAKEDIR ?= $(error ONF_MAKEDIR= is required)
 
-VENV_DIR      ?= venv-jjb
+# VENV_DIR      ?= venv-jjb
 JJB_VERSION   ?= 2.8.0
 # JJB_VERSION   ?= 4.1.0
 JOBCONFIG_DIR ?= job-configs
@@ -45,14 +43,24 @@ JOBCONFIG_DIR ?= job-configs
 $(JOBCONFIG_DIR):
 	mkdir $@
 
+# -----------------------------------------------------------------------
+# Intent: Generate pipeline jobs
+# -----------------------------------------------------------------------
+build : jjb-gen
+
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
-include $(MAKEDIR)/targets/check.mk
-include $(MAKEDIR)/targets/tox.mk#             # python unit testing
-include $(MAKEDIR)/targets/test.mk
+## Display make help summary late
+include $(ONF_MAKEDIR)/help/trailer.mk
 
-## Display make help late
-include $(ONF_MAKE)/help/trailer.mk
+# make help not widely in use yet so be explicit
+help ::
+	@echo
+	@echo 'Usage: $(MAKE) help ...'
+	@echo '  % make clean sterile'
+	@echo '  % make lint lint-jjb'
+	@echo '  % make test'
+	@echo '  % make help            # show all available targes'
 
 # [EOF]
