@@ -23,7 +23,8 @@ library identifier: 'cord-jenkins-libraries@master',
 
 def clusterName = "kind-ci"
 
-def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "") {
+def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "")
+{
     def infraNamespace = "default"
     def volthaNamespace = "voltha"
     def logsDir = "$WORKSPACE/${testTarget}"
@@ -48,7 +49,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 		returnStdout: true,
 		script: cmd)
 	    println(" ** ${cmd}:\n${stream}")
-	    
+
             println("** ${iam}: LEAVE")
 	}
     }

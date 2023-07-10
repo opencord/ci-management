@@ -41,7 +41,7 @@
           profile: 'TP'
           name-extension: '_TT'
           work-flow: 'TT'
-# ZZ
+
       # flex pod1 test job - using voltha branch
       - 'build_voltha_pod_manual_test':
           disable-job: false
@@ -68,46 +68,19 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
-      # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
-#      - 'build_voltha_pod_release_timer':
-#          disable-job: true
-#          build-node: 'qa-testvm-pod'
-#          config-pod: 'flex-ocp-cord'
-#          release: '2.11'
-#          branch: 'voltha-2.11'
-#          profile: '1T4GEM'
-#          time: '1'
-#          VolthaEtcdPort: 9999
-#          num-of-onos: '3'
-#          num-of-atomix: '3'
-#          pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
-
-    ## ZZ
-      # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
-#      - 'build_voltha_pod_release_timer':
-#          disable-job: true
-#          build-node: 'qa-testvm-pod'
-#          config-pod: 'flex-ocp-cord'
-#          release: '2.8'
-#          branch: 'voltha-2.8'
-#          profile: '1T4GEM'
-#          time: '1'
-#          VolthaEtcdPort: 9999
-#          num-of-onos: '3'
-#          num-of-atomix: '3'
-#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-
-      # flex pod1 test job - released versions: uses tech profile on voltha branch
+      # -----------------------------------------------------------------------
+      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
+      # -----------------------------------------------------------------------
       - 'build_voltha_pod_test':
           disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: '2.8'
-          branch: 'voltha-2.8'
+          release: '2.12'
+          branch: 'voltha-2.12'
           power-switch: true
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
-
+          
       # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           disable-job: true
@@ -150,13 +123,32 @@
           profile: 'TP'
           timeout: 360
 
+      # -----------------------------------------------------------------------
       # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
+#      - 'build_voltha_pod_release_timer':
+#          disable-job: true
+#          build-node: 'qa-testvm-pod'
+#          config-pod: 'flex-ocp-cord'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          name-extension: '_TT'
+#          work-flow: 'TT'
+#          profile: 'TP'
+#          time: '20'
+#          VolthaEtcdPort: 9999
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
+#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+
+      # -----------------------------------------------------------------------
+      # [VOL-4939] - flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
+      # -----------------------------------------------------------------------
       - 'build_voltha_pod_release_timer':
           disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: '2.8'
-          branch: 'voltha-2.8'
+          release: '2.12'
+          branch: 'voltha-2.12'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
@@ -164,9 +156,8 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
-          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
 
-      # [VOL-4939] - flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           disable-job: true
           build-node: 'qa-testvm-pod'
@@ -182,19 +173,21 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
+      # -----------------------------------------------------------------------
       # flex pod1 test job - released versions: uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.8'
-          branch: 'voltha-2.8'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-2.8/voltha-tt-physical-functional-tests.groovy'
-          test-repo: 'voltha-system-tests'
-          profile: 'TP'
+      # -----------------------------------------------------------------------
+#      - 'build_voltha_pod_test':
+#          disable-job: true
+#          build-node: 'qa-testvm-pod'
+#          config-pod: 'flex-ocp-cord'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          name-extension: '_TT'
+#          work-flow: 'TT'
+#          power-switch: true
+#          pipeline-script: 'voltha/voltha-2.8/voltha-tt-physical-functional-tests.groovy'
+#          test-repo: 'voltha-system-tests'
+#          profile: 'TP'
 
       # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -210,6 +203,21 @@
           test-repo: 'voltha-system-tests'
           profile: 'TP'
 
+      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          disable-job: true
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.12/voltha-tt-physical-functional-tests.groovy'
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
+
+      # -----------------------------------------------------------------------
       # [CORD-4941] - flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           disable-job: true
@@ -301,22 +309,23 @@
           power-switch: true
           power-cycle-olt: true
 
+      # -----------------------------------------------------------------------
       # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          disable-job: true
-          release: '2.8'
-          branch: 'voltha-2.8'
-          name-extension: '_DT'
-          work-flow: 'DT'
-          profile: '1T8GEM'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          VolthaEtcdPort: 9999
-          in-band-management: true
-          time: '11'
-          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+#      - 'build_voltha_pod_release_timer':
+#          build-node: 'menlo-demo-pod'
+#          config-pod: 'onf-demo-pod'
+#          disable-job: true
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          name-extension: '_DT'
+#          work-flow: 'DT'
+#          profile: '1T8GEM'
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
+#          VolthaEtcdPort: 9999
+#          in-band-management: true
+#          time: '11'
+#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
       # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -335,20 +344,38 @@
           time: '11'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
-      # Menlo pod test job - uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          timeout: 300
+      # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
-          disable-job: true
-          release: '2.8'
-          branch: 'voltha-2.8'
+          disable-job: false
+          release: '2.12'
+          branch: 'voltha-2.12'
           name-extension: '_DT'
           work-flow: 'DT'
-          test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
-          power-switch: true
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          VolthaEtcdPort: 9999
+          in-band-management: true
+          time: '11'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
+
+      # -----------------------------------------------------------------------
+      # Menlo pod test job - uses tech profile on voltha branch
+#      - 'build_voltha_pod_test':
+#          timeout: 300
+#          build-node: 'menlo-demo-pod'
+#          config-pod: 'onf-demo-pod'
+#          disable-job: true
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          name-extension: '_DT'
+#          work-flow: 'DT'
+#          test-repo: 'voltha-system-tests'
+#          profile: '1T8GEM'
+#          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
+#          power-switch: true
 
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -365,6 +392,22 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
           power-switch: true
 
+      # Menlo pod test job - uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          timeout: 300
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          disable-job: false
+          release: '2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+          power-switch: true
+
+      # -----------------------------------------------------------------------
       # ONF Menlo Soak POD build job - voltha-master branch
       - 'build_voltha_pod_manual':
           build-node: 'menlo-soak-pod'
@@ -427,21 +470,21 @@
           time-trigger: "H H * * 6"
 
       # ONF Menlo Soak POD build job - voltha-2.8 branch
-      - 'build_voltha_pod_manual':
-          build-node: 'menlo-soak-pod'
-          config-pod: 'onf-soak-pod'
-          disable-job: true
-          branch: 'voltha-2.8'
-          release: '2.8'
-          bbsimReplicas: 1
-          profile: '1T8GEM'
-          name-extension: '_DT'
-          work-flow: 'DT'
-          reinstall-olt: true
-          num-of-onus: 32
-          num-of-ponports: 16
-          logLevel: 'WARN'
-          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+#      - 'build_voltha_pod_manual':
+#          build-node: 'menlo-soak-pod'
+#          config-pod: 'onf-soak-pod'
+#          disable-job: true
+#          branch: 'voltha-2.8'
+##          release: '2.8'
+ #         bbsimReplicas: 1
+ #         profile: '1T8GEM'
+ #         name-extension: '_DT'
+ #         work-flow: 'DT'
+ #         reinstall-olt: true
+ #         num-of-onus: 32
+ #         num-of-ponports: 16
+ #         logLevel: 'WARN'
+ #         pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
       # ONF Menlo Soak POD build job - voltha-2.11 branch
       - 'build_voltha_pod_manual':
@@ -460,51 +503,85 @@
           logLevel: 'WARN'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
+      # ONF Menlo Soak POD build job - voltha-2.12 branch
+      - 'build_voltha_pod_manual':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: false
+          branch: 'voltha-2.12'
+          release: '2.12'
+          bbsimReplicas: 1
+          profile: '1T8GEM'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          reinstall-olt: true
+          num-of-onus: 32
+          num-of-ponports: 16
+          logLevel: 'WARN'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
+
+      # -----------------------------------------------------------------------
       # ONF Menlo Soak POD test job - voltha-2.8 branch
+      # Run tests manually triggering the job
+#      - 'build_voltha_pod_manual_test':
+#          build-node: 'menlo-soak-pod'
+#          config-pod: 'onf-soak-pod'
+#          disable-job: true
+#          profile: '1T8GEM'
+#          branch: 'voltha-2.8'
+#          release: '2.8'
+#          work-flow: 'DT'
+#          name-extension: '_DT_soak_Func'
+#          test-type: 'Functional'
+#          test-repo: 'voltha-system-tests'
+#          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
+
+      # ONF Menlo Soak POD test job - voltha-2.11 branch
       # Run tests manually triggering the job
       - 'build_voltha_pod_manual_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           profile: '1T8GEM'
-          branch: 'voltha-2.8'
-          release: '2.8'
+          branch: 'voltha-2.11'
+          release: '2.11'
           work-flow: 'DT'
           name-extension: '_DT_soak_Func'
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.11/voltha-physical-soak-dt-tests.groovy'
 
-      # ONF Menlo Soak POD test job - voltha-2.11 branch
+      # ONF Menlo Soak POD test job - voltha-2.12 branch
       # Run tests manually triggering the job
       - 'build_voltha_pod_manual_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
           disable-job: false
           profile: '1T8GEM'
-          branch: 'voltha-2.11'
-          release: '2.11'
+          branch: 'voltha-2.12'
+          release: '2.12'
           work-flow: 'DT'
           name-extension: '_DT_soak_Func'
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha/voltha-2.11/voltha-physical-soak-dt-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.12/voltha-physical-soak-dt-tests.groovy'
 
+      # -----------------------------------------------------------------------
       # ONF Menlo Soak POD test job - voltha-2.8 branch
       # Run failure/recovery tests every Wednesday
-      - 'build_voltha_pod_soak_test':
-          build-node: 'menlo-soak-pod'
-          config-pod: 'onf-soak-pod'
-          disable-job: true
-          profile: '1T8GEM'
-          branch: 'voltha-2.8'
-          release: '2.8'
-          work-flow: 'DT'
-          name-extension: '_DT_soak_Fail'
-          test-type: 'Failure'
-          test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H * * 3"
+#      - 'build_voltha_pod_soak_test':
+#          build-node: 'menlo-soak-pod'
+#          config-pod: 'onf-soak-pod'
+#          disable-job: true
+#          profile: '1T8GEM'
+#          branch: 'voltha-2.8'
+#          release: '2.8'
+#          work-flow: 'DT'
+#          name-extension: '_DT_soak_Fail'
+#          test-type: 'Failure'
+#          test-repo: 'voltha-system-tests'
+#          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
+#          time-trigger: "H H * * 3"
 
       # ONF Menlo Soak POD test job - voltha-2.11 branch
       # Run failure/recovery tests every Wednesday
@@ -522,21 +599,38 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H * * 3"
 
-      # ONF Menlo Soak POD test job - voltha-2.8 branch
-      # Run dataplane tests every Saturday
+      # ONF Menlo Soak POD test job - voltha-2.12 branch
+      # Run failure/recovery tests every Wednesday
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
           config-pod: 'onf-soak-pod'
-          disable-job: true
+          disable-job: false
           profile: '1T8GEM'
-          branch: 'voltha-2.8'
-          release: '2.8'
+          branch: 'voltha-2.12'
+          release: '2.12'
           work-flow: 'DT'
-          name-extension: '_DT_soak_DP'
-          test-type: 'Dataplane'
+          name-extension: '_DT_soak_Fail'
+          test-type: 'Failure'
           test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H * * 6"
+          pipeline-script: 'voltha/voltha-2.12/voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H * * 3"
+
+      # -----------------------------------------------------------------------
+      # ONF Menlo Soak POD test job - voltha-2.8 branch
+      # Run dataplane tests every Saturday
+#      - 'build_voltha_pod_soak_test':
+#          build-node: 'menlo-soak-pod'
+#          config-pod: 'onf-soak-pod'
+#          disable-job: true
+#          profile: '1T8GEM'
+#          branch: 'voltha-2.8'
+#          release: '2.8'
+#          work-flow: 'DT'
+#          name-extension: '_DT_soak_DP'
+#          test-type: 'Dataplane'
+#          test-repo: 'voltha-system-tests'
+#          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
+#          time-trigger: "H H * * 6"
 
       # ONF Menlo Soak POD test job - voltha-2.11 branch
       # Run dataplane tests every Saturday
@@ -554,6 +648,23 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-physical-soak-dt-tests.groovy'
           time-trigger: "H H * * 6"
 
+      # ONF Menlo Soak POD test job - voltha-2.12 branch
+      # Run dataplane tests every Saturday
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: false
+          profile: '1T8GEM'
+          branch: 'voltha-2.12'
+          release: '2.12'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_DP'
+          test-type: 'Dataplane'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha/voltha-2.12/voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H * * 6"
+
+      # -----------------------------------------------------------------------
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
@@ -611,19 +722,19 @@
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-1'
-          config-pod: 'berlin-community-pod-1-gpon'
-          release: '2.8'
-          branch: 'voltha-2.8'
-          name-extension: '_DT'
-          disable-job: true
-          work-flow: 'DT'
-          profile: '1T8GEM'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          time: '1'
-          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+#      - 'build_voltha_pod_release_timer':
+#          build-node: 'berlin-community-pod-1'
+#          config-pod: 'berlin-community-pod-1-gpon'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          name-extension: '_DT'
+#          disable-job: true
+#          work-flow: 'DT'
+#          profile: '1T8GEM'
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
+#          time: '1'
+#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -639,19 +750,34 @@
           time: '1'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
-      # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
-      - 'build_voltha_pod_test':
+      # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          release: '2.12'
+          branch: 'voltha-2.12'
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
-          release: '2.8'
-          branch: 'voltha-2.8'
-          test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          time: '1'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
+
+      # -----------------------------------------------------------------------
+      # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+#      - 'build_voltha_pod_test':
+#          build-node: 'berlin-community-pod-1'
+#          config-pod: 'berlin-community-pod-1-gpon'
+#          name-extension: '_DT'
+#          disable-job: true
+#          work-flow: 'DT'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          test-repo: 'voltha-system-tests'
+#          profile: '1T8GEM'
+#          power-switch: true
+#          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -666,20 +792,34 @@
           power-switch: true
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
 
-      # Berlin pod with olt/onu - voltha-2.8 versions timer based job , two OLTs
-      - 'build_voltha_pod_release_timer':
+      # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
           build-node: 'berlin-community-pod-1'
-          config-pod: 'berlin-community-pod-1-multi-olt'
+          config-pod: 'berlin-community-pod-1-gpon'
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
-          release: '2.8'
-          branch: 'voltha-2.8'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          time: '7'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+
+      # -----------------------------------------------------------------------
+      # Berlin pod with olt/onu - voltha-2.8 versions timer based job , two OLTs
+#      - 'build_voltha_pod_release_timer':
+#          build-node: 'berlin-community-pod-1'
+#          config-pod: 'berlin-community-pod-1-multi-olt'
+#          name-extension: '_DT'
+#          disable-job: true
+#          work-flow: 'DT'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          profile: '1T8GEM'
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
+#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+#          time: '7'
 
       # Berlin pod with olt/onu - voltha-2.11 versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
@@ -695,19 +835,34 @@
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
           time: '7'
 
-      # Berlin POD test job - voltha-2.8 versions: uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
+      # Berlin pod with olt/onu - voltha-2.12 versions timer based job , two OLTs
+      - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-multi-olt'
-          release: '2.8'
-          branch: 'voltha-2.8'
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
-          test-repo: 'voltha-system-tests'
+          release: '2.12'
+          branch: 'voltha-2.12'
           profile: '1T8GEM'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
+          time: '7'
+
+      # -----------------------------------------------------------------------
+      # Berlin POD test job - voltha-2.8 versions: uses tech profile on voltha branch
+#      - 'build_voltha_pod_test':
+#          build-node: 'berlin-community-pod-1'
+#          config-pod: 'berlin-community-pod-1-multi-olt'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          name-extension: '_DT'
+#          disable-job: true
+#          work-flow: 'DT'
+#          test-repo: 'voltha-system-tests'
+#          profile: '1T8GEM'
+#          power-switch: true
+#          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin POD test job - voltha-2.11 versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -722,6 +877,20 @@
           power-switch: true
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
 
+      # Berlin POD test job - voltha-2.12 versions: uses tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-multi-olt'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+
+      # -----------------------------------------------------------------------
       # Berlin pod with gpon olt/onu - master 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
@@ -767,6 +936,23 @@
           time: '13'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
+      # Berlin pod with gpon olt/onu - 2.12 1T4GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon-fttb'
+          withFttb: true
+          name-extension: '_DT'
+          disable-job: false
+          work-flow: 'DT'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          profile: '1T4GEM-FTTB'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          time: '13'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
+
+      # -----------------------------------------------------------------------          
       # Berlin POD test job - 2.11 versions: uses 1T4GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
@@ -783,6 +969,22 @@
           power-switch: true
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
 
+      # Berlin POD test job - 2.12 versions: uses 1T4GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          timeout: 330
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon-fttb'
+          withFttb: true
+          name-extension: '_DT'
+          disable-job: false
+          work-flow: 'DT'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM-FTTB'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+          
           # Berlin pod with zyxel gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-2'
@@ -907,6 +1109,7 @@
           profile: 'TP'
           timeout: 360
 
+      # -----------------------------------------------------------------------
       # [CORD-3256] TT workflow on XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
           disable-job: false
@@ -922,6 +1125,22 @@
           num-of-onos: '3'
           num-of-atomix: '3'
 
+      # [CORD-3256] TT workflow on XGSPON OLT at Berlin pod - build job
+      - 'build_voltha_pod_release_timer':
+          disable-job: false
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon'
+          release: 'voltha-2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          profile: 'TP'
+          time: '10'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
+
+      # -----------------------------------------------------------------------
       # [CORD-3256] TT workflow on GPON OLT at Berlin pod - test job
       - 'build_voltha_pod_test':
           disable-job: false
@@ -934,6 +1153,22 @@
           power-switch: true
           power-cycle-olt: false
           pipeline-script: 'voltha/voltha-2.11/voltha-tt-physical-functional-tests.groovy'
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
+          timeout: 360
+
+      # [CORD-3256] TT workflow on GPON OLT at Berlin pod - test job
+      - 'build_voltha_pod_test':
+          disable-job: false
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon'
+          release: 'voltha-2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: true
+          power-cycle-olt: false
+          pipeline-script: 'voltha/voltha-2.12/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
           timeout: 360
@@ -969,26 +1204,27 @@
           profile: 'TP'
           timeout: 360
 
+      # -----------------------------------------------------------------------
       # Berlin pod with adtran gpon olt/onu - 2.8 1T8GEM tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-1'
-          config-pod: 'berlin-community-pod-1-gpon-adtran'
-          name-extension: '_DT'
-          disable-job: true
-          work-flow: 'DT'
-          release: '2.8'
-          branch: 'voltha-2.8'
-          profile: '1T8GEM'
-          reinstall-olt: false
-          extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_voltha' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore"
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-          VolthaEtcdPort: 9999
-          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.8/voltha-adapter-adtran-olt'
-          oltAdapterReleaseName: 'adtran-olt'
-          waitTimerForOltUp: 420
-          time: '19'
+#      - 'build_voltha_pod_release_timer':
+#          build-node: 'berlin-community-pod-1'
+#          config-pod: 'berlin-community-pod-1-gpon-adtran'
+#          name-extension: '_DT'
+#          disable-job: true
+#          work-flow: 'DT'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          profile: '1T8GEM'
+#          reinstall-olt: false
+#          extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_volth#a' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore#"
+#          num-of-onos: '3'
+#          num-of-atomix: '3'
+#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+#          VolthaEtcdPort: 9999
+#          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.8/voltha-adapter-adtran-olt'
+#          oltAdapterReleaseName: 'adtran-olt'
+#          waitTimerForOltUp: 420
+#          time: '19'
 
       # Berlin pod with adtran gpon olt/onu - 2.11 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -1010,21 +1246,42 @@
           waitTimerForOltUp: 420
           time: '19'
 
-      # Berlin POD adtran test job - 2.8 versions: uses 1T8GEM tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          timeout: 390
+      # Berlin pod with adtran gpon olt/onu - 2.12 1T8GEM tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
-          release: '2.8'
-          branch: 'voltha-2.8'
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
-          test-repo: 'voltha-system-tests'
+          release: '2.12'
+          branch: 'voltha-2.12'
           profile: '1T8GEM'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
-          oltAdapterAppLabel: 'adapter-adtran-olt'
+          reinstall-olt: false
+          extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_voltha' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore"
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
+          VolthaEtcdPort: 9999
+          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.12/voltha-adapter-adtran-olt'
+          oltAdapterReleaseName: 'adtran-olt'
+          waitTimerForOltUp: 420
+          time: '19'
+
+      # -----------------------------------------------------------------------
+      # Berlin POD adtran test job - 2.8 versions: uses 1T8GEM tech profile on voltha branch
+#      - 'build_voltha_pod_test':
+#          timeout: 390
+#          build-node: 'berlin-community-pod-1'
+#          config-pod: 'berlin-community-pod-1-gpon-adtran'
+#          release: '2.8'
+#          branch: 'voltha-2.8'
+#          name-extension: '_DT'
+#          disable-job: true
+#          work-flow: 'DT'
+#          test-repo: 'voltha-system-tests'
+#          profile: '1T8GEM'
+#          power-switch: true
+#          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
+#          oltAdapterAppLabel: 'adapter-adtran-olt'
 
       # Berlin POD adtran test job - 2.11 versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -1041,6 +1298,22 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
           oltAdapterAppLabel: 'adapter-adtran-olt'
 
+      # Berlin POD adtran test job - 2.12 versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          timeout: 390
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon-adtran'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+          oltAdapterAppLabel: 'adapter-adtran-olt'
+
+      # -----------------------------------------------------------------------
       # Berlin pod with adtran gpon olt/onu - 1T8GEM tech profile and timer based job
       - 'verify_voltha_pod_dmi_test':
           build-node: 'berlin-community-pod-1'
@@ -1064,7 +1337,9 @@
           waitTimerForOltUp: 420
           time: '16'
 
+      # -----------------------------------------------------------------------
       # Berlin pod with adtran gpon olt/onu - 2.11 1T8GEM tech profile and timer based job
+      # -----------------------------------------------------------------------
       - 'verify_voltha_pod_dmi_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
@@ -1073,6 +1348,29 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          profile: 'Default'
+          installVolthaInfra: true
+          installVolthaStack: false
+          reinstall-olt: false
+          restart-olt: false
+          extraHelmFlags: " -f /home/community/SDX_Device_Manager_21.4/helm/values-onf.yaml "
+          dmiChart: '/home/community/SDX_Device_Manager_21.4/helm/adtran-olt-device-manager'
+          OltDevMgr: 'adtran-olt-device-manager'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          VolthaEtcdPort: 9999
+          waitTimerForOltUp: 420
+          time: '16'
+
+      # Berlin pod with adtran gpon olt/onu - 2.12 1T8GEM tech profile and timer based job
+      - 'verify_voltha_pod_dmi_test':
+          build-node: 'berlin-community-pod-1'
+          config-pod: 'berlin-community-pod-1-gpon-adtran'
+          name-extension: '_DT'
+          disable-job: false
+          work-flow: 'DT'
+          release: '2.12'
+          branch: 'voltha-2.12'
           profile: 'Default'
           installVolthaInfra: true
           installVolthaStack: false

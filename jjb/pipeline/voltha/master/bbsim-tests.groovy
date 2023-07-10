@@ -190,9 +190,9 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
       cd "$WORKSPACE/voltha-system-tests"
       make vst_venv
-      source ./vst_venv/bin/activate || true
+      source ./vst_venv/bin/activate
       # Collect initial memory consumption
-      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
     """
 
@@ -202,7 +202,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
-    make -C "$WORKSPACE/voltha-system-tests" ${testTarget} || true
+    make -C "$WORKSPACE/voltha-system-tests" ${testTarget}
     """
 
         getPodsInfo("${logsDir}")
@@ -212,15 +212,15 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
       # collect logs collected in the Robot Framework StartLogging keyword
       cd ${logsDir}
       gzip *-combined.log || true
-      rm *-combined.log || true
+      rm -f *-combined.log || true
     """
 
     sh """
     if [ ${withMonitoring} = true ] ; then
       cd "$WORKSPACE/voltha-system-tests"
-      source ./vst_venv/bin/activate || true
+      source ./vst_venv/bin/activate
       # Collect memory consumption of voltha pods once all the tests are complete
-      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
     """
     } // stage
@@ -232,7 +232,7 @@ def collectArtifacts(exitStatus)
 {
   getPodsInfo("$WORKSPACE/${exitStatus}")
   sh """
-  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log || true
+  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log
   """
   archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
   sh '''

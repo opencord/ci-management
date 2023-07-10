@@ -38,7 +38,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
                 'jjb',
                 'pipeline',
                 'voltha',
-                'master',
+                'voltha-2.12',
                 'bbsim-tests.groovy'
             ].join('/')
             println("** ${iam}: ENTER")
@@ -46,7 +46,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
             String cmd = "which pkill"
             def stream = sh(
                 returnStatus:false,
-                returnStdout: true,
+                returnStdout:true,
                 script: cmd)
             println(" ** ${cmd}:\n${stream}")
 
@@ -107,7 +107,10 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
           def localCharts = false
-          if (volthaHelmChartsChange != "" || gerritProject == "voltha-helm-charts") {
+	  if (volthaHelmChartsChange != ""
+	      || gerritProject == "voltha-helm-charts"
+	      || branch != 'master'
+	  ) {
             localCharts = true
           }
 
@@ -202,7 +205,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
     export KVSTOREPREFIX=voltha/voltha_voltha
 
-    make -C "$WORKSPACE/voltha-system-tests" ${testTarget} || true
+    make -C "$WORKSPACE/voltha-system-tests" ${testTarget}
     """
 
         getPodsInfo("${logsDir}")
@@ -218,9 +221,9 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     sh """
     if [ ${withMonitoring} = true ] ; then
       cd "$WORKSPACE/voltha-system-tests"
-      source ./vst_venv/bin/activate || true
+      source ./vst_venv/bin/activate
       # Collect memory consumption of voltha pods once all the tests are complete
-      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace} || true
+      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
     """
     } // stage

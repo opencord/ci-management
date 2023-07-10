@@ -23,6 +23,7 @@ $(if $(DEBUG),$(warning ENTER))
 todo ::
 	@echo
 	@echo '[TODO]'
+	@echo '  o vars/installVolctl.groovy - post release update install version string'
 	@echo '  o volthaStackDeploy.groovy - post v2.11 release cleanup for 2.8'
 
 ## -----------------------------------------------------------------------
