@@ -1241,7 +1241,7 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
           VolthaEtcdPort: 9999
-          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.11/voltha-adapter-adtran-olt'
+          openoltAdapterChart: '/home/community/adtran-23.1-voltha-2.11/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
           time: '19'
@@ -1261,7 +1261,7 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
           VolthaEtcdPort: 9999
-          openoltAdapterChart: '/home/community/adtran-21.5-voltha-2.12/voltha-adapter-adtran-olt'
+          openoltAdapterChart: '/home/community/adtran-23.1-voltha-2.12/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
           time: '19'
