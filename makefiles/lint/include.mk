@@ -1,5 +1,4 @@
 # -*- makefile -*-
-# -*- makefile -*-
 # -----------------------------------------------------------------------
 # Copyright 2022-2023 Open Networking Foundation (ONF) and the ONF Contributors
 #
@@ -28,6 +27,7 @@ help ::
 	@echo
 	@echo "[LINT]"
 
+include $(ONF_MAKEDIR)/lint/doc8
 include $(ONF_MAKEDIR)/lint/groovy.mk
 include $(ONF_MAKEDIR)/lint/jjb.mk
 include $(ONF_MAKEDIR)/lint/json.mk

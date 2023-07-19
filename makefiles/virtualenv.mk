@@ -15,7 +15,7 @@
 # limitations under the License.
 # -----------------------------------------------------------------------
 # https://gerrit.opencord.org/plugins/gitiles/onf-make
-# ONF.makefile.version = 1.0
+# ONF.makefile.version = 1.2
 # -----------------------------------------------------------------------
 
 $(if $(DEBUG),$(warning ENTER))
@@ -51,7 +51,10 @@ $(venv-activate-script):
 	virtualenv -p python3 $(venv-name)
 	$(activate) && python -m pip install --upgrade pip
 	$(activate) && pip install --upgrade setuptools
-	$(activate) && { [[ -r requirements.txt ]] && python -m pip install -r requirements.txt; }
+	$(activate) && [[ -r requirements.txt ]] \
+	    && { python -m pip install -r requirements.txt; } \
+	    || { /bin/true; }
+
 	$(activate) && python --version
 
 ## -----------------------------------------------------------------------

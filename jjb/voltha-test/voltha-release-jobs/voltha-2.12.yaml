@@ -30,7 +30,7 @@
     jobs:
       # flex OCP pod with olt/onu - Default tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          disable-job: false
+          disable-job: true
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
           release: '2.12'
