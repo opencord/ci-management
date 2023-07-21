@@ -31,9 +31,38 @@
 
       # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
       - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-certification-pod-1'
+          config-pod: 'menlo-certification-pod-radisys-1600g'
+          disable-job:   true       # legacy
+          reinstall-olt: true
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          time: '13'
+          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          extraHelmFlags: "--set onos-classic.image.tag=master"
+
+      # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-certification-pod-1'
+          config-pod: 'menlo-certification-pod-radisys-1600g'
+          disable-job: true       # legacy
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
+          
+      # Certification (Radisys) pod with olt/onu - 2.8 version timer based job
+      - 'build_voltha_pod_release_timer':
           build-node: 'menlo-certification-pod-3'
           config-pod: 'menlo-certification-pod-radisys-3200g'
-          disable-job: true
+          disable-job:   true       # legacy
           reinstall-olt: true
           release: '2.8'
           branch: 'voltha-2.8'
@@ -44,4 +73,18 @@
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
           extraHelmFlags: "--set onos-classic.image.tag=master"
 
+      # Certification (Radisys) POD test job - master versions: uses 1T8GEM tech profile on voltha branch
+      - 'build_voltha_pod_test':
+          build-node: 'menlo-certification-pod-3'
+          config-pod: 'menlo-certification-pod-radisys-3200g'
+          disable-job: true       # legacy
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
+         
 # [EOF]

@@ -20,8 +20,14 @@
 ##-------------------##
 .PHONY: lint-doc8 lint-doc8-all lint-doc8-modified
 
-have-rst-files := $(if $(strip $(RST_SOURCE)),true)
-RST_SOURCE     ?= $(error RST_SOURCE= is required)
+have-doc8-files := $(if $(strip $(DOC8_SOURCE)),true)
+DOC8_SOURCE     ?= $(error DOC8_SOURCE= is required)
+
+##--------------------##
+##---]  INCLUDES  [---##
+##--------------------##
+# include $(ONF_MAKEDIR)/lint/doc8/help.mk
+include $(ONF_MAKEDIR)/lint/doc8/install.mk
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
@@ -36,23 +42,14 @@ lint-doc8-modified : lint-doc8
 
 ## -----------------------------------------------------------------------
 ## -----------------------------------------------------------------------
-include $(ONF_MAKEDIR)/lint/doc8/excl.mk
+lint-doc8-excl := $(foreach dir,$(onf-excl-dirs),--ignore-path "$(dir)")
+lint-doc8: lint-doc8-cmd-version
 
-ifdef lint-doc8-excl
-  lint-doc8-excl-args += $(addprefix --ignore-path$(space),$(lint-doc8-excl))
-endif
-lint-doc8-excl-args += $(addprefix --ignore-path$(space),$(lint-doc8-excl-raw))
-
-lint-doc8-args += --max-line-length 120
-
-lint-doc8: $(venv-activate-script)
-	@echo
-	@echo '** -----------------------------------------------------------------------'
-	@echo '** doc8 *.rst syntax checking'
-	@echo '** -----------------------------------------------------------------------'
+	$(call banner-enter,Target $@)
 	$(activate) && doc8 --version
 	@echo
-	$(activate) && doc8 $(lint-doc8-excl-args) $(lint-doc8-args) .
+	$(activate) && doc8 $(lint-doc8-excl)
+	$(call banner-enter,Target $@)
 
 ## -----------------------------------------------------------------------
 ## Intent: Display command usage

@@ -60,6 +60,7 @@ help ::
 	@echo 'Usage: $(MAKE) help ...'
 	@echo '  % make clean sterile'
 	@echo '  % make lint lint-jjb'
+	@echo '  % make build           # jjb-gen'
 	@echo '  % make test'
 	@echo '  % make help            # show all available targes'
 

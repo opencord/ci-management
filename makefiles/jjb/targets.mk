@@ -35,12 +35,13 @@ all: help
 .PHONY: jjb-gen
 
 jjb-gen-log := $(jjb-gen-dir)/jjb-gen.log
-jjb-gen:
+jjb-gen: $(venv-activate-script)
 	$(call banner-enter,Target $@)
 	@mkdir -p $(jjb-gen-dir)
 	@touch "$(jjb-gen-dir)/.sentinel"
-	( $(activate) \
-	   && jenkins-jobs test $(PWD)/jjb -o $(jjb-gen-dir) 3>&1 2>&1 \
+	( \
+	  $(activate) \
+	     && jenkins-jobs test $(PWD)/jjb -o $(jjb-gen-dir) 3>&1 2>&1 \
 	) | tee "$(jjb-gen-log)"
 
   ifdef LOGS
