@@ -47,13 +47,18 @@ function error()
 }
 
 dir="$WORKSPACE/bin"
-if [ ! -f "$dir/kind" ]; then
+cmd="$dir/kind"
+if [ ! -f "$cmd" ]; then
     mkdir -p "$dir"
     pushd "$dir" || error "pushd $dir failed"
     curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.0/kind-linux-amd64
     chmod +x ./kind
     popd         || error "popd $dir failed"
 fi
+
+## Sanity check installed binary
+echo
+echo "Kind command verison: $("$cmd" --version)"
 
 return
 """)
