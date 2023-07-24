@@ -15,14 +15,33 @@
 // voltha-2.x e2e tests for openonu-go
 // uses bbsim to simulate OLT/ONUs
 
+// [TODO] Update syntax below to the latest supported
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
+//------------------//
+//---]  GLOBAL  [---//
+//------------------//
 def clusterName = "kind-ci"
+String branch_name = 'master'
 
+// -----------------------------------------------------------------------
+// Intent: Determine if working on a release branch.
+//   Note: Conditional is legacy, should also check for *-dev or *-pre
+// -----------------------------------------------------------------------
+Boolean isReleaseBranch(String name)
+{
+    // List modifiers = ['-dev', '-pre', 'voltha-x.y.z-pre']
+    // if branch_name in modifiers
+    return(name != 'master') // OR branch_name.contains('-')
+}
+
+// -----------------------------------------------------------------------
+// Intent:
+// -----------------------------------------------------------------------
 def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "")
 {
     def infraNamespace = "default"
@@ -38,19 +57,11 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
                 'jjb',
                 'pipeline',
                 'voltha',
-                'master',
+		branch_name,
                 'bbsim-tests.groovy'
             ].join('/')
-            println("** ${iam}: ENTER")
-
-            String cmd = "which pkill"
-            def stream = sh(
-                returnStatus:false,
-                returnStdout: true,
-                script: cmd)
-            println(" ** ${cmd}:\n${stream}")
-
-            println("** ${iam}: LEAVE")
+	    println("${iam}: ENTER")
+	    println("${iam}: LEAVE")
         }
     }
 
@@ -63,7 +74,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
             timeout(1) {
                     sh returnStdout: false, script: '''
           # remove orphaned port-forward from different namespaces
-          ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9 || true
+          ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
           '''
                 }
             }
@@ -95,11 +106,14 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     '''
     }
 
-    stage('Deploy Voltha') {
-    if (teardown) {
-      timeout(10) {
-        script {
-
+    stage('Deploy Voltha')
+    {
+	if (teardown)
+	{
+	    timeout(10)
+	    {
+		script
+		{
           sh """
           mkdir -p ${logsDir}
           _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
@@ -107,16 +121,24 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
           def localCharts = false
-          if (volthaHelmChartsChange != "" || gerritProject == "voltha-helm-charts") {
+		    
+          if (volthaHelmChartsChange != ""
+	      || gerritProject == "voltha-helm-charts"
+	      || isReleaseBranch(branch) // branch != 'master'
+          ) {
             localCharts = true
           }
+          Boolean is_release = isReleaseBranch(branch)
+	  println(" ** localCharts=${localCharts}, branch_name=${branch_name}, isReleaseBranch=${is_release}")
 
           // NOTE temporary workaround expose ONOS node ports
-          def localHelmFlags = extraHelmFlags.trim() + " --set global.log_level=${logLevel.toUpperCase()} " +
-          " --set onos-classic.onosSshPort=30115 " +
-          " --set onos-classic.onosApiPort=30120 " +
-          " --set onos-classic.onosOfPort=31653 " +
-          " --set onos-classic.individualOpenFlowNodePorts=true " + testSpecificHelmFlags
+	  def localHelmFlags = extraHelmFlags.trim()
+		  + " --set global.log_level=${logLevel.toUpperCase()} "
+		  + " --set onos-classic.onosSshPort=30115 "
+		  + " --set onos-classic.onosApiPort=30120 "
+		  + " --set onos-classic.onosOfPort=31653 "
+		  + " --set onos-classic.individualOpenFlowNodePorts=true "
+		  + testSpecificHelmFlags
 
           if (gerritProject != "") {
             localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
@@ -134,7 +156,22 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
             ])
         }
 
-        // stop logging
+	// -----------------------------------------------------------------------
+	// Intent: Replacing P_IDS with pgrep/pkill is a step forward.
+	// Why not simply use a pid file, capture _TAG=kail-startup above
+	// Grep runs the risk of terminating stray commands (??-good <=> bad-??)
+	// -----------------------------------------------------------------------
+	println('Try out the pgrep/pkill commands')
+	def stream = sh(
+            returnStatus:false,
+            returnStdout:true,
+	    script: '''pgrep --list-full kail-startup || true'''
+	)
+	println("** pgrep output: ${stream}")
+
+	// -----------------------------------------------------------------------
+	// stop logging
+	// -----------------------------------------------------------------------
         sh """
           P_IDS="\$(ps e -ww -A | grep "_TAG=kail-startup" | grep -v grep | awk '{print \$1}')"
           if [ -n "\$P_IDS" ]; then
@@ -189,8 +226,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     if [ ${withMonitoring} = true ] ; then
       mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
       cd "$WORKSPACE/voltha-system-tests"
-      make vst_venv
-      source ./vst_venv/bin/activate
+      make venv-activate-script
+      set +u && source .venv/bin/activate && set -u
       # Collect initial memory consumption
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
@@ -208,17 +245,18 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         getPodsInfo("${logsDir}")
 
         sh """
-      set +e
+      # set +e
       # collect logs collected in the Robot Framework StartLogging keyword
       cd ${logsDir}
-      gzip *-combined.log || true
-      rm -f *-combined.log || true
+      gzip *-combined.log
+      rm -f *-combined.log
     """
 
     sh """
     if [ ${withMonitoring} = true ] ; then
       cd "$WORKSPACE/voltha-system-tests"
-      source ./vst_venv/bin/activate
+      make venv-activate-script
+      set +u && source .venv/bin/activate && set -u
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
@@ -237,7 +275,7 @@ def collectArtifacts(exitStatus)
   archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
   sh '''
     sync
-    pkill kail || true
+    [[ $(pgrep --count kail) -gt 0 ]] && pkill --echo kail
     which voltctl
     md5sum $(which voltctl)
   '''
@@ -299,23 +337,21 @@ pipeline {
       }
     }
 
-        stage('Create K8s Cluster')
-        {
+    stage('Create K8s Cluster')
+    {
             steps
             {
                 script
                 {
-		    /*
                     println(' ** Calling installKind.groovy: ENTER')
                     // chicken-n-egg problem, kind command needed
                     // to determine if kubernetes cluster is active
                     installKind() { debug:true }
                     println(' ** Calling installKind.groovy: LEAVE')
-		     */
 
-                    def clusterExists = sh(
+		    def clusterExists = sh(
                         returnStdout: true,
-                        script: """kind get clusters | grep ${clusterName} | wc -l""")
+                        script: """kind get clusters | grep "${clusterName}" | wc -l""")
 
                     if (clusterExists.trim() == "0")
                     {
