@@ -29,6 +29,25 @@ def clusterName = "kind-ci"
 String branch_name = 'master'
 
 // -----------------------------------------------------------------------
+// Intent: Due to lack of a reliable stack trace, construct a literal.
+//         Jenkins will re-write the call stack for serialization.
+// -----------------------------------------------------------------------
+def getIam(String func)
+{
+    String src = [
+        'ci-management',
+        'jjb',
+        'pipeline',
+        'voltha',
+	branch_name,
+        'bbsim-tests.groovy'
+    ].join('/')
+
+    String iam = [src, func].join('::')
+    return iam
+}
+
+// -----------------------------------------------------------------------
 // Intent: Determine if working on a release branch.
 //   Note: Conditional is legacy, should also check for *-dev or *-pre
 // -----------------------------------------------------------------------
@@ -37,6 +56,36 @@ Boolean isReleaseBranch(String name)
     // List modifiers = ['-dev', '-pre', 'voltha-x.y.z-pre']
     // if branch_name in modifiers
     return(name != 'master') // OR branch_name.contains('-')
+}
+
+// -----------------------------------------------------------------------
+// Intent: Phase helper method
+// -----------------------------------------------------------------------
+Boolean my_install_kind()
+{
+    String iam = getIam('installKind')
+    Boolean ans = False
+
+    println("** ${iam}: ENTER")
+    try
+    {
+	println("** ${iam} Running: installKind() { debug:true }"
+	installKind() { debug:true }
+	println("** ${iam}: Ran to completion")
+	ans = True // iff
+    }
+    catch (Exception err)
+    {
+	ans = False
+	println("** ${iam}: EXCEPTION ${err}")
+	throw err
+    }
+    finally
+    {
+	println("** ${iam}: ENTER")
+    }
+    
+    return(ans)
 }
 
 // -----------------------------------------------------------------------
@@ -52,14 +101,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     {
         script
         {
-            String iam = [
-                'ci-management',
-                'jjb',
-                'pipeline',
-                'voltha',
-		branch_name,
-                'bbsim-tests.groovy'
-            ].join('/')
+	    // Announce ourselves for log usability
+	    String iam = getIam('execute_test')
 	    println("${iam}: ENTER")
 	    println("${iam}: LEAVE")
         }
@@ -92,9 +135,17 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         ].join(' ')
         println(" ** Running: ${cmd}:\n")
         sh("${cmd}")
+
+	// if (! my_install_kail())
+	//    throw new Exception('installKail() failed')
+	if (! my_install_kind())
+	    throw new Exception('installKind() failed')
     }
 
-    stage('Deploy common infrastructure') {
+
+    
+    stage('Deploy common infrastructure')
+    {
         sh '''
     helm repo add onf https://charts.opencord.org
     helm repo update
@@ -330,11 +381,13 @@ pipeline {
                 return !gerritProject.isEmpty()
             }
         }
-      steps {
-        // NOTE that the correct patch has already been checked out
-        // during the getVolthaCode step
-        buildVolthaComponent("${gerritProject}")
-      }
+
+	steps
+	{
+	    // NOTE that the correct patch has already been checked out
+	    // during the getVolthaCode step
+	    buildVolthaComponent("${gerritProject}")
+        }
     }
 
     stage('Create K8s Cluster')
@@ -343,12 +396,6 @@ pipeline {
             {
                 script
                 {
-                    println(' ** Calling installKind.groovy: ENTER')
-                    // chicken-n-egg problem, kind command needed
-                    // to determine if kubernetes cluster is active
-                    installKind() { debug:true }
-                    println(' ** Calling installKind.groovy: LEAVE')
-
 		    def clusterExists = sh(
                         returnStdout: true,
                         script: """kind get clusters | grep "${clusterName}" | wc -l""")
@@ -363,23 +410,19 @@ pipeline {
 
         stage('Replace voltctl')
         {
-            // if the project is voltctl override the downloaded one with the built one
+            // if the project is voltctl, override the downloaded one with the built one
             when {
                 expression {
                     return gerritProject == "voltctl"
                 }
             }
-
+		
+	    // Hmmmm(?) where did the voltctl download happen ?
+	    // Likely Makefile but would be helpful to document here.
             steps
-            {
-                sh """
-        # [TODO] - why is this platform specific (?)
-        # [TODO] - revisit, command alteration has masked an error (see: voltha-2.11).
-        #          find will fail when no filsystem matches are found.
-        #          mv(ls) succeded simply by accident/invoked at a different time.
-        mv `ls $WORKSPACE/voltctl/release/voltctl-*-linux-amd*` $WORKSPACE/bin/voltctl
-        chmod +x $WORKSPACE/bin/voltctl
-        """
+	    {
+		println("${iam} Running: installVoltctl($branch)")
+                installVoltctl("$branch")
             } // steps
         } // stage
 

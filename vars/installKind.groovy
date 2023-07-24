@@ -42,7 +42,7 @@ umask 0
 
 function error()
 {
-    echo "** ${FUNCNAME[1]} ERROR: $*"
+    echo "** ERROR: $*"
     exit 1
 }
 
