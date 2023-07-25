@@ -17,7 +17,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
+String getIam(String func)
 {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/installKind.groovy'
@@ -27,46 +27,22 @@ def getIam(String func)
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def process(Map args) {
-
+def process(Map args)
+{
     String iam = getIam('process')
     println("** ${iam}: ENTER")
+    println("args = " + args)
 
     // go install sigs.k8s.io/kind@v0.18.0
-    sh(
-        returnStdout: true,
-        script: """#!/bin/bash
-
-set -eu -o pipefail
-umask 0
-
-function error()
-{
-    echo "** ERROR: $*"
-    exit 1
-}
-
-dir="$WORKSPACE/bin"
-cmd="$dir/kind"
-if [ ! -f "$cmd" ]; then
-    mkdir -p "$dir"
-    pushd "$dir" || error "pushd $dir failed"
-    curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.0/kind-linux-amd64
-    chmod +x ./kind
-    popd         || error "popd $dir failed"
-fi
-
-## Sanity check installed binary
-echo
-echo "Kind command verison: $("$cmd" --version)"
-
-return
-""")
+    sh('./installKind.sh')
     println("** ${iam}: LEAVE")
+    return
 }
 
 // -----------------------------------------------------------------------
+// TODO: Support native syntax:   installKind() { debug:true }
 // -----------------------------------------------------------------------
+/*
 Boolean call\
     (
     // def self,  // jenkins env object for access to primitives like echo()
@@ -77,7 +53,12 @@ Boolean call\
     body.resolveStrategy = Closure.DELEGATE_FIRST
     body.delegate        = config // make parameters visible down below
     body()
+ */
 
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def call(String branch)
+{
     String iam = getIam('main')
     println("** ${iam}: ENTER")
     println("** ${iam}: Debug= is " + config.contains(debug))
