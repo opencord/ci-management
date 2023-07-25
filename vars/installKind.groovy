@@ -42,7 +42,8 @@ umask 0
 
 function error()
 {
-    echo "** ERROR: $*"
+    declare -a msg=($*)
+    echo "** ERROR: ${msg[@]}"
     exit 1
 }
 
