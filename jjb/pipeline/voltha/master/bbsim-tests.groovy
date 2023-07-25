@@ -70,7 +70,7 @@ Boolean my_install_kind()
     try
     {
 	println("** ${iam} Running: installKind() { debug:true }"
-	installKind() { debug:true }
+	installKind(branch_name)
 	println("** ${iam}: Ran to completion")
 	ans = True // iff
     }
