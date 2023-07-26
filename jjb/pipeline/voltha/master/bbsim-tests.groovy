@@ -61,7 +61,7 @@ Boolean isReleaseBranch(String name)
 // -----------------------------------------------------------------------
 // Intent: Phase helper method
 // -----------------------------------------------------------------------
-Boolean my_install_kind()
+Boolean install_kind(String name)
 {
     String iam = getIam('installKind')
     Boolean ans = False
@@ -70,7 +70,7 @@ Boolean my_install_kind()
     try
     {
 	println("** ${iam} Running: installKind() { debug:true }"
-	installKind(branch_name)
+	installKind(name)
 	println("** ${iam}: Ran to completion")
 	ans = True // iff
     }
@@ -84,7 +84,7 @@ Boolean my_install_kind()
     {
 	println("** ${iam}: ENTER")
     }
-    
+
     return(ans)
 }
 
@@ -124,7 +124,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         }
     }
 
-    stage ('Initialize')
+    stage ('Install Kail')
     {
         // VOL-4926 - Is voltha-system-tests available ?
         String cmd = [
@@ -135,15 +135,18 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         ].join(' ')
         println(" ** Running: ${cmd}:\n")
         sh("${cmd}")
-
-	// if (! my_install_kail())
+        // if (! my_install_kail())
 	//    throw new Exception('installKail() failed')
-	if (! my_install_kind())
-	    throw new Exception('installKind() failed')
     }
 
+    stage ('Install Kind')
+    {
+        steps
+	{
+	    install_kind(branch_name)
+	}
+    }
 
-    
     stage('Deploy common infrastructure')
     {
         sh '''
@@ -172,7 +175,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
           // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
           def localCharts = false
-		    
+
           if (volthaHelmChartsChange != ""
 	      || gerritProject == "voltha-helm-charts"
 	      || isReleaseBranch(branch) // branch != 'master'
@@ -416,7 +419,7 @@ pipeline {
                     return gerritProject == "voltctl"
                 }
             }
-		
+
 	    // Hmmmm(?) where did the voltctl download happen ?
 	    // Likely Makefile but would be helpful to document here.
             steps

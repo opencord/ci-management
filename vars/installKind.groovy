@@ -30,13 +30,19 @@ String getIam(String func)
 def process(Map args)
 {
     String iam = getIam('process')
-    println("** ${iam}: ENTER")
+    Boolean ans = true
+
+    println("** ${iam}: ENTER branch=${args.branch}")
     println("args = " + args)
 
     // go install sigs.k8s.io/kind@v0.18.0
-    sh('./installKind.sh')
+    sh(
+	script: './installKind.sh',
+	returnStdout: true
+    )
+
     println("** ${iam}: LEAVE")
-    return
+    return(ans)
 }
 
 // -----------------------------------------------------------------------
@@ -65,6 +71,8 @@ def call(String branch)
 
     try
     {
+	// Will be passed in eventually
+	Map config = [debug :false, branch:branch]
         process(config)
     }
     catch (Exception err)
