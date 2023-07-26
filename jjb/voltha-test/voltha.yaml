@@ -438,22 +438,6 @@
           pipeline-script: 'voltha/master/voltha-physical-soak-dt-tests.groovy'
 
       # ONF Menlo Soak POD test job - voltha-master branch
-      # Run failure/recovery tests every Wednesday
-      - 'build_voltha_pod_soak_test':
-          build-node: 'menlo-soak-pod'
-          config-pod: 'onf-soak-pod'
-          disable-job: false
-          profile: '1T8GEM'
-          branch: 'master'
-          release: 'master'
-          work-flow: 'DT'
-          name-extension: '_DT_soak_Fail'
-          test-type: 'Failure'
-          test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha/master/voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H * * 3"
-
-      # ONF Menlo Soak POD test job - voltha-master branch
       # Run dataplane tests every Saturday
       - 'build_voltha_pod_soak_test':
           build-node: 'menlo-soak-pod'
@@ -565,55 +549,6 @@
           test-type: 'Functional'
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha/voltha-2.12/voltha-physical-soak-dt-tests.groovy'
-
-      # -----------------------------------------------------------------------
-      # ONF Menlo Soak POD test job - voltha-2.8 branch
-      # Run failure/recovery tests every Wednesday
-#      - 'build_voltha_pod_soak_test':
-#          build-node: 'menlo-soak-pod'
-#          config-pod: 'onf-soak-pod'
-#          disable-job: true
-#          profile: '1T8GEM'
-#          branch: 'voltha-2.8'
-#          release: '2.8'
-#          work-flow: 'DT'
-#          name-extension: '_DT_soak_Fail'
-#          test-type: 'Failure'
-#          test-repo: 'voltha-system-tests'
-#          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
-#          time-trigger: "H H * * 3"
-
-      # ONF Menlo Soak POD test job - voltha-2.11 branch
-      # Run failure/recovery tests every Wednesday
-      - 'build_voltha_pod_soak_test':
-          build-node: 'menlo-soak-pod'
-          config-pod: 'onf-soak-pod'
-          disable-job: false
-          profile: '1T8GEM'
-          branch: 'voltha-2.11'
-          release: '2.11'
-          work-flow: 'DT'
-          name-extension: '_DT_soak_Fail'
-          test-type: 'Failure'
-          test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha/voltha-2.11/voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H * * 3"
-
-      # ONF Menlo Soak POD test job - voltha-2.12 branch
-      # Run failure/recovery tests every Wednesday
-      - 'build_voltha_pod_soak_test':
-          build-node: 'menlo-soak-pod'
-          config-pod: 'onf-soak-pod'
-          disable-job: false
-          profile: '1T8GEM'
-          branch: 'voltha-2.12'
-          release: '2.12'
-          work-flow: 'DT'
-          name-extension: '_DT_soak_Fail'
-          test-type: 'Failure'
-          test-repo: 'voltha-system-tests'
-          pipeline-script: 'voltha/voltha-2.12/voltha-physical-soak-dt-tests.groovy'
-          time-trigger: "H H * * 3"
 
       # -----------------------------------------------------------------------
       # ONF Menlo Soak POD test job - voltha-2.8 branch

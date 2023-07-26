@@ -55,4 +55,23 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
 
+      # -----------------------------------------------------------------------
+      # ONF Menlo Soak POD test job - voltha-2.12 branch
+      # Run failure/recovery tests every Wednesday
+      # Disable reason: menlo-soak-pod is offline
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: true
+          profile: '1T8GEM'
+          branch: 'voltha-2.12'
+          release: '2.12'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_Fail'
+          test-type: 'Failure'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha/voltha-2.12/voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H * * 3"
+          
 # [EOF]
