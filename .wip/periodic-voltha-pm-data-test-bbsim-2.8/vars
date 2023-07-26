@@ -1,5 +1,0 @@
-jjb/pipeline/voltha/master/bbsim-tests.groovy
-jjb/pipeline/voltha/playground/bbsim-tests.groovy
-jjb/pipeline/voltha/voltha-2.11/bbsim-tests.groovy
-jjb/pipeline/voltha/voltha-2.12/bbsim-tests.groovy
-jjb/pipeline/voltha/voltha-2.8/bbsim-tests.groovy

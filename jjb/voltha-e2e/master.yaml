@@ -74,7 +74,8 @@
           name: 'periodic-voltha-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
-          time-trigger: "H H/23 * * *"
+#          time-trigger: "H H/23 * * *"       # Build daily at 11pm
+          time-trigger: "H/30 * * * *"        # Build every 30 min
           testTargets: |
             - target: functional-single-kind
               workflow: att
