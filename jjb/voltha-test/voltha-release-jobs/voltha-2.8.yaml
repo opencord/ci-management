@@ -55,4 +55,22 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
 
+      # -----------------------------------------------------------------------
+      # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_release_timer':
+          disable-job: true               # Reason: qa-testvm-pod offline
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          profile: 'TP'
+          time: '20'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+          
 # [EOF]
