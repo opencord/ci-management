@@ -17,8 +17,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
-{
+String getIam(String func) {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/showCommands'
     String iam = [src, func].join('::')
@@ -27,44 +26,81 @@ def getIam(String func)
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def process(Map config)
-{
-    String iam = getIam('process')
+void run_cmd(String command) {
+    String buffer [
+        "Running command: $command",
+    ]
 
-    // list.each{ } could be used here but simple for now.
-    println("** ${iam}: voltctl command attributes")
-    sh('''which -a voltctl''')
-    sh('''voltctl version''')
+    println("** ${iam}: Running ${command} LEAVE")
+    try {
+        // Run command for output
+        buffer = sh(
+            script: command,
+            returnStdout: true
+        ).trim()
 
+        // Reached if no exceptions thrown
+        buffer += [
+            '',
+            'Ran to completion',
+        ]
+    }
+    catch (Exception err)
+    {
+        // Note the exception w/o failing
+        buffer += [
+            '',
+            "${iam}: EXCEPTION ${err}",
+        ].join('\n')
+    }
+    finally
+    {
+        println("** ${iam}: $buffer")
+        println("** ${iam}: Running ${command} LEAVE")
+    }
     return
 }
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def call(Map config)
-{
+void process(Map config) {
+    String iam = getIam('process')
+
+    println("${iam} config=${config}")
+
+    // list.each{ } could be used here but keep it simple for now.
+    println("** ${iam}: voltctl command path")
+    run_cmd('which -a voltctl 2>&1')
+
+    println("** ${iam}: voltctl command version")
+    run_cmd('voltctl version')
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+Boolean call(Map config) {
     String iam = getIam('main')
+
     println("** ${iam}: ENTER")
 
-    if (!config)
-    {
-        config = [:]
+    config = config ?: [:]
+
+    try {
+        process(config)
     }
-    
-    try
-    {
-	process(config)
-    }
+    /*
     catch (Exception err)
     {
-	println("** ${iam}: EXCEPTION ${err}")
-	throw err
+        println("** ${iam}: EXCEPTION ${err}")
+        throw err
     }
+*/
     finally
     {
-	println("** ${iam}: LEAVE")
+        println("** ${iam}: LEAVE")
     }
-    return
+    return(true)
 }
 
 // [EOF]
