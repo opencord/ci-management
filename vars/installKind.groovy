@@ -17,8 +17,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-String getIam(String func)
-{
+String getIam(String func) {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/installKind.groovy'
     String iam = [src, func].join('::')
@@ -27,22 +26,20 @@ String getIam(String func)
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def process(Map args)
-{
+void process(Map args) {
     String iam = getIam('process')
-    Boolean ans = true
 
     println("** ${iam}: ENTER branch=${args.branch}")
-    println("args = " + args)
+    println('args = ' + args)
 
     // go install sigs.k8s.io/kind@v0.18.0
     sh(
-	script: './installKind.sh',
-	returnStdout: true
+        script: './installKind.sh',
+        returnStdout: true
     )
 
     println("** ${iam}: LEAVE")
-    return(ans)
+    return
 }
 
 // -----------------------------------------------------------------------
@@ -63,28 +60,30 @@ Boolean call\
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def call(String branch)
-{
-    String iam = getIam('main')
+Boolean call(String branch) {
+    String  iam = getIam('main')
+    Boolean ans = true
+
     println("** ${iam}: ENTER")
     println("** ${iam}: Debug= is " + config.contains(debug))
 
-    try
-    {
-	// Will be passed in eventually
-	Map config = [debug :false, branch:branch]
+    try {
+        // Will be passed in eventually
+        Map config = [debug :false, branch:branch]
         process(config)
     }
+    /*
     catch (Exception err)
     {
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }
-    finally
-    {
+*/
+    finally {
         println("** ${iam}: LEAVE")
     }
-    return
+
+    return(ans)
 }
 
 // [EOF]

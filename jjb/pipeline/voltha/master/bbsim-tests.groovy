@@ -79,9 +79,9 @@ Boolean install_kind(String name)
     println("** ${iam}: ENTER")
     try
     {
-	println("** ${iam} Running: installKind() { debug:true }"
-	// installKind(name)
-	println("** ${iam}: Ran to completion")
+	println("** ${iam} Running installKind(name): ENTER")
+	installKind(name)
+	println("** ${iam} Running installKind(name): LEAVE")
 	ans = True // iff
     }
     catch (Exception err)
