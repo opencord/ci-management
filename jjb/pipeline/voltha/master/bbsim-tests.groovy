@@ -61,6 +61,16 @@ Boolean isReleaseBranch(String name)
 // -----------------------------------------------------------------------
 // Intent: Phase helper method
 // -----------------------------------------------------------------------
+// NOTE: installKind temporarily disabled:
+//   o error makes little sense, install.Kind.{groovy,sh} exist in vars/
+//   o jenkins shared library -- checked out on server disk is stale
+//     2 changesets behind current ?!?!
+//   o Disable call for now to revive the pipeline.
+// 10:26:05  org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
+// 10:26:05  WorkflowScript: 73: unexpected token: installKind @ line 73, column 2.
+// 10:26:05     installKind(name)
+// 10:26:05      ^
+// -----------------------------------------------------------------------
 Boolean install_kind(String name)
 {
     String iam = getIam('installKind')
@@ -70,7 +80,7 @@ Boolean install_kind(String name)
     try
     {
 	println("** ${iam} Running: installKind() { debug:true }"
-	installKind(name)
+	// installKind(name)
 	println("** ${iam}: Ran to completion")
 	ans = True // iff
     }
