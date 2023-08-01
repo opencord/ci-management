@@ -45,6 +45,7 @@ void run_cmd(String command) {
             'Ran to completion',
         ]
     }
+    /*
     catch (Exception err)
     {
         // Note the exception w/o failing
@@ -53,9 +54,10 @@ void run_cmd(String command) {
             "${iam}: EXCEPTION ${err}",
         ].join('\n')
     }
+     */
     finally
     {
-        println("** ${iam}: $buffer")
+        println("** ${iam}: " + buffer.join(' '))
         println("** ${iam}: Running ${command} LEAVE")
     }
     return

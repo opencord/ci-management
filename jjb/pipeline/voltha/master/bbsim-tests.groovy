@@ -26,7 +26,13 @@ library identifier: 'cord-jenkins-libraries@master',
 //---]  GLOBAL  [---//
 //------------------//
 def clusterName = "kind-ci"
-String branch_name = 'master'
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+String getBranchName() {
+    String name = 'master'
+    return(name)
+}
 
 // -----------------------------------------------------------------------
 // Intent: Due to lack of a reliable stack trace, construct a literal.
@@ -34,6 +40,7 @@ String branch_name = 'master'
 // -----------------------------------------------------------------------
 def getIam(String func)
 {
+    String branch_name = getBranchName()
     String src = [
         'ci-management',
         'jjb',
@@ -107,6 +114,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     def volthaNamespace = "voltha"
     def logsDir = "$WORKSPACE/${testTarget}"
 
+    /*
     stage('IAM')
     {
         script
@@ -117,8 +125,10 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 	    println("${iam}: LEAVE")
         }
     }
-
-    stage('Cleanup') {
+     */
+    
+    stage('Cleanup')
+    {
         if (teardown) {
             timeout(15) {
                 script {
@@ -153,6 +163,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     {
         steps
 	{
+	    String branch_name = getBranchName()
 	    install_kind(branch_name)
 	}
     }
@@ -192,8 +203,14 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
           ) {
             localCharts = true
           }
+	  String branch_name = getBranchName()
           Boolean is_release = isReleaseBranch(branch)
-	  println(" ** localCharts=${localCharts}, branch_name=${branch_name}, isReleaseBranch=${is_release}")
+		    println([
+			" ** localCharts=${localCharts}",
+			"branch_name=${branch_name}",
+			"branch=${branch}",
+			"branch=isReleaseBranch=${is_release}",
+		    ].join(', '))
 
           // NOTE temporary workaround expose ONOS node ports
 	  def localHelmFlags = extraHelmFlags.trim()
@@ -405,21 +422,21 @@ pipeline {
 
     stage('Create K8s Cluster')
     {
-            steps
+        steps
+        {
+            script
             {
-                script
-                {
-		    def clusterExists = sh(
-                        returnStdout: true,
-                        script: """kind get clusters | grep "${clusterName}" | wc -l""")
+	        def clusterExists = sh(
+                    returnStdout: true,
+                    script: """kind get clusters | grep "${clusterName}" | wc -l""")
 
-                    if (clusterExists.trim() == "0")
-                    {
-                        createKubernetesCluster([nodes: 3, name: clusterName])
-                    }
-                } // script
-            } // steps
-        } // stage('Create K8s Cluster')
+                if (clusterExists.trim() == "0")
+                {
+                    createKubernetesCluster([nodes: 3, name: clusterName])
+                }
+            } // script
+        } // steps
+    } // stage('Create K8s Cluster')
 
         stage('Replace voltctl')
         {
