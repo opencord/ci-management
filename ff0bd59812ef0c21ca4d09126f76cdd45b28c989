@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6deb80ef_1eac8804",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-08-01T16:06:08Z",
+      "side": 1,
+      "message": "jenkins never launched a linting/test job for this patch so manually attaching +1 verify.",
+      "revId": "ff0bd59812ef0c21ca4d09126f76cdd45b28c989",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
