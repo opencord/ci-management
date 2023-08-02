@@ -27,7 +27,7 @@ String getIam(String func) {
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 void run_cmd(String command) {
-    String buffer [
+    String buffer = [
         "Running command: $command",
     ]
 

@@ -28,7 +28,7 @@ help ::
 	@echo "[LINT]"
 
 include $(ONF_MAKEDIR)/lint/doc8/include.mk
-include $(ONF_MAKEDIR)/lint/groovy.mk
+include $(ONF_MAKEDIR)/lint/groovy/include.mk
 include $(ONF_MAKEDIR)/lint/jjb.mk
 include $(ONF_MAKEDIR)/lint/json.mk
 include $(ONF_MAKEDIR)/lint/license/include.mk
