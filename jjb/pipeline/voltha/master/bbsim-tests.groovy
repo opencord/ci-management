@@ -135,15 +135,15 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
           _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
           """
 
-	  // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
-	  Boolean localCharts = false
-
-          if (volthaHelmChartsChange != ''
-              || gerritProject == 'voltha-helm-charts'
-              || isReleaseBranch(branch) // branch != 'master'
-          ) {
-		localCharts = true
-	  }
+		    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+		    Boolean localCharts = false
+		    
+		    if (volthaHelmChartsChange != ''
+			|| gerritProject == 'voltha-helm-charts'
+			|| isReleaseBranch(branch) // branch != 'master'
+		    ) {
+			localCharts = true
+		    }
 		    
 		    String branchName = branchName()
 		    Boolean is_release = isReleaseBranch(branch)
@@ -189,9 +189,8 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 			localCharts: localCharts,
 			bbsimReplica: olts.toInteger(),
 			dockerRegistry: registry,
-		    ])	
+		    ])
 		    println('volthaDeploy: LEAVE')
-
 		} // script
 
         // -----------------------------------------------------------------------
@@ -262,9 +261,10 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
         } // if (teardown)
     } // stage('Deploy Voltha')
 
-    stage('Run test ' + testTarget + ' on ' + workflow + ' workFlow')
+    stage("Run test ${testTarget} on workflow ${workFlow}")
     {
         sh """
+        echo -e "\n** Monitor using mem_consumption.py ?"
     if [ ${withMonitoring} = true ] ; then
       mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
       cd "$WORKSPACE/voltha-system-tests"
@@ -276,6 +276,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
     """
 
         sh """
+        echo -e "\n** make testTarget=[${testTarget}]"
     mkdir -p ${logsDir}
     export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
     ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
@@ -287,14 +288,18 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
         getPodsInfo("${logsDir}")
 
         sh """
+      echo -e '\n** Gather robot Framework logs: ENTER'
       # set +e
       # collect logs collected in the Robot Framework StartLogging keyword
       cd ${logsDir}
       gzip *-combined.log
       rm -f *-combined.log
+
+      echo -e '** Gather robot Framework logs: LEAVE\n'
     """
 
     sh """
+    echo -e '** Monitor pod-mem-consumption: ENTER'
     if [ ${withMonitoring} = true ] ; then
       cd "$WORKSPACE/voltha-system-tests"
       make venv-activate-script
@@ -302,6 +307,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
+    echo -e '** Monitor pod-mem-consumption: LEAVE\n'
     """
     } // stage
 
@@ -329,8 +335,6 @@ def collectArtifacts(exitStatus) {
   sh '''
     sync
     [[ $(pgrep --count kail) -gt 0 ]] && pkill --echo kail
-    which voltctl
-    md5sum $(which voltctl)
   '''
 
   step([$class: 'RobotPublisher',
@@ -515,7 +519,9 @@ pipeline {
                             testLogging = 'True'
                         }
                         println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+                        println "Executing test ${target}: ENTER"
                         execute_test(target, workflow, testLogging, teardown, flags)
+                        println "Executing test ${target}: LEAVE"
                     } // for
                 } // script
             } // steps
