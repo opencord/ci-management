@@ -382,6 +382,7 @@ pipeline {
             {
 	        String cmd = [
 		    'make',
+		    '--no-print-directory',
 		    '-C', "$WORKSPACE/voltha-system-tests",
 		    "KAIL_PATH=\"$WORKSPACE/bin\"",
 		    'kail',
@@ -404,6 +405,7 @@ pipeline {
 
 	        String cmd = [
 			'make',
+			'--no-print-directory',
 			'-C', "$WORKSPACE/voltha-system-tests",
 			"KIND_PATH=\"$WORKSPACE/bin\"",
 			'install-command-kind',
