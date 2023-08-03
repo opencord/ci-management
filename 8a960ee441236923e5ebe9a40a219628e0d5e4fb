@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e07bb630_dbe4115d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-08-03T19:03:47Z",
+      "side": 1,
+      "message": "Merge to try out new changes in voltha-system-tests.\n\nWe really need to add more lint and test coverage in this repository.",
+      "revId": "8a960ee441236923e5ebe9a40a219628e0d5e4fb",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
