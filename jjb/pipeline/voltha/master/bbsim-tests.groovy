@@ -376,31 +376,44 @@ pipeline {
     // -----------------------------------------------------------------------
     stage ('Install Kail')
     {
-        String cmd = [
-            'make',
-            '-C', "$WORKSPACE/voltha-system-tests",
-            "KAIL_PATH=\"$WORKSPACE/bin\"",
-            'kail',
-        ].join(' ')
+        steps
+        {
+            script
+            {
+	        String cmd = [
+		    'make',
+		    '-C', "$WORKSPACE/voltha-system-tests",
+		    "KAIL_PATH=\"$WORKSPACE/bin\"",
+		    'kail',
+		].join(' ')
 
-        println(" ** Running: ${cmd}:\n")
-        sh("${cmd}")
-    }
+		println(" ** Running: ${cmd}:\n")
+		sh("${cmd}")
+	    } // script
+        } // steps
+    } // stage
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage ('Install Kind')
     {
-        String cmd = [
-            'make',
-            '-C', "$WORKSPACE/voltha-system-tests",
-            "KIND_PATH=\"$WORKSPACE/bin\"",
-            'install-command-kind',
-        ].join(' ')
+        steps
+        {
+            script
+            {
 
-        println(" ** Running: ${cmd}:\n")
-        sh("${cmd}")
-    }
+	        String cmd = [
+			'make',
+			'-C', "$WORKSPACE/voltha-system-tests",
+			"KIND_PATH=\"$WORKSPACE/bin\"",
+			'install-command-kind',
+		    ].join(' ')
+		    
+		println(" ** Running: ${cmd}:\n")
+		    sh("${cmd}")
+	    } // script
+	} // steps
+    } // stage
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
