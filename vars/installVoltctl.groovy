@@ -39,7 +39,7 @@ def process(String branch) {
     def released=[
 	// v1.9.1 - https://github.com/opencord/voltctl/releases/tag/untagged-cd611c39178f25b95a87
 	'voltha-2.12' : '1.8.45',
-	// 'voltha-2.11' : '1.8.45',
+	'voltha-2.11' : '1.8.45',
 	// https://github.com/opencord/voltctl/releases/tag/v1.7.6
 	'voltha-2.10' : '1.7.6',
 	'voltha-2.9'  : '1.7.4',
@@ -106,7 +106,7 @@ def process(String branch) {
     // -----------------------------------------------------------------------
     sh returnStdout: false, script: """#!/bin/bash
 
-    set -eu -o pipefail
+#    set -eu -o pipefail
 
     bin_voltctl="$WORKSPACE/bin/voltctl"
 
@@ -150,16 +150,6 @@ def call(String branch)
         config = [:]
     }
 	 */
-
-    try
-    {
-	def config = [:]
-	showCommands(config)
-    }
-    catch (Exception err)
-    {
-	println("** ${iam}: WARNING ${err}")
-    }
 
     try
     {

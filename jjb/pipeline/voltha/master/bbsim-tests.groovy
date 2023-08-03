@@ -25,12 +25,12 @@ library identifier: 'cord-jenkins-libraries@master',
 //------------------//
 //---]  GLOBAL  [---//
 //------------------//
-def clusterName = 'kind-ci'
+String clusterName = 'kind-ci' // was def
 
 // -----------------------------------------------------------------------
 // Intent:
 // -----------------------------------------------------------------------
-String getBranchName() {
+String branchName() {
     String name = 'master'
 
     // [TODO] Sanity check the target branch
@@ -43,13 +43,13 @@ String getBranchName() {
 //         Jenkins will re-write the call stack for serialization.
 // -----------------------------------------------------------------------
 String getIam(String func) {
-    String branch_name = getBranchName()
+    String branchName = branchName()
     String src = [
         'ci-management',
         'jjb',
         'pipeline',
         'voltha',
-        branch_name,
+        branchName,
         'bbsim-tests.groovy'
     ].join('/')
 
@@ -64,30 +64,30 @@ String getIam(String func) {
 Boolean isReleaseBranch(String name)
 {
     // List modifiers = ['-dev', '-pre', 'voltha-x.y.z-pre']
-    // if branch_name in modifiers
-    return(name != 'master') // OR branch_name.contains('-')
+    // if branchName in modifiers
+    return(name != 'master') // OR branchName.contains('-')
 }
 
 // -----------------------------------------------------------------------
 // Intent:
 // -----------------------------------------------------------------------
-def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "")
+void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags='')
 {
-    def infraNamespace = "default"
-    def volthaNamespace = "voltha"
-    def logsDir = "$WORKSPACE/${testTarget}"
+    String infraNamespace  = 'default'
+    String volthaNamespace = 'voltha'
+    String logsDir = "$WORKSPACE/${testTarget}"
 
     stage('IAM')
     {
         script
         {
             // Announce ourselves for log usability
-            String iam = getIam('execute_test')
+            String iam = getIam('execute_test') 
             println("${iam}: ENTER")
             println("${iam}: LEAVE")
         }
     }
-    
+
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage('Cleanup')
@@ -95,7 +95,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         if (teardown) {
             timeout(15) {
                 script {
-                    helmTeardown(["default", infraNamespace, volthaNamespace])
+                    helmTeardown(['default', infraNamespace, volthaNamespace])
                 }
             timeout(1) {
                     sh returnStdout: false, script: '''
@@ -135,38 +135,41 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
           _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
           """
 
-          // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
-          def localCharts = false
+	  // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+	  Boolean localCharts = false
 
-          if (volthaHelmChartsChange != ""
-              || gerritProject == "voltha-helm-charts"
+          if (volthaHelmChartsChange != ''
+              || gerritProject == 'voltha-helm-charts'
               || isReleaseBranch(branch) // branch != 'master'
           ) {
-            localCharts = true
-          }
-          String branch_name = getBranchName()
+		localCharts = true
+	  }
+		    
+          String branchName = branchName()
           Boolean is_release = isReleaseBranch(branch)
-                    println([
-                        " ** localCharts=${localCharts}",
-                        "branch_name=${branch_name}",
-                        "branch=${branch}",
-                        "branch=isReleaseBranch=${is_release}",
-                    ].join(', '))
+          println([
+              " ** localCharts=${localCharts}",
+              "branchName=${branchName}",
+              "branch=${branch}",
+              "branch=isReleaseBranch=${is_release}",
+              ].join(', '))
 
-          // NOTE temporary workaround expose ONOS node ports
-          def localHelmFlags = extraHelmFlags.trim()
+	  // NOTE temporary workaround expose ONOS node ports
+          String localHelmFlags = extraHelmFlags.trim()
                   + " --set global.log_level=${logLevel.toUpperCase()} "
-                  + " --set onos-classic.onosSshPort=30115 "
-                  + " --set onos-classic.onosApiPort=30120 "
-                  + " --set onos-classic.onosOfPort=31653 "
-                  + " --set onos-classic.individualOpenFlowNodePorts=true "
+                  + ' --set onos-classic.onosSshPort=30115 '
+                  + ' --set onos-classic.onosApiPort=30120 '
+                  + ' --set onos-classic.onosOfPort=31653 '
+                  + ' --set onos-classic.individualOpenFlowNodePorts=true '
                   + testSpecificHelmFlags
 
-          if (gerritProject != "") {
+          if (gerritProject != '') {
             localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
           }
 
-          volthaDeploy([
+	println('volthaDeploy: ENTER')
+
+	volthaDeploy([
             infraNamespace: infraNamespace,
             volthaNamespace: volthaNamespace,
             workflow: workflow.toLowerCase(),
@@ -175,21 +178,25 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
             localCharts: localCharts,
             bbsimReplica: olts.toInteger(),
             dockerRegistry: registry,
-            ])
-        }
+            ])	
+
+	println('volthaDeploy: LEAVE')
+		} // script
 
         // -----------------------------------------------------------------------
         // Intent: Replacing P_IDS with pgrep/pkill is a step forward.
         // Why not simply use a pid file, capture _TAG=kail-startup above
         // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
-        // -----------------------------------------------------------------------
-	echo 'Try out pgrep/pkill commands'
-        def stream = sh(
-            returnStatus:false,
-            returnStdout:true,
-            script: '''pgrep --list-full kail-startup || true'''
-        )
-        println("** pgrep output: ${stream}")
+	// -----------------------------------------------------------------------
+	script {
+	    println('Try out pgrep/pkill commands')
+            def stream = sh(
+                returnStatus:false,
+                returnStdout:true,
+                script: '''pgrep --list-full kail-startup || true'''
+            )
+	    println("** pgrep output: ${stream}")
+	}
 
         // -----------------------------------------------------------------------
         // stop logging
@@ -225,8 +232,9 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
             // setting ONOS log level
             script
-            {
-                setOnosLogLevels([
+            { 
+		println('** setOnosLogLevels: ENTER')
+		setOnosLogLevels([
                     onosNamespace: infraNamespace,
                     apps: [
                         'org.opencord.dhcpl2relay',
@@ -238,6 +246,7 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
                     ],
                     logLevel: logLevel
                 ])
+		println('** setOnosLogLevels: LEAVE')
             } // script
         } // if (teardown)
     } // stage('Deploy Voltha')
@@ -284,12 +293,13 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
     fi
     """
     } // stage
+
+    return
 } // execute_test()
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def collectArtifacts(exitStatus)
-{
+def collectArtifacts(exitStatus) {
     echo '''
 
 ** -----------------------------------------------------------------------
@@ -314,16 +324,19 @@ def collectArtifacts(exitStatus)
 
   step([$class: 'RobotPublisher',
     disableArchiveOutput: false,
-    logFileName: "**/*/log*.html",
+    logFileName: '**/*/log*.html',
     otherFiles: '',
-    outputFileName: "**/*/output*.xml",
+    outputFileName: '**/*/output*.xml',
     outputPath: '.',
     passThreshold: 100,
-    reportFileName: "**/*/report*.html",
+    reportFileName: '**/*/report*.html',
     unstableThreshold: 0,
     onlyCritical: true]);
 }
 
+// -----------------------------------------------------------------------
+// Intent: main
+// -----------------------------------------------------------------------
 pipeline {
 
   /* no label, executor is determined by JJB */
@@ -337,8 +350,8 @@ pipeline {
     KUBECONFIG="$HOME/.kube/kind-${clusterName}"
     VOLTCONFIG="$HOME/.volt/config"
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    DIAGS_PROFILE="VOLTHA_PROFILE"
-    SSHPASS="karaf"
+    DIAGS_PROFILE='VOLTHA_PROFILE'
+    SSHPASS='karaf'
   }
   stages {
     stage('Download Code') {
@@ -429,7 +442,7 @@ pipeline {
                     returnStdout: true,
                     script: """kind get clusters | grep "${clusterName}" | wc -l""")
 
-                if (clusterExists.trim() == "0")
+                if (clusterExists.trim() == '0')
                 {
                     createKubernetesCluster([nodes: 3, name: clusterName])
                 }
@@ -444,7 +457,7 @@ pipeline {
         // if the project is voltctl, override the downloaded one with the built one
         when {
             expression {
-                return gerritProject == "voltctl"
+                return gerritProject == 'voltctl'
             }
         }
 
@@ -475,26 +488,26 @@ pipeline {
     // -----------------------------------------------------------------------
     stage('Parse and execute tests')
     {
-            steps {
-                script {
-                    def tests = readYaml text: testTargets
+        steps {
+	    script {
+                def tests = readYaml text: testTargets
 
-                    for(int i = 0;i<tests.size();i++) {
-                        def test = tests[i]
-                        def target = test["target"]
-                        def workflow = test["workflow"]
-                        def flags = test["flags"]
-                        def teardown = test["teardown"].toBoolean()
-                        def logging = test["logging"].toBoolean()
+                for(int i = 0;i<tests.size();i++) {
+                    def test = tests[i]
+                        def target = test['target']
+                        def workflow = test['workflow']
+                        def flags = test['flags']
+                        def teardown = test['teardown'].toBoolean()
+                        def logging = test['logging'].toBoolean()
                         def testLogging = 'False'
                         if (logging) {
                             testLogging = 'True'
                         }
                         println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
                         execute_test(target, workflow, testLogging, teardown, flags)
-                    }
-                }
-            }
+                    } // for
+                } // script
+            } // steps
         } // stage
     } // stages
 
