@@ -173,6 +173,8 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 			testSpecificHelmFlags
 		    ].join(' ')
 
+		    println("** localHelmFlags = ${localHelmFlags}")
+
 		    if (gerritProject != '') {
 			localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
 		    }
