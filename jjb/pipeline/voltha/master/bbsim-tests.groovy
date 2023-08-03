@@ -28,9 +28,13 @@ library identifier: 'cord-jenkins-libraries@master',
 def clusterName = 'kind-ci'
 
 // -----------------------------------------------------------------------
+// Intent:
 // -----------------------------------------------------------------------
 String getBranchName() {
     String name = 'master'
+
+    // [TODO] Sanity check the target branch
+    // if (name != jenkins.branch) { fatal }
     return(name)
 }
 
@@ -49,8 +53,8 @@ String getIam(String func) {
         'bbsim-tests.groovy'
     ].join('/')
 
-    String iam = [src, func].join('::')
-    return iam
+    String name = [src, func].join('::')
+    return(name)
 }
 
 // -----------------------------------------------------------------------
@@ -62,46 +66,6 @@ Boolean isReleaseBranch(String name)
     // List modifiers = ['-dev', '-pre', 'voltha-x.y.z-pre']
     // if branch_name in modifiers
     return(name != 'master') // OR branch_name.contains('-')
-}
-
-// -----------------------------------------------------------------------
-// Intent: Phase helper method
-// -----------------------------------------------------------------------
-// NOTE: installKind temporarily disabled:
-//   o error makes little sense, install.Kind.{groovy,sh} exist in vars/
-//   o jenkins shared library -- checked out on server disk is stale
-//     2 changesets behind current ?!?!
-//   o Disable call for now to revive the pipeline.
-// 10:26:05  org.codehaus.groovy.control.MultipleCompilationErrorsException: startup failed:
-// 10:26:05  WorkflowScript: 73: unexpected token: installKind @ line 73, column 2.
-// 10:26:05     installKind(name)
-// 10:26:05      ^
-// -----------------------------------------------------------------------
-Boolean install_kind(String name)
-{
-    String iam = getIam('installKind')
-    Boolean ans = False
-
-    println("** ${iam}: ENTER")
-    try
-    {
-        println("** ${iam} Running installKind(name): ENTER")
-        installKind(name)
-        println("** ${iam} Running installKind(name): LEAVE")
-        ans = True // iff
-    }
-    catch (Exception err)
-    {
-        ans = False
-        println("** ${iam}: EXCEPTION ${err}")
-        throw err
-    }
-    finally
-    {
-        println("** ${iam}: ENTER")
-    }
-
-    return(ans)
 }
 
 // -----------------------------------------------------------------------
@@ -124,6 +88,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         }
     }
     
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     stage('Cleanup')
     {
         if (teardown) {
@@ -141,21 +107,8 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
         }
     }
 
-    stage ('Install Kail')
-    {
-        // VOL-4926 - Is voltha-system-tests available ?
-        String cmd = [
-            'make',
-            '-C', "$WORKSPACE/voltha-system-tests",
-            "KAIL_PATH=\"$WORKSPACE/bin\"",
-            'kail',
-        ].join(' ')
-        println(" ** Running: ${cmd}:\n")
-        sh("${cmd}")
-        // if (! my_install_kail())
-        //    throw new Exception('installKail() failed')
-    }
-
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     stage('Deploy common infrastructure')
     {
         sh '''
@@ -420,20 +373,34 @@ pipeline {
     }
 
     // -----------------------------------------------------------------------
-    // Intent: Install early so stage('Create K8s Cluster') will not
-    //   fail on bogus "script.sh: line 1: kind: command not found".
+    // -----------------------------------------------------------------------
+    stage ('Install Kail')
+    {
+        String cmd = [
+            'make',
+            '-C', "$WORKSPACE/voltha-system-tests",
+            "KAIL_PATH=\"$WORKSPACE/bin\"",
+            'kail',
+        ].join(' ')
+
+        println(" ** Running: ${cmd}:\n")
+        sh("${cmd}")
+    }
+
+    // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage ('Install Kind')
     {
-        steps
-        {
-            script
-            {
-                String branch_name = getBranchName()
-                install_kind(branch_name)
-            } // script
-        } // steps
-    } // stage
+        String cmd = [
+            'make',
+            '-C', "$WORKSPACE/voltha-system-tests",
+            "KIND_PATH=\"$WORKSPACE/bin\"",
+            'install-command-kind',
+        ].join(' ')
+
+        println(" ** Running: ${cmd}:\n")
+        sh("${cmd}")
+    }
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
