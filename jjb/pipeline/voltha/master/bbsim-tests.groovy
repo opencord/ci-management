@@ -145,42 +145,51 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 		localCharts = true
 	  }
 		    
-          String branchName = branchName()
-          Boolean is_release = isReleaseBranch(branch)
-          println([
-              " ** localCharts=${localCharts}",
-              "branchName=${branchName}",
-              "branch=${branch}",
-              "branch=isReleaseBranch=${is_release}",
-              ].join(', '))
+		    String branchName = branchName()
+		    Boolean is_release = isReleaseBranch(branch)
+		    println([
+			" ** localCharts=${localCharts}",
+			"branchName=${branchName}",
+			"branch=${branch}",
+			"branch=isReleaseBranch=${is_release}",
+		    ].join(', '))
 
-	  // NOTE temporary workaround expose ONOS node ports
-          String localHelmFlags = extraHelmFlags.trim()
-                  + " --set global.log_level=${logLevel.toUpperCase()} "
-                  + ' --set onos-classic.onosSshPort=30115 '
-                  + ' --set onos-classic.onosApiPort=30120 '
-                  + ' --set onos-classic.onosOfPort=31653 '
-                  + ' --set onos-classic.individualOpenFlowNodePorts=true '
-                  + testSpecificHelmFlags
+		    // -----------------------------------------------------------------------
+		    // Rewrite localHelmFlags using array join, moving code around and
+		    // refactoring into standalone functions 
+		    // -----------------------------------------------------------------------
+		    // hudson.remoting.ProxyException: groovy.lang.MissingMethodException:
+		    // No signature of method: java.lang.String.positive() is applicable for argument types: () values: []
+		    // -----------------------------------------------------------------------
+		    // NOTE temporary workaround expose ONOS node ports
+		    // -----------------------------------------------------------------------
+		    String localHelmFlags = [
+			extraHelmFlags.trim(),
+			"--set global.log_level=${logLevel.toUpperCase()}",
+			'--set onos-classic.onosSshPort=30115',
+			'--set onos-classic.onosApiPort=30120',
+			'--set onos-classic.onosOfPort=31653',
+			'--set onos-classic.individualOpenFlowNodePorts=true',
+			testSpecificHelmFlags
+		    ].join(' ')
 
-          if (gerritProject != '') {
-            localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
-          }
+		    if (gerritProject != '') {
+			localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
+		    }
 
-	println('volthaDeploy: ENTER')
+		    println('volthaDeploy: ENTER')
+		    volthaDeploy([
+			infraNamespace: infraNamespace,
+			volthaNamespace: volthaNamespace,
+			workflow: workflow.toLowerCase(),
+			withMacLearning: enableMacLearning.toBoolean(),
+			extraHelmFlags: localHelmFlags,
+			localCharts: localCharts,
+			bbsimReplica: olts.toInteger(),
+			dockerRegistry: registry,
+		    ])	
+		    println('volthaDeploy: LEAVE')
 
-	volthaDeploy([
-            infraNamespace: infraNamespace,
-            volthaNamespace: volthaNamespace,
-            workflow: workflow.toLowerCase(),
-            withMacLearning: enableMacLearning.toBoolean(),
-            extraHelmFlags: localHelmFlags,
-            localCharts: localCharts,
-            bbsimReplica: olts.toInteger(),
-            dockerRegistry: registry,
-            ])	
-
-	println('volthaDeploy: LEAVE')
 		} // script
 
         // -----------------------------------------------------------------------
