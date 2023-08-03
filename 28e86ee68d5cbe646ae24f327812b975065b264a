@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80be170a_16915a81",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-08-03T19:29:21Z",
+      "side": 1,
+      "message": "More debugging added, change getVolthaImageFlags return type to String to narrow down where this is coming from.\n\nhudson.remoting.ProxyException: groovy.lang.MissingMethodException: No signature of method: java.lang.String.positive() is applicable for argument types: () values: []",
+      "revId": "28e86ee68d5cbe646ae24f327812b975065b264a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
