@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed6a80c0_96296f04",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-08-04T18:41:33Z",
+      "side": 1,
+      "message": "No job triggered, merge so we can test changes in the bbsim job.",
+      "revId": "f404b64893a86a6b010f8b0f4ebfcd9248a39cb6",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
