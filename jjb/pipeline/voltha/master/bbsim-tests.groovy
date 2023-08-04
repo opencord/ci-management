@@ -261,7 +261,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
         } // if (teardown)
     } // stage('Deploy Voltha')
 
-    stage("Run test ${testTarget} on workflow ${workFlow}")
+    stage("Run test ${testTarget} on workflow ${workflow}")
     {
         sh """
         echo -e "\n** Monitor using mem_consumption.py ?"
