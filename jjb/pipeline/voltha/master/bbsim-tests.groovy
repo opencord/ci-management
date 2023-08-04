@@ -82,7 +82,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
         script
         {
             // Announce ourselves for log usability
-            String iam = getIam('execute_test') 
+            String iam = getIam('execute_test')
             println("${iam}: ENTER")
             println("${iam}: LEAVE")
         }
@@ -137,14 +137,14 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 
 		    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
 		    Boolean localCharts = false
-		    
+
 		    if (volthaHelmChartsChange != ''
 			|| gerritProject == 'voltha-helm-charts'
 			|| isReleaseBranch(branch) // branch != 'master'
 		    ) {
 			localCharts = true
 		    }
-		    
+
 		    String branchName = branchName()
 		    Boolean is_release = isReleaseBranch(branch)
 		    println([
@@ -156,7 +156,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 
 		    // -----------------------------------------------------------------------
 		    // Rewrite localHelmFlags using array join, moving code around and
-		    // refactoring into standalone functions 
+		    // refactoring into standalone functions
 		    // -----------------------------------------------------------------------
 		    // hudson.remoting.ProxyException: groovy.lang.MissingMethodException:
 		    // No signature of method: java.lang.String.positive() is applicable for argument types: () values: []
@@ -200,12 +200,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 	// -----------------------------------------------------------------------
 	script {
 	    println('Try out pgrep/pkill commands')
-            def stream = sh(
-                returnStatus:false,
-                returnStdout:true,
-                script: '''pgrep --list-full kail-startup || true'''
-            )
-	    println("** pgrep output: ${stream}")
+	    sh('''pgrep --list-full kail-startup || true''')
 	}
 
         // -----------------------------------------------------------------------
@@ -242,7 +237,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 
             // setting ONOS log level
             script
-            { 
+            {
 		println('** setOnosLogLevels: ENTER')
 		setOnosLogLevels([
                     onosNamespace: infraNamespace,
@@ -332,10 +327,12 @@ def collectArtifacts(exitStatus) {
 
   archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
 
-  sh '''
+  sh(returnStdout:true, script: '''
     sync
+    echo '** Running: pgrep --list-full kail-startup'
+    pgrep --list-full 'kail-startup'
     [[ $(pgrep --count kail) -gt 0 ]] && pkill --echo kail
-  '''
+ ''')
 
   step([$class: 'RobotPublisher',
     disableArchiveOutput: false,
@@ -362,11 +359,11 @@ pipeline {
     timeout(time: "${timeout}", unit: 'MINUTES')
   }
   environment {
-    KUBECONFIG="$HOME/.kube/kind-${clusterName}"
-    VOLTCONFIG="$HOME/.volt/config"
-    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    DIAGS_PROFILE='VOLTHA_PROFILE'
-    SSHPASS='karaf'
+    KUBECONFIG = "$HOME/.kube/kind-${clusterName}"
+    VOLTCONFIG = "$HOME/.volt/config"
+    PATH = "$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    DIAGS_PROFILE = 'VOLTHA_PROFILE'
+    SSHPASS = 'karaf'
   }
   stages {
     stage('Download Code') {
@@ -402,7 +399,7 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage ('Install Kail')
+    stage('Install Kail')
     {
         steps
         {
@@ -424,7 +421,7 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage ('Install Kind')
+    stage('Install Kind')
     {
         steps
         {
@@ -438,7 +435,7 @@ pipeline {
 			"KIND_PATH=\"$WORKSPACE/bin\"",
 			'install-command-kind',
 		    ].join(' ')
-		    
+
 		println(" ** Running: ${cmd}:\n")
 		    sh("${cmd}")
 	    } // script
@@ -469,60 +466,62 @@ pipeline {
     // -----------------------------------------------------------------------
     stage('Replace voltctl')
     {
-        // if the project is voltctl, override the downloaded one with the built one
-        when {
-            expression {
-                return gerritProject == 'voltctl'
+            // if the project is voltctl, override the downloaded one with the built one
+            when {
+		expression {
+                    return gerritProject == 'voltctl'
+		}
             }
-        }
 
-        // Hmmmm(?) where did the voltctl download happen ?
-        // Likely Makefile but would be helpful to document here.
-        steps
-        {
-            println("${iam} Running: installVoltctl($branch)")
-            installVoltctl("$branch")
-        } // steps
-    } // stage
+            // Hmmmm(?) where did the voltctl download happen ?
+            // Likely Makefile but would be helpful to document here.
+            steps
+            {
+		println("${iam} Running: installVoltctl($branch)")
+		installVoltctl("$branch")
+            } // steps
+	} // stage
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Load image in kind nodes')
-    {
-        when {
-            expression {
-                return !gerritProject.isEmpty()
+	// -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	stage('Load image in kind nodes')
+	{
+            when {
+		expression {
+                    return !gerritProject.isEmpty()
+		}
             }
-        }
-        steps {
-            loadToKind()
-        } // steps
-    } // stage
+            steps {
+		loadToKind()
+            } // steps
+	} // stage
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Parse and execute tests')
-    {
-        steps {
-	    script {
-                def tests = readYaml text: testTargets
+	// -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	stage('Parse and execute tests')
+	{
+            steps {
+		script {
+                    def tests = readYaml text: testTargets
 
-                for(int i = 0;i<tests.size();i++) {
-                    def test = tests[i]
-                        def target = test['target']
-                        def workflow = test['workflow']
-                        def flags = test['flags']
-                        def teardown = test['teardown'].toBoolean()
-                        def logging = test['logging'].toBoolean()
-                        def testLogging = 'False'
-                        if (logging) {
-                            testLogging = 'True'
-                        }
+		    tests.eachWithIndex { test, idx ->
+			println "** readYaml test suite[$idx]) test=[${test}]"
+			// def test = tests[i]
+                        String  target      = test['target']
+                        String  workflow    = test['workflow']
+                        String  flags       = test['flags']
+                        Boolean teardown    = test['teardown'].toBoolean()
+                        Boolean logging     = test['logging'].toBoolean()
+                        String  testLogging = (logging) ? 'True' : 'False'
+
                         println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
                         println "Executing test ${target}: ENTER"
                         execute_test(target, workflow, testLogging, teardown, flags)
                         println "Executing test ${target}: LEAVE"
                     } // for
+
+		    String iam = getIam('Parse amd execte tests')
+		    println("** ${iam} ran to completion")
                 } // script
             } // steps
         } // stage
