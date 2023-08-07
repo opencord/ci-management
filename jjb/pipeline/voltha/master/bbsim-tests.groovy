@@ -343,7 +343,8 @@ echo
 echo '** -----------------------------------------------------------------------'
 echo '** [DEBUG] Display logfiles for RobotPublisher consumption'
 echo "PWD: $(/bin/pwd)"
-echo '** -----------------------------------------------------------------------find . \( -name 'log*.html' -o -name 'output*.xml' -o 'report*.html' \) -print
+echo '** -----------------------------------------------------------------------'
+find . \( -name 'log*.html' -o -name 'output*.xml' -o -name 'report*.html' \) -print
 echo
 '
 ''')
