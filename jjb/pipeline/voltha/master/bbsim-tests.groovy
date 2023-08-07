@@ -312,38 +312,57 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 def collectArtifacts(exitStatus) {
+    String iam = getIam('execute_test')
+
     echo '''
 
 ** -----------------------------------------------------------------------
 ** collectArtifacts
 ** -----------------------------------------------------------------------
 '''
-
-  getPodsInfo("$WORKSPACE/${exitStatus}")
-
-  sh """
+    println("${iam}: ENTER (exitStatus=${exitStatus})")
+    
+    getPodsInfo("$WORKSPACE/${exitStatus}")
+    
+    sh """
   kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log
   """
-
-  archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
-
-  sh(returnStdout:true, script: '''
+    
+    archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
+    
+    sh(returnStdout:true, script: '''
     sync
-    echo '** Running: pgrep --list-full kail-startup'
-    pgrep --list-full 'kail-startup'
+    echo '** Running: pgrep --list-full kail-startup (ENTER)'
+    pgrep --list-full 'kail-startup' || true
     [[ $(pgrep --count kail) -gt 0 ]] && pkill --echo kail
+    echo '** Running: pgrep --list-full kail-startup (LEAVE)'
  ''')
 
-  step([$class: 'RobotPublisher',
-    disableArchiveOutput: false,
-    logFileName: '**/*/log*.html',
-    otherFiles: '',
-    outputFileName: '**/*/output*.xml',
-    outputPath: '.',
-    passThreshold: 100,
-    reportFileName: '**/*/report*.html',
-    unstableThreshold: 0,
-    onlyCritical: true]);
+    sh('''
+echo
+echo '** -----------------------------------------------------------------------'
+echo '** [DEBUG] Display logfiles for RobotPublisher consumption'
+echo "PWD: $(/bin/pwd)"
+echo '** -----------------------------------------------------------------------find . \( -name 'log*.html' -o -name 'output*.xml' -o 'report*.html' \) -print
+echo
+'
+''')
+
+    println("${iam}: ENTER RobotPublisher")
+    step([$class: 'RobotPublisher',
+	  disableArchiveOutput: false,
+	  logFileName: '**/*/log*.html',
+	  otherFiles: '',
+	  outputFileName: '**/*/output*.xml',
+	  outputPath: '.',
+	  passThreshold: 100,
+	  reportFileName: '**/*/report*.html',
+	  unstableThreshold: 0,
+	  onlyCritical: true]);
+    println("${iam}: LEAVE RobotPublisher")
+
+    println("${iam}: LEAVE (exitStatus=${exitStatus})")
+    return
 }
 
 // -----------------------------------------------------------------------
@@ -462,10 +481,10 @@ pipeline {
         } // steps
     } // stage('Create K8s Cluster')
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Replace voltctl')
-    {
+	// -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
+	stage('Replace voltctl')
+	{
             // if the project is voltctl, override the downloaded one with the built one
             when {
 		expression {
@@ -520,7 +539,7 @@ pipeline {
                         println "Executing test ${target}: LEAVE"
                     } // for
 
-		    String iam = getIam('Parse amd execte tests')
+		    String iam = getIam('Parse and execute tests')
 		    println("** ${iam} ran to completion")
                 } // script
             } // steps
