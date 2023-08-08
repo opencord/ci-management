@@ -338,19 +338,6 @@ def collectArtifacts(exitStatus) {
     echo '** Running: pgrep --list-full kail-startup (LEAVE)'
  ''')
 
-    sh('''
-echo
-echo '** -----------------------------------------------------------------------'
-echo '** [DEBUG] Display logfiles for RobotPublisher consumption'
-echo "PWD: $(/bin/pwd)"
-echo '** -----------------------------------------------------------------------'
-
-# find . \( -name 'log*.html' -o -name 'output*.xml' -o -name 'report*.html' \) -print
-
-echo
-'
-''')
-
     println("${iam}: ENTER RobotPublisher")
     step([$class: 'RobotPublisher',
 	  disableArchiveOutput: false,
