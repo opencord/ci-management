@@ -1,5 +1,7 @@
 ---
 # voltha 2.x tests
+# [NOTE]
+#   o md5sum(master) can be used to locate branch/release variants of a job.
 
 - project:
     name: voltha-e2e-2.11
@@ -131,5 +133,28 @@
               flags: ""
               teardown: false
               logging: true
-              
+
+      # -----------------------------------------------------------------------
+      # md5sum(master): eff05a324e94fdef076b2d5f7cb4f80f
+      #   - pipeline-script was not defined here but was for branch=master test
+      # -----------------------------------------------------------------------
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-dt-test-bbsim-2.11'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          code-branch: 'master'
+          time-trigger: "@daily"
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master '
+          testTargets: |
+            - target: functional-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-failurescenarios-dt
+              workflow: dt
+              flags: ""
+              teardown: false
+              logging: true
+
 # [EOF]
