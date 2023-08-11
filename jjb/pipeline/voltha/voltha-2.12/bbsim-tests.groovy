@@ -256,18 +256,32 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
         } // if (teardown)
     } // stage('Deploy Voltha')
 
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     stage("Run test ${testTarget} on workflow ${workflow}")
     {
         sh """
-        echo -e "\n** Monitor using mem_consumption.py ?"
+        echo -e '** Monitor memory consumption: ENTER'
+
     if [ ${withMonitoring} = true ] ; then
+      cat <<EOM
+
+** -----------------------------------------------------------------------
+** Monitoring memory usage with mem_consumption.py
+** -----------------------------------------------------------------------
+EOM
       mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
       cd "$WORKSPACE/voltha-system-tests"
-      make venv-activate-script
+
+      echo '** Installing python virtualenv'
+      make venv-activate-patched
+
       set +u && source .venv/bin/activate && set -u
       # Collect initial memory consumption
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
+
+    echo -e '** Monitor memory consumption: LEAVE\n'
     """
 
         sh """
@@ -293,11 +307,22 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
       echo -e '** Gather robot Framework logs: LEAVE\n'
     """
 
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     sh """
     echo -e '** Monitor pod-mem-consumption: ENTER'
     if [ ${withMonitoring} = true ] ; then
+      cat <<EOM
+
+** -----------------------------------------------------------------------
+** Monitoring pod-memory-consumption using mem_consumption.py
+** -----------------------------------------------------------------------
+EOM
       cd "$WORKSPACE/voltha-system-tests"
-      make venv-activate-script
+
+      echo '** Installing python virtualenv'
+      make venv-activate-patched
+
       set +u && source .venv/bin/activate && set -u
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
@@ -321,15 +346,15 @@ def collectArtifacts(exitStatus) {
 ** -----------------------------------------------------------------------
 '''
     println("${iam}: ENTER (exitStatus=${exitStatus})")
-    
+
     getPodsInfo("$WORKSPACE/${exitStatus}")
-    
+
     sh """
   kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log
   """
-    
+
     archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
-    
+
     sh(returnStdout:true, script: '''
     sync
     echo '** Running: pgrep --list-full kail-startup (ENTER)'
