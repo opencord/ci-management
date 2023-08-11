@@ -72,5 +72,23 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+
+      # -----------------------------------------------------------------------
+      # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          disable-job: true
+          release: '2.8'
+          branch: 'voltha-2.8'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          VolthaEtcdPort: 9999
+          in-band-management: true
+          time: '11'
+          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
           
 # [EOF]

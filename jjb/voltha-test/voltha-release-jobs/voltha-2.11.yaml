@@ -70,4 +70,24 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
 
+      # ----------------------------------------------------------------------- 
+      # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
+      # md5sum(master): f94fd1f2d15674629cb0900bb3b6c08a
+      # ----------------------------------------------------------------------- 
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          disable-job: true              # menlo-demo-pod offline
+          release: '2.11'
+          branch: 'voltha-2.11'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          VolthaEtcdPort: 9999
+          in-band-management: true
+          time: '11'
+          pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
+          
 # [EOF]

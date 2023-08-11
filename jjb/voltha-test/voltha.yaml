@@ -228,21 +228,6 @@
           power-switch: true
           power-cycle-olt: true
 
-      # Menlo pod with olt/onu - master branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          disable-job: false
-          name-extension: '_DT'
-          work-flow: 'DT'
-          profile: '1T8GEM'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          VolthaEtcdPort: 9999
-          in-band-management: true
-          waitTimerForOltUp: 540
-          time: '6'
-
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
@@ -258,58 +243,6 @@
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
           power-switch: true
           power-cycle-olt: true
-
-      # -----------------------------------------------------------------------
-      # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
-#      - 'build_voltha_pod_release_timer':
-#          build-node: 'menlo-demo-pod'
-#          config-pod: 'onf-demo-pod'
-#          disable-job: true
-#          release: '2.8'
-#          branch: 'voltha-2.8'
-#          name-extension: '_DT'
-#          work-flow: 'DT'
-#          profile: '1T8GEM'
-#          num-of-onos: '3'
-#          num-of-atomix: '3'
-#          VolthaEtcdPort: 9999
-#          in-band-management: true
-#          time: '11'
-#          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
-
-      # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          disable-job: false
-          release: '2.11'
-          branch: 'voltha-2.11'
-          name-extension: '_DT'
-          work-flow: 'DT'
-          profile: '1T8GEM'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          VolthaEtcdPort: 9999
-          in-band-management: true
-          time: '11'
-          pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
-
-      # Menlo pod with olt/onu - released branch,  Default tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          disable-job: false
-          release: '2.12'
-          branch: 'voltha-2.12'
-          name-extension: '_DT'
-          work-flow: 'DT'
-          profile: '1T8GEM'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          VolthaEtcdPort: 9999
-          in-band-management: true
-          time: '11'
-          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
 
       # -----------------------------------------------------------------------
       # Menlo pod test job - uses tech profile on voltha branch
