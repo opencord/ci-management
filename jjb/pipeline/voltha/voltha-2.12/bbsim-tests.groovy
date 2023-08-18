@@ -89,6 +89,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
     }
 
     // -----------------------------------------------------------------------
+    // Intent: Cleanup stale port-forwarding
     // -----------------------------------------------------------------------
     stage('Cleanup')
     {
@@ -97,31 +98,74 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
                 script {
                     helmTeardown(['default', infraNamespace, volthaNamespace])
                 }
-            timeout(1) {
-                    sh returnStdout: false, script: '''
-          # remove orphaned port-forward from different namespaces
-          ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
-          '''
-                }
-            }
-        }
-    }
+
+            // Comment timeout() if we hang (fix it VS mask problem)
+            // timeout(1) {
+sh(returnStdout:true, script: '''
+    sync
+    cat <<EOM
+
+** -----------------------------------------------------------------------
+** remove orphaned port-forward from different namespacse
+** -----------------------------------------------------------------------
+EOM
+    [[ $(pgrep --count port-forward) -gt 0 ]] && pkill --echo 'port-forward'
+    pgrep --list-full port-forward || true
+ ''')
+            } // timeout(15)
+        } // teardown()
+        // timeout(1)
+    } // stage(cleanup)
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage('Deploy common infrastructure')
     {
-        sh '''
+        script
+        {
+            local dashargs = [
+                'kpi_exporter.enabled=false',
+                'dashboards.xos=false',
+                'dashboards.onos=false',
+                'dashboards.aaa=false',
+                'dashboards.voltha=false',
+            ].join(',')
+
+            local promargs = [
+                'prometheus.alertmanager.enabled=false',
+                'prometheus.pushgateway.enabled=false',
+            ].join(',')
+
+            sh('''
     helm repo add onf https://charts.opencord.org
     helm repo update
+
+    echo -e "\nwithMonitoring=[$withMonitoring]"
+    if [ ${withMonitoring} = true ] ; then
+      helm install nem-monitoring onf/nem-monitoring \
+          --set $promargs \
+          --set $dashargs
+    fi
+    ''')
+
+            /*
+            sh '''
+    helm repo add onf https://charts.opencord.org
+    helm repo update
+
+    echo -e "\nwithMonitoring=[$withMonitoring]"
     if [ ${withMonitoring} = true ] ; then
       helm install nem-monitoring onf/nem-monitoring \
       --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
       --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
     fi
     '''
+            */
+        }
     }
 
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     stage('Deploy Voltha')
     {
         if (teardown)
@@ -130,10 +174,16 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
             {
                 script
                 {
-          sh """
+		    sh("""
           mkdir -p ${logsDir}
-          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
-          """
+          onos_log="${logsDir}/onos-voltha-startup-combined.log"
+          echo "** kail-startup ENTER: $(date)" > "$onos_log"
+
+          # Intermixed output (tee -a &) may get conflusing but let(s) see
+          # what messages are logged during startup.
+          #  _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} >> "$onos_log" &
+          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} | tee -a "$onos_log" &
+          """)
 
 		    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
 		    Boolean localCharts = false
@@ -215,6 +265,8 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
             done
           fi
           cd ${logsDir}
+          echo "** kail-startup LEAVE: $(date)" >> "${logsDir}/onos-voltha-startup-combined.log"
+
           gzip -k onos-voltha-startup-combined.log
           rm onos-voltha-startup-combined.log
         """
@@ -256,32 +308,18 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
         } // if (teardown)
     } // stage('Deploy Voltha')
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
     stage("Run test ${testTarget} on workflow ${workflow}")
     {
         sh """
-        echo -e '** Monitor memory consumption: ENTER'
-
+        echo -e "\n** Monitor using mem_consumption.py ?"
     if [ ${withMonitoring} = true ] ; then
-      cat <<EOM
-
-** -----------------------------------------------------------------------
-** Monitoring memory usage with mem_consumption.py
-** -----------------------------------------------------------------------
-EOM
       mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
       cd "$WORKSPACE/voltha-system-tests"
-
-      echo '** Installing python virtualenv'
-      make venv-activate-patched
-
+      make venv-activate-script
       set +u && source .venv/bin/activate && set -u
       # Collect initial memory consumption
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
-
-    echo -e '** Monitor memory consumption: LEAVE\n'
     """
 
         sh """
@@ -307,22 +345,11 @@ EOM
       echo -e '** Gather robot Framework logs: LEAVE\n'
     """
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
     sh """
     echo -e '** Monitor pod-mem-consumption: ENTER'
     if [ ${withMonitoring} = true ] ; then
-      cat <<EOM
-
-** -----------------------------------------------------------------------
-** Monitoring pod-memory-consumption using mem_consumption.py
-** -----------------------------------------------------------------------
-EOM
       cd "$WORKSPACE/voltha-system-tests"
-
-      echo '** Installing python virtualenv'
-      make venv-activate-patched
-
+      make venv-activate-script
       set +u && source .venv/bin/activate && set -u
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
@@ -399,6 +426,7 @@ pipeline {
     DIAGS_PROFILE = 'VOLTHA_PROFILE'
     SSHPASS = 'karaf'
   }
+
   stages {
     stage('Download Code') {
       steps {
@@ -482,83 +510,105 @@ pipeline {
     {
         steps
         {
-            script
+	    script
             {
                 def clusterExists = sh(
-                    returnStdout: true,
-                    script: """kind get clusters | grep "${clusterName}" | wc -l""")
+			returnStdout: true,
+			script: """kind get clusters | grep "${clusterName}" | wc -l"""
+		    )
 
                 if (clusterExists.trim() == '0')
-                {
-                    createKubernetesCluster([nodes: 3, name: clusterName])
+		{
+		    createKubernetesCluster([nodes: 3, name: clusterName])
                 }
-            } // script
-        } // steps
+	    } // script
+       } // steps
     } // stage('Create K8s Cluster')
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Replace voltctl')
-	{
-            // if the project is voltctl, override the downloaded one with the built one
-            when {
-		expression {
-                    return gerritProject == 'voltctl'
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    stage('Replace voltctl')
+    {
+        // if the project is voltctl, override the downloaded one with the built one
+        when {
+	    expression { return gerritProject == 'voltctl' }
+        }
+
+        // Hmmmm(?) where did the voltctl download happen ?
+        // Likely Makefile but would be helpful to document here.
+        steps
+        {
+	    println("${iam} Running: installVoltctl($branch)")
+	    installVoltctl("$branch")
+        } // steps
+    } // stage
+
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    stage('Load image in kind nodes')
+    {
+        when {
+	    expression { return !gerritProject.isEmpty() }
+        }
+        steps {
+	    loadToKind()
+        } // steps
+    } // stage
+
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    stage('Parse and execute tests')
+    {
+        steps {
+	    script {
+		    // Announce ourselves for log usability
+		    String iam = getIam('execute_test')
+		    println("${iam}: ENTER")
+
+                def tests = readYaml text: testTargets
+
+		println("** $iam: Testing index: tests-to-run")
+		tests.eachWithIndex { test, idx ->
+		    String  target = test['target']
+		    println("** $idx: $target")
 		}
-            }
+		println("** NOTE: For odd failures compare tests-to-run with teste output")
 
-            // Hmmmm(?) where did the voltctl download happen ?
-            // Likely Makefile but would be helpful to document here.
-            steps
-            {
-		println("${iam} Running: installVoltctl($branch)")
-		installVoltctl("$branch")
-            } // steps
-	} // stage
+		tests.eachWithIndex { test, idx ->
+                    println "** readYaml test suite[$idx]) test=[${test}]"
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Load image in kind nodes')
-	{
-            when {
-		expression {
-                    return !gerritProject.isEmpty()
-		}
-            }
-            steps {
-		loadToKind()
-            } // steps
-	} // stage
+                    String  target      = test['target']
+                    String  workflow    = test['workflow']
+                    String  flags       = test['flags']
+                    Boolean teardown    = test['teardown'].toBoolean()
+                    Boolean logging     = test['logging'].toBoolean()
+		    String  testLogging = (logging) ? 'True' : 'False'
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Parse and execute tests')
-	{
-            steps {
-		script {
-                    def tests = readYaml text: testTargets
+		    println([
+			    "Executing test ${target}",
+			    "on workflow ${workflow}",
+			    "with logging ${testLogging}",
+			    "and extra flags ${flags}",
+			].join(' ')
 
-		    tests.eachWithIndex { test, idx ->
-			println "** readYaml test suite[$idx]) test=[${test}]"
-			// def test = tests[i]
-                        String  target      = test['target']
-                        String  workflow    = test['workflow']
-                        String  flags       = test['flags']
-                        Boolean teardown    = test['teardown'].toBoolean()
-                        Boolean logging     = test['logging'].toBoolean()
-                        String  testLogging = (logging) ? 'True' : 'False'
+		    try {
+			println "Executing test ${target}: ENTER"
+			execute_test(target, workflow, testLogging, teardown, flags)
+		    }
+		    catch (Exception err) {
+			println("** ${iam}: EXCEPTION ${err}")
+		    }
+		    finally {
+			println "Executing test ${target}: LEAVE"
+		    }
 
-                        println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
-                        println "Executing test ${target}: ENTER"
-                        execute_test(target, workflow, testLogging, teardown, flags)
-                        println "Executing test ${target}: LEAVE"
-                    } // for
+		    } // for
 
-		    String iam = getIam('Parse and execute tests')
-		    println("** ${iam} ran to completion")
+		    // Premature exit if this message is not logged
+                    println("${iam}: LEAVE (testing ran to completion)")
                 } // script
             } // steps
-        } // stage
+	} // stage
     } // stages
 
     post
