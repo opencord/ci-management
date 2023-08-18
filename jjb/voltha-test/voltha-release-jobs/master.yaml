@@ -75,5 +75,23 @@
           time: '6'
 # Was not mentioned in voltha.yaml for branch=master ?!?
 #          pipeline-script: 'voltha/master/physical-build.groovy'
-          
+
+      # -----------------------------------------------------------------------
+      # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
+      # md5sum(master): 68a2922b69b3b7f83a599ae6fb7abb1c
+      # ----------------------------------------------------------------------- 
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          disable-job: true               # Reason: onf-demo-pod offline
+          release: 'master'
+          branch: 'master'
+          profile: '1T4GEM'
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          in-band-management: true
+          waitTimerForOltUp: 540
+          VolthaEtcdPort: 9999
+          time: '1'
+
 # [EOF]

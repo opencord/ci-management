@@ -202,32 +202,6 @@
           profile: 'TP'
           enableMultiUni: true
 
-      # Menlo pod with olt/onu - 1T4GEM tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          disable-job: false
-          profile: '1T4GEM'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          in-band-management: true
-          waitTimerForOltUp: 540
-          VolthaEtcdPort: 9999
-          time: '1'
-
-      # Menlo pod test job - master test job uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          timeout: 300
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          disable-job: false
-          release: 'master'
-          branch: 'master'
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM'
-          power-switch: true
-          power-cycle-olt: true
-
       # Menlo pod test job - uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
