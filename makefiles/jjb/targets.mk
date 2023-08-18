@@ -23,6 +23,7 @@ $(if $(DEBUG),$(warning ENTER))
 ##---]  GLOBALS  [---##
 ##-------------------##
 jjb-gen-dir := build
+# JJB_DEBUG := true
 
 ##-------------------##
 ##---]  TARGETS  [---##
@@ -34,14 +35,18 @@ all: help
 ## -----------------------------------------------------------------------
 .PHONY: jjb-gen
 
+jjb-gen-args := $(null)
+$(if $(JJB_DEBUG),$(eval jjb-gen-args += --log_level DEBUG))
+
 jjb-gen-log := $(jjb-gen-dir)/jjb-gen.log
 jjb-gen: $(venv-activate-script)
+
 	$(call banner-enter,Target $@)
 	@mkdir -p $(jjb-gen-dir)
 	@touch "$(jjb-gen-dir)/.sentinel"
 	( \
 	  $(activate) \
-	     && jenkins-jobs test $(PWD)/jjb -o $(jjb-gen-dir) 3>&1 2>&1 \
+	     && jenkins-jobs $(jjb-gen-args) test $(PWD)/jjb -o $(jjb-gen-dir) 3>&1 2>&1 \
 	) | tee "$(jjb-gen-log)"
 
   ifdef LOGS

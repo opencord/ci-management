@@ -28,7 +28,9 @@
     num-of-ponports: ''
 
     jobs:
+      # -----------------------------------------------------------------------
       # flex OCP pod with olt/onu - Default tech profile and timer based job
+      # -----------------------------------------------------------------------
       - 'build_voltha_pod_release_timer':
           disable-job: true
           build-node: 'qa-testvm-pod'
@@ -40,8 +42,10 @@
           VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
-
+ 
+      # -----------------------------------------------------------------------
       # [VOL-4939] - flex OCP pod with olt/onu - 1T4GEM tech profile and timer based job
+      # -----------------------------------------------------------------------
       - 'build_voltha_pod_release_timer':
           disable-job: true
           build-node: 'qa-testvm-pod'
@@ -58,6 +62,7 @@
       # -----------------------------------------------------------------------
       # [VOL-4939] - flex OCP pod with olt/onu
       #            - Released versions Default tech profile and timer based job
+      # md5sum(master): 07b501ef13e00b5aeaf808ca534ba276
       # -----------------------------------------------------------------------
       - 'build_voltha_pod_release_timer':
           disable-job: true                   # Reason: qa-testvm-pod offline
@@ -112,4 +117,25 @@
           VolthaEtcdPort: 9999
           time: '1'
 
+      # -----------------------------------------------------------------------
+      # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
+      # ec22ad3751cbb83e0cff505eaebe9f6f
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_release_timer':
+          disable-job: true
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord-multi-uni'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          profile: 'TP'
+          time: '16'
+          VolthaEtcdPort: 9999
+          num-of-onos: '3'
+          num-of-atomix: '3'
+          reinstall-olt: true
+          enableMultiUni: true
+          uniPortMask: '0x0003'
+          
 # [EOF]

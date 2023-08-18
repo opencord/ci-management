@@ -92,21 +92,6 @@
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM'
 
-      # flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          disable-job: false
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: 'master'
-          branch: 'master'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          profile: 'TP'
-          time: '10'
-          VolthaEtcdPort: 9999
-          num-of-onos: '3'
-          num-of-atomix: '3'
-
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           disable-job: false
@@ -166,25 +151,6 @@
           pipeline-script: 'voltha/voltha-2.12/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
-
-      # -----------------------------------------------------------------------
-      # [CORD-4941] - flex OCP pod with olt/onu - Released versions Default tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord-multi-uni'
-          release: 'master'
-          branch: 'master'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          profile: 'TP'
-          time: '16'
-          VolthaEtcdPort: 9999
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          reinstall-olt: true
-          enableMultiUni: true
-          uniPortMask: '0x0003'
 
       # [CORD-4941] - flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
