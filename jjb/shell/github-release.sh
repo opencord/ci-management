@@ -106,7 +106,7 @@ function sigtrap()
         /bin/rm -fr "$scratch"
     fi
 
-    do_logout
+    do_logout 'shellcheck-SC2119'
     return
 }
 trap sigtrap EXIT
@@ -183,8 +183,8 @@ function init()
     declare -p work
 
     local git_version
-    getGitVersion git_verison
-    func_echo "git_version = $git_version"
+    getGitVersion git_version
+    func_echo "$(declare -p git_version)"
     return
 }
 
@@ -371,7 +371,7 @@ function get_gh_hostname()
 ## -----------------------------------------------------------------------
 function get_gh_repo_org()
 {
-    declare -n varname=$1; shift
+    declare -n ref=$1; shift
     declare -g __repo_org
 
     local org
@@ -383,8 +383,7 @@ function get_gh_repo_org()
         org="${GITHUB_ORGANIZATION}"
     fi
 
-    # shellcheck disable=SC2178
-    varname="$org"
+    ref="$org"
     return
 }
 
@@ -393,7 +392,7 @@ function get_gh_repo_org()
 ## -----------------------------------------------------------------------
 function get_gh_repo_name()
 {
-    declare -n varname=$1; shift
+    declare -n ref=$1; shift
     declare -g __repo_name
 
     local name
@@ -405,7 +404,7 @@ function get_gh_repo_name()
         name="${GERRIT_PROJECT}"
     fi
 
-    varname="$name"
+    ref="$name"
     return
 }
 
@@ -432,7 +431,7 @@ function get_gh_releases()
 ## -----------------------------------------------------------------------
 function get_argv_repo()
 {
-    declare -n varname=$1; shift
+    declare -n ref=$1; shift
 
     local repo_org
     get_gh_repo_org repo_org
@@ -440,8 +439,8 @@ function get_argv_repo()
     local repo_name
     get_gh_repo_name repo_name
 
-    varname="${repo_org}/${repo_name}"
-    # func_echo "varname=$(declare -p varname)"
+    ref="${repo_org}/${repo_name}"
+    # func_echo "ref=$(declare -p ref)"
     return
 }
 
@@ -450,7 +449,7 @@ function get_argv_repo()
 ## -----------------------------------------------------------------------
 function get_argv_name()
 {
-    declare -n varname=$1; shift
+    declare -n ref=$1; shift
 
     local repo_name
     get_gh_repo_name repo_name
@@ -458,9 +457,9 @@ function get_argv_name()
     local repo_ver
     getGitVersion repo_ver
 
-    # varname="${repo_name} - $GIT_VERSION"
-    varname="${repo_name} - ${repo_ver}"
-    func_echo "varname=$(declare -p varname)"
+    # ref="${repo_name} - $GIT_VERSION"
+    ref="${repo_name} - ${repo_ver}"
+    func_echo "ref=$(declare -p ref)"
     return
 }
 
@@ -469,7 +468,7 @@ function get_argv_name()
 ## -----------------------------------------------------------------------
 function get_argv_tag()
 {
-    declare -n varname=$1; shift
+    declare -n ref=$1; shift
 
     # cached_argv_tag='v3.41.3204'
     if [[ ! -v cached_argv_tag ]]; then
@@ -480,8 +479,8 @@ function get_argv_tag()
     fi
 
     [[ ${#cached_argv_tag} -eq 0 ]] && error "Unable to determine GIT_VERSION="
-    varname="$cached_argv_tag"
-    func_echo "varname=$(declare -p varname)"
+    ref="$cached_argv_tag"
+    func_echo "ref=$(declare -p ref)"
     return
 }
 
@@ -497,10 +496,10 @@ function get_argv_tag()
 ## -----------------------------------------------------------------------
 function get_release_path()
 {
-    declare -n varname=$1; shift
+    declare -n ref=$1; shift
 
     # shellcheck disable=SC2128
-    local varpath="$varname"
+    local varpath="$ref"
     
     DEST_GOPATH=${DEST_GOPATH:-}
     if [ -n "$DEST_GOPATH" ]; then
@@ -565,7 +564,7 @@ EOT
 function get_artifacts()
 {
     local dir="$1"    ; shift
-    declare -n ref=$1 ; shift
+    declare -n refA=$1 ; shift
 
     # Glob available files, exclude checksums
     readarray -t __artifacts < <(find "$dir" -mindepth 1 ! -type d \
@@ -581,7 +580,8 @@ function get_artifacts()
     [[ ${#__artifacts[@]} -eq 0 ]] \
           && error "Artifact dir is empty: $(declare -p dir)"
 
-    ref=("${__artifacts[@]}")
+    # shellcheck disable=SC2034
+    refA=("${__artifacts[@]}")
     return
 }
 
@@ -677,6 +677,10 @@ function gh_release_create()
 ## -----------------------------------------------------------------------
 function do_login()
 {
+    # shellcheck disable=SC2120
+    # shellcheck disable=SC2034
+    local unused="$1"; shift
+
     declare -g pac
     declare -a login_args=()
     [[ $# -gt 0 ]] && login_args+=("$@")
@@ -748,7 +752,7 @@ function do_logout()
 ## -----------------------------------------------------------------------
 function get_releases()
 {
-    declare -n ref="$1"; shift
+    declare -n refA="$1"; shift
 
     banner ""
     pushd "$scratch" >/dev/null
@@ -758,7 +762,7 @@ function get_releases()
     get_gh_releases releases_uri
     # declare -p releases_uri
 
-    ref=()
+    refA=()
     "$gh_cmd" api "$releases_uri" | jq . > 'release.raw'
     readarray -t __tmp < <(jq '.[] | "\(.tag_name)"' 'release.raw')
 
@@ -766,7 +770,7 @@ function get_releases()
     for release in "${__tmp[@]}";
     do
         release="${release//\"/}"
-        ref+=("$release")
+        refA+=("$release")
     done
 
     popd >/dev/null
@@ -843,18 +847,18 @@ function install_gh_binary()
 ## -----------------------------------------------------------------------
 function releaseDelete()
 {
-    declare -n args=$1; shift
+    declare -n refA=$1; shift
     local version="$1"; shift
 
-    banner "${args[@]}"
-    declare -a args=()
-    args+=('--host-repo')
-    args+=('--yes')
-    # args+=('--cleanup-tag')
+    banner "${refA[@]}"
+    # declare -a refA=()
+    refA+=('--host-repo')
+    refA+=('--yes')
+    # refA+=('--cleanup-tag')
 
     echo
     echo "==========================================================================="
-    my_gh 'release' 'delete' "$version" "${args[@]}"
+    my_gh 'release' 'delete' "$version" "${refA[@]}"
     echo "==========================================================================="
     echo
 
@@ -921,7 +925,7 @@ function release_staging()
 ##   ref         gh command line passed back to caller
 ## Switches:
 ##   --host      Pass default github hostname
-##   --verbose   Enable verbose mode#
+##   --verbose   Enable verbose mode
 ##   --version   Display command version
 ##   @array      Remaining arguments passed as command switches.
 ## -----------------------------------------------------------------------
@@ -1058,6 +1062,8 @@ function parse_args()
     while [ $# -gt 0 ]; do
         local arg="$1"; shift
         func_echo "ARGV: $arg"
+
+	# shellcheck disable=SC2034
         case "$arg" in
 
             -*debug)   declare -i -g debug=1         ;;
@@ -1120,7 +1126,7 @@ parse_args "$@"
 init
 install_gh_binary
 
-do_login
+do_login "$*"
 
 release_path='/dev/null'
 get_release_path release_path
