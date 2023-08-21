@@ -1,0 +1,112 @@
+---
+# POD Build Pipeline Jobs for Voltha Releases
+# -----------------------------------------------------------------------
+# Disabled, offline -- 'qa-testvm-pod'
+# -----------------------------------------------------------------------
+- project:
+    name: voltha-soak-jobs-2.8
+#   (was)   name: voltha-release-jobs
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    with-kind: false
+    power-switch: false
+    power-cycle-olt: false
+    work-flow: 'ATT'
+    in-band-management: false
+    num-of-openonu: '1'
+    num-of-onos: '1'
+    num-of-atomix: '0'
+    reinstall-olt: true
+    test-type: ''
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
+    cordTesterChange: ''
+    oltAdapterAppLabel: 'adapter-open-olt'
+    num-of-onus: ''
+    num-of-ponports: ''
+
+# Can we assign this once in the template header ?
+#          branch: 'voltha-2.8'
+#          release: '2.8'
+
+    jobs:
+      # -----------------------------------------------------------------------
+      # ONF Menlo Soak POD build job
+      # md5sum(master): ac5414a6fa137ae7e80d400a4d764495
+      # ----------------------------------------------------------------------- 
+      - 'build_voltha_pod_manual':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: true                # Reason: menlo-soak-pod is offline
+          branch: 'voltha-2.8'
+          release: '2.8'
+          bbsimReplicas: 1
+          profile: '1T8GEM'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          reinstall-olt: true
+          num-of-onus: 32
+          num-of-ponports: 16
+          logLevel: 'WARN'
+          pipeline-script: 'voltha/voltha-2.8/physical-build.groovy'
+
+      # -----------------------------------------------------------------------
+      # ONF Menlo Soak POD test job
+      # Run failure/recovery tests every Wednesday
+      # md5sum(master): 6b9d51edecf561f79e0187c837493463
+      # -----------------------------------------------------------------------      
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: true                # Reason: menlo-soak-pod is offline
+          profile: '1T8GEM'
+          branch: 'voltha-2.8'
+          release: '2.8'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_Fail'
+          test-type: 'Failure'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H * * 3"
+
+      # -----------------------------------------------------------------------
+      # ONF Menlo Soak POD test job
+      # Run dataplane tests every Saturday
+      # md5sum(master): ef45e5436813c9bf3d4d16cc0bd8a445
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_soak_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: true
+          profile: '1T8GEM'
+          branch: 'voltha-2.8'
+          release: '2.8'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_DP'
+          test-type: 'Dataplane'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
+          time-trigger: "H H * * 6"
+
+      # -----------------------------------------------------------------------      
+      # ONF Menlo Soak POD test job
+      # Run tests manually triggering the job
+      # md5sum(master): a71054dd64ac725e723515e70af74555
+      # -----------------------------------------------------------------------       
+      - 'build_voltha_pod_manual_test':
+          build-node: 'menlo-soak-pod'
+          config-pod: 'onf-soak-pod'
+          disable-job: true                # Reason: menlo-soak-pod is offline
+          profile: '1T8GEM'
+          branch: 'voltha-2.8'
+          release: '2.8'
+          work-flow: 'DT'
+          name-extension: '_DT_soak_Func'
+          test-type: 'Functional'
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha/voltha-2.8/voltha-physical-soak-dt-tests.groovy'
+          
+# [EOF]
