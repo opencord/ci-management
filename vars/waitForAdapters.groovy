@@ -216,14 +216,19 @@ def process(Map config)
 	}
     }
 
-    println("** ${iam}: Tearing down port forwarding")
-    sh("""
-      ps aux \
-          | grep port-forw \
-          | grep -v grep \
-          | awk '{print \$2}' \
-          | xargs --no-run-if-empty kill -9 || true
-    """)
+    // -----------------------------------------------------------------------
+    // [TODO] - move into lib or vars/ script for reuse.
+    // logic inlined within several scripts.
+    // -----------------------------------------------------------------------
+    String proc = 'port-forw'
+    println("** ${iam}: Tearing down port forwarding ($proc)")
+    sh(returnStdout:true, script: '''
+    sync
+    echo "** Running: pgrep --list-full ${proc} (ENTER)"
+    pgrep --list-full "$proc" || true
+    [[ $(pgrep --count "$proc") -gt 0 ]] && pkill --echo "$proc"
+    echo "** Running: pgrep --list-full ${proc} (LEAVE)"
+ ''')
 
     println("** ${iam}: LEAVE")
     return
@@ -239,6 +244,15 @@ def call(Map config)
     if (!config) {
         config = [:]
     }
+
+    println("""
+
+** -----------------------------------------------------------------------
+** ${iam}: This may take a while.
+** Iterate with a mild sleep delay, poll until adapter has fully initialized.
+** This routine is intentionally verbose due to some crazy values in the stream.
+** -----------------------------------------------------------------------
+""")
 
     try
     {
