@@ -174,10 +174,10 @@ EOM
             {
                 script
                 {
-		    sh("""
+                    sh("""
           mkdir -p ${logsDir}
           onos_log="${logsDir}/onos-voltha-startup-combined.log"
-          echo "** kail-startup ENTER: $(date)" > "$onos_log"
+          echo "** kail-startup ENTER: \$(date)" > "$onos_log"
 
           # Intermixed output (tee -a &) may get conflusing but let(s) see
           # what messages are logged during startup.
@@ -185,7 +185,7 @@ EOM
           _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} | tee -a "$onos_log" &
           """)
 
-		    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+                    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
 		    Boolean localCharts = false
 
 		    if (volthaHelmChartsChange != ''
@@ -249,11 +249,24 @@ EOM
         // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
 	// -----------------------------------------------------------------------
 	script {
-	    println('Try out pgrep/pkill commands')
+	    println('''
+
+** -----------------------------------------------------------------------
+** pgrep process list for kail-startup (WIP)
+** -----------------------------------------------------------------------
+''')
 	    sh('''pgrep --list-full kail-startup || true''')
+
+	    println('''
+
+** -----------------------------------------------------------------------
+** Raw ps process list for kail-startup (WIP)
+** -----------------------------------------------------------------------
+''')
+	    sh('''ps e -ww -A | grep "_TAG=kail-startup"''')
 	}
 
-        // -----------------------------------------------------------------------
+	/ -----------------------------------------------------------------------
         // stop logging
         // -----------------------------------------------------------------------
         sh """
@@ -265,7 +278,7 @@ EOM
             done
           fi
           cd ${logsDir}
-          echo "** kail-startup LEAVE: $(date)" >> "${logsDir}/onos-voltha-startup-combined.log"
+          echo "** kail-startup LEAVE: \$(date)" >> "${logsDir}/onos-voltha-startup-combined.log"
 
           gzip -k onos-voltha-startup-combined.log
           rm onos-voltha-startup-combined.log
