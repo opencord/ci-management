@@ -89,6 +89,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
     }
 
     // -----------------------------------------------------------------------
+    // Intent: Cleanup stale port-forwarding
     // -----------------------------------------------------------------------
     stage('Cleanup')
     {
@@ -496,39 +497,53 @@ pipeline {
         } // steps
     } // stage('Create K8s Cluster')
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Replace voltctl')
-	{
-            // if the project is voltctl, override the downloaded one with the built one
-            when {
-		expression {
-                    return gerritProject == 'voltctl'
-		}
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    stage('Replace voltctl')
+    {
+        // if the project is voltctl, override the downloaded one with the built one
+        when {
+            expression {
+                return gerritProject == 'voltctl'
             }
+        }
 
-            // Hmmmm(?) where did the voltctl download happen ?
-            // Likely Makefile but would be helpful to document here.
-            steps
-            {
-		println("${iam} Running: installVoltctl($branch)")
-		installVoltctl("$branch")
-            } // steps
-	} // stage
+        // Hmmmm(?) where did the voltctl download happen ?
+        // Likely Makefile but would be helpful to document here.
+        steps
+        {
+            println("${iam} Running: installVoltctl($branch)")
+            installVoltctl("$branch")
+        } // steps
+    } // stage
 
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Load image in kind nodes')
-	{
-            when {
-		expression {
-                    return !gerritProject.isEmpty()
-		}
-            }
-            steps {
-		loadToKind()
-            } // steps
-	} // stage
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    stage('voltctl [DEBUG]')
+    {
+        steps
+        {
+            println("${iam} Checking voltctl config permissions")
+            sh('/bin/ls -ld ~/.volt || true')
+
+            println("${iam} Running find")
+            sh('/bin/ls -l ~/.volt')
+        } // steps
+    } // stage
+
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
+    stage('Load image in kind nodes')
+    {
+        when {
+            expression {
+                return !gerritProject.isEmpty()
+	    }
+        }
+        steps {
+            loadToKind()
+        } // steps
+    } // stage
 
 	// -----------------------------------------------------------------------
 	// -----------------------------------------------------------------------
@@ -548,7 +563,14 @@ pipeline {
                         Boolean logging     = test['logging'].toBoolean()
                         String  testLogging = (logging) ? 'True' : 'False'
 
-                        println "Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+			print("""
+
+** -----------------------------------------------------------------------
+** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+** -----------------------------------------------------------------------
+
+""")
+
                         println "Executing test ${target}: ENTER"
                         execute_test(target, workflow, testLogging, teardown, flags)
                         println "Executing test ${target}: LEAVE"
