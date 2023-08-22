@@ -168,22 +168,6 @@
           profile: 'TP'
           enableMultiUni: true
 
-      # Menlo pod test job - uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          timeout: 330
-          build-node: 'menlo-demo-pod'
-          config-pod: 'onf-demo-pod'
-          disable-job: false
-          release: 'master'
-          branch: 'master'
-          name-extension: '_DT'
-          work-flow: 'DT'
-          test-repo: 'voltha-system-tests'
-          profile: '1T8GEM'
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
-          power-switch: true
-          power-cycle-olt: true
-
       # -----------------------------------------------------------------------
       # Menlo pod test job - uses tech profile on voltha branch
 #      - 'build_voltha_pod_test':

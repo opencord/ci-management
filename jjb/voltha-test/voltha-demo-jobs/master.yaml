@@ -1,0 +1,50 @@
+---
+# POD Build Pipeline Jobs for Voltha Releases
+# -----------------------------------------------------------------------
+# Disabled, offline -- 'qa-testvm-pod'
+# -----------------------------------------------------------------------
+- project:
+    name: voltha-demo-jobs-master    # was: voltha-release-jobs
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    with-kind: false
+    power-switch: false
+    power-cycle-olt: false
+    work-flow: 'ATT'
+    in-band-management: false
+    num-of-openonu: '1'
+    num-of-onos: '1'
+    num-of-atomix: '0'
+    reinstall-olt: true
+    test-type: ''
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
+    cordTesterChange: ''
+    oltAdapterAppLabel: 'adapter-open-olt'
+    num-of-onus: ''
+    num-of-ponports: ''
+
+    jobs:
+      # -----------------------------------------------------------------------
+      # Menlo pod test job - uses tech profile on voltha branch
+      # md5sum(master): 4e2c44bd10575cf1448c36d08065a991
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_test':
+          timeout: 330
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          disable-job: true               # Reason: 'menlo-demo-pod' is offline
+          release: 'master'
+          branch: 'master'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          power-switch: true
+          power-cycle-olt: true
+
+# [EOF]
