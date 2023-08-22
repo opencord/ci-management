@@ -99,8 +99,23 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
                     helmTeardown(['default', infraNamespace, volthaNamespace])
                 }
 
+	// -----------------------------------------------------------------------
+        // Verify pgrep/pkill behavior before replacing ps | kill -9
+        // -----------------------------------------------------------------------
+	script {
+	    println('''
+
+** -----------------------------------------------------------------------
+** pgrep process list for port-forward (pre-pkill)
+** -----------------------------------------------------------------------
+''')
+            sh('''pgrep --list-full port-forward || true''')
+	}
+
             // Comment timeout() if we hang (fix it VS mask problem)
             // timeout(1) {
+	// -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
 sh(returnStdout:true, script: '''
     sync
     cat <<EOM
@@ -110,8 +125,20 @@ sh(returnStdout:true, script: '''
 ** -----------------------------------------------------------------------
 EOM
     [[ $(pgrep --count port-forward) -gt 0 ]] && pkill --echo 'port-forward'
-    pgrep --list-full port-forward || true
  ''')
+
+	// -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+	script {
+	    println('''
+
+** -----------------------------------------------------------------------
+** pgrep process list for port-forward (post-pkill)
+** -----------------------------------------------------------------------
+''')
+            sh('''pgrep --list-full port-forward || true''')
+	}
+		
             } // timeout(15)
         } // teardown()
         // timeout(1)
@@ -266,7 +293,7 @@ EOM
 	    sh('''ps e -ww -A | grep "_TAG=kail-startup"''')
 	}
 
-	/ -----------------------------------------------------------------------
+	// -----------------------------------------------------------------------
         // stop logging
         // -----------------------------------------------------------------------
         sh """
@@ -558,6 +585,23 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
+    stage('voltctl [DEBUG]')
+    {
+        steps
+        {
+	    println("${iam} Display umask")
+	    sh('umask')
+		
+            println("${iam} Checking voltctl config permissions")
+	    sh('/bin/ls -ld ~/.volt || true')
+		
+            println("${iam} Running find")
+            sh('/bin/ls -l ~/.volt')
+        } // steps
+    } // stage
+
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     stage('Load image in kind nodes')
     {
         when {
@@ -597,12 +641,13 @@ pipeline {
                     Boolean logging     = test['logging'].toBoolean()
 		    String  testLogging = (logging) ? 'True' : 'False'
 
-		    println([
-			    "Executing test ${target}",
-			    "on workflow ${workflow}",
-			    "with logging ${testLogging}",
-			    "and extra flags ${flags}",
-			].join(' ')
+                    print("""
+
+** -----------------------------------------------------------------------
+** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+** -----------------------------------------------------------------------
+
+)
 
 		    try {
 			println "Executing test ${target}: ENTER"

@@ -1,0 +1,44 @@
+---
+# POD Build Pipeline Jobs for Voltha Releases
+# -----------------------------------------------------------------------
+# Disabled, offline -- 'qa-testvm-pod'
+# -----------------------------------------------------------------------
+- project:
+    name: voltha-pod-jobs
+
+    project-name: '{name}'
+
+    build-timeout: '300'
+
+    with-kind: false
+    power-switch: false
+    power-cycle-olt: false
+    work-flow: 'ATT'
+    in-band-management: false
+    num-of-openonu: '1'
+    num-of-onos: '1'
+    num-of-atomix: '0'
+    reinstall-olt: true
+    test-type: ''
+    volthaSystemTestsChange: ''
+    kindVolthaChange: ''
+    cordTesterChange: ''
+    oltAdapterAppLabel: 'adapter-open-olt'
+    num-of-onus: ''
+    num-of-ponports: ''
+
+    jobs:
+      # -----------------------------------------------------------------------
+      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_test':
+          disable-job: true              # Reason: qa-testvm-pod offline
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          power-switch: true
+          test-repo: 'voltha-system-tests'
+          profile: '1T4GEM'
+   
+# [EOF]

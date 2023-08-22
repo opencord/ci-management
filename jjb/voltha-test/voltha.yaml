@@ -68,30 +68,6 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
-      # -----------------------------------------------------------------------
-      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
-      # -----------------------------------------------------------------------
-      - 'build_voltha_pod_test':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.12'
-          branch: 'voltha-2.12'
-          power-switch: true
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM'
-          
-      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.11'
-          branch: 'voltha-2.11'
-          power-switch: true
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM'
-
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           disable-job: false
@@ -123,20 +99,6 @@
 #          pipeline-script: 'voltha/voltha-2.8/voltha-tt-physical-functional-tests.groovy'
 #          test-repo: 'voltha-system-tests'
 #          profile: 'TP'
-
-      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.11'
-          branch: 'voltha-2.11'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-2.11/voltha-tt-physical-functional-tests.groovy'
-          test-repo: 'voltha-system-tests'
-          profile: 'TP'
 
       # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
