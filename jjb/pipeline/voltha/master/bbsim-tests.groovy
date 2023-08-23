@@ -205,7 +205,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 	}
 
         // -----------------------------------------------------------------------
-        // stop logging
+	// stop logging
         // -----------------------------------------------------------------------
         sh """
           P_IDS="\$(ps e -ww -A | grep "_TAG=kail-startup" | grep -v grep | awk '{print \$1}')"
@@ -519,18 +519,17 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('voltctl [DEBUG]')
-    {
-        steps
-        {
-	    println("${iam} Display umask")
-	    sh('umask')
-		
-            println("${iam} Checking voltctl config permissions")
-            sh('/bin/ls -ld ~/.volt || true')
+    stage('voltctl [DEBUG]') {
+        steps {
+	    script {
+                String iam = getIam('execute_test')
 
-            println("${iam} Running find")
-            sh('/bin/ls -l ~/.volt')
+                println("${iam} Display umask")
+	        sh('umask')
+
+                println("${iam} Checking voltctl config permissions")
+                sh('/bin/ls -ld ~/.volt ~/.volt/* || true')
+            } // script
         } // steps
     } // stage
 

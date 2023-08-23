@@ -69,6 +69,7 @@ Boolean isReleaseBranch(String name)
 }
 
 // -----------------------------------------------------------------------
+// Intent:
 // -----------------------------------------------------------------------
 void pgrep_proc(String proc)
 {
@@ -111,9 +112,9 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
     // -----------------------------------------------------------------------
     stage('Cleanup')
     {
-        if (teardown) {
+        if (teardown)   {
             timeout(15) {
-                script {
+                script  {
                     helmTeardown(['default', infraNamespace, volthaNamespace])
                 }
 	    } // timeout
@@ -135,10 +136,10 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
     pgrep --list-full "${proc}" || true ; }
 """)
 		    println("${iam}: LEAVE")
-		    } // script
+		} // script
 	    } // timeout
         } // teardown
-    } // stage
+    } // stage('Cleanup')
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
@@ -159,19 +160,19 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
                 'prometheus.pushgateway.enabled=false',
             ].join(',')
 
-            sh('''
+            sh("""
     helm repo add onf https://charts.opencord.org
     helm repo update
 
     echo -e "\nwithMonitoring=[$withMonitoring]"
     if [ ${withMonitoring} = true ] ; then
       helm install nem-monitoring onf/nem-monitoring \
-          --set $promargs \
-          --set $dashargs
+          --set ${promargs} \
+          --set ${dashargs}
     fi
-    ''')
-        }
-    }
+    """)
+        } // script
+    } // stage('Deploy Common Infra')
 
     // -----------------------------------------------------------------------
     // [TODO] Check onos_log output
@@ -186,17 +187,16 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
                 script
                 {
 		    String iam = getIam('Deploy Voltha')
-		    String combinedLog = "${logsDir}/onos-voltha-startup-combined.log"
+		    String onosLog = "${logsDir}/onos-voltha-startup-combined.log"
 sh("""
           mkdir -p ${logsDir}
-          onos_log="${logsDir}/onos-voltha-startup-combined.log"
-          touch "$onos_log
-          echo "** kail-startup ENTER: \$(date)" > "$onos_log"
+          touch "$onosLog"
+          echo "** kail-startup ENTER: \$(date)" > "$onosLog"
 
           # Intermixed output (tee -a &) may get conflusing but let(s) see
           # what messages are logged during startup.
-          #  _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} >> "$onos_log" &
-          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} | tee -a "$onos_log" &
+          #  _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} >> "$onosLog" &
+          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} | tee -a "$onosLog" &
           """)
 
                     // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
@@ -210,12 +210,12 @@ sh("""
 		    }
 
 		    String branchName = branchName()
-		    Boolean is_release = isReleaseBranch(branch)
+		    Boolean isRelease = isReleaseBranch(branch)
 		    println([
 			" ** localCharts=${localCharts}",
 			"branchName=${branchName}",
 			"branch=${branch}",
-			"branch=isReleaseBranch=${is_release}",
+			"branch=isReleaseBranch=${isRelease}",
 		    ].join(', '))
 
 		    // -----------------------------------------------------------------------
@@ -243,7 +243,7 @@ sh("""
 			localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
 		    }
 
-		    println('** ${iam}: ENTER')
+		    println("** ${iam}: ENTER")
 		    volthaDeploy([
 			infraNamespace: infraNamespace,
 			volthaNamespace: volthaNamespace,
@@ -254,7 +254,7 @@ sh("""
 			bbsimReplica: olts.toInteger(),
 			dockerRegistry: registry,
 		    ])
-		    println('** ${iam}: LEAVE')
+		    println("** ${iam}: LEAVE")
 		} // script
 
         // -----------------------------------------------------------------------
@@ -303,7 +303,7 @@ EOM
           rm onos-voltha-startup-combined.log
           popd
         """)
-	} // timeout(10)
+    } // timeout(10)
 
 
         // -----------------------------------------------------------------------
@@ -411,6 +411,7 @@ EOM
 
       echo '** Installing python virtualenv'
       make venv-activate-patched
+
       set +u && source .venv/bin/activate && set -u
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
@@ -648,7 +649,7 @@ pipeline {
 		tests.eachWithIndex { test, idx ->
 		    String  target = test['target']
 		    println("** $idx: $target")
-		}
+	        }
 		println("** NOTE: For odd failures compare tests-to-run with teste output")
 
 		tests.eachWithIndex { test, idx ->
@@ -663,9 +664,9 @@ pipeline {
 
                     print("""
 ** -----------------------------------------------------------------------
-** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}
 ** -----------------------------------------------------------------------
-)
+""")
 
 		    try {
 			println "Executing test ${target}: ENTER"
