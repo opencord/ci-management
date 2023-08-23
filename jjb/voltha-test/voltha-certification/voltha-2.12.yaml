@@ -76,5 +76,23 @@
           time: '13'
           pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
           extraHelmFlags: "--set onos-classic.image.tag=master"
-          
+
+      # -----------------------------------------------------------------------
+      # Certification (Radisys) POD test job
+      # md5sum(master): e8cb3eba849b788944cee1fe58e4091b
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_test':
+          timeout: 330
+          disable-job: true      # menlo-certification-pod-3 is offline
+          build-node: 'menlo-certification-pod-3'
+          config-pod: 'menlo-certification-pod-radisys-3200g'
+          release: '2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+
 # [EOF]
