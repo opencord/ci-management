@@ -69,6 +69,24 @@ Boolean isReleaseBranch(String name)
 }
 
 // -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+void pgrep_proc(String proc)
+{
+    println("** Running: pgrep --list-full ${proc}")
+    sh("""pgrep --list-full "${proc}" || true""")
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+void pkill_proc(String proc)
+{
+    println("** Running: pkill ${proc}")
+    sh(""" [[ \$(pgrep --count "${proc}") -gt 0 ]] && pkill --echo "${proc}" """)
+    return
+}
+
+// -----------------------------------------------------------------------
 // Intent:
 // -----------------------------------------------------------------------
 void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags='')
@@ -98,51 +116,29 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
                 script {
                     helmTeardown(['default', infraNamespace, volthaNamespace])
                 }
+	    } // timeout
 
-	// -----------------------------------------------------------------------
-        // Verify pgrep/pkill behavior before replacing ps | kill -9
-        // -----------------------------------------------------------------------
-	script {
-	    println('''
+            timeout(5) {
+                script {
+		    String iam = getIam('Cleanup')
+		    println("${iam}: ENTER")
 
-** -----------------------------------------------------------------------
-** pgrep process list for port-forward (pre-pkill)
-** -----------------------------------------------------------------------
-''')
-            sh('''pgrep --list-full port-forward || true''')
-	}
+		    // remove orphaned port-forward from different namespaces
+		    String proc = 'port-forw'
+		    pgrep_proc(proc)
+		    pkill_proc(proc)
 
-            // Comment timeout() if we hang (fix it VS mask problem)
-            // timeout(1) {
-	// -----------------------------------------------------------------------
-        // -----------------------------------------------------------------------
-sh(returnStdout:true, script: '''
-    sync
-    cat <<EOM
-
-** -----------------------------------------------------------------------
-** remove orphaned port-forward from different namespacse
-** -----------------------------------------------------------------------
-EOM
-    [[ $(pgrep --count port-forward) -gt 0 ]] && pkill --echo 'port-forward'
- ''')
-
-	// -----------------------------------------------------------------------
-        // -----------------------------------------------------------------------
-	script {
-	    println('''
-
-** -----------------------------------------------------------------------
-** pgrep process list for port-forward (post-pkill)
-** -----------------------------------------------------------------------
-''')
-            sh('''pgrep --list-full port-forward || true''')
-	}
-		
-            } // timeout(15)
-        } // teardown()
-        // timeout(1)
-    } // stage(cleanup)
+		    // Sanity check processes terminated
+                    sh("""
+[[ \$(pgrep --count "${proc}") -gt 0 ]] && { \
+    echo "ERROR: Detected zombie port-forwarding processes"
+    pgrep --list-full "${proc}" || true ; }
+""")
+		    println("${iam}: LEAVE")
+		    } // script
+	    } // timeout
+        } // teardown
+    } // stage
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
@@ -174,24 +170,12 @@ EOM
           --set $dashargs
     fi
     ''')
-
-            /*
-            sh '''
-    helm repo add onf https://charts.opencord.org
-    helm repo update
-
-    echo -e "\nwithMonitoring=[$withMonitoring]"
-    if [ ${withMonitoring} = true ] ; then
-      helm install nem-monitoring onf/nem-monitoring \
-      --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
-      --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
-    fi
-    '''
-            */
         }
     }
 
     // -----------------------------------------------------------------------
+    // [TODO] Check onos_log output
+    // [TODO] kail-startup pgrep/pkill
     // -----------------------------------------------------------------------
     stage('Deploy Voltha')
     {
@@ -201,9 +185,12 @@ EOM
             {
                 script
                 {
-                    sh("""
+		    String iam = getIam('Deploy Voltha')
+		    String combinedLog = "${logsDir}/onos-voltha-startup-combined.log"
+sh("""
           mkdir -p ${logsDir}
           onos_log="${logsDir}/onos-voltha-startup-combined.log"
+          touch "$onos_log
           echo "** kail-startup ENTER: \$(date)" > "$onos_log"
 
           # Intermixed output (tee -a &) may get conflusing but let(s) see
@@ -250,13 +237,13 @@ EOM
 			testSpecificHelmFlags
 		    ].join(' ')
 
-		    println("** localHelmFlags = ${localHelmFlags}")
+		    println("** ${iam} localHelmFlags = ${localHelmFlags}")
 
 		    if (gerritProject != '') {
 			localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
 		    }
 
-		    println('volthaDeploy: ENTER')
+		    println('** ${iam}: ENTER')
 		    volthaDeploy([
 			infraNamespace: infraNamespace,
 			volthaNamespace: volthaNamespace,
@@ -267,7 +254,7 @@ EOM
 			bbsimReplica: olts.toInteger(),
 			dockerRegistry: registry,
 		    ])
-		    println('volthaDeploy: LEAVE')
+		    println('** ${iam}: LEAVE')
 		} // script
 
         // -----------------------------------------------------------------------
@@ -276,13 +263,7 @@ EOM
         // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
 	// -----------------------------------------------------------------------
 	script {
-	    println('''
-
-** -----------------------------------------------------------------------
-** pgrep process list for kail-startup (WIP)
-** -----------------------------------------------------------------------
-''')
-	    sh('''pgrep --list-full kail-startup || true''')
+	    pgrep_proc('kail-startup')
 
 	    println('''
 
@@ -293,10 +274,10 @@ EOM
 	    sh('''ps e -ww -A | grep "_TAG=kail-startup"''')
 	}
 
-	// -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
         // stop logging
         // -----------------------------------------------------------------------
-        sh """
+	sh("""
           P_IDS="\$(ps e -ww -A | grep "_TAG=kail-startup" | grep -v grep | awk '{print \$1}')"
           if [ -n "\$P_IDS" ]; then
             echo \$P_IDS
@@ -304,15 +285,26 @@ EOM
               kill -9 \$P_ID
             done
           fi
-          cd ${logsDir}
-          echo "** kail-startup LEAVE: \$(date)" >> "${logsDir}/onos-voltha-startup-combined.log"
+""")
 
+	sh("""
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** Combine an compress voltha startup log(s)
+** -----------------------------------------------------------------------
+EOM
+          pushd "${logsDir}" || { echo "ERROR: pushd $logsDir failed"; exit 1; }
           gzip -k onos-voltha-startup-combined.log
           rm onos-voltha-startup-combined.log
-        """
-      }
+          popd
+        """)
+       }
 
-            sh """
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        sh """
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
@@ -326,11 +318,12 @@ EOM
       fi
       ps aux | grep port-forward
       """
+      // [TODO] pgrep_proc('port-forward')
 
-            // setting ONOS log level
-            script
-            {
-		println('** setOnosLogLevels: ENTER')
+
+        // setting ONOS log level
+        script {
+            println('** setOnosLogLevels: ENTER')
 		setOnosLogLevels([
                     onosNamespace: infraNamespace,
                     apps: [
@@ -343,23 +336,37 @@ EOM
                     ],
                     logLevel: logLevel
                 ])
-		println('** setOnosLogLevels: LEAVE')
+                println('** setOnosLogLevels: LEAVE')
             } // script
         } // if (teardown)
     } // stage('Deploy Voltha')
 
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     stage("Run test ${testTarget} on workflow ${workflow}")
     {
         sh """
         echo -e "\n** Monitor using mem_consumption.py ?"
+
     if [ ${withMonitoring} = true ] ; then
+      cat <<EOM
+
+** -----------------------------------------------------------------------
+** Monitoring memory usage with mem_consumption.py
+** -----------------------------------------------------------------------
+EOM
       mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
       cd "$WORKSPACE/voltha-system-tests"
-      make venv-activate-script
+
+      echo '** Installing python virtualenv'
+      make venv-activate-patched
+
       set +u && source .venv/bin/activate && set -u
       # Collect initial memory consumption
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
+
+    echo -e '** Monitor memory consumption: LEAVE\n'
     """
 
         sh """
@@ -385,11 +392,21 @@ EOM
       echo -e '** Gather robot Framework logs: LEAVE\n'
     """
 
+    // -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     sh """
     echo -e '** Monitor pod-mem-consumption: ENTER'
     if [ ${withMonitoring} = true ] ; then
+      cat <<EOM
+
+** -----------------------------------------------------------------------
+** Monitoring pod-memory-consumption using mem_consumption.py
+** -----------------------------------------------------------------------
+EOM
       cd "$WORKSPACE/voltha-system-tests"
-      make venv-activate-script
+
+      echo '** Installing python virtualenv'
+      make venv-activate-patched
       set +u && source .venv/bin/activate && set -u
       # Collect memory consumption of voltha pods once all the tests are complete
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
@@ -515,7 +532,7 @@ pipeline {
 		    'kail',
 		].join(' ')
 
-		println(" ** Running: ${cmd}:\n")
+		println(" ** Running: ${cmd}")
 		sh("${cmd}")
 	    } // script
         } // steps
@@ -538,8 +555,8 @@ pipeline {
 			'install-command-kind',
 		    ].join(' ')
 
-		println(" ** Running: ${cmd}:\n")
-		    sh("${cmd}")
+		println(" ** Running: ${cmd}")
+		sh("${cmd}")
 	    } // script
 	} // steps
     } // stage
@@ -550,19 +567,18 @@ pipeline {
     {
         steps
         {
-	    script
+            script
             {
                 def clusterExists = sh(
-			returnStdout: true,
-			script: """kind get clusters | grep "${clusterName}" | wc -l"""
-		    )
+                    returnStdout: true,
+                    script: """kind get clusters | grep "${clusterName}" | wc -l""")
 
                 if (clusterExists.trim() == '0')
-		{
-		    createKubernetesCluster([nodes: 3, name: clusterName])
+                {
+                    createKubernetesCluster([nodes: 3, name: clusterName])
                 }
-	    } // script
-       } // steps
+            } // script
+        } // steps
     } // stage('Create K8s Cluster')
 
     // -----------------------------------------------------------------------
@@ -571,32 +587,31 @@ pipeline {
     {
         // if the project is voltctl, override the downloaded one with the built one
         when {
-	    expression { return gerritProject == 'voltctl' }
+            expression { return gerritProject == 'voltctl' }
         }
 
         // Hmmmm(?) where did the voltctl download happen ?
         // Likely Makefile but would be helpful to document here.
         steps
         {
-	    println("${iam} Running: installVoltctl($branch)")
-	    installVoltctl("$branch")
+            println("${iam} Running: installVoltctl($branch)")
+            installVoltctl("$branch")
         } // steps
     } // stage
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('voltctl [DEBUG]')
-    {
-        steps
-        {
-	    println("${iam} Display umask")
-	    sh('umask')
-		
-            println("${iam} Checking voltctl config permissions")
-	    sh('/bin/ls -ld ~/.volt || true')
-		
-            println("${iam} Running find")
-            sh('/bin/ls -l ~/.volt')
+    stage('voltctl [DEBUG]') {
+        steps {
+	    script {
+                String iam = getIam('execute_test')
+
+                println("${iam} Display umask")
+	        sh('umask')
+
+                println("${iam} Checking voltctl config permissions")
+                sh('/bin/ls -ld ~/.volt ~/.volt/* || true')
+            } // script
         } // steps
     } // stage
 
@@ -613,14 +628,15 @@ pipeline {
     } // stage
 
     // -----------------------------------------------------------------------
+    // [TODO] verify testing output
     // -----------------------------------------------------------------------
     stage('Parse and execute tests')
     {
         steps {
 	    script {
-		    // Announce ourselves for log usability
-		    String iam = getIam('execute_test')
-		    println("${iam}: ENTER")
+		// Announce ourselves for log usability
+		String iam = getIam('execute_test')
+		println("${iam}: ENTER")
 
                 def tests = readYaml text: testTargets
 
@@ -642,11 +658,9 @@ pipeline {
 		    String  testLogging = (logging) ? 'True' : 'False'
 
                     print("""
-
 ** -----------------------------------------------------------------------
 ** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
 ** -----------------------------------------------------------------------
-
 )
 
 		    try {

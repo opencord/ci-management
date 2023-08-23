@@ -36,7 +36,7 @@ def call(Map config) {
 
     // note that I can't define this outside the function as there's no global scope in Groovy
     def defaultConfig = [
-      branch: "master",
+      branch: "master", // branch=master ?!?
       nodes: 1,
       name: "kind-ci"
     ]
@@ -50,7 +50,7 @@ def call(Map config) {
     println "Deploying Kind cluster with the following parameters: ${cfg}."
 
     // TODO support different configs
-    def data = """
+    def data = '''
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
@@ -74,10 +74,10 @@ nodes:
     hostPort: 30115
   - containerPort: 30120
     hostPort: 30120
-    """
+'''
     writeFile(file: 'kind.cfg', text: data)
 
-    // TODO skip cluster creation if cluster is already there
+    // TODO: Skip kind install, make install-kind-command has done it already
     sh """
       mkdir -p "$WORKSPACE/bin"
 
@@ -91,6 +91,12 @@ nodes:
     installVoltctl("${cfg.branch}")
 
     sh """
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** Starting kind cluster
+** -----------------------------------------------------------------------
+EOM
       # start the kind cluster
       kind create cluster --name ${cfg.name} --config kind.cfg
 
@@ -99,13 +105,36 @@ nodes:
           kubectl taint node "\$MNODE" node-role.kubernetes.io/master:NoSchedule-
       done
 
-      mkdir -p $HOME/.volt
-      voltctl -s localhost:55555 config > $HOME/.volt/config
+      ## ----------------------------------------------------------------------
+      ## This logic is problematic, when run on a node processing concurrent
+      ## jobs over-write will corrupt config for the other running job.
+      ## ----------------------------------------------------------------------
+      ## Future enhancement:  Optimal answer would be to create and use configs
+      ## from a job-specific temp/config directory.
+      ## ----------------------------------------------------------------------
 
-      mkdir -p $HOME/.kube
-      kind get kubeconfig --name ${cfg.name} > $HOME/.kube/config
+      umask 022
 
-      # install kail
+      echo
+      echo "** Generate ~/.volt/config"
+      mkdir -p "$HOME/.volt"
+      chmod -R u+w,go-rwx "$HOME/.volt"
+      chmod u=rwx "$HOME/.volt"
+      voltctl -s localhost:55555 config > "$HOME/.volt/config"
+
+      echo
+      echo "** Generate ~/.kube/config"
+      mkdir -p "$HOME/.kube"
+      chmod -R u+w,go-rwx "$HOME/.kube"
+      chmod u=rwx "$HOME/.kube"
+      kind get kubeconfig --name ${cfg.name} > "$HOME/.kube/config"
+
+      echo
+      echo "Display .kube/ and .volt"
+      /bin/ls -l "$HOME/.kube" "$HOME/.volt"
+
+      echo
+      echo "Install Kail"
       make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
   """
 
