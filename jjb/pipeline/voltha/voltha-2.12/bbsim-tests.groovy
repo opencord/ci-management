@@ -73,7 +73,7 @@ Boolean isReleaseBranch(String name) {
 void pgrep_proc(String proc) {
 
     println("** RAW PROCESS OUTPUT:")
-    def stream = sh(returnStdout: true, scirpt: 'ps faaux')
+    def stream = sh(returnStdout: true, script: 'ps faaux')
     println(stream)
     
     String cmd = [
@@ -634,18 +634,18 @@ pipeline {
 		String buffer = []    
 		tests.eachWithIndex { test, idx ->
 		    String  target = test['target']
-		    buffer += sprintf("      test[%02d]: %s\n", idx, target)
+		    buffer.add("      test[${idx}]: ${target}\n")
 	        }
 
 		println("** Testing index: tests-to-run")
 		println(buffer)
-		println("""
+		println('''
 ** -----------------------------------------------------------------------
 ** NOTE: For odd/silent job failures verify a few details
 **   - All tests mentioned in the index have been processed.
 **   - Test suites display ENTER/LEAVE mesasge pairs.
 ** -----------------------------------------------------------------------
-""")
+''')
 		tests.eachWithIndex { test, idx ->
                     println "** readYaml test suite[$idx]) test=[${test}]"
 
