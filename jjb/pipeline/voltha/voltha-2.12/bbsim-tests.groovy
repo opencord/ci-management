@@ -75,7 +75,11 @@ void pgrep_proc(String proc) {
 	'pgrep',
 	// '--older', 5, // switch not supported, nodes using older version
 	'--list-full',
-	proc,
+	"\"${proc}\"",
+	';',
+	'echo', 'DONE',
+	';',
+	'true',
     ].join(' ')
 
     println("** Running: ${cmd}")
@@ -93,7 +97,7 @@ void pkill_proc(String proc) {
 	// good old kill (ps | grep -v -e grep -e '$$-me') }
 	// '--older', 5,
 	'--echo',
-	proc,
+	"\"${proc}\"",
     ].join(' ')
 
     println("** Running: ${cmd}")
@@ -619,13 +623,21 @@ pipeline {
 
                 def tests = readYaml text: testTargets
 
-		println("** $iam: Testing index: tests-to-run")
+		String buffer = []    
 		tests.eachWithIndex { test, idx ->
 		    String  target = test['target']
-		    println("** $idx: $target")
+		    buffer += sprintf("      test[%02d]: %s\n", idx, target)
 	        }
-		println("** NOTE: For odd failures compare tests-to-run with teste output")
 
+		println("** Testing index: tests-to-run")
+		println(buffer)
+		println("""
+** -----------------------------------------------------------------------
+** NOTE: For odd/silent job failures verify a few details
+**   - All tests mentioned in the index have been processed.
+**   - Test suites display ENTER/LEAVE mesasge pairs.
+** -----------------------------------------------------------------------
+""")
 		tests.eachWithIndex { test, idx ->
                     println "** readYaml test suite[$idx]) test=[${test}]"
 
