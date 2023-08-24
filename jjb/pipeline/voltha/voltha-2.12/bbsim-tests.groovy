@@ -73,7 +73,7 @@ Boolean isReleaseBranch(String name) {
 void pgrep_proc(String proc) {
     String cmd = [
 	'pgrep',
-	'--older', 5,  // delay to exclude pgrep
+	// '--older', 5, // switch not supported, nodes using older version
 	'--list-full',
 	proc,
     ].join(' ')
@@ -88,13 +88,16 @@ void pgrep_proc(String proc) {
 void pkill_proc(String proc) {
     String cmd = [
 	'pkill',
-	'--older', 5,  // delay to exclude pkill
+	// switch not supported, nodes using older version
+	// NOTE: pkill should not kill it-self
+	// good old kill (ps | grep -v -e grep -e '$$-me') }
+	// '--older', 5,
 	'--echo',
 	proc,
     ].join(' ')
 
     println("** Running: ${cmd}")
-    sh(""" [[ \$(pgrep --count "${proc}") -gt 0 ]] && "${cmd}" """)
+    sh(""" if [[ \$(pgrep --count "${proc}") -gt 0 ]]; then "$cmd"; fi" """)
     return
 }
 
