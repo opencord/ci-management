@@ -61,8 +61,7 @@ String getIam(String func) {
 // Intent: Determine if working on a release branch.
 //   Note: Conditional is legacy, should also check for *-dev or *-pre
 // -----------------------------------------------------------------------
-Boolean isReleaseBranch(String name)
-{
+Boolean isReleaseBranch(String name) {
     // List modifiers = ['-dev', '-pre', 'voltha-x.y.z-pre']
     // if branchName in modifiers
     return(name != 'master') // OR branchName.contains('-')
@@ -71,27 +70,38 @@ Boolean isReleaseBranch(String name)
 // -----------------------------------------------------------------------
 // Intent:
 // -----------------------------------------------------------------------
-void pgrep_proc(String proc)
-{
-    println("** Running: pgrep --list-full ${proc}")
-    sh("""pgrep --list-full "${proc}" || true""")
+void pgrep_proc(String proc) {
+    String cmd = [
+	'pgrep',
+	'--older', 5,  // delay to exclude pgrep
+	'--list-full',
+	proc,
+    ].join(' ')
+
+    println("** Running: ${cmd}")
+    sh("set +euo pipefail && ${cmd}")
     return
 }
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-void pkill_proc(String proc)
-{
-    println("** Running: pkill ${proc}")
-    sh(""" [[ \$(pgrep --count "${proc}") -gt 0 ]] && pkill --echo "${proc}" """)
+void pkill_proc(String proc) {
+    String cmd = [
+	'pkill',
+	'--older', 5,  // delay to exclude pkill
+	'--echo',
+	proc,
+    ].join(' ')
+
+    println("** Running: ${cmd}")
+    sh(""" [[ \$(pgrep --count "${proc}") -gt 0 ]] && "${cmd}" """)
     return
 }
 
 // -----------------------------------------------------------------------
 // Intent:
 // -----------------------------------------------------------------------
-void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags='')
-{
+void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags='') {
     String infraNamespace  = 'default'
     String volthaNamespace = 'voltha'
     String logsDir = "$WORKSPACE/${testTarget}"
@@ -110,8 +120,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
     // -----------------------------------------------------------------------
     // Intent: Cleanup stale port-forwarding
     // -----------------------------------------------------------------------
-    stage('Cleanup')
-    {
+    stage('Cleanup')    {
         if (teardown)   {
             timeout(15) {
                 script  {
@@ -128,13 +137,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 		    String proc = 'port-forw'
 		    pgrep_proc(proc)
 		    pkill_proc(proc)
-
-		    // Sanity check processes terminated
-                    sh("""
-[[ \$(pgrep --count "${proc}") -gt 0 ]] && { \
-    echo "ERROR: Detected zombie port-forwarding processes"
-    pgrep --list-full "${proc}" || true ; }
-""")
+		    pgrep_proc(proc) // proc count == 0
 		    println("${iam}: LEAVE")
 		} // script
 	    } // timeout
@@ -143,10 +146,8 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Deploy common infrastructure')
-    {
-        script
-        {
+    stage('Deploy common infrastructure') {
+        script {
             local dashargs = [
                 'kpi_exporter.enabled=false',
                 'dashboards.xos=false',
@@ -176,16 +177,11 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
 
     // -----------------------------------------------------------------------
     // [TODO] Check onos_log output
-    // [TODO] kail-startup pgrep/pkill
     // -----------------------------------------------------------------------
-    stage('Deploy Voltha')
-    {
-        if (teardown)
-        {
-            timeout(10)
-            {
-                script
-                {
+    stage('Deploy Voltha') {
+        if (teardown)      {
+            timeout(10)    {
+                script     {
 		    String iam = getIam('Deploy Voltha')
 		    String onosLog = "${logsDir}/onos-voltha-startup-combined.log"
 sh("""
@@ -199,8 +195,8 @@ sh("""
           _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} | tee -a "$onosLog" &
           """)
 
-                    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
-		    Boolean localCharts = false
+              // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+              Boolean localCharts = false
 
 		    if (volthaHelmChartsChange != ''
 			|| gerritProject == 'voltha-helm-charts'
@@ -262,31 +258,15 @@ sh("""
         // Why not simply use a pid file, capture _TAG=kail-startup above
         // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
 	// -----------------------------------------------------------------------
-	script {
-	    pgrep_proc('kail-startup')
+        script {
+	    String proc = '_TAG=kail-startup'
 
-	    println('''
-
-** -----------------------------------------------------------------------
-** Raw ps process list for kail-startup (WIP)
-** -----------------------------------------------------------------------
-''')
-	    sh('''ps e -ww -A | grep "_TAG=kail-startup"''')
-	} // script
-
-        // -----------------------------------------------------------------------
-	// stop logging
-	// [TODO] Replace this block with pgrep/pkill one-liner(s)	
-        // -----------------------------------------------------------------------
-	sh("""
-          P_IDS="\$(ps e -ww -A | grep "_TAG=kail-startup" | grep -v grep | awk '{print \$1}')"
-          if [ -n "\$P_IDS" ]; then
-            echo \$P_IDS
-            for P_ID in \$P_IDS; do
-              kill -9 \$P_ID
-            done
-          fi
-""")
+	    println("${iam}: ENTER")
+	    println("${iam}: Shutdown process $proc")
+	    pgrep_proc(proc)
+	    pkill_proc(proc)
+	    println("${iam}: LEAVE")
+        }
 
         // -----------------------------------------------------------------------
 	// Bundle onos-voltha / kail logs
@@ -322,8 +302,14 @@ EOM
       fi
       ps aux | grep port-forward
       """
-      // [TODO] pgrep_proc('port-forward')
+        script {
+	    String proc = 'port-forward'
 
+	    println("${iam}: ENTER")
+	    println("Display spawned ${proc}")
+	    pgrep_proc(proc)
+	    println("${iam}: LEAVE")
+	}
 
         // setting ONOS log level
         script {
@@ -426,7 +412,7 @@ EOM
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 def collectArtifacts(exitStatus) {
-    String iam = getIam('execute_test')
+    String iam = getIam('collectArtifacts')
 
     echo '''
 
@@ -444,14 +430,13 @@ def collectArtifacts(exitStatus) {
 
     archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
 
-    sh(returnStdout:true, script: '''
-    sync
-    echo '** Running: pgrep --list-full kail-startup (ENTER)'
-    pgrep --list-full 'kail-startup' || true
-    [[ $(pgrep --count kail) -gt 0 ]] && pkill --echo kail
-    echo '** Running: pgrep --list-full kail-startup (LEAVE)'
- ''')
-
+    script {
+	println("${iam}: ENTER")
+	pgrep_proc('kail-startup')
+	pkill_proc('kail')
+	println("${iam}: LEAVE")
+    }
+    
     println("${iam}: ENTER RobotPublisher")
     step([$class: 'RobotPublisher',
 	  disableArchiveOutput: false,
@@ -568,18 +553,14 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Create K8s Cluster')
-    {
-        steps
-        {
-            script
-            {
+    stage('Create K8s Cluster') {
+        steps {
+	    script {
                 def clusterExists = sh(
                     returnStdout: true,
                     script: """kind get clusters | grep "${clusterName}" | wc -l""")
 
-                if (clusterExists.trim() == '0')
-                {
+                if (clusterExists.trim() == '0') {
                     createKubernetesCluster([nodes: 3, name: clusterName])
                 }
             } // script
@@ -588,8 +569,9 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Replace voltctl')
-    {
+    stage('Replace voltctl') {
+        String iam = getIam('Replace voltctl')
+	    
         // if the project is voltctl, override the downloaded one with the built one
         when {
             expression { return gerritProject == 'voltctl' }
@@ -597,26 +579,11 @@ pipeline {
 
         // Hmmmm(?) where did the voltctl download happen ?
         // Likely Makefile but would be helpful to document here.
-        steps
-        {
-            println("${iam} Running: installVoltctl($branch)")
-            installVoltctl("$branch")
-        } // steps
-    } // stage
-
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('voltctl [DEBUG]') {
         steps {
-	    script {
-                String iam = getIam('execute_test')
-
-                println("${iam} Display umask")
-	        sh('umask')
-
-                println("${iam} Checking voltctl config permissions")
-                sh('/bin/ls -ld ~/.volt ~/.volt/* || true')
-            } // script
+            println("${iam} Running: installVoltctl($branch)")
+	    println("${iam}: ENTER")
+            installVoltctl("$branch")
+	    println("${iam}: LEAVE")
         } // steps
     } // stage
 
