@@ -34,13 +34,31 @@ ifndef NO-LINT-GROOVY
 endif
 
 ## -----------------------------------------------------------------------
+## All or on-demand
+##   make lint-groovy BYSRC="a/b/c.groovy d/e/f.groovy"
+## -----------------------------------------------------------------------
+ifdef BYSRC
+  lint-groovy : lint-groovy-bysrc
+else
+  lint-groovy : lint-groovy-all
+endif
+
+## -----------------------------------------------------------------------
 ## Intent: Perform a lint check on command line script sources
 ## -----------------------------------------------------------------------
-lint-groovy:
+lint-groovy-all:
 	$(groovy-check) --version
 	@echo
 	$(HIDE)$(env-clean) find . -iname '*.groovy' -print0 \
   | $(xargs-n1) $(groovy-check) $(groovy-check-args)
+
+## -----------------------------------------------------------------------
+## Intent: Perform lint check on a named list of files
+## -----------------------------------------------------------------------
+lint-groovy-bysrc:
+	$(groovy-check) --version
+	@echo
+	$(foreach fyl,$(BYSRC),$(groovy-check) $(groovy-check-args) $(fyl))
 
 ## -----------------------------------------------------------------------
 ## Intent: Display command help

@@ -412,7 +412,10 @@ EOM
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 def collectArtifacts(exitStatus) {
-    String iam = getIam('collectArtifacts')
+    script {
+	String iam = getIam('collectArtifacts')
+	println("${iam}: ENTER (exitStatus=${exitStatus})")
+    }
 
     echo '''
 
@@ -420,7 +423,6 @@ def collectArtifacts(exitStatus) {
 ** collectArtifacts
 ** -----------------------------------------------------------------------
 '''
-    println("${iam}: ENTER (exitStatus=${exitStatus})")
 
     getPodsInfo("$WORKSPACE/${exitStatus}")
 
@@ -570,8 +572,6 @@ pipeline {
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage('Replace voltctl') {
-        String iam = getIam('Replace voltctl')
-	    
         // if the project is voltctl, override the downloaded one with the built one
         when {
             expression { return gerritProject == 'voltctl' }
@@ -580,11 +580,15 @@ pipeline {
         // Hmmmm(?) where did the voltctl download happen ?
         // Likely Makefile but would be helpful to document here.
         steps {
-            println("${iam} Running: installVoltctl($branch)")
-	    println("${iam}: ENTER")
-            installVoltctl("$branch")
-	    println("${iam}: LEAVE")
-        } // steps
+		script {
+		    String iam = getIam('Replace voltctl')
+
+		    println("${iam} Running: installVoltctl($branch)")
+		    println("${iam}: ENTER")
+		    installVoltctl("$branch")
+		    println("${iam}: LEAVE")
+		} // script
+	    } // steps
     } // stage
 
     // -----------------------------------------------------------------------
