@@ -71,15 +71,27 @@ Boolean isReleaseBranch(String name) {
 // Intent:
 // -----------------------------------------------------------------------
 void pgrep_proc(String proc) {
+
+    println("** RAW PROCESS OUTPUT:")
+    def stream = sh(returnStdout: true, scirpt: 'ps faaux')
+    println(stream)
+    
     String cmd = [
 	'pgrep',
 	// '--older', 5, // switch not supported, nodes using older version
 	'--list-full',
-	proc,
+	"\"${proc}\"",
+	';',
+	'echo', 'DONE',
+	';',
+	'true',
     ].join(' ')
 
     println("** Running: ${cmd}")
-    sh("set +euo pipefail && ${cmd}")
+    sh(
+        returnStdout: true,
+	"set +euo pipefail && ${cmd}"
+    )
     return
 }
 
@@ -93,7 +105,7 @@ void pkill_proc(String proc) {
 	// good old kill (ps | grep -v -e grep -e '$$-me') }
 	// '--older', 5,
 	'--echo',
-	proc,
+	"\"${proc}\"",
     ].join(' ')
 
     println("** Running: ${cmd}")
@@ -619,13 +631,21 @@ pipeline {
 
                 def tests = readYaml text: testTargets
 
-		println("** $iam: Testing index: tests-to-run")
+		String buffer = []    
 		tests.eachWithIndex { test, idx ->
 		    String  target = test['target']
-		    println("** $idx: $target")
+		    buffer += sprintf("      test[%02d]: %s\n", idx, target)
 	        }
-		println("** NOTE: For odd failures compare tests-to-run with teste output")
 
+		println("** Testing index: tests-to-run")
+		println(buffer)
+		println("""
+** -----------------------------------------------------------------------
+** NOTE: For odd/silent job failures verify a few details
+**   - All tests mentioned in the index have been processed.
+**   - Test suites display ENTER/LEAVE mesasge pairs.
+** -----------------------------------------------------------------------
+""")
 		tests.eachWithIndex { test, idx ->
                     println "** readYaml test suite[$idx]) test=[${test}]"
 
