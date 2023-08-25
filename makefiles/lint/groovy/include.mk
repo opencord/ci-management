@@ -35,10 +35,10 @@ endif
 
 ## -----------------------------------------------------------------------
 ## All or on-demand
-##   make lint-groovy BYSRC="a/b/c.groovy d/e/f.groovy"
+##   make lint-groovy BY_SRC="a/b/c.groovy d/e/f.groovy"
 ## -----------------------------------------------------------------------
-ifdef BYSRC
-  lint-groovy : lint-groovy-bysrc
+ifdef LINT_SRC
+  lint-groovy : lint-groovy-src
 else
   lint-groovy : lint-groovy-all
 endif
@@ -55,15 +55,31 @@ lint-groovy-all:
 ## -----------------------------------------------------------------------
 ## Intent: Perform lint check on a named list of files
 ## -----------------------------------------------------------------------
-lint-groovy-bysrc:
+BY_SRC ?= $(error $(MAKE) $@ BY_SRC= is required)
+lint-groovy-src:
 	$(groovy-check) --version
 	@echo
-	$(foreach fyl,$(BYSRC),$(groovy-check) $(groovy-check-args) $(fyl))
+#	$(foreach fyl,$(BY_SRC),$(groovy-check) $(groovy-check-args) $(fyl))
+	$(groovy-check) $(groovy-check-args) $(BY_SRC)
+
+## -----------------------------------------------------------------------
+## Intent: Perform lint check on a named list of files
+## -----------------------------------------------------------------------
+BYGIT = $(shell git diff --name-only HEAD | grep '\.groovy')
+lint-groovy-mod:
+	$(groovy-check) --version
+	@echo
+	$(foreach fyl,$(BYGIT),$(groovy-check) $(groovy-check-args) $(fyl))
 
 ## -----------------------------------------------------------------------
 ## Intent: Display command help
 ## -----------------------------------------------------------------------
 help-summary ::
-	@echo '  lint-groovy          Syntax check groovy sources'
-
+	@echo '  lint-groovy          Conditionally lint groovy source'
+	@echo '      BY_SRC=a/b/c.groovy d/e/f.groovy'
+  ifdef VERBOSE
+	@echo '  lint-groovy-all    Lint all available sources'
+	@echo '  lint-groovy-mod    Lint locally modified (git status)'
+	@echo '  lint-groovy-src    Lint individually (BY_SRC=list-of-files)'
+  endif
 # [EOF]

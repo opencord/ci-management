@@ -144,9 +144,7 @@ def test_software_upgrade(name) {
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
       volthaDeploy([bbsimReplica: olts.toInteger(), workflow: 'att', extraHelmFlags: extraHelmFlags, localCharts: localCharts])
-
-        // [TODO] pkill_proc("_TAG=kail-${name}")
-        // stop logging
+      // stop logging
       sh """
         P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
         if [ -n "\$P_IDS" ]; then
@@ -233,16 +231,11 @@ def test_software_upgrade(name) {
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
-
-        pkill_proc('port-forw')
-	    // remove port-forwarding
-	    /*
+      // remove port-forwarding
       sh """
         # remove orphaned port-forward from different namespaces
         ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
       """
-	     */
-
       // collect pod details
       get_pods_info("$WORKSPACE/${name}")
       sh """
@@ -298,15 +291,16 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Install Tools') {
-        steps              {
-            script         {
-                String branchName = branchName()
+    stage('Install Tools')
+    {
+        steps
+        {
+            script
+            {
                 String iam = getIam('Install Kind')
-
-                println("${iam}: ENTER (branch=$branch)")
-                installKind(branch)   // needed early by stage(Cleanup)
-                println("${iam}: LEAVE (branch=$branch)")
+                println("${iam}: ENTER")
+                installKind("$branch")   // needed early by stage(Cleanup)
+                println("${iam}: LEAVE")
 	    } // script
 	} // steps
     } // stage
@@ -314,21 +308,37 @@ pipeline {
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage('Cleanup') {
-        steps        {
-            script   {
-                pgrep_proc('port-forw')
-                pkill_proc('port-forw')
-            } // script
-            helmTeardown(['infra', 'voltha'])
-        } // steps
-    } // stage
-	
-    stage('Create K8s Cluster') {
         steps {
-            createKubernetesCluster([nodes: 3])
-        }
+
+	script {
+            println('''
+** -----------------------------------------------------------------------
+** Raw process listing
+** -----------------------------------------------------------------------
+''')
+        sh(''' ps faaux ''')
+
+            println('''
+** -----------------------------------------------------------------------
+** pgrep --list-full port
+** -----------------------------------------------------------------------
+''')
+        sh(''' set +euo pipefail && pgrep --list-full 'port' ''')
+		}
+
+        // remove port-forwarding
+        sh """
+          # remove orphaned port-forward from different namespaces
+          ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
+        """
+        helmTeardown(['infra', 'voltha'])
+      }
     }
-	
+    stage('Create K8s Cluster') {
+      steps {
+        createKubernetesCluster([nodes: 3])
+      }
+    }
     stage('Run Test') {
       steps {
         test_software_upgrade("onos-app-upgrade")
@@ -362,5 +372,3 @@ pipeline {
     }
   }
 }
-
-// [EOF]

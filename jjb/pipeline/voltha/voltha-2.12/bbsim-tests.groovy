@@ -44,7 +44,7 @@ String branchName() {
 //   per-script to be sure latest repository changes are being used.
 // -----------------------------------------------------------------------
 String pipelineVer() {
-    String version = '4f87de8f31d588d8277dc5ea6fbb69e714c66079'
+    String version = '757ba9ea12d8d815c10301b7f265f3fcd7c41d26'
     return(version)
 }
 
@@ -440,7 +440,7 @@ def collectArtifacts(exitStatus) {
 	pkill_proc('kail')
 	println("${iam}: LEAVE")
     }
-    
+
     println("${iam}: ENTER RobotPublisher")
     step([$class: 'RobotPublisher',
 	  disableArchiveOutput: false,
@@ -451,7 +451,7 @@ def collectArtifacts(exitStatus) {
 	  passThreshold: 100,
 	  reportFileName: '**/*/report*.html',
 	  unstableThreshold: 0,
-	  onlyCritical: true]);
+	  onlyCritical: true])
     println("${iam}: LEAVE RobotPublisher")
 
     println("${iam}: LEAVE (exitStatus=${exitStatus})")
@@ -462,10 +462,9 @@ def collectArtifacts(exitStatus) {
 // Intent: main
 // -----------------------------------------------------------------------
 pipeline {
-
   /* no label, executor is determined by JJB */
   agent {
-    label "${params.buildNode}"
+	label "${params.buildNode}"
   }
   options {
     timeout(time: "${timeout}", unit: 'MINUTES')
@@ -675,4 +674,4 @@ pipeline {
     }
 } // pipeline
 
-// EOF
+// [EOF]
