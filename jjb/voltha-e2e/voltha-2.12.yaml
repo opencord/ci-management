@@ -137,12 +137,21 @@
       # -----------------------------------------------------------------------
       # md5sum(master): eff05a324e94fdef076b2d5f7cb4f80f
       # -----------------------------------------------------------------------
+      # https://www.lenar.io/jenkins-schedule-build-periodically/
+      # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-test-bbsim-2.12'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
-          time-trigger: "@daily"
+          time-trigger : "* 7-18/4 * * *"       # build every 4 hrs between 7am-6pm
+          # -----------------------------------------------------------------------
+          # time-trigger : "H/20 * * * *"   # every 20 min
+          #          time-trigger: "@hourly"
+          #          time-trigger: "@daily"
+          #          time-trigger: "@weekly"
+          #          time-trigger: "monthly"
+          # -----------------------------------------------------------------------
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master '
           testTargets: |
             - target: functional-single-kind-dt

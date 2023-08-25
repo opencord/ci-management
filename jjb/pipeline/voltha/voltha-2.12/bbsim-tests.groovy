@@ -40,10 +40,13 @@ String branchName() {
 
 // -----------------------------------------------------------------------
 // Intent: Due to lack of a reliable stack trace, construct a literal.
-//         Jenkins will re-write the call stack for serialization.
+//         Jenkins will re-write the call stack for serialization.S
 // -----------------------------------------------------------------------
-String getIam(String func) {
+// Note: Hardcoded version string used to visualize changes in jenkins UI
+// -----------------------------------------------------------------------
+tring getIam(String func, Boolean verbose=True) {
     String branchName = branchName()
+    String version = '4f87de8f31d588d8277dc5ea6fbb69e714c66079'
     String src = [
         'ci-management',
         'jjb',
@@ -53,7 +56,7 @@ String getIam(String func) {
         'bbsim-tests.groovy'
     ].join('/')
 
-    String name = [src, func].join('::')
+    String name = [src, version, func].join('::')
     return(name)
 }
 
