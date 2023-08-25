@@ -580,7 +580,8 @@ pipeline {
                 def tests = readYaml text: testTargets
                 println("** [DEBUG]: tests=$tests")
 
-		String buffer = []    
+		// Display expected tests for times when output goes dark
+		ArrayList buffer = [] as String
 		tests.eachWithIndex { test, idx ->
 		    String  target = test['target']
 		    println(" ** Build test index [$idx]: target=$target")
@@ -589,7 +590,8 @@ pipeline {
 	        }
 
 		println("** Testing index: tests-to-run")
-		println(buffer)
+		println(buffer.join(''))
+
 		println('''
 ** -----------------------------------------------------------------------
 ** NOTE: For odd/silent job failures verify a few details
@@ -598,7 +600,8 @@ pipeline {
 **   - Processing terminated prematurely when LEAVE strings are missing.
 ** -----------------------------------------------------------------------
 ''')
-		tests.eachWithIndex { test, idx ->
+
+                tests.eachWithIndex { test, idx ->
                     println "** readYaml test suite[$idx]) test=[${test}]"
 
                     String  target      = test['target']
