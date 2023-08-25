@@ -36,7 +36,13 @@ Boolean process(String proc) {
 
     String cmdKill = "pkill --echo '${proc}'"
     String cmd = """if [[ \$(pgrep --count "${proc}") -gt 0 ]]; then ${cmdKill}; fi"""
-    println(" ** Running: ${cmd}")
+
+    print("""
+** -----------------------------------------------------------------------
+** Running: $cmd
+** -----------------------------------------------------------------------
+""")
+
     sh(
         label  : 'pkill_proc', // jenkins usability: label log entry 'step'
         script : "${cmd}",

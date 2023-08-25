@@ -234,6 +234,7 @@ sh("""
 	    println("${iam}: Shutdown process $proc")
 	    pgrep_proc(proc)
 	    pkill_proc(proc)
+	    pgrep_proc(proc)
 	    println("${iam}: LEAVE")
         }
 
@@ -271,6 +272,7 @@ EOM
       fi
       ps aux | grep port-forward
       """
+
         script {
 	    String proc = 'port-forward'
 
@@ -576,11 +578,14 @@ pipeline {
 		println("${iam}: ENTER")
 
                 def tests = readYaml text: testTargets
+                println("** [DEBUG]: tests=$tests")
 
 		String buffer = []    
 		tests.eachWithIndex { test, idx ->
 		    String  target = test['target']
+		    println(" ** Build test index [$idx]: target=$target")
 		    buffer.add("      test[${idx}]: ${target}\n")
+		    println("** buffer contains: $buffer")
 	        }
 
 		println("** Testing index: tests-to-run")
@@ -588,8 +593,9 @@ pipeline {
 		println('''
 ** -----------------------------------------------------------------------
 ** NOTE: For odd/silent job failures verify a few details
-**   - All tests mentioned in the index have been processed.
+**   - All tests mentioned in the tests-to-run index were logged.
 **   - Test suites display ENTER/LEAVE mesasge pairs.
+**   - Processing terminated prematurely when LEAVE strings are missing.
 ** -----------------------------------------------------------------------
 ''')
 		tests.eachWithIndex { test, idx ->

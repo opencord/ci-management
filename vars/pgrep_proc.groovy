@@ -37,7 +37,11 @@ Boolean process(String proc) {
     String cmdFull = "pgrep --list-full '${proc}'"
     String cmd = """if [[ \$(pgrep --count "${proc}") -gt 0 ]]; then ${cmdFull}; fi"""
 
-    println(" ** Running: ${cmd}")
+    print("""
+** -----------------------------------------------------------------------
+** Running: $cmd
+** -----------------------------------------------------------------------
+""")
     sh(
         label  : 'pgrep_proc', // jenkins usability: label log entry 'step'
         script : "${cmd}",
