@@ -547,23 +547,15 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Install Kind')
-    {
-        steps
-        {
-            script
-            {
+    stage('Install Tools') {
+        steps              {
+            script         {
+                String branchName = branchName()
+		String iam = getIam('Install Tools')
 
-	        String cmd = [
-			'make',
-			'--no-print-directory',
-			'-C', "$WORKSPACE/voltha-system-tests",
-			"KIND_PATH=\"$WORKSPACE/bin\"",
-			'install-command-kind',
-		    ].join(' ')
-
-		println(" ** Running: ${cmd}")
-		sh("${cmd}")
+                println("${iam}: ENTER (branch=$branch)")
+                installKind(branch)   // needed early by stage(Cleanup)
+                println("${iam}: LEAVE (branch=$branch)")
 	    } // script
 	} // steps
     } // stage

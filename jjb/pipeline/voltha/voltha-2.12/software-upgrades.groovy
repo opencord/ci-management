@@ -21,6 +21,36 @@ library identifier: 'cord-jenkins-libraries@master',
       remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
+// -----------------------------------------------------------------------
+// Intent:
+// -----------------------------------------------------------------------
+String branchName() {
+    String name = 'voltha-2.12'
+
+    // [TODO] Sanity check the target branch
+    // if (name != jenkins.branch) { fatal }
+    return(name)
+}
+
+// -----------------------------------------------------------------------
+// Intent: Due to lack of a reliable stack trace, construct a literal.
+//         Jenkins will re-write the call stack for serialization.
+// -----------------------------------------------------------------------
+String getIam(String func) {
+    String branchName = branchName()
+    String src = [
+        'ci-management',
+        'jjb',
+        'pipeline',
+        'voltha',
+        branchName,
+        'software-upgrades.groovy'
+    ].join('/')
+
+    String name = [src, func].join('::')
+    return(name)
+}
+
 // fetches the versions/tags of the voltha component
 // returns the deployment version which is one less than the latest available tag of the repo, first voltha stack gets deployed using this;
 // returns the test version which is the latest tag of the repo, the component upgrade gets tested on this.
@@ -261,16 +291,15 @@ pipeline {
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Install Tools')
-    {
-        steps
-        {
-            script
-            {
+    stage('Install Tools') {
+        steps              {
+            script         {
+                String branchName = branchName()
                 String iam = getIam('Install Kind')
-                println("${iam}: ENTER")
-                installKind("$branch")   // needed early by stage(Cleanup)
-                println("${iam}: LEAVE")
+
+                println("${iam}: ENTER (branch=$branch)")
+                installKind(branch)   // needed early by stage(Cleanup)
+                println("${iam}: LEAVE (branch=$branch)")
 	    } // script
 	} // steps
     } // stage
