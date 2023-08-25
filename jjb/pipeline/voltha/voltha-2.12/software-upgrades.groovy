@@ -144,7 +144,9 @@ def test_software_upgrade(name) {
       // Currently only testing with ATT workflow
       // TODO: Support for other workflows
       volthaDeploy([bbsimReplica: olts.toInteger(), workflow: 'att', extraHelmFlags: extraHelmFlags, localCharts: localCharts])
-      // stop logging
+
+        // [TODO] pkill_proc("_TAG=kail-${name}")
+        // stop logging
       sh """
         P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
         if [ -n "\$P_IDS" ]; then
@@ -231,11 +233,16 @@ def test_software_upgrade(name) {
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
-      // remove port-forwarding
+
+        pkill_proc('port-forw')
+	    // remove port-forwarding
+	    /*
       sh """
         # remove orphaned port-forward from different namespaces
         ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
       """
+	     */
+
       // collect pod details
       get_pods_info("$WORKSPACE/${name}")
       sh """
@@ -307,37 +314,21 @@ pipeline {
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage('Cleanup') {
-        steps {
-
-	script {
-            println('''
-** -----------------------------------------------------------------------
-** Raw process listing
-** -----------------------------------------------------------------------
-''')
-        sh(''' ps faaux ''')
-
-            println('''
-** -----------------------------------------------------------------------
-** pgrep --list-full port
-** -----------------------------------------------------------------------
-''')
-        sh(''' set +euo pipefail && pgrep --list-full 'port' ''')
-		}
-
-        // remove port-forwarding
-        sh """
-          # remove orphaned port-forward from different namespaces
-          ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
-        """
-        helmTeardown(['infra', 'voltha'])
-      }
-    }
+        steps        {
+            script   {
+                pgrep_proc('port-forw')
+                pkill_proc('port-forw')
+            } // script
+            helmTeardown(['infra', 'voltha'])
+        } // steps
+    } // stage
+	
     stage('Create K8s Cluster') {
-      steps {
-        createKubernetesCluster([nodes: 3])
-      }
+        steps {
+            createKubernetesCluster([nodes: 3])
+        }
     }
+	
     stage('Run Test') {
       steps {
         test_software_upgrade("onos-app-upgrade")
@@ -371,3 +362,5 @@ pipeline {
     }
   }
 }
+
+// [EOF]

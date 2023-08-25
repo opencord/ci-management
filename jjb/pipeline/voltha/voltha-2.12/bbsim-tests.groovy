@@ -70,52 +70,6 @@ Boolean isReleaseBranch(String name) {
 // -----------------------------------------------------------------------
 // Intent:
 // -----------------------------------------------------------------------
-void pgrep_proc(String proc) {
-
-    println("** RAW PROCESS OUTPUT:")
-    def stream = sh(returnStdout: true, script: 'ps faaux')
-    println(stream)
-    
-    String cmd = [
-	'pgrep',
-	// '--older', 5, // switch not supported, nodes using older version
-	'--list-full',
-	"\"${proc}\"",
-	';',
-	'echo', 'DONE',
-	';',
-	'true',
-    ].join(' ')
-
-    println("** Running: ${cmd}")
-    sh(
-        returnStdout: true,
-	"set +euo pipefail && ${cmd}"
-    )
-    return
-}
-
-// -----------------------------------------------------------------------
-// -----------------------------------------------------------------------
-void pkill_proc(String proc) {
-    String cmd = [
-	'pkill',
-	// switch not supported, nodes using older version
-	// NOTE: pkill should not kill it-self
-	// good old kill (ps | grep -v -e grep -e '$$-me') }
-	// '--older', 5,
-	'--echo',
-	"\"${proc}\"",
-    ].join(' ')
-
-    println("** Running: ${cmd}")
-    sh(""" if [[ \$(pgrep --count "${proc}") -gt 0 ]]; then "$cmd"; fi" """)
-    return
-}
-
-// -----------------------------------------------------------------------
-// Intent:
-// -----------------------------------------------------------------------
 void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags='') {
     String infraNamespace  = 'default'
     String volthaNamespace = 'voltha'
