@@ -45,21 +45,6 @@
           power-switch: true
           pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
       
-      # Certification (Radisys) pod with olt/onu - 2.12 version timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'menlo-certification-pod-3'
-          config-pod: 'menlo-certification-pod-radisys-3200g'
-          disable-job: true
-          reinstall-olt: true
-          release: '2.12'
-          branch: 'voltha-2.12'
-          name-extension: '_DT'
-          work-flow: 'DT'
-          profile: '1T8GEM'
-          time: '9'
-          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
-          extraHelmFlags: "--set onos-classic.image.tag=master"
-
       # -----------------------------------------------------------------------
       # Certification (Radisys) pod with olt/onu - 2.11 version timer based job
       # -----------------------------------------------------------------------
@@ -94,5 +79,38 @@
           profile: '1T8GEM'
           power-switch: true
           pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+
+      # Certification (Radisys) pod with olt/onu - 2.12 version timer based job
+      # Duplicate(?) of -- md5sum(master): 2ea4de8fab54538915bcf95ab08c8430
+#      - 'build_voltha_pod_release_timer':
+#          build-node: 'menlo-certification-pod-3'
+#          config-pod: 'menlo-certification-pod-radisys-3200g'
+#          disable-job: true
+#          reinstall-olt: true
+#          release: '2.12'
+#          branch: 'voltha-2.12'
+#          name-extension: '_DT'
+#          work-flow: 'DT'
+#          profile: '1T8GEM'
+#          time: '9'
+#          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
+#          extraHelmFlags: "--set onos-classic.image.tag=master"
+          
+      # -----------------------------------------------------------------------
+      # Certification (Radisys) pod with olt/onu - master versions timer based job
+      # md5sum(master): 2ea4de8fab54538915bcf95ab08c8430 
+     # -----------------------------------------------------------------------
+      - 'build_voltha_pod_release_timer':
+          build-node: 'menlo-certification-pod-3'
+          config-pod: 'menlo-certification-pod-radisys-3200g'
+          disable-job: true              # Reason: menlo-certification-pod-3 is offline
+          release: '2.12'
+          branch: 'voltha-2.12'
+          reinstall-olt: true
+          name-extension: '_DT'
+          work-flow: 'DT'
+          profile: '1T8GEM'
+          time: '1'
+          extraHelmFlags: "--set onos-classic.image.tag=master --set voltha.global.rw_core.rpc_timeout=30s --set voltha.global.rw_core.internal_timeout=30s"
 
 # [EOF]
