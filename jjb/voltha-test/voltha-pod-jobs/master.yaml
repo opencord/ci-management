@@ -4,7 +4,7 @@
 # Disabled, offline -- 'qa-testvm-pod'
 # -----------------------------------------------------------------------
 - project:
-    name: voltha-pod-jobs-2.12
+    name: voltha-pod-jobs-master
 
     project-name: '{name}'
 
@@ -28,19 +28,6 @@
     num-of-ponports: ''
 
     jobs:
-      # -----------------------------------------------------------------------
-      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
-      # -----------------------------------------------------------------------
-      - 'build_voltha_pod_test':
-          disable-job: true              # Reason: qa-testvm-pod offline
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.12'
-          branch: 'voltha-2.12'
-          power-switch: true
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM'
-
 
       # -----------------------------------------------------------------------
       # flex pod1 test job - uses tech profile on voltha branch
@@ -50,11 +37,11 @@
           disable-job: true                    # Reason: qa-testvm-pod offline
           build-node: 'qa-testvm-pod'
           config-pod: 'flex-ocp-cord'
-          release: 'voltha-2.12'
-          branch: '2.12'
+          release: 'master'
+          branch: 'master'
           power-switch: true
           power-cycle-olt: true
           test-repo: 'voltha-system-tests'
           profile: 'Default'
-          
+
 # [EOF]

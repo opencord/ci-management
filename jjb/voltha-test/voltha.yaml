@@ -56,18 +56,6 @@
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
 
-      # flex pod1 test job - uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          disable-job: false
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: 'master'
-          branch: 'master'
-          power-switch: true
-          power-cycle-olt: true
-          test-repo: 'voltha-system-tests'
-          profile: 'Default'
-
       # flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           disable-job: false
