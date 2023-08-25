@@ -39,14 +39,24 @@ String branchName() {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Difficult at times to determine when pipeline jobs have
+//   regenerated.  Hardcode a version string that can be assigned
+//   per-script to be sure latest repository changes are being used.
+// -----------------------------------------------------------------------
+String pipelineVer() {
+    String version = '4f87de8f31d588d8277dc5ea6fbb69e714c66079'
+    return(version)
+}
+
+// -----------------------------------------------------------------------
 // Intent: Due to lack of a reliable stack trace, construct a literal.
 //         Jenkins will re-write the call stack for serialization.S
 // -----------------------------------------------------------------------
 // Note: Hardcoded version string used to visualize changes in jenkins UI
 // -----------------------------------------------------------------------
-tring getIam(String func, Boolean verbose=True) {
+String getIam(String func) {
     String branchName = branchName()
-    String version = '4f87de8f31d588d8277dc5ea6fbb69e714c66079'
+    String version    = pipelineVer()
     String src = [
         'ci-management',
         'jjb',
@@ -71,9 +81,16 @@ Boolean isReleaseBranch(String name) {
 }
 
 // -----------------------------------------------------------------------
-// Intent:
+// Intent: Iterate over a list of test suites and invoke.
 // -----------------------------------------------------------------------
-void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags='') {
+void execute_test\
+(
+    String  testTarget,                       // functional-single-kind-dt
+    String  workflow,                         // dt
+    String  testLogging,                      // 'True'
+    Boolean teardown,                         // true
+    String  testSpecificHelmFlags=''
+) {
     String infraNamespace  = 'default'
     String volthaNamespace = 'voltha'
     String logsDir = "$WORKSPACE/${testTarget}"
@@ -620,16 +637,16 @@ pipeline {
 ** -----------------------------------------------------------------------
 """)
 
-		    try {
-			println "Executing test ${target}: ENTER"
-			execute_test(target, workflow, testLogging, teardown, flags)
-		    }
-		    catch (Exception err) {
-			println("** ${iam}: EXCEPTION ${err}")
-		    }
-		    finally {
-			println "Executing test ${target}: LEAVE"
-		    }
+                   try {
+                       println "Executing test ${target}: ENTER"
+                       execute_test(target, workflow, testLogging, teardown, flags)
+                   }
+                   catch (Exception err) {
+                       println("** ${iam}: EXCEPTION ${err}")
+                   }
+                   finally {
+                       println "Executing test ${target}: LEAVE"
+                   }
 
 		    } // for
 
