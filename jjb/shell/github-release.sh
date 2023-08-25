@@ -308,7 +308,10 @@ function getGitVersion()
         echo "Detected --draft SemVer release version tag [$__ver]"
         echo "Building artifacts for GitHub release."
 
+    # Should also accept:  X.Y.Z-{alpha,beta,...}
+
     else
+        echo "Version string contains: [${__ver}]"
         error "No SemVer released version tag found, exiting..."
     fi
 
