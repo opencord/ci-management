@@ -1,4 +1,4 @@
----
+das---
 # voltha 2.x tests
 # [NOTE]
 #   o md5sum(master) can be used to locate branch/release variants of a job.
@@ -144,7 +144,7 @@
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
-          time-trigger : "* 7-18/4 * * *"       # build every 4 hrs between 7am-6pm
+          time-trigger : '@daily'
           # -----------------------------------------------------------------------
           # time-trigger : "H/20 * * * *"   # every 20 min
           #          time-trigger: "@hourly"
