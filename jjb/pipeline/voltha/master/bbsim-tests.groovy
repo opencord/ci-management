@@ -136,7 +136,7 @@ void execute_test\
 
                     // todo: fatal unless (proc count==0)
                     pgrep_proc(proc)
-                    enter('Cleanup')
+                    leave('Cleanup')
                 } // script
             } // timeout
         } // teardown
@@ -333,7 +333,9 @@ EOM
     // -----------------------------------------------------------------------
     stage("Run test ${testTarget} on workflow ${workflow}")
     {
-        sh """
+        sh(
+            label : 'Monitor using mem_consumption.py',
+            script : """
         echo -e "\n** Monitor using mem_consumption.py ?"
 
     if [ ${withMonitoring} = true ] ; then
@@ -355,7 +357,7 @@ EOM
     fi
 
     echo -e '** Monitor memory consumption: LEAVE\n'
-    """
+    """)
 
         sh """
         echo -e "\n** make testTarget=[${testTarget}]"
@@ -369,7 +371,9 @@ EOM
 
         getPodsInfo("${logsDir}")
 
-        sh """
+        sh(
+            label : 'Gather robot Framework logs',
+            script : """
       echo -e '\n** Gather robot Framework logs: ENTER'
       # set +e
       # collect logs collected in the Robot Framework StartLogging keyword
@@ -378,11 +382,13 @@ EOM
       rm -f *-combined.log
 
       echo -e '** Gather robot Framework logs: LEAVE\n'
-    """
+    """)
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    sh """
+        sh(
+            label  : 'Monitor pod-mem-consumption',
+            script : """
     echo -e '** Monitor pod-mem-consumption: ENTER'
     if [ ${withMonitoring} = true ] ; then
       cat <<EOM
@@ -401,7 +407,7 @@ EOM
       python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
     fi
     echo -e '** Monitor pod-mem-consumption: LEAVE\n'
-    """
+    """)
     } // stage
 
     return
@@ -598,7 +604,7 @@ pipeline {
                     // Announce ourselves for log usability
                     enter('Parse and execute tests')
 
-                    def tests = readYaml text: testTargets
+                    def tests = readYaml text: testTargets // typeof == Map (?)
                     println("** [DEBUG]: tests=$tests")
 
                     // Display expected tests for times when output goes dark
@@ -632,7 +638,7 @@ pipeline {
 """)
 
                         try {
-                            leave("execute_test (target=$target)")
+                            enter("execute_test (target=$target)")
                             execute_test(target, workflow, testLogging, teardown, flags)
                         }
                         catch (Exception err) {

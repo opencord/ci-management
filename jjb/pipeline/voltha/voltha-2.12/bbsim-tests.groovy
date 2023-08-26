@@ -136,7 +136,7 @@ void execute_test\
 
                     // todo: fatal unless (proc count==0)
                     pgrep_proc(proc)
-                    enter('Cleanup')
+                    leave('Cleanup')
                 } // script
             } // timeout
         } // teardown
@@ -638,7 +638,7 @@ pipeline {
 """)
 
                         try {
-                            leave("execute_test (target=$target)")
+                            enter("execute_test (target=$target)")
                             execute_test(target, workflow, testLogging, teardown, flags)
                         }
                         catch (Exception err) {
