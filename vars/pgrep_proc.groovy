@@ -28,14 +28,21 @@ String getIam(String func) {
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-Boolean process(String proc) {
-    String iam  = getIam('process')
+Boolean process(String proc, Map args) {
     Boolean ans = true
+    String  iam = getIam('process')
 
-    println("** ${iam}: ENTER")
+    if (args.containsKey('debug')) {
+        println("** $iam [DEBUG]: proc=[$proc], args=[$args]")
+    }
 
-    String cmdFull = "pgrep --list-full '${proc}'"
-    String cmd = """if [[ \$(pgrep --count "${proc}") -gt 0 ]]; then ${cmdFull}; fi"""
+    String cmd = [
+        'pgrep',
+        '--uid', '$(id -u)', // no stray signals
+        '--list-full',
+        '--full',  // hmmm: conditional use (?)
+        "'${proc}",
+    ]
 
     print("""
 ** -----------------------------------------------------------------------
@@ -46,8 +53,6 @@ Boolean process(String proc) {
         label  : 'pgrep_proc', // jenkins usability: label log entry 'step'
         script : "${cmd}",
     )
-
-    println("** ${iam}: LEAVE")
     return(ans)
 }
 
@@ -56,22 +61,38 @@ Boolean process(String proc) {
 //    o Paramter branch is passed but not yet used.
 //    o Installer should be release friendly and checkout a frozen version
 // -----------------------------------------------------------------------
-def call(String proc) {
+// groovylint-disable-next-line None, UnusedMethodParameter
+Boolean call\
+(
+    String  proc,           // name of process or arguments to terminate
+    Map     args=[:],
+    Boolean filler=True     // Groovy, why special case list comma handling (?)
+) {
     String iam = getIam('main')
+    Boolean ans = True
 
     println("** ${iam}: ENTER")
 
     try {
-        process(proc)
+        process(proc, args)
     }
-    catch (Exception err) {
+    catch (Exception err) {  // groovylint-disable-line CatchException
+        ans = False
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }
     finally {
         println("** ${iam}: LEAVE")
     }
-    return
+
+    return(ans)
 }
 
+// -----------------------------------------------------------------------
+// [TODO] - Combine pkill_proc and pgrep_proc
+//    - Usage: do_proc(pkill=true, pgrep=true, args='proc-forward', cmd='kubectl'
+//      o When kill == grep == true: display procs, terminate, recheck: fatal if procs detected
+//      o cmd && args (or command containing args) (or list of patterns passed)
+//        - pass arg --full to match entire command line.
+// -----------------------------------------------------------------------
 // [EOF]

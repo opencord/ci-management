@@ -130,10 +130,12 @@ void execute_test\
                 script {
                     enter('Cleanup')
                     // remove orphaned port-forward from different namespaces
-                    String proc = 'port-forw'
+                    String proc = 'kubectl .*port-forward' // was 'port-forw'
                     pgrep_proc(proc)
                     pkill_proc(proc)
-                    pgrep_proc(proc) // proc count == 0
+
+                    // todo: fatal unless (proc count==0)
+                    pgrep_proc(proc)
                     enter('Cleanup')
                 } // script
             } // timeout
@@ -300,6 +302,7 @@ EOM
             // ---------------------------------
             script {
                 enter('port-forward check')
+                // String proc = 'kubectl.*port-forward' // was 'port-forward'
                 String proc = 'port-forward'
                 println("Display spawned ${proc}")
                 pgrep_proc(proc)

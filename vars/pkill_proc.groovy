@@ -28,13 +28,28 @@ String getIam(String func) {
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-Boolean process(String proc) {
-    String iam  = getIam('process')
+Boolean process(String proc, Map args) {
     Boolean ans = true
+    String  iam = getIam('process')
 
-    println("** ${iam}: ENTER")
+    if (args.containsKey('debug')) {
+        println("** $iam [DEBUG]: proc=[$proc], args=[$args]")
+    }
 
-    String cmdKill = "pkill --echo '${proc}'"
+    String cmdKill = [
+        'pkill',
+        '--uid', '$(id -u)', // no stray signals
+        '--echo',
+        '--full',  // hmmm: conditional use (?)
+        "'${proc}",
+    ].join(' ')
+
+    /*
+    String cmdKill = (args['command_only')
+        ? "pkill --echo '${proc}'"
+        : "pkill --echo --full '${proc}'"
+     */
+
     String cmd = """if [[ \$(pgrep --count "${proc}") -gt 0 ]]; then ${cmdKill}; fi"""
 
     print("""
@@ -48,7 +63,6 @@ Boolean process(String proc) {
         script : "${cmd}",
     )
 
-    println("** ${iam}: LEAVE")
     return(ans)
 }
 
@@ -57,22 +71,44 @@ Boolean process(String proc) {
 //    o Paramter branch is passed but not yet used.
 //    o Installer should be release friendly and checkout a frozen version
 // -----------------------------------------------------------------------
-def call(String proc) {
+// groovylint-disable-next-line None, UnusedMethodParameter
+void call\
+(
+    String  proc,           // name of process or arguments to terminate
+    Map     args=[:],
+                            // Groovy, why special case list comma handling (?)
+    Boolean filler=True     // groovylint-disable-line UnusedMethodParameter
+) {
+    
     String iam = getIam('main')
+    Boolean ans = True
 
     println("** ${iam}: ENTER")
 
     try {
-        process(proc)
+        // Limit process matching by default
+        if (! mymap.containsKey('command_only')) {
+            mymap['command_only'] = True
+        }
+        process(proc, args)
     }
-    catch (Exception err) {
+    catch (Exception err) { // groovylint-disable-line CatchException
+        ans = False
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }
     finally {
         println("** ${iam}: LEAVE")
     }
-    return
+
+    return(ans)
 }
 
+// -----------------------------------------------------------------------
+// [TODO] - Combine pkill_proc and pgrep_proc
+//    - Usage: do_proc(pkill=true, pgrep=true, args='proc-forward', cmd='kubectl'
+//      o When kill == grep == true: display procs, terminate, recheck: fatal if procs detected
+//      o cmd && args (or command containing args) (or list of patterns passed)
+//        - pass arg --full to match entire command line.
+// -----------------------------------------------------------------------
 // [EOF]
