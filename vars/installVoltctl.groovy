@@ -28,24 +28,53 @@ def getIam(String func)
 }
 
 // -----------------------------------------------------------------------
+// Intent: Assign perms to fix access problems
+// . /bin/sh: 1: /home/jenkins/.volt/config: Permission denied
 // -----------------------------------------------------------------------
-def process(String branch) {
-
+def fixPerms() {
+    
     String iam = 'vars/installVoltctl.groovy'
     println("** ${iam}: ENTER")
 
+    sh(
+        label:  'fixperms',
+        script : """
+
+      umask 022
+
+      volt_dir='~/.volt'
+      volt_cfg='~/.volt/config'
+
+      echo
+      echo "** Fixing perms: $volt_cfg"
+      mkdir -p "$volt_dir"
+      chmod -R u+w,go-rwx "$volt_dir"
+      chmod u=rwx "$volt_dir"
+      touch "$volt_conf"
+      /bin/ls -l "$volt_dir"
+""")
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def process(String branch) {
+    
+    String iam = 'vars/installVoltctl.groovy'
+    println("** ${iam}: ENTER")
+    
     // This logic seems odd given we branch & tag repositories
     // for release so hilight non-frozen until we know for sure.
     def released=[
-	// v1.9.1 - https://github.com/opencord/voltctl/releases/tag/untagged-cd611c39178f25b95a87
-	'voltha-2.12' : '1.8.45',
-	'voltha-2.11' : '1.8.45',
-	// https://github.com/opencord/voltctl/releases/tag/v1.7.6
-	'voltha-2.10' : '1.7.6',
-	'voltha-2.9'  : '1.7.4',
-	'voltha-2.8'  : '1.6.11',
+	    // v1.9.1 - https://github.com/opencord/voltctl/releases/tag/untagged-cd611c39178f25b95a87
+	    'voltha-2.12' : '1.8.45',
+	    'voltha-2.11' : '1.8.45',
+	    // https://github.com/opencord/voltctl/releases/tag/v1.7.6
+	    'voltha-2.10' : '1.7.6',
+	    'voltha-2.9'  : '1.7.4',
+	    'voltha-2.8'  : '1.6.11',
     ]
-
+    
     boolean have_released = released.containsKey(branch)
     boolean is_release  = false
     // TODO: Enable with parameter: RELEASE_VOLTHA=
@@ -61,42 +90,42 @@ def process(String branch) {
     // Sanity check: released version must be frozen
     // ---------------------------------------------
     if (is_release && ! released.containsKey(branch)) {
-	// Fingers crossed: jenkins may rewrite the callstack.
-	def myname = this.class.getName()
-
-	String url = [
-	    'https://docs.voltha.org/master',
-	    'howto/release/installVoltctl.html',
-	].join('/')
-
+	    // Fingers crossed: jenkins may rewrite the callstack.
+	    def myname = this.class.getName()
+        
+	    String url = [
+	        'https://docs.voltha.org/master',
+	        'howto/release/installVoltctl.html',
+	    ].join('/')
+        
 	String error = [
-	    myname, "ERROR:",
-	    "Detected release version=[$branch]",
-	    "but voltctl is not frozen.",
-	    '',
-	    "See Also:", url,
-	].join(' ')
-	throw new Exception(error)
+	        myname, "ERROR:",
+	        "Detected release version=[$branch]",
+	        "but voltctl is not frozen.",
+	        '',
+	        "See Also:", url,
+	    ].join(' ')
+	    throw new Exception(error)
     }
-
+    
     // --------------------------------
     // General answer: latest available
     // --------------------------------
     if (! have_released) {
-	url = 'https://api.github.com/repos/opencord/voltctl/releases/latest'
-	get_version = [
-	    "curl -sSL ${url}",
-	    "jq -r .tag_name",
-	    "sed -e 's/^v//g'",
-	].join(' | ')
-	
-	print(" ** RUNNING: ${get_version}")
-	released[branch] = sh (
-	    script: get_version,
-	    returnStdout: true
-	).trim()
+	    url = 'https://api.github.com/repos/opencord/voltctl/releases/latest'
+	    get_version = [
+	        "curl -sSL ${url}",
+	        "jq -r .tag_name",
+	        "sed -e 's/^v//g'",
+	    ].join(' | ')
+	    
+	    print(" ** RUNNING: ${get_version}")
+	    released[branch] = sh (
+	        script: get_version,
+	        returnStdout: true
+	    ).trim()
     }
-
+    
     voltctlVersion = released[branch]
     println "Installing voltctl version ${voltctlVersion} on branch ${branch}"
 
@@ -134,8 +163,9 @@ def process(String branch) {
     "\${bin_voltctl}" version --clientonly
     voltctl version --clientonly
   """
-
+    
     println("** ${iam}: LEAVE")
+    return
 }
 
 // -----------------------------------------------------------------------
@@ -144,25 +174,20 @@ def call(String branch)
 {
     String iam = getIam('main')
     println("** ${iam}: ENTER")
-
-	/* - unused, string passed as argument
-    if (!config) {
-        config = [:]
-    }
-	 */
-
+    
     try
     {
-	process(branch)
+        fixPerms()
+	    process(branch)
     }
     catch (Exception err)
     {
-	println("** ${iam}: EXCEPTION ${err}")
-	throw err
+	    println("** ${iam}: EXCEPTION ${err}")
+	    throw err
     }
     finally
     {
-	println("** ${iam}: LEAVE")
+	    println("** ${iam}: LEAVE")
     }
     return
 }
