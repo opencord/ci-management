@@ -39,11 +39,24 @@ String branchName() {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Difficult at times to determine when pipeline jobs have
+//   regenerated.  Hardcode a version string that can be assigned
+//   per-script to be sure latest repository changes are being used.
+// -----------------------------------------------------------------------
+String pipelineVer() {
+    String version = '757ba9ea12d8d815c10301b7f265f3fcd7c41d26'
+    return(version)
+}
+
+// -----------------------------------------------------------------------
 // Intent: Due to lack of a reliable stack trace, construct a literal.
-//         Jenkins will re-write the call stack for serialization.
+//         Jenkins will re-write the call stack for serialization.S
+// -----------------------------------------------------------------------
+// Note: Hardcoded version string used to visualize changes in jenkins UI
 // -----------------------------------------------------------------------
 String getIam(String func) {
     String branchName = branchName()
+    String version    = pipelineVer()
     String src = [
         'ci-management',
         'jjb',
@@ -53,174 +66,221 @@ String getIam(String func) {
         'bbsim-tests.groovy'
     ].join('/')
 
-    String name = [src, func].join('::')
+    String name = [src, version, func].join('::')
     return(name)
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void enter(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: ENTER")
+    return
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void leave(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: LEAVE")
+    return
 }
 
 // -----------------------------------------------------------------------
 // Intent: Determine if working on a release branch.
 //   Note: Conditional is legacy, should also check for *-dev or *-pre
 // -----------------------------------------------------------------------
-Boolean isReleaseBranch(String name)
-{
+Boolean isReleaseBranch(String name) {
     // List modifiers = ['-dev', '-pre', 'voltha-x.y.z-pre']
     // if branchName in modifiers
     return(name != 'master') // OR branchName.contains('-')
 }
 
 // -----------------------------------------------------------------------
-// Intent:
+// Intent: Iterate over a list of test suites and invoke.
 // -----------------------------------------------------------------------
-void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags='')
-{
+void execute_test\
+(
+    String  testTarget,                       // functional-single-kind-dt
+    String  workflow,                         // dt
+    String  testLogging,                      // 'True'
+    Boolean teardown,                         // true
+    String  testSpecificHelmFlags=''
+) {
     String infraNamespace  = 'default'
     String volthaNamespace = 'voltha'
     String logsDir = "$WORKSPACE/${testTarget}"
 
-    stage('IAM')
-    {
-        script
-        {
-            // Announce ourselves for log usability
-            String iam = getIam('execute_test')
-            println("${iam}: ENTER")
-            println("${iam}: LEAVE")
-        }
-    }
-
     // -----------------------------------------------------------------------
     // Intent: Cleanup stale port-forwarding
     // -----------------------------------------------------------------------
-    stage('Cleanup')
-    {
-        if (teardown) {
+    stage('Cleanup')    {
+        if (teardown)   {
             timeout(15) {
-                script {
+                script  {
                     helmTeardown(['default', infraNamespace, volthaNamespace])
                 }
-            timeout(1) {
-                    sh returnStdout: false, script: '''
-          # remove orphaned port-forward from different namespaces
-          ps aux | grep port-forw | grep -v grep | awk '{print $2}' | xargs --no-run-if-empty kill -9
-          '''
-                }
-            }
-        }
-    }
+            } // timeout
+
+            timeout(5) {
+                script {
+                    enter('Cleanup')
+                    // remove orphaned port-forward from different namespaces
+                    String proc = 'port-forw'
+                    pgrep_proc(proc)
+                    pkill_proc(proc)
+                    pgrep_proc(proc) // proc count == 0
+                    enter('Cleanup')
+                } // script
+            } // timeout
+        } // teardown
+    } // stage('Cleanup')
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Deploy common infrastructure')
-    {
-        sh '''
+    stage('Deploy common infrastructure') {
+        script {
+            local dashargs = [
+                'kpi_exporter.enabled=false',
+                'dashboards.xos=false',
+                'dashboards.onos=false',
+                'dashboards.aaa=false',
+                'dashboards.voltha=false',
+            ].join(',')
+
+            local promargs = [
+                'prometheus.alertmanager.enabled=false',
+                'prometheus.pushgateway.enabled=false',
+            ].join(',')
+
+            sh("""
     helm repo add onf https://charts.opencord.org
     helm repo update
+
+    echo -e "\nwithMonitoring=[$withMonitoring]"
     if [ ${withMonitoring} = true ] ; then
       helm install nem-monitoring onf/nem-monitoring \
-      --set prometheus.alertmanager.enabled=false,prometheus.pushgateway.enabled=false \
-      --set kpi_exporter.enabled=false,dashboards.xos=false,dashboards.onos=false,dashboards.aaa=false,dashboards.voltha=false
+          --set ${promargs} \
+          --set ${dashargs}
     fi
-    '''
-    }
+    """)
+        } // script
+    } // stage('Deploy Common Infra')
 
-    stage('Deploy Voltha')
-    {
-        if (teardown)
-        {
-            timeout(10)
-            {
-                script
-                {
-          sh """
+    // -----------------------------------------------------------------------
+    // [TODO] Check onos_log output
+    // -----------------------------------------------------------------------
+    stage('Deploy Voltha') {
+        if (teardown)      {
+            timeout(10)    {
+                script     {
+                    String iam = getIam('Deploy Voltha')
+                    String onosLog = "${logsDir}/onos-voltha-startup-combined.log"
+                    sh("""
           mkdir -p ${logsDir}
-          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
-          """
+          touch "$onosLog"
+          echo "** kail-startup ENTER: \$(date)" > "$onosLog"
 
-		    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
-		    Boolean localCharts = false
+          # Intermixed output (tee -a &) may get conflusing but let(s) see
+          # what messages are logged during startup.
+          #  _TAG=ka7il-startup kail -n ${infraNamespace} -n ${volthaNamespace} >> "$onosLog" &
+          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} | tee -a "$onosLog" &
+          """)
 
-		    if (volthaHelmChartsChange != ''
-			|| gerritProject == 'voltha-helm-charts'
-			|| isReleaseBranch(branch) // branch != 'master'
-		    ) {
-			localCharts = true
-		    }
+                    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+                    Boolean localCharts = false
 
-		    String branchName = branchName()
-		    Boolean is_release = isReleaseBranch(branch)
-		    println([
-			" ** localCharts=${localCharts}",
-			"branchName=${branchName}",
-			"branch=${branch}",
-			"branch=isReleaseBranch=${is_release}",
-		    ].join(', '))
+                    if (volthaHelmChartsChange != ''
+                        || gerritProject == 'voltha-helm-charts'
+                        || isReleaseBranch(branch) // branch != 'master'
+                    ) {
+                        localCharts = true
+                    }
 
-		    // -----------------------------------------------------------------------
-		    // Rewrite localHelmFlags using array join, moving code around and
-		    // refactoring into standalone functions
-		    // -----------------------------------------------------------------------
-		    // hudson.remoting.ProxyException: groovy.lang.MissingMethodException:
-		    // No signature of method: java.lang.String.positive() is applicable for argument types: () values: []
-		    // -----------------------------------------------------------------------
-		    // NOTE temporary workaround expose ONOS node ports
-		    // -----------------------------------------------------------------------
-		    String localHelmFlags = [
-			extraHelmFlags.trim(),
-			"--set global.log_level=${logLevel.toUpperCase()}",
-			'--set onos-classic.onosSshPort=30115',
-			'--set onos-classic.onosApiPort=30120',
-			'--set onos-classic.onosOfPort=31653',
-			'--set onos-classic.individualOpenFlowNodePorts=true',
-			testSpecificHelmFlags
-		    ].join(' ')
+                    String branchName = branchName()
+                    Boolean isRelease = isReleaseBranch(branch)
+                    println([
+                        " ** localCharts=${localCharts}",
+                        "branchName=${branchName}",
+                        "branch=${branch}",
+                        "branch=isReleaseBranch=${isRelease}",
+                    ].join(', '))
 
-		    println("** localHelmFlags = ${localHelmFlags}")
+                    // -----------------------------------------------------------------------
+                    // Rewrite localHelmFlags using array join, moving code around and
+                    // refactoring into standalone functions
+                    // -----------------------------------------------------------------------
+                    // NOTE temporary workaround expose ONOS node ports
+                    // -----------------------------------------------------------------------
+                    String localHelmFlags = [
+                        extraHelmFlags.trim(),
+                        "--set global.log_level=${logLevel.toUpperCase()}",
+                        '--set onos-classic.onosSshPort=30115',
+                        '--set onos-classic.onosApiPort=30120',
+                        '--set onos-classic.onosOfPort=31653',
+                        '--set onos-classic.individualOpenFlowNodePorts=true',
+                        testSpecificHelmFlags
+                    ].join(' ')
 
-		    if (gerritProject != '') {
-			localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
-		    }
+                    println("** ${iam} localHelmFlags = ${localHelmFlags}")
 
-		    println('volthaDeploy: ENTER')
-		    volthaDeploy([
-			infraNamespace: infraNamespace,
-			volthaNamespace: volthaNamespace,
-			workflow: workflow.toLowerCase(),
-			withMacLearning: enableMacLearning.toBoolean(),
-			extraHelmFlags: localHelmFlags,
-			localCharts: localCharts,
-			bbsimReplica: olts.toInteger(),
-			dockerRegistry: registry,
-		    ])
-		    println('volthaDeploy: LEAVE')
-		} // script
+                    if (gerritProject != '') {
+                        localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
+                    }
 
-        // -----------------------------------------------------------------------
-        // Intent: Replacing P_IDS with pgrep/pkill is a step forward.
-        // Why not simply use a pid file, capture _TAG=kail-startup above
-        // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
-	// -----------------------------------------------------------------------
-	script {
-	    println('Try out pgrep/pkill commands')
-	    sh('''pgrep --list-full kail-startup || true''')
-	}
+                    println("** ${iam}: ENTER")
+                    volthaDeploy([
+                        infraNamespace: infraNamespace,
+                        volthaNamespace: volthaNamespace,
+                        workflow: workflow.toLowerCase(),
+                        withMacLearning: enableMacLearning.toBoolean(),
+                        extraHelmFlags: localHelmFlags,
+                        localCharts: localCharts,
+                        bbsimReplica: olts.toInteger(),
+                        dockerRegistry: registry,
+                    ])
+                    println("** ${iam}: LEAVE")
+                } // script
 
-        // -----------------------------------------------------------------------
-	// stop logging
-        // -----------------------------------------------------------------------
-        sh """
-          P_IDS="\$(ps e -ww -A | grep "_TAG=kail-startup" | grep -v grep | awk '{print \$1}')"
-          if [ -n "\$P_IDS" ]; then
-            echo \$P_IDS
-            for P_ID in \$P_IDS; do
-              kill -9 \$P_ID
-            done
-          fi
-          cd ${logsDir}
+                // -----------------------------------------------------------------------
+                // Intent: Replacing P_IDS with pgrep/pkill is a step forward.
+                // Why not simply use a pid file, capture _TAG=kail-startup above
+                // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
+                // -----------------------------------------------------------------------
+                script {
+                    String proc = '_TAG=kail-startup'
+
+                    println("${iam}: ENTER")
+                    println("${iam}: Shutdown process $proc")
+                    pgrep_proc(proc)
+                    pkill_proc(proc)
+                    pgrep_proc(proc)
+                    println("${iam}: LEAVE")
+                }
+
+                // -----------------------------------------------------------------------
+                // Bundle onos-voltha / kail logs
+                // -----------------------------------------------------------------------
+                sh("""
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** Combine an compress voltha startup log(s)
+** -----------------------------------------------------------------------
+EOM
+          pushd "${logsDir}" || { echo "ERROR: pushd $logsDir failed"; exit 1; }
           gzip -k onos-voltha-startup-combined.log
           rm onos-voltha-startup-combined.log
-        """
-      }
+          popd
+        """)
+        } // timeout(10)
 
+            // -----------------------------------------------------------------------
+            // -----------------------------------------------------------------------
             sh """
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
@@ -235,12 +295,21 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
       fi
       ps aux | grep port-forward
       """
+            // ---------------------------------
+            // Sanity check port-forward spawned
+            // ---------------------------------
+            script {
+                enter('port-forward check')
+                String proc = 'port-forward'
+                println("Display spawned ${proc}")
+                pgrep_proc(proc)
+                leave('port-forward check')
+            }
 
             // setting ONOS log level
-            script
-            {
-		println('** setOnosLogLevels: ENTER')
-		setOnosLogLevels([
+            script {
+                enter('setOnosLogLevels')
+                setOnosLogLevels([
                     onosNamespace: infraNamespace,
                     apps: [
                         'org.opencord.dhcpl2relay',
@@ -252,7 +321,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
                     ],
                     logLevel: logLevel
                 ])
-		println('** setOnosLogLevels: LEAVE')
+                enter('setOnosLogLevels')
             } // script
         } // if (teardown)
     } // stage('Deploy Voltha')
@@ -262,7 +331,7 @@ void execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmF
     stage("Run test ${testTarget} on workflow ${workflow}")
     {
         sh """
-        echo -e '** Monitor memory consumption: ENTER'
+        echo -e "\n** Monitor using mem_consumption.py ?"
 
     if [ ${withMonitoring} = true ] ; then
       cat <<EOM
@@ -338,7 +407,10 @@ EOM
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 def collectArtifacts(exitStatus) {
-    String iam = getIam('execute_test')
+    script {
+        String iam = getIam('collectArtifacts')
+        println("${iam}: ENTER (exitStatus=${exitStatus})")
+    }
 
     echo '''
 
@@ -346,7 +418,6 @@ def collectArtifacts(exitStatus) {
 ** collectArtifacts
 ** -----------------------------------------------------------------------
 '''
-    println("${iam}: ENTER (exitStatus=${exitStatus})")
 
     getPodsInfo("$WORKSPACE/${exitStatus}")
 
@@ -356,25 +427,24 @@ def collectArtifacts(exitStatus) {
 
     archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
 
-    sh(returnStdout:true, script: '''
-    sync
-    echo '** Running: pgrep --list-full kail-startup (ENTER)'
-    pgrep --list-full 'kail-startup' || true
-    [[ $(pgrep --count kail) -gt 0 ]] && pkill --echo kail
-    echo '** Running: pgrep --list-full kail-startup (LEAVE)'
- ''')
+    script {
+        println("${iam}: ENTER")
+        pgrep_proc('kail-startup')
+        pkill_proc('kail')
+        println("${iam}: LEAVE")
+    }
 
     println("${iam}: ENTER RobotPublisher")
     step([$class: 'RobotPublisher',
-	  disableArchiveOutput: false,
-	  logFileName: '**/*/log*.html',
-	  otherFiles: '',
-	  outputFileName: '**/*/output*.xml',
-	  outputPath: '.',
-	  passThreshold: 100,
-	  reportFileName: '**/*/report*.html',
-	  unstableThreshold: 0,
-	  onlyCritical: true]);
+          disableArchiveOutput: false,
+          logFileName: '**/*/log*.html',
+          otherFiles: '',
+          outputFileName: '**/*/output*.xml',
+          outputPath: '.',
+          passThreshold: 100,
+          reportFileName: '**/*/report*.html',
+          unstableThreshold: 0,
+          onlyCritical: true])
     println("${iam}: LEAVE RobotPublisher")
 
     println("${iam}: LEAVE (exitStatus=${exitStatus})")
@@ -385,179 +455,166 @@ def collectArtifacts(exitStatus) {
 // Intent: main
 // -----------------------------------------------------------------------
 pipeline {
-
-  /* no label, executor is determined by JJB */
-  agent {
-    label "${params.buildNode}"
-  }
-  options {
-    timeout(time: "${timeout}", unit: 'MINUTES')
-  }
-  environment {
-    KUBECONFIG = "$HOME/.kube/kind-${clusterName}"
-    VOLTCONFIG = "$HOME/.volt/config"
-    PATH = "$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-    DIAGS_PROFILE = 'VOLTHA_PROFILE'
-    SSHPASS = 'karaf'
-  }
-  stages {
-    stage('Download Code') {
-      steps {
-        getVolthaCode([
-          branch: "${branch}",
-          gerritProject: "${gerritProject}",
-          gerritRefspec: "${gerritRefspec}",
-          volthaSystemTestsChange: "${volthaSystemTestsChange}",
-          volthaHelmChartsChange: "${volthaHelmChartsChange}",
-        ])
-      }
+    /* no label, executor is determined by JJB */
+    agent {
+        label "${params.buildNode}"
     }
 
-    stage('Build patch v1.1')
-    {
-        // build the patch only if gerritProject is specified
-        when
-        {
-            expression
-            {
-                return !gerritProject.isEmpty()
-            }
-        }
-
-        steps
-        {
-            // NOTE that the correct patch has already been checked out
-            // during the getVolthaCode step
-            buildVolthaComponent("${gerritProject}")
-        }
+    options {
+        timeout(time: "${timeout}", unit: 'MINUTES')
     }
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Install Kail')
-    {
-        steps
-        {
-            script
-            {
-	        String cmd = [
-		    'make',
-		    '--no-print-directory',
-		    '-C', "$WORKSPACE/voltha-system-tests",
-		    "KAIL_PATH=\"$WORKSPACE/bin\"",
-		    'kail',
-		].join(' ')
+    environment {
+        KUBECONFIG = "$HOME/.kube/kind-${clusterName}"
+        VOLTCONFIG = "$HOME/.volt/config"
+        PATH = "$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+        DIAGS_PROFILE = 'VOLTHA_PROFILE'
+        SSHPASS = 'karaf'
+    }
 
-		println(" ** Running: ${cmd}:\n")
-		sh("${cmd}")
-	    } // script
-        } // steps
-    } // stage
-
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Install Kind')
-    {
-        steps
-        {
-            script
-            {
-
-	        String cmd = [
-			'make',
-			'--no-print-directory',
-			'-C', "$WORKSPACE/voltha-system-tests",
-			"KIND_PATH=\"$WORKSPACE/bin\"",
-			'install-command-kind',
-		    ].join(' ')
-
-		println(" ** Running: ${cmd}:\n")
-		    sh("${cmd}")
-	    } // script
-	} // steps
-    } // stage
-
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Create K8s Cluster')
-    {
-        steps
-        {
-            script
-            {
-                def clusterExists = sh(
-                    returnStdout: true,
-                    script: """kind get clusters | grep "${clusterName}" | wc -l""")
-
-                if (clusterExists.trim() == '0')
-                {
-                    createKubernetesCluster([nodes: 3, name: clusterName])
-                }
-            } // script
-        } // steps
-    } // stage('Create K8s Cluster')
-
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Replace voltctl')
-    {
-        // if the project is voltctl, override the downloaded one with the built one
-        when {
-            expression {
-                return gerritProject == 'voltctl'
-            }
-        }
-
-        // Hmmmm(?) where did the voltctl download happen ?
-        // Likely Makefile but would be helpful to document here.
-        steps
-        {
-            println("${iam} Running: installVoltctl($branch)")
-            installVoltctl("$branch")
-        } // steps
-    } // stage
-
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('voltctl [DEBUG]') {
-        steps {
-	    script {
-                String iam = getIam('execute_test')
-
-                println("${iam} Display umask")
-	        sh('umask')
-
-                println("${iam} Checking voltctl config permissions")
-                sh('/bin/ls -ld ~/.volt ~/.volt/* || true')
-            } // script
-        } // steps
-    } // stage
-
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Load image in kind nodes')
-    {
-        when {
-            expression {
-                return !gerritProject.isEmpty()
-	    }
-        }
-        steps {
-            loadToKind()
-        } // steps
-    } // stage
-
-	// -----------------------------------------------------------------------
-	// -----------------------------------------------------------------------
-	stage('Parse and execute tests')
-	{
+    stages {
+        stage('Download Code') {
             steps {
-		script {
-                    def tests = readYaml text: testTargets
+                getVolthaCode([
+                    branch: "${branch}",
+                    gerritProject: "${gerritProject}",
+                    gerritRefspec: "${gerritRefspec}",
+                    volthaSystemTestsChange: "${volthaSystemTestsChange}",
+                    volthaHelmChartsChange: "${volthaHelmChartsChange}",
+                ])
+            }
+        }
 
-		    tests.eachWithIndex { test, idx ->
-			println "** readYaml test suite[$idx]) test=[${test}]"
-			// def test = tests[i]
+        stage('Build patch v1.1') {
+            // build the patch only if gerritProject is specified
+            when {
+                expression { return !gerritProject.isEmpty() }
+            }
+
+            steps {
+                // NOTE that the correct patch has already been checked out
+                // during the getVolthaCode step
+                buildVolthaComponent("${gerritProject}")
+            }
+        }
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Install Kail')
+        {
+            steps
+            {
+                script
+                {
+                    String cmd = [
+                        'make',
+                        '--no-print-directory',
+                        '-C', "$WORKSPACE/voltha-system-tests",
+                        "KAIL_PATH=\"$WORKSPACE/bin\"",
+                        'kail',
+                    ].join(' ')
+
+                    println(" ** Running: ${cmd}")
+                    sh("${cmd}")
+                } // script
+            } // steps
+        } // stage
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Install Tools') {
+            steps              {
+                script         {
+                    String branchName = branchName()
+                    String iam = getIam('Install Tools')
+
+                    println("${iam}: ENTER (branch=$branch)")
+                    installKind(branch)   // needed early by stage(Cleanup)
+                    println("${iam}: LEAVE (branch=$branch)")
+                } // script
+            } // steps
+        } // stage
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Create K8s Cluster') {
+            steps {
+                script {
+                    def clusterExists = sh(
+                        returnStdout: true,
+                        script: """kind get clusters | grep "${clusterName}" | wc -l""")
+
+                    if (clusterExists.trim() == '0') {
+                        createKubernetesCluster([nodes: 3, name: clusterName])
+                    }
+                } // script
+            } // steps
+        } // stage('Create K8s Cluster')
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Replace voltctl') {
+            // if the project is voltctl, override the downloaded one with the built one
+            when {
+                expression { return gerritProject == 'voltctl' }
+            }
+
+            // Hmmmm(?) where did the voltctl download happen ?
+            // Likely Makefile but would be helpful to document here.
+            steps {
+                script {
+                    String iam = getIam('Replace voltctl')
+
+                    println("${iam} Running: installVoltctl($branch)")
+                    println("${iam}: ENTER")
+                    installVoltctl("$branch")
+                    println("${iam}: LEAVE")
+                } // script
+            } // step
+        } // stage
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Load image in kind nodes')
+        {
+            when {
+                expression { return !gerritProject.isEmpty() }
+            }
+            steps {
+                loadToKind()
+            } // steps
+        } // stage
+
+        // -----------------------------------------------------------------------
+        // [TODO] verify testing output
+        // -----------------------------------------------------------------------
+        stage('Parse and execute tests')
+        {
+            steps {
+                script {
+                    // Announce ourselves for log usability
+                    enter('Parse and execute tests')
+
+                    def tests = readYaml text: testTargets
+                    println("** [DEBUG]: tests=$tests")
+
+                    // Display expected tests for times when output goes dark
+                    tests.eachWithIndex { test, idx ->
+                        String  target = test['target']
+                        println("**      test[${idx}]: ${target}\n")
+                    }
+
+                    println('''
+** -----------------------------------------------------------------------
+** NOTE: For odd/silent job failures verify a few details
+**   - All tests mentioned in the tests-to-run index were logged.
+**   - Test suites display ENTER/LEAVE mesasge pairs.
+**   - Processing terminated prematurely when LEAVE strings are missing.
+** -----------------------------------------------------------------------
+''')
+                    tests.eachWithIndex { test, idx ->
+                        println "** readYaml test suite[$idx]) test=[${test}]"
+
                         String  target      = test['target']
                         String  workflow    = test['workflow']
                         String  flags       = test['flags']
@@ -565,21 +622,25 @@ pipeline {
                         Boolean logging     = test['logging'].toBoolean()
                         String  testLogging = (logging) ? 'True' : 'False'
 
-			print("""
-
+                        print("""
 ** -----------------------------------------------------------------------
-** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}"
+** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}
 ** -----------------------------------------------------------------------
-
 """)
 
-                        println "Executing test ${target}: ENTER"
-                        execute_test(target, workflow, testLogging, teardown, flags)
-                        println "Executing test ${target}: LEAVE"
+                        try {
+                            leave("execute_test (target=$target)")
+                            execute_test(target, workflow, testLogging, teardown, flags)
+                        }
+                        catch (Exception err) {
+                            println("** ${iam}: EXCEPTION ${err}")
+                        }
+                        finally {
+                            leave("execute_test (target=$target)")
+                        }
                     } // for
-
-		    String iam = getIam('Parse and execute tests')
-		    println("** ${iam} ran to completion")
+                    // Premature exit if this message is not logged
+                    leave('Parse and execute tests')
                 } // script
             } // steps
         } // stage
@@ -593,4 +654,4 @@ pipeline {
     }
 } // pipeline
 
-// EOF
+// [EOF] - 2
