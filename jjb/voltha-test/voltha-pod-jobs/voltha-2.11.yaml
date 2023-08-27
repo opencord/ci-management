@@ -72,5 +72,23 @@
           test-repo: 'voltha-system-tests'
           profile: 'Default'
 
+      # -----------------------------------------------------------------------
+      # Menlo pod test job - uses tech profile on voltha branch
+      # md5sum(master): a690f5f5139c1ee95fe724eb683c9abe
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_test':
+          timeout: 330
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          disable-job: false
+          release: '2.11'
+          branch: 'voltha-2.11'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          power-switch: true
+          power-cycle-olt: true
           
 # [EOF]
