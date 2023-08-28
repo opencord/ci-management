@@ -60,7 +60,7 @@ Boolean process(String proc, Map args) {
 
     sh(
         label  : 'pkill_proc', // jenkins usability: label log entry 'step'
-        script : "${cmd}",
+        script : cmd.toString(),
     )
 
     return(ans)
@@ -104,6 +104,10 @@ void call\
     return(ans)
 }
 
+// [SEE ALSO]
+// -----------------------------------------------------------------------
+//   o String cmd = [ ... ].join('') -- GString cannot cast to java.String
+//   o https://stackoverflow.com/questions/60304068/artifactory-in-jenkins-pipeline-org-codehaus-groovy-runtime-gstringimpl-cannot
 // -----------------------------------------------------------------------
 // [TODO] - Combine pkill_proc and pgrep_proc
 //    - Usage: do_proc(pkill=true, pgrep=true, args='proc-forward', cmd='kubectl'
