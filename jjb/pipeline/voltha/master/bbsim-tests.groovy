@@ -140,17 +140,17 @@ void execute_test\
 
                     sh(label  : 'pgrep_proc - kill-pre',
                        script : """
-pgrep --uid "$(uid -u)" --list-full --full 'kubectl.*port-forward'
+pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward'
 """)
 
                     sh(label  : 'pkill_proc - kubectl.*port-forward',
                        script : """
-pkill --uid "$(uid -u)" --echo --full 'kubectl.*port-forward'
+pkill --uid "\$(id -u)" --echo --full 'kubectl.*port-forward'
 """)
 
                     sh(label  : 'pgrep_proc - kill-post',
                        script : """
-pgrep --uid "$(uid -u)" --list-full --full 'kubectl.*port-forward'
+pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward'
 """)
 
                     leave('Cleanup')
@@ -284,17 +284,17 @@ pgrep --uid "$(uid -u)" --list-full --full 'kubectl.*port-forward'
 
                     sh(label  : 'pgrep_proc - kill-pre',
                        script : """
-pgrep --uid "$(uid -u)" --list-full --full '_TAG=kail-startup'
+pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup'
 """)
 
                     sh(label  : 'pkill_proc - _TAG=kail-startup',
                        script : """
-pkill --uid "$(uid -u)" --echo --full '_TAG=kail-startup'
+pkill --uid "\$(id -u)" --echo --full '_TAG=kail-startup'
 """)
 
                     sh(label  : 'pgrep_proc - kill-post',
                        script : """
-pgrep --uid "$(uid -u)" --list-full --full '_TAG=kail-startup'
+pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup'
 """)
                     
                     println("${iam}: LEAVE")
@@ -343,7 +343,7 @@ EOM
                 println("Display spawned ${proc}")
                 sh(label  : 'pgrep_proc - check',
                    script : """
-pgrep --uid "$(uid -u)" --list-full --full "port-forward"
+pgrep --uid "\$(id -u)" --list-full --full "port-forward"
 """)
                 leave('port-forward check')
             }
@@ -483,16 +483,16 @@ def collectArtifacts(exitStatus) {
          */
         sh(label  : 'pgrep_proc - kill-pre',
            script : """
-pgrep --uid "$(uid -u)" --list-full --full "kail-startup',
+pgrep --uid "\$(id -u)" --list-full --full "kail-startup',
 """)
         sh(label  : 'pkill_proc - kail',
            script : """
-pkill --uid "$(uid -u)" --echo --full 'kail'
+pkill --uid "\$(id -u)" --echo --full 'kail'
 """)
 
         sh(label  : 'pgrep_proc - kill-post',
            script : """
-pgrep --uid "$(uid -u)" --list-full --full 'kail'
+pgrep --uid "\$(id -u)" --list-full --full 'kail'
 """)
         
         println("${iam}: LEAVE")
