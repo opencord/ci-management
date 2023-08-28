@@ -27,6 +27,26 @@ String getIam(String func) {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void enter(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: ENTER")
+    return
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void leave(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: LEAVE")
+    return
+}
+
+// -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 Boolean process(String proc, Map args) {
     Boolean ans = true
@@ -41,9 +61,9 @@ Boolean process(String proc, Map args) {
         '--uid', '$(id -u)', // no stray signals
         '--list-full',
         '--full',  // hmmm: conditional use (?)
-        "'${proc}",
+        "'${proc}'",
     ]
-
+    println("** Running command: $cmd") 
     print("""
 ** -----------------------------------------------------------------------
 ** Running: $cmd
@@ -51,7 +71,7 @@ Boolean process(String proc, Map args) {
 """)
     sh(
         label  : 'pgrep_proc', // jenkins usability: label log entry 'step'
-        script : ${cmd}.toString(),
+        script : cmd.toString(),
     )
     return(ans)
 }

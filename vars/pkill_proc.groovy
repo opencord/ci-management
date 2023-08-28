@@ -27,10 +27,31 @@ String getIam(String func) {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void enter(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: ENTER")
+    return
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void leave(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: LEAVE")
+    return
+}
+
+// -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 Boolean process(String proc, Map args) {
     Boolean ans = true
-    String  iam = getIam('process')
+
+    enter('process')
 
     if (args.containsKey('debug')) {
         println("** $iam [DEBUG]: proc=[$proc], args=[$args]")
@@ -41,8 +62,9 @@ Boolean process(String proc, Map args) {
         '--uid', '$(id -u)', // no stray signals
         '--echo',
         '--full',  // hmmm: conditional use (?)
-        "'${proc}",
+        "'${proc}'",
     ].join(' ')
+    println("** pkill command is: $cmdKill")
 
     /*
     String cmdKill = (args['command_only')
@@ -63,6 +85,7 @@ Boolean process(String proc, Map args) {
         script : cmd.toString(),
     )
 
+    leave('process')
     return(ans)
 }
 
