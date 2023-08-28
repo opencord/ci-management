@@ -66,10 +66,10 @@ Boolean call\
 (
     String  proc,           // name of process or arguments to terminate
     Map     args=[:],
-    Boolean filler=True     // Groovy, why special case list comma handling (?)
+    Boolean filler = true     // Groovy, why special case list comma handling (?)
 ) {
     String iam = getIam('main')
-    Boolean ans = True
+    Boolean ans = true
 
     println("** ${iam}: ENTER")
 

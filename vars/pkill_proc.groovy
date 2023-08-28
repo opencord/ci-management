@@ -77,18 +77,18 @@ void call\
     String  proc,           // name of process or arguments to terminate
     Map     args=[:],
                             // Groovy, why special case list comma handling (?)
-    Boolean filler=True     // groovylint-disable-line UnusedMethodParameter
+    Boolean filler = true     // groovylint-disable-line UnusedMethodParameter
 ) {
     
     String iam = getIam('main')
-    Boolean ans = True
+    Boolean ans = true
 
     println("** ${iam}: ENTER")
 
     try {
         // Limit process matching by default
         if (! mymap.containsKey('command_only')) {
-            mymap['command_only'] = True
+            mymap['command_only'] = true
         }
         process(proc, args)
     }
