@@ -75,10 +75,14 @@
               logging: true
           time-trigger: "H H/23 * * *"
 
+      # -----------------------------------------------------------------------
+      # md5sum(master): c606493da6ee7cbb18ca8aee97ea2957
+      # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
+          logLevel: 'DEBUG'                      # force job to regenerate
+          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -97,6 +101,11 @@
               teardown: false
               logging: true
             - target: bbsim-errorscenarios
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: onos-ha-test
               workflow: att
               flags: ""
               teardown: false

@@ -79,6 +79,7 @@
           name: 'periodic-voltha-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
+          logLevel: 'DEBUG'                     # Force job to regenerate
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind

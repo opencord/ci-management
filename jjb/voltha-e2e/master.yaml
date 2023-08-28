@@ -72,11 +72,21 @@
               logging: true
           time-trigger: "H H/23 * * *"
 
+      # -----------------------------------------------------------------------
+      # md5sum(master): c606493da6ee7cbb18ca8aee97ea2957
+      # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim'
-          code-branch: 'master'
+          code-branch   : 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
-          time-trigger: "H H/23 * * *"       # Build daily at 11pm
+          logLevel: 'DEBUG'                     # Force job to regenerate
+          # ---------------------------------------------------------
+          # 20230828 - strange, release branches have pipeline-script
+          # 20230828 - while master branch did not (?)  Script does
+          # 20230828 - show in the jenkins UI but w/o updates. 
+          # ---------------------------------------------------------
+          pipeline-script: 'voltha/master/bbsim-tests.groovy'
+          time-trigger: "H H/23 * * *"         # Build daily at 11pm
 #          time-trigger: "H/30 * * * *"        # Build every 30 min
           testTargets: |
             - target: functional-single-kind
