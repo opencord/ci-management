@@ -93,7 +93,7 @@ void call\
         process(proc, args)
     }
     catch (Exception err) { // groovylint-disable-line CatchException
-        ans = False
+        ans = false
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }

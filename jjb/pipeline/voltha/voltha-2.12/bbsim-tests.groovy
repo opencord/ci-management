@@ -637,13 +637,14 @@ pipeline {
 ** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}
 ** -----------------------------------------------------------------------
 """)
-
                         try {
                             enter("execute_test (target=$target)")
                             execute_test(target, workflow, testLogging, teardown, flags)
                         }
+                        // groovylint-disable-next-line CatchException
                         catch (Exception err) {
-                            println("** ${iam}: EXCEPTION ${err}")
+                            String iamexc = getIam(name)
+                            println("** ${iamexc}: EXCEPTION ${err}")
                         }
                         finally {
                             leave("execute_test (target=$target)")
