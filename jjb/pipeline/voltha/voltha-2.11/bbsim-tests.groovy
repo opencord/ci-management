@@ -23,6 +23,49 @@ library identifier: 'cord-jenkins-libraries@master',
 
 def clusterName = "kind-ci"
 
+// -----------------------------------------------------------------------
+// Intent:
+// -----------------------------------------------------------------------
+String branchName() {
+    String name = 'voltha-2.11'
+
+    // [TODO] Sanity check the target branch
+    // if (name != jenkins.branch) { fatal }
+    return(name)
+}
+
+// -----------------------------------------------------------------------
+// Intent: Difficult at times to determine when pipeline jobs have
+//   regenerated.  Hardcode a version string that can be assigned
+//   per-script to be sure latest repository changes are being used.
+// -----------------------------------------------------------------------
+String pipelineVer() {
+    String version = '5addce3fac89095d103ac5c6eedff2bb02e9ec63'
+    return(version)
+}
+
+// -----------------------------------------------------------------------
+// Intent: Due to lack of a reliable stack trace, construct a literal.
+//         Jenkins will re-write the call stack for serialization.S
+// -----------------------------------------------------------------------
+// Note: Hardcoded version string used to visualize changes in jenkins UI
+// -----------------------------------------------------------------------
+String getIam(String func) {
+    String branchName = branchName()
+    String version    = pipelineVer()
+    String src = [
+        'ci-management',
+        'jjb',
+        'pipeline',
+        'voltha',
+        branchName,
+        'bbsim-tests.groovy'
+    ].join('/')
+
+    String name = [src, version, func].join('::')
+    return(name)
+}
+
 def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFlags = "")
 {
     def infraNamespace = "default"
@@ -72,16 +115,27 @@ def execute_test(testTarget, workflow, testLogging, teardown, testSpecificHelmFl
 
     stage ('Initialize')
     {
-	// VOL-4926 - Is voltha-system-tests available ?
-	String cmd = [
-	    'make',
-	    '-C', "$WORKSPACE/voltha-system-tests",
-	    "KAIL_PATH=\"$WORKSPACE/bin\"",
-	    'kail',
-	].join(' ')
-	println(" ** Running: ${cmd}:\n")
-        sh("${cmd}")
-    }
+        steps
+        {
+            script
+            {
+                String iam = getIam('Initialize')
+                println("${iam}: ENTER")
+
+	            // VOL-4926 - Is voltha-system-tests available ?
+	            String cmd = [
+	                'make',
+	                '-C', "$WORKSPACE/voltha-system-tests",
+	                "KAIL_PATH=\"$WORKSPACE/bin\"",
+	                'kail',
+	            ].join(' ')
+	            println(" ** Running: ${cmd}:\n")
+                sh("${cmd}")
+
+                println("${iam}: LEAVE")
+            } // script
+        } // steps
+    } // stage
 
     stage('Deploy common infrastructure') {
 	sh '''

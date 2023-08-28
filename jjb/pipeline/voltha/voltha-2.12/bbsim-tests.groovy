@@ -44,7 +44,7 @@ String branchName() {
 //   per-script to be sure latest repository changes are being used.
 // -----------------------------------------------------------------------
 String pipelineVer() {
-    String version = 'ebc180201844dad3a9a3d6551f3e257797e08ab7'
+    String version = '5addce3fac89095d103ac5c6eedff2bb02e9ec63'
     return(version)
 }
 
@@ -136,7 +136,7 @@ void execute_test\
 
                     // todo: fatal unless (proc count==0)
                     pgrep_proc(proc)
-                    enter('Cleanup')
+                    leave('Cleanup')
                 } // script
             } // timeout
         } // teardown
@@ -159,7 +159,8 @@ void execute_test\
                 'prometheus.pushgateway.enabled=false',
             ].join(',')
 
-            sh("""
+            sh(label  : 'Deploy common infrastructure',
+               script : """
     helm repo add onf https://charts.opencord.org
     helm repo update
 
@@ -324,7 +325,7 @@ EOM
                     ],
                     logLevel: logLevel
                 ])
-                enter('setOnosLogLevels')
+                leave('setOnosLogLevels')
             } // script
         } // if (teardown)
     } // stage('Deploy Voltha')
@@ -638,7 +639,7 @@ pipeline {
 """)
 
                         try {
-                            leave("execute_test (target=$target)")
+                            enter("execute_test (target=$target)")
                             execute_test(target, workflow, testLogging, teardown, flags)
                         }
                         catch (Exception err) {

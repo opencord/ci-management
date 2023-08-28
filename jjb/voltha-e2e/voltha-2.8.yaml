@@ -77,7 +77,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-bbsim-2.8'
-          disable-job: true
+          disable-job: true                 # Reason: deprecated legacy build
           pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
           code-branch: 'voltha-2.8'
           time-trigger: "H H/23 * * *"
