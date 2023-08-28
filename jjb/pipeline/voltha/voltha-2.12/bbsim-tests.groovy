@@ -25,7 +25,7 @@ library identifier: 'cord-jenkins-libraries@master',
 //------------------//
 //---]  GLOBAL  [---//
 //------------------//
-String clusterName = 'kind-ci' // was def
+String clusterName = 'kind-ci'
 
 // -----------------------------------------------------------------------
 // Intent:
@@ -487,7 +487,7 @@ def collectArtifacts(exitStatus) {
          */
         sh(label  : 'pgrep_proc - kill-pre',
            script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kail-startup' || true,
+pgrep --uid "\$(id -u)" --list-full --full 'kail-startup' || true
 """)
         sh(label  : 'pkill_proc - kail',
            script : """
@@ -498,7 +498,7 @@ fi
 
         sh(label  : 'pgrep_proc - kill-post',
            script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kail || true'
+pgrep --uid "\$(id -u)" --list-full --full 'kail || true
 """)
         
         println("${iam}: LEAVE")
