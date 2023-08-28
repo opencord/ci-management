@@ -140,17 +140,19 @@ void execute_test\
 
                     sh(label  : 'pgrep_proc - kill-pre',
                        script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward'
+pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
 """)
 
                     sh(label  : 'pkill_proc - kubectl.*port-forward',
                        script : """
-pkill --uid "\$(id -u)" --echo --full 'kubectl.*port-forward'
+if [[ \$(pgrep --count 'kubectl.*port-forward') -gt 0 ]]; then
+    pkill --uid "\$(id -u)" --echo --full 'kubectl.*port-forward'
+fi
 """)
 
                     sh(label  : 'pgrep_proc - kill-post',
                        script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward'
+pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
 """)
 
                     leave('Cleanup')
@@ -284,17 +286,19 @@ pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward'
 
                     sh(label  : 'pgrep_proc - kill-pre',
                        script : """
-pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup'
+pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup' || true
 """)
 
                     sh(label  : 'pkill_proc - _TAG=kail-startup',
                        script : """
-pkill --uid "\$(id -u)" --echo --full '_TAG=kail-startup'
+if [[ \$(pgrep --count '_TAG=kail-startup') -gt 0 ]]; then
+    pkill --uid "\$(id -u)" --echo --full '_TAG=kail-startup'
+fi
 """)
 
                     sh(label  : 'pgrep_proc - kill-post',
                        script : """
-pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup'
+pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup' || true
 """)
                     
                     println("${iam}: LEAVE")
@@ -343,7 +347,7 @@ EOM
                 println("Display spawned ${proc}")
                 sh(label  : 'pgrep_proc - check',
                    script : """
-pgrep --uid "\$(id -u)" --list-full --full "port-forward"
+pgrep --uid "\$(id -u)" --list-full --full "port-forward" || true
 """)
                 leave('port-forward check')
             }
@@ -483,16 +487,18 @@ def collectArtifacts(exitStatus) {
          */
         sh(label  : 'pgrep_proc - kill-pre',
            script : """
-pgrep --uid "\$(id -u)" --list-full --full "kail-startup',
+pgrep --uid "\$(id -u)" --list-full --full 'kail-startup' || true,
 """)
         sh(label  : 'pkill_proc - kail',
            script : """
-pkill --uid "\$(id -u)" --echo --full 'kail'
+if [[ \$(pgrep --count '_TAG=kail') -gt 0 ]]; then
+    pkill --uid "\$(id -u)" --echo --full 'kail'
+fi
 """)
 
         sh(label  : 'pgrep_proc - kill-post',
            script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kail'
+pgrep --uid "\$(id -u)" --list-full --full 'kail || true'
 """)
         
         println("${iam}: LEAVE")
