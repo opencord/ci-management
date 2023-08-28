@@ -139,19 +139,13 @@ void execute_test\
                      */
 
                     sh(label  : 'pgrep_proc - kill-pre',
-                       script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward'
-""")
+                       script : """ pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' """)
 
                     sh(label  : 'pkill_proc - kubectl.*port-forward',
-                       script : """
-pkill --uid "\$(id -u)" --echo --full 'kubectl.*port-forward'
-""")
+                       script : """ pkill --uid "\$(id -u)" --echo --full 'kubectl.*port-forward' """)
 
                     sh(label  : 'pgrep_proc - kill-post',
-                       script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward'
-""")
+                       script : """ pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' """)
 
                     leave('Cleanup')
                 } // script
