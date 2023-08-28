@@ -1,10 +1,9 @@
 ---
 # POD Build Pipeline Jobs for Voltha Releases
 # -----------------------------------------------------------------------
-# Disabled, offline -- 'qa-testvm-pod'
 # -----------------------------------------------------------------------
 - project:
-    name: voltha-pod-jobs-master
+    name: voltha-pod-jobs-2.8
 
     project-name: '{name}'
 
@@ -30,21 +29,6 @@
     jobs:
 
       # -----------------------------------------------------------------------
-      # flex pod1 test job - uses tech profile on voltha branch
-      # md5sum(master): 9293b0f6d3c00a28c8d1a65ef0e8826e
-      # -----------------------------------------------------------------------
-      - 'build_voltha_pod_test':
-          disable-job: true                    # Reason: qa-testvm-pod offline
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: 'master'
-          branch: 'master'
-          power-switch: true
-          power-cycle-olt: true
-          test-repo: 'voltha-system-tests'
-          profile: 'Default'
-
-      # -----------------------------------------------------------------------
       # Menlo pod test job - uses tech profile on voltha branch
       # md5sum(master): 139b227f6ebe777a7337a07d9883a57f
       # -----------------------------------------------------------------------
@@ -53,13 +37,13 @@
           build-node: 'menlo-demo-pod'
           config-pod: 'onf-demo-pod'
           disable-job: true                      # Reason: menlo-demo-pod offline
-          release: 'master'
-          branch: 'master'
+          release: '2.8'
+          branch: 'voltha-2.8'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-2.8/voltha-dt-physical-functional-tests.groovy'
           power-switch: true
           power-cycle-olt: true
 

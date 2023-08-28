@@ -56,5 +56,23 @@
           power-cycle-olt: true
           test-repo: 'voltha-system-tests'
           profile: 'Default'
+
+      # -----------------------------------------------------------------------
+      # Menlo pod test job - uses tech profile on voltha branch
+      # md5sum(master): 139b227f6ebe777a7337a07d9883a57f
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_test':
+          timeout: 300
+          build-node: 'menlo-demo-pod'
+          config-pod: 'onf-demo-pod'
+          disable-job: true                      # Reason: menlo-demo-pod offline
+          release: '2.12'
+          branch: 'voltha-2.12'
+          name-extension: '_DT'
+          work-flow: 'DT'
+          test-repo: 'voltha-system-tests'
+          profile: '1T8GEM'
+          pipeline-script: 'voltha/voltha-2.12/voltha-dt-physical-functional-tests.groovy'
+          power-switch: true
           
 # [EOF]
