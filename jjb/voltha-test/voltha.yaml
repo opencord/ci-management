@@ -56,53 +56,6 @@
           test-repo: 'voltha-system-tests'
           pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
 
-      # flex pod1 test job - released versions: uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          disable-job: false
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: 'master'
-          branch: 'master'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          power-switch: true
-          power-cycle-olt: true
-          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
-          test-repo: 'voltha-system-tests'
-          profile: 'TP'
-          timeout: 360
-
-      # -----------------------------------------------------------------------
-      # flex pod1 test job - released versions: uses tech profile on voltha branch
-      # -----------------------------------------------------------------------
-#      - 'build_voltha_pod_test':
-#          disable-job: true
-#          build-node: 'qa-testvm-pod'
-#          config-pod: 'flex-ocp-cord'
-#          release: '2.8'
-#          branch: 'voltha-2.8'
-#          name-extension: '_TT'
-#          work-flow: 'TT'
-#          power-switch: true
-#          pipeline-script: 'voltha/voltha-2.8/voltha-tt-physical-functional-tests.groovy'
-#          test-repo: 'voltha-system-tests'
-#          profile: 'TP'
-
-      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.12'
-          branch: 'voltha-2.12'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-2.12/voltha-tt-physical-functional-tests.groovy'
-          test-repo: 'voltha-system-tests'
-          profile: 'TP'
-
-      # [CORD-4941] - flex pod1 test job - released versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           disable-job: true
           build-node: 'qa-testvm-pod'

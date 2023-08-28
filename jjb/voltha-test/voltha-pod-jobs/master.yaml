@@ -63,4 +63,23 @@
           power-switch: true
           power-cycle-olt: true
 
+      # -----------------------------------------------------------------------
+      # flex pod1 test job - released versions: uses tech profile on voltha branch
+      # md5sum(master): a616cd61a22b0acde95efb1c71b4b980
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_test':
+          disable-job: true                     # Reason: qa-testvm-pod offline
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: 'master'
+          branch: 'master'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: true
+          power-cycle-olt: true
+          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
+          timeout: 360
+          
 # [EOF]

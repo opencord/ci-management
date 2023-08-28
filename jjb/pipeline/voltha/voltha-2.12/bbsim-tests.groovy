@@ -44,7 +44,7 @@ String branchName() {
 //   per-script to be sure latest repository changes are being used.
 // -----------------------------------------------------------------------
 String pipelineVer() {
-    String version = '5addce3fac89095d103ac5c6eedff2bb02e9ec63'
+    String version = 'e9725b199be034061750c6e9c4c3ac46cf2d0f68'
     return(version)
 }
 

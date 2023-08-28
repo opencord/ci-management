@@ -42,22 +42,6 @@
           profile: '1T4GEM'
 
       # -----------------------------------------------------------------------
-      # [VOL-4939] - flex pod1 test job - released versions: uses tech profile on voltha branch
-      # -----------------------------------------------------------------------
-      - 'build_voltha_pod_test':
-          disable-job: true
-          build-node: 'qa-testvm-pod'
-          config-pod: 'flex-ocp-cord'
-          release: '2.11'
-          branch: 'voltha-2.11'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-2.11/voltha-tt-physical-functional-tests.groovy'
-          test-repo: 'voltha-system-tests'
-          profile: 'TP'
-
-      # -----------------------------------------------------------------------
       # flex pod1 test job - uses tech profile on voltha branch
       # md5sum(master): 9293b0f6d3c00a28c8d1a65ef0e8826e
       # -----------------------------------------------------------------------
@@ -89,5 +73,22 @@
           profile: '1T8GEM'
           pipeline-script: 'voltha/voltha-2.11/voltha-dt-physical-functional-tests.groovy'
           power-switch: true
+
+      # -----------------------------------------------------------------------
+      # flex pod1 test job - released versions: uses tech profile on voltha branch 
+      # md5sum(master): a616cd61a22b0acde95efb1c71b4b980
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_test': 
+          disable-job: true                     # Reason: qa-testvm-pod offline
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          release: '2.11'
+          branch: 'voltha-2.11'
+          name-extension: '_TT'
+          work-flow: 'TT'
+          power-switch: true
+          pipeline-script: 'voltha/voltha-2.11/voltha-tt-physical-functional-tests.groovy'
+          test-repo: 'voltha-system-tests'
+          profile: 'TP'
           
 # [EOF]
