@@ -129,13 +129,30 @@ void execute_test\
             timeout(5) {
                 script {
                     enter('Cleanup')
+
                     // remove orphaned port-forward from different namespaces
-                    String proc = 'kubectl .*port-forward' // was 'port-forw'
+                    String proc = 'kubectl.*port-forward' // was 'port-forw'
+                    /*
                     pgrep_proc(proc)
                     pkill_proc(proc)
+                    pgrep_proc(proc) // todo: fatal unless (proc count==0)
+                     */
 
-                    // todo: fatal unless (proc count==0)
-                    pgrep_proc(proc)
+                    sh(label  : 'pgrep_proc - kill-pre',
+                       script : """
+pgrep --uid "$(uid -u)" --list-full --full 'kubectl.*port-forward'
+""")
+
+                    sh(label  : 'pkill_proc - kubectl.*port-forward',
+                       script : """
+pkill --uid "$(uid -u)" --echo --full 'kubectl.*port-forward'
+""")
+
+                    sh(label  : 'pgrep_proc - kill-post',
+                       script : """
+pgrep --uid "$(uid -u)" --list-full --full 'kubectl.*port-forward'
+""")
+
                     leave('Cleanup')
                 } // script
             } // timeout
@@ -259,9 +276,27 @@ void execute_test\
 
                     println("${iam}: ENTER")
                     println("${iam}: Shutdown process $proc")
+                    /*
                     pgrep_proc(proc)
                     pkill_proc(proc)
                     pgrep_proc(proc)
+                     */
+
+                    sh(label  : 'pgrep_proc - kill-pre',
+                       script : """
+pgrep --uid "$(uid -u)" --list-full --full '_TAG=kail-startup'
+""")
+
+                    sh(label  : 'pkill_proc - _TAG=kail-startup',
+                       script : """
+pkill --uid "$(uid -u)" --echo --full '_TAG=kail-startup'
+""")
+
+                    sh(label  : 'pgrep_proc - kill-post',
+                       script : """
+pgrep --uid "$(uid -u)" --list-full --full '_TAG=kail-startup'
+""")
+                    
                     println("${iam}: LEAVE")
                 }
 
@@ -306,7 +341,10 @@ EOM
                 // String proc = 'kubectl.*port-forward' // was 'port-forward'
                 String proc = 'port-forward'
                 println("Display spawned ${proc}")
-                pgrep_proc(proc)
+                sh(label  : 'pgrep_proc - check',
+                   script : """
+pgrep --uid "$(uid -u)" --list-full --full "port-forward"
+""")
                 leave('port-forward check')
             }
 
@@ -439,8 +477,24 @@ def collectArtifacts(exitStatus) {
 
     script {
         println("${iam}: ENTER")
+        /*
         pgrep_proc('kail-startup')
         pkill_proc('kail')
+         */
+        sh(label  : 'pgrep_proc - kill-pre',
+           script : """
+pgrep --uid "$(uid -u)" --list-full --full "kail-startup',
+""")
+        sh(label  : 'pkill_proc - kail',
+           script : """
+pkill --uid "$(uid -u)" --echo --full 'kail'
+""")
+
+        sh(label  : 'pgrep_proc - kill-post',
+           script : """
+pgrep --uid "$(uid -u)" --list-full --full 'kail'
+""")
+        
         println("${iam}: LEAVE")
     }
 
@@ -637,6 +691,7 @@ pipeline {
 ** Executing test ${target} on workflow ${workflow} with logging ${testLogging} and extra flags ${flags}
 ** -----------------------------------------------------------------------
 """)
+
                         try {
                             enter("execute_test (target=$target)")
                             execute_test(target, workflow, testLogging, teardown, flags)
@@ -665,4 +720,4 @@ pipeline {
     }
 } // pipeline
 
-// [EOF] - 2
+// [EOF]
