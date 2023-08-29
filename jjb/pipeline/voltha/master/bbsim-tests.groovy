@@ -424,16 +424,12 @@ EOM
       cd "${logsDir}"
 
       echo "** Available logs:"
-      /bin/ls -l "\$logsDir"
+      /bin/ls -l "$logsDir"
       echo
 
-      declare -i count=0
-      count=\$(find . -name '*-combined.log' -print | wc -l)
-      if [[ $count -gt 0 ]]; then
-          echo '** Bundle combined log'
-          gzip "${logs[@]}"
-          rm -f "${logs[@]}"
-      fi
+      echo '** Bundle combined log'
+      gzip *-combined.log || true
+      rm -f *-combined.log || true
 
       echo -e '** Gather robot Framework logs: LEAVE\n'
     """)

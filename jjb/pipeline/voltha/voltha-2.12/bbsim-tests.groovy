@@ -427,14 +427,9 @@ EOM
       /bin/ls -l "$logsDir"
       echo
 
-      # readarray -t logs < <(find . -name '*-combined.log' -print)
-      declare -i count=0
-      count=\$(find . -name '*-combined.log' -print | wc -l)
-      if [[ $count -gt 0 ]]; then
-          echo '** Bundle combined log'
-          gzip "${logs[@]}"
-          rm -f "${logs[@]}"
-      fi
+      echo '** Bundle combined log'
+      gzip *-combined.log || true
+      rm -f *-combined.log || true
 
       echo -e '** Gather robot Framework logs: LEAVE\n'
     """)
