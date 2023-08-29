@@ -203,7 +203,7 @@ pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
                     String iam = getIam('Deploy Voltha')
                     String onosLog = "${logsDir}/onos-voltha-startup-combined.log"
                     sh("""
-          mkdir -p ${logsDir}
+          mkdir -p "$logsDir"
           touch "$onosLog"
           echo "** kail-startup ENTER: \$(date)" > "$onosLog"
 
@@ -424,7 +424,7 @@ EOM
       cd "${logsDir}"
 
       echo "** Available logs:"
-      /bin/ls -l "${logsDir}"
+      /bin/ls -l "$logsDir"
       echo
 
       # readarray -t logs < <(find . -name '*-combined.log' -print)
