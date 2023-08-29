@@ -427,8 +427,10 @@ EOM
       /bin/ls -l "${logsDir}"
       echo
 
-      readarray -t logs < <(find . -name '*-combined.log' -print)
-      if [[ \${\#logs[@]} -gt 0 ]]; then
+      # readarray -t logs < <(find . -name '*-combined.log' -print)
+      declare -i count=0
+      count=$(find . -name '*-combined.log' -print | wc -l)
+      if [[ $count -gt 0 ]]; then
           echo '** Bundle combined log'
           gzip "${logs[@]}"
           rm -f "${logs[@]}"
