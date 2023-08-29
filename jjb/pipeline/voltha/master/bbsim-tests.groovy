@@ -428,7 +428,7 @@ EOM
       echo
 
       declare -i count=0
-      count=$(find . -name '*-combined.log' -print | wc -l)
+      count=\$(find . -name '*-combined.log' -print | wc -l)
       if [[ $count -gt 0 ]]; then
           echo '** Bundle combined log'
           gzip "${logs[@]}"
