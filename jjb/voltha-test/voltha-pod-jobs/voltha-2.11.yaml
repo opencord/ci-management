@@ -90,5 +90,23 @@
           pipeline-script: 'voltha/voltha-2.11/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
-          
+
+
+      # -----------------------------------------------------------------------
+      # flex pod1 test job - using voltha branch
+      # md5sum(master): fbe8e6efaa4f3aba576040ac521a8d6f
+      # -----------------------------------------------------------------------
+      - 'build_voltha_pod_manual_test':
+          disable-job: true                # Reason: qa-testvm-pod offline
+          build-node: 'qa-testvm-pod'
+          config-pod: 'flex-ocp-cord'
+          profile: 'TP'
+          branch: 'voltha-2.11'
+          release: '2.11'
+          work-flow: 'TT'
+          name-extension: '_TT'
+          test-type: ''
+          test-repo: 'voltha-system-tests'
+          pipeline-script: 'voltha/voltha-2.11/voltha-tt-physical-functional-tests.groovy'
+
 # [EOF]
