@@ -42,4 +42,8 @@ package.json
 # Generated pipeline jobs
 build/
 
+# make test residue
+a.out
+archives/
+
 # [EOF]

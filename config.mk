@@ -125,6 +125,16 @@ endif
 
 onf-excl-dirs := $(sort $(strip $(onf-excl-dirs)))
 
+# --------------------------------------------------------------------
+# Repository specific values
+# --------------------------------------------------------------------
+sterile-dirs += archives
+
+# submodules
+# sterile-dirs += global-jjb
+# sterile-dirs += lf-ansible
+# sterile-dirs += packer
+
 # [TODO]#
 #  --------------------------------------------------------------------
 #   o two distinct makefiles/ directories are needed, one for onf-make

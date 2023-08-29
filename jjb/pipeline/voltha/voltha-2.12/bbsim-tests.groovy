@@ -311,7 +311,7 @@ pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup' || true
 cat <<EOM
 
 ** -----------------------------------------------------------------------
-** Combine an compress voltha startup log(s)
+** Combine and compress voltha startup log(s)
 ** -----------------------------------------------------------------------
 EOM
           pushd "${logsDir}" || { echo "ERROR: pushd $logsDir failed"; exit 1; }
@@ -335,13 +335,13 @@ EOM
       if [ ${withMonitoring} = true ] ; then
         JENKINS_NODE_COOKIE="dontKillMe" _TAG="nem-monitoring-prometheus-server" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n default svc/nem-monitoring-prometheus-server 31301:80; done"&
       fi
-      ps aux | grep port-forward
+#      ps aux | grep port-forward
       """
             // ---------------------------------
             // Sanity check port-forward spawned
             // ---------------------------------
             script {
-                enter('port-forward check')
+                enter('Display port-forward procs')
                 // String proc = 'kubectl.*port-forward' // was 'port-forward'
                 String proc = 'port-forward'
                 println("Display spawned ${proc}")
@@ -349,7 +349,7 @@ EOM
                    script : """
 pgrep --uid "\$(id -u)" --list-full --full "port-forward" || true
 """)
-                leave('port-forward check')
+                leave('Display port-forward procs')
             }
 
             // setting ONOS log level
@@ -418,11 +418,21 @@ EOM
             label : 'Gather robot Framework logs',
             script : """
       echo -e '\n** Gather robot Framework logs: ENTER'
+
       # set +e
       # collect logs collected in the Robot Framework StartLogging keyword
-      cd ${logsDir}
-      gzip *-combined.log
-      rm -f *-combined.log
+      cd "${logsDir}"
+
+      echo "** Available logs:"
+      /bin/ls -l "${logsDir}"
+      echo
+
+      readarray -t logs < <(find . -name '*-combined.log' -print)
+      if [[ ${#logs[@]} -gt 0 ]]; then
+          echo '** Bundle combined log'
+          gzip "${logs[@]}"
+          rm -f "${logs[@]}"
+      fi
 
       echo -e '** Gather robot Framework logs: LEAVE\n'
     """)
