@@ -428,7 +428,7 @@ EOM
       echo
 
       readarray -t logs < <(find . -name '*-combined.log' -print)
-      if [[ ${#logs[@]} -gt 0 ]]; then
+      if [[ \${\#logs[@]} -gt 0 ]]; then
           echo '** Bundle combined log'
           gzip "${logs[@]}"
           rm -f "${logs[@]}"
