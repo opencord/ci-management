@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dc81555_b51fe7ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-08-30T13:58:29Z",
+      "side": 1,
+      "message": "Quoting fix, merge so we can re-run the affected job.",
+      "revId": "2563719757ee52af49cf9da3fe76ed4bb6877588",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
