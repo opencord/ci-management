@@ -51,101 +51,105 @@ String getIam(String func) {
     return(name)
 }
 
+// -----------------------------------------------------------------------
 // fetches the versions/tags of the voltha component
 // returns the deployment version which is one less than the latest available tag of the repo, first voltha stack gets deployed using this;
 // returns the test version which is the latest tag of the repo, the component upgrade gets tested on this.
 // Note: if there is a major version change between deployment and test tags, then deployment tag will be same as test tag, i.e. both as latest.
+// -----------------------------------------------------------------------
 def get_voltha_comp_versions(component, base_deploy_tag) {
-    def comp_test_tag = sh (
-      script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
-      returnStdout: true
+    def comp_test_tag = sh(
+        script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
+        returnStdout: true
     ).trim()
-    def comp_deploy_tag = sh (
-      script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
-      returnStdout: true
+    def comp_deploy_tag = sh(
+        script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
+        returnStdout: true
     ).trim()
     def comp_deploy_major = comp_deploy_tag.substring(0, comp_deploy_tag.indexOf('.'))
     def comp_test_major = comp_test_tag.substring(0, comp_test_tag.indexOf('.'))
-    if ( "${comp_deploy_major.trim()}" != "${comp_test_major.trim()}") {
-      comp_deploy_tag = comp_test_tag
+    if ("${comp_deploy_major.trim()}" != "${comp_test_major.trim()}") {
+        comp_deploy_tag = comp_test_tag
     }
-    if ( "${comp_test_tag.trim()}" == "${base_deploy_tag.trim()}") {
-      comp_deploy_tag = comp_test_tag
-      comp_test_tag = "master"
+    if ("${comp_test_tag.trim()}" == "${base_deploy_tag.trim()}") {
+        comp_deploy_tag = comp_test_tag
+        comp_test_tag = "master"
     }
     println "${component}: deploy_tag: ${comp_deploy_tag}, test_tag: ${comp_test_tag}"
     return [comp_deploy_tag, comp_test_tag]
 }
 
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 def test_software_upgrade(name) {
-  def infraNamespace = "infra"
-  def volthaNamespace = "voltha"
-  def openolt_adapter_deploy_tag = ''
-  def openolt_adapter_test_tag = ''
-  def openonu_adapter_deploy_tag = ''
-  def openonu_adapter_test_tag = ''
-  def rw_core_deploy_tag = ''
-  def rw_core_test_tag = ''
-  def ofagent_deploy_tag = ''
-  def ofagent_test_tag = ''
-  def logsDir = "$WORKSPACE/${name}"
-  stage('Deploy Voltha - '+ name) {
-    timeout(10) {
-      // start logging
-      sh """
+    def infraNamespace = "infra"
+    def volthaNamespace = "voltha"
+    def openolt_adapter_deploy_tag = ''
+    def openolt_adapter_test_tag = ''
+    def openonu_adapter_deploy_tag = ''
+    def openonu_adapter_test_tag = ''
+    def rw_core_deploy_tag = ''
+    def rw_core_test_tag = ''
+    def ofagent_deploy_tag = ''
+    def ofagent_test_tag = ''
+    def logsDir = "$WORKSPACE/${name}"
+    stage('Deploy Voltha - ' + name) {
+        timeout(10) {
+            // start logging
+            sh """
       rm -rf ${logsDir} || true
       mkdir -p ${logsDir}
       _TAG=kail-${name} kail -n ${infraNamespace} -n ${volthaNamespace} > ${logsDir}/onos-voltha-startup-combined.log &
       """
-      String extraHelmFlags = extraHelmFlags.trim()
-      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg" || "${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
-          extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
-      }
-      if ("${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg") {
-          extraHelmFlags = " --set global.extended_omci_support.enabled=true " + extraHelmFlags
-      }
-      if ("${name}" == "onu-software-upgrade-omci-extended-msg") {
-          extraHelmFlags = " --set omccVersion=180 " + extraHelmFlags
-      }
-      if ("${name}" == "onu-image-dwl-simultaneously") {
-          extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=2,pon=2 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
-      }
-      if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg" || "${name}" == "onu-image-dwl-simultaneously") {
-          extraHelmFlags = " --set global.image_tag=master --set onos-classic.image.tag=master " + extraHelmFlags
-      }
-      if ("${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
-          extraHelmFlags = " --set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master " + extraHelmFlags
-      }
-      extraHelmFlags += " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
-      extraHelmFlags += " --set voltha.onos_classic.replicas=3"
-      //ONOS custom image handling
-      if ( onosImg.trim() != '' ) {
-         String[] split;
-         onosImg = onosImg.trim()
-         split = onosImg.split(':')
-        extraHelmFlags += " --set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
-      }
-      Integer olts = 1
-      if ("${name}" == "onu-image-dwl-simultaneously") {
-          olts = 2
-      }
-      if ("${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
-        // fetch voltha components versions/tags
-        (openolt_adapter_deploy_tag, openolt_adapter_test_tag) = get_voltha_comp_versions("voltha-openolt-adapter", openoltAdapterDeployBaseTag.trim())
-        extraHelmFlags += " --set voltha-adapter-openolt.images.adapter_open_olt.tag=${openolt_adapter_deploy_tag} "
-        (openonu_adapter_deploy_tag, openonu_adapter_test_tag) = get_voltha_comp_versions("voltha-openonu-adapter-go", openonuAdapterDeployBaseTag.trim())
-        extraHelmFlags += " --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=${openonu_adapter_deploy_tag} "
-        (rw_core_deploy_tag, rw_core_test_tag) = get_voltha_comp_versions("voltha-go", rwCoreDeployBaseTag.trim())
-        extraHelmFlags += " --set voltha.images.rw_core.tag=${rw_core_deploy_tag} "
-        (ofagent_deploy_tag, ofagent_test_tag) = get_voltha_comp_versions("ofagent-go", ofagentDeployBaseTag.trim())
-        extraHelmFlags += " --set voltha.images.ofagent.tag=${ofagent_deploy_tag} "
-      }
-      def localCharts = false
-      // Currently only testing with ATT workflow
-      // TODO: Support for other workflows
-      volthaDeploy([bbsimReplica: olts.toInteger(), workflow: 'att', extraHelmFlags: extraHelmFlags, localCharts: localCharts])
-      // stop logging
-      sh """
+            def extraHelmFlags = extraHelmFlags.trim()
+            if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg" || "${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
+                extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=1,pon=1 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
+            }
+            if ("${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg") {
+                extraHelmFlags = " --set global.extended_omci_support.enabled=true " + extraHelmFlags
+            }
+            if ("${name}" == "onu-software-upgrade-omci-extended-msg") {
+                extraHelmFlags = " --set omccVersion=180 " + extraHelmFlags
+            }
+            if ("${name}" == "onu-image-dwl-simultaneously") {
+                extraHelmFlags = " --set global.log_level=${logLevel.toUpperCase()},onu=2,pon=2 --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 " + extraHelmFlags
+            }
+            if ("${name}" == "onos-app-upgrade" || "${name}" == "onu-software-upgrade" || "${name}" == "onu-software-upgrade-omci-extended-msg" || "${name}" == "onu-image-dwl-simultaneously") {
+                extraHelmFlags = " --set global.image_tag=master --set onos-classic.image.tag=master " + extraHelmFlags
+            }
+            if ("${name}" == "voltha-component-upgrade" || "${name}" == "voltha-component-rolling-upgrade") {
+                extraHelmFlags = " --set images.onos_config_loader.tag=master-onos-config-loader --set onos-classic.image.tag=master " + extraHelmFlags
+            }
+            extraHelmFlags += " --set onos-classic.onosSshPort=30115 --set onos-classic.onosApiPort=30120 "
+            extraHelmFlags += " --set voltha.onos_classic.replicas=3"
+            //ONOS custom image handling
+            if ( onosImg.trim() != '' ) {
+                String[] split;
+                onosImg = onosImg.trim()
+                split = onosImg.split(':')
+                extraHelmFlags += " --set onos-classic.image.repository=" + split[0] +",onos-classic.image.tag=" + split[1] + " "
+            }
+            Integer olts = 1
+            if ("${name}" == 'onu-image-dwl-simultaneously') {
+                olts = 2
+            }
+            if ("${name}" == 'voltha-component-upgrade' || "${name}" == 'voltha-component-rolling-upgrade') {
+                // fetch voltha components versions/tags
+                (openolt_adapter_deploy_tag, openolt_adapter_test_tag) = get_voltha_comp_versions('voltha-openolt-adapter', openoltAdapterDeployBaseTag.trim())
+                extraHelmFlags += " --set voltha-adapter-openolt.images.adapter_open_olt.tag=${openolt_adapter_deploy_tag} "
+                (openonu_adapter_deploy_tag, openonu_adapter_test_tag) = get_voltha_comp_versions('voltha-openonu-adapter-go', openonuAdapterDeployBaseTag.trim())
+                extraHelmFlags += " --set voltha-adapter-openonu.images.adapter_open_onu_go.tag=${openonu_adapter_deploy_tag} "
+                (rw_core_deploy_tag, rw_core_test_tag) = get_voltha_comp_versions('voltha-go', rwCoreDeployBaseTag.trim())
+                extraHelmFlags += " --set voltha.images.rw_core.tag=${rw_core_deploy_tag} "
+                (ofagent_deploy_tag, ofagent_test_tag) = get_voltha_comp_versions('ofagent-go', ofagentDeployBaseTag.trim())
+                extraHelmFlags += " --set voltha.images.ofagent.tag=${ofagent_deploy_tag} "
+            }
+            def localCharts = false
+            // Currently only testing with ATT workflow
+            // TODO: Support for other workflows
+            volthaDeploy([bbsimReplica: olts.toInteger(), workflow: 'att', extraHelmFlags: extraHelmFlags, localCharts: localCharts])
+            // stop logging
+            sh """
         P_IDS="\$(ps e -ww -A | grep "_TAG=kail-${name}" | grep -v grep | awk '{print \$1}')"
         if [ -n "\$P_IDS" ]; then
           echo \$P_IDS
@@ -157,20 +161,21 @@ def test_software_upgrade(name) {
         gzip -k onos-voltha-startup-combined.log
         rm onos-voltha-startup-combined.log
       """
-      // forward ONOS and VOLTHA ports
-      sh('''
+            // forward ONOS and VOLTHA ports
+            sh('''
       JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8101:8101; done 2>&1 " &
       JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8181:8181; done 2>&1 " &
       JENKINS_NODE_COOKIE="dontKillMe" _TAG=port-forward-voltha-api /bin/bash -c "while true; do kubectl -n voltha port-forward --address 0.0.0.0 service/voltha-voltha-api 55555:55555; done 2>&1 " &
       ''')
-      sh """
+            sh('''
       sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord
-      """
+      ''')
+        }
     }
-  }
-  stage('Test - '+ name) {
-    timeout(75) {
-      sh """
+
+    stage('Test - ' + name) {
+        timeout(75) {
+            sh """
         ROBOT_LOGS_DIR="$WORKSPACE/RobotLogs/${name}"
         mkdir -p \$ROBOT_LOGS_DIR
         if [[ ${name} == 'onos-app-upgrade' ]]; then
@@ -231,27 +236,30 @@ def test_software_upgrade(name) {
         # Run the specified tests
         make -C $WORKSPACE/voltha-system-tests \$TARGET || true
       """
-      // remove port-forwarding
-      sh """
+            // remove port-forwarding
+            sh """
         # remove orphaned port-forward from different namespaces
         ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
       """
-      // collect pod details
-      get_pods_info("$WORKSPACE/${name}")
-      sh """
+            // collect pod details
+            get_pods_info("$WORKSPACE/${name}")
+            sh """
         set +e
         # collect logs collected in the Robot Framework StartLogging keyword
         cd ${logsDir}
         gzip *-combined.log || true
         rm *-combined.log || true
       """
-      helmTeardown(['infra', 'voltha'])
+            helmTeardown(['infra', 'voltha'])
+        }
     }
-  }
 }
-def get_pods_info(dest) {
-  // collect pod details, this is here in case of failure
-  sh """
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+void get_pods_info(dest) {
+    // collect pod details, this is here in case of failure
+    sh """
   mkdir -p ${dest} || true
   kubectl get pods --all-namespaces -o wide > ${dest}/pods.txt || true
   kubectl get pods --all-namespaces -o jsonpath="{range .items[*].status.containerStatuses[*]}{.image}{'\\n'}" | sort | uniq | tee ${dest}/pod-images.txt || true
@@ -260,115 +268,116 @@ def get_pods_info(dest) {
   kubectl describe pods -n infra -l app=onos-classic > ${dest}/onos-pods-describe.txt
   helm ls --all-namespaces > ${dest}/helm-charts.txt
   """
-  sh '''
+    sh '''
   # copy the ONOS logs directly from the container to avoid the color codes
   printf '%s\\n' $(kubectl get pods -n infra -l app=onos-classic -o=jsonpath="{.items[*]['metadata.name']}") | xargs --no-run-if-empty -I# bash -c 'kubectl -n infra cp #:apache-karaf-4.2.14/data/log/karaf.log ''' + dest + '''/#.log' || true
   '''
+    return
 }
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 pipeline {
-  /* no label, executor is determined by JJB */
-  agent {
-    label "${params.buildNode}"
-  }
-  options {
-    timeout(time: 220, unit: 'MINUTES')
-  }
-  environment {
-    PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-    KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
-    SSHPASS="karaf"
-  }
-  stages{
-    stage('Download Code') {
-      steps {
-        getVolthaCode([
-          branch: "${branch}",
-          volthaSystemTestsChange: "${volthaSystemTestsChange}",
-          volthaHelmChartsChange: "${volthaHelmChartsChange}",
-        ])
-      }
+    /* no label, executor is determined by JJB */
+    agent {
+        label "${params.buildNode}"
     }
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
-    stage('Install Tools')
-    {
-        steps
+    options {
+        timeout(time: 220, unit: 'MINUTES')
+    }
+
+    environment {
+        PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+        KUBECONFIG="$HOME/.kube/kind-config-voltha-minimal"
+        SSHPASS="karaf"
+    }
+
+    stages {
+        stage('Download Code') {
+            steps {
+                getVolthaCode([
+                    branch: "${branch}",
+                    volthaSystemTestsChange: "${volthaSystemTestsChange}",
+                    volthaHelmChartsChange: "${volthaHelmChartsChange}",
+                ])
+            }
+        }
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Install Tools')
         {
-            script
+            steps
             {
-                String iam = getIam('Install Kind')
-                println("${iam}: ENTER")
-                installKind("$branch")   // needed early by stage(Cleanup)
-                println("${iam}: LEAVE")
-	    } // script
-	} // steps
-    } // stage
+                script
+                {
+                    String iam = getIam('Install Kind')
+                    println("${iam}: ENTER")
+                    installKind("$branch")   // needed early by stage(Cleanup)
+                    println("${iam}: LEAVE")
+                } // script
+	        } // steps
+        } // stage
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Cleanup') {
+            steps {
+                // remove port-forwarding
+                sh(label  : 'Remove port forwarding',
+                   script : """
+if [[ \$(pgrep --count 'port-forw') -gt 0 ]]; then
+    pkill --uid "\$(id -u)" --echo --full 'port-forw'
+fi
+""")
+                helmTeardown(['infra', 'voltha'])
+            }
+        }
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Create K8s Cluster') {
+            steps {
+                createKubernetesCluster([nodes: 3])
+            }
+        }
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Run Test') {
+            steps {
+                test_software_upgrade('onos-app-upgrade')
+                test_software_upgrade('voltha-component-upgrade')
+                test_software_upgrade('voltha-component-rolling-upgrade')
+                test_software_upgrade('onu-software-upgrade')
+                test_software_upgrade('onu-software-upgrade-omci-extended-msg')
+                test_software_upgrade('onu-image-dwl-simultaneously')
+            }
+        }
+    }
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage('Cleanup') {
-        steps {
-
-	script {
-            println('''
-** -----------------------------------------------------------------------
-** Raw process listing
-** -----------------------------------------------------------------------
-''')
-        sh(''' ps faaux ''')
-
-            println('''
-** -----------------------------------------------------------------------
-** pgrep --list-full port
-** -----------------------------------------------------------------------
-''')
-        sh(''' set +euo pipefail && pgrep --list-full 'port' ''')
-		}
-
-        // remove port-forwarding
-        sh """
-          # remove orphaned port-forward from different namespaces
-          ps aux | grep port-forw | grep -v grep | awk '{print \$2}' | xargs --no-run-if-empty kill -9 || true
-        """
-        helmTeardown(['infra', 'voltha'])
-      }
-    }
-    stage('Create K8s Cluster') {
-      steps {
-        createKubernetesCluster([nodes: 3])
-      }
-    }
-    stage('Run Test') {
-      steps {
-        test_software_upgrade("onos-app-upgrade")
-        test_software_upgrade("voltha-component-upgrade")
-        test_software_upgrade("voltha-component-rolling-upgrade")
-        test_software_upgrade("onu-software-upgrade")
-        test_software_upgrade("onu-software-upgrade-omci-extended-msg")
-        test_software_upgrade("onu-image-dwl-simultaneously")
-      }
-    }
-  }
-  post {
-    aborted {
-      get_pods_info("$WORKSPACE/failed")
-    }
-    failure {
-      get_pods_info("$WORKSPACE/failed")
-    }
-    always {
-      step([$class: 'RobotPublisher',
-         disableArchiveOutput: false,
-         logFileName: 'RobotLogs/*/log*.html',
-         otherFiles: '',
-         outputFileName: 'RobotLogs/*/output*.xml',
-         outputPath: '.',
-         passThreshold: 100,
-         reportFileName: 'RobotLogs/*/report*.html',
-         unstableThreshold: 0,
-         onlyCritical: true]);
-      archiveArtifacts artifacts: '*.log,**/*.log,**/*.gz,*.gz,*.txt,**/*.txt'
-    }
-  }
-}
+    post {
+        aborted {
+            get_pods_info("$WORKSPACE/failed")
+        }
+        failure {
+            get_pods_info("$WORKSPACE/failed")
+        }
+        always {
+            step([$class: 'RobotPublisher',
+                  disableArchiveOutput: false,
+                  logFileName: 'RobotLogs/*/log*.html',
+                  otherFiles: '',
+                  outputFileName: 'RobotLogs/*/output*.xml',
+                  outputPath: '.',
+                  passThreshold: 100,
+                  reportFileName: 'RobotLogs/*/report*.html',
+                  unstableThreshold: 0,
+                  onlyCritical: true])
+            archiveArtifacts artifacts: '*.log,**/*.log,**/*.gz,*.gz,*.txt,**/*.txt'
+        } // always
+    } // post
+} // pipeline

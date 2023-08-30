@@ -168,4 +168,20 @@
               teardown: false
               logging: true
 
+      # -----------------------------------------------------------------------
+      # md5sum(master): 6a1a43e203f8b5d4ad0c3d9f73116045
+      # -----------------------------------------------------------------------
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-dt-fttb-test-bbsim-master'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          code-branch: 'master'
+          time-trigger: "H H/23 * * *"
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF --set onu=2'
+          testTargets: |
+            - target: sanity-kind-dt-fttb
+              workflow: dt-fttb
+              flags: ""
+              teardown: true
+              logging: true
+
 # [EOF]
