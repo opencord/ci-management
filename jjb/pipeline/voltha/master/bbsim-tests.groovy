@@ -502,12 +502,6 @@ if [[ \$(pgrep --count '_TAG=kail') -gt 0 ]]; then
     pkill --uid "\$(id -u)" --echo --full 'kail'
 fi
 """)
-
-        sh(label  : 'pgrep_proc - kill-post',
-           script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kail || true
-""")
-        
         println("${iam}: LEAVE")
     }
 

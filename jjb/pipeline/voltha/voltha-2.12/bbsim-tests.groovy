@@ -131,8 +131,10 @@ void execute_test\
                     enter('Cleanup')
 
                     // remove orphaned port-forward from different namespaces
-                    String proc = 'kubectl.*port-forward' // was 'port-forw'
-                    /*
+                    // String proc = 'kubectl.*port-forward' // was 'port-forw'
+
+                    /* Pass Gstring args to sh() having problems
+                       implicit cast from GString to java.lang.String unsupported
                     pgrep_proc(proc)
                     pkill_proc(proc)
                     pgrep_proc(proc) // todo: fatal unless (proc count==0)
@@ -502,12 +504,6 @@ if [[ \$(pgrep --count '_TAG=kail') -gt 0 ]]; then
     pkill --uid "\$(id -u)" --echo --full 'kail'
 fi
 """)
-
-        sh(label  : 'pgrep_proc - kill-post',
-           script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kail || true
-""")
-        
         println("${iam}: LEAVE")
     }
 
