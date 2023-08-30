@@ -44,7 +44,7 @@ String branchName() {
 //   per-script to be sure latest repository changes are being used.
 // -----------------------------------------------------------------------
 String pipelineVer() {
-    String version = 'e9725b199be034061750c6e9c4c3ac46cf2d0f68'
+    String version = '45c11f80698d3be1416a86d2872d6e25aa24baa8'
     return(version)
 }
 
@@ -502,12 +502,6 @@ if [[ \$(pgrep --count '_TAG=kail') -gt 0 ]]; then
     pkill --uid "\$(id -u)" --echo --full 'kail'
 fi
 """)
-
-        sh(label  : 'pgrep_proc - kill-post',
-           script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kail || true
-""")
-        
         println("${iam}: LEAVE")
     }
 

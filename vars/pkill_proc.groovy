@@ -87,7 +87,7 @@ void call\
 
     // var = Gstring throws exception due to cast problem.
     // var = [ 'foo', 'bar' 'tans' ].join(' ').toString() fails
-    throw new Exception("Not yet implemented")
+    throw new Exception("UNUSED: Not yet implemented")
 
     try {
         // Limit process matching by default
