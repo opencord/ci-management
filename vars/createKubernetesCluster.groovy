@@ -19,8 +19,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
-{
+String getIam(String func) {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/createKubernetesCluster.groovy'
     String iam = [src, func].join('::')
@@ -28,22 +27,38 @@ def getIam(String func)
 }
 
 // -----------------------------------------------------------------------
+// Intent: Log progress message
 // -----------------------------------------------------------------------
-def call(Map config) {
+void enter(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: ENTER")
+    return
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void leave(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: LEAVE")
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def call(Map config=[:]) {
 
     String iam = getIam('main')
-    println("** ${iam}: ENTER")
+    enter('main')
 
     // note that I can't define this outside the function as there's no global scope in Groovy
     def defaultConfig = [
-      branch: "master", // branch=master ?!?
-      nodes: 1,
-      name: "kind-ci"
+        branch: 'master', // branch=master ?!?
+        nodes: 1,
+        name: 'kind-ci'
     ]
-
-    if (!config) {
-        config = [:]
-    }
 
     def cfg = defaultConfig + config
 
@@ -79,7 +94,7 @@ nodes:
 
     // TODO: Skip kind install, make install-kind-command has done it already
     sh """
-      mkdir -p "$WORKSPACE/bin"
+      mkdir -p $WORKSPACE/bin
 
       # download kind (should we add it to the base image?)
       curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.0/kind-linux-amd64
@@ -90,10 +105,12 @@ nodes:
     // install voltctl
     installVoltctl("${cfg.branch}")
 
-    sh """
+    sh(label  : 'Start kind cluster',
+       script : """
 cat <<EOM
 
 ** -----------------------------------------------------------------------
+** IAM: ${iam}
 ** Starting kind cluster
 ** -----------------------------------------------------------------------
 EOM
@@ -104,7 +121,10 @@ EOM
       for MNODE in \$(kubectl get node --selector='node-role.kubernetes.io/master' -o json | jq -r '.items[].metadata.name'); do
           kubectl taint node "\$MNODE" node-role.kubernetes.io/master:NoSchedule-
       done
+""")
 
+    sh(label  : 'Normalize config permissions',
+       script : """
       ## ----------------------------------------------------------------------
       ## This logic is problematic, when run on a node processing concurrent
       ## jobs over-write will corrupt config for the other running job.
@@ -116,29 +136,37 @@ EOM
       umask 022
 
       echo
-      echo "** Generate ~/.volt/config"
+      echo "** Generate $HOME/.volt/config"
       mkdir -p "$HOME/.volt"
-      chmod -R u+w,go-rwx "$HOME/.volt"
       chmod u=rwx "$HOME/.volt"
       voltctl -s localhost:55555 config > "$HOME/.volt/config"
+      chmod -R u+w,go-rwx "$HOME/.volt"
 
       echo
-      echo "** Generate ~/.kube/config"
+      echo "** Generate $HOME/.kube/config"
       mkdir -p "$HOME/.kube"
-      chmod -R u+w,go-rwx "$HOME/.kube"
       chmod u=rwx "$HOME/.kube"
       kind get kubeconfig --name ${cfg.name} > "$HOME/.kube/config"
+      chmod -R u+w,go-rwx "$HOME/.kube"
 
       echo
-      echo "Display .kube/ and .volt"
+      echo "Display .kube/ and .volt/ configs"
       /bin/ls -l "$HOME/.kube" "$HOME/.volt"
+""")
 
-      echo
-      echo "Install Kail"
+    sh(label  : 'Install kail',
+       script : """
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** IAM: ${iam}
+** Install kail
+** -----------------------------------------------------------------------
+EOM
       make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
-  """
+""")
 
-    println("** ${iam}: LEAVE")
+    enter('leave')
     return
 }
 

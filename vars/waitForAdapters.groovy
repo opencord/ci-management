@@ -17,8 +17,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
-{
+String getIam(String func) {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/waitForAdapters.groovy'
     String iam = [src, func].join('::')
@@ -26,28 +25,45 @@ def getIam(String func)
 }
 
 // -----------------------------------------------------------------------
+// Intent: Log progress message
 // -----------------------------------------------------------------------
-def getAdapters()
-{
-    String iam = getIam('getAdapters')
+void enter(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: ENTER")
+    return
+}
 
-    def adapters = ""
-    try
-    {
-        adapters = sh (
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void leave(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: LEAVE")
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def getAdapters() {
+    String iam = getIam('getAdapters')
+    String adapters = ''
+
+    try {
+        adapters = sh(
             script: 'voltctl adapter list --format "{{gosince .LastCommunication}}"',
             returnStdout: true,
         ).trim()
     }
-    catch (err)
-    {
+    catch (err) {
         // in some older versions of voltctl the command results in
         // ERROR: Unexpected error while attempting to format results
         // as table : template: output:1: function "gosince" not defined
         // if that's the case we won't be able to check the timestamp so
         // it's useless to wait
         println("voltctl can't parse LastCommunication, skip waiting")
-	adapters = 'SKIP' // why not just retry a few times (?)
+        adapters = 'SKIP' // why not just retry a few times (?)
     }
 
     print("** ${iam}: returned $adapters")
@@ -79,113 +95,111 @@ def getAdaptersState(String adapters0)
 
     String ans = null
     def found = []
-    for(i=0; i<adapters.size(); i++)
-    {
-	String elapsed = adapters[i]
-	if (debug)
-	{
-	    println("** ${iam} Checking elapsed[$i]: $elapsed")
-	}
+    for(i=0; i<adapters.size(); i++) {
+        String elapsed = adapters[i]
+        if (debug) {
+            println("** ${iam} Checking elapsed[$i]: $elapsed")
+        }
 
-	if (! elapsed) // empty string or null
-	{
-	    ans = 'NULL'
-	    break
-	}
+        if (! elapsed) { // empty string or null
+            ans = 'NULL'
+            break
+        }
 
-	Integer size = elapsed.length()
-	if (size > 2) // 463765h58m52(s)
-	{
-	    // higlander: there can be only one
-	    ans = 'DOUBLE-DIGIT'
-	    break
-	}
+        Integer size = elapsed.length()
+        if (size > 2) { // 463765h58m52(s)
+            // higlander: there can be only one
+            ans = 'DOUBLE-DIGIT'
+            break
+        }
 
-	if (elapsed.endsWith('s'))
-	{
-	    // safer than replaceAll('s'): ssss1s => 1
-	    elapsed = elapsed.substring(0, size-1)
-	}
+        if (elapsed.endsWith('s')) {
+            // safer than replaceAll('s'): ssss1s => 1
+            elapsed = elapsed.substring(0, size-1)
+        }
 
-	// Line noise guard: 'a', 'f', '#', '!'
-	if (! elapsed.isInteger())
-	{
-	    ans = 'NON-NUMERIC'
-	    break
-	}
+        // Line noise guard: 'a', 'f', '#', '!'
+        if (! elapsed.isInteger()) {
+            ans = 'NON-NUMERIC'
+            break
+        }
 
-	// Is value in range:
-	//   discard negative integers as just plain wonky.
-	//   HMMM(?): zero/no latency response is kinda odd to include imho.
-	Integer val = elapsed.toInteger()
-	if (5 >= val && val >= 0)
-	{
-	    found.add(elapsed)
-	}
-	else
-	{
-	    ans = 'SIX-NINE'
-	    break
-	}
+        // Is value in range:
+        //   discard negative integers as just plain wonky.
+        //   HMMM(?): zero/no latency response is kinda odd to include imho.
+        Integer val = elapsed.toInteger()
+        if (5 >= val && val >= 0) {
+            found.add(elapsed)
+        }
+        else {
+            ans = 'SIX-NINE'
+            break
+        }
     } // for()
 
     // Declare success IFF all values are:
     //    o integral
     //    o valid
     //    o within range
-    if (ans == null)
-    {
-	Integer got = found.size()
-	Integer exp = adapters.size()
-	ans = (! exp)      ? 'NO-ADAPTERS'
+    if (ans == null) {
+        Integer got = found.size()
+        Integer exp = adapters.size()
+        ans = (! exp)      ? 'NO-ADAPTERS'
             : (got == exp) ? 'VALID'
             : 'CONTINUE'
     }
 
-    if (debug)
-    {
-	println("** ${iam} return: [$ans]")
+    if (debug) {
+        println("** ${iam} return: [$ans]")
     }
     return ans
 } // getAdaptersState
 
 // -----------------------------------------------------------------------
+// Intent: Poll until adapter status is known.
 // -----------------------------------------------------------------------
-def process(Map config)
-{
+def process(Map config) {
     String iam = getIam('process')
-    println("** ${iam}: ENTER")
+    enter('process')
 
     def defaultConfig = [
-        volthaNamespace: "voltha",
-        stackName: "voltha",
-        adaptersToWait: 2,
+        volthaNamespace : 'voltha',
+        stackName       : 'voltha',
+        adaptersToWait  : 2,
     ]
 
     def cfg = defaultConfig + config
 
-    if (cfg.adaptersToWait == 0){
-       //no need to wait
-       println "No need to wait for adapters to be registered"
-       return
+    if (cfg.adaptersToWait == 0) {
+        //no need to wait
+        println "No need to wait for adapters to be registered"
+        return
     }
 
     println("** ${iam}: Wait for adapters to be registered")
 
     // guarantee that at least the specified number of adapters are registered with VOLTHA before proceeding
-     sh """
-        set +x
-        _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${cfg.volthaNamespace} svc/${cfg.stackName}-voltha-api 55555:55555; done"&
-       """
+    sh(label  : 'waitForAdapters: Initiate port forwarding',
+       script : """
+        _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${cfg.volthaNamespace} svc/${cfg.stackName}-voltha-api 55555:55555; done" &
+       """)
 
-    sh """
-        set +x
+    sh(label  : 'waitForAdapters: loop until adapter list',
+       script : """
+#        set +x
         adapters=\$(voltctl adapter list -q | wc -l)
         while [[ \$adapters -lt ${cfg.adaptersToWait} ]]; do
           sleep 5
           adapters=\$(voltctl adapter list -q | wc -l)
         done
-    """
+
+        cat << EOM
+** -----------------------------------------------------------------------
+** ${iam}: Available adapters:
+** -----------------------------------------------------------------------
+EOM
+        voltctl adapter list -q
+    """)
 
     // NOTE that we need to wait for LastCommunication to be equal or shorter that 5s
     // as that means the core can talk to the adapters
@@ -193,65 +207,57 @@ def process(Map config)
 
     println("** ${iam}: Wait for adapter LastCommunication")
     Integer countdown = 60 * 10
-    while (true)
-    {
-	sleep 1
-	def adapters = getAdapters()
-	// Why are we not failing hard on this condition ?
-	// Adapters in an unknown state == testing: roll the dice
-	if (adapters == 'SKIP') { break }
+    while (true) {
+        sleep 1
+        def adapters = getAdapters()
+        // Why are we not failing hard on this condition ?
+        // Adapters in an unknown state == testing: roll the dice
+        if (adapters == 'SKIP') { break }
 
-	def state = getAdaptersState(adapters)
-	if (state == 'VALID') { break }   // IFF
+        def state = getAdaptersState(adapters)
+        if (state == 'VALID') { break }   // IFF
 
-	// ----------------------------------------------------------
-	// Excessive timeout but unsure where startup time boundry is
-	// [TODO] profile for a baseline
-	// [TODO] groovy.transform.TimedInterrupt
-	// ----------------------------------------------------------
-	countdown -= 1
-	if (1 > countdown)
-	{
-	    throw new Exception("ERROR: Timed out waiting on adapter startup")
-	}
+        // ----------------------------------------------------------
+        // Excessive timeout but unsure where startup time boundry is
+        // [TODO] profile for a baseline
+        // [TODO] groovy.transform.TimedInterrupt
+        // ----------------------------------------------------------
+        countdown -= 1
+        if (1 > countdown) {
+            throw new Exception('ERROR: Timed out waiting on adapter startup')
+        }
     }
 
     println("** ${iam}: Tearing down port forwarding")
-    sh("""
-      ps aux \
-          | grep port-forw \
-          | grep -v grep \
-          | awk '{print \$2}' \
-          | xargs --no-run-if-empty kill -9 || true
-    """)
+    // pgrep_port_forward-212
 
-    println("** ${iam}: LEAVE")
+    sh(label  : 'waitForAdapters: Tear down port forwarding',
+       script : """
+if [[ \$(pgrep --count 'port-forw') -gt 0 ]]; then
+    pkill --uid "\$(id -u)" --echo --full 'port-forw'
+fi
+""")
+
+    leave('process')
     return
 }
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def call(Map config)
+def call(Map config=[:])
 {
     String iam = getIam('main')
-    println("** ${iam}: ENTER")
 
-    if (!config) {
-        config = [:]
+    try {
+        enter('main')
+        process(config)
     }
-
-    try
-    {
-	process(config)
+    catch (Exception err) {  // groovylint-disable-line CatchException
+        println("** ${iam}: EXCEPTION ${err}")
+        throw err
     }
-    catch (Exception err)
-    {
-	println("** ${iam}: EXCEPTION ${err}")
-	throw err
-    }
-    finally
-    {
-	println("** ${iam}: LEAVE")
+    finally {
+        leave('main')
     }
     return
 }
