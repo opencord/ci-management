@@ -81,7 +81,7 @@ Boolean process(String branch) {
 
     // This logic seems odd given we branch & tag repositories
     // for release so hilight non-frozen until we know for sure.
-    String released = [
+    def released = [
         // v1.9.1 - https://github.com/opencord/voltctl/releases/tag/untagged-cd611c39178f25b95a87
         'voltha-2.12' : '1.8.45',
         'voltha-2.11' : '1.8.45',
