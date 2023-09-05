@@ -18,6 +18,23 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d891ea08_91859522",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "Background and detail for comment items, let me know if anything is lingering or questionable.",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5e2a1caa_c75d1f7a",
@@ -31,6 +48,24 @@
       "writtenOn": "2023-09-05T16:18:32Z",
       "side": 1,
       "message": "This looks like we not only fix permissions here, but actually might create an empty file $volt_conf. Why is this needed?",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "835f7d50_8283ff70",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "File creation was intentional, helps with log failure usability:\n  - mode #1: an asynchronous error message reports config file does not exist.\n  - mode #2: failure/bad behavior can be traced back to the voltctl invocation with command line.",
+      "parentUuid": "5e2a1caa_c75d1f7a",
       "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
@@ -52,6 +87,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0caf041c_1dbb7bd0",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "npm-groovy-lint inspired cleanups are being added in scripts to help ferret out latent problems.\n\nSide note -- lint cleanups are mentioned in several of the other patches in gerrit but omission here was an oversight.",
+      "parentUuid": "eddd0192_37068ef7",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2df193ca_2dbfe101",
@@ -65,6 +118,24 @@
       "writtenOn": "2023-09-05T16:18:32Z",
       "side": 1,
       "message": "same as above",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0360dc91_73038867",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "npm-groovy-lint",
+      "parentUuid": "2df193ca_2dbfe101",
       "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
@@ -86,6 +157,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "a32de08b_f3829585",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "npm-groovy-lint",
+      "parentUuid": "0fa9eaea_12ddaa93",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4024191d_c56294bc",
@@ -99,6 +188,24 @@
       "writtenOn": "2023-09-05T16:18:32Z",
       "side": 1,
       "message": "why is this needed and how is it related?",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2706f155_0663d3c5",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "From the TST meeting earlier:\nhttps://wiki.opennetworking.org/pages/viewpage.action?pageId\u003d821166182\n\nJobs have encountered silent failures where logs are devoid of error messages or problem sources.  Having scripts output ENTER/LEAVE pairs is an aide for community members to identify where problems have manifested w/o having match up {stage,script,...} messages with external scripts which can be painful.",
+      "parentUuid": "4024191d_c56294bc",
       "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
@@ -120,6 +227,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "00b12c13_cba8fedf",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "Unused/undefined var identified by npm-groovy-lint",
+      "parentUuid": "4d42dd33_8a1b86cb",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5d96129b_fe0be4b9",
@@ -133,6 +258,24 @@
       "writtenOn": "2023-09-05T16:18:32Z",
       "side": 1,
       "message": "same as above",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b522e2fc_e1863974",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-05T16:52:43Z",
+      "side": 1,
+      "message": "Bulk indentation cleanup is courtesy of npm-groovy-lint.\nENTER/LEAVE/EXCEPTION messages are intended to combat silent job failures.\n\nThink that covers the cases for \u0027same as above\u0027, if not let me know which one.",
+      "parentUuid": "5d96129b_fe0be4b9",
       "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
