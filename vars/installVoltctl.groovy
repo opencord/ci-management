@@ -19,8 +19,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
-{
+String getIam(String func) {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/installVoltctl.groovy'
     String iam = [src, func].join('::')
@@ -28,44 +27,61 @@ def getIam(String func)
 }
 
 // -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void enter(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: ENTER")
+    return
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void leave(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: LEAVE")
+    return
+}
+
+// -----------------------------------------------------------------------
 // Intent: Assign perms to fix access problems
 // . /bin/sh: 1: /home/jenkins/.volt/config: Permission denied
 // -----------------------------------------------------------------------
-def fixPerms() {
+void fixPerms() {
+    enter('fixPerms')
 
-    String iam = 'vars/installVoltctl.groovy'
-    println("** ${iam}: ENTER")
-
-    sh(
-        label:  'fixperms',
-        script : """
+    sh(label  : 'fixperms',
+       script : """
 
       umask 022
 
-      volt_dir='~/.volt'
-      volt_cfg='~/.volt/config'
+      declare volt_dir='~/.volt'
+      declare volt_cfg='~/.volt/config'
 
       echo
-      echo "** Fixing perms: $volt_cfg"
-      mkdir -p "$volt_dir"
-      chmod -R u+w,go-rwx "$volt_dir"
-      chmod u=rwx "$volt_dir"
-      touch "$volt_conf"
-      /bin/ls -l "$volt_dir"
+      echo "** Fixing perms: \$volt_cfg"
+      mkdir -p "\$volt_dir"
+      chmod -R u+w,go-rwx "\$volt_dir"
+      chmod u=rwx "\$volt_dir"
+      touch "\$volt_conf"
+      /bin/ls -l "\$volt_dir"
 """)
+    leave('fixPerms')
     return
 }
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def process(String branch) {
-
-    String iam = 'vars/installVoltctl.groovy'
-    println("** ${iam}: ENTER")
+Boolean process(String branch) {
+    Boolean ans = true
+    enter('process')
 
     // This logic seems odd given we branch & tag repositories
     // for release so hilight non-frozen until we know for sure.
-    def released=[
+    def released = [
         // v1.9.1 - https://github.com/opencord/voltctl/releases/tag/untagged-cd611c39178f25b95a87
         'voltha-2.12' : '1.8.45',
         'voltha-2.11' : '1.8.45',
@@ -91,7 +107,7 @@ def process(String branch) {
     // ---------------------------------------------
     if (is_release && ! released.containsKey(branch)) {
         // Fingers crossed: jenkins may rewrite the callstack.
-        def myname = this.class.getName()
+        String myname = this.class.getName()
 
         String url = [
             'https://docs.voltha.org/master',
@@ -99,13 +115,13 @@ def process(String branch) {
         ].join('/')
 
         String error = [
-            myname, "ERROR:",
+            myname, 'ERROR:',
             "Detected release version=[$branch]",
-            "but voltctl is not frozen.",
+            'but voltctl is not frozen.',
             '',
-            "See Also:", url,
+            'See Also:', url,
         ].join(' ')
-        throw new Exception(error)
+        throw new Exception(error) // groovylint-disable-line ThrowException
     }
 
     // --------------------------------
@@ -115,12 +131,12 @@ def process(String branch) {
         url = 'https://api.github.com/repos/opencord/voltctl/releases/latest'
         get_version = [
             "curl -sSL ${url}",
-            "jq -r .tag_name",
+            'jq -r .tag_name',
             "sed -e 's/^v//g'",
         ].join(' | ')
 
         print(" ** RUNNING: ${get_version}")
-        released[branch] = sh (
+        released[branch] = sh(
             script: get_version,
             returnStdout: true
         ).trim()
@@ -133,9 +149,12 @@ def process(String branch) {
     // groovy expansion: ${var}
     // shell  expansion: \${var}
     // -----------------------------------------------------------------------
-    sh returnStdout: false, script: """#!/bin/bash
+    sh(
+        label : 'Install Voltctl',
+        returnStdout: false,
+        script: """#!/bin/bash
 
-#    set -eu -o pipefail
+    # set -eu -o pipefail
 
     bin_voltctl="$WORKSPACE/bin/voltctl"
 
@@ -162,32 +181,27 @@ def process(String branch) {
     # ---------------------------------------------------------
     "\${bin_voltctl}" version --clientonly
     voltctl version --clientonly
-  """
+""")
 
-    println("** ${iam}: LEAVE")
-    return
+    enter('process')
+    return(ans)
 }
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def call(String branch)
-{
-    String iam = getIam('main')
-    println("** ${iam}: ENTER")
-
-    try
-    {
+def call(String branch) {
+    try {
+        enter('main')
         fixPerms()
         process(branch)
     }
-    catch (Exception err)
-    {
+    catch (Exception err) {  // groovylint-disable-line CatchException
+        String iam = getIam('main')
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }
-    finally
-    {
-        println("** ${iam}: LEAVE")
+    finally {
+        leave('main')
     }
     return
 }
