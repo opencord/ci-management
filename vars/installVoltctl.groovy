@@ -66,7 +66,7 @@ void fixPerms() {
       mkdir -p "\$volt_dir"
       chmod -R u+w,go-rwx "\$volt_dir"
       chmod u=rwx "\$volt_dir"
-      touch "\$volt_conf"
+      touch "\$volt_cfg"
       /bin/ls -l "\$volt_dir"
 """)
     leave('fixPerms')
@@ -81,7 +81,7 @@ Boolean process(String branch) {
 
     // This logic seems odd given we branch & tag repositories
     // for release so hilight non-frozen until we know for sure.
-    def released = [
+    String released = [
         // v1.9.1 - https://github.com/opencord/voltctl/releases/tag/untagged-cd611c39178f25b95a87
         'voltha-2.12' : '1.8.45',
         'voltha-2.11' : '1.8.45',
