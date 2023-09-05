@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4e4b0fde_1c4c9f80",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "Some inline questions. I also would suggest to split out all unrelated style changes to ease the review process and also focus on the intended change.",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e2a1caa_c75d1f7a",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "This looks like we not only fix permissions here, but actually might create an empty file $volt_conf. Why is this needed?",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "eddd0192_37068ef7",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "these indentation changes seem to be unrelated",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2df193ca_2dbfe101",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fa9eaea_12ddaa93",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4024191d_c56294bc",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 168,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "why is this needed and how is it related?",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d42dd33_8a1b86cb",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "the removal of this code seems unrelated",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d96129b_fe0be4b9",
+        "filename": "vars/installVoltctl.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T16:18:32Z",
+      "side": 1,
+      "message": "same as above",
+      "revId": "5068ddfc622119915578ed68eb32d215caaf5137",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
