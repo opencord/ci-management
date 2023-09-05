@@ -16,6 +16,23 @@
       "message": "recheck -- verify latest patch edits have not caused a merge conflict.",
       "revId": "d8433695dda9825e4ab7d4bfdefa18c1c7810c53",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "159d7139_cd93d2b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-05T10:25:54Z",
+      "side": 1,
+      "message": "I think we should probably go ahead and just delete the jobs for menlo-pod, since this pod will never come back (or?)",
+      "revId": "d8433695dda9825e4ab7d4bfdefa18c1c7810c53",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
