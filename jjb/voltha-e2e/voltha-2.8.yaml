@@ -30,7 +30,7 @@
           code-branch: 'voltha-2.8'
           extraHelmFlags: '--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           time-trigger: "H H/23 * * *"
-          logLevel: 'DEBUG'
+          logLevel: 'INFO'
           testTargets: |
             - target: voltha-pm-data-single-kind-att
               workflow: att
