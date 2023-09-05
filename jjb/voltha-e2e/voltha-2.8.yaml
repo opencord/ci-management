@@ -1,5 +1,6 @@
 ---
 # voltha 2.0 tests
+# Force regeneration: ee6c143b23ae6acbade0ddcb6965bff3c757dd5a
 
 - project:
     name: voltha-e2e-2.8

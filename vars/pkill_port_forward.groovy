@@ -88,7 +88,7 @@ pgrep --uid \$(uid -u) --list-full --full 'port-forw'
         label  : 'Display port forwarding',
         // script : ${cmd}.toString(),  -> Exception
         script : """
-echo -e "\n** ${iam} [DEBUG]: pgrep-pkill check"
+echo -e "\n** vars/pkill_port_forward.groovy [DEBUG]: pgrep-pkill check"
 if [[ \$(pgrep --count 'port-forw') -gt 0 ]]; then
     pkill --uid \$(uid -u) --echo --list-full --full 'port-forw'
 fi
@@ -113,7 +113,7 @@ Boolean call\
         enter('main')
 
         // Assign defaults
-        ['banner', 'show_procs'].each{ key->
+        ['banner', 'show_procs'].each { key ->
             if (!args.containsKey(key)) {
                 args[key] = true
             }
