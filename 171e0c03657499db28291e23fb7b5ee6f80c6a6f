@@ -16,6 +16,23 @@
       "message": "LGTM\n\nNot required but it has been useful to suffix the disabled: attribute with a comment:\n   disabled : true      # Reason: node is on life support",
       "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7bd7b91_9b4a0c9f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000989
+      },
+      "writtenOn": "2023-09-06T10:48:52Z",
+      "side": 1,
+      "message": "Looks good to me",
+      "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
