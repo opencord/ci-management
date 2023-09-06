@@ -68,6 +68,24 @@
       "parentUuid": "97d76469_ddcdbe0d",
       "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e8b4d3d3_1b0acf77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-06T13:44:51Z",
+      "side": 1,
+      "message": "\u003e\u003e Where not touched since i do not know why they where commented out and how they would need to be modified.\n\nCommented jobs were simply a temp backup until some refactoring work had been verified.\n\nBackground:\n  o JJB yaml config files for pipeline jobs are monolithic and *huge*.\n  o At release time jobs are cloned \u0026 branched creating [n] more copies.\n  o aside\u003e JJB errors can be cryptic.  Large files can make identifying jobs and debugging difficult.\n  o To combat this files/branches are being refactored into smaller chunks, first pass involved creating a rough hierarchy with subdirs containing yaml configs named voltha-{2.8,2.10,2.11}.yaml.\n  o Refactoring steps:\n    - Copy master job (ugh: inconsistent, jobs should be branched but not all are).\n    - into {group}/voltha-2.11.yaml, voltha-2.12.yaml, ...\n    - ** Comment out original job in the monolithic config file until success for the new jobs has been verified.\n\nAny questions ?",
+      "parentUuid": "68e79175_f15a3c92",
+      "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
