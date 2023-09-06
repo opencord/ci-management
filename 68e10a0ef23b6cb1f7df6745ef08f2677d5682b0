@@ -34,6 +34,24 @@
       "parentUuid": "ffd624f2_64fa3501",
       "revId": "68e10a0ef23b6cb1f7df6745ef08f2677d5682b0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e18fc0b_34b03c4c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-06T14:25:48Z",
+      "side": 1,
+      "message": "Written to target nodes which do not exist anymore\n\nJobs refactored into the hierarchy atm are there purely by coincidence.  The monolithic yaml config(s) still need to be refactored and jobs moved, there are plenty of functional jobs that simply have not been moved yet.\n\n\n\u003e\u003e I think duplicating and cloning pipeline definitions should be avoided at all cost, since it makes the code hard to read\n\nThat would be a nice answer to work toward in the future but as things stand right now with failure backlog and release there has not been enough time to re-architect a cleaner answer.\n\nWe either clone the existing job hierarchy or will be unable to run testing against a bugfix branch.\n\nI know everything is under revision control but code bases have a tendency to disappear or fall into disrepair once visibility on them has been lost.",
+      "parentUuid": "9371dbea_84e01821",
+      "revId": "68e10a0ef23b6cb1f7df6745ef08f2677d5682b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
