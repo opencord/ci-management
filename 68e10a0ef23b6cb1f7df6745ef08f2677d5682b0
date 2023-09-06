@@ -16,6 +16,24 @@
       "message": "Individual job definitions can be removed if nodes are unresponsive and there are no plans to research/fix them, but the versioned filesystem hierarchy with basic project definition should be retained.\n\nPipeline jobs are maintained in monolithic config files.\nAt release time jobs need to be cloned and branched for regression testing (full job cloning is incomplete, v2.8 jobs were the original source).\n\nW/o release versioning yaml configs grow even larger.\nproblem\u003e Errors reported by jjb/lint tend to be generic and cryptic.  Large, monolithic files can make identifying source difficult.\n\nThe jjb/voltha-test/*/voltha-{2.10,2.11,2.12}.yaml are simply released versions of jobs bundled together to maintain smaller configs.  The hierarchy can continue to be refactored and expanded, versioned job configs still contain groups of jobs: scale, manual, pods, etc.\n\nThoughts ?",
       "revId": "68e10a0ef23b6cb1f7df6745ef08f2677d5682b0",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9371dbea_84e01821",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-06T14:07:17Z",
+      "side": 1,
+      "message": "I think we should not retain anything that we do not use atm and that was written to target nodes which do not exist anymore. I think duplicating and cloning pipeline definitions should be avoided at all cost, since it makes the code hard to read and also introduces additional errors whenever things only get fixed/changed/refactored in one of the cloned places. If we need different pipeline definitions for different releases, we should try to refactor towards the usage of variables and more templating. Since most (basically all) pipelines are non functional or non existent anymore at the moment, i would suggest to reduce the amount of code we need to look at to allow fixing and refactoring without creating a split between all the unmaintained code (which will probably not/never get fixed) and the one we are testing/debugging right now. Once we are done with refactoring, i am fine with finding a solution for release-branching / duplicating pipelines for different releases.",
+      "parentUuid": "ffd624f2_64fa3501",
+      "revId": "68e10a0ef23b6cb1f7df6745ef08f2677d5682b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
