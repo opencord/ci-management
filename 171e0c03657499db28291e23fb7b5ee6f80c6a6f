@@ -33,6 +33,23 @@
       "message": "Looks good to me",
       "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "97d76469_ddcdbe0d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-06T11:35:16Z",
+      "side": 1,
+      "message": "Reading the commit message gave me the impression that all \u0027disable-job\u0027 arguments were moved after \u0027config-pod\u0027 arguments, but that impression was mistaken. It does not apply to the first two jobs and the jobs that have been commented out.",
+      "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
