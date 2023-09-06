@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ffd624f2_64fa3501",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-06T13:57:11Z",
+      "side": 1,
+      "message": "Individual job definitions can be removed if nodes are unresponsive and there are no plans to research/fix them, but the versioned filesystem hierarchy with basic project definition should be retained.\n\nPipeline jobs are maintained in monolithic config files.\nAt release time jobs need to be cloned and branched for regression testing (full job cloning is incomplete, v2.8 jobs were the original source).\n\nW/o release versioning yaml configs grow even larger.\nproblem\u003e Errors reported by jjb/lint tend to be generic and cryptic.  Large, monolithic files can make identifying source difficult.\n\nThe jjb/voltha-test/*/voltha-{2.10,2.11,2.12}.yaml are simply released versions of jobs bundled together to maintain smaller configs.  The hierarchy can continue to be refactored and expanded, versioned job configs still contain groups of jobs: scale, manual, pods, etc.\n\nThoughts ?",
+      "revId": "68e10a0ef23b6cb1f7df6745ef08f2677d5682b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
