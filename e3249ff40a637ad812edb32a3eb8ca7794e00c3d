@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "361491df_748a56ad",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-06T08:30:23Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "e3249ff40a637ad812edb32a3eb8ca7794e00c3d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
