@@ -50,6 +50,24 @@
       "message": "Reading the commit message gave me the impression that all \u0027disable-job\u0027 arguments were moved after \u0027config-pod\u0027 arguments, but that impression was mistaken. It does not apply to the first two jobs and the jobs that have been commented out.",
       "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68e79175_f15a3c92",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-06T12:00:45Z",
+      "side": 1,
+      "message": "The title of the commit message specifically mentions \"for berlin community pods\" and the body of the commit message mentions again \"all pipelines targeting berlin-community-pods\". Commented out pipeline definitions where not touched since i do not know why they where commented out and how they would need to be modified.",
+      "parentUuid": "97d76469_ddcdbe0d",
+      "revId": "171e0c03657499db28291e23fb7b5ee6f80c6a6f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
