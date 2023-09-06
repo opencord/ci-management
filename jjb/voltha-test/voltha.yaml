@@ -76,9 +76,9 @@
           timeout: 360
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-multi-olt'
+          disable-job: true
           release: 'master'
           branch: 'master'
-          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -90,8 +90,8 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
-          name-extension: '_DT'
           disable-job: true
+          name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
           num-of-onos: '3'
@@ -104,8 +104,8 @@
           timeout: 330
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
-          name-extension: '_DT'
           disable-job: true
+          name-extension: '_DT'
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
@@ -133,6 +133,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: '2.11'
           branch: 'voltha-2.11'
           name-extension: '_DT'
@@ -147,6 +148,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: '2.12'
           branch: 'voltha-2.12'
           name-extension: '_DT'
@@ -176,6 +178,7 @@
       - 'build_voltha_pod_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.11'
@@ -189,6 +192,7 @@
       - 'build_voltha_pod_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.12'
@@ -218,6 +222,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-multi-olt'
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.11'
@@ -232,6 +237,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-multi-olt'
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.12'
@@ -261,6 +267,7 @@
       - 'build_voltha_pod_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-multi-olt'
+          disable-job: true
           release: '2.11'
           branch: 'voltha-2.11'
           name-extension: '_DT'
@@ -274,6 +281,7 @@
       - 'build_voltha_pod_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-multi-olt'
+          disable-job: true
           release: '2.12'
           branch: 'voltha-2.12'
           name-extension: '_DT'
@@ -288,9 +296,9 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
+          disable-job: true
           withFttb: true
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
           profile: '1T4GEM-FTTB'
           num-of-onos: '3'
@@ -302,9 +310,9 @@
           timeout: 330
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
+          disable-job: true
           withFttb: true
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
@@ -317,9 +325,9 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
+          disable-job: true
           withFttb: true
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
@@ -333,9 +341,9 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
+          disable-job: true
           withFttb: true
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
@@ -351,9 +359,9 @@
           timeout: 330
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
+          disable-job: true
           withFttb: true
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
@@ -367,9 +375,9 @@
           timeout: 330
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
+          disable-job: true
           withFttb: true
           name-extension: '_DT'
-          disable-job: true
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
@@ -400,6 +408,7 @@
       - 'build_voltha_pod_test':
           build-node: 'berlin-community-pod-2'
           config-pod: 'berlin-community-pod-2-gpon-zyxel'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -431,6 +440,7 @@
       - 'build_voltha_pod_test':
           build-node: 'berlin-community-pod-2'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_DT'
@@ -442,9 +452,9 @@
 
       # TT workflow on Zyxel XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
-          disable-job: true
           build-node: 'berlin-community-pod-2'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_TT'
@@ -457,9 +467,9 @@
 
       # TT workflow on Zyxel XGSPON OLT at Berlin pod - test job
       - 'build_voltha_pod_test':
-          disable-job: true
           build-node: 'berlin-community-pod-2'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_TT'
@@ -473,9 +483,9 @@
 
       # [CORD-3256] TT workflow on XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_TT'
@@ -488,9 +498,9 @@
 
       # [CORD-3256] TT workflow on GPON OLT at Berlin pod - test job
       - 'build_voltha_pod_test':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_TT'
@@ -505,9 +515,9 @@
       # -----------------------------------------------------------------------
       # [CORD-3256] TT workflow on XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'voltha-2.11'
           branch: 'voltha-2.11'
           name-extension: '_TT'
@@ -520,9 +530,9 @@
 
       # [CORD-3256] TT workflow on XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'voltha-2.12'
           branch: 'voltha-2.12'
           name-extension: '_TT'
@@ -536,9 +546,9 @@
       # -----------------------------------------------------------------------
       # [CORD-3256] TT workflow on GPON OLT at Berlin pod - test job
       - 'build_voltha_pod_test':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'voltha-2.11'
           branch: 'voltha-2.11'
           name-extension: '_TT'
@@ -552,9 +562,9 @@
 
       # [CORD-3256] TT workflow on GPON OLT at Berlin pod - test job
       - 'build_voltha_pod_test':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'voltha-2.12'
           branch: 'voltha-2.12'
           name-extension: '_TT'
@@ -568,9 +578,9 @@
 
       # TT workflow on Zyxel GPON OLT at Berlin pod - build job (playground)
       - 'build_voltha_pod_release_timer_playground':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_TT'
@@ -583,9 +593,9 @@
 
       # TT workflow on Zyxel XGSPON OLT at Berlin pod - test job (playground)
       - 'build_voltha_pod_test_playground':
-          disable-job: true
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon'
+          disable-job: true
           release: 'master'
           branch: 'master'
           name-extension: '_TT'
@@ -623,6 +633,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.11'
@@ -643,6 +654,7 @@
       - 'build_voltha_pod_release_timer':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
+          disable-job: true
           name-extension: '_DT'
           work-flow: 'DT'
           release: '2.12'
@@ -681,6 +693,7 @@
           timeout: 390
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
+          disable-job: true
           release: '2.11'
           branch: 'voltha-2.11'
           name-extension: '_DT'
@@ -696,6 +709,7 @@
           timeout: 390
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
+          disable-job: true
           release: '2.12'
           branch: 'voltha-2.12'
           name-extension: '_DT'
@@ -711,8 +725,8 @@
       - 'verify_voltha_pod_dmi_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
-          name-extension: '_DT'
           disable-job: true
+          name-extension: '_DT'
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
@@ -736,8 +750,8 @@
       - 'verify_voltha_pod_dmi_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
-          name-extension: '_DT'
           disable-job: true
+          name-extension: '_DT'
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
@@ -759,8 +773,8 @@
       - 'verify_voltha_pod_dmi_test':
           build-node: 'berlin-community-pod-1'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
-          name-extension: '_DT'
           disable-job: true
+          name-extension: '_DT'
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
