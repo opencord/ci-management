@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c611e7b_b07a57bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-06T14:13:30Z",
+      "side": 1,
+      "message": "updated the commit message to be specific about which parts where updated",
+      "revId": "11c9b74a989cbd03c7a2303d71fe39c9f4b4bfc8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
