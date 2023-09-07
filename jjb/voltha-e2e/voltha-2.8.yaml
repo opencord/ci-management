@@ -57,7 +57,7 @@
           extraHelmFlags: '--set onu=2,pon=2 --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           olts: 2
           timeout: 180
-          logLevel: 'INFO'
+          logLevel: 'DEBUG'
           testTargets: |
             - target: voltha-pm-data-multiolt-kind-att
               workflow: att

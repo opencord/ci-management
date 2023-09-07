@@ -58,17 +58,18 @@ void fixPerms() {
 
       umask 022
 
-      declare volt_dir='~/.volt'
-      declare volt_cfg='~/.volt/config'
+      declare volt_dir=\$HOME/.volt
+      declare volt_cfg=\$HOME/.volt/config
 
       echo
-      echo "** Fixing perms: \$volt_cfg"
-      mkdir -p "\$volt_dir"
-      chmod -R u+w,go-rwx "\$volt_dir"
-      chmod u=rwx "\$volt_dir"
-      touch "\$volt_cfg"
-      /bin/ls -l "\$volt_dir"
+      echo "** Fixing perms: \$volt_cfg
+      mkdir -p \$volt_dir
+      chmod -R u+w,go-rwx \$volt_dir
+      chmod u=rwx \$volt_dir
+      touch \$volt_cfg
+      /bin/ls -l \$volt_dir
 """)
+
     leave('fixPerms')
     return
 }
