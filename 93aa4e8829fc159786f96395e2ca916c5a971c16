@@ -16,6 +16,24 @@
       "message": "fyi\u003e pkill --uid \"\\$(id -u)\" --echo --full \u0027port-forw\u0027, the flag will not alter existing behavior:\n\n  -f and --full are synonymous, \u0027--full\u0027 is self documenting.\n\nThe pgrep conditional is needed due to use of the environment running under \"set -euo pipefail\".  When pkill attempts to kill a non-existent process ($? !\u003d 0) is returned which will prompt a job failure.\n\n--uid \u003cjenkins\u003e was passed to prevent another failure condition when forwarded procs are running not owned by user jenkins.\n\n--echo displays a list of processes killed (which can be used to match log entries down below).\n\n\nAlas this pkill call is old, can the patch make a call to pkill_proc instead ?\nWe have some issues going on with port forwarding and the script has added debugging (display procs prior to kill).\n\nhttps://gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/vars/pkill_proc.groovy",
       "revId": "93aa4e8829fc159786f96395e2ca916c5a971c16",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3cd278fc_002b6371",
+        "filename": "vars/waitForAdapters.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 236,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-07T12:58:43Z",
+      "side": 1,
+      "message": "There should always be a port-forwarding at the point when this script is called. If there is none, it should fail, exit and we should check what went wront before. Ignoring an unexpected state by wrapping things in if conditions seems wrong here. The same goes for the uid, since there should be nobody else than jenkins starting those things, if somebody else is, we should fix and not ignore that. I can take a look at the pkill_proc.groovy, but i am generally a fan of KIS and here we really just want to kill the port-forwarding created before.",
+      "parentUuid": "cee5770f_2b6d4c10",
+      "revId": "93aa4e8829fc159786f96395e2ca916c5a971c16",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
