@@ -233,10 +233,8 @@ EOM
 
     sh(label  : 'waitForAdapters: Tear down port forwarding',
        script : """
-if [[ \$(pgrep --count 'port-forw') -gt 0 ]]; then
-    pkill --uid "\$(id -u)" --echo --full 'port-forw'
-fi
-""")
+         pkill -f port-forw
+    """)
 
     leave('process')
     return
