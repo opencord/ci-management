@@ -80,7 +80,7 @@ Boolean process(String proc, Map args) {
         sh(
             label  : 'Display port forwarding (pre-pgrep-pkill)',
             script : """
-pgrep --uid \$(id -u) --list-full --full 'port-forw'
+pgrep --uid \$(id -u) --list-full --full 'port-forw' || true
 """)
     }
 
