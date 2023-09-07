@@ -10,18 +10,14 @@
           branch-regexp: '{all-branches-regexp}'
       - 'verify-voltha-go-jobs-master':
           branch-regexp: '^master$'          
-      - 'verify-voltha-go-jobs-voltha-2.12':
-          name-extension: '-voltha-2.12'
-          override-branch: 'voltha-2.12'
-          branch-regexp: '^voltha-2.12$'
-      - 'verify-voltha-go-jobs-voltha-2.11':
-          name-extension: '-voltha-2.11'
-          override-branch: 'voltha-2.11'
-          branch-regexp: '^voltha-2.11$'
-#      - 'verify-voltha-go-jobs-voltha-2.8':
-#          name-extension: '-voltha-2.8'
-#          override-branch: 'voltha-2.8'
-#          branch-regexp: '^voltha-2.8$'
+#      - 'verify-voltha-go-jobs-voltha-2.12':
+#          name-extension: '-voltha-2.12'
+#          override-branch: 'voltha-2.12'
+#          branch-regexp: '^voltha-2.12$'
+#      - 'verify-voltha-go-jobs-voltha-2.11':
+#          name-extension: '-voltha-2.11'
+#          override-branch: 'voltha-2.11'
+#          branch-regexp: '^voltha-2.11$'
       - 'publish-voltha-go-jobs':
           branch-regexp: '{all-branches-regexp}'
 
@@ -46,23 +42,17 @@
           unit-test-targets: 'test'
           unit-test-keep-going: 'false'
 
-- job-group:
-    name: 'verify-voltha-go-jobs-voltha-2.12'
-    jobs:
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
-
-- job-group:
-    name: 'verify-voltha-go-jobs-voltha-2.11'
-    jobs:
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
-
 # - job-group:
-#    name: 'verify-voltha-go-jobs-voltha-2.8'
+#    name: 'verify-voltha-go-jobs-voltha-2.12'
 #    jobs:
 #      - 'voltha-patch-test':
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+#          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+#
+#- job-group:
+#    name: 'verify-voltha-go-jobs-voltha-2.11'
+#    jobs:
+#      - 'voltha-patch-test':
+#          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
 
 - job-group:
     name: 'verify-voltha-go-jobs-master'

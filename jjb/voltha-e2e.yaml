@@ -55,37 +55,9 @@
               teardown: false
               logging: true
 
-#      - 'voltha-periodic-test':
-#          name: 'periodic-voltha-multiple-olts-test-bbsim-2.8'
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: 'voltha-2.8'
-#          olts: 2
-#          extraHelmFlags: '--set onu=2,pon=2'
-#          time-trigger: "H H/23 * * *"
-#          testTargets: |
-#            - target: functional-multi-olt
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: bbsim-multiolt-failurescenarios
-#              workflow: att
-#              flags: ""
-#              teardown: false
-#              logging: true
-#            - target: bbsim-multiolt-errorscenarios
-#              workflow: att
-#              flags: ""
-#              teardown: false
-#              logging: true
-#            - target: bbsim-multiolt-kind
-#              workflow: att
-#              flags: ""
-#              teardown: false
-#              logging: true
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           olts: 2
@@ -115,6 +87,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
           olts: 2
@@ -190,33 +163,9 @@
               logging: true
           timeout: 360
 
-      # -----------------------------------------------------------------------
-      # -----------------------------------------------------------------------
-#      - 'voltha-periodic-test':
-#          name: 'periodic-voltha-multi-uni-test-bbsim-2.8'
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: 'voltha-2.8'
-#          extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
-#          time-trigger: "H H/23 * * *"
-#          testTargets: |
-#            - target: functional-single-kind-multiuni-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: bbsim-multiuni-failurescenarios-att
-#              workflow: att
-#              flags: ""
-#              teardown: false
-#              logging: true
-#            - target: bbsim-multiuni-errorscenarios-att
-#              workflow: att
-#              flags: ""
-#              teardown: false
-#              logging: true
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
@@ -240,6 +189,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
@@ -261,35 +211,9 @@
               teardown: false
               logging: true
 
-      # -----------------------------------------------------------------------
-      # -----------------------------------------------------------------------
-#      - 'voltha-periodic-test':
-#          name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.8'
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: 'voltha-2.8'
-#          olts: 2
-#          extraHelmFlags: '--set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
-#          time-trigger: "H H/23 * * *"
-#          testTargets: |
-#            - target: functional-multiuni-multiolt-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: bbsim-multiuni-multiolt-failurescenarios-att
-#              workflow: att
-#              flags: ""
-#              teardown: false
-#              logging: true
-#            - target: bbsim-multiuni-multiolt-errorscenarios-att
-#              workflow: att
-#              flags: ""
-#              teardown: false
-#              logging: true
-#          timeout: 180
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           olts: 2
@@ -315,6 +239,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
           olts: 2
@@ -450,78 +375,9 @@
               logging: true
           timeout: 240
 
-      # -----------------------------------------------------------------------
-      # -----------------------------------------------------------------------
-#      - 'voltha-periodic-test':
-#          name: 'periodic-voltha-openonu-go-test-bbsim-2.8'
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: 'voltha-2.8'
-#          time-trigger: "H H/23 * * *"
-#          logLevel: 'DEBUG'
-#          testTargets: |
-#            - target: 1t1gem-openonu-go-adapter-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t4gem-openonu-go-adapter-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t8gem-openonu-go-adapter-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: mib-upload-templating-openonu-go-adapter-test
-#              workflow: att
-#              flags: "--set pon=2,onu=2,controlledActivation=only-onu"
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-test-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-test-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-test-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: openonu-go-adapter-omci-hardening-passed-test
-#              workflow: att
-##################              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
-#              teardown: true
-#              logging: true
-#            - target: openonu-go-adapter-omci-hardening-failed-test
-#              workflow: att
-#              flags: "--set omci_response_rate=7"
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-single-kind-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-single-kind-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-single-kind-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           time-trigger: "H H/23 * * *"
@@ -631,6 +487,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
@@ -841,78 +698,9 @@
               logging: true
           timeout: 210
 
-#      - 'voltha-periodic-test':
-#          name: 'patchset-voltha-2.8-openonu-go-test-bbsim'
-#          trigger-comment: "voltha 2.8 test openonu singleolt"
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: '$GERRIT_BRANCH'
-#          gerritProject: '$GERRIT_PROJECT'
-#          gerritRefspec: '$GERRIT_REFSPEC'
-#          logLevel: 'DEBUG'
-#          testTargets: |
-#            - target: 1t1gem-openonu-go-adapter-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t4gem-openonu-go-adapter-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t8gem-openonu-go-adapter-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: mib-upload-templating-openonu-go-adapter-test
-#              workflow: att
-#              flags: "--set pon=2,onu=2,controlledActivation=only-onu"
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-test-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-test-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-test-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: openonu-go-adapter-omci-hardening-passed-test
-#              workflow: att
-##############              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
-#              teardown: true
-#              logging: true
-#            - target: openonu-go-adapter-omci-hardening-failed-test
-#              workflow: att
-#              flags: "--set omci_response_rate=7"
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-single-kind-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-single-kind-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-single-kind-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.11-openonu-go-test-bbsim'
+          disable-job: true           # Disable prior to delete
           trigger-comment: "voltha 2.11 test openonu singleolt"
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: '$GERRIT_BRANCH'
@@ -1014,6 +802,7 @@
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.12-openonu-go-test-bbsim'
+          disable-job: true           # Disable prior to delete
           trigger-comment: "voltha 2.12 test openonu singleolt"
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: '$GERRIT_BRANCH'
@@ -1185,63 +974,9 @@
           time-trigger: "H H/12 * * *"
           timeout: 270
 
-#      - 'voltha-periodic-test':
-#          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.8'
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: 'voltha-2.8'
-#          extraHelmFlags: '--set onu=2,pon=2'
-#          olts: 2
-#          logLevel: 'DEBUG'
-#          testTargets: |
-#            - target: 1t1gem-openonu-go-adapter-multi-olt-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t4gem-openonu-go-adapter-multi-olt-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t8gem-openonu-go-adapter-multi-olt-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-multi-olt-test-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-multi-olt-test-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-multi-olt-test-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-multiolt-kind-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-multiolt-kind-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-multiolt-kind-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#          time-trigger: "H H/23 * * *"
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set onu=2,pon=2'
@@ -1313,6 +1048,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onu=2,pon=2'
@@ -1456,65 +1192,9 @@
           olts: 2
           timeout: 270
 
-#      - 'voltha-periodic-test':
-#          name: 'patchset-voltha-2.8-multiple-olts-openonu-go-test-bbsim'
-#          trigger-comment: "voltha 2.8 test openonu multiolt"
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: '$GERRIT_BRANCH'
-#          gerritProject: '$GERRIT_PROJECT'
-#          gerritRefspec: '$GERRIT_REFSPEC'
-#          extraHelmFlags: '--set onu=2,pon=2'
-#          olts: 2
-#          logLevel: 'DEBUG'
-#          testTargets: |
-#            - target: 1t1gem-openonu-go-adapter-multi-olt-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t4gem-openonu-go-adapter-multi-olt-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: 1t8gem-openonu-go-adapter-multi-olt-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-multi-olt-test-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-multi-olt-test-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: reconcile-openonu-go-adapter-multi-olt-test-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-multiolt-kind-att
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-multiolt-kind-dt
-#              workflow: dt
-#              flags: ""
-#              teardown: true
-#              logging: true
-#            - target: voltha-onu-omci-get-multiolt-kind-tt
-#              workflow: tt
-#              flags: ""
-#              teardown: true
-#              logging: true
-
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.11-multiple-olts-openonu-go-test-bbsim'
+          disable-job: true           # Disable prior to delete
           trigger-comment: "voltha 2.11 test openonu multiolt"
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: '$GERRIT_BRANCH'
@@ -1588,6 +1268,7 @@
 
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.12-multiple-olts-openonu-go-test-bbsim'
+          disable-job: true           # Disable prior to delete
           trigger-comment: "voltha 2.12 test openonu multiolt"
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: '$GERRIT_BRANCH'
@@ -1732,20 +1413,9 @@
               teardown: true
               logging: true
 
-#      - 'voltha-periodic-test':
-#          name: 'periodic-voltha-test-DMI-2.8'
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          code-branch: 'voltha-2.8'
-#          time-trigger: "H H/23 * * *"
-#          testTargets: |
-#            - target: bbsim-dmi-hw-management-test
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           time-trigger: "H H/23 * * *"
@@ -1758,6 +1428,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
@@ -1783,22 +1454,9 @@
               teardown: true
               logging: true
 
-#      - 'voltha-periodic-test':
-#          name: 'periodic-voltha-etcd-test-2.8'
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-#          build-node: 'ubuntu18.04-basebuild-4c-8g'
-#          code-branch: 'voltha-2.8'
-#          extraHelmFlags: '--set onu=2,pon=2'
-#          time-trigger: "H H/23 * * *"
-#          testTargets: |
-#            - target: sanity-multi-kind
-#              workflow: att
-#              flags: ""
-#              teardown: true
-#              logging: true
-
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'voltha-2.11'
@@ -1813,6 +1471,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'voltha-2.12'
@@ -1855,6 +1514,7 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.12'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
@@ -1880,6 +1540,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.11'
+          disable-job: true           # Disable prior to delete
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
@@ -1940,6 +1601,7 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-memory-leak-test-bbsim-2.12'
+          disable-job: true           # Disable prior to delete
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
           code-branch: 'voltha-2.12'
@@ -1956,6 +1618,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-memory-leak-test-bbsim-2.11'
+          disable-job: true           # Disable prior to delete
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           code-branch: 'voltha-2.11'
@@ -1993,29 +1656,6 @@
       #    workflow: 'att'
       #    branch-pattern: master
 
-
-      # ATT Per-patchset Pod builds on Tucson pod (voltha-2.8)
-      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
-      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
-      # the job when the OLT is replaced and everything works fine.
-      # - 'verify_physical_voltha_patchset_auto':
-      #    name: 'verify_physical_voltha_patchset_auto-2.8'
-      #    pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
-      #    extraHelmFlags: '--set global.log_level=debug'
-      #    workflow: 'att'
-      #    branch-pattern: voltha-2.8
-
-      # ATT Per-patchset Pod builds on Tucson pod (voltha-2.11)
-      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
-      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
-      # the job when the OLT is replaced and everything works fine.
-      # - 'verify_physical_voltha_patchset_auto':
-      #    name: 'verify_physical_voltha_patchset_auto-2.11'
-      #    pipeline-script: 'voltha/voltha-2.11/tucson-build-and-test.groovy'
-      #    extraHelmFlags: '--set global.log_level=debug'
-      #    workflow: 'att'
-      #    branch-pattern: voltha-2.11
-
       # ATT Manual Pod builds on Tucson pod (master)
       # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
       # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
@@ -2025,30 +1665,6 @@
       #    trigger-string: 'hardware test'
       #    branch-pattern: master
       #    extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
-      #    workflow: 'att'
-
-      # ATT Manual Pod builds on Tucson pod (voltha-2.8)
-      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
-      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
-      # the job when the OLT is replaced and everything works fine.
-      # - 'verify_physical_voltha_patchset_manual':
-      #    name: 'verify_physical_voltha_patchset_manual-2.8'
-      #    pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
-      #    trigger-string: 'hardware test'
-      #    branch-pattern: voltha-2.8
-      #    extraHelmFlags: '--set global.log_level=debug'
-      #    workflow: 'att'
-
-      # ATT Manual Pod builds on Tucson pod (voltha-2.11)
-      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
-      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
-      # the job when the OLT is replaced and everything works fine.
-      # - 'verify_physical_voltha_patchset_manual':
-      #    name: 'verify_physical_voltha_patchset_manual-2.11'
-      #    pipeline-script: 'voltha/voltha-2.11/tucson-build-and-test.groovy'
-      #    trigger-string: 'hardware test'
-      #    branch-pattern: voltha-2.11
-      #    extraHelmFlags: '--set global.log_level=debug'
       #    workflow: 'att'
 
       # DT Manual Pod builds on Tucson pod  (master)
@@ -2062,32 +1678,6 @@
       #    default-test-args: '-i sanityDt -i PowerSwitch -X'
       #    branch-pattern: master
       #    extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set global.log_level=debug'
-
-      # DT Manual Pod builds on Tucson pod  (voltha-2.8)
-      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
-      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
-      # the job when the OLT is replaced and everything works fine.
-      # - 'verify_physical_voltha_patchset_manual':
-      #    name: 'verify_physical_voltha_patchset_manual_DT-2.8'
-      #    pipeline-script: 'voltha/voltha-2.8/tucson-build-and-test.groovy'
-      #    workflow: 'dt'
-      #    trigger-string: 'DT hardware test'
-      #    default-test-args: '-i sanityDt -i PowerSwitch -X'
-      #    branch-pattern: voltha-2.8
-      #    extraHelmFlags: '--set global.log_level=debug'
-      # DT Manual Pod builds on Tucson pod  (voltha-2.8)
-
-      # Disable Tucson pod jobs as the corresponding ASXVOLT16 OLT is bad and replacement is needed.
-      # The dev_mgmt_daemon process keeps crashing on this OLT and seems to be a hardware issue. Reenable
-      # the job when the OLT is replaced and everything works fine.
-      # - 'verify_physical_voltha_patchset_manual':
-      #    name: 'verify_physical_voltha_patchset_manual_DT-2.11'
-      #    pipeline-script: 'voltha/voltha-2.11/tucson-build-and-test.groovy'
-      #    workflow: 'dt'
-      #    trigger-string: 'DT hardware test'
-      #    default-test-args: '-i sanityDt -i PowerSwitch -X'
-      #    branch-pattern: voltha-2.11
-      #    extraHelmFlags: '--set global.log_level=debug'
 
 - job-template:
     id: 'voltha-periodic-test'

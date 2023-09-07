@@ -10,17 +10,13 @@
           branch-regexp: '{all-branches-regexp}'
       - 'verify-ofagent-jobs-master':
           branch-regexp: '^master$'          
-      - 'verify-ofagent-jobs-voltha-2.12':
-          name-extension: '-voltha-2.12'
-          override-branch: 'voltha-2.12'
-          branch-regexp: '{kind-voltha-regexp}'
-      - 'verify-ofagent-jobs-voltha-2.11':
-          name-extension: '-voltha-2.11'
-          override-branch: 'voltha-2.11'
-          branch-regexp: '{kind-voltha-regexp}'
-#      - 'verify-ofagent-jobs-voltha-2.8':
-#          name-extension: '-voltha-2.8'
-#          override-branch: 'voltha-2.8'
+#      - 'verify-ofagent-jobs-voltha-2.12':
+#          name-extension: '-voltha-2.12'
+#          override-branch: 'voltha-2.12'
+#          branch-regexp: '{kind-voltha-regexp}'
+#      - 'verify-ofagent-jobs-voltha-2.11':
+#          name-extension: '-voltha-2.11'
+#          override-branch: 'voltha-2.11'
 #          branch-regexp: '{kind-voltha-regexp}'
       - 'publish-ofagent-go-jobs':
           branch-regexp: '{all-branches-regexp}'
@@ -44,23 +40,17 @@
       - 'voltha-patch-test':
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           
-- job-group:
-    name: 'verify-ofagent-jobs-voltha-2.11'
-    jobs:
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
-          
-- job-group:
-    name: 'verify-ofagent-jobs-voltha-2.12'
-    jobs:
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
-
-# - job-group:
-#    name: 'verify-ofagent-jobs-voltha-2.8'
+#- job-group:
+#    name: 'verify-ofagent-jobs-voltha-2.11'
 #    jobs:
 #      - 'voltha-patch-test':
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+#          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+#          
+#- job-group:
+#    name: 'verify-ofagent-jobs-voltha-2.12'
+#    jobs:
+#      - 'voltha-patch-test':
+#          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
 
 - job-group:
     name: 'publish-ofagent-go-jobs'
