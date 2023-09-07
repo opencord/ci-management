@@ -20,7 +20,7 @@
     make-target-reconciledttest: reconcile-openonu-go-adapter-test-dt
     make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
 
-    # source: voltha-e2e.yaml
+# source: voltha-e2e.yaml
     jobs:
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim-2.8-playground'
@@ -29,7 +29,7 @@
           code-branch: 'voltha-2.8'
           extraHelmFlags: '--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           time-trigger: "H H/23 * * *"
-          logLevel: 'INFO'
+          logLevel: 'DEBUG'
           testTargets: |
             - target: voltha-pm-data-single-kind-att
               workflow: att
@@ -56,7 +56,7 @@
           extraHelmFlags: '--set onu=2,pon=2 --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           olts: 2
           timeout: 180
-          logLevel: 'INFO'
+          logLevel: 'DEBUG'
           testTargets: |
             - target: voltha-pm-data-multiolt-kind-att
               workflow: att
@@ -136,4 +136,5 @@
               teardown: false
               logging: true
 
-# [EOF]
+
+# [EOF]          
