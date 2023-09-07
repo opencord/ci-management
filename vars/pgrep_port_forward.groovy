@@ -58,7 +58,7 @@ Boolean process(String proc, Map args) {
         '--list-full',
         '--full',  // hmmm: conditional use (?)
         "'${proc}",
-    ]
+    ].join(' ')
 
     print("""
 ** -----------------------------------------------------------------------
