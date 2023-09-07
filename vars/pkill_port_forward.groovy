@@ -80,7 +80,7 @@ Boolean process(String proc, Map args) {
         sh(
             label  : 'Display port forwarding (pre-pgrep-pkill)',
             script : """
-pgrep --uid \$(uid -u) --list-full --full 'port-forw'
+pgrep --uid \$(id -u) --list-full --full 'port-forw'
 """)
     }
 
@@ -90,7 +90,7 @@ pgrep --uid \$(uid -u) --list-full --full 'port-forw'
         script : """
 echo -e "\n** vars/pkill_port_forward.groovy [DEBUG]: pgrep-pkill check"
 if [[ \$(pgrep --count 'port-forw') -gt 0 ]]; then
-    pkill --uid \$(uid -u) --echo --list-full --full 'port-forw'
+    pkill --uid \$(id -u) --echo --list-full --full 'port-forw'
 fi
 """)
 
