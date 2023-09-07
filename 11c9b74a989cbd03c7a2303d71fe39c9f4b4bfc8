@@ -16,6 +16,23 @@
       "message": "updated the commit message to be specific about which parts where updated",
       "revId": "11c9b74a989cbd03c7a2303d71fe39c9f4b4bfc8",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "141db3ac_8dbd1285",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-07T07:33:53Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "11c9b74a989cbd03c7a2303d71fe39c9f4b4bfc8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
