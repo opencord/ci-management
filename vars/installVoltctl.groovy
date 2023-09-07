@@ -62,7 +62,7 @@ void fixPerms() {
       declare volt_cfg=\$HOME/.volt/config
 
       echo
-      echo "** Fixing perms: \$volt_cfg
+      echo "** Fixing perms: \$volt_cfg"
       mkdir -p \$volt_dir
       chmod -R u+w,go-rwx \$volt_dir
       chmod u=rwx \$volt_dir
