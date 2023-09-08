@@ -683,7 +683,7 @@ pipeline {
                         }
                         // groovylint-disable-next-line CatchException
                         catch (Exception err) {
-                            String iamexc = getIam(name)
+                            String iamexc = getIam(test)
                             println("** ${iamexc}: EXCEPTION ${err}")
                         }
                         finally {
