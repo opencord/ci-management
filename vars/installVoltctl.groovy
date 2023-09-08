@@ -47,30 +47,22 @@ void leave(String name) {
 }
 
 // -----------------------------------------------------------------------
-// Intent: Assign perms to fix access problems
-// . /bin/sh: 1: /home/jenkins/.volt/config: Permission denied
+// Intent: Create default ~/.volt/config to set correct ports and addresses for
+//         voltctl (which reads this configuration file at this path by default)
 // -----------------------------------------------------------------------
-void fixPerms() {
-    enter('fixPerms')
+void createVoltConf() {
+    enter('createVoltConf')
 
-    sh(label  : 'fixperms',
+    sh(label  : 'createVoltConf',
        script : """
 
-      umask 022
-
-      declare volt_dir=\$HOME/.volt
-      declare volt_cfg=\$HOME/.volt/config
-
-      echo
-      echo "** Fixing perms: \$volt_cfg"
-      mkdir -p \$volt_dir
-      chmod -R u+w,go-rwx \$volt_dir
-      chmod u=rwx \$volt_dir
-      touch \$volt_cfg
-      /bin/ls -l \$volt_dir
+      mkdir ~/.volt
+      voltctl config > ~/.volt/config
+      /bin/ls -l ~/.volt
+      cat ~/.volt/config
 """)
 
-    leave('fixPerms')
+    leave('createVoltConf')
     return
 }
 
@@ -193,7 +185,7 @@ Boolean process(String branch) {
 def call(String branch) {
     try {
         enter('main')
-        fixPerms()
+        createVoltConf()
         process(branch)
     }
     catch (Exception err) {  // groovylint-disable-line CatchException
