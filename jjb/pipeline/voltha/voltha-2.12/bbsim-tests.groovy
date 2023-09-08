@@ -445,30 +445,29 @@ echo -e '** Monitor pod-mem-consumption: LEAVE\n'
 void collectArtifacts(exitStatus) {
     script {
         String iam = getIam('collectArtifacts')
-        println("${iam}: ENTER (exitStatus=${exitStatus})")
-    }
+        enter("exitStatus=${exitStatus}")
 
-    echo '''
+        println("""
 
 ** -----------------------------------------------------------------------
+** IAM: $iam
 ** collectArtifacts
 ** -----------------------------------------------------------------------
-'''
+""")
+    }
 
     getPodsInfo("$WORKSPACE/${exitStatus}")
 
-    sh """
-  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log
-  """
+    sh(label  : 'kubectl logs > voltha.log',
+       script : """
+kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha \
+    > $WORKSPACE/${exitStatus}/voltha.log
+""")
 
     archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
 
     script {
-        println("${iam}: ENTER")
-        /*
-         pgrep_proc('kail-startup')
-         pkill_proc('kail')
-         */
+        enter('pkill _TAG=kail-startup')
         sh(label  : 'pgrep_proc - kill-pre',
            script : """
 pgrep --uid "\$(id -u)" --list-full --full 'kail-startup' || true
@@ -479,10 +478,10 @@ if [[ \$(pgrep --count '_TAG=kail') -gt 0 ]]; then
     pkill --uid "\$(id -u)" --echo --full 'kail'
 fi
 """)
-        println("${iam}: LEAVE")
+        leave('pkill _TAG=kail-startup')
     }
 
-    println("${iam}: ENTER RobotPublisher")
+    enter('RobotPublisher')
     step([$class: 'RobotPublisher',
           disableArchiveOutput: false,
           logFileName: '**/*/log*.html',
@@ -493,9 +492,9 @@ fi
           reportFileName: '**/*/report*.html',
           unstableThreshold: 0,
           onlyCritical: true])
-    println("${iam}: LEAVE RobotPublisher")
+    leave('RobotPublisher')
 
-    println("${iam}: LEAVE (exitStatus=${exitStatus})")
+    leave("exitStatus=${exitStatus}")
     return
 }
 
@@ -701,15 +700,15 @@ pipeline {
     {
         aborted {
             collectArtifacts('aborted')
-            script{ cleanupPortForward() }
+            script { cleanupPortForward() }
         }
         failure {
             collectArtifacts('failed')
-            script{ cleanupPortForward() }
+            script { cleanupPortForward() }
         }
         always {
             collectArtifacts('always')
-            script{ cleanupPortForward() }
+            script { cleanupPortForward() }
         }
     }
 } // pipeline
