@@ -17,7 +17,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
+String getIam(String func)
 {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/volthaStackDeploy.groovy'
@@ -66,25 +66,25 @@ def process(Map config)
         onosReplica: 1,
         adaptersToWait: 2,
     ]
-    
+
     def cfg = defaultConfig + config
-    
+
     def volthaStackChart = "onf/voltha-stack"
     def bbsimChart = "onf/bbsim"
-    
+
     if (cfg.localCharts) {
         volthaStackChart = "$WORKSPACE/voltha-helm-charts/voltha-stack"
         bbsimChart = "$WORKSPACE/voltha-helm-charts/bbsim"
-        
+
         sh """
       pushd $WORKSPACE/voltha-helm-charts/voltha-stack
       helm dep update
       popd
       """
     }
-    
+
     println "Deploying VOLTHA Stack with the following parameters: ${cfg}."
-    
+
     sh(label  : "Create VOLTHA Stack ${cfg.stackName}, (namespace=${cfg.volthaNamespace})",
        script : """
     helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} ${cfg.stackName} ${volthaStackChart} \
@@ -101,7 +101,7 @@ def process(Map config)
             sh(label  : "Create config[$i]: bbsimCfg${cfg.stackId}${i}.yaml",
                script : "rm -f $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml",
             )
-            
+
             if (cfg.workflow == "att" || cfg.workflow == "tt") {
                 def startingStag = 900
                 def serviceConfigFile = cfg.workflow
@@ -120,7 +120,7 @@ def process(Map config)
           """
             }
         }
-        
+
         sh(label  : "HELM: Create namespace=${cfg.volthaNamespace} bbsim${i}",
            script :  """
         helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} ${bbsimChart} \
@@ -129,11 +129,18 @@ def process(Map config)
         ${cfg.extraHelmFlags}
       """)
     }
-    
+
     sh(label  : "Wait for VOLTHA Stack ${cfg.stackName} to start",
        script : """
-#        set +x
+        # set +x # Noisy when uncommented
 
+cat << EOM
+
+** -----------------------------------------------------------------------
+** Wait for VOLTHA Stack ${cfg.stackName} to start
+** Display kubectl get pods prior to looping
+** -----------------------------------------------------------------------
+EOM
         # [joey]: debug
         kubectl get pods -n ${cfg.volthaNamespace} -l app.kubernetes.io/part-of=voltha --no-headers
 
@@ -142,8 +149,8 @@ def process(Map config)
           sleep 5
           voltha=\$(kubectl get pods -n ${cfg.volthaNamespace} -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
         done
-    """)
-    
+""")
+
     waitForAdapters(cfg)
 
     // also make sure that the ONOS config is loaded
@@ -152,17 +159,54 @@ def process(Map config)
 
     // Wait until the pod completed, meaning ONOS fully deployed
     sh(label   : '"Wait for ONOS Config loader to fully deploy',
-        script : """
-#        set +x
-        config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running | grep "0/" | wc -l)
-        while [[ \$config != 0 ]]; do
-          sleep 5
-          config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running | grep "0/" | wc -l)
-        done
-    """)
+       script : """#!/bin/bash
+
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** Wait for ONOS Config loader to fully deploy
+**   IAM: vars/volthaStackDeploy.groovy
+**   DBG: Polling loop initial kubectl get pods call
+** -----------------------------------------------------------------------
+** 17:06:07  Cancelling nested steps due to timeout
+** 17:06:07  Sending interrupt signal to process
+** 17:06:09  /w/workspace/verify_voltha-openolt-adapter_sanity-test-voltha-2.12@tmp/durable-18af2649/script.sh: line 7: 29716 Terminated              sleep 5
+** 17:06:09  script returned exit code 143
+** -----------------------------------------------------------------------
+EOM
+
+# set -euo pipefail
+set +x#        # Noisy when commented (default: uncommented)
+
+declare -i count=0
+vsd_log='volthaStackDeploy.tmp'
+touch \$vsd_log
+while true; do
+
+    ## Exit when the server begins showing signs of life
+    if grep -q '0/' \$vsd_log; then
+        echo 'volthaStackDeploy.groovy: Detected kubectl pods =~ 0/'
+        grep '0/' \$vsd_log
+        break
+    fi
+
+    sleep 5
+    count=\$((\$count - 1))
+
+    if [[ \$count -lt 1 ]]; then # [DEBUG] Display activity every minute or so
+        count=10
+        kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running \
+            | tee \$vsd_log
+    else
+        kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running> \$vsd_log
+    fi
+
+done
+rm -f \$vsd_log
+""")
 
     leave('process')
-    
+
     return
 }
 
@@ -171,7 +215,7 @@ def process(Map config)
 def call(Map config=[:])
 {
     try
-    {   
+    {
         enter('main')
         process(config)
     }
@@ -183,7 +227,6 @@ def call(Map config=[:])
     finally
     {
         leave('main')
-        println("** ${iam}: LEAVE")
     }
     return
 }
