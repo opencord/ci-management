@@ -176,7 +176,7 @@ cat <<EOM
 EOM
 
 # set -euo pipefail
-set +x#        # Noisy when commented (default: uncommented)
+set +x #        # Noisy when commented (default: uncommented)
 
 declare -i count=0
 vsd_log='volthaStackDeploy.tmp'
