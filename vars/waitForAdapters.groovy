@@ -47,7 +47,6 @@ void leave(String name) {
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 def getAdapters() {
-    String iam = getIam('getAdapters')
     String adapters = ''
 
     try {
@@ -66,7 +65,7 @@ def getAdapters() {
         adapters = 'SKIP' // why not just retry a few times (?)
     }
 
-    print("** ${iam}: returned $adapters")
+    leave("returned $adapters")
     return adapters
 }
 
@@ -149,8 +148,9 @@ def getAdaptersState(String adapters0)
             : 'CONTINUE'
     }
 
+    
     if (debug) {
-        println("** ${iam} return: [$ans]")
+        leave("return: [$ans]")
     }
     return ans
 } // getAdaptersState
@@ -229,14 +229,15 @@ EOM
     }
 
     println("** ${iam}: Tearing down port forwarding")
-    // pgrep_port_forward-212
+    Map pkpfArgs =\
+    [
+        'banner'     : true, // display banner for logging
+        'show_procs' : true, // display procs under consideration
+        'filler'     : true  // fix conditional trailing comma
+    ]
 
-    sh(label  : 'waitForAdapters: Tear down port forwarding',
-       script : """
-if [[ \$(pgrep --count 'port-forw') -gt 0 ]]; then
-    pkill --uid "\$(id -u)" --echo --full 'port-forw'
-fi
-""")
+    // [TODO] 'kubectl.*port-forward'
+    pkill_port_forward('port-forward', pkpfArgs)
 
     leave('process')
     return
@@ -246,13 +247,12 @@ fi
 // -----------------------------------------------------------------------
 def call(Map config=[:])
 {
-    String iam = getIam('main')
-
     try {
         enter('main')
         process(config)
     }
     catch (Exception err) {  // groovylint-disable-line CatchException
+        String iam = getIam('process')
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }

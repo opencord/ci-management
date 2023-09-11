@@ -17,7 +17,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
+String getIam(String func)
 {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/volthaStackDeploy.groovy'
@@ -153,7 +153,23 @@ def process(Map config)
     // Wait until the pod completed, meaning ONOS fully deployed
     sh(label   : '"Wait for ONOS Config loader to fully deploy',
         script : """
-#        set +x
+        # set +x#        # Noisy when commented (default: uncommented)
+
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** Wait for ONOS Config loader to fully deploy
+**   IAM: vars/volthaStackDeploy.groovy
+**   DBG: Polling loop initial kubectl get pods call
+** -----------------------------------------------------------------------
+** 17:06:07  Cancelling nested steps due to timeout
+** 17:06:07  Sending interrupt signal to process
+** 17:06:09  /w/workspace/verify_voltha-openolt-adapter_sanity-test-voltha-2.12@tmp/durable-18af2649/script.sh: line 7: 29716 Terminated              sleep 5
+** 17:06:09  script returned exit code 143
+** -----------------------------------------------------------------------
+EOM
+        kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running
+
         config=\$(kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running | grep "0/" | wc -l)
         while [[ \$config != 0 ]]; do
           sleep 5
@@ -183,7 +199,6 @@ def call(Map config=[:])
     finally
     {
         leave('main')
-        println("** ${iam}: LEAVE")
     }
     return
 }
