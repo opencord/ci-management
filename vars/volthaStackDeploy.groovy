@@ -17,8 +17,7 @@
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-String getIam(String func)
-{
+String getIam(String func) {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/volthaStackDeploy.groovy'
     String iam = [src, func].join('::')
@@ -46,132 +45,77 @@ void leave(String name) {
 }
 
 // -----------------------------------------------------------------------
+// Intent:
 // -----------------------------------------------------------------------
-def process(Map config)
-{
-    enter('process')
-
-    // note that I can't define this outside the function as there's no global scope in Groovy
-    def defaultConfig = [
-        bbsimReplica: 1,
-        infraNamespace: "infra",
-        volthaNamespace: "voltha",
-        stackName: "voltha",
-        stackId: 1, // NOTE this is used to differentiate between BBSims across multiple stacks
-        workflow: "att",
-        withMacLearning: false,
-        withFttb: false,
-        extraHelmFlags: "",
-        localCharts: false,
-        onosReplica: 1,
-        adaptersToWait: 2,
-    ]
-
-    def cfg = defaultConfig + config
-
-    def volthaStackChart = "onf/voltha-stack"
-    def bbsimChart = "onf/bbsim"
-
-    if (cfg.localCharts) {
-        volthaStackChart = "$WORKSPACE/voltha-helm-charts/voltha-stack"
-        bbsimChart = "$WORKSPACE/voltha-helm-charts/bbsim"
-
-        sh """
-      pushd $WORKSPACE/voltha-helm-charts/voltha-stack
-      helm dep update
-      popd
-      """
-    }
-
-    println "Deploying VOLTHA Stack with the following parameters: ${cfg}."
+void deployVolthaStack(Map cfg) {
+    enter('deployVolthaStack')
 
     sh(label  : "Create VOLTHA Stack ${cfg.stackName}, (namespace=${cfg.volthaNamespace})",
        script : """
-    helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} ${cfg.stackName} ${volthaStackChart} \
+
+helm upgrade --install --create-namespace \
+          -n ${cfg.volthaNamespace} ${cfg.stackName} ${cfg.volthaStackChart} \
           --set global.stack_name=${cfg.stackName} \
           --set global.voltha_infra_name=voltha-infra \
           --set voltha.onos_classic.replicas=${cfg.onosReplica} \
           --set global.voltha_infra_namespace=${cfg.infraNamespace} \
           ${cfg.extraHelmFlags}
-    """)
+""")
 
-    for(int i = 0;i<cfg.bbsimReplica;i++) {
+    for (int i = 0; i < cfg.bbsimReplica; i++) {
         // NOTE we don't need to update the tag for DT
         script {
             sh(label  : "Create config[$i]: bbsimCfg${cfg.stackId}${i}.yaml",
                script : "rm -f $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml",
             )
 
-            if (cfg.workflow == "att" || cfg.workflow == "tt") {
-                def startingStag = 900
+            if (c1fg.workflow == 'att' || cfg.workflow == 'tt') {
+                int startingStag = 900
                 def serviceConfigFile = cfg.workflow
                 if (cfg.withMacLearning && cfg.workflow == 'tt') {
-                    serviceConfigFile = "tt-maclearner"
+                    serviceConfigFile = 'tt-maclearner'
                 }
                 def bbsimCfg = readYaml file: "$WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml"
                 // NOTE we assume that the only service that needs a different s_tag is the first one in the list
-                bbsimCfg["servicesConfig"]["services"][0]["s_tag"] = startingStag + i
+                bbsimCfg['servicesConfig']['services'][0]['s_tag'] = startingStag + i
                 println "Using BBSim Service config ${bbsimCfg['servicesConfig']}"
                 writeYaml file: "$WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml", data: bbsimCfg
             } else {
                 // NOTE if it's DT just copy the file over
-                sh """
-          cp $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml
-          """
-            }
-        }
+                sh(label  : 'DT install',
+                   script : """
+cp $WORKSPACE/voltha-helm-charts/examples/${cfg.workflow}-values.yaml \
+   $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml
+          """)
+            } // if (cfg)
+        } // script
 
         sh(label  : "HELM: Create namespace=${cfg.volthaNamespace} bbsim${i}",
            script :  """
-        helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} ${bbsimChart} \
+        helm upgrade --install --create-namespace -n ${cfg.volthaNamespace} bbsim${i} ${cfg.bbsimChart} \
         --set olt_id="${cfg.stackId}${i}" \
         -f $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml \
         ${cfg.extraHelmFlags}
-      """)
-    }
-
-    sh(label  : "Wait for VOLTHA Stack ${cfg.stackName} to start",
-       script : """
-        # set +x # Noisy when uncommented
-
-cat << EOM
-
-** -----------------------------------------------------------------------
-** Wait for VOLTHA Stack ${cfg.stackName} to start
-** Display kubectl get pods prior to looping
-** -----------------------------------------------------------------------
-EOM
-        # [joey]: debug
-        kubectl get pods -n ${cfg.volthaNamespace} -l app.kubernetes.io/part-of=voltha --no-headers
-
-        voltha=\$(kubectl get pods -n ${cfg.volthaNamespace} -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
-        while [[ \$voltha != 0 ]]; do
-          sleep 5
-          voltha=\$(kubectl get pods -n ${cfg.volthaNamespace} -l app.kubernetes.io/part-of=voltha --no-headers | grep "0/" | wc -l)
-        done
 """)
+    } // for
 
-    waitForAdapters(cfg)
+    leave('deployVolthaStack')
+    return
+}
 
-    // also make sure that the ONOS config is loaded
-    // NOTE that this is only required for VOLTHA-2.8
-    println "Wait for ONOS Config loader to complete"
+// -----------------------------------------------------------------------
+// Intent: Wait until the pod completed, meaning ONOS fully deployed
+// -----------------------------------------------------------------------
+void launchVolthaStack(Map cfg) {
+    enter('launchVolthaStack')
 
-    // Wait until the pod completed, meaning ONOS fully deployed
-    sh(label   : '"Wait for ONOS Config loader to fully deploy',
-       script : """#!/bin/bash
+    sh(label   : "Wait for VOLTHA Stack ${cfg.stackName}::${cfg.volthaNamespace} to start",
+       script : """
 
 cat <<EOM
 
 ** -----------------------------------------------------------------------
-** Wait for ONOS Config loader to fully deploy
-**   IAM: vars/volthaStackDeploy.groovy
-**   DBG: Polling loop initial kubectl get pods call
-** -----------------------------------------------------------------------
-** 17:06:07  Cancelling nested steps due to timeout
-** 17:06:07  Sending interrupt signal to process
-** 17:06:09  /w/workspace/verify_voltha-openolt-adapter_sanity-test-voltha-2.12@tmp/durable-18af2649/script.sh: line 7: 29716 Terminated              sleep 5
-** 17:06:09  script returned exit code 143
+** Wait for VOLTHA Stack ${cfg.stackName}::${cfg.volthaNamespace} to start
 ** -----------------------------------------------------------------------
 EOM
 
@@ -195,16 +139,66 @@ while true; do
 
     if [[ \$count -lt 1 ]]; then # [DEBUG] Display activity every minute or so
         count=10
-        kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running \
+        kubectl get pods -n ${cfg.volthaNamespace} \
+            -l app.kubernetes.io/part-of=voltha --no-headers \
             | tee \$vsd_log
     else
-        kubectl get pods -l app=onos-config-loader -n ${cfg.infraNamespace} --no-headers --field-selector=status.phase=Running> \$vsd_log
+        kubectl get pods -n ${cfg.volthaNamespace} \
+            -l app.kubernetes.io/part-of=voltha --no-headers \
+            > \$vsd_log
     fi
 
 done
 rm -f \$vsd_log
 """)
 
+    leave('launchVolthaStack')
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+def process(Map config) {
+    enter('process')
+
+    // note that I can't define this outside the function as there's no global scope in Groovy
+    Map defaultConfig = [
+        bbsimReplica:    1,
+        infraNamespace:  'infra',
+        volthaNamespace: 'voltha',
+        stackName:       'voltha',
+        stackId: 1, // NOTE this is used to differentiate between BBSims across multiple stacks
+        workflow:        'att',
+        withMacLearning: false,
+        withFttb:        false,
+        extraHelmFlags:  '',
+        localCharts:     false,
+        onosReplica:     1,
+        adaptersToWait:  2,
+    ]
+
+    Map cfg = defaultConfig + config
+
+    // Augment config map
+    cfg.volthaStackChart = 'onf/voltha-stack'
+    cfg.bbsimChart       = 'onf/bbsim'
+
+    if (cfg.localCharts) {
+        cfg.volthaStackChart = "$WORKSPACE/voltha-helm-charts/voltha-stack"
+        cfg.bbsimChart       = "$WORKSPACE/voltha-helm-charts/bbsim"
+
+        sh(label  : 'HELM: Update voltha-stack deps',
+           script : """
+      pushd $WORKSPACE/voltha-helm-charts/voltha-stack
+      helm dep update
+      popd
+""")
+    }
+
+    println "Deploying VOLTHA Stack with the following parameters: ${cfg}."
+    deployVolthaStack(cfg)
+    launchVolthaStack(cfg)
+    waitForAdapters(cfg)
     leave('process')
 
     return
@@ -212,10 +206,8 @@ rm -f \$vsd_log
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def call(Map config=[:])
-{
-    try
-    {
+def call(Map config=[:]) {
+    try {
         enter('main')
         process(config)
     }
@@ -224,8 +216,7 @@ def call(Map config=[:])
         println("** volthaStackDeploy.groovy: EXCEPTION ${err}")
         throw err
     }
-    finally
-    {
+    finally {
         leave('main')
     }
     return
