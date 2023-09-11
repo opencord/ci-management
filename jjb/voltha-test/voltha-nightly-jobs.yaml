@@ -1,4 +1,12 @@
 ---
+# define git source for pipeline-scripts used by jenkins job builder
+- scm:
+    name: ci-management
+    scm:
+      - git:
+          url: https://gerrit.opencord.org/ci-management
+          branches:
+            - origin/master
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
 # to use in a job: `parameters: *voltha-build-job-parameters`
@@ -253,7 +261,10 @@
 
     concurrent: true
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
 # -----------------------------------------------------------------------
 # VOLTHA Build Jobs (periodic)
@@ -297,7 +308,10 @@
 
     concurrent: true
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
     triggers:
       - timed: |
@@ -346,7 +360,10 @@
 
     concurrent: true
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
     triggers:
       - timed: |
@@ -492,7 +509,10 @@
     concurrent: true
 
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
     triggers:
       - reverse:
@@ -637,7 +657,10 @@
     concurrent: true
 
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
     triggers:
       - reverse:
@@ -776,7 +799,10 @@
     concurrent: true
 
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
     triggers:
       - timed: |
@@ -920,7 +946,10 @@
     concurrent: true
 
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
 # -----------------------------------------------------------------------
 # VOLTHA DMI Test Job
@@ -1162,7 +1191,10 @@
 
     concurrent: true
     project-type: pipeline
-    dsl: !include-raw-escape: ../pipeline/{pipeline-script}
+    pipeline-scm:
+      script-path: jjb/pipeline/{pipeline-script}
+      scm:
+        - ci-management
 
     triggers:
       - timed: |
