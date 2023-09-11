@@ -16,6 +16,23 @@
       "message": "WIP",
       "revId": "9a766482eff2822adaa7c3ea02db8526ac5f1422",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "90acb299_ad235610",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-11T15:27:26Z",
+      "side": 1,
+      "message": "LGTM",
+      "revId": "9a766482eff2822adaa7c3ea02db8526ac5f1422",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
