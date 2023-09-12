@@ -79,6 +79,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -109,6 +110,7 @@
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: true
@@ -136,6 +138,7 @@
           disable-job: true
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -151,6 +154,7 @@
           disable-job: true
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -183,6 +187,7 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: true
@@ -197,6 +202,7 @@
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: true
@@ -227,6 +233,7 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -242,6 +249,7 @@
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           profile: '1T8GEM'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -270,6 +278,7 @@
           disable-job: true
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -284,6 +293,7 @@
           disable-job: true
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -316,6 +326,7 @@
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-FTTB'
           power-switch: true
@@ -331,6 +342,7 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           profile: '1T4GEM-FTTB'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -347,6 +359,7 @@
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           profile: '1T4GEM-FTTB'
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -365,6 +378,7 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-FTTB'
           power-switch: true
@@ -381,6 +395,7 @@
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-FTTB'
           power-switch: true
@@ -395,6 +410,7 @@
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           profile: '1T8GEM'
           reinstall-olt: true
           num-of-onos: '3'
@@ -411,6 +427,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -427,6 +444,7 @@
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           reinstall-olt: true
           num-of-onos: '3'
           num-of-atomix: '3'
@@ -443,6 +461,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -457,6 +476,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
@@ -472,6 +492,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: true
@@ -488,6 +509,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
@@ -503,6 +525,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: true
@@ -520,6 +543,7 @@
           disable-job: true
           release: 'voltha-2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
@@ -535,6 +559,7 @@
           disable-job: true
           release: 'voltha-2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
@@ -551,6 +576,7 @@
           disable-job: true
           release: 'voltha-2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: true
@@ -567,6 +593,7 @@
           disable-job: true
           release: 'voltha-2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: true
@@ -583,6 +610,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
@@ -598,6 +626,7 @@
           disable-job: true
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           power-switch: true
@@ -638,6 +667,7 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           profile: '1T8GEM'
           reinstall-olt: false
           extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_voltha' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore"
@@ -659,6 +689,7 @@
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           profile: '1T8GEM'
           reinstall-olt: false
           extraHelmFlags: "--set adapter_adtran_olt.kv_store_data_prefix='service/voltha/voltha_voltha' --set network.netconfUserSecret='' --set adapter_adtran_olt.topics.core_topic=voltha_voltha_rwcore"
@@ -696,6 +727,7 @@
           disable-job: true
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -712,6 +744,7 @@
           disable-job: true
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           name-extension: '_DT'
           work-flow: 'DT'
           test-repo: 'voltha-system-tests'
@@ -730,6 +763,7 @@
           work-flow: 'DT'
           release: 'master'
           branch: 'master'
+          pipeline-branch: 'master'
           profile: 'Default'
           installVolthaInfra: true
           installVolthaStack: false
@@ -755,6 +789,7 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-branch: 'voltha-2.11'
           profile: 'Default'
           installVolthaInfra: true
           installVolthaStack: false
@@ -778,6 +813,7 @@
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-branch: 'voltha-2.12'
           profile: 'Default'
           installVolthaInfra: true
           installVolthaStack: false

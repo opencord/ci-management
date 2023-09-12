@@ -1,12 +1,4 @@
 ---
-# define git source for pipeline-scripts used by jenkins job builder
-- scm:
-    name: ci-management
-    scm:
-      - git:
-          url: https://gerrit.opencord.org/ci-management
-          branches:
-            - origin/master
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
 # to use in a job: `parameters: *voltha-build-job-parameters`
@@ -245,6 +237,7 @@
     release: 'master'
     name-extension: ''
     branch: 'master'
+    pipeline-branch: 'master'
     configurePod: true
     volthaHelmChartsChange: ''
     profile: 'Default'
@@ -262,9 +255,12 @@
     concurrent: true
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
 # -----------------------------------------------------------------------
 # VOLTHA Build Jobs (periodic)
@@ -292,6 +288,7 @@
     release: 'master'
     name-extension: ''
     branch: 'master'
+    pipeline-branch: 'master'
     configurePod: true
     volthaHelmChartsChange: ''
     profile: 'Default'
@@ -309,9 +306,12 @@
     concurrent: true
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - timed: |
@@ -344,6 +344,7 @@
     release: 'master'
     name-extension: ''
     branch: 'master'
+    pipeline-branch: 'master'
     configurePod: true
     volthaHelmChartsChange: ''
     profile: 'Default'
@@ -361,9 +362,12 @@
     concurrent: true
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - timed: |
@@ -387,6 +391,7 @@
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
+    pipeline-branch: 'master'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
@@ -510,9 +515,12 @@
 
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - reverse:
@@ -535,6 +543,7 @@
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/playground/voltha-physical-functional-tests.groovy'
+    pipeline-branch: 'master'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
@@ -658,9 +667,12 @@
 
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - reverse:
@@ -684,6 +696,7 @@
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
+    pipeline-branch: 'master'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
@@ -800,9 +813,12 @@
 
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - timed: |
@@ -826,6 +842,7 @@
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/master/voltha-physical-functional-tests.groovy'
+    pipeline-branch: 'master'
     manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
@@ -947,9 +964,12 @@
 
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
 # -----------------------------------------------------------------------
 # VOLTHA DMI Test Job
@@ -980,6 +1000,7 @@
     release: 'master'
     name-extension: ''
     branch: 'master'
+    pipeline-branch: 'master'
     configurePod: true
     volthaHelmChartsChange: ''
     profile: 'Default'
@@ -1192,9 +1213,12 @@
     concurrent: true
     project-type: pipeline
     pipeline-scm:
-      script-path: jjb/pipeline/{pipeline-script}
       scm:
-        - ci-management
+        - git:
+            url: https://github.com/jklare/ci-management.git
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - timed: |
