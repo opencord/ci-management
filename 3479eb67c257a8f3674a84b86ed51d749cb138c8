@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "687cc1d2_4b1bb5e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-12T08:54:38Z",
+      "side": 1,
+      "message": "Before this can go in, we need to have at least the branches \u0027voltha-2.11\u0027, \u0027voltha-2.12\u0027 and \u0027master\u0027 in our \u0027ci-management\u0027 repository to allow the pipelines to pull in the pipeline-scripts from those respective branches. I would suggest to create the branches \u0027voltha-2.11\u0027 and \u0027voltha-2.12\u0027 from the current master, since there is no \u0027correct\u0027 older state where we could branch off. All further refactoring of the pipelines touched in this job can then be done in master without affecting the older versions of the pipeline scripts.",
+      "revId": "3479eb67c257a8f3674a84b86ed51d749cb138c8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
