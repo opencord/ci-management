@@ -69,7 +69,7 @@ helm upgrade --install --create-namespace \
                script : "rm -f $WORKSPACE/bbsimCfg${cfg.stackId}${i}.yaml",
             )
 
-            if (c1fg.workflow == 'att' || cfg.workflow == 'tt') {
+            if (cfg.workflow == 'att' || cfg.workflow == 'tt') {
                 int startingStag = 900
                 def serviceConfigFile = cfg.workflow
                 if (cfg.withMacLearning && cfg.workflow == 'tt') {
@@ -123,7 +123,7 @@ EOM
 set +x #        # Noisy when commented (default: uncommented)
 
 declare -i count=0
-vsd_log='volthaStackDeploy.tmp'
+avsd_log='volthaStackDeploy.tmp'
 touch \$vsd_log
 while true; do
 
@@ -157,8 +157,63 @@ rm -f \$vsd_log
 }
 
 // -----------------------------------------------------------------------
+// Intent: Wait until the pod completed, meaning ONOS fully deployed
 // -----------------------------------------------------------------------
-def process(Map config) {
+void waitForOnosDeploy(Map cfg) {
+    enter('waitForOnosDeploy')
+
+    sh(label  : 'Wait for ONOS full deployment',
+       Scriptx : """
+
+cat <<EOM
+
+** -----------------------------------------------------------------------
+** Wait for ONOS full deployment
+** -----------------------------------------------------------------------
+EOM
+
+# set -euo pipefail
+set +x #        # Noisy when commented (default: uncommented)
+
+declare -i count=0
+avsd_log='volthaStackDeploy.tmp'
+touch \$vsd_log
+while true; do
+
+    ## Exit when the server begins showing signs of life
+    if grep -q '0/' \$vsd_log; then
+        echo 'volthaStackDeploy.groovy: Detected kubectl pods =~ 0/'
+        grep '0/' \$vsd_log
+        break
+    fi
+
+    sleep 5
+    count=\$((\$count - 1))
+
+    if [[ \$count -lt 1 ]]; then # [DEBUG] Display activity every minute or so
+        count=10
+        kubectl get pods -l app=onos-config-loader \
+            -n ${cfg.infraNamespace} --no-headers \
+            --field-selector=status.phase=Running \
+            | tee \$vsd_log
+    else
+        kubectl get pods -l app=onos-config-loader \
+            -n ${cfg.infraNamespace} --no-headers \
+            --field-selector=status.phase=Running \
+            > \$vsd_log
+    fi
+
+done
+rm -f \$vsd_log
+""")
+
+    leave('waitForOnosDeploy')
+    return
+}
+
+// -----------------------------------------------------------------------
+// -----------------------------------------------------------------------
+void process(Map config) {
     enter('process')
 
     // note that I can't define this outside the function as there's no global scope in Groovy
@@ -199,6 +254,7 @@ def process(Map config) {
     deployVolthaStack(cfg)
     launchVolthaStack(cfg)
     waitForAdapters(cfg)
+    waitForOnosDeploy(cfg)
     leave('process')
 
     return
