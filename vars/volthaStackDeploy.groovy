@@ -123,7 +123,7 @@ EOM
 set +x #        # Noisy when commented (default: uncommented)
 
 declare -i count=0
-avsd_log='volthaStackDeploy.tmp'
+vsd_log='volthaStackDeploy.tmp'
 touch \$vsd_log
 while true; do
 
@@ -176,7 +176,7 @@ EOM
 set +x #        # Noisy when commented (default: uncommented)
 
 declare -i count=0
-avsd_log='volthaStackDeploy.tmp'
+vsd_log='volthaStackDeploy.tmp'
 touch \$vsd_log
 while true; do
 
