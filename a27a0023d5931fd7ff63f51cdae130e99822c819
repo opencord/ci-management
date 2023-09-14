@@ -16,6 +16,24 @@
       "message": "why it the .git removed in this commit and why is the order of \"defaultremote\" and \"project\" switched ? those changes seem unrelated to the commit and maybe should be done in a different commit if they are intentional and needed",
       "revId": "a27a0023d5931fd7ff63f51cdae130e99822c819",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "15aaf426_eeea055b",
+        "filename": ".gitreview",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-14T12:50:42Z",
+      "side": 1,
+      "message": "Branches were created by a one-off script, project \u0026 defaultremote are swapped due to explicit removal of values so they can be re-added with an updated values.\n\nAltering the branch that a patch will merge with by default seems like basic functionality for activity for branch creation.  If performed as a separate step that creates a window where people could push to master VS the actual branch.\n\nA chaser patch is on the way to suffix .git",
+      "parentUuid": "c9bac7cc_8c0f07d5",
+      "revId": "a27a0023d5931fd7ff63f51cdae130e99822c819",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
