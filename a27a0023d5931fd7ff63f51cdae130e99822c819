@@ -52,6 +52,24 @@
       "parentUuid": "15aaf426_eeea055b",
       "revId": "a27a0023d5931fd7ff63f51cdae130e99822c819",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c3490e6_f8d94e21",
+        "filename": ".gitreview",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-14T15:29:59Z",
+      "side": 1,
+      "message": ".git suffix removal was an oversight:\n\nOriginal version of the script ran \"git remote -v show\" to query for repository name from (pwd\u003d\u003dsandbox).  This project value contains a \u0027.git\u0027 suffix.\n\nLater logic was generalized to accept a --repo argument and perform a clean checkout prior to branching.  Writing the the argument passed verbatim had a side effect of truncating the suffix.\n\nWe can retain the \u0027.git\u0027 suffix given this is a known/good value, that was not the overall intent.  Would have to verify gerrit/git is clever enough to infer the suffix before trying to prune it and simplify the string.\n\n\nAgreed on documenting/commenting why config line ordering was changed.",
+      "parentUuid": "53c24b29_92ff7daf",
+      "revId": "a27a0023d5931fd7ff63f51cdae130e99822c819",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
