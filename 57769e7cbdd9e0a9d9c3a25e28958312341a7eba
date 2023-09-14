@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e49bdf8e_d3309a7d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-14T21:05:36Z",
+      "side": 1,
+      "message": "will be nice to have Jan(s) scm based patches in the repo to avoid this type of sillyness to regenerate pipeline jobs.",
+      "revId": "57769e7cbdd9e0a9d9c3a25e28958312341a7eba",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
