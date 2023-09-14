@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c9bac7cc_8c0f07d5",
+        "filename": ".gitreview",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-14T07:33:48Z",
+      "side": 1,
+      "message": "why it the .git removed in this commit and why is the order of \"defaultremote\" and \"project\" switched ? those changes seem unrelated to the commit and maybe should be done in a different commit if they are intentional and needed",
+      "revId": "a27a0023d5931fd7ff63f51cdae130e99822c819",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
