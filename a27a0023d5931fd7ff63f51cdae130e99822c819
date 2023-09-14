@@ -34,6 +34,24 @@
       "parentUuid": "c9bac7cc_8c0f07d5",
       "revId": "a27a0023d5931fd7ff63f51cdae130e99822c819",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "53c24b29_92ff7daf",
+        "filename": ".gitreview",
+        "patchSetId": 1
+      },
+      "lineNbr": 5,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-14T13:52:02Z",
+      "side": 1,
+      "message": "If there is a reason to remove the .git in this commit, i am perfectly fine with that, as long as it is mentioned (inlcuding the reason) in the commit message. Reordering seems not necessary, but if your script still does that it should at least be mentioned in the commit message (including the reason). In general i do not have anything against minor style changes in commits, but those always make the review a bit harder, since it gets more difficult to spot the relevant change. For this one it is still easy enough, since there are only three lines involved.",
+      "parentUuid": "15aaf426_eeea055b",
+      "revId": "a27a0023d5931fd7ff63f51cdae130e99822c819",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
