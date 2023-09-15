@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5f96ca09_ed65d41f",
+        "filename": "jjb/voltha-test/voltha-nightly-jobs.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-15T15:14:55Z",
+      "side": 1,
+      "message": "Consider appending {pipeline-branch} in the description.\nVisible in the jenkins UI configure window when pipeline or branch is not mentioned in the job name.",
+      "revId": "a9fe194cc3d0ffbe3743b0ea6fddd0cb14c2e80a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bfc81192_da260f37",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 141,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-15T15:14:55Z",
+      "side": 1,
+      "message": "Enhancement for later:\n\nTo help guard against typos it would be useful having the ability to define a single string (?- voltha_version\u003d) then derive {release, branch, pipeline-branch, ...} attributes from it to avoid making several config edits at release time.\n\nA macro or template used as a dependency or would expand into set of attributes would be optimal:\n\nvoltha-version: \u00272.13\u0027\n--------------------\nbranch : voltha-{voltha-version}\nrelease: {voltha-version}\n...",
+      "revId": "a9fe194cc3d0ffbe3743b0ea6fddd0cb14c2e80a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
