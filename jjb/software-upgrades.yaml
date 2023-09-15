@@ -11,6 +11,7 @@
       - 'software-upgrades-test-master':
           name: 'periodic-software-upgrade-test-bbsim'
           pipeline-script: 'voltha/master/software-upgrades.groovy'
+          pipeline-branch: 'master'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'master'
           aaa-version: '2.9.0.SNAPSHOT'
@@ -46,6 +47,7 @@
       - 'software-upgrades-test-voltha-2.12':
           name: 'periodic-software-upgrade-test-bbsim-2.12'
           pipeline-script: 'voltha/voltha-2.12/software-upgrades.groovy'
+          pipeline-branch: 'voltha-2.12'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'voltha-2.12'
           aaa-version: '2.10.3'
@@ -80,6 +82,7 @@
       - 'software-upgrades-test-voltha-2.11':
           name: 'periodic-software-upgrade-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/software-upgrades.groovy'
+          pipeline-branch: 'voltha-2.11'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'voltha-2.11'
           aaa-version: '2.9.0'
@@ -331,7 +334,13 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://gerrit.opencord.org/ci-management
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - timed: |
@@ -529,7 +538,13 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://gerrit.opencord.org/ci-management
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - timed: |
@@ -728,7 +743,13 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://gerrit.opencord.org/ci-management
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - timed: |
