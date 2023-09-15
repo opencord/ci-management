@@ -2093,6 +2093,7 @@
     id: 'voltha-periodic-test'
     name: '{name}'
     pipeline-script: 'voltha/master/bbsim-tests.groovy'
+    pipeline-branch: 'master'
     build-node: 'ubuntu18.04-basebuild-8c-15g'
     robot-args: ''
     gerritProject: ''
@@ -2217,7 +2218,13 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://gerrit.opencord.org/ci-management
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       # patchset jobs will set this to "0 0 29 2 *" (feb 29th, it's once every 4 years)
@@ -2246,6 +2253,7 @@
     name: 'verify_{project}_sanity-test{name-extension}'
     build-node: 'ubuntu18.04-basebuild-4c-8g'
     pipeline-script: 'voltha/master/bbsim-tests.groovy'
+    pipeline-branch: 'master'
     override-branch: '$GERRIT_BRANCH'
     sandbox: true
     build-timeout: 20
@@ -2383,7 +2391,13 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://gerrit.opencord.org/ci-management
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - gerrit:
@@ -2569,6 +2583,7 @@
                   Copyright 2019-2023 Open Networking Foundation (ONF) and the ONF Contributors
     sandbox: true
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
+    pipeline-branch: 'master'
     default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
     build-node: 'tucson-pod'
     config-pod: 'tucson-pod'
@@ -2590,7 +2605,14 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://gerrit.opencord.org/ci-management
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
+
 
     triggers:
       - gerrit:
@@ -2626,6 +2648,7 @@
     oltDebVersionMaster: 'openolt_asfvolt16-3.7.4-3b190f027136e845c5850a5b1a97897ce2b74ebf-40G-NNI.deb'
     oltDebVersionVoltha23: 'openolt_asfvolt16-3.4.9-e2a9597f3d690fe3a0ea0df244571dfc9e8c2833-40G-NNI.deb'
     pipeline-script: 'voltha/master/tucson-build-and-test.groovy'
+    pipeline-branch: 'master'
     trigger-string: 'hardware test'
     default-test-args: '-i sanityORDeleteOLT -i PowerSwitch -X'
     volthaSystemTestsChange: ''
@@ -2645,7 +2668,13 @@
     project-type: pipeline
     concurrent: true
 
-    dsl: !include-raw-escape: pipeline/{pipeline-script}
+    pipeline-scm:
+      scm:
+        - git:
+            url: https://gerrit.opencord.org/ci-management
+            branches:
+              - origin/{pipeline-branch}
+      script-path: jjb/pipeline/{pipeline-script}
 
     triggers:
       - gerrit:
