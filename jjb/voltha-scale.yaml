@@ -30,7 +30,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-experimental-multi-stack'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/voltha-scale-multi-stack.groovy'
           pipeline-branch: 'master'
           # trigger on Feb 29th (a.k.a only trigger it manually)
           time-trigger: "H 0 29 2 *"
@@ -223,7 +223,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-att-subscribers'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/voltha-scale-multi-stack.groovy'
           pipeline-branch: 'master'
           time-trigger: "H H/4 * * *"
           disable-job: true
@@ -247,7 +247,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/voltha-scale-multi-stack.groovy'
           pipeline-branch: 'master'
           time-trigger: "H H/4 * * *"
           disable-job: true
@@ -271,7 +271,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-10-stacks-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-2'
-          pipeline-script: 'voltha/master/voltha-scale-multi-stack.groovy'
+          pipeline-script: 'voltha/voltha-scale-multi-stack.groovy'
           pipeline-branch: 'master'
           time-trigger: "H H/4 * * *"
           disable-job: true
@@ -910,7 +910,7 @@
       # LWC pipeline
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-lwc-dt-512'
-          pipeline-script: 'voltha/master/voltha-scale-lwc-test.groovy'
+          pipeline-script: 'voltha/voltha-scale-lwc-test.groovy'
           pipeline-branch: 'master'
           build-node: 'berlin-community-pod-2'
           time-trigger: "H H * * *"
@@ -930,7 +930,7 @@
 
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-lwc-dt-256'
-          pipeline-script: 'voltha/master/voltha-scale-lwc-test.groovy'
+          pipeline-script: 'voltha/voltha-scale-lwc-test.groovy'
           pipeline-branch: 'master'
           build-node: 'berlin-community-pod-2'
           time-trigger: "H H * * *"
@@ -1214,7 +1214,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # default values
-    pipeline-script: 'voltha/master/voltha-scale-test.groovy'
+    pipeline-script: 'voltha/voltha-scale-test.groovy'
     pipeline-branch: 'master'
     release: master
 
