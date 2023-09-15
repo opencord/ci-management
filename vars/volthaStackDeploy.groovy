@@ -140,6 +140,7 @@ declare -i debug=1       # uncomment to enable debugging
 vsd_log='volthaStackDeploy.tmp'
 touch \$vsd_log
 
+declare -i rc=0          # exit status
 while true; do
 
     # Gather
@@ -164,12 +165,25 @@ while true; do
     if grep -q -e 'ContainerCreating' \$vsd_log; then
         echo -e '\nvolthaStackDeploy.groovy: ContainerCrating active'
         [[ -v debug ]] && grep -e 'ContainerCreating' \$vsd_log
+
     elif grep -q -e '0/' \$vsd_log; then
         echo -e '\nvolthaStackDeploy.groovy: Waiting for status=Running'
         [[ -v debug ]] && grep -e '0/' \$vsd_log
+
     elif ! grep -q '/' \$vsd_log; then
         echo -e '\nvolthaStackDeploy.groovy: Waiting for initial pod activity'
         [[ ! -v verbose ]] && { cat \$vsd_log; }
+
+    # -----------------------------------------------------------------------
+    # voltha-adapter-openolt-68c84bf786-8xsfc   0/1   CrashLoopBackOff 2 69s
+    # voltha-adapter-openolt-68c84bf786-8xsfc   0/1   Error            3 85s
+    # -----------------------------------------------------------------------
+    elif grep -q 'Error' \$vsd_log; then
+        echo -e '\nvolthaStackDeploy.groovy: Detected cluster state=Error'
+        cat \$vsd_log
+        rc=1 # fatal
+        break
+
     # -----------------------------------------------------------------------
     # An extra conditon needed here but shell coding is tricky:
     #    "svc x/y Running 0 6s
@@ -187,6 +201,7 @@ while true; do
 
 done
 rm -f \$vsd_log
+exit \$rc
 """)
 
     leave('launchVolthaStack')
