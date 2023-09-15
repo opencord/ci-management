@@ -85,7 +85,7 @@
           # 20230828 - while master branch did not (?)  Script does
           # 20230828 - show in the jenkins UI but w/o updates. 
           # ---------------------------------------------------------
-          pipeline-script: 'voltha/master/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'master'
           time-trigger: "H H/23 * * *"         # Build daily at 11pm
 #          time-trigger: "H/30 * * * *"        # Build every 30 min
@@ -154,7 +154,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-test-bbsim-master'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
-          pipeline-script: 'voltha/master/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'master'
           code-branch: 'master'
           time-trigger: "@daily"

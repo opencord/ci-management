@@ -10,7 +10,7 @@
     jobs:
       - 'software-upgrades-test-master':
           name: 'periodic-software-upgrade-test-bbsim'
-          pipeline-script: 'voltha/master/software-upgrades.groovy'
+          pipeline-script: 'voltha/software-upgrades.groovy'
           pipeline-branch: 'master'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'master'
