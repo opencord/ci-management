@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f90b272_f271466d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-15T15:01:47Z",
+      "side": 1,
+      "message": "LGTM\n\nv2.8 and playground configs can be deleted outright when ready.",
+      "revId": "8b7b3dffe26977e278f99465091abd58859bef31",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
