@@ -139,7 +139,7 @@ declare -i count=0
 declare -i debug=1       # uncomment to enable debugging
 # declare -i verbose=1   # uncomment to enable debugging
 vsd_log='volthaStackDeploy.tmp'
-touch \$vsd_log
+echo > \$vsd_log
 
 declare -i rc=0          # exit status
 while true; do
@@ -191,6 +191,8 @@ while true; do
     #    Verify (x == y) && (x > 0)
     # Wait until job failure/we have an actual need for it.
     # -----------------------------------------------------------------------
+    # Could check for all services 'Running', is that reliable (?)
+    # -----------------------------------------------------------------------
     else
         echo -e '\nvolthaStackDeploy.groovy: Voltha stack has launched'
         [[ ! -v verbose ]] && { cat \$vsd_log; }
@@ -229,31 +231,73 @@ EOM
 set +x #        # Noisy when commented (default: uncommented)
 
 declare -i count=0
+declare -i debug=1       # uncomment to enable debugging
+# declare -i verbose=1   # uncomment to enable debugging
 vsd_log='volthaStackDeploy.tmp'
-touch \$vsd_log
+echo > \$vsd_log
+
+declare -i rc=0          # exit status
 while true; do
 
-    ## Exit when the server begins showing signs of life
-    if grep -q '0/' \$vsd_log; then
-        echo 'volthaStackDeploy.groovy: Detected kubectl pods =~ 0/'
-        grep '0/' \$vsd_log
+    # Gather -- should we check for count(svc > 1) ?
+    kubectl get pods -l app=onos-config-loader \
+        -n ${cfg.infraNamespace} --no-headers \
+        --field-selector=status.phase=Running \
+        > \$vsd_log
+
+    count=\$((\$count - 1))
+
+    # Display activity every iteration ?
+    [[ -v verbose ]] && { count=0; }
+
+    # Display activity every minute or so {sleep(5) x count=10}
+    if [[ \$count -lt 1 ]]; then
+        count=10
+        cat \$vsd_log
+    fi
+
+    ## -----------------------
+    ## Probe for cluster state
+    ## -----------------------
+    if grep -q -e 'ContainerCreating' \$vsd_log; then
+        echo -e '\nvolthaStackDeploy.groovy: ContainerCrating active'
+        [[ -v debug ]] && grep -e 'ContainerCreating' \$vsd_log
+
+    elif grep -q -e '0/' \$vsd_log; then
+        echo -e '\nvolthaStackDeploy.groovy: Waiting for status=Running'
+        [[ -v debug ]] && grep -e '0/' \$vsd_log
+
+    elif ! grep -q '/' \$vsd_log; then
+        echo -e '\nvolthaStackDeploy.groovy: Waiting for initial pod activity'
+        [[ ! -v verbose ]] && { cat \$vsd_log; }
+
+    # -----------------------------------------------------------------------
+    # voltha-adapter-openolt-68c84bf786-8xsfc   0/1   CrashLoopBackOff 2 69s
+    # voltha-adapter-openolt-68c84bf786-8xsfc   0/1   Error            3 85s
+    # -----------------------------------------------------------------------
+    elif grep -q 'Error' \$vsd_log; then
+        echo -e '\nvolthaStackDeploy.groovy: Detected cluster state=Error'
+        cat \$vsd_log
+        rc=1 # fatal
+        break
+
+    # -----------------------------------------------------------------------
+    # An extra conditon needed here but shell coding is tricky:
+    #    "svc x/y Running 0 6s
+    #    Verify (x == y) && (x > 0)
+    # Wait until job failure/we have an actual need for it.
+    # -----------------------------------------------------------------------
+    # Could check for all services 'Running', is that reliable (?)
+    # -----------------------------------------------------------------------
+    else
+        echo -e '\nvolthaStackDeploy.groovy: Voltha stack has launched'
+        [[ ! -v verbose ]] && { cat \$vsd_log; }
         break
     fi
 
+    ## Support argument --timeout (?)
     sleep 5
-    count=\$((\$count - 1))
 
-    if [[ \$count -lt 1 ]]; then # [DEBUG] Display activity every minute or so
-        count=10
-        kubectl get pods -l app=onos-config-loader \
-            -n ${cfg.infraNamespace} --no-headers \
-            --field-selector=status.phase=Running \
-            | tee \$vsd_log
-    else
-        kubectl get pods -l app=onos-config-loader \
-            -n ${cfg.infraNamespace} --no-headers \
-            --field-selector=status.phase=Running \
-            > \$vsd_log
     fi
 
 done
