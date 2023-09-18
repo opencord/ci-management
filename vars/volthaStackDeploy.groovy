@@ -71,10 +71,11 @@ helm upgrade --install --create-namespace \
 
             if (cfg.workflow == 'att' || cfg.workflow == 'tt') {
                 int startingStag = 900
-                def serviceConfigFile = cfg.workflow
+                def serviceConfigFile = cfg.workflow // type(?) String
                 if (cfg.withMacLearning && cfg.workflow == 'tt') {
                     serviceConfigFile = 'tt-maclearner'
                 }
+                // bbsimCfg: type(?) Map
                 def bbsimCfg = readYaml file: "$WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml"
                 // NOTE we assume that the only service that needs a different s_tag is the first one in the list
                 bbsimCfg['servicesConfig']['services'][0]['s_tag'] = startingStag + i
@@ -160,7 +161,7 @@ while true; do
     fi
 
     ## -----------------------
-    ## Probe for cluster state 
+    ## Probe for cluster state
     ## -----------------------
     if grep -q -e 'ContainerCreating' \$vsd_log; then
         echo -e '\nvolthaStackDeploy.groovy: ContainerCrating active'
@@ -188,7 +189,7 @@ while true; do
     # An extra conditon needed here but shell coding is tricky:
     #    "svc x/y Running 0 6s
     #    Verify (x == y) && (x > 0)
-    # Wait until job failure/we have an actual need for it. 
+    # Wait until job failure/we have an actual need for it.
     # -----------------------------------------------------------------------
     else
         echo -e '\nvolthaStackDeploy.groovy: Voltha stack has launched'
@@ -215,7 +216,7 @@ void waitForOnosDeploy(Map cfg) {
     enter('waitForOnosDeploy')
 
     sh(label  : 'Wait for ONOS full deployment',
-       Scriptx : """
+       Script : """
 
 cat <<EOM
 
@@ -314,7 +315,7 @@ void process(Map config) {
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def call(Map config=[:]) {
+def call(Map config=[:]) { // Function return type(?)
     try {
         enter('main')
         process(config)
