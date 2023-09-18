@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4830ab99_d655dff5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-18T14:46:00Z",
+      "side": 1,
+      "message": "This should really be two commits, but it\u0027s trivial enough I guess.",
+      "revId": "6f5076572a4ff27ce87e86c0e2fa93aa2bdbcab5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
