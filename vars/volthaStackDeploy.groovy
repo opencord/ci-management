@@ -298,10 +298,9 @@ while true; do
     ## Support argument --timeout (?)
     sleep 5
 
-    fi
-
 done
 rm -f \$vsd_log
+exit \$rc
 """)
 
     leave('waitForOnosDeploy')
