@@ -47,6 +47,7 @@ void leave(String name) {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Display a process by name
 // -----------------------------------------------------------------------
 Boolean process(String proc, Map args) {
     Boolean ans = true
@@ -99,6 +100,7 @@ Boolean call\
     }
     catch (Exception err) {  // groovylint-disable-line CatchException
         ans = false
+        String iam = getIam('main')
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }

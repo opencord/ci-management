@@ -123,7 +123,7 @@ Boolean call\
     }
     catch (Exception err) {  // groovylint-disable-line CatchException
         ans = false
-        String iam = getIam(name)
+        String iam = getIam('main')
         println("** ${iam}: EXCEPTION ${err}")
         throw err
     }
