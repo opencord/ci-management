@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f2ab784b_1997c6d4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-20T12:42:42Z",
+      "side": 1,
+      "message": "LGTM\n\nfyi\u003e A merge will be needed from the *voltha-2.12* scripts into branch\u003dmaster.  Many items like this were fixed while debugging the v2.12 bbsim jobs.",
+      "revId": "ff337d86399e107cd417793454c4bbd398855d31",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
