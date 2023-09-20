@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a6dd6bc_31b852ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-20T14:31:04Z",
+      "side": 1,
+      "message": "LGTM, ++ for added error detection to plug the false-positive case.",
+      "revId": "2fd19e86dc168caa375fd9e66f6e60b3c749035f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
