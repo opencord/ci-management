@@ -131,6 +131,9 @@ pipeline {
         # We should change this. In the meantime here is a workaround.
            set +e
 
+        # Have voltctl exit with error status 1 and warning if etcd is unavailable.
+        voltctl log level list
+
         # Remove noise from voltha-core logs
            voltctl log level set WARN read-write-core#github.com/opencord/voltha-go/db/model
            voltctl log level set WARN read-write-core#github.com/opencord/voltha-lib-go/v3/pkg/kafka
