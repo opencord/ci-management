@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b63d276_9257b2b8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-20T18:14:47Z",
+      "side": 1,
+      "message": "We should not use port-forward at all, but instead use the ingress provided by the voltha helm charts (https://github.com/opencord/voltha-helm-charts#using-an-ingress-controller) instead to expose the relevant services via ingress resources. I agree that this is one of the issues caused by running \"kubectl port-forward...\", but since there are many many more, we should stop treating the symptoms of a wrong architecture and replace it with the correct way of how to expose services (like etcd, kafka and voltha) in kubernetes.",
+      "revId": "9aa9dd292bda2b18caf815adce2dff33655a398a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
