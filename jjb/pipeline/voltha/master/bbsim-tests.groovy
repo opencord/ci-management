@@ -18,8 +18,8 @@
 // [TODO] Update syntax below to the latest supported
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
-      $class: 'GitSCMSource',
-      remote: 'https://gerrit.opencord.org/ci-management.git'
+    $class: 'GitSCMSource',
+    remote: 'https://gerrit.opencord.org/ci-management.git'
 ])
 
 //------------------//
@@ -28,14 +28,22 @@ library identifier: 'cord-jenkins-libraries@master',
 String clusterName = 'kind-ci'
 
 // -----------------------------------------------------------------------
-// Intent:
+// Intent: Return branch name for the script.  A hardcoded value is used
+//   as a guarantee release jobs are running in an expected sandbox.
 // -----------------------------------------------------------------------
 String branchName() {
-    String name = 'master'
+    String br = 'master'
 
-    // [TODO] Sanity check the target branch
-    // if (name != jenkins.branch) { fatal }
-    return(name)
+    // "${branch}" is assigned by jenkins
+    if (br != branch) {
+        String err = [
+            'ERROR: Detected invalid branch',
+            '(expected=[$br] != found=[$branch])'
+        ].join(' ')
+        throw new Exception(err) // groovylint-disable-line CatchException
+    }
+
+    return (br)
 }
 
 // -----------------------------------------------------------------------
@@ -44,7 +52,7 @@ String branchName() {
 //   per-script to be sure latest repository changes are being used.
 // -----------------------------------------------------------------------
 String pipelineVer() {
-    String version = '45c11f80698d3be1416a86d2872d6e25aa24baa8'
+    String version = 'ff337d86399e107cd417793454c4bbd398855d31'    
     return(version)
 }
 
@@ -101,6 +109,25 @@ Boolean isReleaseBranch(String name) {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Terminate orphaned port-forward from different namespaces
+// -----------------------------------------------------------------------
+void cleanupPortForward() {
+    enter('cleanupPortForward')
+
+    Map pkpfArgs =\
+    [
+        'banner'     : true, // display banner for logging
+        'show_procs' : true, // display procs under consideration
+        'filler'     : true  // fix conditional trailing comma
+    ]
+
+    // 'kubectl.*port-forward'
+    pkill_port_forward('port-forward', pkpfArgs)
+    leave('cleanupPortForward')
+    return
+}
+
+// -----------------------------------------------------------------------
 // Intent: Iterate over a list of test suites and invoke.
 // -----------------------------------------------------------------------
 void execute_test\
@@ -118,10 +145,10 @@ void execute_test\
     // -----------------------------------------------------------------------
     // Intent: Cleanup stale port-forwarding
     // -----------------------------------------------------------------------
-    stage('Cleanup')    {
-        if (teardown)   {
+    stage('Cleanup') {
+        if (teardown) {
             timeout(15) {
-                script  {
+                script {
                     helmTeardown(['default', infraNamespace, volthaNamespace])
                 }
             } // timeout
@@ -129,32 +156,7 @@ void execute_test\
             timeout(5) {
                 script {
                     enter('Cleanup')
-
-                    // remove orphaned port-forward from different namespaces
-                    String proc = 'kubectl.*port-forward' // was 'port-forw'
-                    /*
-                    pgrep_proc(proc)
-                    pkill_proc(proc)
-                    pgrep_proc(proc) // todo: fatal unless (proc count==0)
-                     */
-
-                    sh(label  : 'pgrep_proc - kill-pre',
-                       script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
-""")
-
-                    sh(label  : 'pkill_proc - kubectl.*port-forward',
-                       script : """
-if [[ \$(pgrep --count 'kubectl.*port-forward') -gt 0 ]]; then
-    pkill --uid "\$(id -u)" --echo --full 'kubectl.*port-forward'
-fi
-""")
-
-                    sh(label  : 'pgrep_proc - kill-post',
-                       script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
-""")
-
+                    cleanupPortForward()
                     leave('Cleanup')
                 } // script
             } // timeout
@@ -202,18 +204,17 @@ pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
                 script     {
                     String iam = getIam('Deploy Voltha')
                     String onosLog = "${logsDir}/onos-voltha-startup-combined.log"
-                    sh("""
-          mkdir -p "$logsDir"
-          touch "$onosLog"
-          echo "** kail-startup ENTER: \$(date)" > "$onosLog"
 
-          # Intermixed output (tee -a &) may get conflusing but let(s) see
-          # what messages are logged during startup.
-          #  _TAG=ka7il-startup kail -n ${infraNamespace} -n ${volthaNamespace} >> "$onosLog" &
-          _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} | tee -a "$onosLog" &
-          """)
+                    sh(label  : 'Launch kail-startup',
+                       script : """
+mkdir -p "$logsDir"
+touch "$onosLog"
 
-                    // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
+_TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > "$onosLog" &
+""")
+
+                    // if we're downloading a voltha-helm-charts patch,
+                    // install from a local copy of the charts
                     Boolean localCharts = false
 
                     if (volthaHelmChartsChange != ''
@@ -251,10 +252,10 @@ pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
                     println("** ${iam} localHelmFlags = ${localHelmFlags}")
 
                     if (gerritProject != '') {
-                        localHelmFlags = "${localHelmFlags} " + getVolthaImageFlags("${gerritProject}")
+                        localHelmFlags += getVolthaImageFlags(gerritProject)
                     }
 
-                    println("** ${iam}: ENTER")
+                    enter('volthaDeploy')
                     volthaDeploy([
                         infraNamespace: infraNamespace,
                         volthaNamespace: volthaNamespace,
@@ -265,65 +266,47 @@ pgrep --uid "\$(id -u)" --list-full --full 'kubectl.*port-forward' || true
                         bbsimReplica: olts.toInteger(),
                         dockerRegistry: registry,
                     ])
-                    println("** ${iam}: LEAVE")
+                    leave('volthaDeploy')
                 } // script
 
-                // -----------------------------------------------------------------------
-                // Intent: Replacing P_IDS with pgrep/pkill is a step forward.
-                // Why not simply use a pid file, capture _TAG=kail-startup above
-                // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
-                // -----------------------------------------------------------------------
-                script {
-                    String proc = '_TAG=kail-startup'
+                script { pgrep_port_forward() }
 
-                    println("${iam}: ENTER")
-                    println("${iam}: Shutdown process $proc")
-                    /*
-                    pgrep_proc(proc)
-                    pkill_proc(proc)
-                    pgrep_proc(proc)
-                     */
-
-                    sh(label  : 'pgrep_proc - kill-pre',
-                       script : """
-pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup' || true
-""")
-
-                    sh(label  : 'pkill_proc - _TAG=kail-startup',
-                       script : """
+                sh(label  : 'Terminate kail-startup',
+                   script : """
 if [[ \$(pgrep --count '_TAG=kail-startup') -gt 0 ]]; then
-    pkill --uid "\$(id -u)" --echo --full '_TAG=kail-startup'
+    pkill --uid \$(uid -u) --echo --list-full --full '_TAG=kail-startup'
 fi
 """)
 
-                    sh(label  : 'pgrep_proc - kill-post',
-                       script : """
-pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup' || true
+                sh(label  : 'Lingering kail-startup check',
+                   script : """
+pgrep --uid \$(uid -u) --list-full --full 'kail-startup' || true
 """)
-                    
-                    println("${iam}: LEAVE")
-                }
 
                 // -----------------------------------------------------------------------
                 // Bundle onos-voltha / kail logs
                 // -----------------------------------------------------------------------
-                sh("""
+                sh(
+                    label  : 'Bundle logs: onos-voltha-startup-combined',
+                    script : """
 cat <<EOM
 
 ** -----------------------------------------------------------------------
 ** Combine and compress voltha startup log(s)
 ** -----------------------------------------------------------------------
 EOM
-          pushd "${logsDir}" || { echo "ERROR: pushd $logsDir failed"; exit 1; }
-          gzip -k onos-voltha-startup-combined.log
-          rm onos-voltha-startup-combined.log
-          popd
+
+pushd "${logsDir}" || { echo "ERROR: pushd $logsDir failed"; exit 1; }
+gzip -k onos-voltha-startup-combined.log
+rm onos-voltha-startup-combined.log
+popd               || { echo "ERROR: popd $logsDir failed"; exit 1; }
         """)
-        } // timeout(10)
+            } // timeout(10)
 
             // -----------------------------------------------------------------------
             // -----------------------------------------------------------------------
-            sh """
+            sh(label  : 'while-true-port-forward',
+               """
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
@@ -336,21 +319,12 @@ EOM
         JENKINS_NODE_COOKIE="dontKillMe" _TAG="nem-monitoring-prometheus-server" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n default svc/nem-monitoring-prometheus-server 31301:80; done"&
       fi
 #      ps aux | grep port-forward
-      """
+""")
             // ---------------------------------
             // Sanity check port-forward spawned
             // ---------------------------------
-            script {
-                enter('Display port-forward procs')
-                // String proc = 'kubectl.*port-forward' // was 'port-forward'
-                String proc = 'port-forward'
-                println("Display spawned ${proc}")
-                sh(label  : 'pgrep_proc - check',
-                   script : """
-pgrep --uid "\$(id -u)" --list-full --full "port-forward" || true
-""")
-                leave('Display port-forward procs')
-            }
+            // [TODO] - Wait until forwarding successful else fatal
+            script { pgrep_port_forward() }
 
             // setting ONOS log level
             script {
@@ -374,90 +348,93 @@ pgrep --uid "\$(id -u)" --list-full --full "port-forward" || true
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
-    stage("Run test ${testTarget} on workflow ${workflow}")
-    {
+    stage("Run test ${testTarget} on workflow ${workflow}") {
         sh(
             label : 'Monitor using mem_consumption.py',
             script : """
-        echo -e "\n** Monitor using mem_consumption.py ?"
+echo -e "\n** Monitor using mem_consumption.py ?"
 
-    if [ ${withMonitoring} = true ] ; then
-      cat <<EOM
+if [ ${withMonitoring} = true ] ; then
+    cat <<EOM
 
 ** -----------------------------------------------------------------------
 ** Monitoring memory usage with mem_consumption.py
 ** -----------------------------------------------------------------------
 EOM
-      mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
-      cd "$WORKSPACE/voltha-system-tests"
+  mkdir -p "$WORKSPACE/voltha-pods-mem-consumption-${workflow}"
+  cd "$WORKSPACE/voltha-system-tests"
 
-      echo '** Installing python virtualenv'
-      make venv-activate-patched
+  echo '** Installing python virtualenv'
+  make venv-activate-patched
 
-      set +u && source .venv/bin/activate && set -u
-      # Collect initial memory consumption
-      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
-    fi
+  # Collect initial memory consumption
+  set +u && source .venv/bin/activate && set -u
+  python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
+fi
 
-    echo -e '** Monitor memory consumption: LEAVE\n'
-    """)
+echo -e '** Monitor memory consumption: LEAVE\n'
+""")
 
-        sh """
-        echo -e "\n** make testTarget=[${testTarget}]"
-    mkdir -p ${logsDir}
-    export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
-    ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
-    export KVSTOREPREFIX=voltha/voltha_voltha
+        sh(
+            label  : "make testTarget=[${testTarget}]",
+            script : """
+echo -e "\n** make testTarget=[${testTarget}]"
+mkdir -p ${logsDir}
+export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
+ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
+export KVSTOREPREFIX=voltha/voltha_voltha
 
-    make -C "$WORKSPACE/voltha-system-tests" ${testTarget}
-    """
+make -C "$WORKSPACE/voltha-system-tests" ${testTarget}
+""")
 
         getPodsInfo("${logsDir}")
 
+        // [TODO] make conditional, bundle when logs are available
         sh(
             label : 'Gather robot Framework logs',
             script : """
-      echo -e '\n** Gather robot Framework logs: ENTER'
+echo -e '\n** Gather robot Framework logs: ENTER'
 
-      # set +e
-      # collect logs collected in the Robot Framework StartLogging keyword
-      cd "${logsDir}"
+# set +e
+# collect logs collected in the Robot Framework StartLogging keyword
+cd "${logsDir}"
 
-      echo "** Available logs:"
-      /bin/ls -l "$logsDir"
-      echo
+echo "** Available logs:"
+/bin/ls -l "$logsDir"
+echo
 
-      echo '** Bundle combined log'
-      gzip *-combined.log || true
-      rm -f *-combined.log || true
+echo '** Bundle combined log'
+gzip *-combined.log || true
+rm -f *-combined.log || true
 
-      echo -e '** Gather robot Framework logs: LEAVE\n'
-    """)
+echo -e '** Gather robot Framework logs: LEAVE\n'
+""")
 
-    // -----------------------------------------------------------------------
-    // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
         sh(
             label  : 'Monitor pod-mem-consumption',
             script : """
-    echo -e '** Monitor pod-mem-consumption: ENTER'
-    if [ ${withMonitoring} = true ] ; then
+echo -e '** Monitor pod-mem-consumption: ENTER'
+if [ ${withMonitoring} = true ] ; then
       cat <<EOM
 
 ** -----------------------------------------------------------------------
 ** Monitoring pod-memory-consumption using mem_consumption.py
 ** -----------------------------------------------------------------------
 EOM
-      cd "$WORKSPACE/voltha-system-tests"
 
-      echo '** Installing python virtualenv'
-      make venv-activate-patched
+cd "$WORKSPACE/voltha-system-tests"
 
-      set +u && source .venv/bin/activate && set -u
-      # Collect memory consumption of voltha pods once all the tests are complete
-      python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
-    fi
-    echo -e '** Monitor pod-mem-consumption: LEAVE\n'
-    """)
+echo '** Installing python virtualenv'
+make venv-activate-patched
+
+# Collect memory consumption of voltha pods once all the tests are complete
+set +u && source .venv/bin/activate && set -u
+python scripts/mem_consumption.py -o $WORKSPACE/voltha-pods-mem-consumption-${workflow} -a 0.0.0.0:31301 -n ${volthaNamespace}
+fi
+echo -e '** Monitor pod-mem-consumption: LEAVE\n'
+""")
     } // stage
 
     return
@@ -465,33 +442,32 @@ EOM
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def collectArtifacts(exitStatus) {
+void collectArtifacts(exitStatus) {
     script {
         String iam = getIam('collectArtifacts')
-        println("${iam}: ENTER (exitStatus=${exitStatus})")
-    }
+        enter("exitStatus=${exitStatus}")
 
-    echo '''
+        println("""
 
 ** -----------------------------------------------------------------------
+** IAM: $iam
 ** collectArtifacts
 ** -----------------------------------------------------------------------
-'''
+""")
+    }
 
     getPodsInfo("$WORKSPACE/${exitStatus}")
 
-    sh """
-  kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha > $WORKSPACE/${exitStatus}/voltha.log
-  """
+    sh(label  : 'kubectl logs > voltha.log',
+       script : """
+kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha \
+    > $WORKSPACE/${exitStatus}/voltha.log
+""")
 
     archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
 
     script {
-        println("${iam}: ENTER")
-        /*
-        pgrep_proc('kail-startup')
-        pkill_proc('kail')
-         */
+        enter('pkill _TAG=kail-startup')
         sh(label  : 'pgrep_proc - kill-pre',
            script : """
 pgrep --uid "\$(id -u)" --list-full --full 'kail-startup' || true
@@ -502,10 +478,10 @@ if [[ \$(pgrep --count '_TAG=kail') -gt 0 ]]; then
     pkill --uid "\$(id -u)" --echo --full 'kail'
 fi
 """)
-        println("${iam}: LEAVE")
+        leave('pkill _TAG=kail-startup')
     }
 
-    println("${iam}: ENTER RobotPublisher")
+    enter('RobotPublisher')
     step([$class: 'RobotPublisher',
           disableArchiveOutput: false,
           logFileName: '**/*/log*.html',
@@ -516,9 +492,9 @@ fi
           reportFileName: '**/*/report*.html',
           unstableThreshold: 0,
           onlyCritical: true])
-    println("${iam}: LEAVE RobotPublisher")
+    leave('RobotPublisher')
 
-    println("${iam}: LEAVE (exitStatus=${exitStatus})")
+    leave("exitStatus=${exitStatus}")
     return
 }
 
@@ -612,6 +588,7 @@ pipeline {
             steps {
                 script {
                     def clusterExists = sh(
+                        label : 'Create K8s Cluster',
                         returnStdout: true,
                         script: """kind get clusters | grep "${clusterName}" | wc -l""")
 
@@ -705,7 +682,7 @@ pipeline {
                         }
                         // groovylint-disable-next-line CatchException
                         catch (Exception err) {
-                            String iamexc = getIam(name)
+                            String iamexc = getIam(test)
                             println("** ${iamexc}: EXCEPTION ${err}")
                         }
                         finally {
@@ -721,9 +698,18 @@ pipeline {
 
     post
     {
-        aborted { collectArtifacts('aborted') }
-        failure { collectArtifacts('failed')  }
-        always  { collectArtifacts('always')  }
+        aborted {
+            collectArtifacts('aborted')
+            script { cleanupPortForward() }
+        }
+        failure {
+            collectArtifacts('failed')
+            script { cleanupPortForward() }
+        }
+        always {
+            collectArtifacts('always')
+            script { cleanupPortForward() }
+        }
     }
 } // pipeline
 
