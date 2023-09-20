@@ -344,6 +344,7 @@
           profile: '1T8GEM'
           power-switch: true
           pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          VolthaEtcdPort: 9999
 
       # Berlin pod with zyxel xgspon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
