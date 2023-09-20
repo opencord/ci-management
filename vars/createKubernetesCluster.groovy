@@ -166,7 +166,7 @@ EOM
       make -C "$WORKSPACE/voltha-system-tests" KAIL_PATH="$WORKSPACE/bin" kail
 """)
 
-    enter('leave')
+    leave('main')
     return
 }
 

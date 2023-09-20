@@ -31,7 +31,7 @@ void run_cmd(String command) {
         "Running command: $command",
     ]
 
-    println("** ${iam}: Running ${command} LEAVE")
+    println("** ${iam}: Running ${command} ENTER")
     try {
         // Run command for output
         buffer = sh(

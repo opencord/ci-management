@@ -184,7 +184,7 @@ Boolean process(String branch) {
     voltctl version --clientonly
 """)
 
-    enter('process')
+    leave('process')
     return(ans)
 }
 

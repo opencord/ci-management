@@ -103,7 +103,7 @@ Boolean call\
         throw err
     }
     finally {
-        enter('main')
+        leave('main')
     }
 
     return(ans)
