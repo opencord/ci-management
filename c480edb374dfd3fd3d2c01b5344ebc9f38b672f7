@@ -16,6 +16,23 @@
       "message": "Strange:\nURL edits in this patch do not seem related but make lint targets are failing.\nI was able to run lint cleanly on a sandbox checked out from branch\u003dmaster.\n\nLint targets will be invoked when a jenkins job is run.\nOne of the lint targets will sanity check URLs are accessible in documentation.\n\n% make help | grep lint\n  lint-reuse              License syntax checking\n  lint-make           Syntax check [Mm]akefile and *.mk\n  lint-shell          Syntax check shell sources\n  lint-doc8          Syntax check python using the doc8 command\n  lint-jjb               Validate jjb job generation\n  lint-json          Syntax check python using the json command\n  lint-flake8          Syntax check python using the flake8 command\n  lint-pylint          Syntax check python using the pylint command\n  lint-tox             Invoke the tox test command\n  lint-yaml          Invoke all yaml linting targets\n\n% make lint\n-----------\njenkins_jobs.errors.JenkinsJobsException: Failed to find suitable template named \u0027{project-name}-ci-jobs\u0027\n\n% make lint-jjb\n---------------\njenkins_jobs.errors.JenkinsJobsException: Failed to find suitable template named \u0027{project-name}-ci-jobs\u0027\n",
       "revId": "c480edb374dfd3fd3d2c01b5344ebc9f38b672f7",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5f44c2e1_ede1f054",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000982
+      },
+      "writtenOn": "2023-09-20T18:16:56Z",
+      "side": 1,
+      "message": "LGTM! I tried a couple of the new links and they worked.",
+      "revId": "c480edb374dfd3fd3d2c01b5344ebc9f38b672f7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
