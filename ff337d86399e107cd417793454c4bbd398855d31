@@ -16,6 +16,41 @@
       "message": "LGTM\n\nfyi\u003e A merge will be needed from the *voltha-2.12* scripts into branch\u003dmaster.  Many items like this were fixed while debugging the v2.12 bbsim jobs.",
       "revId": "ff337d86399e107cd417793454c4bbd398855d31",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c7b475d_885239d9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-20T13:05:59Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "f2ab784b_1997c6d4",
+      "revId": "ff337d86399e107cd417793454c4bbd398855d31",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2c63714c_c6b4edfd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-20T13:05:59Z",
+      "side": 1,
+      "message": "Thanks for the hint.",
+      "revId": "ff337d86399e107cd417793454c4bbd398855d31",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
