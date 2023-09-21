@@ -17,31 +17,34 @@
 
 def call(List namespaces = ['default'], List excludes = ['docker-registry']) {
 
-    println "Tearing down charts in namespaces: ${namespaces.join(', ')}."
+    String spaces = namespaces.join(', ')
+    String banner = "Tearing down charts in namespaces: ${spaces}"
 
     def exc = excludes.join("|")
     for(int i = 0;i<namespaces.size();i++) {
         def n = namespaces[i]
-        sh """
+        sh(label  : banner,
+           script : """
           for hchart in \$(helm list --all -n ${n} -q | grep -E -v '${exc}');
           do
               echo "Purging chart: \${hchart}"
               helm delete -n ${n} "\${hchart}"
           done
-        """
+""")
     }
 
-    println "Waiting for pods to be removed from namespaces: ${namespaces.join(', ')}."
+    banner = "Waiting for pods to be removed from namespaces: ${spaces}"
     for(int i = 0;i<namespaces.size();i++) {
         def n = namespaces[i]
-        sh """
+        sh(label  : banner,
+           script : """
         set +x
         PODS=\$(kubectl get pods -n ${n} --no-headers | wc -l)
         while [[ \$PODS != 0 ]]; do
           sleep 5
           PODS=\$(kubectl get pods -n ${n} --no-headers | wc -l)
         done
-        """
+""")
     }
 }
 
