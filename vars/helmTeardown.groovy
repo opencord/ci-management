@@ -15,24 +15,35 @@
 // limitations under the License.
 // -----------------------------------------------------------------------
 
+/* -----------------------------------------------------------------------
+groovylint-disable NoDef, VariableTypeRequired
+Reason: jenkins.sh() and groovy String do not play nicely together.
+        cast(String) => java.lang.String not supported natively.
+* -----------------------------------------------------------------------
+*/
+
 def call(List namespaces = ['default'], List excludes = ['docker-registry']) {
+    String spaces = namespaces.join(', ')
+    String msg    = "Tearing down charts in namespaces: ${spaces}."
+    println(msg)
 
-    println "Tearing down charts in namespaces: ${namespaces.join(', ')}."
-
-    def exc = excludes.join("|")
-    for(int i = 0;i<namespaces.size();i++) {
+    def exc = excludes.join('|')
+    for (int i = 0; i < namespaces.size(); i++) {
+        // sh() and groovy String vars do not play well together
         def n = namespaces[i]
-        sh """
+
+        sh(label  : msg,
+           script : """
           for hchart in \$(helm list --all -n ${n} -q | grep -E -v '${exc}');
           do
               echo "Purging chart: \${hchart}"
               helm delete -n ${n} "\${hchart}"
           done
-        """
+        """)
     }
 
     println "Waiting for pods to be removed from namespaces: ${namespaces.join(', ')}."
-    for(int i = 0;i<namespaces.size();i++) {
+    for (int i = 0; i < namespaces.size(); i++) {
         def n = namespaces[i]
         sh """
         set +x
