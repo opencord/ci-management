@@ -18,6 +18,41 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0c8c6f45_f8819313",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-21T13:16:55Z",
+      "side": 1,
+      "message": "Cleanups on the way",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4a6d151_32dda0eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-21T13:16:55Z",
+      "side": 1,
+      "message": "Changes have been accumulating individually in the pseudo-v2.12 script for some time to avoid breaking branch\u003dmaster.\n\nSince the pseudo-branch directories and scripts are being purged edits are being brought forwared in bulk.",
+      "parentUuid": "f48fce52_bd22b6bc",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "545c4c32_cc30294b",
@@ -31,6 +66,24 @@
       "writtenOn": "2023-09-21T10:28:10Z",
       "side": 1,
       "message": "For this to work, I had to s/CatchException/ThrowException/.",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d013d015_f4cfbd6c",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-21T13:16:55Z",
+      "side": 1,
+      "message": "Good catch, npm-groovy-lint exclusion Exception string copied from down below.\n\nWill be good when volume lint messages are cleaned up so these are easier to notice.",
+      "parentUuid": "545c4c32_cc30294b",
       "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
@@ -52,6 +105,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a7d1e0c_bfbb11d6",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-21T13:16:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "633e4f1b_9546bf67",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1f9e6bd9_513edfd0",
@@ -69,6 +140,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e88a352_85546220",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-21T13:16:55Z",
+      "side": 1,
+      "message": "pull in syntax from branhch\u003dmaster flavored script:\n\njenkins-job-builder\u003d\u003d4.1.0gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/jjb/pipeline/voltha/master/bbsim-tests.groovy#143\n\npgrep --uid \"\\$(id -u)\" --list-full --full \u0027kubectl.*port-forward\u0027 || true",
+      "parentUuid": "1f9e6bd9_513edfd0",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "72e980e8_cefa2d79",
@@ -82,6 +171,24 @@
       "writtenOn": "2023-09-21T10:28:10Z",
       "side": 1,
       "message": "Here also \\$(id -u), not \\$(uid -u).",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "573bcd6f_49c4e11c",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-21T13:16:55Z",
+      "side": 1,
+      "message": "pull in syntax from branhch\u003dmaster flavored script:\n\njenkins-job-builder\u003d\u003d4.1.0gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/jjb/pipeline/voltha/master/bbsim-tests.groovy#143\n\npgrep --uid \"\\$(id -u)\" --list-full --full \u0027kubectl.*port-forward\u0027 || true",
+      "parentUuid": "72e980e8_cefa2d79",
       "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
