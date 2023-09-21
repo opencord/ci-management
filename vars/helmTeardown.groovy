@@ -24,35 +24,34 @@ Reason: jenkins.sh() and groovy String do not play nicely together.
 
 def call(List namespaces = ['default'], List excludes = ['docker-registry']) {
     String spaces = namespaces.join(', ')
-    String msg    = "Tearing down charts in namespaces: ${spaces}."
-    println(msg)
+    println("Tearing down charts in namespaces: ${spaces}.")
 
     def exc = excludes.join('|')
     for (int i = 0; i < namespaces.size(); i++) {
-        // sh() and groovy String vars do not play well together
         def n = namespaces[i]
-
-        sh(label  : "Tearing down charts in namespaces: ${n}.",
+        sh(label  : "Tearing down chart in namespace ${n}",
            script : """
+          set +x
           for hchart in \$(helm list --all -n ${n} -q | grep -E -v '${exc}');
           do
               echo "Purging chart: \${hchart}"
               helm delete -n ${n} "\${hchart}"
           done
-        """)
+""")
     }
 
-    println "Waiting for pods to be removed from namespaces: ${namespaces.join(', ')}."
+    banner = "Waiting for pods to be removed from namespaces: ${spaces}"
     for (int i = 0; i < namespaces.size(); i++) {
         def n = namespaces[i]
-        sh """
+        sh(label  : "Waiting for pod removal in namespace ${n}",
+           script : """
         set +x
         PODS=\$(kubectl get pods -n ${n} --no-headers | wc -l)
         while [[ \$PODS != 0 ]]; do
           sleep 5
           PODS=\$(kubectl get pods -n ${n} --no-headers | wc -l)
         done
-        """
+""")
     }
 }
 
