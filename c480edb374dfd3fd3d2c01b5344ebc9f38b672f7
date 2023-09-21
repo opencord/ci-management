@@ -33,6 +33,24 @@
       "message": "LGTM! I tried a couple of the new links and they worked.",
       "revId": "c480edb374dfd3fd3d2c01b5344ebc9f38b672f7",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "63302350_b94fe084",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-21T14:49:17Z",
+      "side": 1,
+      "message": "Visible with python v3.10+ \u0026 3.11\n\n% python --version\nPython 3.10.12\n\n% git clone; cd ci-management\n# [or] make sterile\n% git --review I21b0b39efe1ff2007001690fba5e59d9d0bcd1b7\n% make lint\n% make test",
+      "parentUuid": "5617105c_4ca3006e",
+      "revId": "c480edb374dfd3fd3d2c01b5344ebc9f38b672f7",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
