@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f48fce52_bd22b6bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-21T10:28:10Z",
+      "side": 1,
+      "message": "I cannot say for sure that I didn\u0027t overlook anything. I find it more difficult to spot issues when a commit contains several unrelated changes.",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "545c4c32_cc30294b",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-21T10:28:10Z",
+      "side": 1,
+      "message": "For this to work, I had to s/CatchException/ThrowException/.",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "633e4f1b_9546bf67",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-21T10:28:10Z",
+      "side": 1,
+      "message": "Trailing whitespace on this line.",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1f9e6bd9_513edfd0",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 277,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-21T10:28:10Z",
+      "side": 1,
+      "message": "ITYM \\$(id -u), not \\$(uid -u).",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "72e980e8_cefa2d79",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 283,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-21T10:28:10Z",
+      "side": 1,
+      "message": "Here also \\$(id -u), not \\$(uid -u).",
+      "revId": "aa6ca2faffe77c6a0faeb937bb0d10f4fdb6187d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
