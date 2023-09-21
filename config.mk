@@ -64,7 +64,7 @@ USE-ONF-JJB-MK           := true
 ##-----------------------------------##
 ##---]  JJB/Jenkins Job Builder  [---##
 ##-----------------------------------##
-JJB_VERSION   ?= 2.8.0
+JJB_VERSION   ?= 3.2.0             # lint-from: jjb/ci-management/ci-management.yaml
 JOBCONFIG_DIR ?= job-configs
 
 ##---------------------------------##

@@ -20,7 +20,8 @@ set +e -u -o pipefail
 fail_shellcheck=0
 
 # verify that we have shellcheck-lint installed
-command -v shellcheck  >/dev/null 2>&1 || { echo "shellcheck not found, please install it" >&2; exit 1; }
+command -v shellcheck  >/dev/null 2>&1 \
+    || { echo "shellcheck not found, please install it" >&2; exit 1; }
 
 # when not running under Jenkins, use current dir as workspace
 WORKSPACE=${WORKSPACE:-.}
@@ -40,3 +41,4 @@ done < <(find "${WORKSPACE}" \( -name "*.sh" -o -name "*.bash" \) -print0)
 
 exit ${fail_shellcheck}
 
+# [EOF]
