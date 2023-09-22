@@ -58,6 +58,8 @@ helm upgrade --install --create-namespace \
           --set global.stack_name=${cfg.stackName} \
           --set global.voltha_infra_name=voltha-infra \
           --set voltha.onos_classic.replicas=${cfg.onosReplica} \
+          --set voltha.ingress.enabled=true
+          --set voltha.ingress.enableVirtualHosts=true
           --set global.voltha_infra_namespace=${cfg.infraNamespace} \
           ${cfg.extraHelmFlags}
 """)
