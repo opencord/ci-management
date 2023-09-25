@@ -16,6 +16,40 @@
       "message": "LGTM",
       "revId": "7b065235eeabe574ba46aef07360b52145af9bd8",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e77116e_e38c3db3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T14:30:14Z",
+      "side": 1,
+      "message": "LGTM\n\nPatch can be merged depending on if you want to add the documentation comment.",
+      "revId": "7b065235eeabe574ba46aef07360b52145af9bd8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4d565bf7_2526d7bd",
+        "filename": "vars/volthaInfraDeploy.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T14:30:14Z",
+      "side": 1,
+      "message": "For added context it would be helpful to reference docs.voltha.org as a \"see also\" section in the function header or as a trailing comment for sh():\n\nhttps://docs.voltha.org/master/voltha-helm-charts/README.html?highlight\u003dingress#using-an-ingress-controller",
+      "revId": "7b065235eeabe574ba46aef07360b52145af9bd8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
