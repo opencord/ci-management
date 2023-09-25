@@ -35,6 +35,23 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "757bf00e_9ed0660b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T17:25:38Z",
+      "side": 1,
+      "message": "+2 approval accumulated but the UI merge button is showing:\nSubmit Including Parents: 34709\n\nCode review needed for 34709 but I am not on the reviewers list:\n    https://gerrit.opencord.org/c/ci-management/+/34709",
+      "revId": "7b065235eeabe574ba46aef07360b52145af9bd8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4d565bf7_2526d7bd",
