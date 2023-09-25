@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "1b72b1c1_ec6e25d6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T14:05:34Z",
+      "side": 1,
+      "message": "Oh, one clarification...\n\nJJB Version being used -- the build system is dependent on external Jenkins Job Builder libraries published by the linux foundation.\n\nStale version 2.8.0 was in use for linting.  Jenkins pipelines ARE using 3.2.0 so normalize version.  Version 4.2.0 is available, tested but jobs not officially migrated over to that.",
+      "parentUuid": "56109d0c_8599b1a3",
+      "revId": "298741299634f76a333adc96d6f14e13410991be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "672c4ed3_4542fd4e",
         "filename": "jjb/shell/shcheck.sh",
         "patchSetId": 1
