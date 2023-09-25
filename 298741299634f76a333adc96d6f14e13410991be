@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "56109d0c_8599b1a3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T14:00:46Z",
+      "side": 1,
+      "message": "Expected behavior will be when a dev creates a patch, the lint target will exhibit consistent behavior when launched interactively from the command line or by an automated jenkins job.\n\nWhen targets are unavailable for interactive use (bundled with jenkins logic) or logic is mildly different it has contributed to failing jobs after being screened locally.\n\nUnrelated to jenkins-job-builder version, that is simply the JJB version being used.",
+      "parentUuid": "00ad7089_d39c6f6d",
+      "revId": "298741299634f76a333adc96d6f14e13410991be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "672c4ed3_4542fd4e",
         "filename": "jjb/shell/shcheck.sh",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2023-09-25T11:39:54Z",
       "side": 1,
       "message": "I realize this line exists in many other files already, but what is it good for?",
+      "revId": "298741299634f76a333adc96d6f14e13410991be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cc18ef3b_c3975789",
+        "filename": "jjb/shell/shcheck.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T14:00:46Z",
+      "side": 1,
+      "message": "An explicit exit with value is a guarantee of stat at termination.  Trailing commands at the end of a script can can cause ambiguous state.\n\nFor a silly example:\n    [[ -v debug ]] \u0026\u0026 { echo \"Script exiting\"; }\n\nWhen the variable debug is undefined, test condition will be false.  If this is the last statement in a script it can cause a false failure.\n\nWrapping script logic with an \"exit block\" helps prevent problems:\n\ndeclare -i state\u003d0   # assume success by default\nset -euo pipefail    # exit hard on failing commands\n\nif [[ known_bad_state ]]; then\n   state\u003d1  # force fail\nfi\n\n[....]\n\nexit $state",
+      "parentUuid": "672c4ed3_4542fd4e",
       "revId": "298741299634f76a333adc96d6f14e13410991be",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
