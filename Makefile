@@ -29,10 +29,8 @@ include config.mk
 include makefiles/include.mk
 ONF_MAKEDIR ?= $(error ONF_MAKEDIR= is required)
 
-# VENV_DIR      ?= venv-jjb
-JJB_VERSION   ?= 2.8.0
+# [TODO]
 # JJB_VERSION   ?= 4.1.0
-JOBCONFIG_DIR ?= job-configs
 
 # -----------------------------------------------------------------------
 # horrible dep: (ie -- .PHONY: $(JOBCONFIG_DIR))
