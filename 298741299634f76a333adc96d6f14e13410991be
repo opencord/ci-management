@@ -54,6 +54,42 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "dd12cb42_18bc5d9a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-25T14:28:47Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1b72b1c1_ec6e25d6",
+      "revId": "298741299634f76a333adc96d6f14e13410991be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "729ef30d_c330dafa",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-25T14:28:47Z",
+      "side": 1,
+      "message": "Thanks. Probably should be documented somewhere at some point.",
+      "parentUuid": "1b72b1c1_ec6e25d6",
+      "revId": "298741299634f76a333adc96d6f14e13410991be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "672c4ed3_4542fd4e",
@@ -85,6 +121,24 @@
       "side": 1,
       "message": "An explicit exit with value is a guarantee of stat at termination.  Trailing commands at the end of a script can can cause ambiguous state.\n\nFor a silly example:\n    [[ -v debug ]] \u0026\u0026 { echo \"Script exiting\"; }\n\nWhen the variable debug is undefined, test condition will be false.  If this is the last statement in a script it can cause a false failure.\n\nWrapping script logic with an \"exit block\" helps prevent problems:\n\ndeclare -i state\u003d0   # assume success by default\nset -euo pipefail    # exit hard on failing commands\n\nif [[ known_bad_state ]]; then\n   state\u003d1  # force fail\nfi\n\n[....]\n\nexit $state",
       "parentUuid": "672c4ed3_4542fd4e",
+      "revId": "298741299634f76a333adc96d6f14e13410991be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e65e8ff3_11d06664",
+        "filename": "jjb/shell/shcheck.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-25T14:28:47Z",
+      "side": 1,
+      "message": "I didn\u0027t mean the exit line but the last line added to this file by the commit, \"#EOF\". What is it good for?",
+      "parentUuid": "cc18ef3b_c3975789",
       "revId": "298741299634f76a333adc96d6f14e13410991be",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
