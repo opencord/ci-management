@@ -34,6 +34,24 @@
       "parentUuid": "2da42565_ee6f941e",
       "revId": "38d8c7f620a886a94695cb664e532e9513d5fc5c",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77a9c7c0_c1a8f4c8",
+        "filename": "vars/helmTeardown.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-25T14:31:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "831caf6b_a6bec95c",
+      "revId": "38d8c7f620a886a94695cb664e532e9513d5fc5c",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
