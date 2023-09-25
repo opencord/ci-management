@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0f11a6d_1cd72ec1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-25T11:26:55Z",
+      "side": 1,
+      "message": "This change conflicts with what looks like its parent change, https://gerrit.opencord.org/c/ci-management/+/34723.",
+      "revId": "3e73cae7b1171a2d0c531863f89faed14fb1d3f8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2b17666b_9449b867",
+        "filename": "vars/helmTeardown.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-25T11:26:55Z",
+      "side": 1,
+      "message": "Given that banner is displayed for each namespace, it should show the current namespace instead of listing all namespaces.",
+      "revId": "3e73cae7b1171a2d0c531863f89faed14fb1d3f8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
