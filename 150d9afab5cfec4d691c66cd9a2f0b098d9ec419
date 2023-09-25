@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38f4b33b_a738c625",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T17:45:41Z",
+      "side": 1,
+      "message": "commit message updated with branch\u003dvoltha-2.12",
+      "revId": "150d9afab5cfec4d691c66cd9a2f0b098d9ec419",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
