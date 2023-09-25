@@ -68,6 +68,24 @@
       "parentUuid": "4d565bf7_2526d7bd",
       "revId": "7b065235eeabe574ba46aef07360b52145af9bd8",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0f33827b_b0ed8850",
+        "filename": "vars/volthaInfraDeploy.groovy",
+        "patchSetId": 4
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T14:51:17Z",
+      "side": 1,
+      "message": "Can you at least update the commit message to reference docs.voltha.org so people have a pointer into the documentation ?\n\nIf context is detatched from source it may be harder for people to find it over time in commit messages.\n\nMerging",
+      "parentUuid": "b729d8c5_e96bc577",
+      "revId": "7b065235eeabe574ba46aef07360b52145af9bd8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
