@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "567254b5_1b408588",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-25T15:53:14Z",
+      "side": 1,
+      "message": "Jenkins merge job not triggered by this patch, manually helping it along.",
+      "revId": "e391ce1e3f2b296facf14bd295a9872622353806",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
