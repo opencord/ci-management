@@ -159,6 +159,24 @@
       "parentUuid": "e65e8ff3_11d06664",
       "revId": "298741299634f76a333adc96d6f14e13410991be",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "06f05bd7_552894ce",
+        "filename": "jjb/shell/shcheck.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-25T14:52:48Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "13521b4d_1cbf4f50",
+      "revId": "298741299634f76a333adc96d6f14e13410991be",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
