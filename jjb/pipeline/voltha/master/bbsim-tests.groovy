@@ -52,7 +52,7 @@ String branchName() {
 //   per-script to be sure latest repository changes are being used.
 // -----------------------------------------------------------------------
 String pipelineVer() {
-    String version = 'ff337d86399e107cd417793454c4bbd398855d31'
+    String version = '8a315bee550d6d70165a9af5f72ee157b358b18a'
     return(version)
 }
 
@@ -269,7 +269,26 @@ _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > "$onosLog" &
                     leave('volthaDeploy')
                 } // script
 
-                script { pgrep_port_forward() }
+                // -----------------------------------------------------------------------
+                // Intent: Replacing P_IDS with pgrep/pkill is a step forward.
+                // Why not simply use a pid file, capture _TAG=kail-startup above
+                // Grep runs the risk of terminating stray commands (??-good <=> bad-??)
+                // -----------------------------------------------------------------------
+                script {
+                    String proc = '_TAG=kail-startup'
+
+                    println("${iam}: ENTER")
+                    println("${iam}: Shutdown process $proc")
+                    /*
+                    pgrep_proc(proc)
+                    pkill_proc(proc)
+                    pgrep_proc(proc)
+                     */
+
+                    sh(label  : 'pgrep_proc - kill-pre',
+                       script : """
+pgrep --uid "\$(id -u)" --list-full --full '_TAG=kail-startup' || true
+""")
 
                 sh(label  : 'Terminate kail-startup',
                    script : """
