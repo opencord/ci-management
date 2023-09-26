@@ -54,7 +54,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: true
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -83,7 +83,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: true
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -240,7 +240,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T4GEM-FTTB'
           power-switch: true
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with gpon olt/onu - 2.11 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -325,7 +325,7 @@
           reinstall-olt: true
           num-of-onos: '3'
           num-of-atomix: '3'
-          pipeline-script: 'voltha/master/physical-build.groovy'
+          pipeline-script: 'voltha/physical-build.groovy'
           VolthaEtcdPort: 9999
           waitTimerForOltUp: 360
           time: '1'
@@ -343,7 +343,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: true
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-dt-physical-functional-tests.groovy'
 
       # Berlin pod with zyxel xgspon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
@@ -358,7 +358,7 @@
           reinstall-olt: true
           num-of-onos: '3'
           num-of-atomix: '3'
-          pipeline-script: 'voltha/master/physical-build.groovy'
+          pipeline-script: 'voltha/physical-build.groovy'
           VolthaEtcdPort: 9999
           waitTimerForOltUp: 360
           profile: '1T8GEM'
@@ -377,7 +377,7 @@
           test-repo: 'voltha-system-tests'
           profile: '1T8GEM'
           power-switch: true
-          pipeline-script: 'voltha/master/voltha-dt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-dt-physical-functional-tests.groovy'
 
       # TT workflow on Zyxel XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
@@ -407,7 +407,7 @@
           work-flow: 'TT'
           power-switch: true
           power-cycle-olt: true
-          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
           timeout: 360
@@ -440,7 +440,7 @@
           work-flow: 'TT'
           power-switch: true
           power-cycle-olt: false
-          pipeline-script: 'voltha/master/voltha-tt-physical-functional-tests.groovy'
+          pipeline-script: 'voltha/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
           timeout: 360
