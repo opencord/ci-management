@@ -147,6 +147,8 @@ kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_
           --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
           --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
           --set etcd.replicaCount=${cfg.etcdReplica} \
+          --set etcd.ingress.enabled=true
+          --set etcd.ingress.enableVirtualHosts=true
           -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
 """)
 
