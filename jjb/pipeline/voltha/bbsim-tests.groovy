@@ -269,7 +269,12 @@ _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > "$onosLog" &
                     leave('volthaDeploy')
                 } // script
 
-                script { pgrep_port_forward() }
+                // Display spawned procs
+                script {
+                    enter('bbsim-tests::pgrep_port_forward::0')
+                    pgrep_port_forward('port-forw')
+                    leave('bbsim-tests::pgrep_port_forward::0')
+                }
 
                 sh(label  : 'Terminate kail-startup',
                    script : """
@@ -323,8 +328,11 @@ popd               || { echo "ERROR: popd $logsDir failed"; exit 1; }
             // ---------------------------------
             // Sanity check port-forward spawned
             // ---------------------------------
-            // [TODO] - Wait until forwarding successful else fatal
-            script { pgrep_port_forward() }
+            script {
+                enter('bbsim-tests::pgrep_port_forward::1')
+                pgrep_port_forward('port-forw')
+                leave('bbsim-tests::pgrep_port_forward::1')
+            }
 
             // setting ONOS log level
             script {
