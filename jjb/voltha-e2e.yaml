@@ -87,6 +87,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           olts: 2
           extraHelmFlags: '--set onu=2,pon=2'
@@ -116,6 +117,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           olts: 2
           extraHelmFlags: '--set onu=2,pon=2'
@@ -218,6 +220,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
           time-trigger: "H H/23 * * *"
@@ -241,6 +244,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
           time-trigger: "H H/23 * * *"
@@ -291,6 +295,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           olts: 2
           extraHelmFlags: '--set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
@@ -316,6 +321,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           olts: 2
           extraHelmFlags: '--set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
@@ -523,6 +529,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
@@ -632,6 +639,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
@@ -915,6 +923,7 @@
           name: 'patchset-voltha-2.11-openonu-go-test-bbsim'
           trigger-comment: "voltha 2.11 test openonu singleolt"
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: '$GERRIT_BRANCH'
           gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
@@ -1016,6 +1025,7 @@
           name: 'patchset-voltha-2.12-openonu-go-test-bbsim'
           trigger-comment: "voltha 2.12 test openonu singleolt"
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: '$GERRIT_BRANCH'
           gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
@@ -1243,6 +1253,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set onu=2,pon=2'
           olts: 2
@@ -1314,6 +1325,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onu=2,pon=2'
           olts: 2
@@ -1517,6 +1529,7 @@
           name: 'patchset-voltha-2.11-multiple-olts-openonu-go-test-bbsim'
           trigger-comment: "voltha 2.11 test openonu multiolt"
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: '$GERRIT_BRANCH'
           gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
@@ -1590,6 +1603,7 @@
           name: 'patchset-voltha-2.12-multiple-olts-openonu-go-test-bbsim'
           trigger-comment: "voltha 2.12 test openonu multiolt"
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: '$GERRIT_BRANCH'
           gerritProject: '$GERRIT_PROJECT'
           gerritRefspec: '$GERRIT_REFSPEC'
@@ -1747,6 +1761,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           time-trigger: "H H/23 * * *"
           testTargets: |
@@ -1759,6 +1774,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
           testTargets: |
@@ -1800,6 +1816,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set onu=2,pon=2'
@@ -1814,6 +1831,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onu=2,pon=2'
@@ -1856,6 +1874,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.12'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           time-trigger: "H H/23 * * *"
@@ -1881,6 +1900,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           time-trigger: "H H/23 * * *"
@@ -1942,6 +1962,7 @@
           name: 'periodic-voltha-memory-leak-test-bbsim-2.12'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
           withMonitoring: true
@@ -1958,6 +1979,7 @@
           name: 'periodic-voltha-memory-leak-test-bbsim-2.11'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
           time-trigger: "H H/23 * * *"
           withMonitoring: true

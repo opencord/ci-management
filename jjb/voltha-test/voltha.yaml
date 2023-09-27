@@ -453,6 +453,7 @@
           disable-job: true
           release: 'voltha-2.11'
           branch: 'voltha-2.11'
+          pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
           pipeline-branch: 'voltha-2.11'
           name-extension: '_TT'
           work-flow: 'TT'
@@ -469,6 +470,7 @@
           disable-job: true
           release: 'voltha-2.12'
           branch: 'voltha-2.12'
+          pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
           pipeline-branch: 'voltha-2.12'
           name-extension: '_TT'
           work-flow: 'TT'
@@ -662,6 +664,7 @@
           work-flow: 'DT'
           release: '2.11'
           branch: 'voltha-2.11'
+          pipeline-script: 'voltha/voltha-2.11/dmi-build-and-test.groovy'
           pipeline-branch: 'voltha-2.11'
           profile: 'Default'
           installVolthaInfra: true
@@ -686,6 +689,7 @@
           work-flow: 'DT'
           release: '2.12'
           branch: 'voltha-2.12'
+          pipeline-script: 'voltha/voltha-2.12/dmi-build-and-test.groovy'
           pipeline-branch: 'voltha-2.12'
           profile: 'Default'
           installVolthaInfra: true

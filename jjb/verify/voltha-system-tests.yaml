@@ -44,12 +44,14 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
 
 - job-group:
     name: 'verify-voltha-system-tests-jobs-voltha-2.11'
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
 
 #- job-group:
 #    name: 'verify-voltha-system-tests-jobs-voltha-2.8'
