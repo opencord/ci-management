@@ -5,7 +5,7 @@ CORD.
 
 The best way to work with this repo is to check it out with `repo`, per these
 instructions: [Downloading testing and QA
-repositories](https://guide.opencord.org/developer/getting_the_code.html#testing-and-qa-repositories)
+repositories](https://guide.opencord.org/master/developer/getting_the_code.html#testing-and-qa-repositories)
 
 > NOTE: This repo uses git submodules. If you get an error like this when
 > testing:
@@ -21,7 +21,7 @@ repositories](https://guide.opencord.org/developer/getting_the_code.html#testing
 
 ## Jenkins Job Builder (JJB) Documentation
 
-[Official JJB Docs](https://docs.openstack.org/infra/jenkins-job-builder/index.html)
+[Official JJB Docs](https://jenkins-job-builder.readthedocs.io/en/latest/index.html)
 
 [LF Best practices for
 JJB](http://docs.releng.linuxfoundation.org/projects/global-jjb/en/latest/best-practices.html#)
@@ -53,11 +53,11 @@ When adding a new git repo that needs tests:
 1. Create a new file in `jjb/verify` named `<reponame>.yaml`
 
 2. Create a
-   [project](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#project)
+   [project](https://jenkins-job-builder.readthedocs.io/en/latest/definition.html#project)
    using the name of the repo, and a
-   [job-group](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#job-group)
+   [job-group](https://jenkins-job-builder.readthedocs.io/en/latest/definition.html#job-group)
    section with a list of
-   [jobs-template](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#job-template)
+   [jobs-template](https://jenkins-job-builder.readthedocs.io/en/latest/definition.html#job-template)
    `id`s to invoke.
 
 3. _Optional_: If you have more than one job that applies to the repo, add a
@@ -68,7 +68,7 @@ When adding a new git repo that needs tests:
 ### Making a new job-template
 
 To create jobs that are usable by multiple repos, you want to create a
-[job-template](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#job-template)
+[job-template](https://jenkins-job-builder.readthedocs.io/en/latest/definition.html#job-template)
 that can be used by multiple jobs.
 
 Most `job-template`s are kept in `jjb/*.yaml`. See `lint.yaml` or
@@ -77,7 +77,7 @@ Most `job-template`s are kept in `jjb/*.yaml`. See `lint.yaml` or
 Every `job-template` must have at least a `name` (which creates the name of the
 job in Jenkins) and an `id` item (referred to in the `job-group`), as well as
 several
-[modules](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#modules)
+[modules](https://jenkins-job-builder.readthedocs.io/en/latest/definition.html#modules)
 that invoke Jenkins functionality, or `macros` (see below, and in the docs)
 that customize or provide defaults for those modules.
 
@@ -88,13 +88,13 @@ Default values can be found in `jjb/defaults.yaml`.  These can be used in
 
 > NOTE: Defaults don't work with `macros` - [all
 parameters must be passed to every macro
-invocation](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#macro-notes).
+invocation](https://jenkins-job-builder.readthedocs.io/en/latest/definition.html#macro-notes).
 
 ### Creating macros
 
 If you need to customize how a Jenkins module is run, consider creating a
 reusable
-[macro](https://docs.openstack.org/infra/jenkins-job-builder/definition.html#macro).
+[macro](https://jenkins-job-builder.readthedocs.io/en/latest/definition.html#macro).
 These are generally put in `jjb/cord-macros.yaml`, and have names matching
 `cord-infra-*`.
 
