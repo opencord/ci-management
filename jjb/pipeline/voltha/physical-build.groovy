@@ -16,6 +16,7 @@
 
 // NOTE we are importing the library even if it's global so that it's
 // easier to change the keywords during a replay
+
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
