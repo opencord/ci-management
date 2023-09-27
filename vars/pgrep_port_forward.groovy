@@ -76,7 +76,7 @@ Boolean process(String proc, Map args) {
         // but logic is prone to exception so (YUCK!) hardcode for now.
 
         script : """
-pgrep --uid \$(uid -u) --list-full --full 'port-forw' || true
+pgrep --uid \$(id -u) --list-full --full 'port-forw' || true
 """,
     )
     return(ans)
