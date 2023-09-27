@@ -33,6 +33,788 @@
       "message": "Looks good to me",
       "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e64fbf24_91694ad7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "Some jobs have lingering pseudo-subdir branch references",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "79d5c10f_18924737",
+        "filename": "jjb/repos/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d74f8ec_ae5f1a95",
+        "filename": "jjb/repos/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bb2e228_7188100b",
+        "filename": "jjb/verify/bbsim-sadis-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bf17c12_7f146f0c",
+        "filename": "jjb/verify/bbsim-sadis-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cf0e5ad_ca239658",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd2f0b76_0edeb47f",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44399cac_37c64bce",
+        "filename": "jjb/verify/ofagent-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28c80c86_d1b2a4d7",
+        "filename": "jjb/verify/ofagent-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f7765f9a_a87b7eb2",
+        "filename": "jjb/verify/voltha-api-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dbbbf459_abc0a537",
+        "filename": "jjb/verify/voltha-api-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed\n\n(v2.8 job can be removed outright as legacy/deprecated)",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d41a27ec_80d9bf36",
+        "filename": "jjb/verify/voltha-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85847faa_15eff23a",
+        "filename": "jjb/verify/voltha-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cbe511dd_2deb133b",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70f59cab_3e9ab0eb",
+        "filename": "jjb/verify/voltha-onos.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8d6310a5_dd57e65c",
+        "filename": "jjb/verify/voltha-openolt-adapter.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29af0d9a_241ce7ef",
+        "filename": "jjb/verify/voltha-openolt-adapter.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a05c5e4_be424208",
+        "filename": "jjb/verify/voltha-openonu-adapter-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "181e1b35_3a3ed712",
+        "filename": "jjb/verify/voltha-system-tests.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c2127252_8ddf3984",
+        "filename": "jjb/verify/voltha-system-tests.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d00fd071_c43e1f71",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df27f3bc_87e59b90",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d6eade52_14cd4f53",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 222,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5c5881d_372d4bf0",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "26453be2_db503b0e",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 297,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "44247760_0b4e20f2",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 323,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5dcb5155_1de9d6af",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1388d58d_651d9af6",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 641,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fb00d8a5_e173f934",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 925,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3264039d_ac9b7489",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1027,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89409439_f687f9db",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1255,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d2f5889_1a0fafe9",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1327,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "83030d01_1e356c63",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1531,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c559cebb_c82f7f47",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1605,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bdd38bd_4defc504",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1763,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "64d5e61d_765343ba",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1776,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fb8d699_70735fa3",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1818,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "55822a2e_95598376",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1833,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d113cdb1_b5530eed",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1876,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7140a876_96690db6",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1902,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d000cdb_de7637f9",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1964,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "489424bb_355429bc",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 1981,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8419a35a_91adbe02",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 456,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "03ff99ee_f6d38686",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 473,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bb011d6_63497cb0",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 667,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "43b2b0e1_c493ff0e",
+        "filename": "jjb/voltha-test/voltha.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 692,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-27T14:05:11Z",
+      "side": 1,
+      "message": "pseudo-branch subdir will need to be removed",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
