@@ -18,23 +18,19 @@
 //
 // stage('test stage') {
 //   steps {
-//     volthaDeploy([
-//       onosReplica: 3
-//     ])
+//     volthaDeploy([onosReplica: 3])
 //   }
 // }
 // -----------------------------------------------------------------------
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def getIam(String func)
-{
+String getIam(String func) {
     // Cannot rely on a stack trace due to jenkins manipulation
     String src = 'vars/volthaInfraDeploy.groovy'
     String iam = [src, func].join('::')
     return iam
 }
-
 
 // -----------------------------------------------------------------------
 // Intent: Log progress message
@@ -59,9 +55,9 @@ void leave(String name) {
 // -----------------------------------------------------------------------
 // Intent: Display and interact with kubernetes namespaces.
 // -----------------------------------------------------------------------
-def doKubeNamespaces()
-{
-    enter('doKubeNamespaces')
+void doKubeNamespaces() {
+    String iam = 'doKubeNamespaces'
+    enter(iam)
 
     /*
      [joey] - should pre-existing hint the env is tainted (?)
@@ -76,34 +72,35 @@ def doKubeNamespaces()
 
     sh('kubectl get namespaces || true')
 
-    leave('doKubeNamespaces')
+    leave(iam)
     return
 }
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def process(Map config)
-{
+void process(Map config) {
     enter('process')
 
     // NOTE use params or directule extraHelmFlags??
-    def defaultConfig = [
+    Map defaultConfig = [
         onosReplica: 1,
         atomixReplica: 1,
         kafkaReplica: 1,
         etcdReplica: 1,
-        infraNamespace: "infra",
-        workflow: "att",
+        infraNamespace: 'infra',
+        workflow: 'att',
         withMacLearning: false,
         withFttb: false,
-        extraHelmFlags: "",
+        extraHelmFlags: '',
         localCharts: false,
-        kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
+        // location of the kubernetes config file,
+        // if null we assume it's stored in the $KUBECONFIG
+        kubeconfig: null,
     ]
 
-    def cfg = defaultConfig + config
+    Map cfg = defaultConfig + config
 
-    def volthaInfraChart = "onf/voltha-infra"
+    def volthaInfraChart = 'onf/voltha-infra'
 
     if (cfg.localCharts) {
         volthaInfraChart = "$WORKSPACE/voltha-helm-charts/voltha-infra"
@@ -131,11 +128,11 @@ kubectl create namespace ${cfg.infraNamespace} || true
 kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_config=${kubeconfig}"  || true
 """)
 
-    def serviceConfigFile = cfg.workflow
+    String serviceConfigFile = cfg.workflow
     if (cfg.withMacLearning && cfg.workflow == 'tt') {
-        serviceConfigFile = "tt-maclearner"
+        serviceConfigFile = 'tt-maclearner'
     } else if (cfg.withFttb && cfg.workflow == 'dt') {
-        serviceConfigFile = "dt-fttb"
+        serviceConfigFile = 'dt-fttb'
     }
 
     // bitnamic/etch has change the replica format between the currently used 5.4.2 and the latest 6.2.5
@@ -158,27 +155,19 @@ kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_
 
 // -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
-def call(Map config)
-{
+def call(Map config=[:]) {
     enter('main')
 
-    if (!config) {
-        config = [:]
+    try {
+        process(config)
     }
-
-    try
-    {
-	    process(config)
-    }
-    catch (Exception err)
-    {
+    catch (Exception err) { // groovylint-disable-line CatchException
         String iam = getIam(name)
-	    println("** ${iam}: EXCEPTION ${err}")
-	    throw err
+        println("** ${iam}: EXCEPTION ${err}")
+        throw err
     }
-    finally
-    {
-	    leave('main')
+    finally {
+        leave('main')
     }
 
     return
