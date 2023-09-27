@@ -88,6 +88,7 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.12'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           testTargets: |
             - target: sanity-bbsim-att
@@ -111,6 +112,7 @@
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           testTargets: |
             - target: sanity-bbsim-att

@@ -36,6 +36,7 @@
           junit-allow-empty-results: true
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.11'
 
 - job-group:
     name: 'verify-voltha-api-server-jobs-voltha-2.8'
@@ -51,6 +52,7 @@
           junit-allow-empty-results: true
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.8'
 
 - job-group:
     name: 'publish-voltha-api-server-jobs'
