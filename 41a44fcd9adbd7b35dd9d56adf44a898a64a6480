@@ -52,6 +52,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f3a8adb_b3e30a86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-09-27T14:14:56Z",
+      "side": 1,
+      "message": "They _should_ be fine because once we check out ci-managment branch voltha-2.12, the version-specific pipeline-script path (voltha/voltha-2.12/) does exist. This should change eventually (in the paths you pointed out and in the respective branches, but both changes would have to happen at the same time).",
+      "parentUuid": "e64fbf24_91694ad7",
+      "revId": "41a44fcd9adbd7b35dd9d56adf44a898a64a6480",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "79d5c10f_18924737",
