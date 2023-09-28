@@ -47,34 +47,6 @@ void leave(String name) {
 }
 
 // -----------------------------------------------------------------------
-// Intent: Assign perms to fix access problems
-// . /bin/sh: 1: /home/jenkins/.volt/config: Permission denied
-// -----------------------------------------------------------------------
-void fixPerms() {
-    enter('fixPerms')
-
-    sh(label  : 'fixperms',
-       script : """
-
-      umask 022
-
-      declare volt_dir=\$HOME/.volt
-      declare volt_cfg=\$HOME/.volt/config
-
-      echo
-      echo "** Fixing perms: \$volt_cfg"
-      mkdir -p \$volt_dir
-      chmod -R u+w,go-rwx \$volt_dir
-      chmod u=rwx \$volt_dir
-      touch \$volt_cfg
-      /bin/ls -l \$volt_dir
-""")
-
-    leave('fixPerms')
-    return
-}
-
-// -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 Boolean process(String branch) {
     Boolean ans = true
@@ -193,7 +165,6 @@ Boolean process(String branch) {
 def call(String branch) {
     try {
         enter('main')
-        fixPerms()
         process(branch)
     }
     catch (Exception err) {  // groovylint-disable-line CatchException
