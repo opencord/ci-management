@@ -165,7 +165,11 @@ Boolean process(String branch) {
 
     mkdir -p "/home/jenkins/.volt"
     rm -f "/home/jenkins/.volt/config"
-    "\${bin_voltctl}" config > "/home/jenkins/.volt/config"
+    "\${bin_voltctl}" config | \
+      sed -e "s/server: .*/server: voltha.voltha.local:443/" \
+          -e "s/kvstore: .*/kvstore: voltha-infra.local:443/" \
+          -e "s/useTLS: .*/useTLS: true/" | \
+      tee "/home/jenkins/.volt/config"
 """)
 
     leave('process')
