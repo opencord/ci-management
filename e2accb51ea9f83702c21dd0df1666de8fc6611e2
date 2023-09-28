@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebf2da1f_1f48897f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-28T20:44:26Z",
+      "side": 1,
+      "message": "merge delayed temporarily until the current batch of jenkins log failures have been identified.\nNo need to muddy the waters for bisdh.",
+      "revId": "e2accb51ea9f83702c21dd0df1666de8fc6611e2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
