@@ -181,6 +181,18 @@ Boolean process(String branch) {
     voltctl version --clientonly
 """)
 
+    sh(
+        label : 'Write /home/jenkins/.volt/config',
+        returnStdout: false,
+        script: """#!/bin/bash
+
+    bin_voltctl="$WORKSPACE/bin/voltctl"
+
+    mkdir -p "/home/jenkins/.volt"
+    rm -f "/home/jenkins/.volt/config"
+    "\${bin_voltctl}" config > "/home/jenkins/.volt/config"
+""")
+
     leave('process')
     return(ans)
 }
