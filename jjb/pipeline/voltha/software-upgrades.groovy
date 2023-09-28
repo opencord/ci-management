@@ -230,7 +230,7 @@ def test_software_upgrade(name) {
         if [ ${logging} = true ]; then
           testLogging='True'
         fi
-        export VOLTCONFIG=$HOME/.volt/config-minimal
+        export VOLTCONFIG=$HOME/.volt/config
         export KUBECONFIG=$HOME/.kube/kind-config-voltha-minimal
         ROBOT_MISC_ARGS+=" -v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:\$testLogging"
         # Run the specified tests

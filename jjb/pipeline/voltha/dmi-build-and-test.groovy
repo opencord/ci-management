@@ -47,7 +47,7 @@ pipeline {
   environment {
     PATH="$PATH:$WORKSPACE/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
     KUBECONFIG="$WORKSPACE/${configBaseDir}/${configKubernetesDir}/${configFileName}.conf"
-    VOLTCONFIG="$HOME/.volt/config-minimal"
+    VOLTCONFIG="$HOME/.volt/config"
     LOG_FOLDER="$WORKSPACE/dmi/"
     APPS_TO_LOG="${OltDevMgr}"
   }
