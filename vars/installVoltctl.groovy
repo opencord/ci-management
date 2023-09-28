@@ -47,6 +47,31 @@ void leave(String name) {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Add host entries to /etc/hosts to allow resolving the virtual hosts
+// used to expose the voltha api (voltha.voltha.local) and etcd
+// (voltha-infra.local) inside of k8s via ingress to localhost
+// -----------------------------------------------------------------------
+void setHostEntries() {
+    enter('setHostEntries')
+
+    sh(
+       label  : 'setHostEntries',
+       script: """#!/usr/bin/env bash
+for hostname in voltha.voltha.local voltha-infra.local; do
+  if grep \$hostname /etc/hosts; then
+    echo "host entry for \$hostname already exists"
+  else
+    echo "adding host entry for \$hostname"
+    sed -i "s/127.0.0.1 localhost/& \$hostname/" /etc/hosts
+  fi
+done
+""")
+
+    leave('setHostEntries')
+    return
+}
+
+// -----------------------------------------------------------------------
 // -----------------------------------------------------------------------
 Boolean process(String branch) {
     Boolean ans = true
@@ -165,6 +190,7 @@ Boolean process(String branch) {
 def call(String branch) {
     try {
         enter('main')
+        setHostEntries()
         process(branch)
     }
     catch (Exception err) {  // groovylint-disable-line CatchException
