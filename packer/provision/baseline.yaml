@@ -42,6 +42,14 @@
         backup: true
       become: true
 
+    - name: Update /etc/hosts to resolve voltha-api and etcd ingress hostnames
+      replace:
+        path: /etc/hosts
+        regexp: '^(127\.0\.0\.1 .*)$'
+        replace: '127.0.0.1 localhost voltha.voltha.local voltha-infra.local'
+        backup: true
+      become: true
+
     - name: Disable periodic updates
       block:
         - name: Set all periodic update options to 0
