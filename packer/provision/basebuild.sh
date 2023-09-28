@@ -348,6 +348,14 @@ EOF
     mv /tmp/repo /usr/local/bin/repo
     chmod a+x /usr/local/bin/repo
 
+    # add host entries to /etc/hosts to allow resolving the virtual hosts
+    # used to expose the voltha api (voltha.voltha.local) and etcd
+    # (voltha-infra.local) inside of k8s via ingress to localhost
+    for INGRESS_HOST in voltha.voltha.local voltha-infra.local; do
+      echo "adding host entry for $INGRESS_HOST"
+      sed -i "s/^127.0.0.1[[:blank:]]\+localhost/& $INGRESS_HOST/" /etc/hosts
+    done
+
     # install helm
     HELM_VERSION="3.4.2"
     HELM_SHA256SUM="cacde7768420dd41111a4630e047c231afa01f67e49cc0c6429563e024da4b98"
