@@ -136,13 +136,6 @@ EOM
       umask 022
 
       echo
-      echo "** Generate $HOME/.volt/config"
-      mkdir -p "$HOME/.volt"
-      chmod u=rwx "$HOME/.volt"
-      voltctl -s localhost:55555 config > "$HOME/.volt/config"
-      chmod -R u+w,go-rwx "$HOME/.volt"
-
-      echo
       echo "** Generate $HOME/.kube/config"
       mkdir -p "$HOME/.kube"
       chmod u=rwx "$HOME/.kube"
