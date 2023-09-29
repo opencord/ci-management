@@ -168,6 +168,7 @@
     - name: Install markdownlint npm package with version specifiers
       npm:
         name: markdownlint
+        version: '0.18.0'
         global: true
 
     - name: Install typings npm package with version specifiers
