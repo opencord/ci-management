@@ -52,7 +52,7 @@
     "provisioners": [
       {
           "type": "shell-local",
-          "command": "./common-packer/ansible-galaxy.sh {{user `ansible_roles_path`}}"
+          "command": "ansible-galaxy install -p {{user `ansible_roles_path`}} -r ./ansible-galaxy-requirements.yaml"
       },
       {
           "type": "ansible",
