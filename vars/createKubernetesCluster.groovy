@@ -121,6 +121,9 @@ EOM
       for MNODE in \$(kubectl get node --selector='node-role.kubernetes.io/master' -o json | jq -r '.items[].metadata.name'); do
           kubectl taint node "\$MNODE" node-role.kubernetes.io/master:NoSchedule-
       done
+      # install ingress-nginx to allow usage of ingress to expose voltha
+      # endpoints (etcd and voltha-api)
+      kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/helm-chart-4.2.5/deploy/static/provider/kind/deploy.yaml
 """)
 
     sh(label  : 'Normalize config permissions',
