@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "52cef263_fec79b55",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-09-29T18:28:15Z",
+      "side": 1,
+      "message": "LGTM\n\nFuture enhancement: A separate installer may be helpful to support versioning\n(could also support a unit test then).",
+      "revId": "96abd868e7f54bfadb46f9897e97fa977fbcbb7d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
