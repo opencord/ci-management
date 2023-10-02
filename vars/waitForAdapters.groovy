@@ -179,11 +179,6 @@ def process(Map config) {
     println("** ${iam}: Wait for adapters to be registered")
 
     // guarantee that at least the specified number of adapters are registered with VOLTHA before proceeding
-    sh(label  : 'waitForAdapters: Initiate port forwarding',
-       script : """
-        _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${cfg.volthaNamespace} svc/${cfg.stackName}-voltha-api 55555:55555; done" &
-       """)
-
     sh(label  : 'waitForAdapters: loop until adapter list',
        script : """
 #        set +x

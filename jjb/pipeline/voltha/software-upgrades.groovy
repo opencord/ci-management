@@ -165,7 +165,6 @@ def test_software_upgrade(name) {
             sh('''
       JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8101:8101; done 2>&1 " &
       JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8181:8181; done 2>&1 " &
-      JENKINS_NODE_COOKIE="dontKillMe" _TAG=port-forward-voltha-api /bin/bash -c "while true; do kubectl -n voltha port-forward --address 0.0.0.0 service/voltha-voltha-api 55555:55555; done 2>&1 " &
       ''')
             sh('''
       sshpass -e ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -p 8101 karaf@127.0.0.1 log:set DEBUG org.opencord
