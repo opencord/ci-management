@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ddb1425_a8ce3c09",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-02T13:27:30Z",
+      "side": 1,
+      "message": "This is a NOP given port forwarding has been removed but one fyi:\n\n\u003e\u003e We could simply drop the guard and handle the pkill exit status, but we keep the guard for now and have it print information about matching processes.\n\nCalling pkill w/o a guard will manifest as a job failure condition.\nPkill will return a non-zero status when no processes match the pattern-to-kill.\n\nIf there are no processes to kill, pkill should not indirectly fail the job.\n",
+      "revId": "aa6135944fb49679b1278f11298d0b06ad756bc8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "240da2b5_a5c1fba0",
+        "filename": "vars/pkill_port_forward.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-02T13:27:30Z",
+      "side": 1,
+      "message": "Good enhancement, display VS compare-only will also be able to display procs in the window that existed between pgrep and pkill (if they went away).",
+      "revId": "aa6135944fb49679b1278f11298d0b06ad756bc8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
