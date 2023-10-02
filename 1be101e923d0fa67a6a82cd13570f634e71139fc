@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "680c3448_e6a6a2cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-02T13:19:19Z",
+      "side": 1,
+      "message": "LGTM\n\nThumbs up on simplification and removal of external dependencies.",
+      "revId": "1be101e923d0fa67a6a82cd13570f634e71139fc",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
