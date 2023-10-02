@@ -52,8 +52,10 @@
     name: 'verify-voltha-openolt-adapter-jobs-voltha-2.12'
     jobs:
       - 'voltha-patch-test':
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.12'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
+          pipeline-branch: 'master'
+          # pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          # pipeline-branch: 'voltha-2.12'
 
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs-voltha-2.11'
