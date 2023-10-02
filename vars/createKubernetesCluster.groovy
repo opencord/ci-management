@@ -124,6 +124,16 @@ EOM
       # install ingress-nginx to allow usage of ingress to expose voltha
       # endpoints (etcd and voltha-api)
       kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/helm-chart-4.2.5/deploy/static/provider/kind/deploy.yaml
+      # remove validating webhook for now, since some of the pipelines seem to
+      # fail with errors related to calling this hook and although there is a
+      # lot of talk in the internet about this issue, the solution very much
+      # depends on your exact setup (and it might not be worth investigating the
+      # details for a k8s version which has been EOL since some time now)
+      # https://stackoverflow.com/questions/61616203/nginx-ingress-controller-failed-calling-webhook
+      # This should be removed and properly fixed once we upgrade to a recent
+      # k8s version and a fitting ingress-nginx deployment
+      kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+
 """)
 
     sh(label  : 'Normalize config permissions',
