@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d56eacd7_461f4fd3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000947
+      },
+      "writtenOn": "2023-10-02T19:11:42Z",
+      "side": 1,
+      "message": "Do I understand correctly that \u0027master\u0027 currently looks at the 2.12 branch and the goal of this is to reset master branch test to look at the master branch, and at some point later on update the 2.12 branch with master code.  If so, why is this a temporary repoint?",
+      "revId": "a844e3097af9817a09f0b2f434ae87bbe88968c3",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
