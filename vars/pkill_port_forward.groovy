@@ -85,11 +85,11 @@ pgrep --uid \$(id -u) --list-full --full 'port-forw' || true
     }
 
     sh(
-        label  : 'Display port forwarding',
+        label  : 'Kill port forwarding',
         // script : ${cmd}.toString(),  -> Exception
         script : """
 echo -e "\n** vars/pkill_port_forward.groovy [DEBUG]: pgrep-pkill check"
-if [[ \$(pgrep --count 'port-forw') -gt 0 ]]; then
+if pgrep --uid \$(id -u) --list-full --full 'port-forw'; then
     pkill --uid \$(id -u) --echo --list-full --full 'port-forw'
 fi
 """)
