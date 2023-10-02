@@ -408,8 +408,6 @@ def test_voltha_stacks(numberOfStacks) {
       timeout(time: 15, unit: 'MINUTES') {
         sh """
 
-        # we are restarting the voltha-api port-forward for each stack, no need to have a different voltconfig file
-        voltctl -s 127.0.0.1:55555 config > $HOME/.volt/config
         export VOLTCONFIG=$HOME/.volt/config
 
         # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
