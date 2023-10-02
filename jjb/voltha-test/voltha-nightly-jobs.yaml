@@ -147,11 +147,6 @@
           default: '{reinstall-olt}'
           description: "Re-install olt software bringing up CORD"
 
-      - string:
-          name: VolthaEtcdPort
-          default: '{VolthaEtcdPort}'
-          description: 'Localhost port that is forwarded to VOLTHA etcd'
-
       - bool:
           name: inBandManagement
           default: '{in-band-management}'
@@ -227,7 +222,6 @@
     <<: *voltha-pipe-job-boiler-plate
     # default values
     pipeline-script: 'voltha/physical-build.groovy'
-    VolthaEtcdPort: 2379
     num-of-openonu: 1
     num-of-onos: 1
     num-of-atomix: 0
@@ -278,7 +272,6 @@
     <<: *voltha-pipe-job-boiler-plate
     # default values
     pipeline-script: 'voltha/physical-build.groovy'
-    VolthaEtcdPort: 2379
     num-of-openonu: 1
     num-of-onos: 3
     num-of-atomix: 3
@@ -334,7 +327,6 @@
     <<: *voltha-pipe-job-boiler-plate
     # default values
     pipeline-script: 'voltha/playground/physical-build.groovy'
-    VolthaEtcdPort: 2379
     num-of-openonu: 1
     num-of-onos: 3
     num-of-atomix: 3
@@ -990,7 +982,6 @@
     pipeline-script: 'voltha/dmi-build-and-test.groovy'
     installVolthaInfra: true
     installVolthaStack: true
-    VolthaEtcdPort: 2379
     num-of-openonu: 1
     num-of-onos: 3
     num-of-atomix: 3
@@ -1172,11 +1163,6 @@
           name: restartOlt
           default: '{restart-olt}'
           description: "Re-install olt software bringing up CORD"
-
-      - string:
-          name: VolthaEtcdPort
-          default: '{VolthaEtcdPort}'
-          description: 'Localhost port that is forwarded to VOLTHA etcd'
 
       - bool:
           name: inBandManagement

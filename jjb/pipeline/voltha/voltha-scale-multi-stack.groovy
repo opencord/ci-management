@@ -156,9 +156,6 @@ pipeline {
         script {
           sh returnStdout: false, script: """
 
-          # forward ETCD port
-          JENKINS_NODE_COOKIE="dontKillMe" _TAG=etcd-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/etcd 9999:2379; done 2>&1 " &
-
           # forward ONOS ports
           JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8101:8101; done 2>&1 " &
           JENKINS_NODE_COOKIE="dontKillMe" _TAG=onos-port-forward /bin/bash -c "while true; do kubectl -n infra port-forward --address 0.0.0.0 service/voltha-infra-onos-classic-hs 8181:8181; done 2>&1 " &
@@ -329,10 +326,6 @@ pipeline {
           voltcfg="~/.volt/config-voltha"+i
           try {
             sh """
-
-            # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
-            _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
-
             voltctl -m 32MB device list -o json > $LOG_FOLDER/${stack_ns}/device-list.json || true
             python -m json.tool $LOG_FOLDER/${stack_ns}/device-list.json > $LOG_FOLDER/${stack_ns}/voltha-devices-list.json || true
             rm $LOG_FOLDER/${stack_ns}/device-list.json || true
@@ -409,9 +402,6 @@ def test_voltha_stacks(numberOfStacks) {
         sh """
 
         export VOLTCONFIG=$HOME/.volt/config
-
-        # _TAG=voltha-port-forward kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555& > /dev/null 2>&1
-        _TAG="voltha-port-forward" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha${i} svc/voltha${i}-voltha-api 55555:55555 > /dev/null 2>&1; done"&
 
         # wait a bit to make sure the port-forwarding has started
         sleep 5

@@ -326,7 +326,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/physical-build.groovy'
-          VolthaEtcdPort: 9999
           waitTimerForOltUp: 360
           time: '1'
 
@@ -359,7 +358,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/physical-build.groovy'
-          VolthaEtcdPort: 9999
           waitTimerForOltUp: 360
           profile: '1T8GEM'
           time: '5'
@@ -391,7 +389,6 @@
           work-flow: 'TT'
           profile: 'TP'
           time: '10'
-          VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
 
@@ -424,7 +421,6 @@
           work-flow: 'TT'
           profile: 'TP'
           time: '10'
-          VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
 
@@ -459,7 +455,6 @@
           work-flow: 'TT'
           profile: 'TP'
           time: '10'
-          VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
 
@@ -476,7 +471,6 @@
           work-flow: 'TT'
           profile: 'TP'
           time: '10'
-          VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
 
@@ -527,7 +521,6 @@
           work-flow: 'TT'
           profile: 'TP'
           time: '10'
-          VolthaEtcdPort: 9999
           num-of-onos: '3'
           num-of-atomix: '3'
 
@@ -565,7 +558,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.11/physical-build.groovy'
-          VolthaEtcdPort: 9999
           openoltAdapterChart: '/home/community/adtran-23.1-voltha-2.11/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
@@ -587,7 +579,6 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
-          VolthaEtcdPort: 9999
           openoltAdapterChart: '/home/community/adtran-23.1-voltha-2.12/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
@@ -649,7 +640,6 @@
           OltDevMgr: 'adtran-olt-device-manager'
           num-of-onos: '3'
           num-of-atomix: '3'
-          VolthaEtcdPort: 9999
           waitTimerForOltUp: 420
           time: '16'
 
@@ -676,7 +666,6 @@
           OltDevMgr: 'adtran-olt-device-manager'
           num-of-onos: '3'
           num-of-atomix: '3'
-          VolthaEtcdPort: 9999
           waitTimerForOltUp: 420
           time: '16'
 
@@ -701,7 +690,6 @@
           OltDevMgr: 'adtran-olt-device-manager'
           num-of-onos: '3'
           num-of-atomix: '3'
-          VolthaEtcdPort: 9999
           waitTimerForOltUp: 420
           time: '16'
 

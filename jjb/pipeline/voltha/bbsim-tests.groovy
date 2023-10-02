@@ -312,8 +312,6 @@ popd               || { echo "ERROR: popd $logsDir failed"; exit 1; }
             // -----------------------------------------------------------------------
             sh(label  : 'while-true-port-forward',
                script : """
-      JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-voltha-api" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${volthaNamespace} svc/voltha-voltha-api 55555:55555; done"&
-      JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-etcd" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-etcd 2379:2379; done"&
       JENKINS_NODE_COOKIE="dontKillMe" _TAG="voltha-infra-kafka" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n ${infraNamespace} svc/voltha-infra-kafka 9092:9092; done"&
       bbsimDmiPortFwd=50075
       for i in {0..${olts.toInteger() - 1}}; do
