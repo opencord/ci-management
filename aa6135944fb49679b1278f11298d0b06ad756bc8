@@ -18,6 +18,24 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2885eb4_c9095898",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000983
+      },
+      "writtenOn": "2023-10-02T13:32:53Z",
+      "side": 1,
+      "message": "Yes, that is what I meant with \"handle the pkill exit status\". :)\n\nThere are still some port-forwardings left, we only have k8s ingress for a subset.",
+      "parentUuid": "0ddb1425_a8ce3c09",
+      "revId": "aa6135944fb49679b1278f11298d0b06ad756bc8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "240da2b5_a5c1fba0",
