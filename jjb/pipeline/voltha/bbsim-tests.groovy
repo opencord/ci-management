@@ -38,7 +38,7 @@ String branchName() {
     if (br != branch) {
         String err = [
             'ERROR: Detected invalid branch',
-            '(expected=[$br] != found=[$branch])'
+            "(expected=[${br}] != found=[${branch}])"
         ].join(' ')
         throw new Exception(err) // groovylint-disable-line ThrowException
     }
