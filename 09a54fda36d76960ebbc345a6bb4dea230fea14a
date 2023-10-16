@@ -22,6 +22,30 @@
       },
       "revId": "09a54fda36d76960ebbc345a6bb4dea230fea14a",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c267a0b_de421fff",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-16T18:59:35Z",
+      "side": 1,
+      "message": "Commit message was updated a wile back, .gitreview contains the v2.11 branch string.",
+      "parentUuid": "e8569031_f362e166",
+      "range": {
+        "startLine": 11,
+        "startChar": 18,
+        "endLine": 11,
+        "endChar": 22
+      },
+      "revId": "09a54fda36d76960ebbc345a6bb4dea230fea14a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
