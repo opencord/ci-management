@@ -16,6 +16,23 @@
       "message": "Checkin message updated",
       "revId": "7411ceeaa6e5d944689eb12f54b44c9f37ce1bc5",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62a6e577_ae4f1682",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-23T14:03:10Z",
+      "side": 1,
+      "message": "repo:ci-management will not trigger a jenkins job for a simple config change like this.\nManually adding +1 verify and yes we need to improve commit hook coverage.\n\nShould just err on the side of always running jobs VS trying to be selective to identify documentation changes, comments, etc that may not require regenerating or testing jobs.\n",
+      "revId": "7411ceeaa6e5d944689eb12f54b44c9f37ce1bc5",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
