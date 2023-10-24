@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7bdcda0a_ad036d49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-24T20:29:21Z",
+      "side": 1,
+      "message": "recheck with cosmetic yaml edit to trigger jenkins cleared code reviews.\n\nPost +1 verify from jenkins, re-add roger+1, mahir+1 \u0026 daf+2 sp patch can merge.",
+      "revId": "6ee5c7b13d4e8da7b278dfb89ad060b45cf4b076",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
