@@ -33,6 +33,23 @@
       "message": "LGTM",
       "revId": "e2accb51ea9f83702c21dd0df1666de8fc6611e2",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4fce70fd_b7958db4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-24T14:48:07Z",
+      "side": 1,
+      "message": "recheck\n\n+4 approval, recheck to trigger a jenkins job.\nMay need to add a yaml source edit to artifically force a groovy-only source patch to trigger a jenkins job.\n",
+      "revId": "e2accb51ea9f83702c21dd0df1666de8fc6611e2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
