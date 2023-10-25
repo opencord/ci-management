@@ -166,7 +166,7 @@ while true; do
     ## Probe for cluster state
     ## -----------------------
     if grep -q -e 'ContainerCreating' \$vsd_log; then
-        echo -e '\nvolthaStackDeploy.groovy: ContainerCrating active'
+        echo -e '\nvolthaStackDeploy.groovy: ContainerCreating active'
         [[ -v debug ]] && grep -e 'ContainerCreating' \$vsd_log
 
     elif grep -q -e '0/' \$vsd_log; then
@@ -262,7 +262,7 @@ while true; do
     ## Probe for cluster state
     ## -----------------------
     if grep -q -e 'ContainerCreating' \$vsd_log; then
-        echo -e '\nvolthaStackDeploy.groovy: ContainerCrating active'
+        echo -e '\nvolthaStackDeploy.groovy: ContainerCreating active'
         [[ -v debug ]] && grep -e 'ContainerCreating' \$vsd_log
 
     elif grep -q -e '0/' \$vsd_log; then
