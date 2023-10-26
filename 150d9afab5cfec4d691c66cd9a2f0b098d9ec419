@@ -16,6 +16,23 @@
       "message": "commit message updated with branch\u003dvoltha-2.12",
       "revId": "150d9afab5cfec4d691c66cd9a2f0b098d9ec419",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5de7cccc_21e17cdb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-10-26T15:56:29Z",
+      "side": 1,
+      "message": "Branch mentioned in comments updated to v2.12",
+      "revId": "150d9afab5cfec4d691c66cd9a2f0b098d9ec419",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
