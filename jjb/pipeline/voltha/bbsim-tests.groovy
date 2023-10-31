@@ -15,7 +15,7 @@
 // voltha-2.x e2e tests for openonu-go
 // uses bbsim to simulate OLT/ONUs
 
-// [TODO] Update syntax below to the latest supported
+// [TODO] Update library() to the latest DSL syntax supported by jenkins
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
     $class: 'GitSCMSource',
@@ -47,16 +47,6 @@ String branchName() {
 }
 
 // -----------------------------------------------------------------------
-// Intent: Difficult at times to determine when pipeline jobs have
-//   regenerated.  Hardcode a version string that can be assigned
-//   per-script to be sure latest repository changes are being used.
-// -----------------------------------------------------------------------
-String pipelineVer() {
-    String version = 'ff337d86399e107cd417793454c4bbd398855d31'
-    return(version)
-}
-
-// -----------------------------------------------------------------------
 // Intent: Due to lack of a reliable stack trace, construct a literal.
 //         Jenkins will re-write the call stack for serialization.S
 // -----------------------------------------------------------------------
@@ -64,7 +54,6 @@ String pipelineVer() {
 // -----------------------------------------------------------------------
 String getIam(String func) {
     String branchName = branchName()
-    String version    = pipelineVer()
     String src = [
         'ci-management',
         'jjb',
@@ -74,7 +63,7 @@ String getIam(String func) {
         'bbsim-tests.groovy'
     ].join('/')
 
-    String name = [src, version, func].join('::')
+    String name = [src, func].join('::')
     return(name)
 }
 
@@ -124,6 +113,49 @@ void cleanupPortForward() {
     // 'kubectl.*port-forward'
     pkill_port_forward('port-forward', pkpfArgs)
     leave('cleanupPortForward')
+    return
+}
+
+// find . \( -name 'log*.html' -o -name 'output*.xml' -o -name 'report*.html' \) -p
+// -----------------------------------------------------------------------
+// Intent: Display contents of the logs directory
+// -----------------------------------------------------------------------
+// [TODO]
+//   o where-4-art-thou logs directory ?
+//   o Replace find {logfile} command with /bin/ls {logdir} when found.
+//     Individual logs may be missing due to failure, show what is available.
+// -----------------------------------------------------------------------
+void findPublishedLogs() {
+    String iam = 'findPublishedLogs'
+
+    enter(iam)
+    sh(label  : iam,
+       script : """
+find . -name 'output.xml' -print
+""")
+    leave(iam)
+    return
+}
+
+// -----------------------------------------------------------------------
+// Intent: Terminate kail-startup process launched earlier
+// -----------------------------------------------------------------------
+// :param caller: Name of parent calling function (debug context)
+// :type caller: String, optional
+// :returns: none
+// :rtype:   void
+// -----------------------------------------------------------------------
+void killKailStartup(String caller='') {
+    String iam = "killKailStartup (caller=$caller)"
+
+    enter(iam)
+    sh(label  : 'Terminate kail-startup',
+       script : """
+if [[ \$(pgrep --count '_TAG=kail-startup') -gt 0 ]]; then
+    pkill --uid \$(id -u) --echo --list-full --full '_TAG=kail-startup'
+fi
+""")
+    leave(iam)
     return
 }
 
@@ -274,19 +306,9 @@ _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > "$onosLog" &
                     enter('bbsim-tests::pgrep_port_forward::0')
                     pgrep_port_forward('port-forw')
                     leave('bbsim-tests::pgrep_port_forward::0')
+
+                    killKailStartup('Deploy Voltha')
                 }
-
-                sh(label  : 'Terminate kail-startup',
-                   script : """
-if [[ \$(pgrep --count '_TAG=kail-startup') -gt 0 ]]; then
-    pkill --uid \$(id -u) --echo --list-full --full '_TAG=kail-startup'
-fi
-""")
-
-                sh(label  : 'Lingering kail-startup check',
-                   script : """
-pgrep --uid \$(id -u) --list-full --full 'kail-startup' || true
-""")
 
                 // -----------------------------------------------------------------------
                 // Bundle onos-voltha / kail logs
@@ -472,20 +494,8 @@ kubectl logs -n voltha -l app.kubernetes.io/part-of=voltha \
 
     archiveArtifacts artifacts: '**/*.log,**/*.gz,**/*.txt,**/*.html,**/voltha-pods-mem-consumption-att/*,**/voltha-pods-mem-consumption-dt/*,**/voltha-pods-mem-consumption-tt/*'
 
-    script {
-        enter('pkill _TAG=kail-startup')
-        sh(label  : 'pgrep_proc - kill-pre',
-           script : """
-pgrep --uid "\$(id -u)" --list-full --full 'kail-startup' || true
-""")
-        sh(label  : 'pkill_proc - kail',
-           script : """
-if [[ \$(pgrep --count '_TAG=kail') -gt 0 ]]; then
-    pkill --uid "\$(id -u)" --echo --full 'kail'
-fi
-""")
-        leave('pkill _TAG=kail-startup')
-    }
+    script { killKailStartup('collectArtifacts') }
+    script { findPublishedLogs() }
 
     enter('RobotPublisher')
     step([$class: 'RobotPublisher',
@@ -703,17 +713,17 @@ pipeline {
     } // stages
 
     post
-    {
+    { // https://www.jenkins.io/doc/book/pipeline/syntax/#post
         aborted {
             collectArtifacts('aborted')
-            script { cleanupPortForward() }
         }
         failure {
             collectArtifacts('failed')
-            script { cleanupPortForward() }
         }
         always {
             collectArtifacts('always')
+        }
+        cleanup {
             script { cleanupPortForward() }
         }
     }
