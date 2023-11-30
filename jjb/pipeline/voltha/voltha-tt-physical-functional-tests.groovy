@@ -179,6 +179,11 @@ pipeline {
     }
 
     stage('Multi-Tcont Tests') {
+      when {
+        expression {
+          return params.runMultiTcontTests
+        }
+      }
       environment {
         ROBOT_CONFIG_FILE="$WORKSPACE/${configBaseDir}/${configDeploymentDir}/${configFileName}-TT.yaml"
         ROBOT_FILE="Voltha_TT_MultiTcontTests.robot"
