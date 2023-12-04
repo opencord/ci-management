@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebebb042_ea2d86b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-12-04T15:26:25Z",
+      "side": 1,
+      "message": ",erge c",
+      "revId": "51b66045e5285d5b4ccde3bad4ec6098fda3ed45",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7dc6010c_586bdfee",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-12-04T15:26:25Z",
+      "side": 1,
+      "message": "Double-quote \"${withVGC}\" to prevent a syntax error/script termination when config var is undef.\n\nConditional becomes:\nif [ \u003d true ]; then   (*boom*)",
+      "revId": "51b66045e5285d5b4ccde3bad4ec6098fda3ed45",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "56a61ed7_872b12bd",
+        "filename": "jjb/pipeline/voltha/master/bbsim-tests.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 154,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-12-04T15:26:25Z",
+      "side": 1,
+      "message": "Is it appropriate to use port forwarding here or should this logic be tied to the ingress controller setup that Jan was working on a while back ?\n\nPort forwarding wrapped by an infinite loop (existing logic from viewing surrounding statements) has been a persistent source of instability for testing runs.",
+      "revId": "51b66045e5285d5b4ccde3bad4ec6098fda3ed45",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "23ab2fe5_5ab04c86",
+        "filename": "jjb/voltha-e2e.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-12-04T15:26:25Z",
+      "side": 1,
+      "message": "It would be helpful to update repo:voltha-docs to document the test and how to trigger the patch job.",
+      "revId": "51b66045e5285d5b4ccde3bad4ec6098fda3ed45",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
