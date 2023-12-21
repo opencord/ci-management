@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "adf30f2b_2bdc9723",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2023-12-21T18:06:16Z",
+      "side": 1,
+      "message": "Patch needs to be linked to a jira ticket\n\nHOWTO:\nhttps://docs.voltha.org/master/overview/contributing.html#submitting-code\nhttps://docs.voltha.org/master/overview/contributing/jira_tickets.html",
+      "revId": "544c180f109c82061a8fc17775c961d8d91d3597",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
