@@ -158,7 +158,7 @@
     description: |
       <!-- Managed by Jenkins Job Builder -->
       Created by {id} job-template from ci-management/jjb/software-upgrades.yaml  <br /><br />
-      E2E Validation for Voltha 2.X
+      E2E Validation for Voltha master
     properties:
       - onf-infra-volthadevs-permissions
       - cord-infra-properties:
