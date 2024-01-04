@@ -48,7 +48,7 @@ String call(String project = 'unknown', String tag = 'citest', String pullPolicy
             break
         case 'voltha-onos':
             String ans = [
-                '--set nos-classic.image.repository=voltha/voltha-onos',
+                '--set onos-classic.image.repository=voltha/voltha-onos',
                 'onos-classic.image.tag=citest',
                 "onos-classic.image.pullPolicy=${pullPolicy}",
             ].join(',')
