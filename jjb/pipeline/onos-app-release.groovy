@@ -1,4 +1,4 @@
-// Copyright 2019-2023 Open Networking Foundation (ONF) and the ONF Contributors
+// Copyright 2019-2024 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,60 @@ def version = '${version}'
 def nextVersion = '${nextVersion}'
 def branch = '${branch}'
 def jdkDistro = '${jdkDistro}'
+
+// -----------------------------------------------------------------------
+// Intent: Identify running script.  callstack() cannot be used here,
+//   jenkins + serialization alters stack trace making display unreliable.
+// -----------------------------------------------------------------------
+String getIam(String func) {
+    // Cannot rely on a stack trace due to jenkins manipulation
+    String src = 'jjb/pipeline/onos-app-release.groovy'
+    String iam = [src, func].join('::')
+    return iam
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void enter(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: ENTER")
+    return
+}
+
+// -----------------------------------------------------------------------
+// Intent: Log progress message
+// -----------------------------------------------------------------------
+void leave(String name) {
+    // Announce ourselves for log usability
+    String iam = getIam(name)
+    println("${iam}: LEAVE")
+    return
+}
+
+// -----------------------------------------------------------------------
+// https://jenkins.opencord.org/job/onos-app-release/285/consoleFull
+// -----------------------------------------------------------------------
+void git_debug(String name) {
+    enter(name)
+
+    println('''
+
+** -----------------------------------------------------------------------
+** git debugging: Commit-Id string MIA
+** -----------------------------------------------------------------------
+''')
+
+    sh 'echo "PWD: $(/bin/pwd)"'
+    sh '/bin/ls -l'
+    sh 'gitdir=$(git rev-parse --git-dir) && /bin/ls -ld ${gitdir}'
+    sh 'gitdir=$(git rev-parse --git-dir) && /bin/ls -ld ${gitdir}/hooks/'
+
+    leave(name)
+
+    return
+}
 
 // This pipeline updates the <version> tag in the root pom.xml for the
 // given app repo, and pushes two new Gerrit changes:
@@ -78,7 +132,7 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     sshagent (credentials: ['gerrit-jenkins-user']) {
       git branch: branch, url: 'ssh://jenkins@gerrit.opencord.org:29418/' + appRepo, credentialsId: 'gerrit-jenkins-user'
 
-      sh 'gitdir=$(git rev-parse --git-dir); scp -p -P 29418 jenkins@gerrit.opencord.org:hooks/commit-msg ${gitdir}/hooks/'
+      sh 'gitdir=$(git rev-parse --git-dir) && scp -p -P 29418 jenkins@gerrit.opencord.org:hooks/commit-msg ${gitdir}/hooks/'
     }
   }
 
@@ -93,6 +147,9 @@ node ('ubuntu18.04-basebuild-1c-2g') {
        sh 'echo releasing api version' + '"' + apiVersion +'"'
        changeApiVersion(appName, apiVersion)
     }
+
+        git_debug("Move to release version")
+
     sh 'git add -A && git commit -m "Release app version ' + version + ' with API version ' + apiVersion + '"'
   }
 
@@ -126,6 +183,9 @@ node ('ubuntu18.04-basebuild-1c-2g') {
        sh 'echo moving to next api version' + '"' + nextApiVersion +'"'
        changeApiVersion(appName, apiSnapshot)
     }
+
+        git_debug("Move to next SNAPSHOT version")
+
     sh 'git add -A && git commit -m "Starting snapshot ' + snapshot + ' with API version ' + apiSnapshot + '"'
     sshagent (credentials: ['gerrit-jenkins-user']) {
       sh 'git push origin HEAD:refs/for/' + branch
