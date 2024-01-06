@@ -68,7 +68,7 @@ void git_debug(String name) {
     sh 'echo "PWD: $(/bin/pwd)"'
     sh '/bin/ls -l'
     sh 'gitdir=$(git rev-parse --git-dir) && /bin/ls -ld ${gitdir}'
-    sh 'gitdir=$(git rev-parse --git-dir) && /bin/ls -ld ${gitdir}/hooks/'
+    sh 'gitdir=$(git rev-parse --git-dir) && /bin/ls -l ${gitdir}/hooks/*'
 
     leave(name)
 
@@ -198,4 +198,3 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     sh  'echo "Go to http://oss.sonatype.org and release the artifacts (after the maven-publish job completes)"'
   }
 }
-
