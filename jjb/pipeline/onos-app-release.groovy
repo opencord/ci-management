@@ -184,9 +184,16 @@ node ('ubuntu18.04-basebuild-1c-2g') {
        changeApiVersion(appName, apiSnapshot)
     }
 
-        git_debug("Move to next SNAPSHOT version")
+    git_debug("Move to next SNAPSHOT version")
 
     sh 'git add -A && git commit -m "Starting snapshot ' + snapshot + ' with API version ' + apiSnapshot + '"'
+
+    println("\nSnapshot commit message: branch=HEAD")
+    sh """git log -1 --pretty=format:'%b' HEAD"""
+
+    println("\nSnapshot commit message: branch=" + branch)
+    sh """git log -1 --pretty=format:'%b' """ + branch
+
     sshagent (credentials: ['gerrit-jenkins-user']) {
       sh 'git push origin HEAD:refs/for/' + branch
     }
@@ -198,3 +205,5 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     sh  'echo "Go to http://oss.sonatype.org and release the artifacts (after the maven-publish job completes)"'
   }
 }
+
+// [EOF]
