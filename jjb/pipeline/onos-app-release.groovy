@@ -70,6 +70,25 @@ void git_debug(String name) {
     sh 'gitdir=$(git rev-parse --git-dir) && /bin/ls -ld ${gitdir}'
     sh 'gitdir=$(git rev-parse --git-dir) && /bin/ls -l ${gitdir}/hooks/*'
 
+    println('''
+
+** -----------------------------------------------------------------------
+** git config --list
+** -----------------------------------------------------------------------
+''')
+    sh 'git config --list'
+
+    println('''
+
+** -----------------------------------------------------------------------
+** git config --global --list
+** -----------------------------------------------------------------------
+''')
+    sh 'git config --global --list'
+
+    println('\nWANTED: git config --bool --get gerrit.createChangeId')
+    sh '''git config --bool --get gerrit.createChangedId' && echo "gerrit.createChangedId=[$?]'''
+
     leave(name)
 
     return
