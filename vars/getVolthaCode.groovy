@@ -118,7 +118,7 @@ def wrapped(Map config)
     // -----------------------------------------------------------------------
     stage('Clone voltha-system-tests')
     {
-        enter('Clone voltha-system-tests')
+        enter("Clone voltha-system-tests @ BRANCH=[${cfg.branch}]")
         println("""
 
 ** -----------------------------------------------------------------------
@@ -162,14 +162,14 @@ def wrapped(Map config)
             leave("git fetch https://${cfg.gerritProject}")
         }
 
-        leave('Clone voltha-system-tests')
+        leave("Clone voltha-system-tests @ BRANCH=[${cfg.branch}]")
     }
 
     // -----------------------------------------------------------------------
     // -----------------------------------------------------------------------
     stage('Clone voltha-helm-charts')
     {
-        enter('Clone voltha-helm-charts')
+        enter("Clone voltha-helm-charts @ BRANCH=[${cfg.branch}]")
         repo_vhc = 'https://gerrit.opencord.org/voltha-helm-charts'
 
         checkout([
@@ -204,7 +204,7 @@ def wrapped(Map config)
             leave('cfg.gerritProject == voltha-helm-charts')
         }
 
-        leave('Clone voltha-helm-charts')
+        leave("Clone voltha-helm-charts @ BRANCH=[${cfg.branch}]")
     }
 }
 
