@@ -538,6 +538,7 @@ pipeline {
     stages {
         stage('Download Code') {
             steps {
+                enter('getVolthaCode')
                 getVolthaCode([
                     branch: "${branch}",
                     gerritProject: "${gerritProject}",
@@ -545,6 +546,7 @@ pipeline {
                     volthaSystemTestsChange: "${volthaSystemTestsChange}",
                     volthaHelmChartsChange: "${volthaHelmChartsChange}",
                 ])
+                leave('getVolthaCode')
             }
         }
 
@@ -555,9 +557,11 @@ pipeline {
             }
 
             steps {
+                enter('buildVolthaComponent')
                 // NOTE that the correct patch has already been checked out
                 // during the getVolthaCode step
                 buildVolthaComponent("${gerritProject}")
+                leave('buildVolthaComponent')
             }
         }
 
