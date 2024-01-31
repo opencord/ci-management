@@ -26,7 +26,7 @@
     jobs:
       - 'voltha-periodic-test':
           name: 'periodic-voltha-pm-data-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
@@ -52,7 +52,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-pm-data-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onu=2,pon=2 --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
@@ -84,7 +84,7 @@
           name: 'periodic-voltha-test-bbsim-2.12'
           code-branch: 'voltha-2.12'
           logLevel: 'DEBUG'                      # force job to regenerate
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
           testTargets: |
@@ -116,7 +116,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
@@ -155,7 +155,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-test-bbsim-2.12'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger : '@daily'

@@ -116,7 +116,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           olts: 2
@@ -219,7 +219,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
@@ -320,7 +320,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           olts: 2
@@ -638,7 +638,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-openonu-go-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
@@ -1024,7 +1024,7 @@
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.12-openonu-go-test-bbsim'
           trigger-comment: "voltha 2.12 test openonu singleolt"
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: '$GERRIT_BRANCH'
           gerritProject: '$GERRIT_PROJECT'
@@ -1324,7 +1324,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onu=2,pon=2'
@@ -1602,7 +1602,7 @@
       - 'voltha-periodic-test':
           name: 'patchset-voltha-2.12-multiple-olts-openonu-go-test-bbsim'
           trigger-comment: "voltha 2.12 test openonu multiolt"
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: '$GERRIT_BRANCH'
           gerritProject: '$GERRIT_PROJECT'
@@ -1773,7 +1773,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-test-DMI-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"
@@ -1830,7 +1830,7 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'voltha-2.12'
@@ -1873,7 +1873,7 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.12'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
@@ -1961,7 +1961,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-memory-leak-test-bbsim-2.12'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
           time-trigger: "H H/23 * * *"

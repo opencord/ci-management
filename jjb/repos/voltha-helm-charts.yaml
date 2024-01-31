@@ -43,7 +43,7 @@
     name: 'verify-voltha-helm-charts-jobs-voltha-2.12'
     jobs:
       - 'voltha-patch-test':
-          pipeline-script: 'voltha/voltha-2.12/bbsim-tests.groovy'
+          pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
 
 - job-group:
