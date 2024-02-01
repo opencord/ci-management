@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59144e5a_c926e382",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-02-01T02:19:33Z",
+      "side": 1,
+      "message": "Update branch name so is_release_branch check stops failing.\nNeed to move this logic into a reusable groovy script so branch_name can be modified once per release and all scripts can perform the same check.",
+      "revId": "abd73c2215cdd8dea2aa213a2513d13afc9e613f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
