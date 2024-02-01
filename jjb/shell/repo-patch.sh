@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# SPDX-FileCopyrightText: 2018-2022 Open Networking Foundation
+# SPDX-FileCopyrightText: 2022-2024 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 
 # repo-patch.sh

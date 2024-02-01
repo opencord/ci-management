@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2020-2023 Open Networking Foundation (ONF) and the ONF Contributors
+# Copyright 2020-2024 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 
 set -eu -o pipefail
