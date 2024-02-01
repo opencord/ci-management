@@ -1,4 +1,6 @@
-// Copyright 2021-2023 Open Networking Foundation (ONF) and the ONF Contributors
+// -*- groovy -*-
+// -----------------------------------------------------------------------
+// Copyright 2021-2024 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,6 +18,9 @@
 // uses bbsim to simulate OLT/ONUs
 
 // [TODO] Update library() to the latest DSL syntax supported by jenkins
+// -----------------------------------------------------------------------
+
+// Should this be branch=relase ?
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
     $class: 'GitSCMSource',
@@ -32,7 +37,7 @@ String clusterName = 'kind-ci'
 //   as a guarantee release jobs are running in an expected sandbox.
 // -----------------------------------------------------------------------
 String branchName() {
-    String br = 'master'
+    String br = 'voltha-2.12'
 
     // "${branch}" is assigned by jenkins
     if (br != branch) {
