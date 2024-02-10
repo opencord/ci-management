@@ -61,8 +61,8 @@ def call(Map config) {
         // loader.go:223] Config not found: /home/jenkins/.kube/kind-kind-ci
         stage('.kube/ debugging')
         {
-            sh("""/bin/ls -ld "${HOME}/.kube" """)
-            sh("""find "${HOME}/.kube" -print0 | xargs -0 /bin/ls -ld""")
+            sh("""/bin/ls -ld ~.kube """)
+            sh("""find ~/.kube -print0 | xargs -0 /bin/ls -ld""")
             // if (config['do-something']) {}
         }
     }
