@@ -484,6 +484,7 @@ void collectArtifacts(exitStatus) {
 """)
     }
 
+    dotkube(['debug':false])
     getPodsInfo("$WORKSPACE/${exitStatus}")
 
     sh(label  : 'kubectl logs > voltha.log',
