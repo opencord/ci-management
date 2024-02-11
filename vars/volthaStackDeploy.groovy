@@ -135,7 +135,7 @@ cat <<EOM
 EOM
 
 # set -euo pipefail
-set +x #                 # Logs are noisy when commented
+set +x #                 # Logs are noisy with set -x
 
 declare -i count=0
 declare -i debug=1       # uncomment to enable debugging
@@ -234,7 +234,7 @@ set +x #        # Noisy when commented (default: uncommented)
 
 declare -i count=0
 declare -i debug=1       # uncomment to enable debugging
-# declare -i verbose=1   # uncomment to enable debugging
+declare -i verbose=1     # uncomment to enable debugging
 vsd_log='volthaStackDeploy.tmp'
 echo > \$vsd_log
 
