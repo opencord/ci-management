@@ -62,7 +62,9 @@ def call(Map config) {
         stage('.kube/ debugging')
         {
             sh("""/bin/ls -ld ~/.kube """)
-            sh("""find ~/.kube -print0 | xargs -0 /bin/ls -ld""")
+            sh("""find ~/.kube -print0 \
+                      | grep --null --null-data -e 'cache -e 'temp' \
+                      | xargs -0 /bin/ls -ld""")
             // if (config['do-something']) {}
         }
     }
