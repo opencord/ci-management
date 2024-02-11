@@ -63,7 +63,7 @@ def call(Map config) {
         {
             sh("""/bin/ls -ld ~/.kube """)
             sh("""find ~/.kube -print0 \
-                      | grep --null --null-data -e 'cache -e 'temp' \
+                      | grep --null --null-data -e 'cache' -e 'temp' \
                       | xargs -0 /bin/ls -ld""")
             // if (config['do-something']) {}
         }

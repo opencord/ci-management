@@ -52,9 +52,12 @@ void leave(String name) {
 // Intent: Display a message with visibility for logging
 // -----------------------------------------------------------------------
 String banner(String message) {
+    String iam = getIam('banner')
+
     println("""
 
 ** -----------------------------------------------------------------------
+** IAM: $iam
 ** ${message}
 ** -----------------------------------------------------------------------
 """)

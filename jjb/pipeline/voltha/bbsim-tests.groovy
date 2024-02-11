@@ -88,6 +88,22 @@ void leave(String name) {
 }
 
 // -----------------------------------------------------------------------
+// Intent: Display a message with visibility for logging
+// -----------------------------------------------------------------------
+String banner(String message) {
+    String iam = getIam('banner')
+
+    println("""
+
+** -----------------------------------------------------------------------
+** IAM: $iam
+** ${message}
+** -----------------------------------------------------------------------
+""")
+    return
+}
+
+// -----------------------------------------------------------------------
 // Intent: Determine if working on a release branch.
 //   Note: Conditional is legacy, should also check for *-dev or *-pre
 // -----------------------------------------------------------------------
@@ -472,18 +488,10 @@ echo -e '** Monitor pod-mem-consumption: LEAVE\n'
 // -----------------------------------------------------------------------
 void collectArtifacts(exitStatus) {
     script {
-        String iam = getIam('collectArtifacts')
         enter("exitStatus=${exitStatus}")
-
-        println("""
-
-** -----------------------------------------------------------------------
-** IAM: $iam
-** collectArtifacts
-** -----------------------------------------------------------------------
-""")
+        banner('collectArtifacts')
     }
-
+    
     dotkube(['debug':false])
     getPodsInfo("$WORKSPACE/${exitStatus}")
 
