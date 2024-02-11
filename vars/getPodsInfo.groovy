@@ -85,7 +85,7 @@ Boolean process(String dest)
 // def call(Map config=[:])
 def call(String dest)
 {
-    Map config ?: [:]
+    Map config = [:] // Map config = config ?: [:]
 
     try
     {
