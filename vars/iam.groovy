@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 // -----------------------------------------------------------------------
-// Copyright 2023 Open Networking Foundation (ONF) and the ONF Contributors
+// Copyright 2023-2024 Open Networking Foundation (ONF) and the ONF Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,8 +61,8 @@ void todo(Map argv)
 Boolean process(Map argv)
 {
     String iam = getIam(argv, 'process')
-
-    Boolean leave = false
+    Boolean debug ?: argv.debug
+    Boolean leave ?: argv.leave
 
     // Identify caller with a banner for logging
     if (config.containsKey('enter')) {
@@ -71,9 +71,14 @@ Boolean process(Map argv)
     else if (config.containsKey('leave')) {
         leave = true
     }
-    else
-    {
-        println("** ${iam}: HELLO")
+    else if (debug) {
+        println("** ${iam}: DEBUG=true")
+    }
+
+    // Invoke closure passed in
+    if (config.containsKey('invoke')) {
+        Closure invoke = argv.invoke
+        invoke()
     }
 
     // Display future enhancement list
@@ -91,11 +96,16 @@ Boolean process(Map argv)
 }
 
 // -----------------------------------------------------------------------
-// Intent: Debug method for jenkins jobs identifying caller for logging.
+// Intent: Wrap functions/DSL tokens within a closure to improve logging
+//   o Issue a startup banner
+//   o Invoke task wrapped within the iam(){} closure
+//   o Detect exception/early termination and hilight that detail.
+//   o Issue a shutdown banner
 // -----------------------------------------------------------------------
 // Given:
 //   self    jenkins environment pointer 'this'
 //   config  groovy closure used to pass key/value pairs into argv
+//     invoke   Groovy closure to invoke: (ENTER, closure, LEAVE)
 //     enter    Display "** {iam} ENTER"
 //     leave    Display "** {iam} LEAVE"
 //     todo     Display future enhancement list
@@ -106,8 +116,10 @@ Boolean process(Map argv)
 //   o called from a jenkins {pipeline,stage,script} block.
 //   o iam(this)
 //     {
-//         foo  = bar    // paramter foo is...
-//         tans = fans
+//         debug = false
+//         enter = true
+//         invoke = { println('hello from closure') }
+//         leave = true
 //     }
 // -----------------------------------------------------------------------
 Boolean call\
@@ -122,7 +134,9 @@ Boolean call\
     body.delegate        = argv
     body()
 
+    // Running within closure
     String iam = getIam(argv, 'main')
+    Booelan debug ?: argv.debug
 
     println("** ${iam}: argv=${argv}")
 
@@ -140,7 +154,7 @@ Boolean call\
             ranToCompletion = true
         }
     }
-    catch (Exception err)
+    catch (Exception err) // groovylint-disable-line CatchException
     {
         println("** ${iam}: EXCEPTION ${err}")
         throw err
@@ -162,6 +176,7 @@ Boolean call\
  * -----------------------------------------------------------------------
 [SEE ALSO]
   o https://rtyler.github.io/jenkins.io/doc/book/pipeline/shared-libraries/#defining-a-more-structured-dsl
+  o https://blog.mrhaki.com/2009/11/groovy-goodness-passing-closures-to.html
  * -----------------------------------------------------------------------
  */
 
