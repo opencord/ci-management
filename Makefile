@@ -54,12 +54,43 @@ include $(ONF_MAKEDIR)/help/trailer.mk
 
 # make help not widely in use yet so be explicit
 help ::
+
 	@echo
 	@echo 'Usage: $(MAKE) help ...'
+
 	@echo '  % make clean sterile'
-	@echo '  % make lint lint-jjb'
-	@echo '  % make build           # jjb-gen'
+	@printf '  %-33.33s %s\n' 'lint' \
+	  'Invoke syntax checking targets'
+	@printf '  %-33.33s %s\n' 'build' \
+	  'Invoke jenkins-jobs to regenerate pipelines'
 	@echo '  % make test'
 	@echo '  % make help            # show all available targes'
+
+	@echo
+	@echo '[HELP: modifiers]'
+	@printf '  %-33.33s %s\n' '{topic}-help' \
+	  'Display extended help for individual makefile targets'
+	@printf '  %-33.33s %s\n' 'help-verbose' \
+	  'Display exhaustive help'
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+build-help :
+	@printf '  %-33.33s %s\n' 'build' \
+	  'Alias for $(MAKE) jjb-gen'
+	@printf '  %-33.33s %s\n' 'jjb-gen' \
+	  'Invoke jenkins-jobs to regenerate pipelines'
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+lint-help :
+	@printf '  %-33.33s %s\n' 'lint' \
+	  'Perform syntax checking on configured sources'
+	@printf '  %-33.33s %s\n' 'lint-jjb' \
+	  'Invoke jenkins-jobs to syntax check JJB source'
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help-verbose :: help $(help-verbose)
 
 # [EOF]
