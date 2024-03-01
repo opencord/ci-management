@@ -1,4 +1,6 @@
-// Copyright 2021-2024 Open Networking Foundation (ONF) and the ONF Contributors
+#!/usr/bin/env groovy
+// -----------------------------------------------------------------------
+// Copyright 2021-2024 Open Networking Foundation Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,10 +13,18 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-// voltha-2.x e2e tests
-// uses bbsim to simulate OLT/ONUs
-// NOTE we are importing the library even if it's global so that it's
+// -----------------------------------------------------------------------
+// SPDX-FileCopyrightText: 2021-2024 Open Networking Foundation Contributors
+// SPDX-License-Identifier: Apache-2.0
+// -----------------------------------------------------------------------
+// Entropy: 0fcb5ffa-d1a4-11ee-be5e-9f44b7181764
+// -----------------------------------------------------------------------
+// Intent: voltha-2.x e2e tests, uses bbsim to simulate OLT/ONUs
+// -----------------------------------------------------------------------
+// NOTE: we are importing the library even if it's global so that it's
 // easier to change the keywords during a replay
+// -----------------------------------------------------------------------
+
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
@@ -380,3 +390,5 @@ fi
         } // always
     } // post
 } // pipeline
+
+// [EOF]
