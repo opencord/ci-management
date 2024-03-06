@@ -11,7 +11,7 @@
     # https://docs.releng.linuxfoundation.org/projects/lftools/en/latest/commands/version.html
     # https://docs.releng.linuxfoundation.org/projects/lftools/en/latest/release-notes.html#v0-35-11-4
     # lftools
-    lftools-version: '~=0.26.2'
+    lftools-version: '~=0.37.4'
 
     # git module config
     # LF templates require these to be set in later versions of global-jjb for git module
@@ -78,6 +78,8 @@
 
     # default email address to send job failure messages
     failure-email-address: 'cord-dev@opencord.org'
+    failure-notification: 'cord-dev@opencord.org'
+    failure-notification-prefix: "[releng]"
 
     # regexp for gerrit triggers
     # list of supported branches, for branch-regexp
