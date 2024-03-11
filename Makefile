@@ -25,8 +25,9 @@
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-include config.mk
-include makefiles/include.mk
+# include config.mk
+include lf/include.mk
+
 ONF_MAKEDIR ?= $(error ONF_MAKEDIR= is required)
 
 # [TODO]
