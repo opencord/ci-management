@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# SPDX-FileCopyrightText: 2017-present Open Networking Foundation
+# SPDX-FileCopyrightText: 2017-2024 Open Networking Foundation Contributors
 # SPDX-License-Identifier: Apache-2.0
 
 # jflint.sh - lint for Jenkins declarative pipeline jobs

@@ -217,7 +217,7 @@
                   Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by QA (Suchitra Vemuri) <br />
-                  Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2018-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     # default values
@@ -267,7 +267,7 @@
                   Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by QA (Suchitra Vemuri) <br />
-                  Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2018-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     # default values
@@ -322,7 +322,7 @@
     description: |
                   Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management'
                   Created from job-template {id} from repo::ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml
-                  Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2018-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     # default values
@@ -379,7 +379,7 @@
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by (Suchitra Vemuri) <br />
                   UUID: 1a23dd34-4058-11ee-b6af-3b2e60c5d971 <br />
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/voltha-physical-functional-tests.groovy'
@@ -531,7 +531,7 @@
                   Post Tests on {config-pod} triggered by build_{config-pod}_{branch}, using {pipeline-script} <br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   UUID: 65587ad0-4058-11ee-9e99-e3ca477d4427 <br />
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/playground/voltha-physical-functional-tests.groovy'
@@ -684,7 +684,7 @@
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by (Suchitra Vemuri) <br />
                   UUID: 798f0064-4058-11ee-b70f-2fee4c7dfce6 <br />                  
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/voltha-physical-functional-tests.groovy'
@@ -830,7 +830,7 @@
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by (Suchitra Vemuri) <br />
                   UUID: 873eb92a-4058-11ee-8298-33472e0ccae4 <br />
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/voltha-physical-functional-tests.groovy'
@@ -975,7 +975,7 @@
                   Manual Build on POD {config-pod}, using pipeline/{pipeline-script} in {gerrit-server-url}/ci-management' <br /><br />
                   Created from job-template {id} from ci-management/jjb/voltha-test/voltha-nightly-jobs.yaml <br />
                   Created by QA (Suchitra Vemuri) <br />
-                  Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2018-2024 Open Networking Foundation Contributors
 
     <<: *voltha-pipe-job-boiler-plate
     # default values

@@ -21,7 +21,7 @@
                   Manual Build on POD {config-pod} using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2018-2024 Open Networking Foundation Contributors
 
     openoltAdapterChart: onf/voltha-adapter-openolt
 
@@ -173,7 +173,7 @@
                   Nightly Kubernetes tests on {config-pod} using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml<br />
                   Created by Suchitra Vemuri, suchitra@opennetworking.org <br />
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
     disabled: '{disable-job}'
 
     <<: *test-pipe-job-boiler-plate
@@ -304,7 +304,7 @@
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
                   UUID: 9f1d0a1a-4058-11ee-93cc-07cf258f407e <br />
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -375,7 +375,7 @@
                   Manual Build on POD {config-pod}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2018-2024 Open Networking Foundation Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -466,7 +466,7 @@
                   Manual Build on POD {config-pod}, using {Jenkinsfile}<br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Suchitra Vemuri - suchitra@opennetworking.org ) <br />
-                  Copyright 2018-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2018-2024 Open Networking Foundation Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -568,7 +568,7 @@
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
                   UUID: a8bea83a-4058-11ee-a520-4f2870f29e62 <br />
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -641,7 +641,7 @@
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by Kailash Khalasi - kailash@opennetworking.org <br />
                   UUID: b0d585a2-4058-11ee-8a56-a362f23eaed9 <br />
-                  Copyright 2017-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2017-2024 Open Networking Foundation Contributors
 
     <<: *test-pipe-job-boiler-plate
 
@@ -713,7 +713,7 @@
                   Manual Build on POD {config-pod}, using {Jenkinsfile} <br /><br />
                   Created from job-template {id} from ci-management/jjb/cord-test/nightly-build-pipeline.yaml <br />
                   Created by QA (Kailash Khalasi - kailash@opennetworking.org ) <br />
-                  Copyright 2019-2024 Open Networking Foundation (ONF) and the ONF Contributors
+                  Copyright 2019-2024 Open Networking Foundation Contributors
 
     <<: *test-pipe-job-boiler-plate
 
