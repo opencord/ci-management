@@ -39,8 +39,8 @@ ONF_MAKEDIR ?= $(error ONF_MAKEDIR= is required)
 # -----------------------------------------------------------------------
 # horrible dep: (ie -- .PHONY: $(JOBCONFIG_DIR))
 #   o Directory inode always changing due to (time-last-accessed++).
-#   o Dependent Targets always re-made due to setale dependency.
-#   o Use file inside directory as dep rather than a directory.
+#   o Dependent Targets always re-made due to stale dependency.
+#   o Use one file inside directory as dep rather than dep-on-a-directory.
 # -----------------------------------------------------------------------
 $(JOBCONFIG_DIR):
 	mkdir $@
@@ -53,8 +53,6 @@ build : jjb-gen
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
-## Display make help summary late
-include $(ONF_MAKEDIR)/help/trailer.mk
 
 # make help not widely in use yet so be explicit
 help ::

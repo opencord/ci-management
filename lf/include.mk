@@ -61,7 +61,8 @@ include $(onf-mk-loc)/include.mk
 ##         version available from the remote repository.  Subsequently
 ##         a checkin will be needed to make the submodule update permanent.
 ## -----------------------------------------------------------------------
-update-submodules:
+.PHONY: update-git-submodules
+update-git-submodules:
 	git submodule foreach git pull
 
 ## -----------------------------------------------------------------------
@@ -72,12 +73,24 @@ update-submodules:
 ##     repo:onf-make submodule, this target/dependency will initialize
 ##     and checkout all submodules the current repository depends on.
 ## -----------------------------------------------------------------------
+.PHONY: git-submodules
+git-submodules : $(onf-mk-lib)/include.mk
+
 $(onf-mk-lib)/include.mk:
-	@echo
-	@echo "** Checkout git submodule(s)"
-	@echo "** -----------------------------------------------------------------------"
+
+	$(call banner-enter,(Checkout git submodules))
+
 	git submodule update --init --recursive
-	@echo "** -----------------------------------------------------------------------"
+
+	$(call banner-leave,(Checkout git submodules))
+
+## -----------------------------------------------------------------------
+## -----------------------------------------------------------------------
+help-git :
+	@printf '  %-33.33s %s\n' 'git-submodules' \
+	  'Init and recursive checkout of git submodule(s)'
+	@printf '  %-33.33s %s\n' 'update-git-submodules' \
+	  'Update git submodule(s) to the latest version'
 
 $(if $(DEBUG),$(warning LEAVE))
 
