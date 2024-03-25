@@ -67,13 +67,24 @@ String getIam(String func) {
 // returns the test version which is the latest tag of the repo, the component upgrade gets tested on this.
 // Note: if there is a major version change between deployment and test tags, then deployment tag will be same as test tag, i.e. both as latest.
 // -----------------------------------------------------------------------
+// git ls repo: gerrit (source of truth) VS github (mirror)
+// Branch deletions are not mirrored out to github.
+// Always perform checkouts/queries using the gerrit server as added
+// insulation to guard against repository deltas.
+// -----------------------------------------------------------------------
+// [TODO] Revisit logic:
+//   o Refactor logic into a standalone shell script.
+//   o Redundancy can be removed and a script will be testable.
+// -----------------------------------------------------------------------
 def get_voltha_comp_versions(component, base_deploy_tag) {
     def comp_test_tag = sh(
-        script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
+        // script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
+        script: "git ls-remote --refs --tags https://gerrit.opencord.org/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
         returnStdout: true
     ).trim()
     def comp_deploy_tag = sh(
-        script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
+        // script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
+        script: "git ls-remote --refs --tags https://gerrit.opencord.org/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
         returnStdout: true
     ).trim()
     def comp_deploy_major = comp_deploy_tag.substring(0, comp_deploy_tag.indexOf('.'))

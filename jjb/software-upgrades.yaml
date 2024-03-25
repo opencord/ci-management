@@ -1,7 +1,29 @@
 ---
-# voltha 2.X tests
+
+# -----------------------------------------------------------------------
+# Copyright 2021-2024 Open Networking Foundation Contributors
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http:#www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# -----------------------------------------------------------------------
+# SPDX-FileCopyrightText: 2021-2024 Open Networking Foundation Contributors
+# SPDX-License-Identifier: Apache-2.0
+# -----------------------------------------------------------------------
+# Entropy: 0fcb5ffa-d1a4-11ee-be5e-9f44b7181764
+# -----------------------------------------------------------------------
+# Intent: voltha 2.X tests
 # oar image URLs that redirect away from oss to maven-central (?)
 # olt, dhcpl2relay, igmpproxy, kafka
+# -----------------------------------------------------------------------
 
 - project:
     name: software-upgrades
