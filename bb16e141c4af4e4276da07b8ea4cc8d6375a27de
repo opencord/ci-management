@@ -16,6 +16,23 @@
       "message": "lgtm",
       "revId": "bb16e141c4af4e4276da07b8ea4cc8d6375a27de",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "819aa0f9_32a65165",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-26T13:37:33Z",
+      "side": 1,
+      "message": "Mahir brought up a good point, verify syntax from git ls commands return the same answer.\nGit should not be returning variant answers but lets make 100% sure.\n\nTODO: create bats unit test to verify the behavior.",
+      "revId": "bb16e141c4af4e4276da07b8ea4cc8d6375a27de",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
