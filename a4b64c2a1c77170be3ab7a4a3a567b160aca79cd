@@ -24,6 +24,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb93db6a_76a0b27b",
+        "filename": "test/bats/check_repo_tags.bats",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "This test gathers a list of tags using \u0027git ls-remote\u0027 -- command currently inlined here:\n    https://gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/jjb/pipeline/voltha/software-upgrades.groovy#80\n\n\nShell command used by testing can be found here:\n  * https://gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/test/bats/utils/check_repo_tags.sh#31\n  * Eventually this logic would be moved into a standalone script so\n    pipeline logic and unit test are using the same shell commands.\n  * This test was setup as an early sanity check to be sure changing the tag\n    query from github to gerrit would not cause breakage (ie: voltha-beta-2.12)\n\n\nStrings in the skip lines are literal deltas from tag names that exist in one repository but not the other.  gerrit\u003d() is an array of gerrit tagnames, github\u003d() is an array of github tags.  The unit test simply compares the two arrays:\n    declare -a gerrit\u003d(xxx) are tags that exist in gerrit but not github.\n    declare -a github\u003d(yyy) are tags that exist in github but not gerrit.\n\nskip \u0027declare -a gerrit\u003d([0]\u003d\"2.12.35\")\u0027\n   * This test exclusion hints (shell case) repo:voltha-docs failed due to\n     the gerrit repository having an extra (tag\u003d2.12.35) not found in the\n     github repository.\n\nAny lingering questions ?\n\n\nSkip messages could be written more clearly but tag problems will likely be cleaned up before the skip messages are needed/used.",
+      "parentUuid": "99dd1f84_53320336",
+      "range": {
+        "startLine": 62,
+        "startChar": 50,
+        "endLine": 62,
+        "endChar": 57
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ab33d5f7_6d1eb255",
@@ -37,6 +61,30 @@
       "writtenOn": "2024-03-27T16:42:02Z",
       "side": 1,
       "message": "We don\u0027t use ponsims anymore",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 24
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf0aca8_bccbc6d3",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "Will move all of the deprecated repositories into another list named \u0027deprecated\u0027.\n\nTrying to maintain an exhaustive repository list for use later on,\ndeprecated repositories should be read-only, contain a README.md file that documents the deprecation, etc.",
+      "parentUuid": "ab33d5f7_6d1eb255",
       "range": {
         "startLine": 5,
         "startChar": 0,
@@ -70,6 +118,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "798d2966_323d8e58",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "Will retain in the active repository list for now until usage can be determined.\n\nFile copyrights dated 2018.\nLast activity was 2020.\n\nhttps://gerrit.opencord.org/plugins/gitiles/voltha-test-manifest/+/refs/heads/master/default.xml#32\n\npyvoltha, ofagent-py and voltha-api-server are mentioned in default.xml.\nMaybe the repository was abandoned but never decorated as being deprecated.",
+      "parentUuid": "ddc0a063_b4b51281",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "475fb788_f6a787fb",
@@ -83,6 +155,30 @@
       "writtenOn": "2024-03-27T16:42:02Z",
       "side": 1,
       "message": "?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 19
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f0315af_db0a9f40",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "From contents the repo is used for constructing docker images populated with a versioned set of tools.  Likely a cookie cutter for creating new jenkins node images.",
+      "parentUuid": "475fb788_f6a787fb",
       "range": {
         "startLine": 9,
         "startChar": 0,
@@ -116,6 +212,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "35b48bc4_e28bf532",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "move voltha-omci from conf/voltha \u003d\u003e conf/deprecated\necho \u0027omci-lib-go\u0027 \u003e\u003e conf/voltha",
+      "parentUuid": "737b662c_c5fad04e",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 11
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6f7720ae_04c2e011",
@@ -129,6 +249,30 @@
       "writtenOn": "2024-03-27T16:42:02Z",
       "side": 1,
       "message": "Deprecated",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 1
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b3c8cdfa_0e245022",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "Moved from conf/voltha into conf/deprecated",
+      "parentUuid": "6f7720ae_04c2e011",
       "range": {
         "startLine": 13,
         "startChar": 0,
@@ -162,6 +306,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "65233d70_c85c1105",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "Moved from conf/voltha to conf/deprecated",
+      "parentUuid": "5db11708_be1928d2",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 1
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "25d3c61a_7732585c",
@@ -175,6 +343,30 @@
       "writtenOn": "2024-03-27T16:42:02Z",
       "side": 1,
       "message": "Deprecated.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "88f3cdc3_ebaf44dd",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:31:44Z",
+      "side": 1,
+      "message": "moved from conf/voltha to conf/deprecated",
+      "parentUuid": "25d3c61a_7732585c",
       "range": {
         "startLine": 20,
         "startChar": 0,
