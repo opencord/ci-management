@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efb1dec6_d971894f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-03-27T20:55:54Z",
+      "side": 1,
+      "message": "FYI\u003e test/bats/README.md added to the patch to capture some of the code review notes.",
+      "revId": "ca84c6d2558daf67cbcb062814efb1dfe1db9c1b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
