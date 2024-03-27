@@ -28,13 +28,15 @@ bats_require_minimum_version 1.5.0
 setup() {
     source './utils/check_repo_tags.sh'
 
-    declare -g components=()
-    components+=('voltha-docs')
-    components+=('voltha-onos')
-    components+=('voltha-openolt-adapter')
-    components+=('voltha-openonu-adapter-go')
-    components+=('voltha-lib-go')
-    components+=('voltha-protos')
+    ## Slurp a list of repositories to query
+    readarray -t buffer < 'conf/repos/voltha'
+    declare -g -a components=("${buffer[0]}")
+
+    # Uncomment for raw test results
+    # declare -g -i enable_fatal=1
+
+    # Uncomment to skip remaining checks within a test.
+    # declare -g -i enable_skip=1
 }
 
 ## -----------------------------------------------------------------------
@@ -49,29 +51,47 @@ setup() {
         ## Known problems
         ## --------------
         case "$component" in
+            device-management-interface)
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="1.15.0")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
+                ;;
             voltha-docs)
-                # skip 'declare -a gerrit=([0]="2.12.35")'
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="2.12.35")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-lib-go)
-                # skip 'declare -a gerrit=([0]="7.5.3")'
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="7.5.3")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-onos)
-                # skip 'declare -a gerrit=([0]="2.11.0")'
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="2.11.0")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
-            voltha-openolt-adapter)
-                # skip 'declare -a gerrit=([0]="4.4.10")'
-                continue
+            voltha-openolt-adapter) 
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="4.4.10")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-openonu-adapter-go)
-                # skip 'declare -a gerrit=([0]="2.12.0~beta")'
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="2.12.0~beta")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-protos)
-                # skip 'declare -a gerrit=([0]="5.4.11")'
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="5.4.11")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
         esac
 
@@ -108,29 +128,35 @@ setup() {
         ## Known problems
         ## --------------
         case "$component" in
-            voltha-docs)
-                # skip "$component not mirrored on github"
-                continue
+            device-management-interface)
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="1.16.0")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-onos)
-                # skip "declare -a gerrit=([0]="2.12.0~beta")"
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip "declare -a gerrit=([0]="2.12.0~beta")"
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-lib-go)
-                # skip "declare -a gerrit=([0]="7.6.0")"
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip "declare -a gerrit=([0]="7.6.0")"
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-openolt-adapter)
-                # skip "declare -a gerrit=([0]="4.4.11")"
-                continue
-                ;;
-            voltha-openonu-adapter-go)
-                # skip 'github repo lacks tag 2.12.0 (voltha-openonu-adapter-go)'
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip "declare -a gerrit=([0]="4.4.11")"
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
             voltha-protos)
-                # skip "declare -a gerrit=([0]="5.5.0")"
-                continue
+                if [[ -v enable_skip ]]; then
+                    skip 'declare -a gerrit=([0]="5.5.0")'
+                fi
+                [[ ! -v enable_fatal ]] && { continue; }
                 ;;
         esac
 
