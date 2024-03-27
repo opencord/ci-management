@@ -73,6 +73,7 @@ update-git-submodules:
 ##     repo:onf-make submodule, this target/dependency will initialize
 ##     and checkout all submodules the current repository depends on.
 ## -----------------------------------------------------------------------
+GIT ?= $(shell which git)
 .PHONY: git-submodules
 git-submodules : $(onf-mk-lib)/include.mk
 
@@ -80,7 +81,7 @@ $(onf-mk-lib)/include.mk:
 
 	$(call banner-enter,(Checkout git submodules))
 
-	git submodule update --init --recursive
+	$(GIT) submodule update --init --recursive
 
 	$(call banner-leave,(Checkout git submodules))
 
