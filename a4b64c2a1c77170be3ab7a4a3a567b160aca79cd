@@ -1,0 +1,188 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "99dd1f84_53320336",
+        "filename": "test/bats/check_repo_tags.bats",
+        "patchSetId": 2
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "What are these version numbers? What is checked here?",
+      "range": {
+        "startLine": 62,
+        "startChar": 50,
+        "endLine": 62,
+        "endChar": 57
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ab33d5f7_6d1eb255",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "We don\u0027t use ponsims anymore",
+      "range": {
+        "startLine": 5,
+        "startChar": 0,
+        "endLine": 6,
+        "endChar": 24
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddc0a063_b4b51281",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "I don\u0027t know what this is.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 20
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "475fb788_f6a787fb",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 9,
+        "endChar": 19
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "737b662c_c5fad04e",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "deprecated. We are using omci-lib-go instead.",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 11
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6f7720ae_04c2e011",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "Deprecated",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 1
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5db11708_be1928d2",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "I don\u0027t think this is used anymore. At least we don\u0027t need to make any checks on that.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 1
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "25d3c61a_7732585c",
+        "filename": "test/bats/conf/repos/voltha",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-03-27T16:42:02Z",
+      "side": 1,
+      "message": "Deprecated.",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 22
+      },
+      "revId": "a4b64c2a1c77170be3ab7a4a3a567b160aca79cd",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
