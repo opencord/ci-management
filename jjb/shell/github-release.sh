@@ -528,7 +528,7 @@ function get_release_path()
         esac
     done
 
-    return
+    ref="$varpath"
 }
 
 ## -----------------------------------------------------------------------
