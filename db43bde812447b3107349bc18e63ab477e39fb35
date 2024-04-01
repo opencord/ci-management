@@ -22,6 +22,30 @@
       },
       "revId": "db43bde812447b3107349bc18e63ab477e39fb35",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7cb8f617_210cf5f5",
+        "filename": "jjb/shell/github-release.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-04-01T19:32:54Z",
+      "side": 1,
+      "message": "local and define often resolve to the same behavior in bash.\n\nPrimary difference happens around allocation for main() and in globals (no system stack so vars are allocated/copied within the symbol table).\n\n(-n) \u003d\u003e search for \u0027nameref\u0027:\nhttps://www.gnu.org/software/bash/manual/bash.html#Shell-Parameters\n\nnameref is the magic that creates variable references.  It works for both declare and local statements -- hmmmm, but the manpage only documents the switch in declare.",
+      "parentUuid": "f0569dcf_f14612c2",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 9
+      },
+      "revId": "db43bde812447b3107349bc18e63ab477e39fb35",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
