@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f0569dcf_f14612c2",
+        "filename": "jjb/shell/github-release.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2024-04-01T19:09:56Z",
+      "side": 1,
+      "message": "If we change this to local, then how do we change the original value of the variable where get_version() called?",
+      "range": {
+        "startLine": 126,
+        "startChar": 4,
+        "endLine": 126,
+        "endChar": 9
+      },
+      "revId": "db43bde812447b3107349bc18e63ab477e39fb35",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
