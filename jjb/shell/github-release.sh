@@ -17,7 +17,7 @@
 # SPDX-FileCopyrightText: 2018-2024 Open Networking Foundation Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
-# github-release.sh
+# Intent:
 # builds (with make) and uploads release artifacts (binaries, etc.) to github
 # given a tag also create checksums files and release notes from the commit
 # message
@@ -123,7 +123,7 @@ trap sigtrap EXIT
 ## -----------------------------------------------------------------------
 function get_version()
 {
-    declare -n ref="$1"
+    local -n ref="$1"
 
     declare -a rev=()
     rev+=("$(( RANDOM % 10 + 1 ))")
@@ -267,7 +267,7 @@ function error()
 ## -----------------------------------------------------------------------
 function getGitVersion()
 {
-    declare -n varname="$1"; shift
+    local -n varname="$1"; shift
 
     local __ver # use prefix('__') to protect callers variable name
     if [[ -v cached_getGitVersion ]]; then
@@ -334,7 +334,7 @@ function getGitVersion()
 ## -----------------------------------------------------------------------
 function getReleaseDescription()
 {
-    declare -n varname="$1"; shift
+    local -n varname="$1"; shift
 
     local msg
     msg="$(git log -1 --pretty=%B)"
@@ -354,7 +354,7 @@ function getReleaseDescription()
 ## -----------------------------------------------------------------------
 function get_release_dir()
 {
-    declare -n varname=$1; shift
+    local -n varname=$1; shift
 
     # Temporary staging directory to copy artifacts to
     varname="$scratch/release"
@@ -367,7 +367,7 @@ function get_release_dir()
 ## -----------------------------------------------------------------------
 function get_gh_hostname()
 {
-    declare -n varname=$1; shift
+    local -n varname=$1; shift
     varname+=('--hostname' "${__githost}")
     return
 }
@@ -377,7 +377,7 @@ function get_gh_hostname()
 ## -----------------------------------------------------------------------
 function get_gh_repo_org()
 {
-    declare -n ref=$1; shift
+    local -n ref=$1; shift
     declare -g __repo_org
 
     local org
@@ -398,7 +398,7 @@ function get_gh_repo_org()
 ## -----------------------------------------------------------------------
 function get_gh_repo_name()
 {
-    declare -n ref=$1; shift
+    local -n ref=$1; shift
     declare -g __repo_name
 
     local name
@@ -419,7 +419,7 @@ function get_gh_repo_name()
 ## -----------------------------------------------------------------------
 function get_gh_releases()
 {
-    declare -n ref="$1"
+    local -n ref="$1"
 
     local repo_org
     get_gh_repo_org repo_org
@@ -437,7 +437,7 @@ function get_gh_releases()
 ## -----------------------------------------------------------------------
 function get_argv_repo()
 {
-    declare -n ref=$1; shift
+    local -n ref=$1; shift
 
     local repo_org
     get_gh_repo_org repo_org
@@ -455,7 +455,7 @@ function get_argv_repo()
 ## -----------------------------------------------------------------------
 function get_argv_name()
 {
-    declare -n ref=$1; shift
+    local -n ref=$1; shift
 
     local repo_name
     get_gh_repo_name repo_name
@@ -474,7 +474,7 @@ function get_argv_name()
 ## -----------------------------------------------------------------------
 function get_argv_tag()
 {
-    declare -n ref=$1; shift
+    local -n ref=$1; shift
 
     # cached_argv_tag='v3.41.3204'
     if [[ ! -v cached_argv_tag ]]; then
@@ -502,7 +502,7 @@ function get_argv_tag()
 ## -----------------------------------------------------------------------
 function get_release_path()
 {
-    declare -n ref=$1; shift
+    local -n ref=$1; shift
 
     # shellcheck disable=SC2128
     local varpath="$ref"
@@ -570,7 +570,8 @@ EOT
 function get_artifacts()
 {
     local dir="$1"    ; shift
-    declare -n refA=$1 ; shift
+    # shellcheck disable=SC2178
+    local -n refA=$1 ; shift
 
     # Glob available files, exclude checksums
     readarray -t __artifacts < <(find "$dir" -mindepth 1 ! -type d \
@@ -758,7 +759,8 @@ function do_logout()
 ## -----------------------------------------------------------------------
 function get_releases()
 {
-    declare -n refA="$1"; shift
+    # shellcheck disable=SC2178
+    local -n refA="$1"; shift
 
     banner ""
     pushd "$scratch" >/dev/null
@@ -853,7 +855,8 @@ function install_gh_binary()
 ## -----------------------------------------------------------------------
 function releaseDelete()
 {
-    declare -n refA=$1; shift
+    # shellcheck disable=SC2178
+    local -n refA=$1; shift
     local version="$1"; shift
 
     banner "${refA[@]}"
@@ -926,7 +929,7 @@ function release_staging()
 ##   o Command wrapper can provide defaults (--hostname github.com)
 ## -----------------------------------------------------------------------
 ## Given:
-##   scalar      Array variable name (declare -n is a reference)
+##   scalar      Array variable name (local -n is a reference)
 ## Return:
 ##   ref         gh command line passed back to caller
 ## Switches:
