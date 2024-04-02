@@ -72,8 +72,9 @@
 - job-template:
     id: verify-ansible-lint
     name: 'verify_{project}_ansible-lint'
-    description: |
-      Created by verify-ansible-lint job-template from ci-management/jjb/lint.yaml
+    description: >+
+      Created by verify-ansible-lint job-template
+      from ci-management/jjb/lint.yaml
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:

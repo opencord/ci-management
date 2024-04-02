@@ -123,7 +123,7 @@ trap sigtrap EXIT
 ## -----------------------------------------------------------------------
 function get_version()
 {
-    local -n ref="$1"
+    local -n ref=$1; shift
 
     declare -a rev=()
     rev+=("$(( RANDOM % 10 + 1 ))")
@@ -267,7 +267,7 @@ function error()
 ## -----------------------------------------------------------------------
 function getGitVersion()
 {
-    local -n varname="$1"; shift
+    local -n varname=$1; shift
 
     local __ver # use prefix('__') to protect callers variable name
     if [[ -v cached_getGitVersion ]]; then
@@ -334,7 +334,7 @@ function getGitVersion()
 ## -----------------------------------------------------------------------
 function getReleaseDescription()
 {
-    local -n varname="$1"; shift
+    local -n varname=$1; shift
 
     local msg
     msg="$(git log -1 --pretty=%B)"
@@ -419,7 +419,7 @@ function get_gh_repo_name()
 ## -----------------------------------------------------------------------
 function get_gh_releases()
 {
-    local -n ref="$1"
+    local -n ref=$1; shift
 
     local repo_org
     get_gh_repo_org repo_org
@@ -503,8 +503,6 @@ function get_argv_tag()
 function get_release_path()
 {
     local -n ref=$1; shift
-
-    # shellcheck disable=SC2128
     local varpath="$ref"
     
     DEST_GOPATH=${DEST_GOPATH:-}
@@ -570,7 +568,6 @@ EOT
 function get_artifacts()
 {
     local dir="$1"    ; shift
-    # shellcheck disable=SC2178
     local -n refA=$1 ; shift
 
     # Glob available files, exclude checksums
@@ -587,7 +584,6 @@ function get_artifacts()
     [[ ${#__artifacts[@]} -eq 0 ]] \
           && error "Artifact dir is empty: $(declare -p dir)"
 
-    # shellcheck disable=SC2034
     refA=("${__artifacts[@]}")
     return
 }
@@ -760,7 +756,7 @@ function do_logout()
 function get_releases()
 {
     # shellcheck disable=SC2178
-    local -n refA="$1"; shift
+    local -n refA=$1; shift
 
     banner ""
     pushd "$scratch" >/dev/null

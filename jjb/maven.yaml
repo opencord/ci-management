@@ -16,7 +16,8 @@
       - string:
           name: jdkDistro
           default: '{jdk-distribution}'
-          description: 'Distribution of the JDK to use with update-java-alternatives'
+          description: >
+            'Distribution of the JDK to use with update-java-alternatives'
 
     triggers:
       - cord-infra-gerrit-trigger-patchset:
@@ -91,7 +92,8 @@
       - string:
           name: jdkDistro
           default: '{jdk-distribution}'
-          description: 'Distribution of the JDK to use with update-java-alternatives'
+          description: >
+            'Distribution of the JDK to use with update-java-alternatives'
 
     triggers:
       - cord-infra-gerrit-trigger-merge:
