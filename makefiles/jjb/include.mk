@@ -32,5 +32,3 @@ ifdef USE-ONF-JJB-MK
 endif
 
 # [EOF]
-
-

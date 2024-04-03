@@ -45,4 +45,3 @@ a good deal of searching and effort are needed to trace job construction.
 - Beneath the job subdir create individual release.yaml config files.
 - voltha-nightly-jobs/voltha-2.12.yaml will eventually become monolithic as releases progress.
 - Splitting configs based on job set would help reduce this config as well.
-

@@ -46,4 +46,3 @@ help-summary ::
 	@echo '  lint-groovy-install          Syntax check groovy sources'
 
 # [EOF]
-

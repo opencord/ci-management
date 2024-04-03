@@ -36,7 +36,7 @@ voltha-versions += playground
 # fatal to make help (param is null)
 voltha-version ?= $(error $(MAKE) voltha-verison=voltha-x.yy is required)\
 
-voltha-release-this := $(word 1,$(voltha-versions)) 
+voltha-release-this := $(word 1,$(voltha-versions))
 voltha-release-last := $(word 2,$(voltha-versions))
 
 $(if $(DEBUG),$(warning LEAVE))

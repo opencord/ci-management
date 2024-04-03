@@ -20,4 +20,3 @@ repo and run the init script. It should look like:
 
   # clean-up from the init run
   rm -rf /ci-management
-

@@ -225,4 +225,3 @@ group names` and `Subnet ID for VPC` or it will fail to instantiate.
 - [ONOS](https://gerrit.onosproject.org/gitweb?p=ci-management.git;a=tree)
 - [ODL](https://git.opendaylight.org/gerrit/gitweb?p=releng/builder.git;a=tree)
 - [ONAP](https://gerrit.onap.org/r/gitweb?p=ci-management.git;a=tree)
-

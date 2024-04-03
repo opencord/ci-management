@@ -75,7 +75,7 @@ setup() {
                 fi
                 [[ ! -v enable_fatal ]] && { continue; }
                 ;;
-            voltha-openolt-adapter) 
+            voltha-openolt-adapter)
                 if [[ -v enable_skip ]]; then
                     skip 'declare -a gerrit=([0]="4.4.10")'
                 fi
@@ -109,7 +109,7 @@ setup() {
         ## Check for deltas
         [[ "${gerrit[*]}" == "${github[@]}" ]]
     done
-    
+
     ## -----------------------------------------
     ## Compare by size, filtered list is smaller
     ## -----------------------------------------
@@ -120,7 +120,7 @@ setup() {
 ## Intent: Compare tags between gerrit and github repositories
 ## -----------------------------------------------------------------------
 @test 'Validate comp_test_tag()' {
- 
+
     local component
     for component in "${components[@]}";
     do

@@ -36,4 +36,3 @@ github.com ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCj7ndNxQowgcQnjshcLrqPEiiphnt+V
 [gerrit.onosproject.org]:29418 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBMBzs9fkmwgIqvYavMlIFz95RzDoSBQxHIeBj2BuDz0HLz2qrW2Q2Rksq4OwsAuSjRto3+9/BgIKv1ONnh21KMM=
 [gerrit.onosproject.org]:29418 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKkIOHzFGowb9yL7FcWD73YF/xDUQ23/As/HAP3flf/L
 EOKNOWN
-

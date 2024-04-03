@@ -47,7 +47,7 @@
     jobs:
       - 'voltha-patch-test':
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
-          
+
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs-voltha-2.12'
     jobs:

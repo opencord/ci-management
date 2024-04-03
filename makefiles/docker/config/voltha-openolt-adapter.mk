@@ -22,4 +22,3 @@ protoc-sh-docker-mount    := /go/src/github.com/opencord/voltha-protos/v5
 # voltha-protos-v5          := /go/src/github.com/opencord/voltha-protos/v5
 
 # [EOF]
-

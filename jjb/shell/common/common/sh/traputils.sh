@@ -44,18 +44,18 @@ trap_push()
 {
     local new_trap="$1"; shift
     declare -a sigs=($*)
-    
+
     # local sigs=$*
     local sig
     for sig in "${sigs[@]}";
     do
 	    local stack_name="$(trap_stack_name "$sig")"
 	    local old_trap="$(get_trap "$sig")"
-        
+
 	    # eval '__trap_stack_SIGUSR1[${#__trap_stack_SIGUSR1[@]}]=$old_trap'
 	    # __trap_stack_SIGUSR1[${#__trap_stack_SIGUSR1[@]}]=one
 	    # trap two SIGUSR1
-        
+
 	    eval "${stack_name}"'[${#'"${stack_name}"'[@]}]=$old_trap'
 	    trap "${new_trap}" "$sig"
     done

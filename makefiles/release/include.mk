@@ -32,5 +32,3 @@ ifdef USE_VOLTHA_RELEASE_MK
 endif
 
 # [EOF]
-
-

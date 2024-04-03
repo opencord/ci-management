@@ -148,7 +148,7 @@ def getAdaptersState(String adapters0)
             : 'CONTINUE'
     }
 
-    
+
     if (debug) {
         leave("return: [$ans]")
     }

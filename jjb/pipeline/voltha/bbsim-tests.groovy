@@ -496,7 +496,7 @@ void collectArtifacts(exitStatus) {
         enter("exitStatus=${exitStatus}")
         banner('collectArtifacts')
     }
-    
+
     dotkube(['debug':false])
     getPodsInfo("$WORKSPACE/${exitStatus}")
 

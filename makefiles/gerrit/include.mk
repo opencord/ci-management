@@ -27,7 +27,7 @@ replication-status:
 
 # -----------------------------------------------------------------------
 # NOTE: Gerrit ssh targets assume use of ~/.ssh config files
-#       port, login, etc are 
+#       port, login, etc are
 # -----------------------------------------------------------------------
 # % ssh -p 29418 <username>@gerrit.opencord.org replication list --detail
 # % ssh gerrit.opencord.org replication list --detail

@@ -504,7 +504,7 @@ function get_release_path()
 {
     local -n ref=$1; shift
     local varpath="$ref"
-    
+
     DEST_GOPATH=${DEST_GOPATH:-}
     if [ -n "$DEST_GOPATH" ]; then
         mkdir -p "$GOPATH/src/$DEST_GOPATH"
@@ -939,9 +939,9 @@ function release_staging()
 ## -----------------------------------------------------------------------
 function my_gh()
 {
-    func_echo "ENTER"    
+    func_echo "ENTER"
     set -x
- 
+
     declare -a cmd=()
     cmd+=("$gh_cmd")
 
@@ -958,7 +958,7 @@ function my_gh()
         case "$arg" in
 
             # Modes
-            -*debug)	
+            -*debug)
 		# shellcheck disable=SC2034
 		declare -i -g debug=1
 		;;

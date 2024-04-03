@@ -58,7 +58,7 @@ execute() {
   srcdir="${tmpdir}"
   (cd "${tmpdir}" && untar "${TARBALL}")
   test ! -d "${BINDIR}" && install -d "${BINDIR}"
-# shellcheck disable=SC2043 
+# shellcheck disable=SC2043
   for binexe in "kail" ; do
     if [ "$OS" = "windows" ]; then
       binexe="${binexe}.exe"

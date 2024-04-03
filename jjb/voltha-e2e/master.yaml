@@ -83,7 +83,7 @@
           # ---------------------------------------------------------
           # 20230828 - strange, release branches have pipeline-script
           # 20230828 - while master branch did not (?)  Script does
-          # 20230828 - show in the jenkins UI but w/o updates. 
+          # 20230828 - show in the jenkins UI but w/o updates.
           # ---------------------------------------------------------
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'master'

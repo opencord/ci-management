@@ -276,7 +276,7 @@
           time: '13'
           pipeline-script: 'voltha/voltha-2.12/physical-build.groovy'
 
-      # -----------------------------------------------------------------------          
+      # -----------------------------------------------------------------------
       # Berlin POD test job - 2.11 versions: uses 1T4GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330

@@ -31,13 +31,13 @@ fi
 function common_tempdir_mkdir()
 {
     local var="$1"; shift
-    
+
     local pkgbase="${0##*/}" # basename
     local pkgname="${pkgbase%.*}"
 
     local __junk__
     local __junk__="$(mktemp -d -t "${pkgname}.XXXXXXXXXX")"
-    
+
     __COMMON_TEMP_DIRS__+=("$__junk__")
 
     export TMPDIR="$__junk__"

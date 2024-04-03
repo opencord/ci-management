@@ -98,9 +98,9 @@
           onu-image-crc: '0'
           time-trigger: "H H/23 * * *"
 
-# -----------------------------------------------------------------------         
+# -----------------------------------------------------------------------
 # https://docs.voltha.org/master/release_notes/voltha_2.11.html#onos-apps
-# -----------------------------------------------------------------------         
+# -----------------------------------------------------------------------
       - 'software-upgrades-test-voltha-2.11':
           name: 'periodic-software-upgrade-test-bbsim-2.11'
           pipeline-script: 'voltha/voltha-2.11/software-upgrades.groovy'

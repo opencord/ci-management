@@ -106,7 +106,7 @@ pipeline {
           deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}.yaml"
         }
 	installVoltctl("${branch}")
-	
+
 	sh(returnStdout: false, script: """
 
         mkdir -p "$WORKSPACE/bin"

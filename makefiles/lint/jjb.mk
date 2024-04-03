@@ -44,7 +44,7 @@ lint-jjb-args += --config-xml#                # JJB v3.0 write to OUTPUT/jobname
 lint-jjb-args += jjb/#                        # JJB config sources (input)
 
 lint-jjb-deps := $(null)
-lint-jjb-deps += $(venv-activate-script) 
+lint-jjb-deps += $(venv-activate-script)
 lint-jjb-deps += checkout-ci-management-sub-modules
 lint-jjb: $(lint-jjb-deps)
 	$(activate) && { jenkins-jobs $(lint-jjb-args); }

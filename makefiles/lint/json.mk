@@ -43,7 +43,7 @@ endif# NO-LINT-JSON
 ## -----------------------------------------------------------------------
 json-find-args := $(null)
 json-find-args += -name '$(venv-name)'
-lint-json-all:	
+lint-json-all:
 	$(HIDE)$(MAKE) --no-print-directory lint-json-install
 
 	$(activate)\

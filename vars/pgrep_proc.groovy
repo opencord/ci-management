@@ -72,13 +72,13 @@ Boolean call\
     Boolean ans = true
 
     throw new Exception("UNUSED: Not yet implemented")
-    
+
     println("** ${iam}: ENTER")
 
     // var = Gstring throws exception due to cast problem.
     // var = [ 'foo', 'bar' 'tans' ].join(' ').toString() fails
     throw new Exception("Not yet implemented")
-    
+
     try {
         process(proc, args)
     }

@@ -54,7 +54,7 @@ echo "$0: ENTER"
 # foo: hello - stack_frame[1]
 # bar: hello - stack_frame[2]
 # tans: early exit for stacktrace
-# 
+#
 # OFFENDER: ./example.sh:1
 # ERROR: 'exit 1' exited with status 1
 # Call tree:

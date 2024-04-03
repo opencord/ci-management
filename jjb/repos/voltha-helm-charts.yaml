@@ -38,7 +38,7 @@
     name: 'verify-voltha-helm-charts-jobs-master'
     jobs:
       - 'voltha-patch-test'
-      
+
 - job-group:
     name: 'verify-voltha-helm-charts-jobs-voltha-2.12'
     jobs:
@@ -58,5 +58,5 @@
 #    jobs:
 #      - 'voltha-patch-test':
 #          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
-          
+
 # [EOF]

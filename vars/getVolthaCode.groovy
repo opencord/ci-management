@@ -188,7 +188,7 @@ def wrapped(Map config)
             sh """
         cd "$WORKSPACE/voltha-helm-charts"
         git fetch "$repo_vhc" ${cfg.volthaHelmChartsChange} && git checkout FETCH_HEAD
-      """ 
+      """
             leave("git fetch repo_vhc=[$repo_vhc]")
         }
         else if (cfg.gerritProject == 'voltha-helm-charts') {
