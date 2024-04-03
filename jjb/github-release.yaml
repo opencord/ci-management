@@ -4,8 +4,10 @@
 - job-template:
     id: github-release
     name: 'github-release_{project}'
-    description: |
-      Created by {id} job-template from ci-management/jjb/github-release.yaml<br/>
+    description: >-
+      Created by {id} job-template from
+      ci-management/jjb/github-release.yaml<br/>
+
       Build and publish artifacts to GitHub as a release, with checksums
 
     triggers:
@@ -27,7 +29,7 @@
           jenkins-ssh-credential: '{gerrit-ssh-credential}'
       - credentials-binding:
           - text:
-              credential-id: github-release-token
+              credential-id: onf-voltha  # github-release-token
               variable: GITHUB_TOKEN
 
     scm:
