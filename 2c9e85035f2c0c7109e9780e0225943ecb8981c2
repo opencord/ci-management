@@ -16,6 +16,24 @@
       "message": "Hmmmm, I would add the return statement back in so the func is self documenting.\nThat aside the shellcheck command (make lint-shell) may complain about it.\n\nAside from that LGTM",
       "revId": "2c9e85035f2c0c7109e9780e0225943ecb8981c2",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4ffa9a03_4c77d744",
+        "filename": "jjb/shell/github-release.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 531,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-04-03T14:43:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "40ef7185_37535b2d",
+      "revId": "2c9e85035f2c0c7109e9780e0225943ecb8981c2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
