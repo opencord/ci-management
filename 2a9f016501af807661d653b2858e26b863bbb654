@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cec7701a_94b5a009",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-04-18T20:29:54Z",
+      "side": 1,
+      "message": "Edits to make debug script non-fatal.\nPublish to continue repo debugging for another patch/repository.",
+      "revId": "2a9f016501af807661d653b2858e26b863bbb654",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
