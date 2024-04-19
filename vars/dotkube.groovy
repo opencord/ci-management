@@ -66,7 +66,7 @@ Boolean process(String proc, Map args) {
     // -------------------------
     // loader.go:223] Config not found: /home/jenkins/.kube/kind-kind-ci
     sh(
-        label  : '[DEBUG] ls ~/.kube'
+        label  : '[DEBUG] ls ~/.kube',
         script : """
 echo -e "\n** /bin/ls -ld ~/.kube"
 /bin/ls -ld ~/.kube
