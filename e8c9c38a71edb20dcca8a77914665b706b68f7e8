@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "60d13de2_f442ceee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-07-18T21:34:58Z",
+      "side": 1,
+      "message": "Merge in image name change.\nManually updated jenkins pipeline jobs, this is needed to prevent pipeline regeneration from reverting to the old image name.",
+      "revId": "e8c9c38a71edb20dcca8a77914665b706b68f7e8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
