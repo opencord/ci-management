@@ -1,5 +1,7 @@
 ---
 # verification jobs for 'voltha-docs' repo
+# build-node(-orig): 'ubuntu18.04-basebuild-1c-2g' # see defaults.yaml
+# [TODO:2024-07-22] - replace voltha-1804-micro with a 1c-2g image
 
 - project:
     name: voltha-docs
@@ -8,8 +10,10 @@
 
     jobs:
       - 'verify-voltha-docs-jobs':
+          build-node: 'voltha-1804-micro'          
           branch-regexp: '{supported-branches-regexp}'
       - 'post-submit-voltha-docs-jobs':
+          build-node: 'voltha-1804-micro'
           branch-regexp: '{supported-branches-regexp}'
 
 - job-group:
@@ -18,6 +22,7 @@
       - 'verify-licensed'
       - 'tag-check'
       - 'make-unit-test':
+          build-node: 'voltha-1804-micro'
           unit-test-targets: 'test'
           junit-allow-empty-results: true
 
@@ -26,6 +31,7 @@
     jobs:
       - 'version-tag'
       - 'sync-dir':
+          build-node: 'voltha-1804-micro'
           dependency-jobs: 'version-tag_voltha-docs'
           build-command: 'make multiversion'
           build-output-path: '_build/multiversion/'
