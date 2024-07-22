@@ -549,6 +549,7 @@ pipeline {
     }
 
     stages {
+
         stage('Download Code') {
             steps {
                 enter('getVolthaCode')
@@ -592,6 +593,28 @@ pipeline {
                         '-C', "$WORKSPACE/voltha-system-tests",
                         "KAIL_PATH=\"$WORKSPACE/bin\"",
                         'kail',
+                    ].join(' ')
+
+                    println(" ** Running: ${cmd}")
+                    sh("${cmd}")
+                } // script
+            } // steps
+        } // stage
+
+        // -----------------------------------------------------------------------
+        // -----------------------------------------------------------------------
+        stage('Install kubectl')
+        {
+            steps
+            {
+                script
+                {
+                    String cmd = [
+                        'make',
+                        '--no-print-directory',
+                        '-C', "$WORKSPACE",
+                        "KUBECTL_PATH=\"$WORKSPACE/bin\"",
+                        'kubectl',
                     ].join(' ')
 
                     println(" ** Running: ${cmd}")
