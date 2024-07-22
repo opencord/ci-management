@@ -46,4 +46,6 @@ build/
 a.out
 archives/
 
+bin/kubectl*
+
 # [EOF]

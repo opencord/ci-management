@@ -64,6 +64,7 @@ $(if $(USE-ONF-DOCKER-MK),$(eval include $(ONF_MAKEDIR)/docker/include.mk))
 ##-------------------##
 ##---]  TARGETS  [---##
 ##-------------------##
+$(error onf-mkdir=$(ONF_MAKEDIR))
 include $(ONF_MAKEDIR)/targets/include.mk # clean, sterile
 
 $(if $(DEBUG),$(warning LEAVE))
