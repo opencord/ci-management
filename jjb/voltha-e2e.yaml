@@ -1807,7 +1807,8 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-etcd-test'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           time-trigger: "H H/12 * * *"
@@ -1836,7 +1837,8 @@
           name: 'periodic-voltha-etcd-test-2.11'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.11'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           code-branch: 'voltha-2.11'
           extraHelmFlags: '--set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
@@ -1851,7 +1853,8 @@
           name: 'periodic-voltha-etcd-test-2.12'
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           code-branch: 'voltha-2.12'
           extraHelmFlags: '--set onu=2,pon=2'
           time-trigger: "H H/23 * * *"
@@ -1961,7 +1964,8 @@
       # Attention: Due VOL-4703 is not corrected memory leak tests will run in pipeline for DT workflow only!
       - 'voltha-periodic-test':
           name: 'periodic-voltha-memory-leak-test-bbsim'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           code-branch: 'master'
           time-trigger: "H H/23 * * *"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,controlledActivation=only-onu'
@@ -1979,7 +1983,8 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-memory-leak-test-bbsim-2.12'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
@@ -1996,7 +2001,8 @@
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-memory-leak-test-bbsim-2.11'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.11'
           code-branch: 'voltha-2.11'
@@ -2292,7 +2298,8 @@
 - job-template:
     id: 'voltha-patch-test'
     name: 'verify_{project}_sanity-test{name-extension}'
-    build-node: 'ubuntu18.04-basebuild-4c-8g'
+    #build-node: 'ubuntu18.04-basebuild-4c-8g'
+    build-node: 'voltha-1804-micro'
     pipeline-script: 'voltha/bbsim-tests.groovy'
     pipeline-branch: 'master'
     override-branch: '$GERRIT_BRANCH'

@@ -30,7 +30,8 @@
     parameters:
       - string:
           name: buildNode
-          default: 'ubuntu18.04-basebuild-4c-8g'
+          # default: 'ubuntu18.04-basebuild-4c-8g'
+          default: 'voltha-1804-micro'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:

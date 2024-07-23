@@ -154,7 +154,8 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-test-bbsim-2.12'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'          
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.12'
           code-branch: 'voltha-2.12'
@@ -184,7 +185,8 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-fttb-test-bbsim-2.12'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'          
           code-branch: 'VOLTHA-2.12'
           time-trigger: "H H/23 * * *"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF --set onu=2'

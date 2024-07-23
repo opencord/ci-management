@@ -145,7 +145,8 @@
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
           name: 'periodic-voltha-dt-test-bbsim-2.11'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.11'
           code-branch: 'master'

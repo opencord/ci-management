@@ -36,7 +36,8 @@
           unit-test-targets: 'lint sca'
           unit-test-keep-going: 'false'
           junit-allow-empty-results: true
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-tests"

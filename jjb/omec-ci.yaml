@@ -101,7 +101,8 @@
       - 'docker-publish-github':
           build-timeout: 30
           docker-repo: 'omecproject'
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
       - 'omec-container'
 
 # for c3po

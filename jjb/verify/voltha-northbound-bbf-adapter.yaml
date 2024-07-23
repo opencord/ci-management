@@ -20,7 +20,8 @@
       - 'tag-collision-reject':
           dependency-jobs: 'verify_voltha-northbound-bbf-adapter_licensed'
       - 'make-unit-test':
-          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'voltha-1804-micro'
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'false'

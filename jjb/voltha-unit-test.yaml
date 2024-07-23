@@ -38,7 +38,8 @@
           choosing-strategy: gerrit
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
-    node: 'ubuntu18.04-basebuild-4c-8g'
+    # node: 'ubuntu18.04-basebuild-4c-8g'
+    node: 'voltha-1804-micro'
     project-type: freestyle
     concurrent: true
 
