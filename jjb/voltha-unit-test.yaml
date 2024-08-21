@@ -39,7 +39,7 @@
           jenkins-ssh-credential: '{jenkins-ssh-credential}'
 
     # node: 'ubuntu18.04-basebuild-4c-8g'
-    node: 'voltha-1804-micro'
+    node: 'ubuntu-basebuild-24.04-4c-15g'
     project-type: freestyle
     concurrent: true
 

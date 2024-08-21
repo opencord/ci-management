@@ -52,7 +52,7 @@
           dependency-jobs: 'verify_bbsim_licensed'
       - 'make-unit-test':
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
-          build-node: 'voltha-1804-micro'
+          build-node: 'ubuntu-basebuild-24.04-4c-15g'
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'
           unit-test-keep-going: 'false'

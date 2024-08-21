@@ -52,7 +52,7 @@
       - 'python-unit-test':
           build-timeout: 45
           # build-node: 'ubuntu18.04-basebuild-2c-4g'
-          build-node: 'voltha-1804-micro'
+          build-node: 'ubuntu-basebuild-24.04-4c-15g'
       - 'api-test':
           pipeline-script: 'xos-core.groovy'
 

@@ -20,7 +20,7 @@
       - 'tag-collision-reject':
       - 'make-unit-test':
 #          build-node: 'ubuntu18.04-basebuild-2c-4g'
-          build-node: 'voltha-1804-micro'
+          build-node: 'ubuntu-basebuild-24.04-4c-15g'
           build-timeout: 20
           unit-test-targets: 'test'
           unit-test-keep-going: 'false'
