@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20007e04_c4f512fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000948
+      },
+      "writtenOn": "2024-08-23T16:33:36Z",
+      "side": 1,
+      "message": "Merge \u0026 publish patch so Eric can continue working.",
+      "revId": "a36909c274792bfaa001d09b29ca72b26ea4623d",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
