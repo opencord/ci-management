@@ -73,6 +73,9 @@ $(kubectl-cmd) : $(kubectl-ver-cmd)
 # -----------------------------------------------------------------------
 # 3) Intent: Download versioned kubectl into the local build directory
 # -----------------------------------------------------------------------
+# [NOTE] Remove --no-progress-meter switch for now, not supporte by
+#    curl in ubuntu 18.04-LTS.
+# -----------------------------------------------------------------------
 $(kubectl-ver-cmd):
 
 #	$(call banner,(kubectl install: $(kubectl-ver)))
@@ -82,8 +85,7 @@ $(kubectl-ver-cmd):
 
 	curl \
 	  --output $@ \
-	  --location "$(kube-url)" \
-	  --no-progress-meter
+	  --location "$(kube-url)"
 
 	@umask 0 && chmod 0555 $@
 
