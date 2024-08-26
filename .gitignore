@@ -48,4 +48,8 @@ archives/
 
 bin/kubectl*
 
+# Packer
+**/.galaxy
+**/cloud_env.json
+
 # [EOF]

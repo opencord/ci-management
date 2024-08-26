@@ -1,5 +1,5 @@
 ---
-# SPDX-FileCopyrightText: 2020-2024 Open Networking Foundation (ONF) and the ONF Contributors
+# SPDX-FileCopyrightText: 2020-2025 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
 
 - name: "Provision Packages for Jenkins image"
@@ -25,16 +25,17 @@
           - "bzip2"
           - "curl"
           - "ebtables"
-          - "enchant"
           - "ethtool"
           - "git"
           - "graphviz"
+          - "host"
           - "jq"
           - "kafkacat"
           - "less"
           - "libpcap-dev"
           - "libxml2-utils"
           - "maven"
+          - "rsync"
           - "ruby"
           - "screen"
           - "socat"
@@ -43,8 +44,7 @@
           - "zip"
           # below four packages are required by npm
           - "nodejs"
-          - "libssl1.0-dev"
-          - "nodejs-dev"
+          - "libssl-dev"
           - "node-gyp"
           - "npm"
           - "java-1.8.0-amazon-corretto-jdk"
@@ -52,6 +52,35 @@
         state: "present"
         update_cache: true
         cache_valid_time: 3600
+
+    - name: Install modern Ubuntu packages
+      apt:
+        name:
+          - "ansible"
+          - "enchant-2"
+          - "libnode-dev"
+      when: ansible_distribution_version > '18.04'
+
+    - name: Install legacy Ubuntu packages
+      apt:
+        name:
+          - "enchant"
+          - "nodejs-dev"
+      when: ansible_distribution_version <= '18.04'
+
+    - name: Ensure HostKeyAlgorithms support for ssh-rsa
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/ssh_config
+        regexp: '^HostKeyAlgorithms='
+        line: HostKeyAlgorithms=+ssh-rsa
+      when: ansible_distribution_version > '18.04'
+
+    - name: Ensure PubkeyAcceptedKeyTypes support for ssh-rsa
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/ssh_config
+        regexp: '^PubkeyAcceptedKeyTypes='
+        line: PubkeyAcceptedKeyTypes=+ssh-rsa
+      when: ansible_distribution_version > '18.04'
 
     - name: Download repo launcher
       get_url:
@@ -112,48 +141,54 @@
         state: restarted
         daemon_reload: true
 
-    - name: Install multi python3 packages with version specifiers
-      pip:
-        name:
-          - ansible
-          - ansible-lint
-          - docker
-          - docker-compose
-          - git-review
-          - httpie
-          - netaddr
-          - pylint
-          - tox
-          - twine
-          - virtualenv
-          - yamllint
-        executable: pip3
-    - name: Install multi python2 packages with version specifiers
-      pip:
-        name:
-          - Jinja2
-          - coverage
-          - certifi
-          - cryptography
-          - git+https://github.com/linkchecker/linkchecker.git@v9.4.0
-          - graphviz
-          - isort
-          - more-itertools==5.0.0
-          - mock>2.0.0<2.1.0
-          - ndg-httpsclient
-          - nose2>0.9.0<0.10.0
-          - pyopenssl
-          - pexpect
-          - pyyaml>3.10.0<3.11.0
-          - requests>2.14.0<2.15.0
-          - robotframework
-          - robotframework-httplibrary
-          - robotframework-kafkalibrary
-          - robotframework-lint
-          - robotframework-requests
-          - robotframework-sshlibrary
-          - six
-          - urllib3
+    # Installing python packages in this way is not supported in the latest
+    # versions of python. These need to be installed in a venv, which is then
+    # utilized by jobs.
+    #
+    # - name: Install multi python3 packages with version specifiers
+    #   ansible.builtin.pip:
+    #     name:
+    #       - ansible
+    #       - ansible-lint
+    #       - docker
+    #       - docker-compose
+    #       - git-review
+    #       - httpie
+    #       - netaddr
+    #       - pylint
+    #       - tox
+    #       - twine
+    #       - virtualenv
+    #       - yamllint
+    #     executable: pip3
+        # break_system_packages: true
+
+    # - name: Install multi python2 packages with version specifiers
+    #   pip:
+    #     name:
+    #       - Jinja2
+    #       - coverage
+    #       - certifi
+    #       - cryptography
+    #       - git+https://github.com/linkchecker/linkchecker.git@v9.4.0
+    #       - graphviz
+    #       - isort
+    #       - more-itertools==5.0.0
+    #       - mock>2.0.0<2.1.0
+    #       - ndg-httpsclient
+    #       - nose2>0.9.0<0.10.0
+    #       - pyopenssl
+    #       - pexpect
+    #       - pyyaml>3.10.0<3.11.0
+    #       - requests>2.14.0<2.15.0
+    #       - robotframework
+    #       - robotframework-httplibrary
+    #       - robotframework-kafkalibrary
+    #       - robotframework-lint
+    #       - robotframework-requests
+    #       - robotframework-sshlibrary
+    #       - six
+    #       - urllib3
 
     - name: Install multi ruby packages with version specifiers
       gem:
@@ -235,7 +270,6 @@
         url: "https://github.com/github-release/github-release/releases/download/v0.10.0/linux-amd64-github-release.bz2"
         checksum: "sha256:b360af98188c5988314d672bb604efd1e99daae3abfb64d04051ee17c77f84b6"
         dest: /tmp/github-release.bz2
-
 
     # Unarchive target doesn't support the bz2 format
     - name: Unarchive github-release

@@ -8,7 +8,7 @@
     name:
       - build-essential
       - devscripts
-      - dh-systemd
+      - debhelper
       - equivs
       - gdebi
     state: latest

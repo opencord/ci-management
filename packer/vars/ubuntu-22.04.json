@@ -1,0 +1,10 @@
+{
+  "source_ami_filter_name": "*ubuntu-jammy-22.04-amd64-server*",
+  "source_ami_filter_owner": "099720109477",
+
+  "ssh_user": "ubuntu",
+
+  "distro": "Ubuntu 22.04",
+  "arch": "x86_64",
+  "cloud_user_data": null
+}

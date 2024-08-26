@@ -52,16 +52,26 @@
 
     - name: Disable periodic updates
       block:
+        - name: Check for 10periodic conf file
+          stat:
+            path: /etc/apt/apt.conf.d/10periodic
+          register: periodic
         - name: Set all periodic update options to 0
-          replace:
+          ansible.builtin.replace:
             path: /etc/apt/apt.conf.d/10periodic
             regexp: "1"
             replace: "0"
+          when: periodic.stat.exists
+        - name: Check for 20auto-upgrades conf file
+          stat:
+            path: /etc/apt/apt.conf.d/20auto-upgrades
+          register: auto_upgrades
         - name: Set all auto update options to 0
-          replace:
+          ansible.builtin.replace:
             path: /etc/apt/apt.conf.d/20auto-upgrades
             regexp: "1"
             replace: "0"
+          when: auto_upgrades.stat.exists
         - name: Disable unattended upgrades
           lineinfile:
             path: /etc/apt/apt.conf.d/10periodic
