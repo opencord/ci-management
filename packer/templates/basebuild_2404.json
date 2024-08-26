@@ -56,43 +56,43 @@
           "type": "ansible",
           "user": "{{user `ssh_user`}}",
           "playbook_file": "provision/local-builder.yaml",
-          "pause_before": "3m",
+          "ansible_ssh_extra_args": ["'-oHostKeyAlgorithms=+ssh-rsa'", "' '", "'-oPubkeyAcceptedKeyTypes=+ssh-rsa'"],
+          "pause_before": "2m",
           "ansible_env_vars": [
               "ANSIBLE_NOCOWS=1",
               "ANSIBLE_PIPELINING=False",
               "ANSIBLE_HOST_KEY_CHECKING=False",
               "ANSIBLE_ROLES_PATH={{user `ansible_roles_path`}}",
               "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
-              "ANSIBLE_STDOUT_CALLBACK=debug",
-              "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedKeyTypes=+ssh-rsa'"
+              "ANSIBLE_STDOUT_CALLBACK=debug"
           ]
       },
       {
           "type": "ansible",
           "user": "{{user `ssh_user`}}",
-          "playbook_file": "./common-packer/provision/local-docker.yaml",
+          "playbook_file": "provision/local-docker.yaml",
+          "ansible_ssh_extra_args": ["'-oHostKeyAlgorithms=+ssh-rsa'", "' '", "'-oPubkeyAcceptedKeyTypes=+ssh-rsa'"],
           "ansible_env_vars": [
               "ANSIBLE_NOCOWS=1",
               "ANSIBLE_PIPELINING=False",
               "ANSIBLE_HOST_KEY_CHECKING=False",
               "ANSIBLE_ROLES_PATH={{user `ansible_roles_path`}}",
               "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
-              "ANSIBLE_STDOUT_CALLBACK=debug",
-              "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedKeyTypes=+ssh-rsa'"
+              "ANSIBLE_STDOUT_CALLBACK=debug"
           ]
       },
       {
           "type": "ansible",
           "user": "{{user `ssh_user`}}",
           "playbook_file": "provision/onf-playbook.yaml",
+          "ansible_ssh_extra_args": ["'-oHostKeyAlgorithms=+ssh-rsa'", "' '", "'-oPubkeyAcceptedKeyTypes=+ssh-rsa'"],
           "ansible_env_vars": [
               "ANSIBLE_NOCOWS=1",
               "ANSIBLE_PIPELINING=False",
               "ANSIBLE_HOST_KEY_CHECKING=False",
               "ANSIBLE_ROLES_PATH={{user `ansible_roles_path`}}",
               "ANSIBLE_CALLBACK_WHITELIST=profile_tasks",
-              "ANSIBLE_STDOUT_CALLBACK=debug",
-              "ANSIBLE_SSH_ARGS='-o ForwardAgent=yes -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedKeyTypes=+ssh-rsa'"
+              "ANSIBLE_STDOUT_CALLBACK=debug"
           ]
       }
   ]

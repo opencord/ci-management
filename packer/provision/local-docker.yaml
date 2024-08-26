@@ -1,0 +1,13 @@
+---
+
+- hosts: all
+  become_user: root
+  become_method: sudo
+
+  roles:
+    - { role: lfit.docker-install, mtu: 1458 }
+
+  post_tasks:
+    - name: System Reseal
+      script: system-reseal.sh
+      become: true

@@ -1,0 +1,10 @@
+{
+  "source_ami_filter_name": "*ubuntu*24.04-amd64-server*",
+  "source_ami_filter_owner": "099720109477",
+
+  "ssh_user": "ubuntu",
+
+  "distro": "Ubuntu 24.04",
+  "arch": "x86_64",
+  "cloud_user_data": null
+}

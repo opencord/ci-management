@@ -1,7 +1,6 @@
 {
-  "source_ami_filter_name": "*ubuntu*18.04*",
-  "source_ami_filter_owner": "aws-marketplace",
-  "source_ami_filter_product_code": "3iplms73etrdhxdepv72l6ywj",
+  "source_ami_filter_name": "*Ubuntu_18.04*",
+  "source_ami_filter_owner": "374168611083",
 
   "ssh_user": "ubuntu",
 

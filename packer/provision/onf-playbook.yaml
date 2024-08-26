@@ -25,7 +25,6 @@
           - "bzip2"
           - "curl"
           - "ebtables"
-          - "enchant"
           - "ethtool"
           - "git"
           - "graphviz"
@@ -43,8 +42,7 @@
           - "zip"
           # below four packages are required by npm
           - "nodejs"
-          - "libssl1.0-dev"
-          - "nodejs-dev"
+          - "libssl-dev"
           - "node-gyp"
           - "npm"
           - "java-1.8.0-amazon-corretto-jdk"
@@ -52,6 +50,35 @@
         state: "present"
         update_cache: true
         cache_valid_time: 3600
+
+    - name: Install modern Ubuntu packages
+      apt:
+        name:
+          - "ansible"
+          - "enchant-2"
+          - "libnode-dev"
+      when: ansible_distribution_version > '18.04'
+
+    - name: Install legacy Ubuntu packages
+      apt:
+        name:
+          - "enchant"
+          - "nodejs-dev"
+      when: ansible_distribution_version <= '18.04'
+
+    - name: Ensure HostKeyAlgorithms support for ssh-rsa
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/ssh_config
+        regexp: '^HostKeyAlgorithms='
+        line: HostKeyAlgorithms=+ssh-rsa
+      when: ansible_distribution_version > '18.04'
+
+    - name: Ensure PubkeyAcceptedKeyTypes support for ssh-rsa
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/ssh_config
+        regexp: '^PubkeyAcceptedKeyTypes='
+        line: PubkeyAcceptedKeyTypes=+ssh-rsa
+      when: ansible_distribution_version > '18.04'
 
     - name: Download repo launcher
       get_url:
@@ -112,48 +139,54 @@
         state: restarted
         daemon_reload: true
 
-    - name: Install multi python3 packages with version specifiers
-      pip:
-        name:
-          - ansible
-          - ansible-lint
-          - docker
-          - docker-compose
-          - git-review
-          - httpie
-          - netaddr
-          - pylint
-          - tox
-          - twine
-          - virtualenv
-          - yamllint
-        executable: pip3
-    - name: Install multi python2 packages with version specifiers
-      pip:
-        name:
-          - Jinja2
-          - coverage
-          - certifi
-          - cryptography
-          - git+https://github.com/linkchecker/linkchecker.git@v9.4.0
-          - graphviz
-          - isort
-          - more-itertools==5.0.0
-          - mock>2.0.0<2.1.0
-          - ndg-httpsclient
-          - nose2>0.9.0<0.10.0
-          - pyopenssl
-          - pexpect
-          - pyyaml>3.10.0<3.11.0
-          - requests>2.14.0<2.15.0
-          - robotframework
-          - robotframework-httplibrary
-          - robotframework-kafkalibrary
-          - robotframework-lint
-          - robotframework-requests
-          - robotframework-sshlibrary
-          - six
-          - urllib3
+    # Installing python packages in this way is not supported in the latest
+    # versions of python. These need to be installed in a venv, which is then
+    # utilized by jobs.
+    #
+    # - name: Install multi python3 packages with version specifiers
+    #   ansible.builtin.pip:
+    #     name:
+    #       - ansible
+    #       - ansible-lint
+    #       - docker
+    #       - docker-compose
+    #       - git-review
+    #       - httpie
+    #       - netaddr
+    #       - pylint
+    #       - tox
+    #       - twine
+    #       - virtualenv
+    #       - yamllint
+    #     executable: pip3
+        # break_system_packages: true
+
+    # - name: Install multi python2 packages with version specifiers
+    #   pip:
+    #     name:
+    #       - Jinja2
+    #       - coverage
+    #       - certifi
+    #       - cryptography
+    #       - git+https://github.com/linkchecker/linkchecker.git@v9.4.0
+    #       - graphviz
+    #       - isort
+    #       - more-itertools==5.0.0
+    #       - mock>2.0.0<2.1.0
+    #       - ndg-httpsclient
+    #       - nose2>0.9.0<0.10.0
+    #       - pyopenssl
+    #       - pexpect
+    #       - pyyaml>3.10.0<3.11.0
+    #       - requests>2.14.0<2.15.0
+    #       - robotframework
+    #       - robotframework-httplibrary
+    #       - robotframework-kafkalibrary
+    #       - robotframework-lint
+    #       - robotframework-requests
+    #       - robotframework-sshlibrary
+    #       - six
+    #       - urllib3
 
     - name: Install multi ruby packages with version specifiers
       gem:
