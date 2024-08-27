@@ -33,7 +33,7 @@
           unit-test-targets: 'lint sca'
           unit-test-keep-going: 'false'
           junit-allow-empty-results: true
-          build-node: 'ubuntu-basebuild-24.04-4c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
@@ -42,7 +42,7 @@
           unit-test-keep-going: 'false'
           junit-allow-empty-results: true
           # build-node: 'ubuntu18.04-basebuild-2c-4g'
-          build-node: 'ubuntu-basebuild-24.04-4c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
 
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs-master'

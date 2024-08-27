@@ -8,21 +8,21 @@
     jobs:
       - 'verify-voltha-system-tests-jobs':
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
-          build-node: 'ubuntu-basebuild-24.04-4c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
           branch-regexp: '{all-branches-regexp}'
       - 'verify-voltha-system-tests-jobs-master':
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
-          build-node: 'ubuntu-basebuild-24.04-4c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
           branch-regexp: '^master$'
       - 'verify-voltha-system-tests-jobs-voltha-2.12':
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
-          build-node: 'ubuntu-basebuild-24.04-4c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
           name-extension: '-voltha-2.12'
           override-branch: 'voltha-2.12'
           branch-regexp: '^voltha-2.12$'
       - 'verify-voltha-system-tests-jobs-voltha-2.11':
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
-          build-node: 'ubuntu-basebuild-24.04-4c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
           name-extension: '-voltha-2.11'
           override-branch: 'voltha-2.11'
           branch-regexp: '^voltha-2.11$'

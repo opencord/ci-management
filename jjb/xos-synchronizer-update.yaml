@@ -29,7 +29,7 @@
       - string:
           name: buildNode
           # default: 'ubuntu18.04-basebuild-4c-8g'
-          default: 'ubuntu-basebuild-24.04-4c-15g'
+          default: 'ubuntu18.04-basebuild-8c-15g'
           description: 'Name of the Jenkins node to run the job on'
 
       - string:

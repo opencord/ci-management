@@ -102,7 +102,7 @@
           build-timeout: 30
           docker-repo: 'omecproject'
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
-          build-node: 'ubuntu-basebuild-24.04-4c-15g'
+          build-node: 'ubuntu18.04-basebuild-8c-15g'
       - 'omec-container'
 
 # for c3po
