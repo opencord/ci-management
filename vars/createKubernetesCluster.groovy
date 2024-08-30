@@ -103,7 +103,7 @@ nodes:
     """
 
     // install voltctl
-    installVoltctl("${cfg.branch}")
+    //installVoltctl("${cfg.branch}")
 
     sh(label  : 'Start kind cluster',
        script : """

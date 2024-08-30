@@ -76,6 +76,11 @@ pipeline {
         createKubernetesCluster([nodes: 3])
       }
     }
+    stage('Install voltctl') {
+        steps {
+            installVoltctl("${branch}")
+        }
+    }
     stage('Load image in kind nodes') {
       steps {
         loadToKind()
