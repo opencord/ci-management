@@ -6,7 +6,7 @@
     build-node: 'ubuntu18.04-basebuild-1c-1g'
 
     jobs:
-      - '{project-name}-ci-jobs'
+      - gerrit-jjb-merge
 
     name: ci-management-jobs
     project: 'ci-management'
