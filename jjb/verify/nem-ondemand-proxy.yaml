@@ -14,7 +14,6 @@
     name: 'verify-nem-ondemand-proxy-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
       - 'make-unit-test':
           unit-test-targets: 'docker-build lint'
           junit-allow-empty-results: true

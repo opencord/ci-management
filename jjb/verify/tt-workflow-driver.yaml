@@ -14,8 +14,6 @@
     name: 'verify-tt-workflow-driver-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_tt-workflow-driver_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_tt-workflow-driver_tag-collision'
 

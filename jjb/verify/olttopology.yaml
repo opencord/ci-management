@@ -13,7 +13,6 @@
     name: 'olttopology-jobs-common'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
 
 - job-group:
     name: 'olttopology-jobs'

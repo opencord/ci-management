@@ -46,8 +46,6 @@
     name: 'verify-voltha-api-server-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltha-api-server_licensed'
       - 'make-unit-test':
           build-node: 'ubuntu18.04-basebuild-2c-4g'
           dest-gopath: "github.com/opencord"
@@ -62,8 +60,6 @@
     name: 'verify-voltha-api-server-jobs-voltha-2.8'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltha-api-server_licensed'
       - 'make-unit-test':
           build-node: 'ubuntu18.04-basebuild-2c-4g'
           dest-gopath: "github.com/opencord"

@@ -14,8 +14,6 @@
     name: 'verify-alpine-grpc-base-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_alpine-grpc-base_licensed'
 
 - job-group:
     name: 'publish-alpine-grpc-base-jobs'

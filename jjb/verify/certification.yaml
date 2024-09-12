@@ -13,7 +13,5 @@
     name: 'verify-certification-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_certification_licensed'
 
 # [EOF]

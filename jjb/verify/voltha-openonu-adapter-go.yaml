@@ -29,7 +29,6 @@
     name: 'verify-voltha-openonu-adapter-go-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-lint"

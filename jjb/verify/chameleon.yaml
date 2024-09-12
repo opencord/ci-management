@@ -15,11 +15,9 @@
     name: 'verify-chameleon-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_chameleon_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_chameleon_tag-collision'
-      - 'xos-auth':
+      - 'xos-auth-test':
           dependency-jobs: 'verify_chameleon_unit-test'
 
 - job-group:

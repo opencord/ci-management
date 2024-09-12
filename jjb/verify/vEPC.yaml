@@ -13,7 +13,5 @@
     name: 'verify-vEPC-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_vEPC_licensed'
 
 # [EOF]
