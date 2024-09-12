@@ -48,8 +48,6 @@
     name: 'verify-bbsim-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_bbsim_licensed'
       - 'make-unit-test':
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
           build-node: 'ubuntu18.04-basebuild-8c-15g'

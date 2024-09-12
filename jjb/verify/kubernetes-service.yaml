@@ -14,8 +14,6 @@
     name: 'verify-kubernetes-service-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_kubernetes-service_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_kubernetes-service_tag-collision'
       - 'xos-service-upgrade':

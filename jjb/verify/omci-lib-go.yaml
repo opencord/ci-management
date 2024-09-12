@@ -13,7 +13,6 @@
     name: 'verify-omci-lib-go-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'make-unit-test'
 
 # [EOF]

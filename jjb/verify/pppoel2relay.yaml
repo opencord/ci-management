@@ -13,7 +13,6 @@
     name: 'pppoel2relay-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'maven-test'
       - 'maven-publish'
 

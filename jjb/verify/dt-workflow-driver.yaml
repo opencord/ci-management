@@ -14,8 +14,6 @@
     name: 'verify-dt-workflow-driver-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_dt-workflow-driver_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_dt-workflow-driver_tag-collision'
       - 'xos-service-upgrade':

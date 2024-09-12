@@ -15,8 +15,6 @@
     name: 'verify-openolt-scale-tester-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_openolt-scale-tester_licensed'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'test'

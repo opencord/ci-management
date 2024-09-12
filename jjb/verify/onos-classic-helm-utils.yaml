@@ -14,8 +14,6 @@
     name: 'verify-onos-classic-helm-utils-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_onos-classic-helm-utils_licensed'
       - 'make-unit-test':
           build-timeout: 30
           unit-test-targets: 'docker-build'

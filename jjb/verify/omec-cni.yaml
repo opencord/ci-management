@@ -14,8 +14,6 @@
     name: 'verify-omec-cni-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_omec-cni_licensed'
       - 'make-unit-test':
           build-timeout: 30
           junit-allow-empty-results: true

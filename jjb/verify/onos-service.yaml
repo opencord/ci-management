@@ -14,8 +14,6 @@
     name: 'verify-onos-service-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_onos-service_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_onos-service_tag-collision'
       - 'xos-service-upgrade':

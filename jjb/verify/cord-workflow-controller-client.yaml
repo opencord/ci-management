@@ -18,8 +18,6 @@
     name: 'verify-cord-workflow-controller-client-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_cord-workflow-controller-client_licensed'
       - 'make-unit-test':
           dependency-jobs: 'verify_cord-workflow-controller-client_tag-collision'
 

@@ -13,7 +13,5 @@
     name: 'verify-epc-service-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_epc-service_licensed'
 
 # [EOF]

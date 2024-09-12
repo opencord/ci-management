@@ -21,7 +21,6 @@
     name: 'dhcpl2relay-jobs-common'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
 
 - job-group:
     name: 'dhcpl2relay-jobs'

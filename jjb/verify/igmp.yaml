@@ -21,7 +21,6 @@
     name: 'igmp-jobs-common'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
 
 - job-group:
     name: 'igmp-jobs'

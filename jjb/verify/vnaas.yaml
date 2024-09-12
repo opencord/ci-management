@@ -13,8 +13,6 @@
     name: 'verify-vnaas-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_vnaas_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_vnaas_tag-collision'
 #

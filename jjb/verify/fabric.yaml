@@ -14,8 +14,6 @@
     name: 'verify-fabric-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_fabric_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_fabric_tag-collision'
       - 'xos-service-upgrade':

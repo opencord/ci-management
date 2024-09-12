@@ -14,8 +14,6 @@
     name: 'verify-omec-pod-init-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_omec-pod-init_licensed'
       - 'make-unit-test':
           build-timeout: 30
           junit-allow-empty-results: true

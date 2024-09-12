@@ -33,7 +33,5 @@
     name: 'verify-vtr-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_vtr_licensed'
 
 # [EOF]

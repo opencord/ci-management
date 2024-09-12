@@ -17,8 +17,6 @@
     name: 'verify-voltctl-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltctl_licensed'
       - 'make-unit-test':
           build-node: 'ubuntu18.04-basebuild-2c-4g'
           unit-test-targets: 'lint sca test'

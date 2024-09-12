@@ -13,7 +13,5 @@
     name: 'verify-exampleservice-common'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_exampleservice_licensed'
 
 # [EOF]

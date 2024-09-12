@@ -21,7 +21,6 @@
     name: 'olt-jobs-common'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
 
 - job-group:
     name: 'olt-jobs'

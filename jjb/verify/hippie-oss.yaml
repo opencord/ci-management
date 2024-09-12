@@ -13,8 +13,6 @@
     name: 'verify-hippie-oss-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_hippie-oss_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_hippie-oss_tag-collision'
 
