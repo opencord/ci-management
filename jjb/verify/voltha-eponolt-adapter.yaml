@@ -15,8 +15,6 @@
     name: 'verify-voltha-eponolt-adapter-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltha-eponolt-adapter_licensed'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           unit-test-targets: 'lint sca test'

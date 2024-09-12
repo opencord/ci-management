@@ -14,7 +14,6 @@
     name: 'verify-multifabric-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'make-unit-test':
           unit-test-targets: 'test docker-build'
           junit-allow-empty-results: true

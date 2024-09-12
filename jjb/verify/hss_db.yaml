@@ -13,7 +13,5 @@
     name: 'verify-hss_db-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_hss_db_licensed'
 
 # [EOF]

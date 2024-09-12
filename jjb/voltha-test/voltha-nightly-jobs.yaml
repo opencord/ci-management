@@ -2,7 +2,7 @@
 # list of parameters for the VOLTHA Jobs,
 # used as anchor so that can be shared across multiple jobs
 # to use in a job: `parameters: *voltha-build-job-parameters`
-- voltha-build-job-parameters: &voltha-build-job-parameters
+- _voltha-build-job-parameters: &voltha-build-job-parameters
     name: voltha-build-job-parameters
 
     openoltAdapterChart: onf/voltha-adapter-openolt
@@ -193,7 +193,7 @@
 # -----------------------------------------------------------------------
 # default properties for the VOLTHA scale jobs
 # -----------------------------------------------------------------------
-- voltha-pipe-job-boiler-plate: &voltha-pipe-job-boiler-plate
+- _voltha-pipe-job-boiler-plate: &voltha-pipe-job-boiler-plate
     name: voltha-pipe-job-boiler-plate
 
     project-type: pipeline

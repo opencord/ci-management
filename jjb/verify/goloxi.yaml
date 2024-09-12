@@ -13,7 +13,6 @@
     name: 'verify-goloxi-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'make-unit-test':
           unit-test-targets: 'test'
           junit-allow-empty-results: true

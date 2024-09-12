@@ -15,8 +15,6 @@
     name: 'verify-voltha-epononu-adapter-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltha-epononu-adapter_licensed'
       - 'make-unit-test':
           unit-test-targets: 'test'
           unit-test-keep-going: 'false'

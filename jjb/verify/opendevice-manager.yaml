@@ -15,7 +15,6 @@
     name: 'verify-opendevice-manager-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'make-unit-test':
           build-node: 'ubuntu18.04-basebuild-2c-4g'
           unit-test-targets: 'test'

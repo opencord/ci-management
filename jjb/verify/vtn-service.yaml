@@ -33,7 +33,5 @@
     name: 'verify-vtn-service-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_vtn-service_licensed'
 
 # [EOF]

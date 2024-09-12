@@ -23,7 +23,6 @@
     name: 'mcast-jobs-common'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
 
 - job-group:
     name: 'mcast-jobs'

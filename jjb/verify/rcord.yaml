@@ -14,8 +14,6 @@
     name: 'verify-rcord-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_rcord_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_rcord_tag-collision'
       - 'xos-service-upgrade':

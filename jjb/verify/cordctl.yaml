@@ -17,8 +17,6 @@
     name: 'verify-cordctl-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_cordctl_licensed'
       - 'make-unit-test':
           unit-test-targets: 'lint test'
           unit-test-keep-going: 'false'

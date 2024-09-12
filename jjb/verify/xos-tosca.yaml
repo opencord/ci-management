@@ -34,8 +34,6 @@
     name: 'verify-xos-tosca-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_xos-tosca_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_xos-tosca_tag-collision'
 

@@ -13,7 +13,5 @@
     name: 'verify-progran-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_progran_licensed'
 
 # [EOF]

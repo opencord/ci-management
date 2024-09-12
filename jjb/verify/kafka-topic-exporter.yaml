@@ -14,8 +14,6 @@
     name: 'verify-kafka-topic-exporter-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_kafka-topic-exporter_licensed'
       - 'make-unit-test':
           build-timeout: 30
           unit-test-targets: 'test docker-build'

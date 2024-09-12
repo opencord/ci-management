@@ -14,8 +14,6 @@
     name: 'verify-att-workflow-driver-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_att-workflow-driver_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_att-workflow-driver_tag-collision'
       - 'xos-service-upgrade':

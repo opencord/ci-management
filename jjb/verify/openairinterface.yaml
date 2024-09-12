@@ -14,8 +14,6 @@
     name: 'verify-openairinterface-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_openairinterface_licensed'
       - 'make-unit-test':
           build-timeout: 60
           junit-allow-empty-results: true
