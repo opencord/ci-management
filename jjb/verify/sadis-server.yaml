@@ -13,8 +13,6 @@
     name: 'verify-sadis-server-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_sadis-server_licensed'
       - 'sadis-server-tests':
           dependency-jobs: 'verify_sadis-server_tag-collision'
 

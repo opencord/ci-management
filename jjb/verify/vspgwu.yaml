@@ -33,7 +33,5 @@
     name: 'verify-vspgwu-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_vspgwu_licensed'
 
 # [EOF]

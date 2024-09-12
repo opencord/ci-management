@@ -16,7 +16,6 @@
     name: 'verify-kafka-robot-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
       - 'make-unit-test':
           junit-allow-empty-results: true
 

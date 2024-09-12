@@ -13,8 +13,6 @@
     name: 'verify-kafkaloghandler-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_kafkaloghandler_licensed'
       - 'python-unit-test':
           dependency-jobs: 'verify_kafkaloghandler_tag-collision'
 

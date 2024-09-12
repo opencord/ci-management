@@ -16,8 +16,6 @@
     name: 'verify-cord-tester-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_cord-tester_licensed'
       - 'make-unit-test':
           dependency-jobs: 'verify_cord-tester_tag-collision'
           unit-test-targets: 'lint test'

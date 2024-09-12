@@ -36,8 +36,6 @@
     name: 'verify-voltha-system-tests-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltha-system-tests_licensed'
       - 'make-unit-test':
           dependency-jobs: 'verify_voltha-system-tests_tag-collision'
           unit-test-targets: 'lint'

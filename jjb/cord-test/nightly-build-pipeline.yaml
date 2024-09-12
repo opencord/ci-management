@@ -1,7 +1,7 @@
 ---
 # POD Nightly Build Pipeline Jobs
 
-- test-pipe-job-boiler-plate: &test-pipe-job-boiler-plate
+- _test-pipe-job-boiler-plate: &test-pipe-job-boiler-plate
     name: test-pipe-job-boiler-plate
 
     project-type: pipeline

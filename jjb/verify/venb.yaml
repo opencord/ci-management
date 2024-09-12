@@ -13,7 +13,5 @@
     name: 'verify-venb-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_venb_licensed'
 
 # [EOF]

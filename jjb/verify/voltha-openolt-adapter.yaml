@@ -25,8 +25,6 @@
     name: 'verify-voltha-openolt-adapter-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltha-openolt-adapter_licensed'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-lint"

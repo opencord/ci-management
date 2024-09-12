@@ -13,7 +13,5 @@
     name: 'verify-sdn-controller-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_sdn-controller_licensed'
 
 # [EOF]

@@ -13,7 +13,5 @@
     name: 'verify-vMME-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_vMME_licensed'
 
 # [EOF]

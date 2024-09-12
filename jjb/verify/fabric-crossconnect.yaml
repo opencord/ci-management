@@ -14,8 +14,6 @@
     name: 'verify-fabric-crossconnect-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_fabric-crossconnect_licensed'
       - 'xos-unit-test':
           dependency-jobs: 'verify_fabric-crossconnect_tag-collision'
       - 'xos-service-upgrade':

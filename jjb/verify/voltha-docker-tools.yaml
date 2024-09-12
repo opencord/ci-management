@@ -14,8 +14,6 @@
     name: 'verify-voltha-docker-tools-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_voltha-docker-tools_licensed'
       - 'make-unit-test':
           build-timeout: 30
           unit-test-targets: 'docker-build lint'

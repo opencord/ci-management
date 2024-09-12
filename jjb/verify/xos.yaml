@@ -43,8 +43,6 @@
     name: 'verify-xos-jobs-licensed-versioned'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_xos_licensed'
 
 - job-group:
     name: 'verify-xos-jobs-code'

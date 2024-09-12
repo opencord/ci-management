@@ -16,8 +16,6 @@
     name: 'verify-plyxproto-jobs'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject':
-          dependency-jobs: 'verify_plyxproto_licensed'
       - 'python-unit-test':
 
 - job-group:

@@ -23,7 +23,6 @@
     name: 'igmpproxy-jobs-common'
     jobs:
       - 'verify-licensed'
-      - 'tag-collision-reject'
 
 - job-group:
     name: 'igmpproxy-jobs'
