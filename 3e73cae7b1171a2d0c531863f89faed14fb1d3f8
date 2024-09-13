@@ -33,6 +33,24 @@
       "message": "Given that banner is displayed for each namespace, it should show the current namespace instead of listing all namespaces.",
       "revId": "3e73cae7b1171a2d0c531863f89faed14fb1d3f8",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d38b5d1_69b19cf7",
+        "filename": "vars/helmTeardown.groovy",
+        "patchSetId": 1
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2024-09-13T22:38:06Z",
+      "side": 1,
+      "message": "The single namespace is only defined in the loop. I don\u0027t think we have access to the current namespace at the time the banner is set.",
+      "parentUuid": "2b17666b_9449b867",
+      "revId": "3e73cae7b1171a2d0c531863f89faed14fb1d3f8",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
