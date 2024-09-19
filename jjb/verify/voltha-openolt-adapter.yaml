@@ -10,14 +10,14 @@
           branch-regexp: '{all-branches-regexp}'
       - 'verify-voltha-openolt-adapter-jobs-master':
           branch-regexp: '^master$'
-#      - 'verify-voltha-openolt-adapter-jobs-voltha-2.12':
-#          name-extension: '-voltha-2.12'
-#          override-branch: 'voltha-2.12'
-#          branch-regexp: '^voltha-2.12$'
-#      - 'verify-voltha-openolt-adapter-jobs-voltha-2.11':
-#          name-extension: '-voltha-2.11'
-#          override-branch: 'voltha-2.11'
-#          branch-regexp: '^voltha-2.11$'
+      - 'verify-voltha-openolt-adapter-jobs-voltha-2.12':
+          name-extension: '-voltha-2.12'
+          override-branch: 'voltha-2.12'
+          branch-regexp: '^voltha-2.12$'
+      - 'verify-voltha-openolt-adapter-jobs-voltha-2.11':
+          name-extension: '-voltha-2.11'
+          override-branch: 'voltha-2.11'
+          branch-regexp: '^voltha-2.11$'
       - 'publish-voltha-openolt-adapter-jobs':
           branch-regexp: '{all-branches-regexp}'
 
@@ -31,22 +31,21 @@
           unit-test-targets: 'lint sca'
           unit-test-keep-going: 'false'
           junit-allow-empty-results: true
-          build-node: 'ubuntu18.04-basebuild-8c-15g'
-          # build-node: 'ubuntu18.04-basebuild-4c-8g'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
       - 'make-unit-test':
           dest-gopath: "github.com/opencord"
           name-extension: "-tests"
           unit-test-targets: 'test'
           unit-test-keep-going: 'false'
           junit-allow-empty-results: true
-          # build-node: 'ubuntu18.04-basebuild-2c-4g'
-          build-node: 'ubuntu18.04-basebuild-8c-15g'
+          build-node: 'ubuntu18.04-basebuild-2c-4g'
 
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs-master'
     jobs:
       - 'voltha-patch-test':
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
+          extraHelmFlags: >
+            --set global.image_tag=master --set onos-classic.image.tag=master
 
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs-voltha-2.12'
@@ -54,8 +53,6 @@
       - 'voltha-patch-test':
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'master'
-          # pipeline-script: 'voltha/bbsim-tests.groovy'
-          # pipeline-branch: 'voltha-2.12'
 
 # -----------------------------------------------------------------------
 # Directory based branch test suites were removed when consultants moved
@@ -66,12 +63,12 @@
 # cron jobs a new set of jobs that will checkout release branch and
 # run testing to validate hotfixes will need to be created.
 # -----------------------------------------------------------------------
-#- job-group:
-#    name: 'verify-voltha-openolt-adapter-jobs-voltha-2.11'
-#    jobs:
-#      - 'voltha-patch-test':
-#          pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
-#          pipeline-branch: 'voltha-2.11'
+# - job-group:
+#   name: 'verify-voltha-openolt-adapter-jobs-voltha-2.11'
+#   jobs:
+#     - 'voltha-patch-test':
+#         pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
+#         pipeline-branch: 'voltha-2.11'
 
 - job-group:
     name: 'publish-voltha-openolt-adapter-jobs'

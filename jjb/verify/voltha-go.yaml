@@ -18,10 +18,6 @@
           name-extension: '-voltha-2.11'
           override-branch: 'voltha-2.11'
           branch-regexp: '^voltha-2.11$'
-#      - 'verify-voltha-go-jobs-voltha-2.8':
-#          name-extension: '-voltha-2.8'
-#          override-branch: 'voltha-2.8'
-#          branch-regexp: '^voltha-2.8$'
       - 'publish-voltha-go-jobs':
           branch-regexp: '{all-branches-regexp}'
 
@@ -58,12 +54,6 @@
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.11'
-
-# - job-group:
-#    name: 'verify-voltha-go-jobs-voltha-2.8'
-#    jobs:
-#      - 'voltha-patch-test':
-#          pipeline-script: 'voltha/voltha-2.8/bbsim-tests.groovy'
 
 - job-group:
     name: 'verify-voltha-go-jobs-master'
