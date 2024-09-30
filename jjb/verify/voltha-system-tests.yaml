@@ -12,6 +12,11 @@
       - 'verify-voltha-system-tests-jobs-master':
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           branch-regexp: '^master$'
+      - 'verify-voltha-system-tests-jobs-py312':
+          build-node: 'ubuntu24.04-basebuild-4c-8g'
+          name-extension: '-py312'
+          override-branch: 'python312-update'
+          branch-regexp: '^python312-update$'
       - 'verify-voltha-system-tests-jobs-voltha-2.12':
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           name-extension: '-voltha-2.12'
@@ -31,6 +36,13 @@
           dependency-jobs: 'verify_voltha-system-tests_tag-collision'
           unit-test-targets: 'lint'
           junit-allow-empty-results: true
+
+- job-group:
+    name: 'verify-voltha-system-tests-jobs-py312'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/bbsim-tests.groovy'
+          pipeline-branch: 'python312-update'
 
 - job-group:
     name: 'verify-voltha-system-tests-jobs-voltha-2.12'
