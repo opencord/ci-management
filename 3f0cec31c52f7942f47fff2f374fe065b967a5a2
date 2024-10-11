@@ -16,6 +16,24 @@
       "message": "I can\u0027t remember -- Where did GERRIT_PROJECT get defined?  I think of that as getting defined in the global parameter settings that are defined at build time.  The reason for the question is that if I\u0027m right about GERRIT_PROJECT, then I don\u0027t understand where TEST_PROJECT gets defined?",
       "revId": "3f0cec31c52f7942f47fff2f374fe065b967a5a2",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "771bce2d_9638bff2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2024-10-11T20:39:38Z",
+      "side": 1,
+      "message": "GERRIT_PROJECT is a parameter received from Gerrit with the build trigger hook. TEST_PROJECT is something we define in the job, which you can find in the injected env vars.",
+      "parentUuid": "c7a3c55a_31db554a",
+      "revId": "3f0cec31c52f7942f47fff2f374fe065b967a5a2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
