@@ -20,13 +20,13 @@ set -eu -o pipefail
 # when not running under Jenkins, use current dir as workspace, a blank project
 # name
 WORKSPACE=${WORKSPACE:-.}
-GERRIT_PROJECT=${GERRIT_PROJECT:-}
+TEST_PROJECT="${TEST_PROJECT:-}"
 
 # Fixes to for golang projects to support GOPATH
 # If $DEST_GOPATH is not an empty string:
 # - create GOPATH within WORKSPACE, and destination directory within
 # - set PATH to include $GOPATH/bin and the system go binaries
-# - move project from $WORKSPACE/$GERRIT_PROJECT to new location in $GOPATH
+# - move project from $WORKSPACE/$TEST_PROJECT to new location in $GOPATH
 # - start tests within that directory
 
 DEST_GOPATH=${DEST_GOPATH:-}
@@ -34,10 +34,10 @@ if [ ! -z "$DEST_GOPATH" ]; then
   export GOPATH=${GOPATH:-$WORKSPACE/go}
   mkdir -p "$GOPATH/src/$DEST_GOPATH"
   export PATH=$PATH:/usr/lib/go-1.12/bin:/usr/local/go/bin:$GOPATH/bin
-  test_path="$GOPATH/src/$DEST_GOPATH/$GERRIT_PROJECT"
-  mv "$WORKSPACE/$GERRIT_PROJECT" "$test_path"
+  test_path="$GOPATH/src/$DEST_GOPATH/$TEST_PROJECT"
+  mv "$WORKSPACE/$TEST_PROJECT" "$test_path"
 else
-  test_path="$WORKSPACE/$GERRIT_PROJECT"
+  test_path="$WORKSPACE/$TEST_PROJECT"
 fi
 
 # Use "test" as the default target, can be a space separated list
