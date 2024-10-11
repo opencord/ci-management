@@ -1,0 +1,74 @@
+---
+
+- project:
+    name: onf-make-tests
+
+    project-name: '{name}'
+    project: 'onf-make'
+    manualBranch: ''
+    olts: 1
+    onus: 1
+    pons: 1
+    withAlarms: true
+    make-target-failtest: bbsim-failurescenarios
+    make-target-errortest: bbsim-errorscenarios
+    make-target-alarmtest: bbsim-alarms-kind
+    make-target-multipleolt: bbsim-multiolt-kind
+    make-target-1t4gemtest: 1t4gem-openonu-go-adapter-test
+    make-target-1t8gemtest: 1t8gem-openonu-go-adapter-test
+    make-target-reconciletest: reconcile-openonu-go-adapter-test-att
+    make-target-reconciledttest: reconcile-openonu-go-adapter-test-dt
+    make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
+
+    jobs:
+      - 'voltha-make-test':
+          name: 'onf-make-voltha-dt-fttb-test-bbsim-master'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF --set onu=2'
+          testTargets: |
+            - target: sanity-kind-dt-fttb
+              workflow: dt-fttb
+              flags: ""
+              teardown: true
+              logging: true
+
+      - 'voltha-make-test':
+          name: 'onf-make-voltha-sanity-test-multi-runs'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
+          testTargets: |
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: sanity-kind
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+
+      - 'onf-make-unit-test':
+          test-repo: 'bbsim'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          branch-regexp: '^master$'
+          dest-gopath: "github.com/opencord"
+          unit-test-targets: 'lint sca test'
+          unit-test-keep-going: 'false'
+
+# [EOF]

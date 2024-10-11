@@ -56,6 +56,7 @@ def wrapped(Map config)
         gerritRefspec: "",
         volthaSystemTestsChange: "",
         volthaHelmChartsChange: "",
+        onfMakeChange: "",
     ]
 
     def cfg = defaultConfig + config
@@ -76,8 +77,8 @@ def wrapped(Map config)
             'voltha-helm-charts',
         ]
 
-        // We are always downloading those repos, if the patch under test is in one of those
-        // just checkout the patch, no need to clone it again
+        // We are always downloading those repos, if the patch under test is in
+        // one of those just checkout the patch, no need to clone it again
         if (cfg.gerritProject == '')
         {
             // Revisit:
@@ -87,6 +88,36 @@ def wrapped(Map config)
             // Unfortunately the conditional can also inadvertently bypass
             // checkout during an error condition.
             // Case: when cfg= is invalid due to a jenkins hiccup.
+        }
+        else if (params.GERRIT_PROJECT == "onf-make")
+        {
+            // When testing onf-make, the tests are kicked off from the onf-make
+            // repo, so the GERRIT_PROJECT and GERRIT_PATCHSET_REVISION params
+            // will carry the data of what we want the submodule to be.
+            // However, the gerritProject is overridden, so that we can pull
+            // in another repo and run the tests to make sure that they work
+            // with the code changes to onf-make.
+            repo_project = "https://gerrit.opencord.org/${cfg.gerritProject}"
+
+            checkout([
+                $class: 'GitSCM',
+                userRemoteConfigs: [[ url:repo_project ]],
+                branches: [[ name: "${cfg.branch}", ]],
+                extensions: [
+                    [$class: 'WipeWorkspace'],
+                    [$class: 'RelativeTargetDirectory', relativeTargetDir: "${cfg.gerritProject}"],
+                    [$class: 'CloneOption', depth: 0, noTags: false, reference: '', shallow: false],
+                    submodule(recursiveSubmodules: true, reference: "${params.GERRIT_PATCHSET_REVISION}"),
+                ],
+            ])
+
+            sh("""pushd $WORKSPACE/${cfg.gerritProject}
+                  git fetch "$repo_project" ${cfg.gerritRefspec} && git checkout FETCH_HEAD
+
+                  echo "Currently on commit: \n"
+                  git log -1 --oneline
+                  popd
+               """)
         }
         else if (!(cfg.gerritProject in frequent_repos))
         {
@@ -103,14 +134,13 @@ def wrapped(Map config)
                 ],
             ])
 
-            sh("""
-        pushd $WORKSPACE/${cfg.gerritProject}
-        git fetch "$repo_project" ${cfg.gerritRefspec} && git checkout FETCH_HEAD
+            sh("""pushd $WORKSPACE/${cfg.gerritProject}
+                  git fetch "$repo_project" ${cfg.gerritRefspec} && git checkout FETCH_HEAD
 
-        echo "Currently on commit: \n"
-        git log -1 --oneline
-        popd
-      """)
+                  echo "Currently on commit: \n"
+                  git log -1 --oneline
+                  popd
+               """)
         }
     }
 
