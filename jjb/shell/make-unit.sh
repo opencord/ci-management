@@ -47,7 +47,7 @@ UNIT_TEST_TARGETS=${UNIT_TEST_TARGETS:-test}
 UNIT_TEST_KEEP_GOING=${UNIT_TEST_KEEP_GOING:-false}
 
 if [ ! -f "$test_path/Makefile" ]; then
-  echo "Makefile not found at $test_path!"
+  echo "Makefile not found at ${test_path}/Makefile"
   exit 1
 else
   pushd "$test_path"

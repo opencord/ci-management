@@ -48,6 +48,7 @@
             UNIT_TEST_TARGETS={unit-test-targets}
             UNIT_TEST_KEEP_GOING={unit-test-keep-going}
             GOPROXY=https://proxy.golang.org
+            TEST_PROJECT={project}
       - shell: !include-raw-escape: shell/make-unit.sh
 
     publishers:
