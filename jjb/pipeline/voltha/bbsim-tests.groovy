@@ -37,7 +37,7 @@ String clusterName = 'kind-ci'
 //   as a guarantee release jobs are running in an expected sandbox.
 // -----------------------------------------------------------------------
 String branchName() {
-    String br = 'master'
+    String br = 'python312-update'
 
     // "${branch}" is assigned by jenkins
     if (br != branch) {
@@ -115,7 +115,7 @@ String banner(String message) {
 Boolean isReleaseBranch(String name) {
     // List modifiers = ['-dev', '-pre', 'voltha-x.y.z-pre']
     // if branchName in modifiers
-    return(name != 'master') // OR branchName.contains('-')
+    return(name != 'master' && name != 'python312-update') // OR branchName.contains('-')
 }
 
 // -----------------------------------------------------------------------
