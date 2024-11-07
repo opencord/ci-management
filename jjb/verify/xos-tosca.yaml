@@ -41,7 +41,7 @@
     name: 'publish-xos-tosca-jobs'
     jobs:
       - 'docker-publish':
-          maintainers: "onf-bat-admin@opennetworking.org, scottb@opennetworking.org"
+          maintainers: "releng+voltha-build@linuxfoundation.org, scottb@opennetworking.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag_wildcard'
 

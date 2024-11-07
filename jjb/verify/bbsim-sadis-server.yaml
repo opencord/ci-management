@@ -77,7 +77,7 @@
     name: 'publish-bbsim-sadis-server-jobs'
     jobs:
       - 'docker-publish':
-          maintainers: "onf-bat-admin@opennetworking.org"
+          maintainers: "releng+voltha-build@linuxfoundation.org"
           docker-repo: 'voltha'
           dependency-jobs: 'version-tag_wildcard'
 

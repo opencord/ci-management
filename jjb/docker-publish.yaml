@@ -95,7 +95,7 @@
       - string:
           name: maintainers
           default: '{maintainers}'
-          description: "The person that sould be notified if this job fails"
+          description: "The person that should be notified if this job fails"
 
       - string:
           name: extraEnvironmentVars

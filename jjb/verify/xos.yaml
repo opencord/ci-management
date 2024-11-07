@@ -63,7 +63,7 @@
           pypi-index: 'pypi'
           dependency-jobs: 'version-tag_wildcard'
       - 'docker-publish':
-          maintainers: "onf-bat-admin@opennetworking.org"
+          maintainers: "releng+voltha-build@linuxfoundation.org"
           build-timeout: 30
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag_wildcard'
