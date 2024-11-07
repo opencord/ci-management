@@ -8,6 +8,8 @@
     jobs:
       - 'verify-voltha-go-controller-jobs':
           branch-regexp: '{all-branches-regexp}'
+      - 'publish-voltha-go-controller-jobs':
+          branch-regexp: '{all-branches-regexp}'
 
 - job-group:
     name: 'verify-voltha-go-controller-jobs'
@@ -33,12 +35,12 @@
 #       - 'voltha-patch-test':
 #           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
 
-# - job-group:
-#     name: 'publish-voltha-go-controller-jobs'
-#     jobs:
-#       - 'docker-publish':
-#           maintainers: "info@opennetworking.org"
-#           docker-repo: 'voltha'
-#           dependency-jobs: 'version-tag_wildcard'
+- job-group:
+    name: 'publish-voltha-go-controller-jobs'
+    jobs:
+      - 'docker-publish':
+          maintainers: "releng+voltha-build@linuxfoundation.org"
+          docker-repo: 'voltha'
+          dependency-jobs: 'version-tag_wildcard'
 
-# [EOF] x 2
+# [EOF]
