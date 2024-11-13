@@ -732,7 +732,7 @@
           name: 'voltha-scale-measurements-lwc-dt-512'
           pipeline-script: 'voltha/voltha-scale-lwc-test.groovy'
           pipeline-branch: 'master'
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           time-trigger: "H H * * *"
           disable-job: true
           withMonitoring: true
@@ -752,7 +752,7 @@
           name: 'voltha-scale-measurements-lwc-dt-256'
           pipeline-script: 'voltha/voltha-scale-lwc-test.groovy'
           pipeline-branch: 'master'
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           time-trigger: "H H * * *"
           disable-job: true
           withMonitoring: true

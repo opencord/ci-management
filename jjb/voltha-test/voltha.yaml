@@ -29,7 +29,7 @@
       # -----------------------------------------------------------------------
       # Berlin pod with olt/onu - master versions timer based job , two OLTs
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-multi-olt'
           disable-job: true
           name-extension: '_DT'
@@ -43,7 +43,7 @@
       # Berlin POD test job - master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 360
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-multi-olt'
           disable-job: true
           release: 'master'
@@ -58,7 +58,7 @@
 
       # Berlin pod with gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           disable-job: false
           name-extension: '_DT'
@@ -72,7 +72,7 @@
       # Berlin POD test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           disable-job: false
           name-extension: '_DT'
@@ -88,7 +88,7 @@
       # -----------------------------------------------------------------------
       # Berlin pod with gpon olt/onu - master 1T4GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
           disable-job: true
           withFttb: true
@@ -102,7 +102,7 @@
       # Berlin POD test job - master versions: uses 1T4GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 330
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon-fttb'
           disable-job: true
           withFttb: true
@@ -118,7 +118,7 @@
 
       # Berlin pod with zyxel gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-gpon-zyxel'
           disable-job: true
           name-extension: '_DT'
@@ -136,7 +136,7 @@
 
       # Berlin POD test job - zyxel gpon master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-gpon-zyxel'
           disable-job: true
           release: 'master'
@@ -151,7 +151,7 @@
 
       # Berlin pod with zyxel xgspon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           disable-job: true
           name-extension: '_DT'
@@ -169,7 +169,7 @@
 
       # Berlin POD test job - zyxel xgsgpon master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           disable-job: true
           release: 'master'
@@ -184,7 +184,7 @@
 
       # TT workflow on Zyxel XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           disable-job: true
           release: 'master'
@@ -199,7 +199,7 @@
 
       # TT workflow on Zyxel XGSPON OLT at Berlin pod - test job
       - 'build_voltha_pod_test':
-          build-node: 'berlin-community-pod-2'
+          build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           disable-job: true
           release: 'master'
@@ -216,7 +216,7 @@
 
       # [CORD-3256] TT workflow on XGSPON OLT at Berlin pod - build job
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           disable-job: true
           release: 'master'
@@ -231,7 +231,7 @@
 
       # [CORD-3256] TT workflow on GPON OLT at Berlin pod - test job
       - 'build_voltha_pod_test':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           disable-job: true
           release: 'master'
@@ -248,7 +248,7 @@
 
       # TT workflow on Zyxel GPON OLT at Berlin pod - build job (playground)
       - 'build_voltha_pod_release_timer_playground':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           disable-job: true
           release: 'master'
@@ -263,7 +263,7 @@
 
       # TT workflow on Zyxel XGSPON OLT at Berlin pod - test job (playground)
       - 'build_voltha_pod_test_playground':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           disable-job: true
           release: 'master'
@@ -280,7 +280,7 @@
 
       # Berlin pod with adtran gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           disable-job: true
           name-extension: '_DT'
@@ -302,7 +302,7 @@
       # Berlin POD adtran test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
           timeout: 390
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           disable-job: true
           release: 'master'
@@ -319,7 +319,7 @@
       # -----------------------------------------------------------------------
       # Berlin pod with adtran gpon olt/onu - 1T8GEM tech profile and timer based job
       - 'verify_voltha_pod_dmi_test':
-          build-node: 'berlin-community-pod-1'
+          build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           disable-job: true
           name-extension: '_DT'
