@@ -145,7 +145,8 @@ kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_
           --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
           --set etcd.replicaCount=${cfg.etcdReplica} \
           --set etcd.ingress.enabled=true \
-          --set etcd.ingress.enableVirtualHosts=true \
+          --set etcd.ingress.hosts[0].host=voltha-infra-${cfg.cluster} \
+          --set etcd.ingress.hosts[0].paths[0]='/etcdserverpb.KV/' \
           -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
 """)
 
