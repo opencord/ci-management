@@ -58,6 +58,11 @@
           description: 'The config file'
 
       - string:
+        name: cluster
+        default: '{cluster}'
+        description: 'Name of the cluster'
+
+      - string:
           name: profile
           default: '{profile}'
           description: 'Technology Profile pushed to the ETCD'
