@@ -183,6 +183,7 @@ pipeline {
               bbsimReplica: bbsimReplicas.toInteger(),
               withFttb: withFttb.toBoolean(),
               adaptersToWait: numberOfAdaptersToWait,
+              cluster: cluster,
               ])
 
             if(openoltAdapterChart != "onf/voltha-adapter-openolt"){

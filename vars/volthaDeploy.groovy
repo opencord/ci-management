@@ -90,6 +90,7 @@ void process(Map config)
         kubeconfig: null, // location of the kubernetes config file, if null we assume it's stored in the $KUBECONFIG environment variable
         withVolthaInfra: true,
         withVolthaStack: true,
+        cluster: 'virtual.local'
     ]
 
     if (!config) {

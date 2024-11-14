@@ -46,7 +46,7 @@
       replace:
         path: /etc/hosts
         regexp: '^(127\.0\.0\.1 .*)$'
-        replace: '127.0.0.1 localhost voltha.voltha.local voltha-infra.local'
+        replace: '127.0.0.1 localhost voltha-virtual.local voltha-infra-virtual.local'
         backup: true
       become: true
 
