@@ -1,0 +1,7 @@
+Verified+1: voltha jobbuilder <releng+voltha-jobbuilder@linuxfoundation.org>
+Code-Review+2: Jan Klare <jan.klare@bisdn.de>
+Submitted-by: Jan Klare <jan.klare@bisdn.de>
+Submitted-at: Thu, 14 Nov 2024 14:46:11 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/35434
+Project: ci-management
+Branch: refs/heads/master
