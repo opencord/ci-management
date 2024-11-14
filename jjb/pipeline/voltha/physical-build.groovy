@@ -120,6 +120,13 @@ pipeline {
       steps {
         timeout(20) {
           installVoltctl("${branch}")
+
+          sh """
+          sed -i -e "s/server: .*/server: voltha-${cluster}:443/" \
+              -e "s/kvstore: .*/kvstore: voltha-infra-${cluster}:443/" \
+              /home/jenkins/.volt/config
+          """
+
           script {
             // if we're downloading a voltha-helm-charts patch, then install from a local copy of the charts
             def localCharts = false
