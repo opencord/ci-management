@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0701b99d_9c952a01",
+        "filename": "vars/volthaInfraDeploy.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 148,
+      "author": {
+        "id": 1000989
+      },
+      "writtenOn": "2024-11-15T11:19:54Z",
+      "side": 1,
+      "message": "Adding a default value for the cluster variable might also be needed in this file, since it seems like volthaInfraDeploy is also called from the voltha-scale pipelines (not sure if those are still used or not).",
+      "range": {
+        "startLine": 148,
+        "startChar": 0,
+        "endLine": 148,
+        "endChar": 72
+      },
+      "revId": "03af83b7601b22e8378f915e783f0dd3f1ce6c1f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b6feb093_23a3f9fc",
+        "filename": "vars/volthaStackDeploy.groovy",
+        "patchSetId": 3
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000989
+      },
+      "writtenOn": "2024-11-15T11:19:54Z",
+      "side": 1,
+      "message": "Same as for the volthaInfraDeploy, a default value might also be needed for this, since it\u0027s also called from some voltha-scale pipeline scripts.",
+      "range": {
+        "startLine": 62,
+        "startChar": 0,
+        "endLine": 62,
+        "endChar": 68
+      },
+      "revId": "03af83b7601b22e8378f915e783f0dd3f1ce6c1f",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
