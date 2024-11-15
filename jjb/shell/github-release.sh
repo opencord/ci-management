@@ -42,20 +42,12 @@ readonly libdir
 ##--------------------##
 ##---]  INCLUDES  [---##
 ##--------------------##
-source "$libdir/help.sh"
-source "$libdir/parse-args.sh"
-
-## -----------------------------------------------------------------------
-## Uncomment to activate
-## -----------------------------------------------------------------------
-# declare -g -i debug
-
-# Debug arguments
-# declare -i -g argv_gen_version=1
-# declare -i -g draft_release=1
-
-declare -a -g ARGV=()           # Capture args to minimize globals and arg passing
-[[ $# -gt 0 ]] && ARGV=("$@")
+# If running locally, we can include help and parse-args. However, when run as
+# part of a CI build, these files are not included nor necessary.
+if [[ -d $libdir ]]; then
+    # source "$libdir/help.sh"  "usage" function is never called
+    source "$libdir/parse-args.sh"
+fi
 
 declare -g scratch              # temp workspace for downloads
 
@@ -153,7 +145,7 @@ function sigtrap()
 
     # shellcheck disable=SC2119
     do_logout
-    
+
     return
 }
 trap sigtrap EXIT
@@ -1103,7 +1095,9 @@ bannerEL 'ENTER'
 iam="${0##*/}"
 
 full_banner
-parse_args "$@"
+if [[ $(type -t "parse_args" 2>/dev/null) == "function" ]]; then
+    parse_args "$@"
+fi
 init
 install_gh_binary
 
