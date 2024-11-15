@@ -48,7 +48,7 @@ pushd "$OLD_REPO_DIR"
 
   # Add changes and create commit
   git add -A
-  git commit -m "Changed by CORD Jenkins publish-helm-repo job: $BUILD_NUMBER, for project: $GERRIT_PROJECT, patchset: $GERRIT_CHANGE_NUMBER"
+  git commit -sm "Changed by CORD Jenkins publish-helm-repo job: $BUILD_NUMBER, for project: $GERRIT_PROJECT, patchset: $GERRIT_CHANGE_NUMBER"
 
   # create tag on new commit
   git tag "$NEW_VERSION"
