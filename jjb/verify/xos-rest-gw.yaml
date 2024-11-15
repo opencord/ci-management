@@ -41,7 +41,7 @@
     name: 'publish-xos-rest-gw-jobs'
     jobs:
       - 'docker-publish':
-          maintainers: "onf-bat-admin@opennetworking.org"
+          maintainers: "releng+voltha-build@linuxfoundation.org"
           docker-repo: 'xosproject'
           dependency-jobs: 'version-tag_wildcard'
 
