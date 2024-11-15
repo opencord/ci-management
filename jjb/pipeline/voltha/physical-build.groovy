@@ -122,8 +122,8 @@ pipeline {
           installVoltctl("${branch}")
 
           sh """
-          sed -i -e "s/server: .*/server: voltha-${cluster}:443/" \
-              -e "s/kvstore: .*/kvstore: voltha-infra-${cluster}:443/" \
+          sed -i -e "s/server: .*/server: voltha.${cluster}:443/" \
+              -e "s/kvstore: .*/kvstore: voltha-infra.${cluster}:443/" \
               /home/jenkins/.volt/config
           """
 
@@ -183,6 +183,7 @@ pipeline {
               bbsimReplica: bbsimReplicas.toInteger(),
               withFttb: withFttb.toBoolean(),
               adaptersToWait: numberOfAdaptersToWait,
+              cluster: cluster,
               ])
 
             if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
