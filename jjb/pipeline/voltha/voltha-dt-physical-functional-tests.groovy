@@ -102,7 +102,6 @@ pipeline {
         script {
            deployment_config = readYaml file: "${configBaseDir}/${configDeploymentDir}/${configFileName}-DT.yaml"
         }
-        installVoltctl("${branch}")
         sh """
         ps -ef | grep port-forward
         """
