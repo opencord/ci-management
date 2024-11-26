@@ -187,7 +187,7 @@ pipeline {
               ])
 
             if(openoltAdapterChart != "onf/voltha-adapter-openolt"){
-              extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel}"
+              extraHelmFlags = extraHelmFlags + " --set global.log_level=${logLevel} -f $WORKSPACE/${configBaseDir}/${configKubernetesDir}/voltha/${configFileName}.yml"
               deploy_custom_oltAdapterChart(volthaNamespace, oltAdapterReleaseName, openoltAdapterChart, extraHelmFlags)
               waitForAdapters([
                 adaptersToWait: 2

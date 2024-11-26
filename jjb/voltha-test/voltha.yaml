@@ -311,7 +311,7 @@
           num-of-onos: '3'
           num-of-atomix: '3'
           pipeline-script: 'voltha/physical-build.groovy'
-          openoltAdapterChart: '/home/community/adtran-23.1-voltha-2.12/voltha-adapter-adtran-olt'
+          openoltAdapterChart: '/home/jenkins/SDX_Voltha_Adtran_Adapter_24.2/helm/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
           time: '19'
