@@ -72,6 +72,45 @@
               logging: true
           time-trigger: "H H/23 * * *"
 
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-combined'
+          code-branch: 'master'
+          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
+          time-trigger: "H H/23 * * *"
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: sanity-kind-dt-vgc
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: functional-single-kind-dt-vgc
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: multiolt-kind-dt-vgc
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: sanity-kind-dt-fttb-vgc
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-multiolt-kind-dt-vgc
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-failurescenarios-dt-vgc
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+          timeout: 140
+
       # -----------------------------------------------------------------------
       # md5sum(master): c606493da6ee7cbb18ca8aee97ea2957
       # -----------------------------------------------------------------------
@@ -79,16 +118,10 @@
           name: 'periodic-voltha-test-bbsim'
           code-branch   : 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
-          logLevel: 'DEBUG'                     # Force job to regenerate
-          # ---------------------------------------------------------
-          # 20230828 - strange, release branches have pipeline-script
-          # 20230828 - while master branch did not (?)  Script does
-          # 20230828 - show in the jenkins UI but w/o updates.
-          # ---------------------------------------------------------
+          logLevel: 'DEBUG'
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'master'
           time-trigger: "H H/23 * * *"         # Build daily at 11pm
-#          time-trigger: "H/30 * * * *"        # Build every 30 min
           testTargets: |
             - target: functional-single-kind
               workflow: att
