@@ -50,35 +50,20 @@ void leave(String name) {
 void deployVolthaStack(Map cfg) {
     enter('deployVolthaStack')
 
-    if (cfg.vgcEnabled) {
-        sh(label: "Create VOLTHA Stack ${cfg.stackName}, (namespace=${cfg.volthaNamespace}), (flowController=VGC)",
-           script: """
+    sh(label  : "Create VOLTHA Stack ${cfg.stackName}, (namespace=${cfg.volthaNamespace})",
+       script : """
+
 helm upgrade --install --create-namespace \
           -n ${cfg.volthaNamespace} ${cfg.stackName} ${cfg.volthaStackChart} \
           --set global.stack_name=${cfg.stackName} \
           --set global.voltha_infra_name=voltha-infra \
-          --set voltha-go-controller.enabled=true \
+          --set voltha-go-controller.enabled=${cfg.vgcEnabled} \
           --set voltha.ingress.enabled=true \
           --set voltha.ingress.hosts[0].host=voltha.${cfg.cluster} \
           --set voltha.ingress.hosts[0].paths[0]='/voltha.VolthaService/' \
           --set global.voltha_infra_namespace=${cfg.infraNamespace} \
           ${cfg.extraHelmFlags}
 """)
-    } else {
-        sh(label: "Create VOLTHA Stack ${cfg.stackName}, (namespace=${cfg.volthaNamespace})",
-           script: """
-helm upgrade --install --create-namespace \
-    -n ${cfg.volthaNamespace} ${cfg.stackName} ${cfg.volthaStackChart} \
-    --set global.stack_name=${cfg.stackName} \
-    --set global.voltha_infra_name=voltha-infra \
-    --set voltha.onos_classic.replicas=${cfg.onosReplica} \
-    --set voltha.ingress.enabled=true \
-    --set voltha.ingress.hosts[0].host=voltha.${cfg.cluster} \
-    --set voltha.ingress.hosts[0].paths[0]='/voltha.VolthaService/' \
-    --set global.voltha_infra_namespace=${cfg.infraNamespace} \
-    ${cfg.extraHelmFlags}
-""")
-    }
 
     for (int i = 0; i < cfg.bbsimReplica; i++) {
         // NOTE we don't need to update the tag for DT
@@ -345,7 +330,6 @@ void process(Map config) {
         onosReplica:     1,
         adaptersToWait:  2,
         cluster: 'voltha.local',
-        vgcEnabled: 'false',
     ]
 
     Map cfg = defaultConfig + config
