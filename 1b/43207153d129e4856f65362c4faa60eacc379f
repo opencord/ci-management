@@ -1,0 +1,8 @@
+Verified+1: voltha jobbuilder <releng+voltha-jobbuilder@linuxfoundation.org>
+Code-Review+1: Serkant Uluderya <serkant.uluderya@netsia.com>
+Code-Review+2: Mahir Gunyel <mahir.gunyel@netsia.com>
+Submitted-by: Mahir Gunyel <mahir.gunyel@netsia.com>
+Submitted-at: Mon, 06 Jan 2025 19:54:39 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/35563
+Project: ci-management
+Branch: refs/heads/master
