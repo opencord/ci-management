@@ -143,9 +143,6 @@ function sigtrap()
         /bin/rm -fr "$scratch"
     fi
 
-    # shellcheck disable=SC2119
-    do_logout
-
     return
 }
 trap sigtrap EXIT
@@ -303,18 +300,6 @@ function error()
 }
 
 ## -----------------------------------------------------------------------
-## Intent: Script self checking, direct API access for troubleshooting
-## -----------------------------------------------------------------------
-function do_api_validation()
-{
-    # if --verify credentials
-    do_login
-    # shellcheck disable=SC2119
-    do_logout
-    return
-}
-
-## -----------------------------------------------------------------------
 ## Intent: Verify sandbox/build is versioned for release.
 ## -----------------------------------------------------------------------
 function getGitVersion()
@@ -462,7 +447,7 @@ function get_gh_repo_org()
 }
 
 ## -----------------------------------------------------------------------
-## Intent: Retrieve repository organizaiton name
+## Intent: Retrieve repository name
 ## -----------------------------------------------------------------------
 function get_gh_repo_name()
 {
@@ -497,6 +482,27 @@ function get_gh_releases()
 
     ref="repos/${repo_org}/${repo_name}/releases"
     func_echo "releases_uri=$ref"
+    return
+}
+
+## -----------------------------------------------------------------------
+## Intent: Return whether the repo has discussions enabled
+## -----------------------------------------------------------------------
+function get_discussions()
+{
+    declare -g HAS_DISCUSSIONS
+
+    local repo_org
+    get_gh_repo_org repo_org
+
+    local repo_name
+    get_gh_repo_name repo_name
+
+    local repo_uri
+    repo_uri="repos/${repo_org}/${repo_name}"
+
+    func_echo "RUNNING: $gh_cmd api $repo_uri | jq '.has_discussions'"
+    HAS_DISCUSSIONS=$($gh_cmd api $repo_uri | jq '.has_discussions')
     return
 }
 
@@ -613,7 +619,7 @@ function todo()
       - refactor redundant paths into local vars.
       - see comments, do we have a one-off failure condition ?
   o PATH += golang appended 3 times, release needs a single, reliable answer.
-  o do_login, do_logout and api calls do not use the my_gh wrapper:
+  o do_login and api calls do not use the my_gh wrapper:
       - Add a lookup function to cache and retrieve path to downloaded gh command.
 
 EOT
@@ -714,9 +720,13 @@ function gh_release_create()
     declare -a args=()
     args+=('--host-repo')
     args+=('--title')
+
+    # Check if repo has discussions enabled
+    get_discussions
+
     if [[ -v draft_release ]]; then
         args+=('--draft')
-    else
+    elif [[ $HAS_DISCUSSIONS == "true" ]]; then
         args+=('--discussion-category' 'Announcements')
     fi
 
@@ -792,28 +802,6 @@ function do_login()
 
     declare -i -g active_login=1 # signal logout needed
 
-    return
-}
-
-## -----------------------------------------------------------------------
-## Intent: Destroy credentials/gh session authenticated by do_login
-## -----------------------------------------------------------------------
-## NOTE: my_gh currently unused due to "<<< 'y'"
-## -----------------------------------------------------------------------
-function do_logout()
-{
-    declare -i -g active_login
-    [[ ! -v active_login ]] && return
-
-    declare -a logout_args=()
-    [[ $# -gt 0 ]] && logout_args+=("$@")
-
-    get_gh_hostname logout_args
-
-    banner "${logout_args[@]}"
-    func_echo "$gh_cmd auth logout ${logout_args[*]} <<< 'Y'"
-    "$gh_cmd" auth logout "${logout_args[@]}" <<< 'Y'
-    unset active_login
     return
 }
 
@@ -1101,8 +1089,6 @@ fi
 init
 install_gh_binary
 
-[[ -v argv_self_check ]] && { do_api_validation; exit 0; }
-
 do_login "$*"
 
 release_path='/dev/null'
@@ -1163,9 +1149,6 @@ release_staging
 # showReleaseUrl
 
 popd  || { error "pushd failed: dir is [$release_path]"; }
-
-# shellcheck disable=SC2119
-do_logout
 
 # [SEE ALSO]
 # -----------------------------------------------------------------------
