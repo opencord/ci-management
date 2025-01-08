@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b19cfec5_d881bdf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-01-08T00:18:50Z",
+      "side": 1,
+      "message": "It seems pretty inefficient to add 1300 LOC to effectively just remove\n  --set voltha.onos_classic.replicas\u003d${cfg.onosReplica}\n\nand add\n\n  --set voltha-go-controller.enabled\u003d${cfg.vgcEnabled}\n\nin the helm call.\n\nIs there any way to simplify this?",
+      "revId": "2f2d17067c6ef2408bc21e058f545f464472541a",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
