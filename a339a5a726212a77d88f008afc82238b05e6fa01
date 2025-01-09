@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "09d067ed_37668ffd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-01-09T19:30:11Z",
+      "side": 1,
+      "message": "Fantastic! Thanks so much for that change. This is a huge improvement to the simplicity and maintainability of our codebase. LGTM.",
+      "revId": "a339a5a726212a77d88f008afc82238b05e6fa01",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
