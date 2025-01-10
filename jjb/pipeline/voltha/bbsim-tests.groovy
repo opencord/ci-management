@@ -189,7 +189,8 @@ void execute_test\
     String  workflow,                         // dt
     String  testLogging,                      // 'True'
     Boolean teardown,                         // true
-    String  testSpecificHelmFlags=''
+    String  testSpecificHelmFlags='',
+    String  vgcEnabled
 ) {
     String infraNamespace  = 'default'
     String volthaNamespace = 'voltha'
@@ -318,6 +319,7 @@ _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > "$onosLog" &
                         localCharts: localCharts,
                         bbsimReplica: olts.toInteger(),
                         dockerRegistry: registry,
+                        vgcEnabled: vgcEnabled.toLowerCase(),
                     ])
                     leave('volthaDeploy')
                 } // script
@@ -734,7 +736,7 @@ pipeline {
 
                         try {
                             enter("execute_test (target=$target)")
-                            execute_test(target, workflow, testLogging, teardown, flags)
+                            execute_test(target, workflow, testLogging, teardown, flags, vgcEnabled)
                         }
                         // groovylint-disable-next-line CatchException
                         catch (Exception err) {
