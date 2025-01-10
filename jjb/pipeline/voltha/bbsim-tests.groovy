@@ -727,7 +727,7 @@ pipeline {
                         Boolean teardown    = test['teardown'].toBoolean()
                         Boolean logging     = test['logging'].toBoolean()
                         String  testLogging = (logging) ? 'True' : 'False'
-                        Boolean vgcEnabled  = test['vgcEnabled'].toBoolean()
+                        Boolean vgcEnabled = test['vgcEnabled'] != null ? test['vgcEnabled'].toBoolean() : false
 
                         print("""
 ** -----------------------------------------------------------------------
