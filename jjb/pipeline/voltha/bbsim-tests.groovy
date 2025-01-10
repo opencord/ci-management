@@ -190,7 +190,7 @@ void execute_test\
     String  testLogging,                      // 'True'
     Boolean teardown,                         // true
     String  testSpecificHelmFlags='',
-    String  vgcEnabled
+    Boolean  vgcEnabled
 ) {
     String infraNamespace  = 'default'
     String volthaNamespace = 'voltha'
@@ -319,7 +319,7 @@ _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > "$onosLog" &
                         localCharts: localCharts,
                         bbsimReplica: olts.toInteger(),
                         dockerRegistry: registry,
-                        vgcEnabled: vgcEnabled.toLowerCase(),
+                        vgcEnabled: vgcEnabled,
                     ])
                     leave('volthaDeploy')
                 } // script
@@ -727,6 +727,7 @@ pipeline {
                         Boolean teardown    = test['teardown'].toBoolean()
                         Boolean logging     = test['logging'].toBoolean()
                         String  testLogging = (logging) ? 'True' : 'False'
+                        Boolean vgcEnabled  = test['vgcEnabled'].toBoolean()
 
                         print("""
 ** -----------------------------------------------------------------------
