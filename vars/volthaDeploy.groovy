@@ -82,6 +82,7 @@ void process(Map config)
         stackName        : 'voltha',
         stackId: 1,
         workflow         : 'att',
+        vgcEnabled       : false,
         withMacLearning: false,
         withFttb: false,
         extraHelmFlags   : '',
