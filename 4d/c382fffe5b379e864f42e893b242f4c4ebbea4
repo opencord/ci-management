@@ -1,0 +1,7 @@
+Verified+1: voltha jobbuilder <releng+voltha-jobbuilder@linuxfoundation.org>
+Code-Review+2: Abhilash Laxmeshwar <abhilash.laxmeshwar@radisys.com>
+Submitted-by: Abhilash Laxmeshwar <abhilash.laxmeshwar@radisys.com>
+Submitted-at: Fri, 10 Jan 2025 12:49:39 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/35575
+Project: ci-management
+Branch: refs/heads/master
