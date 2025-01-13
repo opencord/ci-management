@@ -293,15 +293,20 @@ _TAG=kail-startup kail -n ${infraNamespace} -n ${volthaNamespace} > "$onosLog" &
                     // -----------------------------------------------------------------------
                     // NOTE temporary workaround expose ONOS node ports
                     // -----------------------------------------------------------------------
-                    String localHelmFlags = [
-                        extraHelmFlags.trim(),
-                        "--set global.log_level=${logLevel.toUpperCase()}",
-                        '--set onos-classic.onosSshPort=30115',
-                        '--set onos-classic.onosApiPort=30120',
-                        '--set onos-classic.onosOfPort=31653',
-                        '--set onos-classic.individualOpenFlowNodePorts=true',
-                        testSpecificHelmFlags
-                    ].join(' ')
+                    String localHelmFlags = ""
+                    if (!vgcEnabled) {
+                        localHelmFlags = [
+                            extraHelmFlags.trim(),
+                            "--set global.log_level=${logLevel.toUpperCase()}",
+                            '--set onos-classic.onosSshPort=30115',
+                            '--set onos-classic.onosApiPort=30120',
+                            '--set onos-classic.onosOfPort=31653',
+                            '--set onos-classic.individualOpenFlowNodePorts=true',
+                            testSpecificHelmFlags
+                        ].join(' ')
+                    } else {
+                        localHelmFlags = extraHelmFlags.trim()
+                    }
 
                     println("** ${iam} localHelmFlags = ${localHelmFlags}")
 
@@ -366,6 +371,11 @@ popd               || { echo "ERROR: popd $logsDir failed"; exit 1; }
       if [ ${withMonitoring} = true ] ; then
         JENKINS_NODE_COOKIE="dontKillMe" _TAG="nem-monitoring-prometheus-server" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n default svc/nem-monitoring-prometheus-server 31301:80; done"&
       fi
+      if (vgcEnabled) {
+        JENKINS_NODE_COOKIE="dontKillMe" _TAG="vgc-Port-Forward-Enable" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-go-controller 8181:8181; done"&
+      fi
+    }
+
 #      ps aux | grep port-forward
 """)
             // ---------------------------------
