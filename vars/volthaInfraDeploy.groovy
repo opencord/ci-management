@@ -89,6 +89,7 @@ void process(Map config) {
         etcdReplica: 1,
         infraNamespace: 'infra',
         workflow: 'att',
+        vgcEnabled: false,
         withMacLearning: false,
         withFttb: false,
         extraHelmFlags: '',
@@ -138,18 +139,32 @@ kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_
 
     // bitnamic/etch has change the replica format between the currently used 5.4.2 and the latest 6.2.5
     // for now put both values in the extra helm chart flags
-    sh(label  : 'HELM: upgrade --install',
-       script : """
-    helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
-          --set onos-classic.replicas=${cfg.onosReplica},onos-classic.atomix.replicas=${cfg.atomixReplica} \
-          --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
-          --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
-          --set etcd.replicaCount=${cfg.etcdReplica} \
-          --set etcd.ingress.enabled=true \
-          --set etcd.ingress.hosts[0].host=voltha-infra.${cfg.cluster} \
-          --set etcd.ingress.hosts[0].paths[0]='/etcdserverpb.KV/' \
-          -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
-""")
+    if (cfg.vgcEnabled) {
+        sh(label  : 'HELM: upgrade --install',
+            script : """
+        helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
+            --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
+            --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
+            --set etcd.replicaCount=${cfg.etcdReplica} \
+            --set etcd.ingress.enabled=true \
+            --set etcd.ingress.hosts[0].host=voltha-infra.${cfg.cluster} \
+            --set etcd.ingress.hosts[0].paths[0]='/etcdserverpb.KV/' \
+            -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
+    """)
+    } else {
+        sh(label  : 'HELM: upgrade --install',
+            script : """
+        helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
+            --set onos-classic.replicas=${cfg.onosReplica},onos-classic.atomix.replicas=${cfg.atomixReplica} \
+            --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
+            --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
+            --set etcd.replicaCount=${cfg.etcdReplica} \
+            --set etcd.ingress.enabled=true \
+            --set etcd.ingress.hosts[0].host=voltha-infra.${cfg.cluster} \
+            --set etcd.ingress.hosts[0].paths[0]='/etcdserverpb.KV/' \
+            -f $WORKSPACE/voltha-helm-charts/examples/${serviceConfigFile}-values.yaml ${cfg.extraHelmFlags}
+    """)
+    }
 
     leave('process')
     return
