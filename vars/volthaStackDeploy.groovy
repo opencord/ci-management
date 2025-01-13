@@ -62,7 +62,7 @@ helm upgrade --install --create-namespace \
           --set voltha.ingress.hosts[0].host=voltha.${cfg.cluster} \
           --set voltha.ingress.hosts[0].paths[0]='/voltha.VolthaService/' \
           --set global.voltha_infra_namespace=${cfg.infraNamespace} \
-          --set voltha.replicas.ofagent=0
+          --set voltha.replicas.ofagent=0 \
           ${cfg.extraHelmFlags}
 """)
     } else {
