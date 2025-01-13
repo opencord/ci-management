@@ -143,6 +143,7 @@ kubectl create configmap -n ${cfg.infraNamespace} kube-config "--from-file=kube_
         sh(label  : 'HELM: upgrade --install',
             script : """
         helm upgrade --install --create-namespace -n ${cfg.infraNamespace} voltha-infra ${volthaInfraChart} \
+            --set onos-classic.enabled=false \
             --set kafka.replicaCount=${cfg.kafkaReplica},kafka.zookeeper.replicaCount=${cfg.kafkaReplica} \
             --set etcd.statefulset.replicaCount=${cfg.etcdReplica} \
             --set etcd.replicaCount=${cfg.etcdReplica} \
