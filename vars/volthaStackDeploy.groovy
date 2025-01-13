@@ -234,7 +234,8 @@ exit \$rc
 // Intent: Wait until the pod completed, meaning ONOS fully deployed
 // -----------------------------------------------------------------------
 void waitForOnosDeploy(Map cfg) {
-    enter('waitForOnosDeploy')
+    if (!cfg.vgcEnabled) {
+        enter('waitForOnosDeploy')
 
     sh(label  : 'Wait for ONOS full deployment',
        script : """
@@ -321,8 +322,10 @@ done
 rm -f \$vsd_log
 exit \$rc
 """)
-
     leave('waitForOnosDeploy')
+    } else {
+        println "VGC enabled, no need to wait for ONOS deployment"
+    }
     return
 }
 
