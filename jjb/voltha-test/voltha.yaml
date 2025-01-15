@@ -127,7 +127,7 @@
           build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-gpon-zyxel'
           cluster: 'pod-2.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           name-extension: '_DT'
           work-flow: 'DT'
           release: 'master'
@@ -139,14 +139,14 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/physical-build.groovy'
           waitTimerForOltUp: 360
-          time: '1'
+          time: ''
 
       # Berlin POD test job - zyxel gpon master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-gpon-zyxel'
           cluster: 'pod-2.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'
@@ -162,7 +162,7 @@
           build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           cluster: 'pod-2.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           name-extension: '_DT'
           work-flow: 'DT'
           release: 'master'
@@ -174,14 +174,14 @@
           pipeline-script: 'voltha/physical-build.groovy'
           waitTimerForOltUp: 360
           profile: '1T8GEM'
-          time: '5'
+          time: ''
 
       # Berlin POD test job - zyxel xgsgpon master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
           build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           cluster: 'pod-2.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'
@@ -197,14 +197,14 @@
           build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           cluster: 'pod-2.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
-          time: '10'
+          time: ''
           num-of-onos: '3'
           num-of-atomix: '3'
 
@@ -213,7 +213,7 @@
           build-node: 'jenkins-worker-02.berlin-lab'
           config-pod: 'berlin-community-pod-2-xgspon-zyxel'
           cluster: 'pod-2.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'
@@ -231,14 +231,14 @@
           build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
-          time: '10'
+          time: ''
           num-of-onos: '3'
           num-of-atomix: '3'
 
@@ -247,7 +247,7 @@
           build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon'
           cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'
@@ -299,7 +299,7 @@
           build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           name-extension: '_DT'
           work-flow: 'DT'
           release: 'master'
@@ -314,7 +314,7 @@
           openoltAdapterChart: '/home/jenkins/SDX_Voltha_Adtran_Adapter_24.2/helm/voltha-adapter-adtran-olt'
           oltAdapterReleaseName: 'adtran-olt'
           waitTimerForOltUp: 420
-          time: '19'
+          time: ''
 
       # Berlin POD adtran test job - master versions: uses 1T8GEM tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -322,7 +322,7 @@
           build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-gpon-adtran'
           cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'
