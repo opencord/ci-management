@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d3820a81_838fd07d",
+        "filename": "jjb/pipeline/voltha/bbsim-tests.groovy",
+        "patchSetId": 2
+      },
+      "lineNbr": 308,
+      "author": {
+        "id": 1000537
+      },
+      "writtenOn": "2025-01-15T09:47:34Z",
+      "side": 1,
+      "message": "testSpecificHelmFlags , is this missing in the else case ?",
+      "revId": "91be779225d16a48455ad274810630f3c2c66b38",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
