@@ -374,11 +374,9 @@ popd               || { echo "ERROR: popd $logsDir failed"; exit 1; }
       if [ ${withMonitoring} = true ] ; then
         JENKINS_NODE_COOKIE="dontKillMe" _TAG="nem-monitoring-prometheus-server" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n default svc/nem-monitoring-prometheus-server 31301:80; done"&
       fi
-      if (vgcEnabled) {
+      if [ ${vgcEnabled} = true ] ; then
         JENKINS_NODE_COOKIE="dontKillMe" _TAG="vgc-Port-Forward-Enable" bash -c "while true; do kubectl port-forward --address 0.0.0.0 -n voltha svc/voltha-voltha-go-controller 8181:8181; done"&
       fi
-    }
-
 #      ps aux | grep port-forward
 """)
             // ---------------------------------
