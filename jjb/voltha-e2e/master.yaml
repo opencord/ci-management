@@ -73,9 +73,9 @@
           time-trigger: "H H/23 * * *"
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-combined'
+          name: 'periodic-voltha-combined-vgc'
           code-branch: 'master'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
+          extraHelmFlags: '--set global.image_tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
           testTargets: |
@@ -89,22 +89,31 @@
               flags: ""
               teardown: true
               logging: true
-            - target: multiolt-kind-dt-vgc
-              workflow: dt
-              flags: ""
-              teardown: true
-              logging: true
             - target: sanity-kind-dt-fttb-vgc
               workflow: dt
               flags: ""
               teardown: true
               logging: true
-            - target: bbsim-multiolt-kind-dt-vgc
+            - target: bbsim-failurescenarios-dt-vgc
               workflow: dt
               flags: ""
               teardown: true
               logging: true
-            - target: bbsim-failurescenarios-dt-vgc
+          timeout: 140
+      - 'voltha-periodic-test':
+          name: 'periodic-voltha-combined-vgc-multi-olt'
+          code-branch: 'master'
+          olts: 2
+          extraHelmFlags: '--set global.image_tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
+          time-trigger: "H H/23 * * *"
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: multiolt-kind-dt-vgc
+              workflow: dt
+              flags: "--set onu=2,pon=2"
+              teardown: true
+              logging: true
+            - target: bbsim-multiolt-kind-dt-vgc
               workflow: dt
               flags: ""
               teardown: true
