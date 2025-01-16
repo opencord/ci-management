@@ -162,7 +162,11 @@ pipeline {
                export ROBOT_MISC_ARGS="--removekeywords wuks -e PowerSwitch -i sanityDt -i functionalDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           fi
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          if [[ ${configFileName} == *"zyxel"* ]]; then  
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test
+          else
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          fi
         fi
         """
       }
@@ -180,7 +184,11 @@ pipeline {
         if [ ${params.withFttb} = true ]; then
           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i sanityDtFttb -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE"
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v has_dataplane:False"
-          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          if [[ ${configFileName} == *"zyxel"* ]]; then  
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test
+          else
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          fi
         fi
         """
       }
@@ -203,7 +211,11 @@ pipeline {
                export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           fi
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          if [[ ${configFileName} == *"zyxel"* ]]; then  
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test
+          else
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          fi
         fi
         """
       }
@@ -222,7 +234,11 @@ pipeline {
         if [ ${params.withFttb} = false ]; then
           export ROBOT_MISC_ARGS="--removekeywords wuks -i dataplaneDt -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          if [[ ${configFileName} == *"zyxel"* ]]; then  
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test
+          else
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          fi
         fi
         """
       }
@@ -240,7 +256,11 @@ pipeline {
         if [ ${params.withFttb} = false ]; then
           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          make -C $WORKSPACE/voltha-system-tests voltha-test || true
+          if [[ ${configFileName} == *"zyxel"* ]]; then  
+            make -C $WORKSPACE/voltha-system-tests voltha-test
+          else
+            make -C $WORKSPACE/voltha-system-tests voltha-test || true
+          fi
         fi
         """
       }
@@ -263,7 +283,11 @@ pipeline {
                export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalDt -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           fi
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          if [[ ${configFileName} == *"zyxel"* ]]; then  
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test
+          else
+            make -C $WORKSPACE/voltha-system-tests voltha-dt-test || true
+          fi
         fi
         """
       }
@@ -282,7 +306,11 @@ pipeline {
         if [ ${params.withFttb} = false ]; then
           export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functional -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v workflow:${params.workFlow} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          make -C $WORKSPACE/voltha-system-tests voltha-test || true
+          if [[ ${configFileName} == *"zyxel"* ]]; then          
+            make -C $WORKSPACE/voltha-system-tests voltha-test
+          else
+            make -C $WORKSPACE/voltha-system-tests voltha-test || true
+          fi
         fi
         """
       }
