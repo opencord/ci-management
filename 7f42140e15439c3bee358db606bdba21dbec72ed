@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d5a8028e_50f02917",
+        "filename": "jjb/voltha-e2e/master.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000537
+      },
+      "writtenOn": "2025-01-16T14:31:34Z",
+      "side": 1,
+      "message": "canwe add vgc name to this jst to distinguish from onos runs",
+      "revId": "7f42140e15439c3bee358db606bdba21dbec72ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c47210e_f9417e0f",
+        "filename": "jjb/voltha-e2e/master.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000537
+      },
+      "writtenOn": "2025-01-16T14:31:34Z",
+      "side": 1,
+      "message": "same as above comment",
+      "revId": "7f42140e15439c3bee358db606bdba21dbec72ed",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
