@@ -1,0 +1,7 @@
+Verified+1: voltha jobbuilder <releng+voltha-jobbuilder@linuxfoundation.org>
+Code-Review+2: Jokin Garay <jokin.garay@bisdn.de>
+Submitted-by: Amaia de Pablo <amaia.depablo@bisdn.de>
+Submitted-at: Thu, 16 Jan 2025 10:14:46 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/35602
+Project: ci-management
+Branch: refs/heads/master
