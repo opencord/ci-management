@@ -73,9 +73,11 @@ void git_debug(String name) {
     println('''
 
 ** -----------------------------------------------------------------------
-** git config --list
+** DEBUG: git config --list
 ** -----------------------------------------------------------------------
 ''')
+
+    sh '''echo "RUNNING: git config --list" '''
     sh 'git config --list'
 
     println('''
@@ -85,9 +87,6 @@ void git_debug(String name) {
 ** -----------------------------------------------------------------------
 ''')
     sh 'git config --global --list'
-
-    println('\nWANTED: git config --bool --get gerrit.createChangeId')
-    sh '''git config --bool --get gerrit.createChangedId' && echo "gerrit.createChangedId=[$?]'''
 
     leave(name)
 
@@ -131,6 +130,10 @@ node ('ubuntu18.04-basebuild-1c-2g') {
   }
 
   stage ('Configure system') {
+
+    String attempt = "1"
+    enter('Configure system: ' + attempt)
+
     echo "Job triggered by " + userId
     // FIXME: supply Jenkins-owned known_hosts file via config_file_provider
     //  https://jenkins.io/doc/pipeline/steps/config-file-provider/
@@ -143,6 +146,7 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     withCredentials([file(credentialsId: 'gpg-creds-maven', variable: 'GPUPG')]) {
       sh 'tar -xvf $GPUPG -C ~'
     }
+    leave('Configure system: ' + attempt)
   }
 
   stage ('Check out code') {
@@ -167,9 +171,12 @@ node ('ubuntu18.04-basebuild-1c-2g') {
        changeApiVersion(appName, apiVersion)
     }
 
-        git_debug("Move to release version")
+    git_debug("Move to release version")
 
-    sh 'git add -A && git commit -m "Release app version ' + version + ' with API version ' + apiVersion + '"'
+    // Explicitly set hooksPath.  Need to figure out logic to detect and
+    // test if unset -- else multiple cases where Exception is thrown.
+    sh """git config --local core.hooksPath './.git/hooks'""" // limited scope
+    sh 'git add -A && git commit -sm "Release app version ' + version + ' with API version ' + apiVersion + '"'
   }
 
   stage ('Verify code') {
@@ -204,8 +211,7 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     }
 
     git_debug("Move to next SNAPSHOT version")
-
-    sh 'git add -A && git commit -m "Starting snapshot ' + snapshot + ' with API version ' + apiSnapshot + '"'
+    sh 'git add -A && git commit -sm "Starting snapshot ' + snapshot + ' with API version ' + apiSnapshot + '"'
 
     println("\nSnapshot commit message: branch=HEAD")
     sh """git log -1 --pretty=format:'%b' HEAD"""
@@ -222,7 +228,12 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     sh 'echo "Release done!"'
     sh  'echo "Go to Gerrit and merge new changes"'
     sh  'echo "Go to http://oss.sonatype.org and release the artifacts (after the maven-publish job completes)"'
-  }
+
+    // Restore config: secure but what changed (?)
+    // Should revert completely to 'factory defaults'
+    println("Revert core.hooksPath")
+    sh """git config --local core.hooksPath '/dev/null'""" // limited scope
+    }
 }
 
 // [EOF]
