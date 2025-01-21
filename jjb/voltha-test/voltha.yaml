@@ -32,7 +32,7 @@
           build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-multi-olt'
           cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           name-extension: '_DT'
           work-flow: 'DT'
           profile: '1T8GEM'
@@ -47,7 +47,7 @@
           build-node: 'jenkins-worker-01.berlin-lab'
           config-pod: 'berlin-community-pod-1-multi-olt'
           cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
+          disable-job: false
           release: 'master'
           branch: 'master'
           pipeline-branch: 'master'

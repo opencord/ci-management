@@ -156,11 +156,7 @@ pipeline {
              export ROBOT_MISC_ARGS="--removekeywords wuks -i functionalTT -e PowerSwitch -i sanityTT -i sanityTT-MCAST -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
         fi
         ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-        if [[ ${configFileName} == *"zyxel"* ]]; then          
-          make -C $WORKSPACE/voltha-system-tests voltha-tt-test
-        else
-          make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
-        fi
+        make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         """
       }
     }
@@ -181,11 +177,7 @@ pipeline {
                export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel}"
           fi
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          if [[ ${configFileName} == *"zyxel"* ]]; then          
-            make -C $WORKSPACE/voltha-system-tests voltha-tt-test
-          else
-            make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
-          fi
+          make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """
       }
@@ -213,11 +205,7 @@ pipeline {
             export ROBOT_MISC_ARGS="--removekeywords wuks -L TRACE -i functionalTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
           fi
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          if [[ ${configFileName} == *"zyxel"* ]]; then          
-            make -C $WORKSPACE/voltha-system-tests voltha-tt-test
-          else
-            make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
-          fi
+          make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """
       }
@@ -240,11 +228,7 @@ pipeline {
              export ROBOT_MISC_ARGS="--removekeywords wuks -i multicastTT -e PowerSwitch -e bbsim -e notready -d $ROBOT_LOGS_DIR -v teardown_device:False -v POD_NAME:${configFileName} -v KUBERNETES_CONFIGS_DIR:$WORKSPACE/${configBaseDir}/${configKubernetesDir} -v container_log_dir:$WORKSPACE -v OLT_ADAPTER_APP_LABEL:${oltAdapterAppLabel} -V $ROBOT_TEST_INPUT_FILE"
           fi
           ROBOT_MISC_ARGS+=" -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace}"
-          if [[ ${configFileName} == *"zyxel"* ]]; then          
-            make -C $WORKSPACE/voltha-system-tests voltha-tt-test
-          else
-            make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
-          fi
+          make -C $WORKSPACE/voltha-system-tests voltha-tt-test || true
         fi
         """
       }
