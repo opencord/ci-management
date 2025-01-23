@@ -39,6 +39,30 @@
       },
       "revId": "cabe34b49a7ebe61f35dde0ae78005a6bc0d4504",
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a9fc1c54_2c7103d9",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-01-23T23:18:37Z",
+      "side": 1,
+      "message": "I think we can at least skip adding new ones here. I\u0027ll remove them.",
+      "parentUuid": "46d338b3_8396ea14",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 4
+      },
+      "revId": "cabe34b49a7ebe61f35dde0ae78005a6bc0d4504",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     }
   ]
 }
