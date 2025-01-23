@@ -10,6 +10,10 @@
           branch-regexp: '{all-branches-regexp}'
       - 'verify-ofagent-jobs-master':
           branch-regexp: '^master$'
+      - 'verify-ofagent-jobs-voltha-2.13':
+          name-extension: '-voltha-2.13'
+          override-branch: 'voltha-2.13'
+          branch-regexp: '{kind-voltha-regexp}'
       - 'verify-ofagent-jobs-voltha-2.12':
           name-extension: '-voltha-2.12'
           override-branch: 'voltha-2.12'
@@ -44,6 +48,13 @@
       - 'voltha-patch-test':
           pipeline-script: 'voltha/voltha-2.11/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.11'
+
+- job-group:
+    name: 'verify-ofagent-jobs-voltha-2.13'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.13'
 
 - job-group:
     name: 'verify-ofagent-jobs-voltha-2.12'
