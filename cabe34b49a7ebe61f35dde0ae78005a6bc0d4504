@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "053f874f_03300d02",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-01-23T21:13:44Z",
+      "side": 1,
+      "message": "In general, we decided not to test ATT workflows anymore. All the ATT tests should be changed to TT and DT test, but we can do this after the release, if it is hard to do in release process. ",
+      "revId": "cabe34b49a7ebe61f35dde0ae78005a6bc0d4504",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "46d338b3_8396ea14",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 3
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-01-23T21:13:44Z",
+      "side": 1,
+      "message": "I don\u0027t think we need to test  att  workflow anymore",
+      "range": {
+        "startLine": 92,
+        "startChar": 0,
+        "endLine": 92,
+        "endChar": 4
+      },
+      "revId": "cabe34b49a7ebe61f35dde0ae78005a6bc0d4504",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
