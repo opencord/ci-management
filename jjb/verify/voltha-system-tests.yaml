@@ -17,6 +17,11 @@
           name-extension: '-py312'
           override-branch: 'python312-update'
           branch-regexp: '^python312-update$'
+      - 'verify-voltha-system-tests-jobs-voltha-2.13':
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          name-extension: '-voltha-2.13'
+          override-branch: 'voltha-2.13'
+          branch-regexp: '^voltha-2.13$'
       - 'verify-voltha-system-tests-jobs-voltha-2.12':
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           name-extension: '-voltha-2.12'
@@ -43,6 +48,13 @@
       - 'voltha-patch-test':
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'python312-update'
+
+- job-group:
+    name: 'verify-voltha-system-tests-jobs-voltha-2.13'
+    jobs:
+      - 'voltha-patch-test':
+          pipeline-script: 'voltha/bbsim-tests.groovy'
+          pipeline-branch: 'voltha-2.13'
 
 - job-group:
     name: 'verify-voltha-system-tests-jobs-voltha-2.12'
