@@ -23,6 +23,13 @@
 # Intent: voltha 2.0 tests, end-2-end pipeline jobs.
 # -----------------------------------------------------------------------
 
+- _voltha_213_common: &voltha_213_common
+    name: voltha-2.13-common
+    pipeline-script: 'voltha/bbsim-tests.groovy'
+    pipeline-branch: 'voltha-2.13'
+    code-branch: 'voltha-2.13'
+    time-trigger: "H H/23 * * *"
+
 - project:
     name: voltha-e2e
 
@@ -43,6 +50,485 @@
     make-target-reconciletttest: reconcile-openonu-go-adapter-test-tt
 
     jobs:
+
+      # -----------------------------------------------------------------------
+      # voltha-2.13 Jobs
+      # -----------------------------------------------------------------------
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-multiple-olts-test-bbsim-2.13'
+          olts: 2
+          extraHelmFlags: '--set onu=2,pon=2'
+          testTargets: |
+            - target: functional-multi-olt
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-multiolt-failurescenarios
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: bbsim-multiolt-errorscenarios
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: bbsim-multiolt-kind
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-multi-uni-test-bbsim-2.13'
+          extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          testTargets: |
+            - target: functional-single-kind-multiuni-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-multiuni-failurescenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: bbsim-multiuni-errorscenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.13'
+          olts: 2
+          extraHelmFlags: '--set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
+          testTargets: |
+            - target: functional-multiuni-multiolt-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-multiuni-multiolt-failurescenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+            - target: bbsim-multiuni-multiolt-errorscenarios-att
+              workflow: att
+              flags: ""
+              teardown: false
+              logging: true
+          timeout: 180
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-openonu-go-test-bbsim-2.13'
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t4gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t8gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: mib-upload-templating-openonu-go-adapter-test
+              workflow: att
+              flags: "--set pon=2,onu=2,controlledActivation=only-onu,injectOmciUnknownAttributes=true,injectOmciUnknownMe=true --set global.extended_omci_support.enabled=true "
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-uni-test-tt
+              workflow: tt
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
+              teardown: true
+              logging: true
+            - target: openonu-go-adapter-omci-hardening-passed-test
+              workflow: att
+              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
+              teardown: true
+              logging: true
+            - target: openonu-go-adapter-omci-hardening-failed-test
+              workflow: att
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,omci_response_rate=7"
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-att
+              workflow: att
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-dt
+              workflow: dt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-tt
+              workflow: tt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-robustness-test-single-kind-dt
+              workflow: dt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1"
+              teardown: true
+              logging: true
+            - target: onu-robustness-test-multi-uni-kind-tt
+              workflow: tt
+              flags: "--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF,kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1"
+              teardown: true
+              logging: true
+          timeout: 240
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'patchset-voltha-2.13-openonu-go-test-bbsim'
+          trigger-comment: "voltha 2.13 test openonu singleolt"
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t4gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t8gem-openonu-go-adapter-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: mib-upload-templating-openonu-go-adapter-test
+              workflow: att
+              flags: "--set pon=2,onu=2,controlledActivation=only-onu,injectOmciUnknownAttributes=true,injectOmciUnknownMe=true --set global.extended_omci_support.enabled=true "
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-uni-test-tt
+              workflow: tt
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
+              teardown: true
+              logging: true
+            - target: openonu-go-adapter-omci-hardening-passed-test
+              workflow: att
+              flags: "--set omci_response_rate=9 --set voltha-adapter-openonu.adapter_open_onu.omci_timeout=1s"
+              teardown: true
+              logging: true
+            - target: openonu-go-adapter-omci-hardening-failed-test
+              workflow: att
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,omci_response_rate=7"
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-single-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-att
+              workflow: att
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-dt
+              workflow: dt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+            - target: onu-mib-audit-test-single-kind-tt
+              workflow: tt
+              flags: "--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1,voltha-adapter-openonu.global.mib_audit.interval=60s"
+              teardown: true
+              logging: true
+          timeout: 210
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.13'
+          extraHelmFlags: '--set onu=2,pon=2'
+          olts: 2
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t4gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t8gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-multi-uni-test-tt
+              workflow: tt
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+          time-trigger: "H H/23 * * *"
+          timeout: 270
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'patchset-voltha-2.13-multiple-olts-openonu-go-test-bbsim'
+          trigger-comment: "voltha 2.13 test openonu multiolt"
+          extraHelmFlags: '--set onu=2,pon=2'
+          olts: 2
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: 1t1gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t4gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: 1t8gem-openonu-go-adapter-multi-olt-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-test-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: reconcile-openonu-go-adapter-multi-olt-multi-uni-test-tt
+              workflow: tt
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-omci-get-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-multiolt-kind-att
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-multiolt-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: voltha-onu-flows-check-multiolt-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+          timeout: 270
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-test-DMI-2.13'
+          testTargets: |
+            - target: bbsim-dmi-hw-management-test
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-etcd-test-2.13'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          extraHelmFlags: '--set onu=2,pon=2'
+          testTargets: |
+            - target: sanity-multi-kind
+              workflow: att
+              flags: ""
+              teardown: true
+              logging: true
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.13'
+          extraHelmFlags: '--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
+          logLevel: 'DEBUG'
+          robot-args: '-v unitag_sub:True'
+          testTargets: |
+            - target: functional-single-kind-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: bbsim-failurescenarios-tt
+              workflow: tt
+              flags: ""
+              teardown: true
+              logging: true
+            - target: functional-single-kind-multiuni-tt
+              workflow: tt
+              flags: " --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF "
+              teardown: true
+              logging: true
+
+      - 'voltha-periodic-test':
+          <<: *voltha_213_common
+          name: 'periodic-voltha-memory-leak-test-bbsim-2.13'
+          build-node: 'ubuntu18.04-basebuild-4c-8g'
+          withMonitoring: true
+          logLevel: 'DEBUG'
+          testTargets: |
+            - target: memory-leak-test-single-kind-dt
+              workflow: dt
+              flags: ""
+              teardown: true
+              logging: true
+          timeout: 230
 
       # -----------------------------------------------------------------------
       # -----------------------------------------------------------------------
