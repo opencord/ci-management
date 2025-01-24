@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "804e10e1_04ff511b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-01-24T20:18:04Z",
+      "side": 1,
+      "message": "Merging changes from the voltha-2.13 branch into master.",
+      "revId": "0d5a51acc9893065cd11e6ce65aeafb29ece3bd2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
