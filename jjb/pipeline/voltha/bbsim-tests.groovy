@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------
-// Copyright 2021-2024 Open Networking Foundation Contributors
+// Copyright 2021-2025 Open Networking Foundation Contributors
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -37,10 +37,10 @@ String clusterName = 'kind-ci'
 //   as a guarantee release jobs are running in an expected sandbox.
 // -----------------------------------------------------------------------
 String branchName() {
-    String br = 'master'
+    def validBranches = ["master", "voltha-2.13"]
 
     // "${branch}" is assigned by jenkins
-    if (br != branch) {
+    if (!validBranches.contains(branch)) {
         String err = [
             'ERROR: Detected invalid branch',
             "(expected=[${br}] != found=[${branch}])"
@@ -48,7 +48,7 @@ String branchName() {
         throw new Exception(err) // groovylint-disable-line ThrowException
     }
 
-    return (br)
+    return (branch)
 }
 
 // -----------------------------------------------------------------------
