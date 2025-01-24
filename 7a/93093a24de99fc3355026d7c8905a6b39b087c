@@ -1,0 +1,8 @@
+Verified+1: voltha jobbuilder <releng+voltha-jobbuilder@linuxfoundation.org>
+Code-Review+1: Cristina de Francisco <cristina.defrancisco@bisdn.de>
+Code-Review+2: Amaia de Pablo <amaia.depablo@bisdn.de>
+Submitted-by: Amaia de Pablo <amaia.depablo@bisdn.de>
+Submitted-at: Fri, 24 Jan 2025 08:59:24 +0000
+Reviewed-on: https://gerrit.opencord.org/c/ci-management/+/35675
+Project: ci-management
+Branch: refs/heads/master
