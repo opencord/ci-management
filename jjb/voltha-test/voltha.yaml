@@ -139,7 +139,7 @@
           num-of-atomix: '3'
           pipeline-script: 'voltha/physical-build.groovy'
           waitTimerForOltUp: 360
-          time: '2'
+          time: ''
 
       # Berlin POD test job - zyxel gpon master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -174,7 +174,7 @@
           pipeline-script: 'voltha/physical-build.groovy'
           waitTimerForOltUp: 360
           profile: '1T8GEM'
-          time: '7'
+          time: ''
 
       # Berlin POD test job - zyxel xgsgpon master versions: uses tech profile on voltha branch
       - 'build_voltha_pod_test':
@@ -204,7 +204,7 @@
           name-extension: '_TT'
           work-flow: 'TT'
           profile: 'TP'
-          time: '12'
+          time: ''
           num-of-onos: '3'
           num-of-atomix: '3'
 
