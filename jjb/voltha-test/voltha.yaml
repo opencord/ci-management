@@ -89,39 +89,6 @@
           power-switch: true
           pipeline-script: 'voltha/voltha-dt-physical-functional-tests.groovy'
 
-      # -----------------------------------------------------------------------
-      # Berlin pod with gpon olt/onu - master 1T4GEM tech profile and timer based job
-      - 'build_voltha_pod_release_timer':
-          build-node: 'jenkins-worker-01.berlin-lab'
-          config-pod: 'berlin-community-pod-1-gpon-fttb'
-          cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
-          withFttb: true
-          name-extension: '_DT'
-          work-flow: 'DT'
-          profile: '1T4GEM-FTTB'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-          time: '13'
-
-      # Berlin POD test job - master versions: uses 1T4GEM tech profile on voltha branch
-      - 'build_voltha_pod_test':
-          timeout: 330
-          build-node: 'jenkins-worker-01.berlin-lab'
-          config-pod: 'berlin-community-pod-1-gpon-fttb'
-          cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
-          withFttb: true
-          name-extension: '_DT'
-          work-flow: 'DT'
-          release: 'master'
-          branch: 'master'
-          pipeline-branch: 'master'
-          test-repo: 'voltha-system-tests'
-          profile: '1T4GEM-FTTB'
-          power-switch: true
-          pipeline-script: 'voltha/voltha-dt-physical-functional-tests.groovy'
-
       # Berlin pod with zyxel gpon olt/onu - master 1T8GEM tech profile and timer based job
       - 'build_voltha_pod_release_timer':
           build-node: 'jenkins-worker-02.berlin-lab'
@@ -256,40 +223,6 @@
           power-switch: true
           power-cycle-olt: false
           pipeline-script: 'voltha/voltha-tt-physical-functional-tests.groovy'
-          test-repo: 'voltha-system-tests'
-          profile: 'TP'
-          timeout: 360
-
-      # TT workflow on Zyxel GPON OLT at Berlin pod - build job (playground)
-      - 'build_voltha_pod_release_timer_playground':
-          build-node: 'jenkins-worker-01.berlin-lab'
-          config-pod: 'berlin-community-pod-1-gpon'
-          cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
-          release: 'master'
-          branch: 'master'
-          pipeline-branch: 'master'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          profile: 'TP'
-          time: '10'
-          num-of-onos: '3'
-          num-of-atomix: '3'
-
-      # TT workflow on Zyxel XGSPON OLT at Berlin pod - test job (playground)
-      - 'build_voltha_pod_test_playground':
-          build-node: 'jenkins-worker-01.berlin-lab'
-          config-pod: 'berlin-community-pod-1-gpon'
-          cluster: 'pod-1.berlin-lab.lfbroadband.org'
-          disable-job: true
-          release: 'master'
-          branch: 'master'
-          pipeline-branch: 'master'
-          name-extension: '_TT'
-          work-flow: 'TT'
-          power-switch: true
-          power-cycle-olt: false
-          pipeline-script: 'voltha/playground/voltha-tt-physical-functional-tests.groovy'
           test-repo: 'voltha-system-tests'
           profile: 'TP'
           timeout: 360

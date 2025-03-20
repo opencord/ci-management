@@ -12,11 +12,6 @@
       - 'olt-jobs':
           branch-regexp: '^((?!olt-3\.0).*)$'
 
-      - 'olt-jobs-legacy':
-          branch-regexp: '^(olt-3.0)$'
-          jdk-distribution: 'java-1.8.0-amazon-corretto'
-          name-extension: '-jdk8'
-
 - job-group:
     name: 'olt-jobs-common'
     jobs:
@@ -24,12 +19,6 @@
 
 - job-group:
     name: 'olt-jobs'
-    jobs:
-      - 'maven-test'
-      - 'maven-publish'
-
-- job-group:
-    name: 'olt-jobs-legacy'
     jobs:
       - 'maven-test'
       - 'maven-publish'

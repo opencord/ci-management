@@ -35,10 +35,6 @@
           name-extension: '-voltha-2.13'
           override-branch: 'voltha-2.13'
           branch-regexp: '^voltha-2.13$'
-      - 'verify-bbsim-jobs-voltha-2.12':
-          name-extension: '-voltha-2.12'
-          override-branch: 'voltha-2.12'
-          branch-regexp: '^voltha-2.12$'
       - 'verify-bbsim-jobs-voltha-2.11':
           name-extension: '-voltha-2.11'
           override-branch: 'voltha-2.11'
@@ -89,30 +85,6 @@
           pipeline-branch: 'voltha-2.13'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           testTargets: |
-            - target: sanity-bbsim-dt
-              workflow: dt
-              flags: ""
-              teardown: true
-              logging: true
-            - target: sanity-bbsim-tt
-              workflow: tt
-              flags: ""
-              teardown: true
-              logging: true
-
-- job-group:
-    name: 'verify-bbsim-jobs-voltha-2.12'
-    jobs:
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.12'
-          extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
-          testTargets: |
-            - target: sanity-bbsim-att
-              workflow: att
-              flags: ""
-              teardown: true
-              logging: true
             - target: sanity-bbsim-dt
               workflow: dt
               flags: ""

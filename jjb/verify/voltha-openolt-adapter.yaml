@@ -14,10 +14,6 @@
           name-extension: '-voltha-2.13'
           override-branch: 'voltha-2.13'
           branch-regexp: '^voltha-2.13$'
-      - 'verify-voltha-openolt-adapter-jobs-voltha-2.12':
-          name-extension: '-voltha-2.12'
-          override-branch: 'voltha-2.12'
-          branch-regexp: '^voltha-2.12$'
       - 'publish-voltha-openolt-adapter-jobs':
           branch-regexp: '{all-branches-regexp}'
 
@@ -49,13 +45,6 @@
 
 - job-group:
     name: 'verify-voltha-openolt-adapter-jobs-voltha-2.13'
-    jobs:
-      - 'voltha-patch-test':
-          pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'master'
-
-- job-group:
-    name: 'verify-voltha-openolt-adapter-jobs-voltha-2.12'
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/bbsim-tests.groovy'
