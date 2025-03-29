@@ -25,4 +25,8 @@ WORKSPACE=${WORKSPACE:-.}
 $BUILD_COMMAND
 
 # sync the files to the target
-rsync -rvzh --delete-after --exclude=.git "$WORKSPACE/$BUILD_OUTPUT_PATH" "$SYNC_TARGET_SERVER:$SYNC_TARGET_PATH"
+rsync -rvzh --delete-after --exclude=.git "$WORKSPACE/$BUILD_OUTPUT_PATH/$GERRIT_BRANCH" \
+    "$SYNC_TARGET_SERVER:$SYNC_TARGET_PATH/$GERRIT_BRANCH"
+# Parent dir index.html will only be created on master build.
+rsync -vzh "$WORKSPACE/$BUILD_OUTPUT/index.html" \
+    "$SYNC_TARGET_SERVER:$SYNC_TARGET_PATH/index.html" || true
