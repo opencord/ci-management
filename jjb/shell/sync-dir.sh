@@ -28,5 +28,5 @@ $BUILD_COMMAND
 rsync -rvzh --delete-after --exclude=.git "$WORKSPACE/$BUILD_OUTPUT_PATH/$GERRIT_BRANCH" \
     "$SYNC_TARGET_SERVER:$SYNC_TARGET_PATH/$GERRIT_BRANCH"
 # Parent dir index.html will only be created on master build.
-rsync -vzh "$WORKSPACE/$BUILD_OUTPUT/index.html" \
+rsync -vzh "$WORKSPACE/$BUILD_OUTPUT_PATH/index.html" \
     "$SYNC_TARGET_SERVER:$SYNC_TARGET_PATH/index.html" || true
