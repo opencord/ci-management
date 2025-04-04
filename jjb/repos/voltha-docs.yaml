@@ -28,8 +28,8 @@
       - 'version-tag'
       - 'sync-dir':
           dependency-jobs: 'version-tag_voltha-docs'
-          build-command: 'make docs'
-          build-output-path: '_build/'
+          build-command: 'make multiversion'
+          build-output-path: '_build/multiversion/'
           sync-target-server: 'static.opennetworking.org'
           sync-target-path: '/srv/sites/docs.voltha.org/'
           build-timeout: 60
