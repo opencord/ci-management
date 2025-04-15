@@ -152,6 +152,8 @@ EOM
       echo "** Generate $HOME/.kube/config"
       mkdir -p "$HOME/.kube"
       chmod u=rwx "$HOME/.kube"
+      # Remove current config, if it exists
+      rm -f "$HOME/.kube/config"
       kind get kubeconfig --name ${cfg.name} > "$HOME/.kube/config"
       chmod -R u+w,go-rwx "$HOME/.kube"
 

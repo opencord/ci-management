@@ -442,7 +442,7 @@ echo -e '** Monitor memory consumption: LEAVE\n'
             script : """
 echo -e "\n** make testTarget=[${testTarget}]"
 mkdir -p ${logsDir}
-export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs} "
+export ROBOT_MISC_ARGS="-d ${logsDir} ${params.extraRobotArgs}"
 ROBOT_MISC_ARGS+="-v ONOS_SSH_PORT:30115 -v ONOS_REST_PORT:30120 -v NAMESPACE:${volthaNamespace} -v INFRA_NAMESPACE:${infraNamespace} -v container_log_dir:${logsDir} -v logging:${testLogging}"
 export KVSTOREPREFIX=voltha/voltha_voltha
 
