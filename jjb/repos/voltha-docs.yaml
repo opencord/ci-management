@@ -5,7 +5,7 @@
     name: voltha-docs
     project: '{name}'
     project-regexp: '^{name}$'
-    build-node: ubuntu24.04-basebuild-4c-8g
+    build-node: ubuntu22.04-basebuild-4c-8g
 
     jobs:
       - 'verify-voltha-docs-jobs':
