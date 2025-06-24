@@ -250,6 +250,8 @@
           silent-start: true
           trigger-on:
             - change-merged-event
+            - comment-added-contains-event:
+                comment-contains-value: '(?i)^.*remerge$'
           projects:
             - project-compare-type: REG_EXP
               project-pattern: '{project-regexp}'
