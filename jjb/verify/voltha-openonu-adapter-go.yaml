@@ -10,10 +10,10 @@
           branch-regexp: '{all-branches-regexp}'
       - 'verify-voltha-openonu-adapter-go-jobs-master':
           branch-regexp: '^master$'
-      - 'verify-voltha-openonu-adapter-go-jobs-voltha-2.13':
-          name-extension: '-voltha-2.13'
-          override-branch: 'voltha-2.13'
-          branch-regexp: '^voltha-2.13$'
+      - 'verify-voltha-openonu-adapter-go-jobs-voltha-2.14':
+          name-extension: '-voltha-2.14'
+          override-branch: 'voltha-2.14'
+          branch-regexp: '^voltha-2.14$'
       - 'verify-voltha-openonu-adapter-go-jobs-voltha-2.11':
           name-extension: '-voltha-2.11'
           override-branch: 'voltha-2.11'
@@ -41,11 +41,11 @@
           build-node: 'ubuntu18.04-basebuild-2c-4g'
 
 - job-group:
-    name: 'verify-voltha-openonu-adapter-go-jobs-voltha-2.13'
+    name: 'verify-voltha-openonu-adapter-go-jobs-voltha-2.14'
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.13'
+          pipeline-branch: 'voltha-2.14'
 
 - job-group:
     name: 'verify-voltha-openonu-adapter-go-jobs-voltha-2.11'

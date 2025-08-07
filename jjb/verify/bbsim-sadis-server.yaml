@@ -30,9 +30,9 @@
     jobs:
       - 'verify-bbsim-sadis-server-jobs':
           branch-regexp: '{all-branches-regexp}'
-      - 'verify-bbsim-sadis-server-jobs-voltha-2.13':
-          name-extension: '-voltha-2.13'
-          branch-regexp: '^voltha-2.13$'
+      - 'verify-bbsim-sadis-server-jobs-voltha-2.14':
+          name-extension: '-voltha-2.14'
+          branch-regexp: '^voltha-2.14$'
       - 'verify-bbsim-sadis-server-jobs-voltha-2.11':
           name-extension: '-voltha-2.11'
           branch-regexp: '^voltha-2.11$'
@@ -60,11 +60,11 @@
             --set onos-classic.image.tag=master
 
 - job-group:
-    name: 'verify-bbsim-sadis-server-jobs-voltha-2.13'
+    name: 'verify-bbsim-sadis-server-jobs-voltha-2.14'
     jobs:
       - 'voltha-patch-test':
           pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.13'
+          pipeline-branch: 'voltha-2.14'
 
 - job-group:
     name: 'verify-bbsim-sadis-server-jobs-voltha-2.11'

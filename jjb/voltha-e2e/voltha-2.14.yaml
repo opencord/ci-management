@@ -4,7 +4,7 @@
 #   o md5sum(master) can be used to locate branch/release variants of a job.
 
 - project:
-    name: voltha-e2e-2.13
+    name: voltha-e2e-2.14
 
     project-name: '{name}'
     manualBranch: ''
@@ -24,10 +24,10 @@
 # source: voltha-e2e.yaml
     jobs:
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-pm-data-test-bbsim-2.13'
+          name: 'periodic-voltha-pm-data-test-bbsim-2.14'
           pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.13'
-          code-branch: 'voltha-2.13'
+          pipeline-branch: 'voltha-2.14'
+          code-branch: 'voltha-2.14'
           extraHelmFlags: '--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           time-trigger: "H H/23 * * *"
           logLevel: 'DEBUG'
@@ -45,10 +45,10 @@
           timeout: 140
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-multiple-olts-pm-data-test-bbsim-2.13'
+          name: 'periodic-voltha-multiple-olts-pm-data-test-bbsim-2.14'
           pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.13'
-          code-branch: 'voltha-2.13'
+          pipeline-branch: 'voltha-2.14'
+          code-branch: 'voltha-2.14'
           extraHelmFlags: '--set onu=2,pon=2 --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
           olts: 2
           timeout: 180
@@ -70,11 +70,11 @@
       # md5sum(master): c606493da6ee7cbb18ca8aee97ea2957
       # -----------------------------------------------------------------------
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-test-bbsim-2.13'
-          code-branch: 'voltha-2.13'
+          name: 'periodic-voltha-test-bbsim-2.14'
+          code-branch: 'voltha-2.14'
           logLevel: 'DEBUG'                      # force job to regenerate
           pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.13'
+          pipeline-branch: 'voltha-2.14'
           time-trigger: "H H/23 * * *"
           testTargets: |
             - target: functional-single-kind
@@ -104,12 +104,12 @@
               logging: true
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-dt-test-bbsim-2.13'
+          name: 'periodic-voltha-dt-test-bbsim-2.14'
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           pipeline-script: 'voltha/bbsim-tests.groovy'
-          pipeline-branch: 'voltha-2.13'
-          code-branch: 'voltha-2.13'
+          pipeline-branch: 'voltha-2.14'
+          code-branch: 'voltha-2.14'
           time-trigger : '@daily'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master '
           testTargets: |
@@ -125,10 +125,10 @@
               logging: true
 
       - 'voltha-periodic-test':
-          name: 'periodic-voltha-dt-fttb-test-bbsim-2.13'
+          name: 'periodic-voltha-dt-fttb-test-bbsim-2.14'
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
-          code-branch: 'voltha-2.13'
+          code-branch: 'voltha-2.14'
           time-trigger: "H H/23 * * *"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF --set onu=2'
           testTargets: |

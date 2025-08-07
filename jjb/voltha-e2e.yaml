@@ -23,11 +23,11 @@
 # Intent: voltha 2.0 tests, end-2-end pipeline jobs.
 # -----------------------------------------------------------------------
 
-- _voltha_213_common: &voltha_213_common
-    name: voltha-2.13-common
+- _voltha_214_common: &voltha_214_common
+    name: voltha-2.14-common
     pipeline-script: 'voltha/bbsim-tests.groovy'
-    pipeline-branch: 'voltha-2.13'
-    code-branch: 'voltha-2.13'
+    pipeline-branch: 'voltha-2.14'
+    code-branch: 'voltha-2.14'
     time-trigger: "H H/23 * * *"
 
 - project:
@@ -52,12 +52,12 @@
     jobs:
 
       # -----------------------------------------------------------------------
-      # voltha-2.13 Jobs
+      # voltha-2.14 Jobs
       # -----------------------------------------------------------------------
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-multiple-olts-test-bbsim-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-multiple-olts-test-bbsim-2.14'
           olts: 2
           extraHelmFlags: '--set onu=2,pon=2'
           testTargets: |
@@ -83,8 +83,8 @@
               logging: true
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-multi-uni-test-bbsim-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-multi-uni-test-bbsim-2.14'
           extraHelmFlags: '--set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
           testTargets: |
             - target: functional-single-kind-multiuni-att
@@ -104,8 +104,8 @@
               logging: true
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-multi-uni-multiple-olts-test-bbsim-2.14'
           olts: 2
           extraHelmFlags: '--set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
           testTargets: |
@@ -127,8 +127,8 @@
           timeout: 180
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-openonu-go-test-bbsim-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-openonu-go-test-bbsim-2.14'
           logLevel: 'DEBUG'
           testTargets: |
             - target: 1t1gem-openonu-go-adapter-test
@@ -234,9 +234,9 @@
           timeout: 240
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'patchset-voltha-2.13-openonu-go-test-bbsim'
-          trigger-comment: "voltha 2.13 test openonu singleolt"
+          <<: *voltha_214_common
+          name: 'patchset-voltha-2.14-openonu-go-test-bbsim'
+          trigger-comment: "voltha 2.14 test openonu singleolt"
           logLevel: 'DEBUG'
           testTargets: |
             - target: 1t1gem-openonu-go-adapter-test
@@ -332,8 +332,8 @@
           timeout: 210
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-multiple-olts-openonu-go-test-bbsim-2.14'
           extraHelmFlags: '--set onu=2,pon=2'
           olts: 2
           logLevel: 'DEBUG'
@@ -402,9 +402,9 @@
           timeout: 270
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'patchset-voltha-2.13-multiple-olts-openonu-go-test-bbsim'
-          trigger-comment: "voltha 2.13 test openonu multiolt"
+          <<: *voltha_214_common
+          name: 'patchset-voltha-2.14-multiple-olts-openonu-go-test-bbsim'
+          trigger-comment: "voltha 2.14 test openonu multiolt"
           extraHelmFlags: '--set onu=2,pon=2'
           olts: 2
           logLevel: 'DEBUG'
@@ -472,8 +472,8 @@
           timeout: 270
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-test-DMI-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-test-DMI-2.14'
           testTargets: |
             - target: bbsim-dmi-hw-management-test
               workflow: att
@@ -482,8 +482,8 @@
               logging: true
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-etcd-test-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-etcd-test-2.14'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           extraHelmFlags: '--set onu=2,pon=2'
           testTargets: |
@@ -494,8 +494,8 @@
               logging: true
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim-2.14'
           extraHelmFlags: '--set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
           logLevel: 'DEBUG'
           robot-args: '-v unitag_sub:True'
@@ -517,8 +517,8 @@
               logging: true
 
       - 'voltha-periodic-test':
-          <<: *voltha_213_common
-          name: 'periodic-voltha-memory-leak-test-bbsim-2.13'
+          <<: *voltha_214_common
+          name: 'periodic-voltha-memory-leak-test-bbsim-2.14'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           withMonitoring: true
           logLevel: 'DEBUG'
