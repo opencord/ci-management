@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e0caca9_43803f8d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-08-08T07:42:42Z",
+      "side": 1,
+      "message": "We don\u0027t need to support 2.11 anymore. All 2.11 jobs nedds to be removed.",
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c39a597c_87f5e1d4",
+        "filename": "jjb/repos/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-08-08T07:42:42Z",
+      "side": 1,
+      "message": "We don\u0027t need 2.11 anymore",
+      "range": {
+        "startLine": 17,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 40
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca779e91_8f60d270",
+        "filename": "jjb/software-upgrades.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-08-08T07:42:42Z",
+      "side": 1,
+      "message": "Previously was 2.13, but now becomes 2.3, decreasing. Is that right?",
+      "range": {
+        "startLine": 56,
+        "startChar": 36,
+        "endLine": 56,
+        "endChar": 42
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90694c6a_cf0b8d2c",
+        "filename": "jjb/verify/bbsim-sadis-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-08-08T07:42:42Z",
+      "side": 1,
+      "message": "same 2.11 comment here.",
+      "range": {
+        "startLine": 70,
+        "startChar": 51,
+        "endLine": 70,
+        "endChar": 53
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1e18a739_1eb1cde3",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-08-08T07:42:42Z",
+      "side": 1,
+      "message": "WE don\u0027t need 2.11 anymore. All 2.11s need to be removed.",
+      "range": {
+        "startLine": 38,
+        "startChar": 10,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8f1ed753_fbbfd44a",
+        "filename": "jjb/verify/ofagent-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-08-08T07:42:42Z",
+      "side": 1,
+      "message": "same",
+      "range": {
+        "startLine": 17,
+        "startChar": 35,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88c024c2_6ba80c0e",
+        "filename": "jjb/verify/ofagent-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1000218
+      },
+      "writtenOn": "2025-08-08T07:42:42Z",
+      "side": 1,
+      "message": "same 2.11",
+      "range": {
+        "startLine": 42,
+        "startChar": 11,
+        "endLine": 43,
+        "endChar": 9
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
