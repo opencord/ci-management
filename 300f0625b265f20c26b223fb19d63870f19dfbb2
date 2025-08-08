@@ -41,6 +41,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "de814271_fc9f42db",
+        "filename": "jjb/repos/voltha-helm-charts.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-08-08T21:23:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c39a597c_87f5e1d4",
+      "range": {
+        "startLine": 17,
+        "startChar": 9,
+        "endLine": 18,
+        "endChar": 40
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ca779e91_8f60d270",
@@ -54,6 +78,30 @@
       "writtenOn": "2025-08-08T07:42:42Z",
       "side": 1,
       "message": "Previously was 2.13, but now becomes 2.3, decreasing. Is that right?",
+      "range": {
+        "startLine": 56,
+        "startChar": 36,
+        "endLine": 56,
+        "endChar": 42
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f529efdf_0c63ffe6",
+        "filename": "jjb/software-upgrades.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-08-08T21:23:36Z",
+      "side": 1,
+      "message": "I think this was a mistake on my part last time. ofagent isn\u0027t normally versioned to the Voltha version, but I tagged it last time and used that version. Now that I\u0027m more familiar with everything, I think it makes more sense to go back to ofagent\u0027s native tag.",
+      "parentUuid": "ca779e91_8f60d270",
       "range": {
         "startLine": 56,
         "startChar": 36,
@@ -87,6 +135,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0b33a496_015aadec",
+        "filename": "jjb/verify/bbsim-sadis-server.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-08-08T21:23:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "90694c6a_cf0b8d2c",
+      "range": {
+        "startLine": 70,
+        "startChar": 51,
+        "endLine": 70,
+        "endChar": 53
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1e18a739_1eb1cde3",
@@ -100,6 +172,30 @@
       "writtenOn": "2025-08-08T07:42:42Z",
       "side": 1,
       "message": "WE don\u0027t need 2.11 anymore. All 2.11s need to be removed.",
+      "range": {
+        "startLine": 38,
+        "startChar": 10,
+        "endLine": 40,
+        "endChar": 40
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f0a3ee1b_58d84ad7",
+        "filename": "jjb/verify/bbsim.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 40,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-08-08T21:23:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1e18a739_1eb1cde3",
       "range": {
         "startLine": 38,
         "startChar": 10,
@@ -133,6 +229,30 @@
       "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6cb57be2_0a98f6a6",
+        "filename": "jjb/verify/ofagent-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-08-08T21:23:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8f1ed753_fbbfd44a",
+      "range": {
+        "startLine": 17,
+        "startChar": 35,
+        "endLine": 19,
+        "endChar": 40
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88c024c2_6ba80c0e",
@@ -146,6 +266,30 @@
       "writtenOn": "2025-08-08T07:42:42Z",
       "side": 1,
       "message": "same 2.11",
+      "range": {
+        "startLine": 42,
+        "startChar": 11,
+        "endLine": 43,
+        "endChar": 9
+      },
+      "revId": "300f0625b265f20c26b223fb19d63870f19dfbb2",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "38b44f8d_ac647711",
+        "filename": "jjb/verify/ofagent-go.yaml",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-08-08T21:23:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88c024c2_6ba80c0e",
       "range": {
         "startLine": 42,
         "startChar": 11,
