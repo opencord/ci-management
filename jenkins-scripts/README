@@ -15,7 +15,7 @@ repo and run the init script. It should look like:
   #!/bin/bash
 
   # Clone the management repo
-  git clone https://gerrit.opencord.org/ci-management.git /ci-management
+  git clone https://gerrit.lfbroadband.org/ci-management.git /ci-management
   /ci-management/jenkins-scripts/jenkins-init-script.sh
 
   # clean-up from the init run
