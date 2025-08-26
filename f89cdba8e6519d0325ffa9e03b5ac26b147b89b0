@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b803f4b8_dc1a4c86",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001013
+      },
+      "writtenOn": "2025-08-26T23:34:50Z",
+      "side": 1,
+      "message": "Overriding CI, as this needs to be merged in order to fix CI.",
+      "revId": "f89cdba8e6519d0325ffa9e03b5ac26b147b89b0",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
