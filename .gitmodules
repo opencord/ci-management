@@ -9,4 +9,4 @@
 	url = https://github.com/lfit/releng-common-packer.git
 [submodule "lf/onf-make"]
 	path = lf/onf-make
-	url = http://gerrit.opencord.org/onf-make
+	url = http://gerrit.lfbroadband.org/onf-make

@@ -8,7 +8,7 @@ set -eu -o pipefail
 echo "git version: $(git --version)"
 
 # Variables used in this and child scripts
-export PUBLISH_URL="charts.opencord.org"
+export PUBLISH_URL="charts.lfbroadband.org"
 export OLD_REPO_DIR="cord-charts-repo"
 export NEW_REPO_DIR="chart_repo"
 
@@ -17,15 +17,15 @@ git config --global user.email "do-not-reply@opennetworking.org"
 git config --global user.name "Jenkins"
 
 # Checkout 'cord-charts-repo' repo that contains updated charts
-git clone "ssh://jenkins@gerrit.opencord.org:29418/$OLD_REPO_DIR.git"
+git clone "ssh://jenkins@gerrit.lfbroadband.org:29418/$OLD_REPO_DIR.git"
 
 # Clone the `helm-repo-tools` which contains scripts
-git clone ssh://jenkins@gerrit.opencord.org:29418/helm-repo-tools.git
+git clone ssh://jenkins@gerrit.lfbroadband.org:29418/helm-repo-tools.git
 
 # Setup helm and external repos
 helm repo add stable https://charts.helm.sh/stable
 helm repo add rook-release https://charts.rook.io/release
-helm repo add cord https://charts.opencord.org
+helm repo add cord https://charts.lfbroadband.org
 helm repo add elastic  https://helm.elastic.co
 helm repo add kiwigrid https://kiwigrid.github.io
 

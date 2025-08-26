@@ -18,7 +18,7 @@
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
-      remote: 'https://gerrit.opencord.org/ci-management.git'
+      remote: 'https://gerrit.lfbroadband.org/ci-management.git'
 ])
 def infraNamespace = "infra"
 def volthaNamespace = "voltha"
@@ -169,7 +169,7 @@ pipeline {
       steps {
         script {
           sh returnStdout: false, script: """
-              helm repo add cord https://charts.opencord.org
+              helm repo add cord https://charts.lfbroadband.org
               helm repo update
               if helm version -c --short|grep v2 -q; then
                 helm install -n voltha-kafka-dump cord/voltha-kafka-dump

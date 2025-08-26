@@ -53,7 +53,7 @@ void leave(String name) {
 }
 
 // -----------------------------------------------------------------------
-// https://jenkins.opencord.org/job/onos-app-release/285/consoleFull
+// https://jenkins.lfbroadband.org/job/onos-app-release/285/consoleFull
 // -----------------------------------------------------------------------
 void git_debug(String name) {
     enter(name)
@@ -137,7 +137,7 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     echo "Job triggered by " + userId
     // FIXME: supply Jenkins-owned known_hosts file via config_file_provider
     //  https://jenkins.io/doc/pipeline/steps/config-file-provider/
-    sh 'ssh-keyscan -H -t rsa -p 29418 gerrit.opencord.org >> ~/.ssh/known_hosts'
+    sh 'ssh-keyscan -H -t rsa -p 29418 gerrit.lfbroadband.org >> ~/.ssh/known_hosts'
 
     sh 'git config --global user.name "Jenkins"'
     sh 'git config --global user.email "do-not-reply@opennetworking.org"'
@@ -153,9 +153,9 @@ node ('ubuntu18.04-basebuild-1c-2g') {
     cleanWs()
 
     sshagent (credentials: ['gerrit-jenkins-user']) {
-      git branch: branch, url: 'ssh://jenkins@gerrit.opencord.org:29418/' + appRepo, credentialsId: 'gerrit-jenkins-user'
+      git branch: branch, url: 'ssh://jenkins@gerrit.lfbroadband.org:29418/' + appRepo, credentialsId: 'gerrit-jenkins-user'
 
-      sh 'gitdir=$(git rev-parse --git-dir) && scp -p -P 29418 jenkins@gerrit.opencord.org:hooks/commit-msg ${gitdir}/hooks/'
+      sh 'gitdir=$(git rev-parse --git-dir) && scp -p -P 29418 jenkins@gerrit.lfbroadband.org:hooks/commit-msg ${gitdir}/hooks/'
     }
   }
 

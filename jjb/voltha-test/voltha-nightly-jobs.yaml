@@ -69,7 +69,7 @@
 
       - string:
           name: helmRepoUrl
-          default: 'https://charts.opencord.org'
+          default: 'https://charts.lfbroadband.org'
           description: 'URL where helm-charts are published'
 
       - string:
@@ -256,7 +256,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -306,7 +306,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -334,7 +334,7 @@
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/voltha-physical-functional-tests.groovy'
     pipeline-branch: 'master'
-    manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
+    manifest-url: 'https://gerrit.lfbroadband.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
     oltAdapterAppLabel: 'adapter-open-olt'
@@ -459,7 +459,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -486,7 +486,7 @@
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/playground/voltha-physical-functional-tests.groovy'
     pipeline-branch: 'master'
-    manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
+    manifest-url: 'https://gerrit.lfbroadband.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
     oltAdapterAppLabel: 'adapter-open-olt'
@@ -611,7 +611,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -639,7 +639,7 @@
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/voltha-physical-functional-tests.groovy'
     pipeline-branch: 'master'
-    manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
+    manifest-url: 'https://gerrit.lfbroadband.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
     oltAdapterAppLabel: 'adapter-open-olt'
@@ -757,7 +757,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -785,7 +785,7 @@
     <<: *voltha-pipe-job-boiler-plate
     pipeline-script: 'voltha/voltha-physical-functional-tests.groovy'
     pipeline-branch: 'master'
-    manifest-url: 'https://gerrit.opencord.org/voltha-test-manifest.git'
+    manifest-url: 'https://gerrit.lfbroadband.org/voltha-test-manifest.git'
     manifest-branch: 'master'
 
     oltAdapterAppLabel: 'adapter-open-olt'
@@ -908,7 +908,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -1011,7 +1011,7 @@
 
       - string:
           name: helmRepoUrl
-          default: 'https://charts.opencord.org'
+          default: 'https://charts.lfbroadband.org'
           description: 'URL where helm-charts are published'
 
       - string:
@@ -1151,7 +1151,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}

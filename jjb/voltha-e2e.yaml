@@ -1261,7 +1261,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -1435,7 +1435,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -1611,7 +1611,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -1784,7 +1784,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}
@@ -1846,7 +1846,7 @@
     pipeline-scm:
       scm:
         - git:
-            url: https://gerrit.opencord.org/ci-management
+            url: https://gerrit.lfbroadband.org/ci-management
             branches:
               - origin/{pipeline-branch}
       script-path: jjb/pipeline/{pipeline-script}

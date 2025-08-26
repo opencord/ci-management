@@ -23,18 +23,18 @@ include $(ONF_MAKEDIR)/gerrit/help.mk
 # -----------------------------------------------------------------------
 # -----------------------------------------------------------------------
 replication-status:
-	ssh gerrit.opencord.org replication list --detail
+	ssh gerrit.lfbroadband.org replication list --detail
 
 # -----------------------------------------------------------------------
 # NOTE: Gerrit ssh targets assume use of ~/.ssh config files
 #       port, login, etc are
 # -----------------------------------------------------------------------
-# % ssh -p 29418 <username>@gerrit.opencord.org replication list --detail
-# % ssh gerrit.opencord.org replication list --detail
+# % ssh -p 29418 <username>@gerrit.lfbroadband.org replication list --detail
+# % ssh gerrit.lfbroadband.org replication list --detail
 # -----------------------------------------------------------------------
-# Host gerrit.opencord.org
-#  Hostname gerrit.opencord.org
-#  IdentityFile ~/.ssh/gerrit.opencord.org/{ssh_keyfile}
+# Host gerrit.lfbroadband.org
+#  Hostname gerrit.lfbroadband.org
+#  IdentityFile ~/.ssh/gerrit.lfbroadband.org/{ssh_keyfile}
 #  IdentitiesOnly yes
 #  AddKeysToAgent yes
 #  Port 29418

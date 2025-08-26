@@ -23,7 +23,7 @@
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
-      remote: 'https://gerrit.opencord.org/ci-management.git'
+      remote: 'https://gerrit.lfbroadband.org/ci-management.git'
 ])
 
 def infraNamespace = "infra"

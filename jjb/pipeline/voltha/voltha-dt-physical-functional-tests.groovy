@@ -18,7 +18,7 @@
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
-      remote: 'https://gerrit.opencord.org/ci-management.git'
+      remote: 'https://gerrit.lfbroadband.org/ci-management.git'
 ])
 
 node {
@@ -51,7 +51,7 @@ pipeline {
         checkout([
           $class: 'GitSCM',
           userRemoteConfigs: [[
-            url: "https://gerrit.opencord.org/voltha-system-tests",
+            url: "https://gerrit.lfbroadband.org/voltha-system-tests",
             refspec: "${volthaSystemTestsChange}"
           ]],
           branches: [[ name: "${branch}", ]],
@@ -65,7 +65,7 @@ pipeline {
           sh(script:"""
             if [ '${volthaSystemTestsChange}' != '' ] ; then
               cd $WORKSPACE/voltha-system-tests;
-              git fetch https://gerrit.opencord.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
+              git fetch https://gerrit.lfbroadband.org/voltha-system-tests ${volthaSystemTestsChange} && git checkout FETCH_HEAD
             fi
             """)
         }

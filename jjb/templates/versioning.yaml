@@ -19,7 +19,7 @@
 #    released, the correct action is to make a new fixed version, not try to
 #    fix the released version
 #
-# For reference: https://jira.opencord.org/browse/CORD-3117
+# For reference: https://lf-broadband.atlassian.net/browse/CORD-3117
 
 - job-template:
     id: tag-check

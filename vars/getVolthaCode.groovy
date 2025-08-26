@@ -96,7 +96,7 @@ def wrapped(Map config)
             // However, the gerritProject is overridden, so that we can pull
             // in another repo and run the tests to make sure that they work
             // with the code changes to onf-make.
-            repo_project = "https://gerrit.opencord.org/${cfg.gerritProject}"
+            repo_project = "https://gerrit.lfbroadband.org/${cfg.gerritProject}"
 
             checkout([
                 $class: 'GitSCM',
@@ -120,7 +120,7 @@ def wrapped(Map config)
         }
         else if (!(cfg.gerritProject in frequent_repos))
         {
-            repo_project = "https://gerrit.opencord.org/${cfg.gerritProject}"
+            repo_project = "https://gerrit.lfbroadband.org/${cfg.gerritProject}"
 
             checkout([
                 $class: 'GitSCM',
@@ -154,7 +154,7 @@ def wrapped(Map config)
 ** Clone voltha-system-tests
 ** -----------------------------------------------------------------------
 """)
-        repo_vst = 'https://gerrit.opencord.org/voltha-system-tests'
+        repo_vst = 'https://gerrit.lfbroadband.org/voltha-system-tests'
 
         checkout([
             $class: 'GitSCM',
@@ -182,7 +182,7 @@ def wrapped(Map config)
 
             sh("""
         pushd "$WORKSPACE/${cfg.gerritProject}"
-        git fetch https://gerrit.opencord.org/${cfg.gerritProject} ${cfg.gerritRefspec} && git checkout FETCH_HEAD
+        git fetch https://gerrit.lfbroadband.org/${cfg.gerritProject} ${cfg.gerritRefspec} && git checkout FETCH_HEAD
 
         echo "Currently on commit: \n"
         git log -1 --oneline
@@ -199,7 +199,7 @@ def wrapped(Map config)
     stage('Clone voltha-helm-charts')
     {
         enter("Clone voltha-helm-charts @ BRANCH=[${cfg.branch}]")
-        repo_vhc = 'https://gerrit.opencord.org/voltha-helm-charts'
+        repo_vhc = 'https://gerrit.lfbroadband.org/voltha-helm-charts'
 
         checkout([
             $class: 'GitSCM',
@@ -224,7 +224,7 @@ def wrapped(Map config)
             enter('cfg.gerritProject == voltha-helm-charts')
             sh """
         pushd "$WORKSPACE/${cfg.gerritProject}"
-        git fetch "https://gerrit.opencord.org/${cfg.gerritProject}" ${cfg.gerritRefspec} && git checkout FETCH_HEAD
+        git fetch "https://gerrit.lfbroadband.org/${cfg.gerritProject}" ${cfg.gerritRefspec} && git checkout FETCH_HEAD
 
         echo "Currently on commit: \n"
         git log -1 --oneline

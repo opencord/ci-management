@@ -31,7 +31,7 @@ rules:
     max: 160
 
 # -----------------------------------------------------------------------
-# .. seealso: https://gerrit.opencord.org/plugins/gitiles/
+# .. seealso: https://gerrit.lfbroadband.org/plugins/gitiles/
 #             helm-repo-tools/+/refs/heads/master/yamllint.conf
 # -----------------------------------------------------------------------
 #

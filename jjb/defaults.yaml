@@ -60,15 +60,15 @@
 
     # The most frequently used type of Build Executor. Name is per the LF global-jjb.
     # See build node types under "Cloud > Amazon EC2" at
-    #  https://jenkins.opencord.org/configure
+    #  https://jenkins.lfbroadband.org/configure
     build-node: 'ubuntu18.04-basebuild-1c-1g'
 
     # CORD Gerrit server definition, set in configuration
     gerrit-server-name: 'CORD Gerrit'
 
     # URL for Gerrit server, for use with `repo`
-    gerrit-server-url: 'https://gerrit.opencord.org'
-    gerrit-server-ssh-url: 'ssh://jenkins@gerrit.opencord.org:29418'
+    gerrit-server-url: 'https://gerrit.lfbroadband.org'
+    gerrit-server-ssh-url: 'ssh://jenkins@gerrit.lfbroadband.org:29418'
 
     # name of the manifest git repos used with the `repo` cli tool
     cord-repo-manifest: manifest.git

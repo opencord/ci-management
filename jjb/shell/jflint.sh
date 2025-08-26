@@ -9,7 +9,7 @@
 
 set -e -u -o pipefail
 
-JENKINS_URL=https://jenkins.opencord.org/
+JENKINS_URL=https://jenkins.lfbroadband.org/
 JF_LIST=()
 
 JF_FAIL=0

@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # -----------------------------------------------------------------------
-# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# https://gerrit.lfbroadband.org/plugins/gitiles/onf-make
 # ONF.makefiles.include.version = 1.1
 # ONF.confg.mk                  = 1.5
 # -----------------------------------------------------------------------

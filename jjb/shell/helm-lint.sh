@@ -17,10 +17,10 @@ EOM
 
 helm repo add stable https://charts.helm.sh/stable
 helm repo add rook-release https://charts.rook.io/release
-helm repo add cord https://charts.opencord.org
+helm repo add cord https://charts.lfbroadband.org
 
 ## Clone tool chain
-git clone ssh://jenkins@gerrit.opencord.org:29418/helm-repo-tools.git
+git clone ssh://jenkins@gerrit.lfbroadband.org:29418/helm-repo-tools.git
 ./helm-repo-tools/helmlint.sh clean
 echo "*.lock" >> .gitignore
 
@@ -33,7 +33,7 @@ git config --global user.email "do-not-reply@opennetworking.org"
 git config --global user.name "Jenkins"
 
 # Check for chart version conflicts by building the repo (don't upload)
-git clone "ssh://jenkins@gerrit.opencord.org:29418/$OLD_REPO_DIR.git"
+git clone "ssh://jenkins@gerrit.lfbroadband.org:29418/$OLD_REPO_DIR.git"
 
 ./helm-repo-tools/helmrepo.sh   # [TODO] make ???
 

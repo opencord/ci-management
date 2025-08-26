@@ -76,7 +76,7 @@ pipeline {
            #!/usr/bin/env bash
            set -eu -o pipefail
 
-           git clone https://gerrit.opencord.org/pod-configs
+           git clone https://gerrit.lfbroadband.org/pod-configs
            pushd cord/helm-charts
 
            helm install -f examples/kafka-single.yaml --version 0.13.3 -n cord-kafka incubator/kafka

@@ -28,7 +28,7 @@
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
-      remote: 'https://gerrit.opencord.org/ci-management.git'
+      remote: 'https://gerrit.lfbroadband.org/ci-management.git'
 ])
 
 // -----------------------------------------------------------------------
@@ -79,12 +79,12 @@ String getIam(String func) {
 def get_voltha_comp_versions(component, base_deploy_tag) {
     def comp_test_tag = sh(
         // script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
-        script: "git ls-remote --refs --tags https://gerrit.opencord.org/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
+        script: "git ls-remote --refs --tags https://gerrit.lfbroadband.org/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=1 | sed 's/v//'",
         returnStdout: true
     ).trim()
     def comp_deploy_tag = sh(
         // script: "git ls-remote --refs --tags https://github.com/opencord/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
-        script: "git ls-remote --refs --tags https://gerrit.opencord.org/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
+        script: "git ls-remote --refs --tags https://gerrit.lfbroadband.org/${component} | cut --delimiter='/' --fields=3 | tr '-' '~' | sort --version-sort | tail --lines=2 | head -n 1 | sed 's/v//'",
         returnStdout: true
     ).trim()
     def comp_deploy_major = comp_deploy_tag.substring(0, comp_deploy_tag.indexOf('.'))

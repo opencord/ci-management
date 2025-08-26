@@ -24,7 +24,7 @@
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
     $class: 'GitSCMSource',
-    remote: 'https://gerrit.opencord.org/ci-management.git'
+    remote: 'https://gerrit.lfbroadband.org/ci-management.git'
 ])
 
 //------------------//
@@ -236,7 +236,7 @@ void execute_test\
 
             sh(label  : 'Deploy common infrastructure',
                script : """
-    helm repo add onf https://charts.opencord.org
+    helm repo add onf https://charts.lfbroadband.org
     helm repo update
 
     echo -e "\nwithMonitoring=[$withMonitoring]"

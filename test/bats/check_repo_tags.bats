@@ -97,7 +97,7 @@ setup() {
 
         # local component='voltha-openonu-adapter-go'
         declare -a gerrit=()
-        gather_comp_deploy gerrit "http://gerrit.opencord.org/${component}"
+        gather_comp_deploy gerrit "http://gerrit.lfbroadband.org/${component}"
 
         declare -a github=()
         gather_comp_deploy gerrit "http://github.com/opencord/${component}"
@@ -162,7 +162,7 @@ setup() {
 
         # local component='voltha-openonu-adapter-go'
         declare -a gerrit=()
-        gather_comp_test gerrit "http://gerrit.opencord.org/${component}"
+        gather_comp_test gerrit "http://gerrit.lfbroadband.org/${component}"
 
         declare -a github=()
         gather_comp_test gerrit "http://github.com/opencord/${component}"

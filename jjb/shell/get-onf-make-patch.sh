@@ -19,14 +19,14 @@
 
 ONF_MAKE_SUBDIR="lf/onf-make"
 PROJECT="${TEST_PROJECT:-}"
-REPO="https://gerrit.opencord.org/$PROJECT"
+REPO="https://gerrit.lfbroadband.org/$PROJECT"
 
 cd $WORKSPACE
 git clone "$REPO" "$PROJECT"
 cd "$PROJECT"
 git submodule update --init
 
-REPO="https://gerrit.opencord.org/onf-make"
+REPO="https://gerrit.lfbroadband.org/onf-make"
 
 pushd "$ONF_MAKE_SUBDIR"
 git fetch "$REPO" "$GERRIT_REFSPEC" && git checkout FETCH_HEAD

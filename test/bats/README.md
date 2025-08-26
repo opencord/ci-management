@@ -4,9 +4,9 @@ BATS unit testing
 check_repo_tags.bats
 --------------------
 
-- SRC: [jjb/pipeline/voltha/software-upgrades.groovy](https://gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/jjb/pipeline/voltha/software-upgrades.groovy#80)
-- TST: [test/bats/check_repo_tags.bats](https://gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/test/bats/check_repo_tags.bats)
-- LIB: [test/bats/utils/check_repo_tags.sh](https://gerrit.opencord.org/plugins/gitiles/ci-management/+/refs/heads/master/test/bats/utils/check_repo_tags.sh#31)
+- SRC: [jjb/pipeline/voltha/software-upgrades.groovy](https://gerrit.lfbroadband.org/plugins/gitiles/ci-management/+/refs/heads/master/jjb/pipeline/voltha/software-upgrades.groovy#80)
+- TST: [test/bats/check_repo_tags.bats](https://gerrit.lfbroadband.org/plugins/gitiles/ci-management/+/refs/heads/master/test/bats/check_repo_tags.bats)
+- LIB: [test/bats/utils/check_repo_tags.sh](https://gerrit.lfbroadband.org/plugins/gitiles/ci-management/+/refs/heads/master/test/bats/utils/check_repo_tags.sh#31)
 
 Unit test check_repo_tags.bats will exercise (git ls-remote) logic inlined within the software-upgrades.groovy script.  The test will gather a list of tagnames from the gerrit and github repositories then compare the lists for differences.
 

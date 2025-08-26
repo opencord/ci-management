@@ -25,7 +25,7 @@ pipeline {
       steps {
         sh '''
             pushd $WORKSPACE
-            git clone https://gerrit.opencord.org/automation-tools
+            git clone https://gerrit.lfbroadband.org/automation-tools
             popd
             '''
             }

@@ -74,7 +74,7 @@ pipeline {
     stage ('Checkout Automation-Tools Repo') {
       steps {
         script {
-          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'mkdir ~/cord; cd ~/cord/; git clone https://gerrit.opencord.org/automation-tools'", returnStdout: true)
+          sh (script: "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'mkdir ~/cord; cd ~/cord/; git clone https://gerrit.lfbroadband.org/automation-tools'", returnStdout: true)
           }
       }
     }
@@ -115,7 +115,7 @@ EOF
     stage ('Test MCORD') {
       steps {
         script {
-          sh "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'cd ~/cord/; git clone https://gerrit.opencord.org/mcord; cd mcord/test; ansible-playbook -i localhost, -c local mcord-cavium-test-playbook.yml 1>&2'"
+          sh "ssh -oStrictHostKeyChecking=no -i ~/.ssh/cord ubuntu@${node_ip} 'cd ~/cord/; git clone https://gerrit.lfbroadband.org/mcord; cd mcord/test; ansible-playbook -i localhost, -c local mcord-cavium-test-playbook.yml 1>&2'"
           }
        }
     }

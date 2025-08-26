@@ -17,7 +17,7 @@
 # SPDX-FileCopyrightText: 2024 Open Networking Foundation (ONF) and the ONF Contributors
 # SPDX-License-Identifier: Apache-2.0
 # -----------------------------------------------------------------------
-# https://gerrit.opencord.org/plugins/gitiles/onf-make
+# https://gerrit.lfbroadband.org/plugins/gitiles/onf-make
 # ONF.makefiles.include.version = 1.1
 # -----------------------------------------------------------------------
 

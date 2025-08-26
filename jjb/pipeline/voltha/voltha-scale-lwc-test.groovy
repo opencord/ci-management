@@ -17,7 +17,7 @@
 library identifier: 'cord-jenkins-libraries@master',
     retriever: modernSCM([
       $class: 'GitSCMSource',
-      remote: 'https://gerrit.opencord.org/ci-management.git'
+      remote: 'https://gerrit.lfbroadband.org/ci-management.git'
 ])
 
 // [TODO] fix path, achilles heel for testing.
@@ -86,7 +86,7 @@ pipeline {
               helmTeardown(["default", "voltha1", "voltha-infra"])
             }
             sh returnStdout: false, script: '''
-              helm repo add onf https://charts.opencord.org
+              helm repo add onf https://charts.lfbroadband.org
               helm repo update
 
               # remove all persistent volume claims

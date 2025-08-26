@@ -247,7 +247,7 @@ EOB
 ##   o SCRIPT_VERSION => git changeset for repo:ci-managment
 ##   o echo "library version: ${env."library.libName.version"}"
 # -----------------------------------------------------------------------
-# 14:18:38   > git fetch --no-tags --progress -- https://gerrit.opencord.org/ci-management.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+# 14:18:38   > git fetch --no-tags --progress -- https://gerrit.lfbroadband.org/ci-management.git +refs/heads/*:refs/remotes/origin/* # timeout=10
 # 14:18:39  Checking out Revision 50f6e0b97f449b32d32ec0e02d59642000351847 (master)
 # -----------------------------------------------------------------------
 function full_banner()
