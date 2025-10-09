@@ -2,5 +2,4 @@
 host=gerrit.lfbroadband.org
 port=29418
 project=ci-management.git
-defaultremote=origin
 defaultbranch=master
