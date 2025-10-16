@@ -61,4 +61,4 @@ pushd "$OLD_REPO_DIR"
   git push origin "$NEW_VERSION"
 popd
 
-rsync -rvzh --delete-after --exclude=.git "$OLD_REPO_DIR/" "static.opennetworking.org:/srv/sites/$PUBLISH_URL/"
+rsync -rvzh --delete-after --exclude=.git "$OLD_REPO_DIR/" "static.lfbroadband.org:/srv/sites/$PUBLISH_URL/"

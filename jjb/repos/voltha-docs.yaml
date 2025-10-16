@@ -30,7 +30,7 @@
           dependency-jobs: 'version-tag_voltha-docs'
           build-command: 'make multiversion'
           build-output-path: '_build/multiversion/'
-          sync-target-server: 'static.opennetworking.org'
+          sync-target-server: 'static.lfbroadband.org'
           sync-target-path: '/srv/sites/docs.voltha.org/'
           build-timeout: 60
 
