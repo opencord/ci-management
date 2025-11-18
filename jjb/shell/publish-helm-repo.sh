@@ -27,7 +27,7 @@ helm repo add stable https://charts.helm.sh/stable
 helm repo add rook-release https://charts.rook.io/release
 helm repo add cord https://charts.lfbroadband.org
 helm repo add elastic  https://helm.elastic.co
-helm repo add kiwigrid https://kiwigrid.github.io
+helm repo add kiwigrid "https://kokuwaio.github.io/helm-charts"
 
 # Update the repo
 ./helm-repo-tools/helmrepo.sh

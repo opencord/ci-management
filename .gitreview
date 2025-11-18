@@ -1,5 +1,5 @@
 [gerrit]
 host=gerrit.lfbroadband.org
-port=29418
+scheme=https
 project=ci-management.git
 defaultbranch=master
