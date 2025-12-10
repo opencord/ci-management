@@ -117,8 +117,7 @@ void process(Map config)
 
     sh(label  : 'Configure helm repo',
        script : """
-helm repo add onf https://charts.lfbroadband.org
-helm repo update
+helm repo add onf https://charts.lfbroadband.org || helm repo update
 """)
 
     // ---------------------
