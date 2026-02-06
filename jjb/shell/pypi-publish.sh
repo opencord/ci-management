@@ -56,6 +56,13 @@ do
     pushd "$pymoddir"
 
     echo "Building python module in '$pymoddir'"
+    # Activate venv (created by Makefile) and get latest packages
+    if [[ -f .venv/bin/activate ]]; then
+      source .venv/bin/activate
+    fi
+    pip install --upgrade pip
+    pip install --upgrade setuptools pkginfo wheel twine
+    python3 setup.py sdist
     # Create source distribution
     python setup.py sdist
 

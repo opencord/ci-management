@@ -30,5 +30,6 @@
       - 'pypi-publish':
           project-regexp: '^{name}$'
           dependency-jobs: 'version-tag_wildcard'
+          build-node: ubuntu22.04-basebuild-4c-8g
 
 # [EOF]
