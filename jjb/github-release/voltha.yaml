@@ -47,7 +47,7 @@
           jenkins-ssh-credential: '{gerrit-ssh-credential}'
       - credentials-binding:
           - text:
-              credential-id: onf-voltha
+              credential-id: github-release-2025
               variable: GITHUB_TOKEN
 
     scm:
