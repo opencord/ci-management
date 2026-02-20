@@ -37,7 +37,7 @@ String clusterName = 'kind-ci'
 //   as a guarantee release jobs are running in an expected sandbox.
 // -----------------------------------------------------------------------
 String branchName() {
-    def validBranches = ["master", "voltha-2.14"]
+    def validBranches = ["master", "voltha-2.15"]
 
     // "${branch}" is assigned by jenkins
     if (!validBranches.contains(branch)) {
