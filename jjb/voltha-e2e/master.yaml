@@ -113,11 +113,13 @@
               flags: "--set onu=2,pon=2"
               teardown: true
               logging: true
+              vgcEnabled: true
             - target: bbsim-multiolt-kind-dt-vgc
               workflow: dt
               flags: ""
               teardown: true
               logging: true
+              vgcEnabled: true
           timeout: 140
 
       # -----------------------------------------------------------------------
