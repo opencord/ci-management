@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "386d8b09_c8fee777",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001041
+      },
+      "writtenOn": "2026-03-02T08:18:15Z",
+      "side": 1,
+      "message": "Hi @Eric, For the vgc pipeline: periodic-voltha-combined-vgc we need to add the\n              vgcEnabled: true\nand for periodic-voltha-combined-vgc-multi-olt we need to also set the flags apart from the vgcEnabled:\n\n              flags: \"--set onu\u003d2,pon\u003d2\"",
+      "revId": "45c94561b8cee1bf42ef3dc29d87008bc7719f7b",
+      "serverId": "2a2bfe1b-c5c2-48ed-9ac8-16438ab24388"
+    }
+  ]
+}
