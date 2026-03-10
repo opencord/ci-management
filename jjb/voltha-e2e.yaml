@@ -1141,7 +1141,7 @@
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
     extraHelmFlags: ''
-    registry: mirror.registry.opennetworking.org
+    registry: linuxfoundation.jfrog.io/voltha-docker
     sandbox: true
     olts: 1
     timeout: 130
@@ -1300,7 +1300,7 @@
     build-timeout: 20
     timeout: 50
     olts: 1
-    registry:  mirror.registry.opennetworking.org
+    registry:  linuxfoundation.jfrog.io/voltha-docker
     logLevel: 'INFO'
     volthaSystemTestsChange: ''
     volthaHelmChartsChange: ''
@@ -1475,7 +1475,7 @@
     build-timeout: 20
     timeout: 50
     olts: 1
-    registry:  mirror.registry.opennetworking.org
+    registry:  linuxfoundation.jfrog.io/voltha-docker
     logLevel: 'INFO'
     test-project: 'voltha-go'
     volthaSystemTestsChange: ''

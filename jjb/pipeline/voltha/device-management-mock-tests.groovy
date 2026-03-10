@@ -92,7 +92,7 @@ pipeline {
         volthaDeploy([
           workflow: "att",
           extraHelmFlags: extraHelmFlags,
-          dockerRegistry: "mirror.registry.opennetworking.org",
+          dockerRegistry: "linuxfoundation.jfrog.io/voltha-docker",
           localCharts: localCharts,
         ])
         // start logging
