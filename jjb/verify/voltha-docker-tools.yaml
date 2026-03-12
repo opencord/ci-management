@@ -2,29 +2,28 @@
 # verification jobs for 'voltha-docker-tools' repo
 
 - project:
-    name: voltha-docker-tools
-    project: '{name}'
+      name: voltha-docker-tools
+      project: "{name}"
 
-    jobs:
-      - 'verify-voltha-docker-tools-jobs':
-          branch-regexp: '{all-branches-regexp}'
-      - 'publish-voltha-docker-tools-jobs'
-
-- job-group:
-    name: 'verify-voltha-docker-tools-jobs'
-    jobs:
-      - 'verify-licensed'
-      - 'make-unit-test':
-          build-timeout: 30
-          unit-test-targets: 'docker-build lint'
-          junit-allow-empty-results: true
+      jobs:
+          - "verify-voltha-docker-tools-jobs":
+                branch-regexp: "{all-branches-regexp}"
+          - "publish-voltha-docker-tools-jobs"
 
 - job-group:
-    name: 'publish-voltha-docker-tools-jobs'
-    jobs:
-      - 'docker-publish':
-          build-timeout: 30
-          docker-repo: 'voltha'
-          dependency-jobs: 'version-tag_wildcard'
+      name: "verify-voltha-docker-tools-jobs"
+      jobs:
+          - "verify-licensed"
+          - "make-unit-test":
+                build-timeout: 60
+                unit-test-targets: "docker-build lint"
+                junit-allow-empty-results: true
 
+- job-group:
+      name: "publish-voltha-docker-tools-jobs"
+      jobs:
+          - "docker-publish":
+                build-timeout: 30
+                docker-repo: "voltha"
+                dependency-jobs: "version-tag_wildcard"
 # [EOF]
