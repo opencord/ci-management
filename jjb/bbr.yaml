@@ -43,7 +43,7 @@
     triggers:
       - timed: |
           TZ=America/Los_Angeles
-          H H/4 * * *
+          H H * * 6
 
     parameters:
       - string:

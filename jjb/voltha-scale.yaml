@@ -4,7 +4,7 @@
 - _voltha_214_common: &voltha_214_common
     name: voltha-2.14-common
     pipeline-branch: 'voltha-2.14'
-    time-trigger: "H H/4 * * *"
+    time-trigger: "H H * * 6"
     olts: 2
     pons: 16
     onus: 32
@@ -70,7 +70,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-att-subscribers'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           olts: 2
           pons: 16
@@ -95,7 +95,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-onu-upgrade-2-16-32-att-onus'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H * * 6"
           olts: 2
           pons: 16
           onus: 32
@@ -110,7 +110,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-dt-subscribers'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           olts: 2
           pons: 16
@@ -132,7 +132,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           olts: 2
           pons: 16
@@ -159,7 +159,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-16-32-tt-subscribers-maclearner'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           olts: 2
           pons: 16
@@ -183,7 +183,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-2-64-32-dt-subscribers'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           olts: 2
           pons: 64
           onus: 32
@@ -202,7 +202,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-64-63-dt-subscribers'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           olts: 1
           pons: 64
           onus: 63
@@ -221,7 +221,7 @@
       - 'voltha-scale-measurements':
           name: 'voltha-scale-measurements-master-1-64-63-tt-subscribers'
           build-node: 'voltha-scale-1'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           olts: 1
           pons: 64
           onus: 63
@@ -243,7 +243,7 @@
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha/voltha-scale-multi-stack.groovy'
           pipeline-branch: 'master'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           logLevel: WARN
           onosReplicas: 1
@@ -267,7 +267,7 @@
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha/voltha-scale-multi-stack.groovy'
           pipeline-branch: 'master'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           logLevel: WARN
           onosReplicas: 1
@@ -291,7 +291,7 @@
           build-node: 'voltha-scale-2'
           pipeline-script: 'voltha/voltha-scale-multi-stack.groovy'
           pipeline-branch: 'master'
-          time-trigger: "H H/4 * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           logLevel: WARN
           onosReplicas: 1
@@ -425,7 +425,7 @@
           pipeline-script: 'voltha/voltha-scale-lwc-test.groovy'
           pipeline-branch: 'master'
           build-node: 'jenkins-worker-02.berlin-lab'
-          time-trigger: "H H * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           withMonitoring: true
           olts: 1
@@ -445,7 +445,7 @@
           pipeline-script: 'voltha/voltha-scale-lwc-test.groovy'
           pipeline-branch: 'master'
           build-node: 'jenkins-worker-02.berlin-lab'
-          time-trigger: "H H * * *"
+          time-trigger: "H H * * 6"
           disable-job: true
           withMonitoring: true
           olts: 1

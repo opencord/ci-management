@@ -60,7 +60,7 @@
           onu-image-activate-on-success: 'false'
           onu-image-commit-on-success: 'false'
           onu-image-crc: '0'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
 
 # -----------------------------------------------------------------------
 # voltha 2.14 release
@@ -96,7 +96,7 @@
           onu-image-activate-on-success: 'false'
           onu-image-commit-on-success: 'false'
           onu-image-crc: '0'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
 
 # -----------------------------------------------------------------------
 # https://docs.voltha.org/master/release_notes/voltha_2.11.html#onos-apps
@@ -131,7 +131,7 @@
           onu-image-activate-on-success: 'false'
           onu-image-commit-on-success: 'false'
           onu-image-crc: '0'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
 
 # -----------------------------------------------------------------------
 # to be used for voltha releases 2.9 onwards

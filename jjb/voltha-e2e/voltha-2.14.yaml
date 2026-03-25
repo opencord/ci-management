@@ -29,7 +29,7 @@
           pipeline-branch: 'voltha-2.14'
           code-branch: 'voltha-2.14'
           extraHelmFlags: '--set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           logLevel: 'DEBUG'
           testTargets: |
             - target: voltha-pm-data-single-kind-dt
@@ -64,7 +64,7 @@
               flags: ""
               teardown: true
               logging: true
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
 
       # -----------------------------------------------------------------------
       # md5sum(master): c606493da6ee7cbb18ca8aee97ea2957
@@ -75,7 +75,7 @@
           logLevel: 'DEBUG'                      # force job to regenerate
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.14'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: functional-single-kind
               workflow: att
@@ -110,7 +110,7 @@
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'voltha-2.14'
           code-branch: 'voltha-2.14'
-          time-trigger : '@daily'
+          time-trigger : "H H * * 6"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master '
           testTargets: |
             - target: functional-single-kind-dt
@@ -129,7 +129,7 @@
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'voltha-2.14'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF --set onu=2'
           testTargets: |
             - target: sanity-kind-dt-fttb

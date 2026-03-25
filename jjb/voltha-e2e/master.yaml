@@ -27,7 +27,7 @@
           name: 'periodic-voltha-pm-data-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           logLevel: 'DEBUG'
           testTargets: |
             - target: voltha-pm-data-single-kind-att
@@ -70,13 +70,13 @@
               flags: ""
               teardown: true
               logging: true
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
 
       - 'voltha-periodic-test':
           name: 'periodic-voltha-combined-vgc'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           logLevel: 'DEBUG'
           testTargets: |
             - target: sanity-kind-dt-vgc
@@ -109,7 +109,7 @@
           code-branch: 'master'
           olts: 2
           extraHelmFlags: '--set global.image_tag=master --set kafka.externalAccess.enabled=true,kafka.externalAccess.service.type=NodePort,kafka.externalAccess.service.nodePorts[0]=30201,kafka.externalAccess.service.domain=127.0.0.1'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           logLevel: 'DEBUG'
           testTargets: |
             - target: multiolt-kind-dt-vgc
@@ -136,7 +136,7 @@
           logLevel: 'DEBUG'
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'master'
-          time-trigger: "H H/23 * * *"         # Build daily at 11pm
+          time-trigger: "H H * * 6"         # Build on every Saturday at a random hour
           testTargets: |
             - target: functional-single-kind
               workflow: att
@@ -167,7 +167,7 @@
       - 'voltha-periodic-test':
           name: 'periodic-voltha-sanity-test-multi-runs'
           code-branch: 'master'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
           testTargets: |
             - target: sanity-kind
@@ -206,7 +206,7 @@
           pipeline-script: 'voltha/bbsim-tests.groovy'
           pipeline-branch: 'master'
           code-branch: 'master'
-          time-trigger: "@daily"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: functional-single-kind-dt
               workflow: dt
@@ -227,7 +227,7 @@
           # build-node: 'ubuntu18.04-basebuild-4c-8g'
           build-node: 'ubuntu18.04-basebuild-8c-15g'
           code-branch: 'master'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF --set onu=2'
           testTargets: |
             - target: sanity-kind-dt-fttb

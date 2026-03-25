@@ -28,7 +28,7 @@
     pipeline-script: 'voltha/bbsim-tests.groovy'
     pipeline-branch: 'voltha-2.14'
     code-branch: 'voltha-2.14'
-    time-trigger: "H H/23 * * *"
+    time-trigger: "H H * * 6"
 
 - project:
     name: voltha-e2e
@@ -398,7 +398,7 @@
               flags: ""
               teardown: true
               logging: true
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           timeout: 270
 
       - 'voltha-periodic-test':
@@ -537,7 +537,7 @@
           code-branch: 'master'
           olts: 2
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: functional-multi-olt
               workflow: att
@@ -566,7 +566,7 @@
           name: 'periodic-voltha-multi-uni-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: functional-single-kind-multiuni-att
               workflow: att
@@ -589,7 +589,7 @@
           code-branch: 'master'
           olts: 2
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2 --set voltha-adapter-openonu.adapter_open_onu.uni_port_mask=0x00FF'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: functional-multiuni-multiolt-att
               workflow: att
@@ -615,7 +615,7 @@
           name: 'periodic-voltha-openonu-go-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H * * 6"
           logLevel: 'DEBUG'
           testTargets: |
             - target: 1t1gem-openonu-go-adapter-test
@@ -892,7 +892,7 @@
               flags: ""
               teardown: true
               logging: true
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H * * 6"
           timeout: 270
 
       # -----------------------------------------------------------------------
@@ -1034,7 +1034,7 @@
           name: 'periodic-voltha-test-DMI'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master'
           code-branch: 'master'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: bbsim-dmi-hw-management-test
               workflow: att
@@ -1049,7 +1049,7 @@
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
-          time-trigger: "H H/12 * * *"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: sanity-multi-kind
               workflow: att
@@ -1063,7 +1063,7 @@
           name: 'periodic-voltha-unitag-subscriber-tt-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           logLevel: 'DEBUG'
           robot-args: '-v unitag_sub:True'
           testTargets: |
@@ -1089,7 +1089,7 @@
           name: 'periodic-voltha-tt-maclearner-sanity-test-bbsim'
           code-branch: 'master'
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onos-classic.replicas=3,onos-classic.atomix.replicas=3 --set voltha.onos_classic.replicas=3 '
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           logLevel: 'DEBUG'
           enableMacLearning: true
           testTargets: |
@@ -1104,7 +1104,7 @@
           name: 'periodic-voltha-memory-leak-test-bbsim'
           build-node: 'ubuntu18.04-basebuild-4c-8g'
           code-branch: 'master'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,controlledActivation=only-onu'
           withMonitoring: true
           logLevel: 'DEBUG'
@@ -1121,7 +1121,7 @@
           code-branch: 'master'
           olts: 2
           extraHelmFlags: '--set global.image_tag=master --set onos-classic.image.tag=master --set onu=2,pon=2'
-          time-trigger: "H H/23 * * *"
+          time-trigger: "H H * * 6"
           testTargets: |
             - target: sanity-kind-tim-multi-olt-multi-pon-multi-onu
               workflow: tim
