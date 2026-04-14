@@ -18,8 +18,7 @@
     jobs:
       - 'verify-licensed'
       - 'make-unit-test':
-#          build-node: 'ubuntu18.04-basebuild-2c-4g'
-          build-node: 'ubuntu18.04-basebuild-8c-15g'
+          build-node: 'ubuntu22.04-basebuild-4c-8g'
           build-timeout: 20
           unit-test-targets: 'test'
           unit-test-keep-going: 'false'
